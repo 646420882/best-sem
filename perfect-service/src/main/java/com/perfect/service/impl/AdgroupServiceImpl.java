@@ -58,6 +58,16 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
+    public Iterable<AdgroupDTO> findAll() {
+        return adgroupDAO.findAll();
+    }
+
+    @Override
+    public List<AdgroupDTO> findHasLocalStatus() {
+        return adgroupDAO.findHasLocalStatus();
+    }
+
+    @Override
     public List<Long> getAdgroupIdByCampaignId(Long campaignId) {
         return adgroupDAO.getAdgroupIdByCampaignId(campaignId);
     }
@@ -146,7 +156,7 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public void save(AdgroupDTO adgroupDTO) {
-        adgroupDAO.save(adgroupDTO);
+        adgroupDAO.insert(adgroupDTO);
     }
 
     @Override

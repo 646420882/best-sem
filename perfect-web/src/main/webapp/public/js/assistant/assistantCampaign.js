@@ -584,6 +584,7 @@ $(".scheduleOk").click(function () {
         jsonSchdule_add = {};
         jsonSchdule_add["schedule"] = getInputScheduleData();
     }
+    $(".TB_overlayBG").css({display: "none"});
     $("#setExtension").hide(0);
 });
 
@@ -1091,12 +1092,15 @@ $(".closeAddCampaign").click(function () {
 
 //推广时段的取消按钮的事件
 function closeSetExtension() {
+    $(".TB_overlayBG").css({display: "none"});
     $("#setExtension").hide(0);
 }
 function closeSetExcludeIp() {
+    $(".TB_overlayBG").css({display: "none"});
     $("#setExcludeIp").hide(0);
 }
 function closeSetNegtiveWord() {
+    $(".TB_overlayBG").css({display: "none"});
     $("#setNegtiveWord").hide(0);
 }
 

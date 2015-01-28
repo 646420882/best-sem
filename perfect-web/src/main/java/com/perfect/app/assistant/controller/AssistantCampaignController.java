@@ -342,16 +342,18 @@ public class AssistantCampaignController extends WebContextSupport {
 
         //开始添加
         String id = campaignService.insertReturnId(campaignDTO);
+        if(id!=null){
+            AdgroupDTO adgroupDTO = new AdgroupDTO();
+            adgroupDTO.setCampaignObjId(id);
+            adgroupDTO.setAdgroupName(adgroupName);
+            adgroupDTO.setMaxPrice(maxPrice);
+            adgroupDTO.setPause(adgroupPause);
+            adgroupDTO.setStatus(-1);
+            adgroupDTO.setLocalStatus(1);
+            adgroupDTO.setAccountId(AppContext.getAccountId());
+            adgroupService.save(adgroupDTO);
+        }
 
-        AdgroupDTO adgroupDTO = new AdgroupDTO();
-        adgroupDTO.setCampaignObjId(id);
-        adgroupDTO.setAdgroupName(adgroupName);
-        adgroupDTO.setMaxPrice(maxPrice);
-        adgroupDTO.setPause(adgroupPause);
-        adgroupDTO.setStatus(-1);
-        adgroupDTO.setLocalStatus(1);
-        adgroupDTO.setAccountId(AppContext.getAccountId());
-        adgroupService.save(adgroupDTO);
 
     }
 
@@ -444,13 +446,13 @@ public class AssistantCampaignController extends WebContextSupport {
         adgroupEntity.setAccountId(AppContext.getAccountId());
 
         String adgroupObjectId = (String) adgroupService.insertOutId(adgroupEntity);
-
-        for (KeywordDTO kwd : list) {
-            kwd.setAdgroupObjId(adgroupObjectId);
-            kwd.setAccountId(AppContext.getAccountId());
+        if(adgroupObjectId!=null){
+            for (KeywordDTO kwd : list) {
+                kwd.setAdgroupObjId(adgroupObjectId);
+                kwd.setAccountId(AppContext.getAccountId());
+            }
+            keywordService.insertAll(list);
         }
-
-        keywordService.insertAll(list);
         writeJson(RES_SUCCESS, response);
     }
 

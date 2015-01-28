@@ -18,6 +18,10 @@ public interface AdgroupService {
 
     List<AdgroupDTO> getAdgroupByCampaignId(Long campaignObjId);
 
+    Iterable<AdgroupDTO> findAll();
+
+    List<AdgroupDTO> findHasLocalStatus();
+
     List<Long> getAdgroupIdByCampaignId(Long campaignId);
 
     List<Long> getAdgroupIdByCampaignObj(String campaignId);

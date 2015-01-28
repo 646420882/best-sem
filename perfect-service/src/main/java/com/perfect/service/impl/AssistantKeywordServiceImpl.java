@@ -510,6 +510,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         return campaignTreeList;
     }
 
+    @Override
+    public Iterable<KeywordDTO> findAll() {
+       return keywordDAO.findAll();
+    }
+
+    @Override
+    public List<KeywordDTO> findHasLocalStatus() {
+        return keywordDAO.findHasLocalStatus();
+    }
+
 
     /**
      * (用户的选择计划，单元，输入的关键词的方式)

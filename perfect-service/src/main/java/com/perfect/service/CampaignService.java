@@ -14,6 +14,8 @@ public interface CampaignService {
 
     public Iterable<CampaignDTO> findAll();
 
+    public List<CampaignDTO> findHasLocalStatus();
+
     public Iterable<CampaignDTO> findAllDownloadCampaign();
 
     public void insertAll(List<CampaignDTO> list);

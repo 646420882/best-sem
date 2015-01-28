@@ -16,6 +16,8 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     List<CampaignDTO> findAllDownloadCampaign();
 
+    List<CampaignDTO> findHasLocalStatus();
+
     CampaignDTO findByLongId(Long cid);
 
     CampaignDTO findByObjectId(String oid);

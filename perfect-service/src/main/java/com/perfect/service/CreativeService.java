@@ -15,6 +15,10 @@ public interface CreativeService {
 
     public List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
+    public Iterable<CreativeDTO> findAll();
+
+    public List<CreativeDTO> findHasLocalStatus();
+
     public CreativeDTO findOne(Long creativeId);
 
     public List<CreativeDTO> find(Map<String, Object> params, int skip, int limit);

@@ -54,6 +54,16 @@ public class CreativeServiceImpl implements CreativeService {
     }
 
     @Override
+    public Iterable<CreativeDTO> findAll() {
+        return creativeDAO.findAll();
+    }
+
+    @Override
+    public List<CreativeDTO> findHasLocalStatus() {
+        return creativeDAO.findHasLocalStatus();
+    }
+
+    @Override
     public CreativeDTO findOne(Long creativeId) {
         return creativeDAO.findOne(creativeId);
     }

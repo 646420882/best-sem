@@ -23,6 +23,8 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
     List<CreativeDTO> getAllsByAdgroupIds(List<Long> l);
 
     List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l);
+    
+    List<CreativeDTO> findHasLocalStatus();
 
     void deleteByCacheId(Long cacheCreativeId);
 

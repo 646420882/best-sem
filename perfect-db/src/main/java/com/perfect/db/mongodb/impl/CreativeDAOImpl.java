@@ -101,6 +101,12 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
+    public List<CreativeDTO> findHasLocalStatus() {
+        List<CreativeEntity> creativeEntities=getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass());
+        return ObjectUtils.convert(creativeEntities,CreativeDTO.class);
+    }
+
+    @Override
     public CreativeDTO getAllsBySomeParams(Map<String, Object> params) {
         Query q = new Query();
         Criteria c = new Criteria();

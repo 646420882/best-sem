@@ -996,10 +996,10 @@
     <h2 id="uploadHead"><span class="fl">上传更新</span><a href="javascript:void(0)" onclick="closeUploadDialog()" class="close">关闭</a></h2>
 
     <div class="mainlist">
-        您希望更新账户的哪个部分？
+        您希望上传账户的哪个部分？
         <ul class="zs_set">
-            <li><input type="radio" value="all" name="up1" onchange="dialogUpload(this.value)">&nbsp; 所有操作过的计划</li>
-            <li><input type="radio" value="opreated" name="up1" onchange="dialogUpload(this.value)">&nbsp; 从修改的推广计划列表中选择</li>
+            <li><input type="radio" value="all" name="up1" onchange="dialogUpload(this.value)">&nbsp; 所有计划</li>
+            <li><input type="radio" value="opreated" name="up1" onchange="dialogUpload(this.value)">&nbsp; 从推广计划列表中选择</li>
         </ul>
         <div class="zs_sets over">
             <div id="allCamp" class="zs_ses1" style="overflow: auto">

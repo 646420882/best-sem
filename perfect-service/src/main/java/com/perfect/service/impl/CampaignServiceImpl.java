@@ -44,6 +44,11 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
+    public List<CampaignDTO> findHasLocalStatus() {
+        return campaignDAO.findHasLocalStatus();
+    }
+
+    @Override
     public Iterable<CampaignDTO> findAllDownloadCampaign() {
         return campaignDAO.findAllDownloadCampaign();
     }
