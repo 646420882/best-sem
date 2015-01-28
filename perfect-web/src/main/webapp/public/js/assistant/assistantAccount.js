@@ -117,8 +117,7 @@ var AccountPerformance = function () {
     });
 
     $("#containerLegend").empty();
-    $("#containerLegend").append("<div class='tu_top over'><ul><li><b>账户表现<b/></li>" +
-//            + "<li>最近7天&nbsp;<input type='image' src='../public/img/zs_input.png'/></li>"
+    $("#containerLegend").html("<div class='tu_top over'><ul><li><b>账户表现</b></li>" +
         "<li><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></li>" +
         "<li><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></li>" +
         "<li><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></li>" +

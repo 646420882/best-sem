@@ -687,17 +687,20 @@
     margin-left: 3px;
 }
 
-.tu_top ul li input, .tu_top ul li span, .tu_top ul li b {
+.tu_top ul li input, .tu_top ul li span{
+    line-height:34px;
+    vertical-align: middle;
     display: block;
     float: left;
     font-weight: normal;
-    margin: 0 2px;
+    margin: 10px  2px 0 0;
 }
-
+.tu_top ul li input{
+    *margin-top:6px;
+}
 .tu_top ul li span {
     width: 13px;
     height: 13px;
-    *margin-top: 3px;
 }
 
 .tu_top ul li .blue {
@@ -2018,7 +2021,6 @@ h2 .close {
     background: url(/public/img/zs_function_bg.png) repeat-x;
     border-top: 1px solid #cfcfcf;
 }
-
 .zs_function ul {
     height: 34px;
 }
@@ -2026,8 +2028,10 @@ h2 .close {
 .zs_function ul li {
     display: block;
     float: left;
-    margin: 10px 15px 10px 0;
+    margin: 0px 15px 0px 0;
     height: 34px;
+    line-height:34px;
+    vertical-align: middle;
     position: relative;
     z-index: 10;
 }
@@ -2043,32 +2047,20 @@ h2 .close {
 .zs_function ul li ul li {
     cursor: pointer;
 }
-
-@media screen and (max-width: 1425px) {
-    .zs_function ul li {
-        margin: 10px 2px 10px 0;
-    }
-}
-
 .zs_function span {
+    line-height:34px;
 }
 
 .zs_function ul li b {
     display: block;
     float: left;
     margin-right: 5px;
-    margin-top: -4px;
-}
-
-#deletekeywords {
-    margin-top: -8px;
-
 }
 
 .zs_top, .z_function_hover {
     display: block;
     float: left;
-    margin-right: 5px;
+    margin:10px 5px 0 0 ;
     position: relative;
     width: 15px;
     height: 15px;
@@ -3651,11 +3643,6 @@ h2 .close {
 }
 .tuoci table ,.hangyetuoci table{
     margin-top:0px;
-
-}
-#containerLegend ul li{
-    display:block;
-    float:left;
 
 }
 #riginality_editor1{
