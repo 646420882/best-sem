@@ -1,13 +1,6 @@
 /**
  * Created by XiaoWei on 2015/1/19.
  */
-function dialogUpload(val){
-    if(val=="all"){
-
-    }else{
-
-    }
-}
 function uploadDialog() {
     openUploadDialog();
 }
@@ -56,7 +49,7 @@ function uploadDialogOk(){
         }
     }
     if (uploadType != "") {
-        if (uploadType == "all") {
+        if (uploadType == "all") {//上传全部数据
             var conf = confirm("是否上传全部计划内包含的一系列操作过的模块到百度？");
             if (conf) {
                 $.get("/uploadMerge/uploadByAll", function (res) {
@@ -64,34 +57,43 @@ function uploadDialogOk(){
                         alert("上传成功");
                         reloadGrid();
                         loadTree();
+                        closeUploadDialog();
                     } else {
                         alert(res.msg);
+                        reloadGrid();
+                        loadTree();
+                        closeUploadDialog();
                     }
                 });
             }
-        } else {
-            var campaignIds = [];
+        } else {//上传部分数据
+            var campaignIds = "";
             $.each($("input[name='camp_o']:checked"), function (i, item) {
                 if (item.checked) {
-                    campaignIds.push(item.id);
+                    campaignIds+=item.id+","
                 }
             });
             if (campaignIds.length == 0) {
                 alert("请选择要上传的计划！");
                 return;
             } else {
-                alert("功能尚不完善，先暂时使用全部上传!2015-01-29后则可以使用！");
-                //var conf = confirm("是否上传选择的这些计划？");
-                //if (conf) {
-                //    $.post("/uploadMerge/uploadBySomeCamp", {cids: campaignIds}, function (res) {
-                //        if (res.msg == "1") {
-                //            alert("上传成功");
-                //            reloadGrid();
-                //            loadTree();
-                //        } else {
-                //        }
-                //    });
-                //}
+                campaignIds=campaignIds.slice(0,-1);
+                var conf = confirm("是否上传选择的这些计划？");
+                if (conf) {
+                    $.post("/uploadMerge/uploadBySomeCamp", {cids: campaignIds}, function (res) {
+                        if (res.msg == "1") {
+                            alert("上传成功");
+                            reloadGrid();
+                            loadTree();
+                            closeUploadDialog();
+                        } else {
+                            alert(res.msg);
+                            reloadGrid();
+                            loadTree();
+                            closeUploadDialog();
+                        }
+                    });
+                }
             }
         }
     } else {

@@ -1,5 +1,6 @@
 package com.perfect.service;
 
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.utils.paging.PagerInfo;
 
@@ -18,6 +19,10 @@ public interface CreativeService {
     public Iterable<CreativeDTO> findAll();
 
     public List<CreativeDTO> findHasLocalStatus();
+
+    public List<CreativeDTO> findHasLocalStatusStr(List<AdgroupDTO> adgroupDTOStr);
+
+    public List<CreativeDTO> findHasLocalStatusLong(List<AdgroupDTO> adgroupDTOLong);
 
     public CreativeDTO findOne(Long creativeId);
 

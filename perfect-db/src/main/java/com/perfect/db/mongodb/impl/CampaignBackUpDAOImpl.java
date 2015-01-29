@@ -48,7 +48,7 @@ public class CampaignBackUpDAOImpl extends AbstractUserBaseDAOImpl<CampaignBackU
 
     @Override
     public void deleteByOId(List<String> strings) {
-        strings.parallelStream().forEach(s->{
+        strings.stream().forEach(s->{
             getMongoTemplate().remove(new Query(Criteria.where(SYSTEM_ID).is(s)),CampaignBackUpEntity.class);
         });
     }

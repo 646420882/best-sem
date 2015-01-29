@@ -223,49 +223,49 @@ $(function () {
 function initMutliTree() {
     $("#creativeMultiTree").html("正在加载数据...");
     $.ajax({
-        url: "/assistantKeyword/campaignTree",
-        type: "post",
+        url: "/account/get_tree",
+        type: "get",
         dataType: "json",
         success: function (data) {
             if (data.length == 0) {
                 $("#creativeMultiTree").html("暂无数据!");
                 return;
             }
-            var array = new Array();
-            var json;
-            var camId;
-            for (var i = 0; i < data.length; i++) {
-                json = {};
-
-                if (data[i].rootNode.campaignId == null) {
-                    camId = data[i].rootNode.id;
-                } else {
-                    camId = data[i].rootNode.campaignId;
-                }
-                json["id"] = camId;
-                json["pId"] = 0;
-                json["name"] = data[i].rootNode.campaignName;
-                json["titile"] = "";
-                json["open"] = false;
-                array.push(json);
-                for (var j = 0; j < data[i].childNode.length; j++) {
-                    json = {};
-
-                    if (data[i].childNode[j].adgroupId == null) {
-                        json["id"] = data[i].childNode[j].id;
-                    } else {
-                        json["id"] = data[i].childNode[j].adgroupId;
-                    }
-
-                    json["pId"] = camId;
-                    json["name"] = data[i].childNode[j].adgroupName;
-                    json["titile"] = "";
-                    json["checked"] = false;
-                    json["isHidden"] = true;
-                    array.push(json);
-                }
-            }
-            $.fn.zTree.init($("#creativeMultiTree"), settingCreativeMutli, array);
+//            var array = new Array();
+//            var json;
+//            var camId;
+//            for (var i = 0; i < data.length; i++) {
+//                json = {};
+//
+//                if (data[i].rootNode.campaignId == null) {
+//                    camId = data[i].rootNode.id;
+//                } else {
+//                    camId = data[i].rootNode.campaignId;
+//                }
+//                json["id"] = camId;
+//                json["pId"] = 0;
+//                json["name"] = data[i].rootNode.campaignName;
+//                json["titile"] = "";
+//                json["open"] = false;
+//                array.push(json);
+//                for (var j = 0; j < data[i].childNode.length; j++) {
+//                    json = {};
+//
+//                    if (data[i].childNode[j].adgroupId == null) {
+//                        json["id"] = data[i].childNode[j].id;
+//                    } else {
+//                        json["id"] = data[i].childNode[j].adgroupId;
+//                    }
+//
+//                    json["pId"] = camId;
+//                    json["name"] = data[i].childNode[j].adgroupName;
+//                    json["titile"] = "";
+//                    json["checked"] = false;
+//                    json["isHidden"] = true;
+//                    array.push(json);
+//                }
+//            }
+            $.fn.zTree.init($("#creativeMultiTree"), settingCreativeMutli, data.trees);
         }
     });
 }

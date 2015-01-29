@@ -18,6 +18,10 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     List<CampaignDTO> findHasLocalStatus();
 
+    public List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids);
+
+    public List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids);
+
     CampaignDTO findByLongId(Long cid);
 
     CampaignDTO findByObjectId(String oid);

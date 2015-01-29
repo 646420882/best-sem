@@ -154,6 +154,18 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
+    public List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids) {
+        List<CampaignEntity> campaignEntityList=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(SYSTEM_ID).in(cids)),getEntityClass());
+        return ObjectUtils.convert(campaignEntityList,CampaignDTO.class);
+    }
+
+    @Override
+    public List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids) {
+        List<CampaignEntity> campaignEntityList=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).in(cids)),getEntityClass());
+        return ObjectUtils.convert(campaignEntityList,CampaignDTO.class);
+    }
+
+    @Override
     public CampaignDTO findByLongId(Long cid) {
         CampaignEntity campaignEntity = getMongoTemplate().findOne(Query.query(Criteria.where(CAMPAIGN_ID).is(cid)), getEntityClass());
         CampaignDTO campaignDTO = new CampaignDTO();
@@ -276,7 +288,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     @Override
     public void updateRemoveLs(List<String> afterUpdateStr) {
-        afterUpdateStr.parallelStream().forEach(s->{
+        afterUpdateStr.stream().forEach(s->{
             Update up=new Update();
             up.set("ls",null);
             getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(s)),up,CampaignEntity.class);

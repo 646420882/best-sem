@@ -31,6 +31,10 @@ public interface AssistantKeywordService {
 
     List<KeywordDTO> findHasLocalStatus();
 
+    List<KeywordDTO> findHasLocalStatusStr(List<AdgroupDTO> adgroupDTOStr);
+
+    List<KeywordDTO> findHasLocalStatusLong(List<AdgroupDTO> adgroupDTOLong);
+
     Map<String,Object> batchAddOrUpdateKeywordByChoose(Long accountId, Boolean isReplace, String chooseInfos, String keywordInfos);
 
     void batchAddUpdateKeyword(List<KeywordInfoDTO> insertDtos, List<KeywordInfoDTO> updateDtos, Boolean isReplace);

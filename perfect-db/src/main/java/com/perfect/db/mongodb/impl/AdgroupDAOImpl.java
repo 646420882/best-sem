@@ -10,6 +10,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
@@ -150,6 +151,18 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public List<AdgroupDTO> findHasLocalStatus() {
         List<AdgroupEntity> adgroupEntities=getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass());
+        return ObjectUtils.convert(adgroupEntities,AdgroupDTO.class);
+    }
+
+    @Override
+    public List<AdgroupDTO> findHasLocalStatusStr(List<String> str) {
+        List<AdgroupEntity> adgroupEntities=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_CAMPAIGN_ID).in(str)),getEntityClass());
+        return ObjectUtils.convert(adgroupEntities,AdgroupDTO.class);
+    }
+
+    @Override
+    public List<AdgroupDTO> findHasLocalStatusLong(List<Long> longs) {
+        List<AdgroupEntity> adgroupEntities=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).in(longs)),getEntityClass());
         return ObjectUtils.convert(adgroupEntities,AdgroupDTO.class);
     }
 
@@ -476,7 +489,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public void deleteLinkedByAgid(List<Long> agid) {
         Update up = new Update();
-        up.set("ls", 4);
+        up.set("ls", 3);
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.updateMulti(new Query(Criteria.where(ADGROUP_ID).in(agid)), up, getEntityClass());
         mongoTemplate.updateMulti(new Query(Criteria.where(ADGROUP_ID).in(agid)), up, KeywordEntity.class);

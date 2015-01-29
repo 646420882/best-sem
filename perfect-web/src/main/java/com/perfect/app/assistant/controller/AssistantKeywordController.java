@@ -541,7 +541,7 @@ public class AssistantKeywordController extends WebContextSupport{
                 add(kid);
             }});
             if (keywordDTOs.size() > 0) {
-                keywordDTOs.parallelStream().forEach(s -> assistantKeywordService.update(kid, s));
+                keywordDTOs.stream().forEach(s -> assistantKeywordService.update(kid, s));
                 return writeMapObject(MSG, SUCCESS);
             } else {
                 return writeMapObject(MSG, "noUp");
@@ -573,7 +573,7 @@ public class AssistantKeywordController extends WebContextSupport{
     public ModelAndView uploadAddByUp(@RequestParam(value = "kid",required = true)String kid){
         List<KeywordDTO> returnKeywordDTO=assistantKeywordService.uploadAddByUp(kid);
         if(returnKeywordDTO.size()>0){
-            returnKeywordDTO.parallelStream().filter(s->s.getKeywordId()!=null).forEach(s -> assistantKeywordService.update(kid, s));
+            returnKeywordDTO.stream().filter(s->s.getKeywordId()!=null).forEach(s -> assistantKeywordService.update(kid, s));
             return  writeMapObject(MSG,SUCCESS);
         }
         return writeMapObject(MSG,"级联上传失败");

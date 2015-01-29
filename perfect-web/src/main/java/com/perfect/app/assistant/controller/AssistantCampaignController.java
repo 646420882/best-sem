@@ -460,7 +460,7 @@ public class AssistantCampaignController extends WebContextSupport {
     public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid,@RequestParam(value = "ls")Integer ls) {
         if (cid.length() > OBJ_SIZE) {
             List<CampaignDTO> dtos=campaignService.uploadAdd(cid);
-            dtos.parallelStream().forEach(s->campaignService.update(s,cid));
+            dtos.stream().forEach(s->campaignService.update(s,cid));
             return writeMapObject(MSG, SUCCESS);
         } else {
             switch (ls) {

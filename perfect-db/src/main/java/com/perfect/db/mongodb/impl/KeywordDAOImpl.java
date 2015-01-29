@@ -194,6 +194,18 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
+    public List<KeywordDTO> findHasLocalStatusStr(List<String> strs) {
+        List<KeywordEntity> keywordEntities= getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_ADGROUP_ID).in(strs)),getEntityClass());
+        return ObjectUtils.convert(keywordEntities,KeywordDTO.class);
+    }
+
+    @Override
+    public List<KeywordDTO> findHasLocalStatusLong(List<Long> longs) {
+        List<KeywordEntity> keywordEntities= getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)),getEntityClass());
+        return ObjectUtils.convert(keywordEntities,KeywordDTO.class);
+    }
+
+    @Override
     public Long keywordCount(List<Long> adgroupIds) {
         return getMongoTemplate().count(Query.query(
                         Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),

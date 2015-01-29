@@ -4,6 +4,7 @@ package com.perfect.dao.adgroup;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.utils.paging.PagerInfo;
 
@@ -27,6 +28,10 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
     List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId);
 
     List<AdgroupDTO> findHasLocalStatus();
+
+    List<AdgroupDTO> findHasLocalStatusStr(List<String> str);
+
+    List<AdgroupDTO> findHasLocalStatusLong(List<Long> longs);
 
 //    List<AdgroupDTO> findByQuery(Query query);
 

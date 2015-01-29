@@ -49,6 +49,16 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
+    public List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids) {
+        return campaignDAO.findHasLocalStatusByStrings(cids);
+    }
+
+    @Override
+    public List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids) {
+        return campaignDAO.findHasLocalStatusByLongs(cids);
+    }
+
+    @Override
     public Iterable<CampaignDTO> findAllDownloadCampaign() {
         return campaignDAO.findAllDownloadCampaign();
     }
@@ -160,7 +170,7 @@ public class CampaignServiceImpl implements CampaignService {
                 addCampaignRequest.setCampaignTypes(Arrays.asList(campaignType));
                 AddCampaignResponse addCampaignResponse = campaignService.addCampaign(addCampaignRequest);
                 List<CampaignType> campaignTypes = addCampaignResponse.getCampaignTypes();
-                campaignTypes.parallelStream().forEach(s -> {
+                campaignTypes.stream().forEach(s -> {
                     if (s.getCampaignId() != null) {
                         CampaignDTO campaignDTO = new CampaignDTO();
                         campaignDTO.setCampaignId(s.getCampaignId());
@@ -188,7 +198,7 @@ public class CampaignServiceImpl implements CampaignService {
             DeleteCampaignResponse deleteCampaignResponse = campaignService.deleteCampaign(deleteCampaignRequest);
             int result = deleteCampaignResponse.getResult();
             if (result != 0) {
-                campaignIds.parallelStream().forEach(s -> campaignDAO.deleteByCampaignId(s));
+                campaignIds.stream().forEach(s -> campaignDAO.deleteByCampaignId(s));
                 return result;
             }
         } catch (ApiException e) {
@@ -202,7 +212,7 @@ public class CampaignServiceImpl implements CampaignService {
         List<CampaignType> campaignTypeList = new ArrayList<>();
         List<Long> returnCampaignIds = new ArrayList<>();
         List<CampaignDTO> dtos = new ArrayList<>();
-        campaignIds.parallelStream().forEach(s -> dtos.add(campaignDAO.findByLongId(s)));
+        campaignIds.stream().forEach(s -> dtos.add(campaignDAO.findByLongId(s)));
         for (CampaignDTO dto : dtos) {
             CampaignType campaignType = new CampaignType();
             campaignType.setCampaignId(dto.getCampaignId());
@@ -232,7 +242,7 @@ public class CampaignServiceImpl implements CampaignService {
             updateCampaignRequest.setCampaignTypes(campaignTypeList);
             UpdateCampaignResponse updateCampaignResponse = campaignService.updateCampaign(updateCampaignRequest);
             List<CampaignType> campaignTypes = updateCampaignResponse.getCampaignTypes();
-            campaignTypes.parallelStream().forEach(s -> returnCampaignIds.add(s.getCampaignId()));
+            campaignTypes.stream().forEach(s -> returnCampaignIds.add(s.getCampaignId()));
             return returnCampaignIds;
         } catch (ApiException e) {
             e.printStackTrace();

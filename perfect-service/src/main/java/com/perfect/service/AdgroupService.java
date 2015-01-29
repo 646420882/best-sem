@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -21,6 +22,10 @@ public interface AdgroupService {
     Iterable<AdgroupDTO> findAll();
 
     List<AdgroupDTO> findHasLocalStatus();
+
+    List<AdgroupDTO> findHasLocalStatusStr(List<CampaignDTO> campaignDTOStr);
+
+    List<AdgroupDTO> findHasLocalStatusLong(List<CampaignDTO> campaignDTOLong);
 
     List<Long> getAdgroupIdByCampaignId(Long campaignId);
 
