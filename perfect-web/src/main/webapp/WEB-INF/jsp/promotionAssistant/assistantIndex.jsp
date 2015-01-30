@@ -44,8 +44,8 @@
     </script>
 </head>
 <body>
-<%--<div id="background" class="background"></div>
-<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>--%>
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent over">
@@ -1431,14 +1431,15 @@
     };
     //loading
     var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide();
-    $(document).ajaxStart(function () {
-        ajaxbg.show();
+     ajaxbg.hide();
+    $("#downloadAccount").click(function(){
+        $(document).ajaxStart(function () {
+            ajaxbg.show();
+        })
+        $(document).ajaxStop(function () {
+            ajaxbg.hide();
+        });
     })
-    $(document).ajaxStop(function () {
-        ajaxbg.fadeOut(1000);
-    });
-
 </script>
 </body>
 </html>

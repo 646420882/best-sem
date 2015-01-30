@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="serBox" onclick="window.open('http://seo.best-ad.cn')">
+        <div class="serBox disabled">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo2.png"></div>
@@ -78,10 +78,9 @@
                 <div class="tex2_mid">
                     <p>SEO追踪，集统计、分析和管理</p>
                     <p>专家级的建议和优化方案</p>
-                    <p></p>
                 </div>
                 <div class="enter">
-                    <a href="javascript:void(0);" onclick="js_method()">点击进入</a>
+                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
                 </div>
             </div>
         </div>

@@ -686,7 +686,9 @@
     float: left;
     margin-left: 3px;
 }
-
+.tu_top ul li b{
+    font-weight: normal;
+}
 .tu_top ul li input, .tu_top ul li span{
     line-height:34px;
     vertical-align: middle;

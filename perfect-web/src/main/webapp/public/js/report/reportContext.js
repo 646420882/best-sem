@@ -602,7 +602,7 @@ $(function () {
     });
 //明细报告
     reportData = function () {
-        jQuery.ajaxSetup ({cache:false});
+        /*jQuery.ajaxSetup ({cache:false});*/
         $("#containerLegend").empty();
         $("#shujuthead").empty();
         $('#container').empty();
@@ -616,7 +616,6 @@ $(function () {
         $("#container").hide();
         $("#imprDiv").hide();
         $("#pathImages").hide();
-
         $("#shuju").append("<div class='example'><div id='progress2'><div id='percentNumber'></div><div class='pbar'></div><div class='elapsed'></div></div></div>");
         var isMin = 0;
         if (judety <= 0) {
@@ -653,7 +652,7 @@ $(function () {
                 dataName: dataname
             },
             success: function (data) {
-                inter = setInterval('if($("#jindut").val() >= 99){contextVal();clearInterval(inter);}', 0);
+                inter = setInterval('if($("#jindut").val() >= 99){contextVal();clearInterval(inter);}', 500);
                 contextVal = function () {
                     $("#shujuthead").empty();
                     $("#shuju").empty();
