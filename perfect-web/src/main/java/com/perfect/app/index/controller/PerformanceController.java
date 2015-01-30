@@ -98,12 +98,11 @@ public class PerformanceController {
             } else {
                 endDates = dateFormat.parse(endDate);
             }
-            date = DateUtils.getPeriod(startDate, endDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        List<AccountReportDTO> jsonMapList = performanceService.performanceCurve(startDates, endDates, date);
+        List<AccountReportDTO> jsonMapList = performanceService.performanceCurve(startDates, endDates);
 
         Map<String, Object> attributes = null;
         if (jsonMapList != null)

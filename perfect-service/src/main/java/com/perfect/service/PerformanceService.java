@@ -15,7 +15,7 @@ public interface PerformanceService {
 
     public List<AccountReportDTO> performanceUser(Date startDate, Date endDate, String sorted, int limit, int startPer, List<String> date);
 
-    public List<AccountReportDTO> performanceCurve(Date startDate, Date endDate, List<String> date);
+    public List<AccountReportDTO> performanceCurve(Date startDate, Date endDate);
 
     public void downAccountCSV(OutputStream os);
 }
