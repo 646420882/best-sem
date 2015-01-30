@@ -270,6 +270,7 @@ public class AccountManageController extends WebContextSupport {
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateBaiduAccount(@RequestBody BaiduAccountInfoDTO dto) {
+        dto.setId(AppContext.getAccountId());
         accountManageService.updateBaiduAccount(dto);
         ObjectNode json_string = new ObjectMapper().createObjectNode();
         json_string.put("status", true);

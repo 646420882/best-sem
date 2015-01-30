@@ -77,7 +77,7 @@ function getTime() {
 //定义展现、点击、点击率、消费、转化数组
 var colorOne = "#4572A7";
 var colorTow = "#40BC2A";
-var unitOne ="次";
+var unitOne = "次";
 var unitTow = "次"
 var arr_impr = [];
 var arr_click = [];
@@ -100,11 +100,11 @@ var AccountPerformance = function () {
             var results2 = data.dates;
             if (results1 != null && results1.length > 0) {
                 $.each(results1, function (i, item) {
-                    arr_impr.push(item.pcImpression);
-                    arr_click.push(item.pcClick);
-                    arr_ctr.push(item.pcCtr);
-                    arr_cost.push(item.pcCost);
-                    arr_conv.push(item.pcConversion);
+                    arr_impr.push(item.pcImpression + (item.mobileImpression == null ? 0 : item.mobileImpression));
+                    arr_click.push(item.pcClick + (item.mobileClick == null ? 0 : item.mobileClick));
+                    arr_ctr.push(item.pcCtr + (item.mobileCtr == null ? 0 : item.mobileCtr));
+                    arr_cost.push(item.pcCost + (item.mobileCost == null ? 0 : item.mobileCost));
+                    arr_conv.push(item.pcConversion + (item.mobileConversion == null ? 0 : item.mobileConversion));
                 });
             }
 
@@ -118,16 +118,16 @@ var AccountPerformance = function () {
 
     $("#containerLegend").empty();
     $("#containerLegend").html("<div class='tu_top over'><ul><li><b>账户表现</b></li>" +
-        "<li><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></li>" +
-        "<li><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></li>" +
-        "<li><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></li>" +
-        "<li><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></li>" +
-        "<li><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></li>" +
-        "<li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+    "<li><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></li>" +
+    "<li><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></li>" +
+    "<li><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></li>" +
+    "<li><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></li>" +
+    "<li><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></li>" +
+    "<li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
     data1 = {
         name: '展现',
         type: 'line',
-        smooth:true,
+        smooth: true,
         data: arr_impr,
         itemStyle: {
             normal: {
@@ -140,9 +140,9 @@ var AccountPerformance = function () {
     data2 = {
         name: '点击',
         type: 'line',
-        smooth:true,
+        smooth: true,
         data: arr_click,
-        yAxisIndex:1,
+        yAxisIndex: 1,
         itemStyle: {
             normal: {
                 lineStyle: {
@@ -156,58 +156,58 @@ var AccountPerformance = function () {
     });
 
 };
-var mychart = function(){
+var mychart = function () {
     var myChart = echarts.init(document.getElementById('container'));
     var option = {
-        tooltip : {
+        tooltip: {
             trigger: 'axis'
         },
         toolbox: {
-            show : true,
-            feature : {
-                magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-                restore : {show: true},
-                saveAsImage : {show: true}
+            show: true,
+            feature: {
+                magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                restore: {show: true},
+                saveAsImage: {show: true}
             }
         },
-        calculable : true,
-        xAxis : [
+        calculable: true,
+        xAxis: [
             {
-                type : 'category',
-                boundaryGap : false,
-                data :xAxis_categories
+                type: 'category',
+                boundaryGap: false,
+                data: xAxis_categories
             }
         ],
-        yAxis : [
-              {
-                type : 'value',
-                name:"impression",
-                scale:true,
-                axisLabel : {
+        yAxis: [
+            {
+                type: 'value',
+                name: "impression",
+                scale: true,
+                axisLabel: {
                     formatter: '{value} ' + unitOne
                 },
-                axisLine:{
-                    show:true,
-                    lineStyle:{
-                        color:colorOne
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: colorOne
                     }
                 }
-            },{
-                type : 'value',
-                name:"click",
-                scale:true,
-                axisLabel : {
+            }, {
+                type: 'value',
+                name: "click",
+                scale: true,
+                axisLabel: {
                     formatter: '{value} ' + unitTow
                 },
-                axisLine:{
-                    show:true,
-                    lineStyle:{
-                        color:colorTow
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: colorTow
                     }
                 }
             }
         ],
-        series : [
+        series: [
             data1,
             data2
         ]
@@ -236,7 +236,7 @@ $(function () {
                         data1 = {
                             name: '展现',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_impr,
                             itemStyle: {
                                 normal: {
@@ -255,9 +255,9 @@ $(function () {
                         data2 = {
                             name: '展现',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_impr,
-                            yAxisIndex:1,
+                            yAxisIndex: 1,
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
@@ -289,7 +289,7 @@ $(function () {
                         data1 = {
                             name: '点击',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_click,
                             itemStyle: {
                                 normal: {
@@ -308,9 +308,9 @@ $(function () {
                         data2 = {
                             name: '点击',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_click,
-                            yAxisIndex:1,
+                            yAxisIndex: 1,
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
@@ -342,7 +342,7 @@ $(function () {
                         data1 = {
                             name: '点击率',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_ctr,
                             itemStyle: {
                                 normal: {
@@ -361,9 +361,9 @@ $(function () {
                         data2 = {
                             name: '点击率',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_ctr,
-                            yAxisIndex:1,
+                            yAxisIndex: 1,
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
@@ -395,7 +395,7 @@ $(function () {
                         data1 = {
                             name: '消费',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_cost,
                             itemStyle: {
                                 normal: {
@@ -414,9 +414,9 @@ $(function () {
                         data2 = {
                             name: '消费',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_cost,
-                            yAxisIndex:1,
+                            yAxisIndex: 1,
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
@@ -448,7 +448,7 @@ $(function () {
                         data1 = {
                             name: '转化',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_conv,
                             itemStyle: {
                                 normal: {
@@ -467,9 +467,9 @@ $(function () {
                         data2 = {
                             name: '转化',
                             type: 'line',
-                            smooth:true,
+                            smooth: true,
                             data: arr_conv,
-                            yAxisIndex:1,
+                            yAxisIndex: 1,
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
@@ -519,12 +519,14 @@ $(function () {
     });
 
     /*$("input[name=chartcheckbox]:checkbox").on('click', function () {
-        var arr_checkbox = $("input[name=chartcheckbox]:checked");
-        if (arr_checkbox.length > 2) {
-            return false;
-        }
-       *//* reloadhighcharts(arr_checkbox);*//*
-    });*/
+     var arr_checkbox = $("input[name=chartcheckbox]:checked");
+     if (arr_checkbox.length > 2) {
+     return false;
+     }
+     */
+    /* reloadhighcharts(arr_checkbox);*/
+    /*
+     });*/
 
     $("#reachBudget").on('click', function () {
         $(".TB_overlayBG").css({
@@ -537,7 +539,7 @@ $(function () {
         });
     });
 });
-var loadTree=function (){
+var loadTree = function () {
     jsonData.cid = null;
     jsonData.aid = null;
     //获取账户树数据
@@ -664,6 +666,10 @@ var changeDynamicCreativeStatus = function () {
 //修改账户预算
 var modifyAccountBudget = function () {
     var _budget = $("#budget_text").val();
+    if (parseFloat(_budget) < 50) {
+        alert("日预算不得低于50元!");
+        return false;
+    }
     $("#accountBudget").text(_budget);
     var jsonEntity = {};
     jsonEntity["budget"] = _budget;

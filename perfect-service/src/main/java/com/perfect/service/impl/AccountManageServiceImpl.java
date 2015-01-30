@@ -139,7 +139,7 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Override
     public int updateSystemAccount(String userName, Long state) {
         int i = 0;
-        boolean writeResult = accountManageDAO.updateSysAccount(userName,state);
+        boolean writeResult = accountManageDAO.updateSysAccount(userName, state);
         if (writeResult) {
             i = 1;
         }
@@ -214,10 +214,10 @@ public class AccountManageServiceImpl implements AccountManageService {
 
     @SuppressWarnings("unchecked")
     public Map<String, Object> getAccountReports(int number) {
-        List<Date> dates = (List<Date>) DateUtils.getsLatestAnyDays("MM-dd", number).get(DateUtils.KEY_DATE);
+        List<Date> dates = (List<Date>) DateUtils.getsLatestAnyDays("yyyy-MM-dd", number).get(DateUtils.KEY_DATE);
         List<AccountReportDTO> list = accountManageDAO.getAccountReports(dates);
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
-        values.put("dates", JSONUtils.getJsonObjectArray(DateUtils.getsLatestAnyDays("MM-dd", 7).get(DateUtils.KEY_STRING)));
+        values.put("dates", JSONUtils.getJsonObjectArray(DateUtils.getsLatestAnyDays("yyyy-MM-dd", 7).get(DateUtils.KEY_STRING)));
         return values;
     }
 
