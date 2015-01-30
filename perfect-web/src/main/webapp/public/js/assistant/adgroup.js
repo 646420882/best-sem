@@ -73,7 +73,7 @@ function initAMenu() {
             var _an = $(this).parents("tr").find("input:eq(2)");
             var _anStr = getChar(_an.val());
             if (parseInt(_anStr) == 0 || parseInt(_anStr) >= 30) {
-                alert("\"推广单元名称\"长度应大于1个字符小于30个字符，汉子占两个字符!");
+                alert("\"推广单元名称\"长度应大于1个字符小于30个字符，汉子占两个字符,且不为空！");
                 return false;
             }
             // /^-?\d+\.?\d*$/
@@ -615,8 +615,8 @@ function adrgoupUpdateOk() {
     var an=$("#adgroupUpdateForm input[name='adgroupName']").val();
     var mp=$("#adgroupUpdateForm input[name='maxPrice']").val();
     //  /^-?\d+\.?\d*$/
-    if(parseInt(getChar(an))>30){
-        alert("单元名长度不能超过30个字符，一个汉字占两个字符");
+    if(parseInt(getChar(an))>30||parseInt(getChar(an))==0){
+        alert("单元名长度不能超过30个字符，一个汉字占两个字符,且不为空！");
         return;
     }
     if(mp!=""){
@@ -774,8 +774,12 @@ function adgroupMutli(){
             if (plans.cid != null) {
             loadAdgroupData(plans.nowPage);
             }
+            loadTree();
         },
         onremove: function () {
+            if (plans.cid != null) {
+                loadAdgroupData(plans.nowPage);
+            }
         }
     }).showModal(dockObj);
 }

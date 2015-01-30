@@ -311,11 +311,11 @@ public class AssistantCampaignController extends WebContextSupport {
      * @return
      */
     @RequestMapping(value = "assistantCampaign/add")
-    public void addCampaign(String campaignName, Double budget, Double priceRatio, Boolean pause, Integer showProb, String schedule, Integer[] regionTarget,
+    public ModelAndView addCampaign(String campaignName, Double budget, Double priceRatio, Boolean pause, Integer showProb, String schedule, Integer[] regionTarget,
                             String negativeWords, String exactNegativeWords, String excludeIp,
                             String adgroupName, Double maxPrice, Boolean adgroupPause
     ) {
-
+        try {
         //推广计划
         CampaignDTO campaignDTO = new CampaignDTO();
         campaignDTO.setCampaignName(campaignName);
@@ -354,7 +354,12 @@ public class AssistantCampaignController extends WebContextSupport {
             adgroupService.save(adgroupDTO);
         }
 
+            return writeMapObject(MSG,SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
+        return writeMapObject(MSG,"添加失败");
     }
 
     /**

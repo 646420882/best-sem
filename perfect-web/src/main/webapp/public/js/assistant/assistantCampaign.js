@@ -755,7 +755,8 @@ function createChooseTimeUIByCampaignData(data) {
 /*显示设置推广地域窗口*/
 $(".regionTarget_5").click(function () {
     var cid = $("#hiddenCampaignId").val();
-    top.dialog({title: "设置推广地域",
+    top.dialog({
+        title: "设置推广地域",
         padding: "5px",
         content: "<iframe src='/assistantCampaign/showSetPlace?cid=" + cid + "' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
@@ -813,25 +814,25 @@ $("#createCampaignOk").click(function () {
         }
     }
 // /^-?\d+\.?\d*$/
-    if(budget!="<请输入每日预算，不填默认为不限定>"){
+    if (budget != "<请输入每日预算，不填默认为不限定>") {
         if (/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(budget) == false) {
             alert("每日预算只能是数值");
             return;
-        }else{
-            if(parseFloat(budget).toFixed(3)<=49){
+        } else {
+            if (parseFloat(budget).toFixed(3) <= 49) {
                 alert("每日预算必须大于50RMB");
                 return;
             }
         }
-    }else{
-        budget=null;
+    } else {
+        budget = null;
     }
-    if(priceRatio!=""){
-        if(!/^-?\d+\.?\d*$/.test(priceRatio)){
+    if (priceRatio != "") {
+        if (!/^-?\d+\.?\d*$/.test(priceRatio)) {
             alert("移动出价比例只能是数值");
             return;
-        }else{
-            if(parseFloat(priceRatio).toFixed(2)<0.1||parseFloat(priceRatio).toFixed(2)>10.0){
+        } else {
+            if (parseFloat(priceRatio).toFixed(2) < 0.1 || parseFloat(priceRatio).toFixed(2) > 10.0) {
                 alert("0.1<移动出价比例<10.0");
                 return;
             }
@@ -843,18 +844,18 @@ $("#createCampaignOk").click(function () {
     if (adgroupName == "" || adgroupName == "<请输入推广单元名称>") {
         alert("请输入推广单元名称");
         return;
-    }else{
-        if(parseInt(getChar(adgroupName))>30){
+    } else {
+        if (parseInt(getChar(adgroupName)) > 30) {
             alert("推广单元名不能超过30个字符，汉字占两个字符");
             return;
         }
     }
-    if(maxPrice!=""){
-        if(!/^-?\d+\.?\d*$/.test(maxPrice)){
+    if (maxPrice != "") {
+        if (!/^-?\d+\.?\d*$/.test(maxPrice)) {
             alert("推广单元的最高出价只能是数字!");
             return;
         }
-    }else{
+    } else {
         alert("请输入推广单元最高出价！");
         return;
     }
@@ -877,18 +878,24 @@ $("#createCampaignOk").click(function () {
             "adgroupPause": adgroupPause
         },
         success: function (data) {
-
+            if (data.msg == "1") {
+                alert("添加成功");
+                loadTree();
+                getCampaignList(0)
+                jsonSchdule_add = null;
+                negativeWordsValue = "";
+                exactNegativeWordsValue = "";
+                excludeIpStr = "";
+                $("#plan input[type=text]").val("");
+                $(".TB_overlayBG,#plan").hide(0);
+            }else{
+                alert(data.msg);
+            }
         }
     });
 
 
-    jsonSchdule_add = null;
-    negativeWordsValue = "";
-    exactNegativeWordsValue = "";
-    excludeIpStr = "";
-    $("#plan input[type=text]").val("");
-    $(".TB_overlayBG,#plan").hide(0);
-    setTimeout("loadTree(),getCampaignList(0)", 1500);
+
     //loadTree();
 });
 
@@ -1023,7 +1030,7 @@ $("#quickAddplan").click(function () {
     showQuickAddPlanWindow();
 });
 
-function uploadCampagin(){
+function uploadCampagin() {
     var _list = $("#tbodyClick5").find(".list2_box3");
     var id = _list.find("input[type=hidden]").val();
     var step = _list.find("td:last span").attr("step");
@@ -1031,54 +1038,57 @@ function uploadCampagin(){
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;
         }
-    }else{
+    } else {
         alert("已经是最新数据了！");
         return;
     }
-   switch (parseInt(step)){
-       case 1:
-           if(id.length>18){
-               uploadOperate(id, 1);
-           }
-           break;
-       case 2:
-           uploadOperate(id, 2);
-           break
-       case 3:
-           if (id.length < 18) {
-               uploadOperate(id, 3);
-           } else {
-               deleteCampaign();
-           }
-           break;
+    switch (parseInt(step)) {
+        case 1:
+            if (id.length > 18) {
+                uploadOperate(id, 1);
+            }
+            break;
+        case 2:
+            uploadOperate(id, 2);
+            break
+        case 3:
+            if (id.length < 18) {
+                uploadOperate(id, 3);
+            } else {
+                deleteCampaign();
+            }
+            break;
     }
 }
-function uploadOperate(id,ls){
-    $.get("/assistantCampaign/upload",{cid:id,ls:ls},function(result){
-        if(result.msg!="0"){
+function uploadOperate(id, ls) {
+    $.get("/assistantCampaign/upload", {cid: id, ls: ls}, function (result) {
+        if (result.msg != "0") {
             alert("上传成功!");
             getCampaignList(0);
             setTimeout("loadTree()", 1500);
-        }else{
+        } else {
             alert(result.msg);
         }
     });
 }
 
 function showQuickAddPlanWindow() {
-    top.dialog({title: "快速新建计划",
+    top.dialog({
+        title: "快速新建计划",
         padding: "5px",
-        align:'right bottom',
+        align: 'right bottom',
         content: "<iframe src='/assistantCampaign/showCreatePlanWindow' width='900' height='620' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
             if (jsonData.cid != null) {
-            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
-            loadTree();
+                whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
+                loadTree();
             }
         },
         onremove: function () {
+            loadTree();
+            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
         }
     }).showModal(dockObj);
 }
@@ -1092,15 +1102,21 @@ $(".closeAddCampaign").click(function () {
 
 //推广时段的取消按钮的事件
 function closeSetExtension() {
-    $(".TB_overlayBG").css({display: "none"});
+    if ($("#plan").css("display") == "none") {
+        $(".TB_overlayBG").css({display: "none"});
+    }
     $("#setExtension").hide(0);
 }
 function closeSetExcludeIp() {
-    $(".TB_overlayBG").css({display: "none"});
+    if ($("#plan").css("display") == "none") {
+        $(".TB_overlayBG").css({display: "none"});
+    }
     $("#setExcludeIp").hide(0);
 }
 function closeSetNegtiveWord() {
-    $(".TB_overlayBG").css({display: "none"});
+    if ($("#plan").css("display") == "none") {
+        $(".TB_overlayBG").css({display: "none"});
+    }
     $("#setNegtiveWord").hide(0);
 }
 
@@ -1144,9 +1160,9 @@ var menu_campaign_add = {
     func: function () {
         showReductionCampaignWindow();
     }
-},menu_campaign_upload={
-    text:"更新到凤巢",
-    func:function(){
+}, menu_campaign_upload = {
+    text: "更新到凤巢",
+    func: function () {
         uploadCampagin();
     }
 }, menu_campaign_searchWord = {
@@ -1160,7 +1176,7 @@ var menu_campaign_add = {
  * @type {*[]}
  */
 var campaignMenuData = [
-    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu,menu_campaign_upload, menu_campaign_searchWord]
+    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu, menu_campaign_upload, menu_campaign_searchWord]
 ];
 /**
  * 用户缓存右键点击的对象

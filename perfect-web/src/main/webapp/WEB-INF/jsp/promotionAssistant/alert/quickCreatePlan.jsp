@@ -84,7 +84,7 @@
                 <div class="w_list03">
                     <ul>
                         <li class="current nextStep" id="downloadAccount">下一步</li>
-                        <%--<li class="close">取消</li>--%>
+                        <li class="close" onclick="closeDialog();">取消</li>
                     </ul>
                 </div>
             </div>
@@ -340,7 +340,9 @@ var saveChooseKeyword = function () {
         }
     });
 };
-
+function closeDialog(){
+    top.dialog.getCurrent().close().remove();
+}
 
 /**
  *修改推广地域的单击事件

@@ -103,7 +103,7 @@
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" onclick="nextStep();">下一步</li>
-                                            <li class="close">取消</li>
+                                            <li class="close" onclick="closeDialog();">取消</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -243,9 +243,8 @@ function initMutliTree() {
 function onCheck(e, treeId, treeNode) {
     count();
     var v = getSelectedNodeToString();
-    var vs = getSelectedNodeNameToString();
     if (v != "") {
-        var campaign = v.split("-");
+        var campaign = v.split(",");
         $("#column").html(campaign.length);
         focuspError();
     } else {
@@ -316,7 +315,10 @@ function getSelectedNodeNameToString() {
     v = v.substr(0, v.length - 1);
     return v;
 }
-
+function getChar(str) {
+    var char = str.match(/[^\x00-\xff]/ig);
+    return str.length + (char == null ? 0 : char.length);
+}
 /**
  *选择单选的第一个
  */
@@ -337,23 +339,40 @@ function stepTwo() {
 function nextStep() {
     var txt = $("#creativeMultiTxt").val().trim();
     if (getSelectedNodeToString() != "" && txt != "") {
-        initNextStep();
         var vs = getSelectedNodeNameToString();
         var v = getSelectedNodeToString();
         var ids = v.split(",");
         var names = vs.split(",");
         var _createTable = $("#createTable tbody");
         var txtSize = txt.split("\n");
+        for (var j = 0; j < txtSize.length; j++) {
+            var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
+            var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
+            if(parseInt(getChar(c0))>30||parseInt(getChar(c0))==0){
+                alert("第"+(j+1)+"行单元名长度不能超过30个字符，一个汉字占两个字符,且不为空");
+                return;
+            }
+            if(c2!=""){
+                if(!/^-?\d+\.?\d*$/.test(c2)){
+                    alert("第"+(j+1)+"行输入正确的单元出价！");
+                    return;
+                }
+            }else{
+                alert("第"+(j+1)+"行单元出价不能为空!");
+                return;
+            }
+        }
+        initNextStep();
         _createTable.empty();
         $("#criSize").html(txtSize.length);
         for (var i = 0; i < names.length; i++) {
             for (var j = 0; j < txtSize.length; j++) {
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
                 var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
-                var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "0.0";
+                var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "0.1";
                 var c4_pause = "暂停";
-                if (c1 != "") {
-                    c4_pause = c1 == "暂停" ? "暂停" : "启用";
+                if (c1 == "启用") {
+                    c4_pause ="启用";
                 }
                 var _tbody = "<tr>" +
                         "<td>" + names[i] + "<input type='hidden' value=" + ids[i] + "></td>" +
@@ -364,6 +383,8 @@ function nextStep() {
                 _createTable.append(_tbody);
             }
         }
+    }else{
+        alert("请选择推广计划或者输入单元信息！");
     }
 }
 /**
@@ -444,6 +465,9 @@ function overStep() {
         });
 
     }
+}
+function closeDialog() {
+    top.dialog.getCurrent().close().remove();
 }
 </script>
 </body>
