@@ -87,7 +87,7 @@
                                 <div class="newkeyword_right_mid">
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
 
-                                    <p>例如：鲜花，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
+                                    <p>例如：鲜花,精确,1.0,http://pc.xxx,http://pcs.xxx,启用</p>
 
                                     <p style="color:red;">要设定高级匹配模式的语法如下：短语-同义,短语-核心,短语-精确</p>
                                     <textarea onkeyup="getColumn(this)" id="TextAreaChoose"
@@ -542,6 +542,8 @@ function nextStepAjax() {
             }
 
         }
+    }else{
+        alert("请选择某单元或者填写正确的关键词数据！");
     }
 }
 function overStep(isReplace) {

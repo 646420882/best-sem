@@ -90,14 +90,14 @@
     <ul class="zs_nav">
         <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
         <li onclick="uploadDialog()"><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
-        <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span >高级搜索</span></a></li>
-        <li class="nav_menu"><a><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
-            <ul>
-                <li class="showbox3 current">重复关键词</li>
-                <li>设置</li>
-            </ul>
+        <li class="current"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span><img src="../public/img/Advanced_search.png"></span><span >高级搜索</span></a></li>
+        <li class="nav_menu"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
+            <%--<ul>--%>
+                <%--<li class="showbox3 current">重复关键词</li>--%>
+                <%--<li>设置</li>--%>
+            <%--</ul>--%>
         </li>
-        <li class="showbox4"><a> <span><img src="../public/img/Estimate.png"></span><span>估算工具</span></a></li>
+        <li class="showbox4"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"> <span><img src="../public/img/Estimate.png"></span><span>估算工具</span></a></li>
     </ul>
 </div>
 <div class="zhushou_concent over" id="jiangkong_box2">
@@ -999,8 +999,8 @@
     <div class="mainlist">
         您希望上传账户的哪个部分？
         <ul class="zs_set">
-            <li><input type="radio" value="all" name="up1" onchange="dialogUpload(this.value)">&nbsp; 所有计划</li>
-            <li><input type="radio" value="opreated" name="up1" onchange="dialogUpload(this.value)">&nbsp; 从推广计划列表中选择</li>
+            <li><input type="radio" value="all" name="up1" >&nbsp; 所有计划</li>
+            <li><input type="radio" value="opreated" name="up1" >&nbsp; 从推广计划列表中选择</li>
         </ul>
         <div class="zs_sets over">
             <div id="allCamp" class="zs_ses1" style="overflow: auto">

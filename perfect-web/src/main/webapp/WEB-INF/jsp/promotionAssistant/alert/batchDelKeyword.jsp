@@ -52,7 +52,7 @@
                 <div class="newkeyeord_title over">
                     <ul class="over">
                         <li><input type="radio" checked="checked" name="Target" class="chooseRadio">选择推广计划、推广单元</li>
-                        <li><input type="radio" name="Target" class="inputRadio">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>
+                        <%--<li><input type="radio" name="Target" class="inputRadio">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>--%>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over chooseKwdInfoDiv">
@@ -81,7 +81,7 @@
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" id="kwdNextStep">下一步</li>
-                                            <%--<li class="close">取消</li>--%>
+                                            <li class="close" onclick="closeDialog();">取消</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current delKwdByinputNext">下一步</li>
-                                            <%--<li class="close">取消</li>--%>
+                                            <li class="close" onclick="closeDialog();">取消</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -131,7 +131,7 @@
                             <ul>
                                 <li class="current delKwdLastStep">上一步</li>
                                 <li class="delkwdFinish">完成</li>
-                                <%--<li class="close">取消</li>--%>
+                                <li class="close" onclick="closeDialog();">取消</li>
                             </ul>
                         </div>
                     </div>
@@ -203,49 +203,49 @@
     function getCampaiTreeData() {
         $("#treeDemo").html("正在加载数据...");
         $.ajax({
-            url: "/assistantKeyword/campaignTree",
-            type: "post",
+            url: "/account/get_tree",
+            type: "get",
             dataType: "json",
             success: function (data) {
                 if (data.length == 0) {
                     $("#treeDemo").html("暂无数据!");
                     return;
                 }
-                var array = new Array();
-                var json;
-                var camId;
-                for (var i = 0; i < data.length; i++) {
-                    json = {};
-
-                    if (data[i].rootNode.campaignId == null) {
-                        camId = data[i].rootNode.id;
-                    } else {
-                        camId = data[i].rootNode.campaignId;
-                    }
-                    json["id"] = camId;
-                    json["pId"] = 0;
-                    json["name"] = data[i].rootNode.campaignName;
-                    json["titile"] = "";
-                    json["open"] = false;
-                    array.push(json);
-                    for (var j = 0; j < data[i].childNode.length; j++) {
-                        json = {};
-
-                        if (data[i].childNode[j].adgroupId == null) {
-                            json["id"] = data[i].childNode[j].id;
-                        } else {
-                            json["id"] = data[i].childNode[j].adgroupId;
-                        }
-
-                        json["pId"] = camId;
-                        json["name"] = data[i].childNode[j].adgroupName;
-                        json["titile"] = "";
-                        json["checked"] = false;
-                        json["isHidden"] = true;
-                        array.push(json);
-                    }
-                }
-                initTree(array);
+//                var array = new Array();
+//                var json;
+//                var camId;
+//                for (var i = 0; i < data.length; i++) {
+//                    json = {};
+//
+//                    if (data[i].rootNode.campaignId == null) {
+//                        camId = data[i].rootNode.id;
+//                    } else {
+//                        camId = data[i].rootNode.campaignId;
+//                    }
+//                    json["id"] = camId;
+//                    json["pId"] = 0;
+//                    json["name"] = data[i].rootNode.campaignName;
+//                    json["titile"] = "";
+//                    json["open"] = false;
+//                    array.push(json);
+//                    for (var j = 0; j < data[i].childNode.length; j++) {
+//                        json = {};
+//
+//                        if (data[i].childNode[j].adgroupId == null) {
+//                            json["id"] = data[i].childNode[j].id;
+//                        } else {
+//                            json["id"] = data[i].childNode[j].adgroupId;
+//                        }
+//
+//                        json["pId"] = camId;
+//                        json["name"] = data[i].childNode[j].adgroupName;
+//                        json["titile"] = "";
+//                        json["checked"] = false;
+//                        json["isHidden"] = true;
+//                        array.push(json);
+//                    }
+//                }
+                initTree(data.trees);
             }
         });
     }
@@ -386,7 +386,7 @@ function nextStepAjax(nowPage, pageSize) {
         return;
     }
     if ($("#deleteKwdTextChoose").val() == "") {
-        alert("请数据关键词的删除信息");
+        alert("请输入关键词的删除信息");
         return;
     }
 
@@ -546,6 +546,10 @@ $(".delkwdFinish").click(function () {
     }
 
 });
+
+function closeDialog(){
+    top.dialog.getCurrent().close().remove();
+}
 
 
 //取消按钮的事件

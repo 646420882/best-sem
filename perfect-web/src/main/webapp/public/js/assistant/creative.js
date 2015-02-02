@@ -334,7 +334,7 @@ function on(obj) {
     if (_edit != "") {
         onRbackBtn();
     } else {
-        initRbackBtn();
+        $("#reBak").attr("class", "z_function_hover");
     }
     preview(obj);
     $("#sDiv input[type='text']").val("");

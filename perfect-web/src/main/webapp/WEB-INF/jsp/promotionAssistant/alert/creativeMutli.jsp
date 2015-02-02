@@ -87,7 +87,7 @@
                                     <p>格式：创意标题(必填)，创意描述1，创意描述2，默认访问URL，默认显示URL，移动访问URL，移动显示URL，启用/暂停，设备偏好</p>
 
                                     <p>
-                                        例如：标题,描述1,描述2,http://com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,http://m.com.perfect.api.baidu.com,m.com.perfect.api.baidu.com,启用,全部设备</p>
+                                        例如：标题,描述1,描述2,http://pc.xxx,http://pcs.xxx,http://mobile.xxx,http://mobiles.xxx,启用,全部设备</p>
                                     <textarea onkeyup="getColumn(this)" id="creativeMultiTxt"
                                               style="font-size: 12px;font-family: 微软雅黑;"></textarea>
 
@@ -512,6 +512,8 @@ function nextStep() {
 
         }
 
+    }else{
+        alert("请选择单元或者输入创意信息!");
     }
 }
 /**
