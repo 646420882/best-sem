@@ -66,7 +66,8 @@
                 <li>
                     <div class="planbox1 fl"> 推广单元名称</div>
                     <div class="planbox2 fl">
-                        <input type="text" onblur="if (value=='') {value='&lt;请输入推广单元名称&gt;'}" onfocus="if(value=='&lt;请输入推广单元名称&gt;') {value=''}" value="&lt;请输入推广单元名称&gt;" class="plan_input inputCampaignName">
+                        <input type="hidden" name="oid"/>
+                        <input type="text" onblur="if (value=='') {value='&lt;请输入推广单元名称&gt;'}" onfocus="if(value=='&lt;请输入推广单元名称&gt;') {value=''}" value="&lt;请输入推广单元名称&gt;" class="plan_input inputCampaignName" name="adgroupName">
                     </div>
                 </li>
                 <li>

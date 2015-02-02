@@ -89,6 +89,7 @@ var menuData = [
  * @type {null}
  */
 var tmp = null;
+var acHtml=null;
 /**
  * 菜单name值，标识唯一，beforeShow显示完成后方法
  * @type {{name: string, beforeShow: beforeShow}}
@@ -113,145 +114,150 @@ function InitMenu() {
     $("#createTable").on("mousedown", "tr", function () {
         $(this).smartMenu(menuData, menuExt);
     });
-    $("#createTable").on("keydown", "input", function (event) {
+    $("#createTable").on("keydown", "tr", function (event) {
         if (event.keyCode == 13) {
             //var strRegex = "^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
             //var re = new RegExp(strRegex);
-            var _title = $(this).parents("tr").find("input:eq(2)");
-            var _thisStr = getChar(_title.val());
-            var dm = "." + $(".doMainS").html();
-            if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
-                alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
-                return false;
-            }
-            var _desc1 = $(this).parents("tr").find("input:eq(3)");
-            var _thisStrDesc1 = getChar(_desc1.val());
-            if (parseInt(_thisStrDesc1) > 80 || parseInt(_thisStrDesc1) <= 8) {
-                alert("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
-                return false;
-            }
-            var _desc2 = $(this).parents("tr").find("input:eq(4)");
-            var _thisStrDesc2 = getChar(_desc2.val());
-            if (parseInt(_thisStrDesc2) > 80 || parseInt(_thisStrDesc2) <= 8) {
-                alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
-                return false;
-            }
-            var _pc = $(this).parents("tr").find("input:eq(5)");
-            var _thisStrpc = getChar(_pc.val());
-            if (parseInt(_thisStrpc) > 1024 || parseInt(_thisStrpc) <= 1) {
-                alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
-                return false;
-            } else {
-                if (_pc.val().indexOf(dm) == -1) {
-                    alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
-                    return false;
-                }
-                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                else {
-                    var _pcSize = _pc.val();
-                    if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
-                        alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                        return false;
-                    }
-                }
-            }
-            var _pcs = $(this).parents("tr").find("input:eq(6)");
-            var _thisStrpcs = getChar(_pcs.val());
-            if (parseInt(_thisStrpcs) > 36 || parseInt(_thisStrpcs) <= 1) {
-                alert("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
-                return false;
-            } else {
-                if (_pcs.val().indexOf(dm) == -1) {
-                    alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
-                    return false;
-                }
-                //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                else {
-                    var _pcsSize = _pcs.val();
-                    if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
-                        alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-                        return false;
-                    }
-                }
-            }
-            var _mib=$(this).parents("tr").find("input:eq(7)");
-            if (_mib.val() != "空"||_mib.val() != "") {
-                if (_mib.val().indexOf(dm) == -1) {
-                    alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
-                    return false;
-                } else {    //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                    var _thisStrMib = getChar(_mib.val());
-                    if (parseInt(_thisStrMib) > 1017 || parseInt(_thisStrMib) <= 1) {
-                        alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
-                        return false;
-                    }  else {
-                        if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
-                            alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                            return false;
-                        }
-                    }
-                }
-            }
-            var _mibs=$(this).parents("tr").find("input:eq(8)");
-            if (_mibs.val() != ""||_mibs.val() != "空") {
-                if (_mibs.val().indexOf(dm) == -1) {
-                    alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
-                    return false;
-                } else {
-                    var _thisStrMibs = getChar(_mibs.val());
-                    if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
-                        alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
-                        return false;
-                    }else {//下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                        if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
-                            alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-                            return false;
-                        }
-                    }
-                }
-            }
-            var con = confirm("你确定要添加么？");
-            if (con) {
-                var _selects = $(this).parents("tr").find("select");
-                var _input = $(this).parents("tr").find("input");
-                var _tr = $(this).parents("tr");
-                $(this).submit("../assistantCreative/add", function (rs) {
-                    var json = eval("(" + rs + ")");
-                    if (json.success == "1") {
-                        _tr.remove();
-                        var data = {};
-                        for (var i = 0; i < _input.size(); i++) {
-                            if (_input[i].name) {
-                                data[_input[i].name] = _input[i].value;
-                            }
-                        }
-                        for (var i = 0; i < _selects.length; i++) {
-                            data[_selects[i].name] = _selects[i].value;
-                        }
-                        var p = data["pause"] == "true" ? "启用" : "暂停";
-                        var s = until.getCreativeStatus(parseInt(data["status"]));
-                        var _createTable = $("#createTable tbody");
-                        var i = $("#createTable tbody tr").size();
-                        var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                        var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                            "<td style='width: 30px;'>&nbsp;<input type='hidden' value='"+ json.data+"'/></td>" +
-                            "<td >" + until.substring(10, data["title"]) + "</td>" +
-                            " <td >" + until.substring(10, data["description1"]) + "</td>" +
-                            " <td >" + until.substring(10, data["description2"]) + "</td>" +
-                            " <td ><a href='" + data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, data["pcDestinationUrl"]) + "</a></td>" +
-                            " <td >" + until.substring(10, data["pcDisplayUrl"]) + "</td>" +
-                            " <td >" + until.substring(10, data["mobileDestinationUrl"]) + "</td>" +
-                            " <td >" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
-                            " <td >" + p + "</td>" +
-                            " <td >" + s + "</td>" +
-                            " <td ><span class='pen' step='1'></span></td>" +
-                            "</tr>";
-                        _createTable.append(_tbody);
-                    }
-                });
-            }
+          var _this=this;
+            addOperate(_this);
         }
     });
+}
+function addOperate(obj){
+    var _this=$(obj);
+    var _title = _this.find("input:eq(2)");
+    var _thisStr = getChar(_title.val());
+    var dm = "." + $(".doMainS").html();
+    if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
+        alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+        return false;
+    }
+    var _desc1 = _this.find("input:eq(3)");
+    var _thisStrDesc1 = getChar(_desc1.val());
+    if (parseInt(_thisStrDesc1) > 80 || parseInt(_thisStrDesc1) <= 8) {
+        alert("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        return false;
+    }
+    var _desc2 = _this.find("input:eq(4)");
+    var _thisStrDesc2 = getChar(_desc2.val());
+    if (parseInt(_thisStrDesc2) > 80 || parseInt(_thisStrDesc2) <= 8) {
+        alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        return false;
+    }
+    var _pc = _this.find("input:eq(5)");
+    var _thisStrpc = getChar(_pc.val());
+    if (parseInt(_thisStrpc) > 1024 || parseInt(_thisStrpc) <= 1) {
+        alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+        return false;
+    } else {
+        if (_pc.val().indexOf(dm) == -1) {
+            alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            return false;
+        }
+        //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+        else {
+            var _pcSize = _pc.val();
+            if (_pc.val().substr(_pc.val().indexOf(dm)) != dm) {
+                alert("默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                return false;
+            }
+        }
+    }
+    var _pcs = _this.find("input:eq(6)");
+    var _thisStrpcs = getChar(_pcs.val());
+    if (parseInt(_thisStrpcs) > 36 || parseInt(_thisStrpcs) <= 1) {
+        alert("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
+        return false;
+    } else {
+        if (_pcs.val().indexOf(dm) == -1) {
+            alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            return false;
+        }
+        //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+        else {
+            var _pcsSize = _pcs.val();
+            if (_pcs.val().substr(_pcs.val().indexOf(dm)) != dm) {
+                alert("默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                return false;
+            }
+        }
+    }
+    var _mib=_this.find("input:eq(7)");
+    if (_mib.val() != "空"||_mib.val() != "") {
+        if (_mib.val().indexOf(dm) == -1) {
+            alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            return false;
+        } else {    //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+            var _thisStrMib = getChar(_mib.val());
+            if (parseInt(_thisStrMib) > 1017 || parseInt(_thisStrMib) <= 1) {
+                alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+                return false;
+            }  else {
+                if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
+                    alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                    return false;
+                }
+            }
+        }
+    }
+    var _mibs=_this.find("input:eq(8)");
+    if (_mibs.val() != ""||_mibs.val() != "空") {
+        if (_mibs.val().indexOf(dm) == -1) {
+            alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            return false;
+        } else {
+            var _thisStrMibs = getChar(_mibs.val());
+            if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
+                alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
+                return false;
+            }else {//下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
+                    alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                    return false;
+                }
+            }
+        }
+    }
+    var con = confirm("你确定要添加么？");
+    if (con) {
+        var _selects = _this.find("select");
+        var _input = _this.find("input");
+        var _tr = _this;
+        _this.formSubmit("../assistantCreative/add", function (rs) {
+            var json = eval("(" + rs + ")");
+            if (json.success == "1") {
+                _tr.remove();
+                var data = {};
+                for (var i = 0; i < _input.size(); i++) {
+                    if (_input[i].name) {
+                        data[_input[i].name] = _input[i].value;
+                    }
+                }
+                for (var i = 0; i < _selects.length; i++) {
+                    data[_selects[i].name] = _selects[i].value;
+                }
+                var p = data["pause"] == "true" ? "启用" : "暂停";
+                var s = until.getCreativeStatus(parseInt(data["status"]));
+                var _createTable = $("#createTable tbody");
+                var i = $("#createTable tbody tr").size();
+                var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                    "<td style='width: 30px;'>&nbsp;<input type='hidden' value='"+ json.data+"'/></td>" +
+                    "<td >" + until.substring(10, data["title"]) + "</td>" +
+                    " <td >" + until.substring(10, data["description1"]) + "</td>" +
+                    " <td >" + until.substring(10, data["description2"]) + "</td>" +
+                    " <td ><a href='" + data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, data["pcDestinationUrl"]) + "</a></td>" +
+                    " <td >" + until.substring(10, data["pcDisplayUrl"]) + "</td>" +
+                    " <td >" + until.substring(10, data["mobileDestinationUrl"]) + "</td>" +
+                    " <td >" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
+                    " <td >" + p + "</td>" +
+                    " <td >" + s + "</td>" +
+                    " <td ><span class='pen' step='1'></span></td>" +
+                    "</tr>";
+                _createTable.append(_tbody);
+            }
+        });
+    }
 }
 function initDomain(){
     var dm = $(".doMainS").html();
@@ -329,8 +335,13 @@ function skipCreativePage(){
  */
 function on(obj) {
     var _this = $(obj);
+    var tadd=_this.find("td:eq(0) a").html();
+    if(tadd==undefined&&acHtml=="删除"){
+        addOperate(tmp);
+    }
+    acHtml=_this.find("td:eq(0) a").html();
     tmp = _this;
-    var _edit = _this.find("td:eq(10)").html()
+    var _edit = _this.find("td:eq(10)").html();
     if (_edit != "") {
         onRbackBtn();
     } else {
@@ -455,6 +466,11 @@ function addCreative() {
     var jcBox = $("#jcUl");
     if (sparams.cid != null && sparams.aid != null) {
         var i = $("#createTable tbody tr").size();
+        var lastTr=$("#createTable tr:eq("+i+")").find("td:eq(0) a").html();
+        if(lastTr=="删除"){
+            alert("请提交后再继续添加");
+            return;
+        }
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
@@ -462,10 +478,10 @@ function addCreative() {
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
-            " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='1024'></td>" +
-            " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='36'></td>" +
-            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='1017'></td>" +
-            " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='36'></td>" +
+            " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='1024' ></td>" +
+            " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='36' ></td>" +
+            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='1017' ></td>" +
+            " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='36' ></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
             " <td><span class='pen' step='1'></span></td>" +

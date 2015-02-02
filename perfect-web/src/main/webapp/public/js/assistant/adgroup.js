@@ -1,7 +1,7 @@
 /**
  * Created by XiaoWei on 2014/8/21.
  */
-var plans = {cid: null, cn: null,nowPage:1,pageSize:20};
+var plans = {cid: null, cn: null, nowPage: 1, pageSize: 20};
 var priceRatio = "";//获取计划下拉时该计划的移动出价比例，用于添加单元时fush到添加框中
 $(function () {
     initAMenu();
@@ -13,6 +13,7 @@ $(function () {
     initNoKwdKeyUp();
 });
 var atmp = null;
+var adHtml = null;
 var sp = null;
 var nn = null;
 var ne = null;
@@ -41,12 +42,12 @@ var aAdd = {
     func: function () {
         agreBakClick();
     }
-},aUpload={
-        text:"更新到凤巢",
-        func:function(){
-            adgroupUpload();
-        }
+}, aUpload = {
+    text: "更新到凤巢",
+    func: function () {
+        adgroupUpload();
     }
+}
 var aMeunData = [
     [aAdd, aDel, aUpdate, aAddMutli, aReBack, aUpload,]
 ];
@@ -68,54 +69,58 @@ function initAMenu() {
     $("#adGroupTable").on("mousedown", "tr", function () {
         $(this).smartMenu(aMeunData, aMenuExt);
     });
-    $("#adGroupTable").on("keydown", "input", function (event) {
+    $("#adGroupTable").on("keydown", "tr", function (event) {
         if (event.keyCode == 13) {
-            var _an = $(this).parents("tr").find("input:eq(2)");
-            var _anStr = getChar(_an.val());
-            if (parseInt(_anStr) == 0 || parseInt(_anStr) >= 30) {
-                alert("\"推广单元名称\"长度应大于1个字符小于30个字符，汉子占两个字符,且不为空！");
-                return false;
-            }
-            // /^-?\d+\.?\d*$/
-            var _mp = $(this).parents("tr").find("input:eq(4)").val();
-            if (!/^-?\d+\.?\d*$/.test(_mp)) {
-                alert("请输入正确的\"单元出价\"");
-                return false;
-            }
-            var con = confirm("你确定要添加?");
-            if (con) {
-                var _this = $(this).parents("tr");
-                $(this).submit("../assistantAdgroup/adAdd", function (rs) {
-                    var json = eval("(" + rs + ")");
-                    if (json.success == "1") {
-                        loadTree();
-                        var _span = $("#" + sp + "").html();
-                        if (_span == null) {
-                            _span = "<span>未设置</span>";
-                        }
-                        _this.remove();
-                        var i = $("#adGroupTable tbody tr").size();
-                        var _createTable = $("#adGroupTable tbody");
-                        var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                        var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
-                            "<td>&nbsp;<input type='hidden'  name='oid' value='" + json.data + "'/><input type='hidden' name='cid' value='" + subData["cid"] + "'/></td>" +
-                            "<td>" + subData["adgroupName"] + "</td>" +
-                            "<td>本地新增</td>" +
-                            " <td>" + getAdgroupPauseByBoolean(subData["pause"]) + "</td>" +
-                            "<td>" + parseFloat(subData["maxPrice"]).toFixed(2) + "</td>" +
-                            "<td><span>" + _span + "</span><input type='hidden' value='" + subData["negativeWords"] + "'><input type='hidden' value='" + subData["exactNegativeWords"] + "'></td>" +
-                            "<td>&nbsp;</td>" +
-                            "<td>" + plans.cn + "</td>" +
-                            "<td><span class='pen' step='1'></span></td>" +
-                            "</tr>";
-                        _createTable.append(_tbody);
-                    } else if (rs == "3") {
-                        alert("异常");
-                    }
-                });
-            }
+            var _this = $(this);
+            adgroupAddOperate(_this);
         }
     });
+}
+function adgroupAddOperate(obj) {
+    var _this = $(obj);
+    var _an = _this.find("input:eq(2)");
+    var _anStr = getChar(_an.val());
+    if (parseInt(_anStr) == 0 || parseInt(_anStr) >= 30) {
+        alert("\"推广单元名称\"长度应大于1个字符小于30个字符，汉子占两个字符,且不为空！");
+        return false;
+    }
+    // /^-?\d+\.?\d*$/
+    var _mp = _this.find("input:eq(4)").val();
+    if (!/^-?\d+\.?\d*$/.test(_mp)) {
+        alert("请输入正确的\"单元出价\"");
+        return false;
+    }
+    var con = confirm("你确定要添加?");
+    if (con) {
+        _this.formSubmit("../assistantAdgroup/adAdd", function (rs) {
+            var json = eval("(" + rs + ")");
+            if (json.success == "1") {
+                loadTree();
+                var _span = $("#" + sp + "").html();
+                if (_span == null) {
+                    _span = "<span>未设置</span>";
+                }
+                _this.remove();
+                var i = $("#adGroupTable tbody tr").size();
+                var _createTable = $("#adGroupTable tbody");
+                var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
+                    "<td>&nbsp;<input type='hidden'  name='oid' value='" + json.data + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
+                    "<td>" + formData["adgroupName"] + "</td>" +
+                    "<td>本地新增</td>" +
+                    " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
+                    "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</td>" +
+                    "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
+                    "<td>&nbsp;</td>" +
+                    "<td>" + plans.cn + "</td>" +
+                    "<td><span class='pen' step='1'></span></td>" +
+                    "</tr>";
+                _createTable.append(_tbody);
+            } else if (rs == "3") {
+                alert("异常");
+            }
+        });
+    }
 }
 /**
  * 根据传入的字符串布尔类型返回暂停或则是启用
@@ -130,20 +135,20 @@ function getAdgroupPauseByBoolean(bol) {
  */
 function initNoKwdKeyUp() {
     $("#nKwd").keydown(function (e) {
-        var arr = $(this).val().trim() .split("\n");
+        var arr = $(this).val().trim().split("\n");
         $("#nKwd_size").html(arr.length);
     });
     $("#mKwd").keydown(function (e) {
-        var arr = $(this).val().trim() .split("\n");
+        var arr = $(this).val().trim().split("\n");
         $("#mKwd_size").html(arr.length);
     });
 
     $("#npKwd").keydown(function (e) {
-        var arr = $(this).val().trim() .split("\n");
+        var arr = $(this).val().trim().split("\n");
         $("#npKwd_size").html(arr.length);
     });
     $("#mpKwd").keydown(function (e) {
-        var arr = $(this).val().trim() .split("\n");
+        var arr = $(this).val().trim().split("\n");
         $("#mpKwd_size").html(arr.length);
     });
 }
@@ -152,20 +157,20 @@ function initNoKwdKeyUp() {
  * @param plans 根据点击树结构的计划id，如果有则根据计划加载，如果没有，查询所有单元
  */
 function loadAdgroupData(page_index) {
-    pageType=4;
-    plans.pageSize=items_per_page;
-    plans.nowPage=page_index;
+    pageType = 4;
+    plans.pageSize = items_per_page;
+    plans.nowPage = page_index;
     initAgReback();
     var _adGroudTable = $("#adGroupTable tbody");
     _adGroudTable.empty().html("加载中....");
     $.post("../assistantAdgroup/getAdgroupList", plans, function (rs) {
-        var gson= $.parseJSON(rs);
-        if (gson.list!= undefined) {
+        var gson = $.parseJSON(rs);
+        if (gson.list != undefined) {
             if (gson.list.length > 0) {
                 adgPagerInit(gson);
                 _adGroudTable.empty();
                 var _trClass = "";
-                var json=gson.list;
+                var json = gson.list;
                 for (var i = 0; i < json.length; i++) {
                     _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                     var _id = json[i].adgroupId != null ? json[i].adgroupId : json[i].id;
@@ -198,16 +203,16 @@ function loadAdgroupData(page_index) {
  * 初始化分页控件
  * @param data
  */
-function adgPagerInit(data){
-    if(data.totalCount==0){
+function adgPagerInit(data) {
+    if (data.totalCount == 0) {
         return false;
     }
     $("#adgroupPager").pagination(data.totalCount, getOptionsFromForm(data.pageNo));
 }
 //输入数字传入分页
-function skipAdgroupPage(){
+function skipAdgroupPage() {
     var pageNo = $("#adgroupPageNum").val();
-    loadAdgroupData(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1);
+    loadAdgroupData(/^\d+$/.test(pageNo) == false ? 0 : parseInt(pageNo) - 1);
 }
 
 
@@ -242,6 +247,11 @@ function getMib(double) {
  */
 function aon(ts) {
     var _this = $(ts);
+    var tadd = _this.find("td:eq(0) a").html();
+    if (tadd == undefined && adHtml == "删除") {
+        adgroupAddOperate(atmp);
+    }
+    adHtml = _this.find("td:eq(0) a").html();
     atmp = _this;
     var _edit = _this.find("td:eq(8)").html()
     if (_edit != "") {
@@ -311,22 +321,27 @@ function addAdgroup() {
     } else {
         //$.get("/assistantAdgroup/getPriceRatio", {cid: plans.cid}, function (res) {
         //    if (res != "0.0") {
-                var i = $("#adGroupTable tbody tr").size();
-                var _createTable = $("#adGroupTable tbody");
-                var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                var _tbody = "<tr class=" + _trClass + ">" +
-                    "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden'  name='oid' value='" + getRandomId() + "'/><input type='hidden' name='cid' value='" + getAdgroupId() + "'/></td>" +
-                    "<td><input name='adgroupName' style='width:140px;' maxlength='30'></td>" +
-                    "<td><input type='hidden' name='status' value='-1'><span>本地新增</span></td>" +
-                    " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
-                    "<td><input name='maxPrice' style='width:50px;'  onkeypress='until.regDouble(this)' maxlength='4'></td>" +
-                    "<td><span id='" + getRandomId() + "sp'>未设置</span><input name='negativeWords' id='" + getRandomId() + "ni' type='hidden' readonly='readonly'><input type='button' onclick='adgroupNokeyword(this)' value='设置否定关键词'/><input name='exactNegativeWords' id='" + getRandomId() + "ne' type='hidden'  readonly='readonly'></td>" +
-                    "<td>&nbsp;</td>" +
-                    "<td>" + plans.cn + "</td>" +
-                    "<td>&nbsp;</td>" +
-                    "</tr>";
-                _createTable.append(_tbody);
-            //}
+        var i = $("#adGroupTable tbody tr").size();
+        var lastTr = $("#adGroupTable tr:eq(" + i + ")").find("td:eq(0) a").html();
+        if (lastTr == "删除") {
+            alert("请提交后再继续添加");
+            return;
+        }
+        var _createTable = $("#adGroupTable tbody");
+        var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+        var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
+            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden'  name='oid' value='" + getRandomId() + "'/><input type='hidden' name='cid' value='" + getAdgroupId() + "'/></td>" +
+            "<td><input name='adgroupName' style='width:140px;' maxlength='30'></td>" +
+            "<td><input type='hidden' name='status' value='-1'><span>本地新增</span></td>" +
+            " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
+            "<td><input name='maxPrice' style='width:50px;'  onkeypress='until.regDouble(this)' maxlength='4'></td>" +
+            "<td><span id='" + getRandomId() + "sp'>未设置</span><input name='negativeWords' id='" + getRandomId() + "ni' type='hidden' readonly='readonly'><input type='button' onclick='adgroupNokeyword(this)' value='设置否定关键词'/><input name='exactNegativeWords' id='" + getRandomId() + "ne' type='hidden'  readonly='readonly'></td>" +
+            "<td>&nbsp;</td>" +
+            "<td>" + plans.cn + "</td>" +
+            "<td>&nbsp;</td>" +
+            "</tr>";
+        _createTable.append(_tbody);
+        //}
         //});
 
     }
@@ -348,7 +363,7 @@ function adgroupDel() {
                 }
             });
         }
-    }else{
+    } else {
         alert("请选择单元！");
     }
 }
@@ -434,20 +449,20 @@ function adgroupNokeyword(rs) {
     nn = _this.attr("id");
     ne = _thisne.attr("id");
     sp = _sp.attr("id");
-    var arr = _this.val().trim() .split(",");
-    var arrne = _thisne.val().trim() .split(",");
+    var arr = _this.val().trim().split(",");
+    var arrne = _thisne.val().trim().split(",");
     if (_this.val() != "") {
         var str = "";
         for (var i = 0; i < arr.length; i++) {
             str = str + arr[i] + "\n";
         }
-        $("#nKwd").val(str.trim() );
+        $("#nKwd").val(str.trim());
     } else if (_thisne.val() != "") {
         var strne = "";
         for (var i = 0; i < arrne.length; i++) {
             strne = strne + arrne[i] + "\n";
         }
-        $("#mKwd").val(strne.trim() );
+        $("#mKwd").val(strne.trim());
     } else {
         initNoKeyAlert();
     }
@@ -564,14 +579,14 @@ function adgroupUpdateNokwdMath() {
         top: ($(window).height() - _adAdd.height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
-    var unn = $("#adgroupUpdateForm input[name='negativeWords']").val().trim() ;
-    var une = $("#adgroupUpdateForm input[name='exactNegativeWords']").val().trim() ;
+    var unn = $("#adgroupUpdateForm input[name='negativeWords']").val().trim();
+    var une = $("#adgroupUpdateForm input[name='exactNegativeWords']").val().trim();
     if (unn.indexOf(",") > -1 || unn.length > 0) {
         var arr = unn.split(",");
         $("#npKwd_size").html(arr.length);
         var str = "";
         for (var i = 0; i < arr.length; i++) {
-            str = str + arr[i].trim()  + "\n";
+            str = str + arr[i].trim() + "\n";
         }
         $("#npKwd").val(str);
     } else {
@@ -583,7 +598,7 @@ function adgroupUpdateNokwdMath() {
         $("#mpKwd_size").html(arrne.length);
         var strne = "";
         for (var i = 0; i < arrne.length; i++) {
-            strne = strne + arrne[i].trim()  + "\n";
+            strne = strne + arrne[i].trim() + "\n";
         }
         $("#mpKwd").val(strne);
     } else {
@@ -612,45 +627,45 @@ function adgroupUpdateNokwdMathOk() {
  * 点击修改确定方法
  */
 function adrgoupUpdateOk() {
-    var an=$("#adgroupUpdateForm input[name='adgroupName']").val();
-    var mp=$("#adgroupUpdateForm input[name='maxPrice']").val();
+    var an = $("#adgroupUpdateForm input[name='adgroupName']").val();
+    var mp = $("#adgroupUpdateForm input[name='maxPrice']").val();
     //  /^-?\d+\.?\d*$/
-    if(parseInt(getChar(an))>30||parseInt(getChar(an))==0){
+    if (parseInt(getChar(an)) > 30 || parseInt(getChar(an)) == 0) {
         alert("单元名长度不能超过30个字符，一个汉字占两个字符,且不为空！");
         return;
     }
-    if(mp!=""){
-        if(!/^-?\d+\.?\d*$/.test(mp)){
+    if (mp != "") {
+        if (!/^-?\d+\.?\d*$/.test(mp)) {
             alert("单元最高出价只能是小数");
             return;
         }
-    }else{
+    } else {
         alert("单元最高出价不能为空！");
         return;
     }
 
-    if(confirm("你确定要修改该计划吗?")==true){
-    var _this = $(atmp);
-    $("#adgroupUpdateForm").formSubmit("../assistantAdgroup/update", function (rs) {
-        if (rs == "1") {
-            adgroupAddAlertClose();
-            var _span = $("#auSpan").html();
-            var _edit = formData["oid"].length > 18 ? "<span class='pen' step='1'></span>" : "<span class='pen' step='2'></span>";
-            var _tbody =
-                "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
-                "<td>" + formData["adgroupName"] + "</td>" +
-                "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
-                " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
-                "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</td>" +
-                "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
-                "<td>&nbsp;</td>" +
-                "<td>" + formData["cn"] + "</td>" +
-                "<td>" + _edit + "</td>";
-            $(atmp).html(_tbody);
-            alert("修改完成");
-            loadTree();
-        }
-    });
+    if (confirm("你确定要修改该计划吗?") == true) {
+        var _this = $(atmp);
+        $("#adgroupUpdateForm").formSubmit("../assistantAdgroup/update", function (rs) {
+            if (rs == "1") {
+                adgroupAddAlertClose();
+                var _span = $("#auSpan").html();
+                var _edit = formData["oid"].length > 18 ? "<span class='pen' step='1'></span>" : "<span class='pen' step='2'></span>";
+                var _tbody =
+                    "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
+                    "<td>" + formData["adgroupName"] + "</td>" +
+                    "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
+                    " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
+                    "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</td>" +
+                    "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
+                    "<td>&nbsp;</td>" +
+                    "<td>" + formData["cn"] + "</td>" +
+                    "<td>" + _edit + "</td>";
+                $(atmp).html(_tbody);
+                alert("修改完成");
+                loadTree();
+            }
+        });
     }
 }
 /**
@@ -659,8 +674,8 @@ function adrgoupUpdateOk() {
  */
 function adgroupdSelectChange(rs) {
     var _this = $(rs);
-    var _atmp=$(atmp);
-    var _oid =_atmp.find("td:eq(0) input").val();
+    var _atmp = $(atmp);
+    var _oid = _atmp.find("td:eq(0) input").val();
     if (_oid != null) {
         var pause = _this.val();
         var params = {
@@ -760,11 +775,12 @@ function agDelReBack(oid) {
         }
     });
 }
-function adgroupMutli(){
-    top.dialog({title: "添加/更新多个单元",
+function adgroupMutli() {
+    top.dialog({
+        title: "添加/更新多个单元",
         padding: "5px",
-        align:'right bottom',
-        id:'adgroupMutli',
+        align: 'right bottom',
+        id: 'adgroupMutli',
         content: "<iframe src='/assistantAdgroup/adgroupMutli' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
 
@@ -772,7 +788,7 @@ function adgroupMutli(){
         onclose: function () {
 //            loadCreativeData({cid:plans.cid,aid:plans.aid});
             if (plans.cid != null) {
-            loadAdgroupData(plans.nowPage);
+                loadAdgroupData(plans.nowPage);
             }
             loadTree();
         },
@@ -783,63 +799,63 @@ function adgroupMutli(){
         }
     }).showModal(dockObj);
 }
-function adgroupUpload(){
+function adgroupUpload() {
     var _this = $(atmp);
     var oid = _this.find("td:eq(0) input").val();
     var _localStatus = _this.find("td:eq(8) span").attr("step");
     if (_localStatus != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;
-        }else{
-            switch (_localStatus){
+        } else {
+            switch (_localStatus) {
                 case "1":
-                    if(oid.length>18&&oid!=undefined){
-                        adgroupUploadOperate(oid,1);
+                    if (oid.length > 18 && oid != undefined) {
+                        adgroupUploadOperate(oid, 1);
                     }
                     break;
                 case "2":
-                    if (oid.length < 18&&oid!=undefined) {
-                        adgroupUploadOperate(oid,2);
+                    if (oid.length < 18 && oid != undefined) {
+                        adgroupUploadOperate(oid, 2);
                     }
                     break;
                 case "3":
-                    if (oid.length < 18&&oid!=undefined) {
-                        adgroupUploadOperate(oid,3);
-                    }else{
+                    if (oid.length < 18 && oid != undefined) {
+                        adgroupUploadOperate(oid, 3);
+                    } else {
                         adgroupDel();
                     }
                     break;
             }
         }
-    }else{
+    } else {
         alert("已经是最新数据了！");
         return;
     }
 }
-function adgroupUploadOperate(aid,ls){
-    $.get("/assistantAdgroup/uploadOperate",{aid:aid,ls:ls},function(str){
-        if(str.msg=="1"){
+function adgroupUploadOperate(aid, ls) {
+    $.get("/assistantAdgroup/uploadOperate", {aid: aid, ls: ls}, function (str) {
+        if (str.msg == "1") {
             alert("上传成功");
             if (plans.cid != null) {
                 getAdgroupPlan(plans.cid, plans.cn);
                 loadTree();
             }
-        }else if(str.msg=="noUp"){
-            var conf=confirm("该单元上级及计划没有上传，是否要一并上传？");
-            if(conf){
-                $.get("/assistantAdgroup/uploadAddByUp",{aid:aid},function(res){
-                   if(res.msg=="1"){
-                       alert("上传成功");
-                       if (plans.cid != null) {
-                           getAdgroupPlan(plans.cid, plans.cn);
-                           loadTree();
-                       }
-                   } else{
-                       alert(res.msg);
-                   }
+        } else if (str.msg == "noUp") {
+            var conf = confirm("该单元上级及计划没有上传，是否要一并上传？");
+            if (conf) {
+                $.get("/assistantAdgroup/uploadAddByUp", {aid: aid}, function (res) {
+                    if (res.msg == "1") {
+                        alert("上传成功");
+                        if (plans.cid != null) {
+                            getAdgroupPlan(plans.cid, plans.cn);
+                            loadTree();
+                        }
+                    } else {
+                        alert(res.msg);
+                    }
                 });
             }
-        }else{
+        } else {
             alert(str.msg);
         }
     })
