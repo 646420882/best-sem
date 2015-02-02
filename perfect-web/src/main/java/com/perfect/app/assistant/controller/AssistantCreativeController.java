@@ -526,7 +526,7 @@ public class AssistantCreativeController extends WebContextSupport {
         if(crid.length()>OBJ_SIZE){
             List<CreativeDTO> creativeDTOs=creativeService.uploadAdd(new ArrayList<String>(){{add(crid);}});
             if (creativeDTOs.size()>0){
-                creativeDTOs.parallelStream().forEach(s->{creativeService.update(crid,s);});
+                creativeDTOs.stream().forEach(s->{creativeService.update(crid,s);});
                 return writeMapObject(MSG, SUCCESS);
             }else{
                 return writeMapObject(MSG, "noUp");
@@ -536,7 +536,7 @@ public class AssistantCreativeController extends WebContextSupport {
                 case 2:
                     List<CreativeDTO> dtos=creativeService.uploadUpdate(new ArrayList<Long>(){{add(Long.valueOf(crid));}});
                     if(dtos.size()>0){
-                        dtos.parallelStream().forEach(s->{creativeService.updateLs(Long.valueOf(crid), s);});
+                        dtos.stream().forEach(s->{creativeService.updateLs(Long.valueOf(crid), s);});
                         return writeMapObject(MSG,SUCCESS);
                     }else{
                         return writeMapObject(MSG,"修改失败");
@@ -559,7 +559,7 @@ public class AssistantCreativeController extends WebContextSupport {
     public ModelAndView uploadAddByUp(@RequestParam(value = "crid")String crid){
         List<CreativeDTO> returnKeywordDTO=creativeService.uploadAddByUp(crid);
         if(returnKeywordDTO.size()>0){
-            returnKeywordDTO.parallelStream().forEach(s->{creativeService.update(crid,s);});
+            returnKeywordDTO.stream().forEach(s->{creativeService.update(crid,s);});
             return writeMapObject(MSG,SUCCESS);
         }
         return writeMapObject(MSG,"级联上传失败");

@@ -40,6 +40,12 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     List<KeywordDTO> getKeywordInfo();
 
+    List<KeywordDTO> findHasLocalStatus();
+
+    List<KeywordDTO> findHasLocalStatusStr(List<String> strs);
+
+    List<KeywordDTO> findHasLocalStatusLong(List<Long> longs);
+
     Long keywordCount(List<Long> adgroupIds);
 
     /**

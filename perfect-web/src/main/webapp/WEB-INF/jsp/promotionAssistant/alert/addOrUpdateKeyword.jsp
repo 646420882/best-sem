@@ -87,7 +87,7 @@
                                 <div class="newkeyword_right_mid">
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
 
-                                    <p>例如：鲜花，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
+                                    <p>例如：鲜花,精确,1.0,http://pc.xxx,http://pcs.xxx,启用</p>
 
                                     <p style="color:red;">要设定高级匹配模式的语法如下：短语-同义,短语-核心,短语-精确</p>
                                     <textarea onkeyup="getColumn(this)" id="TextAreaChoose"
@@ -249,49 +249,49 @@
     function getCampaiTreeData() {
         $("#treeDemo").html("正在加载数据...");
         $.ajax({
-            url: "/assistantKeyword/campaignTree",
-            type: "post",
+            url: "/account/get_tree",
+            type: "get",
             dataType: "json",
             success: function (data) {
                 if (data.length == 0) {
                     $("#treeDemo").html("暂无数据!");
                     return;
                 }
-                var array = new Array();
-                var json;
-                var camId;
-                for (var i = 0; i < data.length; i++) {
-                    json = {};
-
-                    if (data[i].rootNode.campaignId == null) {
-                        camId = data[i].rootNode.id;
-                    } else {
-                        camId = data[i].rootNode.campaignId;
-                    }
-                    json["id"] = camId;
-                    json["pId"] = 0;
-                    json["name"] = data[i].rootNode.campaignName;
-                    json["titile"] = "";
-                    json["open"] = false;
-                    array.push(json);
-                    for (var j = 0; j < data[i].childNode.length; j++) {
-                        json = {};
-
-                        if (data[i].childNode[j].adgroupId == null) {
-                            json["id"] = data[i].childNode[j].id;
-                        } else {
-                            json["id"] = data[i].childNode[j].adgroupId;
-                        }
-
-                        json["pId"] = camId;
-                        json["name"] = data[i].childNode[j].adgroupName;
-                        json["titile"] = "";
-                        json["checked"] = false;
-                        json["isHidden"] = true;
-                        array.push(json);
-                    }
-                }
-                initTree(array);
+//                var array = new Array();
+//                var json;
+//                var camId;
+//                for (var i = 0; i < data.length; i++) {
+//                    json = {};
+//
+//                    if (data[i].rootNode.campaignId == null) {
+//                        camId = data[i].rootNode.id;
+//                    } else {
+//                        camId = data[i].rootNode.campaignId;
+//                    }
+//                    json["id"] = camId;
+//                    json["pId"] = 0;
+//                    json["name"] = data[i].rootNode.campaignName;
+//                    json["titile"] = "";
+//                    json["open"] = false;
+//                    array.push(json);
+//                    for (var j = 0; j < data[i].childNode.length; j++) {
+//                        json = {};
+//
+//                        if (data[i].childNode[j].adgroupId == null) {
+//                            json["id"] = data[i].childNode[j].id;
+//                        } else {
+//                            json["id"] = data[i].childNode[j].adgroupId;
+//                        }
+//
+//                        json["pId"] = camId;
+//                        json["name"] = data[i].childNode[j].adgroupName;
+//                        json["titile"] = "";
+//                        json["checked"] = false;
+//                        json["isHidden"] = true;
+//                        array.push(json);
+//                    }
+//                }
+                initTree(data.trees);
             }
         });
     }
@@ -317,7 +317,6 @@
     function onCheck(e, treeId, treeNode) {
         count();
         var v = getSelectedNodeToString();
-        var vs = getSelectedNodeNameToString();
         if (v != "") {
             var campaign = v.split("-");
             $("#column").html(campaign.length - 1);
@@ -543,6 +542,8 @@ function nextStepAjax() {
             }
 
         }
+    }else{
+        alert("请选择某单元或者填写正确的关键词数据！");
     }
 }
 function overStep(isReplace) {
@@ -571,7 +572,7 @@ function overStep(isReplace) {
             aids =aids+ _tr.find("td:eq(1) input").val()+"\n";
             kwds = kwds+_tr.find("td:eq(2)").html()+"\n";
             var starMatchType = _tr.find("td:eq(3)").html();
-            var phraseType = "";
+            var phraseType = "1";
             var matchType = "";
             if (starMatchType.indexOf("短语-") > -1) {
                 matchType = 2;//如果输入短语-xx，必定匹配模式是2

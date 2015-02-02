@@ -41,7 +41,7 @@ var loadNewCampaignData = function () {
         }
     });
 };
-
+var ajaxbg = $("#background,#progressBar");
 var updateAllCampaign = function () {
     $.ajax({
         url: '/account/updateAccountData',
@@ -49,6 +49,10 @@ var updateAllCampaign = function () {
         dataType: 'json',
         success: function (data, textStatus, jqXHR) {
             alert("更新成功!");
+            ajaxbg.hide();
+            $(".TB_overlayBG").css("display", "none");
+            $("#download").css("display", "none");
+
         }
     });
 };
@@ -76,6 +80,9 @@ var updateExistsCampaign = function () {
         },
         success: function (data, textStatus, jqXHR) {
             alert("更新成功!");
+            ajaxbg.hide();
+            $(".TB_overlayBG").css("display", "none");
+            $("#download").css("display", "none");
         }
     });
 };
@@ -101,12 +108,14 @@ var updateNewCampaign = function () {
         },
         success: function (data, textStatus, jqXHR) {
             alert("更新成功!");
+             ajaxbg.hide();
+            $(".TB_overlayBG").css("display", "none");
+            $("#download").css("display", "none");
         }
     });
 };
 
 var index = 0;
-
 $(function () {
     //loadExistsCampaign();
     //

@@ -58,18 +58,67 @@
 
 <%--单元选择时右键点击修改弹出框--%>
 <div class="box" style="display:none" id="adUpdate">
-    <h2 id="adUp">修改<a href="#" class="close">关闭</a></h2>
+    <h2 id="adUp">修改单元<a href="#" class="close" onclick="adgroupAddAlertClose()">关闭</a></h2>
     <div class="mainlist">
-        <form id="adgroupUpdateForm">
+        <div class="plan_box over">
+            <form id="adgroupUpdateForm">
+            <ul>
+                <li>
+                    <div class="planbox1 fl"> 推广单元名称</div>
+                    <div class="planbox2 fl">
+                        <input type="hidden" name="oid"/>
+                        <input type="text" onblur="if (value=='') {value='&lt;请输入推广单元名称&gt;'}" onfocus="if(value=='&lt;请输入推广单元名称&gt;') {value=''}" value="&lt;请输入推广单元名称&gt;" class="plan_input inputCampaignName" name="adgroupName">
+                    </div>
+                </li>
+                <li>
+                    <div class="planbox1 fl"> 推广单元状态: </div>
+                    <div class="planbox2 fl">
+                        <label id="adStatus"></label>
+                    </div>
+                </li>
+                <li>
+                    <div class="planbox1 fl"> 是否启用: </div>
+                    <div class="planbox2 fl">
+                        <select name="pause" class="inputCampaignPause">
+                            <option value="true">启用</option>
+                            <option value="false">暂停</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="planbox1 fl">最高出价:</div>
+                    <div class="planbox2 fl">
+                        <input class="plan_input inputCampaignName" type="text" name="maxPrice" onkeypress="until.regDouble(this)" maxlength="4"/>
+                    </div>
+                </li>
+                <li>
+                    <div class="planbox1 fl">否定关键词:</div>
+                    <div class="planbox2 fl">
+                        <label id="usp"></label><label id="auSpan">未设定</label><a href="javascript:void(0)" onclick="adgroupUpdateNokwdMath();">设定</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="planbox1 fl">
+                        <span></span>
+                    </div>
+                    <div class="planbox2 fl">
+                        <input type="hidden"  name="negativeWords"/><input type="hidden" name="exactNegativeWords"/>
+                        <input type="hidden" name="cn"/>
+                    </div>
+                </li>
+
+            </ul>
+                </form>
+        </div>
+       <%-- <form id="adgroupUpdateForm">
             <input type="hidden" name="oid"/>
             <label>推广单元名称：</label><input name="adgroupName" maxlength="30"/>
-            <label>推广单元状态：</label><label id="adStatus"></label></br>
+           &lt;%&ndash; <label>推广单元状态：</label><label id="adStatus"></label></br>&ndash;%&gt;
             <label>是否启用：</label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select>
             <label>最高出价</label><input name="maxPrice" onkeypress="until.regDouble(this)" maxlength="4"/>
-            <label>否定关键词：</label><label id="usp"></label><label id="auSpan">未设定</label><a href="javascript:void(0)" onclick="adgroupUpdateNokwdMath();">设定</a></br>
-            <input type="hidden"  name="negativeWords"/><input type="hidden" name="exactNegativeWords"/>
-            <input type="hidden" name="cn"/>
-        </form>
+          &lt;%&ndash;  <label>否定关键词：</label><label id="usp"></label><label id="auSpan">未设定</label><a href="javascript:void(0)" onclick="adgroupUpdateNokwdMath();">设定</a></br>&ndash;%&gt;
+
+        </form>--%>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -111,4 +160,5 @@
         </div>
     </div>
 </div>
+
 

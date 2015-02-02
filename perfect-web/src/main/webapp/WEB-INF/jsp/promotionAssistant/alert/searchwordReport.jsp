@@ -467,7 +467,7 @@ function getChooseKeyword() {
     var keywords = "";
     var chooseKwd = $("#searchWordTbody").find(".choose");
     chooseKwd.each(function () {
-        keywords += $(this).find("td:eq(0)").html() + "\n";
+        keywords += $(this).find("td:eq(1)").html() + "\n";
     });
     keywords=keywords.substring(0, keywords.lastIndexOf('\n'));
     return keywords;

@@ -417,7 +417,10 @@
     <div class="contant over">
         <%--<div class="download over fr"><a href="#">下载全部</a></div>--%>
         <div class="list01_under3 over">
-
+            <div class="tubiao2 over" style="width: 80%;margin:0 auto; ">
+                <div id="imprDiv" style="width:100%;height:530px;display: none;"></div>
+                <div id="pm_data" style="display: none;"></div>
+            </div>
             <div class="list3 wd" style="overflow-x: auto; width: 100%;">
                 <table border="0" cellspacing="0" cellspacing="0">
                     <thead id="shujuthead">
@@ -430,6 +433,7 @@
 
                     </tbody>
                 </table>
+                <img style="margin-left: 50%; display: none" id="pathImages" src='${pageContext.request.contextPath}/public/img/loading.gif'/>
             </div>
             <!--<div class="page2 fl" id="pageDet"></div>-->
             <div id="pageNumberDetSelect" class="over">
@@ -445,8 +449,6 @@
             <div class="tubiao2 over">
                 <div id="containerLegend"></div>
                 <div id="container" style="width:100%;height:400px;display: none"></div>
-                <div id="imprDiv" style="width:100%;height:530px;display: none;"></div>
-                <div id="pm_data" style="display: none;"></div>
             </div>
 
         </div>

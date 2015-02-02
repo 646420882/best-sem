@@ -17,18 +17,18 @@ function getNowChooseCampaignTreeData(treeNode) {
         //点击的是父节点(推广计划)
         jsonData.cid = treeNode.id;
         jsonData.cn = treeNode.name;
-        jsonData.aid=null;
+        jsonData.aid = null;
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
         jsonData.cid = treeNode.getParentNode().id;
         jsonData.aid = treeNode.id;
     } else {
-        jsonData.cid=null;
-        jsonData.aid=null;
-        jsonData.cn=null;
+        jsonData.cid = null;
+        jsonData.aid = null;
+        jsonData.cn = null;
     }
-    nowChoose=jsonData;
-    whenClickTreeLoadData(getCurrentTabName(),jsonData);
+    nowChoose = jsonData;
+    whenClickTreeLoadData(getCurrentTabName(), jsonData);
 }
 
 /**
@@ -49,7 +49,7 @@ function whenClickTreeLoadData(tabName, param) {
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
         if (param.cid != null) {
-        getKwdList(0);
+            getKwdList(0);
         }
     } else if (tabName == "推广计划") {
         getCampaignList(0);
@@ -65,7 +65,7 @@ function whenClickTreeLoadData(tabName, param) {
 
     } else if (tabName == "推广单元") {
         if (param.cid != null) {
-        getAdgroupPlan(param.cid, param.cn);
+            getAdgroupPlan(param.cid, param.cn);
         }
     }
 
@@ -76,7 +76,7 @@ function whenClickTreeLoadData(tabName, param) {
  */
 $("#tabMenu li").click(function () {
     var tabName = $(this).html();
-    whenClickTreeLoadData(tabName,getNowChooseCidAndAid());
+    whenClickTreeLoadData(tabName, getNowChooseCidAndAid());
 });
 
 /**

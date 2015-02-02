@@ -58,6 +58,38 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
+    public Iterable<AdgroupDTO> findAll() {
+        return adgroupDAO.findAll();
+    }
+
+    @Override
+    public List<AdgroupDTO> findHasLocalStatus() {
+        return adgroupDAO.findHasLocalStatus();
+    }
+
+    @Override
+    public List<AdgroupDTO> findHasLocalStatusStr(List<CampaignDTO> campaignDTOStr) {
+        List<String> strs=new ArrayList<>();
+        for (CampaignDTO camp:campaignDTOStr){
+            if(camp.getCampaignId()==null){
+                strs.add(camp.getId());
+            }
+        }
+        return adgroupDAO.findHasLocalStatusStr(strs);
+    }
+
+    @Override
+    public List<AdgroupDTO> findHasLocalStatusLong(List<CampaignDTO> campaignDTOLong) {
+        List<Long> longs=new ArrayList<>();
+        for (CampaignDTO camp:campaignDTOLong){
+            if(camp.getCampaignId()!=null){
+                longs.add(camp.getCampaignId());
+            }
+        }
+        return adgroupDAO.findHasLocalStatusLong(longs);
+    }
+
+    @Override
     public List<Long> getAdgroupIdByCampaignId(Long campaignId) {
         return adgroupDAO.getAdgroupIdByCampaignId(campaignId);
     }
@@ -146,7 +178,7 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public void save(AdgroupDTO adgroupDTO) {
-        adgroupDAO.save(adgroupDTO);
+        adgroupDAO.insert(adgroupDTO);
     }
 
     @Override
@@ -158,7 +190,7 @@ public class AdgroupServiceImpl implements AdgroupService {
     public List<AdgroupDTO> uploadAdd(List<String> aids) {
         List<AdgroupDTO> returnDto = new ArrayList<>();
         List<AdgroupType> adgroupTypes = new ArrayList<>();
-        aids.parallelStream().forEach(s -> {
+        aids.stream().forEach(s -> {
             AdgroupDTO dto = adgroupDAO.findByObjId(s);
             CampaignDTO campaignDTO = campaignDAO.findByLongId(dto.getCampaignId());
             if (campaignDTO.getCampaignId() != null) {//判断如果需要上传的单元的计划编号没有更新，则无法更新该条记录
@@ -181,7 +213,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             addAdgroupRequest.setAdgroupTypes(adgroupTypes);
             AddAdgroupResponse addAdgroupResponse=adgroupService.addAdgroup(addAdgroupRequest);
             List<AdgroupType> returnAdgroupType=addAdgroupResponse.getAdgroupTypes();
-            returnAdgroupType.parallelStream().forEach(s -> {
+            returnAdgroupType.stream().forEach(s -> {
                 if (s.getAdgroupId() != null) {
                     AdgroupDTO dto = new AdgroupDTO();
                     dto.setAdgroupId(s.getAdgroupId());
@@ -228,7 +260,7 @@ public class AdgroupServiceImpl implements AdgroupService {
     public List<AdgroupDTO> uploadUpdate(List<Long> aid) {
         List<AdgroupDTO> returnAdgroupDTO = new ArrayList<>();
         List<AdgroupType> adgroupTypes = new ArrayList<>();
-        aid.parallelStream().forEach(s -> {
+        aid.stream().forEach(s -> {
             AdgroupDTO adgroupDTOFind = adgroupDAO.findOne(s);
             AdgroupType adgroupType = new AdgroupType();
             adgroupType.setAdgroupId(adgroupDTOFind.getAdgroupId());
@@ -248,7 +280,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             adgroupRequest.setAdgroupTypes(adgroupTypes);
             UpdateAdgroupResponse updateCampaignResponse = adgroupService.updateAdgroup(adgroupRequest);
             List<AdgroupType> returnAdgroupTypes = updateCampaignResponse.getAdgroupTypes();
-            returnAdgroupTypes.parallelStream().filter(s -> s.getAdgroupId() != null).forEach(s -> {
+            returnAdgroupTypes.stream().filter(s -> s.getAdgroupId() != null).forEach(s -> {
                 AdgroupDTO adgroupDTO = new AdgroupDTO();
                 adgroupDTO.setStatus(s.getStatus());
                 adgroupDTO.setPause(s.getPause());
@@ -272,7 +304,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
             if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
                 List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
-                dtos.parallelStream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+                dtos.stream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
             }
             //计划级联上传 end
 

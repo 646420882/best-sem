@@ -424,7 +424,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                 add(aid);
             }});
             if (returnAids.size() > 0) {
-                returnAids.parallelStream().forEach(s -> {
+                returnAids.stream().forEach(s -> {
                     adgroupService.update(aid, s);
                 });
                 return writeMapObject(MSG, SUCCESS);
@@ -438,7 +438,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                         add(Long.valueOf(aid));
                     }});
                     if (updatedAdgroupDTO.size() > 0) {
-                        updatedAdgroupDTO.parallelStream().forEach(s -> {
+                        updatedAdgroupDTO.stream().forEach(s -> {
                             adgroupService.updateUpdate(Long.valueOf(aid), s);
                         });
                         return writeMapObject(MSG, SUCCESS);
@@ -460,7 +460,7 @@ public class AssistantAdgroupController extends WebContextSupport {
     public ModelAndView uploadAddByUp(@RequestParam(value = "aid")String aid){
         List<AdgroupDTO> adgroupDTOs=adgroupService.uploadAddByUp(aid);
         if(adgroupDTOs.size()>0){
-            adgroupDTOs.parallelStream().forEach(s ->adgroupService.update(aid, s));
+            adgroupDTOs.stream().forEach(s ->adgroupService.update(aid, s));
             return  writeMapObject(MSG,SUCCESS);
         }
         return writeMapObject(MSG,"级联上传失败");

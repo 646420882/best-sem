@@ -87,7 +87,7 @@
                                     <p>格式：创意标题(必填)，创意描述1，创意描述2，默认访问URL，默认显示URL，移动访问URL，移动显示URL，启用/暂停，设备偏好</p>
 
                                     <p>
-                                        例如：标题,描述1,描述2,http://com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,http://m.com.perfect.api.baidu.com,m.com.perfect.api.baidu.com,启用,全部设备</p>
+                                        例如：标题,描述1,描述2,http://pc.xxx,http://pcs.xxx,http://mobile.xxx,http://mobiles.xxx,启用,全部设备</p>
                                     <textarea onkeyup="getColumn(this)" id="creativeMultiTxt"
                                               style="font-size: 12px;font-family: 微软雅黑;"></textarea>
 
@@ -223,49 +223,49 @@ $(function () {
 function initMutliTree() {
     $("#creativeMultiTree").html("正在加载数据...");
     $.ajax({
-        url: "/assistantKeyword/campaignTree",
-        type: "post",
+        url: "/account/get_tree",
+        type: "get",
         dataType: "json",
         success: function (data) {
             if (data.length == 0) {
                 $("#creativeMultiTree").html("暂无数据!");
                 return;
             }
-            var array = new Array();
-            var json;
-            var camId;
-            for (var i = 0; i < data.length; i++) {
-                json = {};
-
-                if (data[i].rootNode.campaignId == null) {
-                    camId = data[i].rootNode.id;
-                } else {
-                    camId = data[i].rootNode.campaignId;
-                }
-                json["id"] = camId;
-                json["pId"] = 0;
-                json["name"] = data[i].rootNode.campaignName;
-                json["titile"] = "";
-                json["open"] = false;
-                array.push(json);
-                for (var j = 0; j < data[i].childNode.length; j++) {
-                    json = {};
-
-                    if (data[i].childNode[j].adgroupId == null) {
-                        json["id"] = data[i].childNode[j].id;
-                    } else {
-                        json["id"] = data[i].childNode[j].adgroupId;
-                    }
-
-                    json["pId"] = camId;
-                    json["name"] = data[i].childNode[j].adgroupName;
-                    json["titile"] = "";
-                    json["checked"] = false;
-                    json["isHidden"] = true;
-                    array.push(json);
-                }
-            }
-            $.fn.zTree.init($("#creativeMultiTree"), settingCreativeMutli, array);
+//            var array = new Array();
+//            var json;
+//            var camId;
+//            for (var i = 0; i < data.length; i++) {
+//                json = {};
+//
+//                if (data[i].rootNode.campaignId == null) {
+//                    camId = data[i].rootNode.id;
+//                } else {
+//                    camId = data[i].rootNode.campaignId;
+//                }
+//                json["id"] = camId;
+//                json["pId"] = 0;
+//                json["name"] = data[i].rootNode.campaignName;
+//                json["titile"] = "";
+//                json["open"] = false;
+//                array.push(json);
+//                for (var j = 0; j < data[i].childNode.length; j++) {
+//                    json = {};
+//
+//                    if (data[i].childNode[j].adgroupId == null) {
+//                        json["id"] = data[i].childNode[j].id;
+//                    } else {
+//                        json["id"] = data[i].childNode[j].adgroupId;
+//                    }
+//
+//                    json["pId"] = camId;
+//                    json["name"] = data[i].childNode[j].adgroupName;
+//                    json["titile"] = "";
+//                    json["checked"] = false;
+//                    json["isHidden"] = true;
+//                    array.push(json);
+//                }
+//            }
+            $.fn.zTree.init($("#creativeMultiTree"), settingCreativeMutli, data.trees);
         }
     });
 }
@@ -512,6 +512,8 @@ function nextStep() {
 
         }
 
+    }else{
+        alert("请选择单元或者输入创意信息!");
     }
 }
 /**

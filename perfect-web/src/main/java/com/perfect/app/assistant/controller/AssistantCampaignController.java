@@ -311,11 +311,11 @@ public class AssistantCampaignController extends WebContextSupport {
      * @return
      */
     @RequestMapping(value = "assistantCampaign/add")
-    public void addCampaign(String campaignName, Double budget, Double priceRatio, Boolean pause, Integer showProb, String schedule, Integer[] regionTarget,
+    public ModelAndView addCampaign(String campaignName, Double budget, Double priceRatio, Boolean pause, Integer showProb, String schedule, Integer[] regionTarget,
                             String negativeWords, String exactNegativeWords, String excludeIp,
                             String adgroupName, Double maxPrice, Boolean adgroupPause
     ) {
-
+        try {
         //推广计划
         CampaignDTO campaignDTO = new CampaignDTO();
         campaignDTO.setCampaignName(campaignName);
@@ -342,17 +342,24 @@ public class AssistantCampaignController extends WebContextSupport {
 
         //开始添加
         String id = campaignService.insertReturnId(campaignDTO);
+        if(id!=null){
+            AdgroupDTO adgroupDTO = new AdgroupDTO();
+            adgroupDTO.setCampaignObjId(id);
+            adgroupDTO.setAdgroupName(adgroupName);
+            adgroupDTO.setMaxPrice(maxPrice);
+            adgroupDTO.setPause(adgroupPause);
+            adgroupDTO.setStatus(-1);
+            adgroupDTO.setLocalStatus(1);
+            adgroupDTO.setAccountId(AppContext.getAccountId());
+            adgroupService.save(adgroupDTO);
+        }
 
-        AdgroupDTO adgroupDTO = new AdgroupDTO();
-        adgroupDTO.setCampaignObjId(id);
-        adgroupDTO.setAdgroupName(adgroupName);
-        adgroupDTO.setMaxPrice(maxPrice);
-        adgroupDTO.setPause(adgroupPause);
-        adgroupDTO.setStatus(-1);
-        adgroupDTO.setLocalStatus(1);
-        adgroupDTO.setAccountId(AppContext.getAccountId());
-        adgroupService.save(adgroupDTO);
+            return writeMapObject(MSG,SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
+        return writeMapObject(MSG,"添加失败");
     }
 
     /**
@@ -444,13 +451,13 @@ public class AssistantCampaignController extends WebContextSupport {
         adgroupEntity.setAccountId(AppContext.getAccountId());
 
         String adgroupObjectId = (String) adgroupService.insertOutId(adgroupEntity);
-
-        for (KeywordDTO kwd : list) {
-            kwd.setAdgroupObjId(adgroupObjectId);
-            kwd.setAccountId(AppContext.getAccountId());
+        if(adgroupObjectId!=null){
+            for (KeywordDTO kwd : list) {
+                kwd.setAdgroupObjId(adgroupObjectId);
+                kwd.setAccountId(AppContext.getAccountId());
+            }
+            keywordService.insertAll(list);
         }
-
-        keywordService.insertAll(list);
         writeJson(RES_SUCCESS, response);
     }
 
@@ -458,7 +465,7 @@ public class AssistantCampaignController extends WebContextSupport {
     public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid,@RequestParam(value = "ls")Integer ls) {
         if (cid.length() > OBJ_SIZE) {
             List<CampaignDTO> dtos=campaignService.uploadAdd(cid);
-            dtos.parallelStream().forEach(s->campaignService.update(s,cid));
+            dtos.stream().forEach(s->campaignService.update(s,cid));
             return writeMapObject(MSG, SUCCESS);
         } else {
             switch (ls) {

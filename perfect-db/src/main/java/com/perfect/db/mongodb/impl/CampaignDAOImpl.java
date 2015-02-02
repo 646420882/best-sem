@@ -10,7 +10,6 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.CampaignBackUpDTO;
 import com.perfect.dto.campaign.CampaignDTO;
-import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.entity.backup.CampaignBackUpEntity;
@@ -33,7 +32,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import javax.lang.model.element.Name;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -150,6 +148,24 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
+    public List<CampaignDTO> findHasLocalStatus() {
+        List<CampaignEntity> campaignEntityList=getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
+        return ObjectUtils.convert(campaignEntityList,CampaignDTO.class);
+    }
+
+    @Override
+    public List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids) {
+        List<CampaignEntity> campaignEntityList=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(SYSTEM_ID).in(cids)),getEntityClass());
+        return ObjectUtils.convert(campaignEntityList,CampaignDTO.class);
+    }
+
+    @Override
+    public List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids) {
+        List<CampaignEntity> campaignEntityList=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).in(cids)),getEntityClass());
+        return ObjectUtils.convert(campaignEntityList,CampaignDTO.class);
+    }
+
+    @Override
     public CampaignDTO findByLongId(Long cid) {
         CampaignEntity campaignEntity = getMongoTemplate().findOne(Query.query(Criteria.where(CAMPAIGN_ID).is(cid)), getEntityClass());
         CampaignDTO campaignDTO = new CampaignDTO();
@@ -190,7 +206,9 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         CampaignEntity campaignEntity = new CampaignBackUpEntity();
         BeanUtils.copyProperties(campaignDTO, campaignEntity);
 
-        getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
+        if(!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(campaignDTO.getCampaignName())),getEntityClass())){
+            getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
+        }
         return campaignEntity.getId();
     }
 
@@ -270,7 +288,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     @Override
     public void updateRemoveLs(List<String> afterUpdateStr) {
-        afterUpdateStr.parallelStream().forEach(s->{
+        afterUpdateStr.stream().forEach(s->{
             Update up=new Update();
             up.set("ls",null);
             getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(s)),up,CampaignEntity.class);
@@ -279,58 +297,14 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     @Override
     public List<CampaignDTO> getOperateCamp() {
-        //根据添加关键字反查到计划,全部增加状态，新增的关键字，新增的计划，新增的计划，只能是全部新增的才能反查到 star
-        List<String> adgroupIdsLsAdd = getStringAdgroupIds();//在新增的关键词模块获取添加的本地单元列表 ok
-        List<String> campaingIdsLsAdd=getStringCampaignIds(adgroupIdsLsAdd);//根据获取到的单元id列表去查询上级所属的计划id
-        //end
-
-        //根据添加的创意反查计划
-
-
-        List<CampaignDTO> campaignDTOs=getCampainByids(campaingIdsLsAdd);
-        return campaignDTOs;
-    }
-
-    private List<String> getStringAdgroupIds() {//ok
-        List<String> ids=new ArrayList<>();
-        Aggregation aggregation = Aggregation.newAggregation(
-                match(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),
-                project(OBJ_ADGROUP_ID),
-                group(OBJ_ADGROUP_ID).count().as(OBJ_ADGROUP_ID)
-        );
-        AggregationResults<KeywordEntity> aggregationResults = getMongoTemplate().aggregate(aggregation, TBL_KEYWORD, KeywordEntity.class);
-        List<KeywordEntity> keywordEntities = aggregationResults.getMappedResults();
-        for (KeywordEntity s : keywordEntities) {
-            if (s.getId() != null) {
-                ids.add(s.getId());
-            }
-        }
-    return  ids;
-    }
-    private  List<String> getStringCampaignIds(List<String> adgroupIds){ //ok
-        List<String> ids=new ArrayList<>();
-        Aggregation aggregation = Aggregation.newAggregation(
-                match(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),
-                project(OBJ_CAMPAIGN_ID),
-                group(OBJ_CAMPAIGN_ID).count().as(OBJ_CAMPAIGN_ID)
-        );
-        AggregationResults<AdgroupEntity> aggregationResults = getMongoTemplate().aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class);
-        List<AdgroupEntity> adgroupEntities = aggregationResults.getMappedResults();
-        for (AdgroupEntity s : adgroupEntities) {
-            if (s.getId() != null) {
-                ids.add(s.getId());
-            }
-        }
-        return ids;
-    }
-
-    private List<CampaignDTO> getCampainByids(List<String> camaingIds){
-        Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + " : 1," + NAME + " : 1}");
-        query.addCriteria(Criteria.where(SYSTEM_ID).in(camaingIds).and("ls").ne(null));
+        Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + " : 1," + NAME + " : 1,"+SYSTEM_ID+":1}");
+        query.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()));
         List<CampaignEntity> list = getMongoTemplate().find(query, CampaignEntity.class);
         List<CampaignDTO> campaignDTOs=ObjectUtils.convert(list,CampaignDTO.class);
         return campaignDTOs;
+
     }
+
 
 
 
@@ -361,8 +335,9 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        getMongoTemplate().updateFirst(query, update, CampaignEntity.class, TBL_CAMPAIGN);
-
+        if(!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(newCampaign.getCampaignName())),getEntityClass())){
+            getMongoTemplate().updateFirst(query, update, CampaignEntity.class, TBL_CAMPAIGN);
+        }
         CampaignBackUpDTO campaignBackUpDTOFind = campaignBackUpDAO.findByObjectId(newCampaign.getId());
         if (campaignBackUpDTOFind == null && newCampaign.getLocalStatus() == 2) {
             CampaignBackUpEntity backUpEntity = new CampaignBackUpEntity();

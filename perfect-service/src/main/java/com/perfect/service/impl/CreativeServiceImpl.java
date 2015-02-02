@@ -54,6 +54,38 @@ public class CreativeServiceImpl implements CreativeService {
     }
 
     @Override
+    public Iterable<CreativeDTO> findAll() {
+        return creativeDAO.findAll();
+    }
+
+    @Override
+    public List<CreativeDTO> findHasLocalStatus() {
+        return creativeDAO.findHasLocalStatus();
+    }
+
+    @Override
+    public List<CreativeDTO> findHasLocalStatusStr(List<AdgroupDTO> adgroupDTOStr) {
+        List<String> strs=new ArrayList<>();
+        for (AdgroupDTO str:adgroupDTOStr){
+            if(str.getAdgroupId()==null){
+                strs.add(str.getId());
+            }
+        }
+        return creativeDAO.findHasLocalStatusStr(strs);
+    }
+
+    @Override
+    public List<CreativeDTO> findHasLocalStatusLong(List<AdgroupDTO> adgroupDTOLong) {
+        List<Long> longs=new ArrayList<>();
+        for (AdgroupDTO str:adgroupDTOLong){
+            if(str.getAdgroupId()!=null){
+                longs.add(str.getAdgroupId());
+            }
+        }
+        return creativeDAO.findHasLocalStatusLong(longs);
+    }
+
+    @Override
     public CreativeDTO findOne(Long creativeId) {
         return creativeDAO.findOne(creativeId);
     }
@@ -143,7 +175,7 @@ public class CreativeServiceImpl implements CreativeService {
     public List<CreativeDTO> uploadAdd(List<String> crid) {
         List<CreativeDTO> returnCreativeDTOs = new ArrayList<>();
         List<CreativeType> creativeTypes = new ArrayList<>();
-        crid.parallelStream().forEach(s -> {
+        crid.stream().forEach(s -> {
             CreativeDTO creativeDTOFind = creativeDAO.findByObjId(s);
 //            AdgroupDTO adgroupDTO = adgroupDAO.findOne(creativeDTOFind.getAdgroupId());
             if (creativeDTOFind.getAdgroupId() != null) {
@@ -169,7 +201,7 @@ public class CreativeServiceImpl implements CreativeService {
                 addCreativeRequest.setCreativeTypes(creativeTypes);
                 AddCreativeResponse addCreativeResponse = creativeService.addCreative(addCreativeRequest);
                 List<CreativeType> returnCreativeTypes = addCreativeResponse.getCreativeTypes();
-                returnCreativeTypes.parallelStream().filter(s -> s.getCreativeId() != null).forEach(s -> {
+                returnCreativeTypes.stream().filter(s -> s.getCreativeId() != null).forEach(s -> {
                     CreativeDTO creativeDTO = new CreativeDTO();
                     creativeDTO.setCreativeId(s.getCreativeId());
                     creativeDTO.setStatus(s.getStatus());
@@ -194,7 +226,7 @@ public class CreativeServiceImpl implements CreativeService {
             //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
             if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
                 List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
-                dtos.parallelStream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+                dtos.stream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
             }
             //计划级联上传 end
 
@@ -204,7 +236,7 @@ public class CreativeServiceImpl implements CreativeService {
                 add(creativeDTOFind.getAdgroupObjId());
             }});
             //上传完毕后执行修改单元操作
-            returnAids.parallelStream().forEach(f -> adgroupService.update(creativeDTOFind.getAdgroupObjId(), f));
+            returnAids.stream().forEach(f -> adgroupService.update(creativeDTOFind.getAdgroupObjId(), f));
             //单元级联上传 end
 
             //最后上传创意
@@ -248,7 +280,7 @@ public class CreativeServiceImpl implements CreativeService {
     public List<CreativeDTO> uploadUpdate(List<Long> crids) {
         List<CreativeDTO> returnCreativeDTOs = new ArrayList<>();
         List<CreativeType> creativeTypes = new ArrayList<>();
-        crids.parallelStream().forEach(s -> {
+        crids.stream().forEach(s -> {
             CreativeDTO creativeDTOFind = creativeDAO.findOne(s);
             if (creativeDTOFind.getAdgroupId() != null) {
                 CreativeType creativeType = new CreativeType();
@@ -274,7 +306,7 @@ public class CreativeServiceImpl implements CreativeService {
                 updateCreativeRequest.setCreativeTypes(creativeTypes);
                 UpdateCreativeResponse updateCreativeResponse=creativeService.updateCreative(updateCreativeRequest);
                 List<CreativeType> returnCreativeTypes=updateCreativeResponse.getCreativeTypes();
-                returnCreativeTypes.parallelStream().filter(s -> s.getCreativeId() != null).forEach(s->{
+                returnCreativeTypes.stream().filter(s -> s.getCreativeId() != null).forEach(s->{
                     CreativeDTO returnCreativeDTO=new CreativeDTO();
                     returnCreativeDTO.setCreativeId(s.getCreativeId());
                     returnCreativeDTO.setStatus(s.getStatus());

@@ -188,6 +188,24 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
+    public List<KeywordDTO> findHasLocalStatus() {
+       List<KeywordEntity> keywordEntities= getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass());
+        return ObjectUtils.convert(keywordEntities,KeywordDTO.class);
+    }
+
+    @Override
+    public List<KeywordDTO> findHasLocalStatusStr(List<String> strs) {
+        List<KeywordEntity> keywordEntities= getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_ADGROUP_ID).in(strs)),getEntityClass());
+        return ObjectUtils.convert(keywordEntities,KeywordDTO.class);
+    }
+
+    @Override
+    public List<KeywordDTO> findHasLocalStatusLong(List<Long> longs) {
+        List<KeywordEntity> keywordEntities= getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)),getEntityClass());
+        return ObjectUtils.convert(keywordEntities,KeywordDTO.class);
+    }
+
+    @Override
     public Long keywordCount(List<Long> adgroupIds) {
         return getMongoTemplate().count(Query.query(
                         Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),
@@ -410,7 +428,11 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     public Iterable<KeywordDTO> save(Iterable<KeywordDTO> keywordDTOs) {
         List<KeywordDTO> dtoList = Lists.newArrayList(keywordDTOs);
         List<KeywordEntity> entityList = ObjectUtils.convert(dtoList, getEntityClass());
-        getMongoTemplate().insertAll(entityList);
+        entityList.stream().forEach(s -> {
+            if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword())), getEntityClass())) {
+                getMongoTemplate().insert(s);
+            }
+        });
         dtoList = ObjectUtils.convert(entityList, getDTOClass());
         return dtoList;
     }

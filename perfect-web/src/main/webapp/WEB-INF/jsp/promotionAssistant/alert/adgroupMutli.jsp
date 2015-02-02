@@ -17,18 +17,22 @@
         .newkeyword_right_mid textarea {
             height: 180px;
         }
+
         .ztree {
             height: 300px;
 
         }
+
         .list4 table {
             border: 1px solid #eaf0f3;
             overflow: auto;
             width: 100%;
         }
-        .table2 tr td{
+
+        .table2 tr td {
             text-align: center;
         }
+
         .assembly_under {
             height: 440px;
         }
@@ -40,6 +44,7 @@
             height: 30px;
             overflow: hidden;
         }
+
         .list2 table .list2_top td, th {
             color: #333;
         }
@@ -92,18 +97,18 @@
                                             id="totalStr"></span>/<span id="maxLength">5000</span></span>
                                     </p>
 
-                                    <p>
-                                        <%--<span><input type="checkbox"/>用这些普通创意替换目标推广单元的所有相应内容<br/></span>--%>
-                                        <span><input type="checkbox"
-                                                     checked="checked"/>创意标题和描述相同时，更新该创意的url等其他设设置</span>
-                                    </p>
+                                    <%--<p>--%>
+                                    <%--&lt;%&ndash;<span><input type="checkbox"/>用这些普通创意替换目标推广单元的所有相应内容<br/></span>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<span><input type="checkbox"&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;checked="checked"/>创意标题和描述相同时，更新该创意的url等其他设设置</span>&ndash;%&gt;--%>
+                                    <%--</p>--%>
                                 </div>
 
                                 <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" onclick="nextStep();">下一步</li>
-                                            <li class="close">取消</li>
+                                            <li class="close" onclick="closeDialog();">取消</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -150,7 +155,8 @@
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
                         <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <p><span style="font-weight: bold; line-height:30px;">新增的单元：<span id="criSize">0</span></span></p>
+                            <p><span style="font-weight: bold; line-height:30px;">新增的单元：<span
+                                    id="criSize">0</span></span></p>
                             <table border="0" cellspacing="0" width="100%" id="createTable"
                                    class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                 <thead>
@@ -186,265 +192,295 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript">
-var settingCreativeMutli = {
-    check: {
-        enable: true
-    },
-    data: {
-        key: {
-            title: "title"
-        },
-        simpleData: {
+    var settingCreativeMutli = {
+        check: {
             enable: true
-        }
-    },
-    callback: {
-        onCheck: onCheck
-    }
-};
-var columnSize = 0;
-$(function () {
-    initMutliTree();
-
-});
-function initMutliTree() {
-    $("#creativeMultiTree").html("正在加载数据...");
-    $.ajax({
-        url: "/assistantKeyword/campaignTree",
-        type: "post",
-        dataType: "json",
-        success: function (data) {
-            if (data.length == 0) {
-                $("#creativeMultiTree").html("暂无数据!");
-                return;
+        },
+        data: {
+            key: {
+                title: "title"
+            },
+            simpleData: {
+                enable: true
             }
-            var array = new Array();
-            var json;
-            var camId;
-            for (var i = 0; i < data.length; i++) {
-                json = {};
-
-                if (data[i].rootNode.campaignId == null) {
-                    camId = data[i].rootNode.id;
-                } else {
-                    camId = data[i].rootNode.campaignId;
-                }
-                json["id"] = camId;
-                json["pId"] = 0;
-                json["name"] = data[i].rootNode.campaignName;
-                json["titile"] = "";
-                json["open"] = false;
-                array.push(json);
-            }
-            $.fn.zTree.init($("#creativeMultiTree"), settingCreativeMutli, array);
+        },
+        callback: {
+            onCheck: onCheck
         }
+    };
+    var columnSize = 0;
+    $(function () {
+        initMutliTree();
+
     });
-}
-function onCheck(e, treeId, treeNode) {
-    count();
-    var v = getSelectedNodeToString();
-    var vs = getSelectedNodeNameToString();
-    if (v != "") {
-        var campaign = v.split("-");
-        $("#column").html(campaign.length);
-        focuspError();
-    } else {
-        $("#column").html(0);
-    }
-}
-function count() {
-    function isForceHidden(node) {
-        if (!node.parentTId) return false;
-        var p = node.getParentNode();
-        return !!p.isHidden ? true : isForceHidden(p);
-    }
+    function initMutliTree() {
+        $("#creativeMultiTree").html("正在加载数据...");
+        $.ajax({
+            url: "/assistantKeyword/campaignTree",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.length == 0) {
+                    $("#creativeMultiTree").html("暂无数据!");
+                    return;
+                }
+                var array = new Array();
+                var json;
+                var camId;
+                for (var i = 0; i < data.length; i++) {
+                    json = {};
 
-    var zTree = $.fn.zTree.getZTreeObj("creativeMultiTree"),
-            checkCount = zTree.getCheckedNodes(true).length,
-            nocheckCount = zTree.getCheckedNodes(false).length,
-            hiddenNodes = zTree.getNodesByParam("isHidden", true),
-            hiddenCount = hiddenNodes.length;
-
-    for (var i = 0, j = hiddenNodes.length; i < j; i++) {
-        var n = hiddenNodes[i];
-        if (isForceHidden(n)) {
-            hiddenCount -= 1;
-        } else if (n.isParent) {
-            hiddenCount += zTree.transformToArray(n.children).length;
-        }
+                    if (data[i].rootNode.campaignId == null) {
+                        camId = data[i].rootNode.id;
+                    } else {
+                        camId = data[i].rootNode.campaignId;
+                    }
+                    json["id"] = camId;
+                    json["pId"] = 0;
+                    json["name"] = data[i].rootNode.campaignName;
+                    json["titile"] = "";
+                    json["open"] = false;
+                    array.push(json);
+                }
+                $.fn.zTree.init($("#creativeMultiTree"), settingCreativeMutli, array);
+            }
+        });
     }
-
-    $("#isHiddenCount").text(hiddenNodes.length);
-    $("#hiddenCount").text(hiddenCount);
-    $("#checkCount").text(checkCount);
-    $("#nocheckCount").text(nocheckCount);
-}
-
-/**
- * 获取选中树形结构的计划单元id
- * */
-function getSelectedNodeToString() {
-    var treeObj = $.fn.zTree.getZTreeObj("creativeMultiTree");
-    var selectNode = treeObj.getCheckedNodes(true);
-    var v = "";
-    var parentNode = "";
-    for (var i = 0; i < selectNode.length; i++) {
-        if (selectNode[i].isParent == true) {
-            parentNode = selectNode[i].id;
-        } else {
-            v = v + selectNode[i].id + ",";
-        }
-    }
-    v = v.substr(0, v.length - 1);
-    return v;
-}
-/**
- * 获取选中树形结构的计划单元名字
- * */
-function getSelectedNodeNameToString() {
-    var treeObj = $.fn.zTree.getZTreeObj("creativeMultiTree");
-    var selectNode = treeObj.getCheckedNodes(true);
-    var v = "";
-    var parentNode = "";
-    for (var i = 0; i < selectNode.length; i++) {
-        if (selectNode[i].isParent == true) {
-            parentNode = selectNode[i].name;
-        } else {
-            v = v + selectNode[i].name + ",";
-        }
-    }
-    v = v.substr(0, v.length - 1);
-    return v;
-}
-
-/**
- *选择单选的第一个
- */
-function stepOne() {
-    $(".inputKwdInfoDiv").addClass("hides");
-    $(".chooseKwdInfoDiv").removeClass("hides");
-}
-/**
- *选择单选的第二个
- */
-function stepTwo() {
-    $(".inputKwdInfoDiv").removeClass("hides");
-    $(".chooseKwdInfoDiv").addClass("hides");
-}
-/**
- 下一步*
- */
-function nextStep() {
-    var txt = $("#creativeMultiTxt").val().trim();
-    if (getSelectedNodeToString() != "" && txt != "") {
-        initNextStep();
-        var vs = getSelectedNodeNameToString();
+    function onCheck(e, treeId, treeNode) {
+        count();
         var v = getSelectedNodeToString();
-        var ids = v.split(",");
-        var names = vs.split(",");
-        var _createTable = $("#createTable tbody");
-        var txtSize = txt.split("\n");
-        _createTable.empty();
-        $("#criSize").html(txtSize.length);
-        for (var i = 0; i < names.length; i++) {
+        if (v != "") {
+            var campaign = v.split(",");
+            $("#column").html(campaign.length);
+            focuspError();
+        } else {
+            $("#column").html(0);
+        }
+    }
+    function count() {
+        function isForceHidden(node) {
+            if (!node.parentTId) return false;
+            var p = node.getParentNode();
+            return !!p.isHidden ? true : isForceHidden(p);
+        }
+
+        var zTree = $.fn.zTree.getZTreeObj("creativeMultiTree"),
+                checkCount = zTree.getCheckedNodes(true).length,
+                nocheckCount = zTree.getCheckedNodes(false).length,
+                hiddenNodes = zTree.getNodesByParam("isHidden", true),
+                hiddenCount = hiddenNodes.length;
+
+        for (var i = 0, j = hiddenNodes.length; i < j; i++) {
+            var n = hiddenNodes[i];
+            if (isForceHidden(n)) {
+                hiddenCount -= 1;
+            } else if (n.isParent) {
+                hiddenCount += zTree.transformToArray(n.children).length;
+            }
+        }
+
+        $("#isHiddenCount").text(hiddenNodes.length);
+        $("#hiddenCount").text(hiddenCount);
+        $("#checkCount").text(checkCount);
+        $("#nocheckCount").text(nocheckCount);
+    }
+
+    /**
+     * 获取选中树形结构的计划单元id
+     * */
+    function getSelectedNodeToString() {
+        var treeObj = $.fn.zTree.getZTreeObj("creativeMultiTree");
+        var selectNode = treeObj.getCheckedNodes(true);
+        var v = "";
+        var parentNode = "";
+        for (var i = 0; i < selectNode.length; i++) {
+            if (selectNode[i].isParent == true) {
+                parentNode = selectNode[i].id;
+            } else {
+                v = v + selectNode[i].id + ",";
+            }
+        }
+        v = v.substr(0, v.length - 1);
+        return v;
+    }
+    /**
+     * 获取选中树形结构的计划单元名字
+     * */
+    function getSelectedNodeNameToString() {
+        var treeObj = $.fn.zTree.getZTreeObj("creativeMultiTree");
+        var selectNode = treeObj.getCheckedNodes(true);
+        var v = "";
+        var parentNode = "";
+        for (var i = 0; i < selectNode.length; i++) {
+            if (selectNode[i].isParent == true) {
+                parentNode = selectNode[i].name;
+            } else {
+                v = v + selectNode[i].name + ",";
+            }
+        }
+        v = v.substr(0, v.length - 1);
+        return v;
+    }
+    function getChar(str) {
+        var char = str.match(/[^\x00-\xff]/ig);
+        return str.length + (char == null ? 0 : char.length);
+    }
+    /**
+     *选择单选的第一个
+     */
+    function stepOne() {
+        $(".inputKwdInfoDiv").addClass("hides");
+        $(".chooseKwdInfoDiv").removeClass("hides");
+    }
+    /**
+     *选择单选的第二个
+     */
+    function stepTwo() {
+        $(".inputKwdInfoDiv").removeClass("hides");
+        $(".chooseKwdInfoDiv").addClass("hides");
+    }
+    /**
+     下一步*
+     */
+    function nextStep() {
+        var txt = $("#creativeMultiTxt").val().trim();
+        if (getSelectedNodeToString() != "" && txt != "") {
+            var vs = getSelectedNodeNameToString();
+            var v = getSelectedNodeToString();
+            var ids = v.split(",");
+            var names = vs.split(",");
+            var _createTable = $("#createTable tbody");
+            var txtSize = txt.split("\n");
             for (var j = 0; j < txtSize.length; j++) {
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
-                var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
-                var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "0.0";
-                var c4_pause = "暂停";
-                if (c1 != "") {
-                    c4_pause = c1 == "暂停" ? "暂停" : "启用";
+                var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
+                if (parseInt(getChar(c0)) > 30 || parseInt(getChar(c0)) == 0) {
+                    alert("第" + (j + 1) + "行单元名长度不能超过30个字符，一个汉字占两个字符,且不为空");
+                    return;
                 }
-                var _tbody = "<tr>" +
-                        "<td>" + names[i] + "<input type='hidden' value=" + ids[i] + "></td>" +
-                        "<td>" + c0 + "</td>" +
-                        "<td>" + c4_pause + "</td>" +
-                        "<td>" + c2 + "</td>" +
-                        "</tr>";
-                _createTable.append(_tbody);
+                if (c2 != "") {
+                    if (!/^-?\d+\.?\d*$/.test(c2)) {
+                        alert("第" + (j + 1) + "行输入正确的单元出价！");
+                        return;
+                    }
+                } else {
+                    alert("第" + (j + 1) + "行单元出价不能为空!");
+                    return;
+                }
             }
+            initNextStep();
+            _createTable.empty();
+            $("#criSize").html(txtSize.length);
+            for (var i = 0; i < names.length; i++) {
+                for (var j = 0; j < txtSize.length; j++) {
+                    var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
+                    var c1 = txtSize[j].split(",")[1] != undefined ? txtSize[j].split(",")[1] : "";
+                    var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "0.1";
+                    var c4_pause = "暂停";
+                    if (c1 == "启用") {
+                        c4_pause = "启用";
+                    }
+                    var _tbody = "<tr>" +
+                            "<td>" + names[i] + "<input type='hidden' value=" + ids[i] + "></td>" +
+                            "<td>" + c0 + "</td>" +
+                            "<td>" + c4_pause + "</td>" +
+                            "<td>" + c2 + "</td>" +
+                            "</tr>";
+                    _createTable.append(_tbody);
+                }
+            }
+        } else {
+            alert("请选择推广计划或者输入单元信息！");
         }
     }
-}
-/**
- 上一步*
- */
-function preStep() {
-    initPreStep();
-}
+    /**
+     上一步*
+     */
+    function preStep() {
+        initPreStep();
+    }
 
-function creativeMultiNextStep() {
-    var v = getSelectedNodeToString();
-}
-/**
- 获取文本框中数据的行数*
- * @param rs
- */
-function getColumn(rs) {
-    var _this = $(rs);
-    if (_this.val() != "") {
-        var column = _this.val().trim().split("\n");
-        $("#checkedNodes").html(column.length);
-        focuspError();
-    } else {
-        $("#checkedNodes").html(0);
+    function creativeMultiNextStep() {
+        var v = getSelectedNodeToString();
     }
-}
-/**
- 验证输入的字符串是否大于规定值*
- */
-function focuspError() {
-    var plans = parseInt($("#column").html());
-    var col = parseInt($("#checkedNodes").html());
-    $("#totalStr").html(plans * col);
-    if ((plans * col) > parseInt($("#maxLength").html())) {
-        $("#pError").css("color", "red");
-    } else {
-        $("#pError").css("color", "black");
+    /**
+     获取文本框中数据的行数*
+     * @param rs
+     */
+    function getColumn(rs) {
+        var _this = $(rs);
+        if (_this.val() != "") {
+            var column = _this.val().trim().split("\n");
+            $("#checkedNodes").html(column.length);
+            focuspError();
+        } else {
+            $("#checkedNodes").html(0);
+        }
     }
-}
-/**
- 初始化下一步效果*
- */
-function initNextStep() {
-    $("#creativeMulti").addClass("hides");
-    $("#creativeMultishowValidateDiv").removeClass("hides");
-    $("#step").find("li").addClass("current");
-}
-/**
- 初始化上一步效果*
- */
-function initPreStep() {
-    $("#creativeMulti").removeClass("hides");
-    $("#creativeMultishowValidateDiv").addClass("hides");
-    $("#step").find("li:eq(1)").removeClass("current");
-}
-/**
- 完成方法,循环添加批量的数据*
- */
-function overStep() {
-    var con = confirm("你确定要添加或者替换这些单元吗？");
-    if (con) {
-        var _table = $("#createTable tbody");
-        var trs = _table.find("tr");
-        var data = {};
-        $(trs).each(function (i, o) {
-            var _tr = $(o);
-            var cid = _tr.find("td:eq(0) input").val();
-            var name = _tr.find("td:eq(1)").html();
-            var pause = _tr.find("td:eq(2)").html();
-            var maxPrice = _tr.find("td:eq(3)").html();
-            var pause_ToF = pause != "启用" ? false : true;
-            $.post("../assistantAdgroup/insertOrUpdate", {cid: cid, name: name, pause: pause_ToF, maxPrice: maxPrice, status: -1}, function (rs) {
-                if(rs=="1"){
-                    alert("操作成功");
-                    top.dialog.getCurrent().close().remove();
-                }
+    /**
+     验证输入的字符串是否大于规定值*
+     */
+    function focuspError() {
+        var plans = parseInt($("#column").html());
+        var col = parseInt($("#checkedNodes").html());
+        $("#totalStr").html(plans * col);
+        if ((plans * col) > parseInt($("#maxLength").html())) {
+            $("#pError").css("color", "red");
+        } else {
+            $("#pError").css("color", "black");
+        }
+    }
+    /**
+     初始化下一步效果*
+     */
+    function initNextStep() {
+        $("#creativeMulti").addClass("hides");
+        $("#creativeMultishowValidateDiv").removeClass("hides");
+        $("#step").find("li").addClass("current");
+    }
+    /**
+     初始化上一步效果*
+     */
+    function initPreStep() {
+        $("#creativeMulti").removeClass("hides");
+        $("#creativeMultishowValidateDiv").addClass("hides");
+        $("#step").find("li:eq(1)").removeClass("current");
+    }
+    /**
+     完成方法,循环添加批量的数据*
+     */
+    function overStep() {
+        var con = confirm("你确定要添加或者替换这些单元吗？");
+        if (con) {
+            var _table = $("#createTable tbody");
+            var trs = _table.find("tr");
+            var data = {};
+            $(trs).each(function (i, o) {
+                var _tr = $(o);
+                var cid = _tr.find("td:eq(0) input").val();
+                var name = _tr.find("td:eq(1)").html();
+                var pause = _tr.find("td:eq(2)").html();
+                var maxPrice = _tr.find("td:eq(3)").html();
+                var pause_ToF = pause != "启用" ? false : true;
+                $.post("../assistantAdgroup/insertOrUpdate", {
+                    cid: cid,
+                    name: name,
+                    pause: pause_ToF,
+                    maxPrice: maxPrice,
+                    status: -1
+                }, function (rs) {
+                    if (rs == "1") {
+                        alert("操作成功");
+                        top.dialog.getCurrent().close().remove();
+                    }
+                });
             });
-        });
 
+        }
     }
-}
+    function closeDialog() {
+        top.dialog.getCurrent().close().remove();
+    }
 </script>
 </body>
 </html>

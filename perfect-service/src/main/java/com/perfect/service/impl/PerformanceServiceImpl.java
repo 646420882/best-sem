@@ -6,6 +6,7 @@ import com.perfect.dao.account.AccountAnalyzeDAO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.keyword.KeywordRealDTO;
 import com.perfect.service.PerformanceService;
+import com.perfect.utils.DateUtils;
 import com.perfect.utils.report.Performance;
 import org.springframework.stereotype.Service;
 
@@ -175,10 +176,13 @@ public class PerformanceServiceImpl implements PerformanceService {
      * @return
      */
     @Override
-    public List<AccountReportDTO> performanceCurve(Date startDate, Date endDate, List<String> date) {
+    public List<AccountReportDTO> performanceCurve(Date startDate, Date endDate) {
 
         List<AccountReportDTO> listUser = new ArrayList<>(accountAnalyzeDAO.performaneCurve(startDate, endDate));
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        List<String> date = DateUtils.getPeriod(dateFormat.format(startDate), dateFormat.format(endDate));
+
         DecimalFormat df = new DecimalFormat("#.0000");
         for (AccountReportDTO list : listUser) {
             list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));

@@ -10,6 +10,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
 import com.perfect.entity.backup.CreativeBackUpEntity;
@@ -147,6 +148,24 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         return wrapperList(adgroupDTOList);
     }
 
+    @Override
+    public List<AdgroupDTO> findHasLocalStatus() {
+        List<AdgroupEntity> adgroupEntities=getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass());
+        return ObjectUtils.convert(adgroupEntities,AdgroupDTO.class);
+    }
+
+    @Override
+    public List<AdgroupDTO> findHasLocalStatusStr(List<String> str) {
+        List<AdgroupEntity> adgroupEntities=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_CAMPAIGN_ID).in(str)),getEntityClass());
+        return ObjectUtils.convert(adgroupEntities,AdgroupDTO.class);
+    }
+
+    @Override
+    public List<AdgroupDTO> findHasLocalStatusLong(List<Long> longs) {
+        List<AdgroupEntity> adgroupEntities=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).in(longs)),getEntityClass());
+        return ObjectUtils.convert(adgroupEntities,AdgroupDTO.class);
+    }
+
     public AdgroupDTO findOne(Long adgroupId) {
         AdgroupEntity _adgroupEntity = getMongoTemplate().findOne(new Query(Criteria.where(ADGROUP_ID).is(adgroupId)), getEntityClass());
         return wrapperObject(_adgroupEntity);
@@ -222,8 +241,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     public Object insertOutId(AdgroupDTO adgroupEntity) {
         AdgroupEntity adgroupEntityInsert = new AdgroupEntity();
         BeanUtils.copyProperties(adgroupEntity, adgroupEntityInsert);
-        getMongoTemplate().insert(adgroupEntityInsert);
-        logDAO.insertLog(adgroupEntity.getId(), LogStatusConstant.ENTITY_ADGROUP);
+        if(!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(adgroupEntity.getAdgroupName())),getEntityClass())){
+            getMongoTemplate().insert(adgroupEntityInsert);
+        }
         return adgroupEntityInsert.getId();
     }
 
@@ -264,8 +284,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         up.set("exneg", adgroupEntity.getExactNegativeWords());
         up.set("p", adgroupEntity.getPause());
         up.set("s", adgroupEntity.getStatus());
-        getMongoTemplate().updateFirst(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())), up, getEntityClass());
-        logDAO.insertLog(adgroupEntity.getId(), LogStatusConstant.ENTITY_ADGROUP);
+        if(!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(adgroupEntity.getAdgroupName()).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass())){
+            getMongoTemplate().updateFirst(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())), up, getEntityClass());
+        }
     }
 
 
@@ -293,14 +314,16 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        getMongoTemplate().updateFirst(query, update, getEntityClass());
-        AdgroupBackupDTO adgroupBackupDTOFind = adgroupBackUpDAO.findOne(adgroupDTO.getId());
-        if (adgroupBackupDTOFind.getId() == null) {
-            AdgroupBackUpEntity adgroupBakcUpEntity = new AdgroupBackUpEntity();
-            BeanUtils.copyProperties(bakadgroupDTO, adgroupBakcUpEntity);
-            getMongoTemplate().insert(adgroupBakcUpEntity);
+        if(!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(adgroupDTO.getAdgroupName())),getEntityClass())){
+            getMongoTemplate().updateFirst(query, update, getEntityClass());
+            AdgroupBackupDTO adgroupBackupDTOFind = adgroupBackUpDAO.findOne(adgroupDTO.getId());
+            if (adgroupBackupDTOFind.getId() == null) {
+                AdgroupBackUpEntity adgroupBakcUpEntity = new AdgroupBackUpEntity();
+                BeanUtils.copyProperties(bakadgroupDTO, adgroupBakcUpEntity);
+                getMongoTemplate().insert(adgroupBakcUpEntity);
+            }
         }
-        logDAO.insertLog(id, LogStatusConstant.ENTITY_ADGROUP, LogStatusConstant.OPT_UPDATE);
+
     }
 
     @Override
@@ -346,7 +369,9 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     public void insert(AdgroupDTO adgroupDTO) {
         AdgroupEntity adgroupEntit = new AdgroupEntity();
         BeanUtils.copyProperties(adgroupDTO, adgroupEntit);
-        getMongoTemplate().insert(adgroupEntit, TBL_ADGROUP);
+        if(!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(adgroupDTO.getAdgroupName())),getEntityClass())){
+            getMongoTemplate().insert(adgroupEntit, TBL_ADGROUP);
+        }
     }
 
     @Override
@@ -464,7 +489,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public void deleteLinkedByAgid(List<Long> agid) {
         Update up = new Update();
-        up.set("ls", 4);
+        up.set("ls", 3);
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
         mongoTemplate.updateMulti(new Query(Criteria.where(ADGROUP_ID).in(agid)), up, getEntityClass());
         mongoTemplate.updateMulti(new Query(Criteria.where(ADGROUP_ID).in(agid)), up, KeywordEntity.class);

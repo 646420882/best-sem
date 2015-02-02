@@ -510,6 +510,38 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         return campaignTreeList;
     }
 
+    @Override
+    public Iterable<KeywordDTO> findAll() {
+       return keywordDAO.findAll();
+    }
+
+    @Override
+    public List<KeywordDTO> findHasLocalStatus() {
+        return keywordDAO.findHasLocalStatus();
+    }
+
+    @Override
+    public List<KeywordDTO> findHasLocalStatusStr(List<AdgroupDTO> adgroupDTOStr) {
+        List<String> strs=new ArrayList<>();
+        for (AdgroupDTO str:adgroupDTOStr){
+            if(str.getAdgroupId()==null){
+                strs.add(str.getId());
+            }
+        }
+        return keywordDAO.findHasLocalStatusStr(strs);
+    }
+
+    @Override
+    public List<KeywordDTO> findHasLocalStatusLong(List<AdgroupDTO> adgroupDTOLong) {
+        List<Long> longs=new ArrayList<>();
+        for (AdgroupDTO str:adgroupDTOLong){
+            if(str.getAdgroupId()!=null){
+                longs.add(str.getAdgroupId());
+            }
+        }
+        return keywordDAO.findHasLocalStatusLong(longs);
+    }
+
 
     /**
      * (用户的选择计划，单元，输入的关键词的方式)
@@ -871,7 +903,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordDTO> uploadAdd(List<String> kids) {
         List<KeywordDTO> retrunKeywordDTOs = new ArrayList<>();
         List<KeywordType> keywordTypes = new ArrayList<>();
-        kids.parallelStream().forEach(s -> {
+        kids.stream().forEach(s -> {
             KeywordDTO keywordDTO = keywordDAO.findByObjectId(s);
 //            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
             if (keywordDTO.getAdgroupId()!=null) {
@@ -897,7 +929,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 addKeywordRequest.setKeywordTypes(keywordTypes);
                 AddKeywordResponse addKeywordResponse = keywordService.addKeyword(addKeywordRequest);
                 List<KeywordType> returnKeywordList = addKeywordResponse.getKeywordTypes();
-                returnKeywordList.parallelStream().filter(s -> s.getKeywordId() != null).forEach(s -> {
+                returnKeywordList.stream().filter(s -> s.getKeywordId() != null).forEach(s -> {
                     KeywordDTO returnKeywordDTO = new KeywordDTO();
                     returnKeywordDTO.setKeywordId(s.getKeywordId());
                     returnKeywordDTO.setStatus(s.getStatus());
@@ -922,7 +954,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
                 if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
                     List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
-                    dtos.parallelStream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+                    dtos.stream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
                 }
                 //计划级联上传 end
 
@@ -932,7 +964,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     add(keywordDTOFind.getAdgroupObjId());
                 }});
                 //上传完毕后执行修改单元操作
-                returnAids.parallelStream().forEach(f -> adgroupService.update(keywordDTOFind.getAdgroupObjId(), f));
+                returnAids.stream().forEach(f -> adgroupService.update(keywordDTOFind.getAdgroupObjId(), f));
                 //单元级联上传 end
 
                 //最后上传关键字
@@ -972,7 +1004,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordDTO> uploadUpdate(List<Long> kid) {
         List<KeywordDTO> returnKeywordDTOs=new ArrayList<>();
         List<KeywordType> keywordTypes=new ArrayList<>();
-        kid.parallelStream().forEach(s->{
+        kid.stream().forEach(s->{
             KeywordDTO dtoFind=keywordDAO.findOne(s);
             if(dtoFind!=null){
                 KeywordType keywordType=new KeywordType();
@@ -996,7 +1028,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 updateKeywordRequest.setKeywordTypes(keywordTypes);
                 UpdateKeywordResponse updateKeywordResponse=keywordService.updateKeyword(updateKeywordRequest);
                 List<KeywordType> returnKeywordTypes=updateKeywordResponse.getKeywordTypes();
-                returnKeywordTypes.parallelStream().filter(s->s!=null).forEach(s->{//这里进行判定，如果返回不为null，则进行修改本地的ls为null，表示上传修改操作已经完成
+                returnKeywordTypes.stream().filter(s->s!=null).forEach(s->{//这里进行判定，如果返回不为null，则进行修改本地的ls为null，表示上传修改操作已经完成
                     KeywordDTO keywordDTO=new KeywordDTO();
                     keywordDTO.setKeywordId(s.getKeywordId());
                     keywordDTO.setStatus(s.getStatus());

@@ -10,6 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
@@ -43,8 +44,8 @@
     </script>
 </head>
 <body>
-<%--<div id="background" class="background"></div>
-<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>--%>
+<div id="background" class="background"></div>
+<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent over">
@@ -89,14 +90,14 @@
     <ul class="zs_nav">
         <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
         <li onclick="uploadDialog()"><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
-        <li class="current"><a><span><img src="../public/img/Advanced_search.png"></span><span >高级搜索</span></a></li>
-        <li class="nav_menu"><a><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
-            <ul>
-                <li class="showbox3 current">重复关键词</li>
-                <li>设置</li>
-            </ul>
+        <li class="current"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span><img src="../public/img/Advanced_search.png"></span><span >高级搜索</span></a></li>
+        <li class="nav_menu"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
+            <%--<ul>--%>
+                <%--<li class="showbox3 current">重复关键词</li>--%>
+                <%--<li>设置</li>--%>
+            <%--</ul>--%>
         </li>
-        <li class="showbox4"><a> <span><img src="../public/img/Estimate.png"></span><span>估算工具</span></a></li>
+        <li class="showbox4"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"> <span><img src="../public/img/Estimate.png"></span><span>估算工具</span></a></li>
     </ul>
 </div>
 <div class="zhushou_concent over" id="jiangkong_box2">
@@ -996,10 +997,10 @@
     <h2 id="uploadHead"><span class="fl">上传更新</span><a href="javascript:void(0)" onclick="closeUploadDialog()" class="close">关闭</a></h2>
 
     <div class="mainlist">
-        您希望更新账户的哪个部分？
+        您希望上传账户的哪个部分？
         <ul class="zs_set">
-            <li><input type="radio" value="all" name="up1" onchange="dialogUpload(this.value)">&nbsp; 所有操作过的计划</li>
-            <li><input type="radio" value="opreated" name="up1" onchange="dialogUpload(this.value)">&nbsp; 从修改的推广计划列表中选择</li>
+            <li><input type="radio" value="all" name="up1" >&nbsp; 所有计划</li>
+            <li><input type="radio" value="opreated" name="up1" >&nbsp; 从推广计划列表中选择</li>
         </ul>
         <div class="zs_sets over">
             <div id="allCamp" class="zs_ses1" style="overflow: auto">
@@ -1395,45 +1396,28 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/uploadMerge.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-    var target = document.getElementById("navigator_tips");
-    var myId = document.getElementById("nav_input1");
-    var ztree_minwidth = $(document.body).width() - 432;
-    var ztree_maxwidth = $(document.body).width() - 252;
-    $(".jingjia_right").css("width", ztree_minwidth);
-    $(window).resize(function () {
-        Tablewidth();
-    });
-    function Tablewidth(){
-        ztree_minwidth = $(document.body).width() - 432;
-        ztree_maxwidth = $(document.body).width() - 252;
-        if ($(".nav_left").css("display") == "none") {
-            $(".jingjia_right").css("width", ztree_maxwidth);
+        var mycheck = $("#navigator_tips,#nav_input1");
+        var ztree_minwidth = $(document.body).width() - 434;
+        var ztree_maxwidth = $(document.body).width() - 260;
+        $(".jingjia_right").css("width", ztree_minwidth);
+            $(window).resize(function () {
+                Tablewidth();
+            });
+            function Tablewidth(){
+                ztree_minwidth = $(document.body).width() - 434;
+                ztree_maxwidth = $(document.body).width() - 260;
+                if ($(".nav_left").css("display") == "none") {
+                    $(".jingjia_right").css("width", ztree_maxwidth);
+                }
+                else {
+                    $(".jingjia_right").css("width", ztree_minwidth);
+                }
         }
-        else {
-            $(".jingjia_right").css("width", ztree_minwidth);
-        }
-    }
-    if (!!window.ActiveXObject || "ActiveXObject" in window) {
-        target.attachEvent('onclick', function (event) {
-            Tablewidth()
-        });
-    } else {
-        target.addEventListener('click', function (event) {
-            Tablewidth()
-        }, false);
-    }
-//    if (!!window.ActiveXObject || "ActiveXObject" in window) {
-//        myId.attachEvent('onclick', function (event) {
-//            Tablewidth()
-//        });
-//    }
-//    else {
-//        myId.addEventListener('click', function (event) {
-//            Tablewidth()
-//        }, false);
-//    }
+        mycheck.click(function () {
+            Tablewidth();
 
-});
+        });
+    });
     $(function () {
         window.dialog = dialog;
     });
@@ -1447,14 +1431,15 @@
     };
     //loading
     var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide();
-    $(document).ajaxStart(function () {
-        ajaxbg.show();
+     ajaxbg.hide();
+    $("#downloadAccount").click(function(){
+        $(document).ajaxStart(function () {
+            ajaxbg.show();
+        })
+        $(document).ajaxStop(function () {
+            ajaxbg.hide();
+        });
     })
-    $(document).ajaxStop(function () {
-        ajaxbg.fadeOut(1000);
-    });
-
 </script>
 </body>
 </html>
