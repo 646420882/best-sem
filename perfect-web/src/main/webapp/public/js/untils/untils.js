@@ -146,5 +146,16 @@ var until = {
             default:
                 return 0;
         }
+    },convertDeviceByNum: function (Str) {
+        switch (Str) {
+            case 0:
+                return "全部设备";
+                break;
+            case 1:
+                return "移动设备优先";
+                break;
+            default:
+                return "全部设备";
+        }
     }
 };

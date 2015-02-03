@@ -248,6 +248,7 @@
         <ul class="fl">
             <li><a href="javascript:void(0)" onclick="addCreative();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
             <li><a href="javascript:void(0)" onclick="deleteByObjectId()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+            <li><a href="javascript:void(0)" onclick="updateCreatvie()"><span class="zs_top"><img src="../public/img/zs_function7.png"></span><b>编辑</b></a></li>
             <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b onclick="creativeMulti();">批量添加/更新</b></a></li>
             <li><a href="#"><span class="z_function_hover" id="reBak" onclick="reBakClick();"><img src="../public/img/zs_function9.png"></span><b onclick="reBakClick();">还原</b></a>  </li>
             <li><a href="javascript:void(0)" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
@@ -255,7 +256,7 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4" style="height:480px;">
+    <div class="list4" style="height:480px;" id="tcreative">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" id="createTable" class="table2 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
@@ -270,6 +271,7 @@
                     <th>&nbsp;移动显示URL</th>
                     <th>&nbsp;启用/暂停</th>
                     <th>&nbsp;创意状态</th>
+                    <th>&nbsp;设备偏好</th>
                     <th class="username-column" data-noresize>
                         <div class="set fr"></div>
                     </th>
@@ -279,22 +281,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="more_list over" style="display:none;">
-            <ul>
-                <li class="current" onclick="alert(123);"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加创意</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除创意</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证创意</b></li>
-                <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原创意</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function14.png"></span><b>剪贴</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
-                <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
-            </ul>
-        </div>
     </div>
-    <div class="zhanghu_input"></div>
+    <div class="zhanghu_input" onclick="dragg()"></div>
     <div id="creativePager" class="pagination"></div>
-    <div class="zs_bottom over">
+    <div class="zs_bottom over" id="amsDiv" >
         <div class="zs_bottom1 over fl " id="sDiv">
             <ul>
                 <li>
@@ -354,14 +344,15 @@
                 <li>
                     <div class="t_list01 fl over">设备偏好：</div>
                     <div class="w_list02 fl over">
-                        <select>
-                            <option>全部</option>
+                        <select id="sD">
+                            <option value="0">全部设备</option>
+                            <option value="1">移动设备优先</option>
                         </select></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over" id="sPause">
-                        <select>
+                    <div class="w_list02 fl over" >
+                        <select id="sPause">
                             <option value="true">启用</option>
                             <option value="false">暂停</option>
                         </select></div>
@@ -1243,7 +1234,7 @@
 <div class="box" style="display:none;width:500px;" id="jcUpdate">
     <h2 id="dUpdate">
         <span class="fl">修改创意</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlertCreative();" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <form id="cUpdateForm">
@@ -1261,6 +1252,7 @@
                 <li><label>移动显示URL:<span>35/36</span></label><input name="mobileDisplayUrl" maxlength="36"/></li>
                 <li> <label class="fl"><span>创意状态:</span></label><label id="cuStatus" class="fl">暂无</label><input type="hidden" name="status"></li>
                 <li><label class="fl"><span>是否启用:</span></label><select name="pause"><option value="true">启用</option><option value="false">暂停</option></select></li>
+                <li><label class="fl"><span>设备偏好:</span></label><select name="devicePreference"><option value="0">全部</option><option value="1">移动设备优先</option></select></li>
             </ul>
         </form>
     </div>

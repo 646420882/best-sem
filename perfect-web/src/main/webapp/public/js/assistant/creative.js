@@ -5,8 +5,8 @@
  * 树加载数据需要的计划，单元参数，默认都为空
  * @type {{aid: null, cid: null}}
  */
-sparams={cid:null,aid:null,nowPage:0,pageSize:20}
-$.fn.selectionTp= function () {
+sparams = {cid: null, aid: null, nowPage: 0, pageSize: 20}
+$.fn.selectionTp = function () {
     var s, e, range, stored_range;
     if (this[0].selectionStart == undefined) {
         var selection = document.selection;
@@ -33,7 +33,7 @@ $.fn.selectionTp= function () {
     var te = this[0].value.substring(s, e);
     return {start: s, end: e, text: te};
 };
-var dockObj=document.getElementById('argDialogDiv');
+var dockObj = document.getElementById('argDialogDiv');
 $(function () {
     InitMenu();
     rDrag.init(document.getElementById("dAdd"));
@@ -56,24 +56,24 @@ var add = {
     func: function () {
         deleteByObjectId();
     }
-},cAddMutli={
-    text:"批量添加创意",
-    func:function(){
+}, cAddMutli = {
+    text: "批量添加创意",
+    func: function () {
         creativeMulti();
     }
-},creBack = {
+}, creBack = {
     text: "还原",
     func: function () {
         reBakClick();
     }
 }, update = {
-    text: "修改创意",
+    text: "编辑",
     func: function () {
-        updateCreatvie(tmp);
+        updateCreatvie();
     }
-},cUpload={
-    text:"上传到凤巢",
-    func:function(){
+}, cUpload = {
+    text: "上传到凤巢",
+    func: function () {
         creativeUpload();
     }
 }
@@ -82,14 +82,14 @@ var add = {
  * @type {*[]}
  */
 var menuData = [
-    [add, del, update,cAddMutli,creBack,cUpload]
+    [add, del, update, cAddMutli, creBack, cUpload]
 ];
 /**
  * 用户缓存右键点击的对象
  * @type {null}
  */
 var tmp = null;
-var acHtml=null;
+var acHtml = null;
 /**
  * 菜单name值，标识唯一，beforeShow显示完成后方法
  * @type {{name: string, beforeShow: beforeShow}}
@@ -104,7 +104,7 @@ var menuExt = {
 };
 function getChar(str) {
     var char = str.match(/[^\x00-\xff]/ig);
-    return  str.length + (char == null ? 0 : char.length);
+    return str.length + (char == null ? 0 : char.length);
 }
 /**
  * 初始化右键菜单
@@ -118,13 +118,13 @@ function InitMenu() {
         if (event.keyCode == 13) {
             //var strRegex = "^((https|http|ftp|rtsp|mms)://)?[a-z0-9A-Z]{3}\.[a-z0-9A-Z][a-z0-9A-Z]{0,61}?[a-z0-9A-Z]\.com|net|cn|cc (:s[0-9]{1-4})?/$";
             //var re = new RegExp(strRegex);
-          var _this=this;
+            var _this = this;
             addOperate(_this);
         }
     });
 }
-function addOperate(obj){
-    var _this=$(obj);
+function addOperate(obj) {
+    var _this = $(obj);
     var _title = _this.find("input:eq(2)");
     var _thisStr = getChar(_title.val());
     var dm = "." + $(".doMainS").html();
@@ -182,8 +182,8 @@ function addOperate(obj){
             }
         }
     }
-    var _mib=_this.find("input:eq(7)");
-    if (_mib.val() != "空"||_mib.val() != "") {
+    var _mib = _this.find("input:eq(7)");
+    if (_mib.val() != "空" || _mib.val() != "") {
         if (_mib.val().indexOf(dm) == -1) {
             alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
@@ -192,7 +192,7 @@ function addOperate(obj){
             if (parseInt(_thisStrMib) > 1017 || parseInt(_thisStrMib) <= 1) {
                 alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
                 return false;
-            }  else {
+            } else {
                 if (_mib.val().substr(_mib.val().indexOf(dm)) != dm) {
                     alert("移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
                     return false;
@@ -200,8 +200,8 @@ function addOperate(obj){
             }
         }
     }
-    var _mibs=_this.find("input:eq(8)");
-    if (_mibs.val() != ""||_mibs.val() != "空") {
+    var _mibs = _this.find("input:eq(8)");
+    if (_mibs.val() != "" || _mibs.val() != "空") {
         if (_mibs.val().indexOf(dm) == -1) {
             alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
@@ -210,7 +210,7 @@ function addOperate(obj){
             if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
                 alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                 return false;
-            }else {//下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+            } else {//下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
                 if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
                     alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
                     return false;
@@ -238,11 +238,12 @@ function addOperate(obj){
                 }
                 var p = data["pause"] == "true" ? "启用" : "暂停";
                 var s = until.getCreativeStatus(parseInt(data["status"]));
+                var d = until.convertDeviceByNum(parseInt(data['d']));
                 var _createTable = $("#createTable tbody");
                 var i = $("#createTable tbody tr").size();
                 var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td style='width: 30px;'>&nbsp;<input type='hidden' value='"+ json.data+"'/></td>" +
+                    "<td style='width: 30px;'>&nbsp;<input type='hidden' value='" + json.data + "'/></td>" +
                     "<td >" + until.substring(10, data["title"]) + "</td>" +
                     " <td >" + until.substring(10, data["description1"]) + "</td>" +
                     " <td >" + until.substring(10, data["description2"]) + "</td>" +
@@ -252,6 +253,7 @@ function addOperate(obj){
                     " <td >" + until.substring(10, data["mobileDisplayUrl"]) + "</td>" +
                     " <td >" + p + "</td>" +
                     " <td >" + s + "</td>" +
+                    " <td >" + d + "</td>" +
                     " <td ><span class='pen' step='1'></span></td>" +
                     "</tr>";
                 _createTable.append(_tbody);
@@ -259,7 +261,7 @@ function addOperate(obj){
         });
     }
 }
-function initDomain(){
+function initDomain() {
     var dm = $(".doMainS").html();
     if (dm == "") {
         $.get("/assistantCreative/getDomain", function (result) {
@@ -273,15 +275,15 @@ function initDomain(){
  * 加载创意数据
  * @param params
  */
-var recordsCreative=0;
+var recordsCreative = 0;
 function loadCreativeData(page_index) {
     initDomain();
     initRbackBtn();
     var _createTable = $("#createTable tbody");
     _createTable.empty().html("加载中...");
-    sparams.nowPage=page_index;
-    sparams.pageSize=items_per_page;
-    pageType=3;
+    sparams.nowPage = page_index;
+    sparams.pageSize = items_per_page;
+    pageType = 3;
     $.post("/assistantCreative/getList", sparams, function (result) {
         var gson = $.parseJSON(result);
         if (gson.list != undefined) {
@@ -305,11 +307,12 @@ function loadCreativeData(page_index) {
                     " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
                     " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                     " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
+                    "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>" +
                     " <td >" + ls + "</td>" +
                     "</tr>";
                 _createTable.append(_tbody);
             }
-        }else {
+        } else {
             _createTable.empty();
             _createTable.append("<tr><td>暂无数据</td></tr>");
         }
@@ -319,14 +322,14 @@ function loadCreativeData(page_index) {
  * 初始化分页控件
  */
 function pagerInit(data) {
-    if(data.totalCount==0){
+    if (data.totalCount == 0) {
         return false;
     }
     $("#creativePager").pagination(data.totalCount, getOptionsFromForm(data.pageNo));
 }
-function skipCreativePage(){
+function skipCreativePage() {
     var pageNo = $("#creativePageNum").val();
-    loadCreativeData(/^\d+$/.test(pageNo) == false?0:parseInt(pageNo)-1);
+    loadCreativeData(/^\d+$/.test(pageNo) == false ? 0 : parseInt(pageNo) - 1);
 }
 
 /**
@@ -335,11 +338,11 @@ function skipCreativePage(){
  */
 function on(obj) {
     var _this = $(obj);
-    var tadd=_this.find("td:eq(0) a").html();
-    if(tadd==undefined&&acHtml=="删除"){
+    var tadd = _this.find("td:eq(0) a").html();
+    if (tadd == undefined && acHtml == "删除") {
         addOperate(tmp);
     }
-    acHtml=_this.find("td:eq(0) a").html();
+    acHtml = _this.find("td:eq(0) a").html();
     tmp = _this;
     var _edit = _this.find("td:eq(10)").html();
     if (_edit != "") {
@@ -378,8 +381,9 @@ function on(obj) {
     if (mibs == undefined) {
         mibs = _this.find("td:eq(7) a").attr("title");
     }
-    var pause = _this.find("td:eq(8) select") == "" ? _this.find("td:eq(10)").find("select") : _this.find("td:eq(8)").html();
+    var pause = _this.find("td:eq(8) select") == "" ? _this.find("td:eq(8)").find("select") : _this.find("td:eq(8)").html();
     var status = _this.find("td:eq(9) select") == "" ? _this.find("td:eq(9)").find("select") : _this.find("td:eq(9)").html();
+    var d = _this.find("td:eq(10) select") == "" ? _this.find("td:eq(10)").find("select") : _this.find("td:eq(10)").html();
 
     $("#sTitle").val(title);
     initKeyUp($("#sTitle"));
@@ -402,8 +406,51 @@ function on(obj) {
     $("#sMibs").val(mibs);
     initKeyUp($("#sMibs"), -1);
 
-    $("#sPause").html(pause);
     $("#sStatus").html(status);
+
+    var objPause = document.getElementById("sD");
+    for (var i = 0; i < objPause.options.length; i++) {
+        if (objPause.options[i].text == d) {
+            objPause.options[i].selected = true;
+        }
+    }
+    var objStatus = document.getElementById("sPause");
+    for (var i = 0; i < objStatus.options.length; i++) {
+        if (objStatus.options[i].text == pause) {
+            objStatus.options[i].selected = true;
+        }
+    }
+    //console.log(obj.offsetTop);
+    //if(obj.offsetTop>200){
+    //    $("#amsDiv").css({
+    //        position:"absolute",
+    //        display:"block",
+    //        background:'gray',
+    //        "z-index":100000
+    //    }).animate({
+    //        top:obj.offsetTop-225,
+    //        right:obj.offsetLeft+100
+    //    });
+    //}else{
+    //    $("#amsDiv").css({
+    //        position:"absolute",
+    //        display:"block",
+    //        background:'gray',
+    //        "z-index":100000
+    //    }).animate({
+    //        top:obj.offsetTop+225,
+    //        right:obj.offsetLeft+100
+    //    });
+    //}
+
+}
+function dragg() {
+    var _height = $("#tcreative").css("height");
+    if (_height == "480px") {
+        $("#tcreative").css("height","350px");
+    }else{
+        $("#tcreative").css("height","480px");
+    }
 
 }
 function initKeyUp(res, gtval) {
@@ -420,7 +467,7 @@ function initKeyUp(res, gtval) {
     $(res).next("span").text(_thisStr + "/" + _max);
 }
 
-function initsDivKeyup(){
+function initsDivKeyup() {
     var _input = $("#sDiv input");
     _input.each(function (i, o) {
         if (i < 3) {
@@ -445,19 +492,19 @@ function initsDivKeyup(){
  * @param rs
  */
 function addTb(rs) {
-    var s=$("#cUpdateForm input[name='title']").selectionTp();
-    var _val=$("#cUpdateForm input[name='title']");
-    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
+    var s = $("#cUpdateForm input[name='title']").selectionTp();
+    var _val = $("#cUpdateForm input[name='title']");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
 }
-function addTbDes1(){
-    var s=$("#cUpdateForm input[name='description1']").selectionTp();
-    var _val=$("#cUpdateForm input[name='description1']");
-    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
+function addTbDes1() {
+    var s = $("#cUpdateForm input[name='description1']").selectionTp();
+    var _val = $("#cUpdateForm input[name='description1']");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
 }
-function addTbDes2(){
-    var s=$("#cUpdateForm input[name='description2']").selectionTp();
-    var _val=$("#cUpdateForm input[name='description2']");
-    _val.val(_val.val().replace(s.text,"{"+ s.text+"}"));
+function addTbDes2() {
+    var s = $("#cUpdateForm input[name='description2']").selectionTp();
+    var _val = $("#cUpdateForm input[name='description2']");
+    _val.val(_val.val().replace(s.text, "{" + s.text + "}"));
 }
 /**
  * 添加创意
@@ -466,8 +513,8 @@ function addCreative() {
     var jcBox = $("#jcUl");
     if (sparams.cid != null && sparams.aid != null) {
         var i = $("#createTable tbody tr").size();
-        var lastTr=$("#createTable tr:eq("+i+")").find("td:eq(0) a").html();
-        if(lastTr=="删除"){
+        var lastTr = $("#createTable tr:eq(" + i + ")").find("td:eq(0) a").html();
+        if (lastTr == "删除") {
             alert("请提交后再继续添加");
             return;
         }
@@ -484,6 +531,7 @@ function addCreative() {
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='36' ></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
+            "<td><select name='d'><option value='0'>全部</option><option value='1'>移动设备优先</option></select></td>" +
             " <td><span class='pen' step='1'></span></td>" +
             "</tr>";
         _createTable.append(_tbody);
@@ -791,11 +839,11 @@ function deleteByObjectId() {
         if (con) {
             $.get("/assistantCreative/del", {oid: oid}, function (rs) {
                 if (rs == "1") {
-                    $(tmp).find("td:eq(10)").html("<span class='error' step='3'></span>");
+                    $(tmp).find("td:eq(11)").html("<span class='error' step='3'></span>");
                 }
             });
         }
-    }else{
+    } else {
         alert("请选择要删除的创意！");
     }
 }
@@ -803,7 +851,13 @@ function deleteByObjectId() {
  * 修改选中的创意
  * @param temp
  */
-function updateCreatvie(temp) {
+function updateCreatvie() {
+    var temp = $(tmp);
+    var name = temp.find("td:eq(1)").html();
+    if (name == undefined) {
+        alert("请选择要编辑的创意！");
+        return;
+    }
     var _update = $("#jcUpdate");
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height(),
@@ -815,7 +869,7 @@ function updateCreatvie(temp) {
         display: "block"
     });
     var dm = $(".doMainS").html();
-    var _tr = $(temp);
+    var _tr = temp;
     var creativeId = _tr.find("td:eq(0) input").val() != undefined ? _tr.find("td:eq(0) input").val() : _tr.find("td:eq(0) span").html();
     var title = _tr.find("td:eq(1) a").attr("title") != undefined ? _tr.find("td:eq(1) a").attr("title") : _tr.find("td:eq(1) span").html();
     var description1 = _tr.find("td:eq(2) a").attr("title") != undefined ? _tr.find("td:eq(2) a").attr("title") : _tr.find("td:eq(2) span").html();
@@ -826,6 +880,7 @@ function updateCreatvie(temp) {
     var mobileDisplayUrl = _tr.find("td:eq(7) a").attr("title") != undefined ? _tr.find("td:eq(7) a").attr("title") : _tr.find("td:eq(7) span").html();
     var status = _tr.find("td:eq(9) input").val();
     var pause = _tr.find("td:eq(8)").html();
+    var devicePreference = _tr.find("td:eq(10)").html();
     $("#cUpdateForm input[name='oid']").val(creativeId);
     $("#cUpdateForm input[name='title']").val(title);
     $("#cUpdateForm input[name='description1']").val(description1);
@@ -840,6 +895,11 @@ function updateCreatvie(temp) {
         $("#cUpdateForm select[name='pause']").get(0).selectedIndex = 0;
     } else {
         $("#cUpdateForm select[name='pause']").get(0).selectedIndex = 1;
+    }
+    if (devicePreference == "全部") {
+        $("#cUpdateForm select[name='devicePreference']").get(0).selectedIndex = 0;
+    } else {
+        $("#cUpdateForm select[name='devicePreference']").get(0).selectedIndex = 1;
     }
     var titleObj = $("#cUpdateForm input[name='title']");
     var des1Obj = $("#cUpdateForm input[name='description1']");
@@ -933,7 +993,7 @@ function updateOk() {
             }
         }
     }
-    if (_mib.val() != "空"||_mib.val() != "") {
+    if (_mib.val() != "空" || _mib.val() != "") {
         if (_mib.val().indexOf(dm) == -1) {
             alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
@@ -953,7 +1013,7 @@ function updateOk() {
 
 
     }
-    if (_mibs.val() != ""||_mibs.val() != "空") {
+    if (_mibs.val() != "" || _mibs.val() != "空") {
         if (_mibs.val().indexOf(dm) == -1) {
             alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
@@ -962,7 +1022,7 @@ function updateOk() {
             if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
                 alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                 return false;
-            }else {
+            } else {
                 if (_mibs.val().substr(_mibs.val().indexOf(dm)) != dm) {
                     alert("移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
                     return false;
@@ -988,7 +1048,7 @@ function updateOk() {
                     _edit = "<span class='pen' step='2'></span>";
                 }
                 var _tbody =
-                    "<td>&nbsp;<input type='hidden' value='"+formData["oid"]+"'/></td>" +
+                    "<td>&nbsp;<input type='hidden' value='" + formData["oid"] + "'/></td>" +
                     "<td >" + until.substring(10, formData["title"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description1"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description2"]) + "</td>" +
@@ -998,6 +1058,7 @@ function updateOk() {
                     " <td >" + until.substring(10, formData["mobileDisplayUrl"]) + "</td>" +
                     " <td >" + p + "</td>" +
                     " <td >" + until.getCreativeStatus(parseInt(formData["status"])) + "</td>" +
+                    " <td >" + until.convertDeviceByNum(parseInt(formData["devicePreference"])) + "</td>" +
                     " <td >" + _edit + "</td>";
                 $(tmp).html(_tbody);
                 alert("修改完成");
@@ -1024,11 +1085,11 @@ function onRbackBtn() {
 function reBakClick() {
     var _this = $(tmp);
     if (_this.html() != undefined) {
-        var _edit = _this.find("td:eq(10)").html();
+        var _edit = _this.find("td:eq(11)").html();
         if (_edit != "") {
             var con = confirm("是否还原选中的数据？");
             if (con) {
-                var _localStatus = parseInt(_this.find("td:eq(10) span").attr("step"));
+                var _localStatus = parseInt(_this.find("td:eq(11) span").attr("step"));
                 var _oid = _this.find("td:eq(0) input").val() != undefined ? _this.find("td:eq(0) input").val() : _this.find("td:eq(0) span").html();
                 switch (_localStatus) {
                     case 1:
@@ -1057,6 +1118,7 @@ function reBack(oid) {
             var crid = oid.length > 18 ? oid : json.data["creativeId"];
             var p = json.data["pause"] == "true" ? "启用" : "暂停";
             var s = until.getCreativeStatus(parseInt(json.data["status"]));
+            var d = until.convertDeviceByNum(parseInt(json.data['devicePreference']));
             var _tbody =
                 "<td>&nbsp;<input type='hidden' value='" + crid + "'/></td>" +
                 "<td >" + until.substring(10, json.data["title"]) + "</td>" +
@@ -1068,6 +1130,7 @@ function reBack(oid) {
                 " <td >" + until.substring(10, json.data["mobileDisplayUrl"]) + "</td>" +
                 " <td >" + p + "</td>" +
                 " <td >" + s + "</td>" +
+                " <td >" + d + "</td>" +
                 " <td ></td>";
             $(tmp).html(_tbody);
         }
@@ -1076,7 +1139,7 @@ function reBack(oid) {
 function delBack(oid) {
     $.get("../assistantCreative/delBack", {oid: oid}, function (rs) {
         if (rs == "1") {
-            $(tmp).find("td:eq(10)").html("");
+            $(tmp).find("td:eq(11)").html("");
         }
     });
 }
@@ -1100,19 +1163,20 @@ function getLocalStatus(number) {
     }
 }
 function creativeMulti() {
-    top.dialog({title: "批量添加创意",
+    top.dialog({
+        title: "批量添加创意",
         padding: "5px",
-        id:'creativeMutli',
-        align:'right bottom',
+        id: 'creativeMutli',
+        align: 'right bottom',
         content: "<iframe src='/assistantCreative/updateMulti' width='900' height='700' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-        width:'900',
-        height:'700',
+        width: '900',
+        height: '700',
         oniframeload: function () {
 
         },
         onclose: function () {
-            if(sparams.cid!=null){
-            loadCreativeData(sparams.nowPage);
+            if (sparams.cid != null) {
+                loadCreativeData(sparams.nowPage);
             }
         },
         onremove: function () {
@@ -1120,43 +1184,43 @@ function creativeMulti() {
     }).showModal(dockObj);
 
 }
-function creativeUpload(){
+function creativeUpload() {
     var _this = $(tmp);
     var oid = _this.find("td:eq(0) input").val();
     var _localStatus = _this.find("td:eq(10) span").attr("step");
     if (_localStatus != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;
-        }else{
-                switch (_localStatus){
-                    case "1":
-                        if(oid.length>18&&oid!=undefined){
-                            cUploadOpreate(oid,1);
-                        }
-                        break;
-                    case "2":
-                        if (oid.length < 18&&oid!=undefined) {
-                            cUploadOpreate(oid,2);
-                        }
-                        break;
-                    case "3":
-                        if (oid.length < 18&&oid!=undefined) {
-                            cUploadOpreate(oid,3);
-                        }else{
-                            deleteByObjectId();
-                        }
-                        break;
-                }
+        } else {
+            switch (_localStatus) {
+                case "1":
+                    if (oid.length > 18 && oid != undefined) {
+                        cUploadOpreate(oid, 1);
+                    }
+                    break;
+                case "2":
+                    if (oid.length < 18 && oid != undefined) {
+                        cUploadOpreate(oid, 2);
+                    }
+                    break;
+                case "3":
+                    if (oid.length < 18 && oid != undefined) {
+                        cUploadOpreate(oid, 3);
+                    } else {
+                        deleteByObjectId();
+                    }
+                    break;
+            }
         }
-    }else{
+    } else {
         alert("已经是最新数据了！");
         return;
     }
 }
 
-function cUploadOpreate(crid,ls){
-    $.get("/assistantCreative/uploadOperate",{crid:crid,ls:ls},function(res){
-        if(res.msg=="1"){
+function cUploadOpreate(crid, ls) {
+    $.get("/assistantCreative/uploadOperate", {crid: crid, ls: ls}, function (res) {
+        if (res.msg == "1") {
             alert("上传成功!");
             if (sparams.cid != null) {
                 if (sparams.cid != null && sparams.aid != null) {
@@ -1182,7 +1246,7 @@ function cUploadOpreate(crid,ls){
                     }
                 });
             }
-        }else{
+        } else {
             alert(res.msg);
         }
     });
