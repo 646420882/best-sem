@@ -18,7 +18,7 @@
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
         .tab_box {
-            padding: 10px 0 80px 0;
+            padding: 10px 0 0px 0;
         }
 
         .ui-jqgrid tr.jqgrow td {
