@@ -446,10 +446,10 @@ function on(obj) {
 }
 function dragg() {
     var _height = $("#tcreative").css("height");
-    if (_height == "480px") {
+    if (_height == "400px") {
         $("#tcreative").css("height","350px");
     }else{
-        $("#tcreative").css("height","480px");
+        $("#tcreative").css("height","400px");
     }
 
 }

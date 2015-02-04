@@ -328,4 +328,14 @@ public class AdgroupServiceImpl implements AdgroupService {
     public void deleteBubLinks(Long aid) {
         adgroupDAO.deleteBubLinks(aid);
     }
+
+    @Override
+    public double getCampBgt(String cid) {
+        return adgroupDAO.getCampBgt(cid);
+    }
+
+    @Override
+    public double getCampBgt(Long cid) {
+        return adgroupDAO.getCampBgt(cid);
+    }
 }

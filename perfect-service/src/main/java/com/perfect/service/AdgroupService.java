@@ -111,4 +111,8 @@ public interface AdgroupService {
      * @param aid 该单元的mongodbId，只能用该id来做级联删除，因为本地级联该单元的创意和关键字都是以mongodb来级联的
      */
     void deleteBubLinks(Long aid);
+
+    double getCampBgt(String cid);
+
+    double getCampBgt(Long cid);
 }

@@ -267,17 +267,11 @@ public class AssistantCampaignController extends WebContextSupport {
 
         newCampaign.setCampaignName(campaignName == null ? newCampaign.getCampaignName() : campaignName);
         if (budget != null) {
-            if (budget < 50) {
-                newCampaign.setBudget(newCampaign.getBudget());
-            } else {
+            if (budget >= 50) {
                 newCampaign.setBudget(budget);
             }
-        } else {
-            if(budget==newCampaign.getBudget()){
-                newCampaign.setBudget(newCampaign.getBudget());
-            }else{
-                newCampaign.setBudget(budget);
-            }
+        }else {
+            newCampaign.setBudget(null);
         }
         newCampaign.setPriceRatio(priceRatio == null ? newCampaign.getPriceRatio() : priceRatio);
         newCampaign.setRegionTarget(regionTarget == null ? newCampaign.getRegionTarget() : "".equals(regionTarget) ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
@@ -480,10 +474,15 @@ public class AssistantCampaignController extends WebContextSupport {
                     campaignBackUpService.deleteByOId(afterUpdateObjId);
                     return writeMapObject(MSG, SUCCESS);
                 case 3:
-                    campaignService.uploadDel(new ArrayList<Long>() {{
+                    int result = campaignService.uploadDel(new ArrayList<Long>() {{
                         add(Long.valueOf(cid));
                     }});
-                    return writeMapObject(MSG, SUCCESS);
+                    if (result == 0) {
+                        campaignService.deleteByCampaignId(Long.valueOf(cid));
+                        return writeMapObject(MSG, "凤巢删除计划失败!该计划在凤巢不存在，或则已经在凤巢已经被删除掉了，系统已经自动删除");
+                    } else {
+                        return writeMapObject(MSG, SUCCESS);
+                    }
                 default:
                     return writeMapObject(MSG, "暂无操作模式");
             }

@@ -22,7 +22,7 @@
                             <span>*</span>计划名称：
                         </div>
                         <div class="planbox2 fl">
-                            <input type="text" class="plan_input inputCampaignName" value="<请输入推广计划名称>"
+                            <input type="text" class="plan_input" value="<请输入推广计划名称>" name="inputCampaignName"
                                    onfocus="if(value=='<请输入推广计划名称>') {value=''}"
                                    onblur="if (value=='') {value='<请输入推广计划名称>'}">
                         </div>
@@ -32,17 +32,19 @@
                             <span></span>每日预算：
                         </div>
                         <div class="planbox2 fl">
-                            <input type="text" class="plan_input inputBudget" value="<请输入每日预算，不填默认为不限定>"
+                            <input type="text" class="plan_input" value="<请输入每日预算，不填默认为不限定>" name="inputBudget"
                                    onfocus="if(value=='<请输入每日预算，不填默认为不限定>') {value=''}"
                                    onblur="if (value=='') {value='<请输入每日预算，不填默认为不限定>'}">
                         </div>
                     </li>
+                    <li>您的账户最高预算为：<span style="color:red;" id="acBgt"></span>元</li>
                     <li>
                         <div class="planbox1 fl">
                             <span>*</span>移动出价比例：
                         </div>
                         <div class="planbox2 fl">
-                            <input type="text" class="plan_input inputPriceRatio" maxlength="3"  onkeypress='until.regDouble(this)'>
+                            <input type="text" class="plan_input" maxlength="3" onkeypress='until.regDouble(this)'
+                                   name="inputPriceRatio">
                         </div>
                     </li>
                     <li>
@@ -50,7 +52,7 @@
                             <span>*</span>启用/暂停：
                         </div>
                         <div class="planbox2 fl">
-                            <select class="inputCampaignPause">
+                            <select id="inputCampaignPause">
                                 <option value="false">启用</option>
                                 <option value="true">暂停</option>
                             </select>
@@ -62,7 +64,7 @@
                             <span>*</span>创意展现：
                         </div>
                         <div class="planbox2 fl">
-                            <select class="inputShowProb">
+                            <select id="inputShowProb">
                                 <option value="1">优选</option>
                                 <option value="2">轮显</option>
                             </select>

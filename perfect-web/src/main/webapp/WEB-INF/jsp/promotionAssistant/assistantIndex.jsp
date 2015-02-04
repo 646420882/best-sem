@@ -136,7 +136,7 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="list4" id="kkeyword" style="height:400px;">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"
                    data-resizable-columns-id="demo-table">
@@ -174,7 +174,7 @@
             <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zhanghu_input"></div>
+    <div class="zhanghu_input" onclick="kadrgg()"></div>
     <div id="pagination_keywordPage" class="pagination"></div>
     <div class="zs_bottom over">
         <input type="hidden" id="hiddenkwid_1"/>
@@ -256,7 +256,7 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4" style="height:480px;" id="tcreative">
+    <div class="list4" style="height:400px;" id="tcreative">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" id="createTable" class="table2 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
@@ -542,7 +542,7 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img  src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img  src="../public/img/zs_function1.png"></span><b>添加</b></a><span style="display: none;" id="campBgt"></span></li>
             <li><a href="javascript:void(0)" onclick="adgroupDel()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b  onclick="adgroupMutli();">批量添加/更新</b></a></li>
             <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
@@ -550,7 +550,7 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="list4" style="height:400px;" id="aadgroup">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" id="adGroupTable" class="table4 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
@@ -594,7 +594,7 @@
             <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zhanghu_input"></div>
+    <div class="zhanghu_input" onclick="adragg()"></div>
     <div id="adgroupPager" class="pagination"></div>
     <div class="zs_bottom over" id="aDiv">
         <div class="zs_bottom1 over fl ">
@@ -639,7 +639,7 @@
         </ul>
         <span class="fr">1/10</span>
     </div>
-    <div class="list4">
+    <div class="list4" id="ccampaign" style="height: 400px;">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" class="table5 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
@@ -676,7 +676,7 @@
             <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zhanghu_input"></div>
+    <div class="zhanghu_input" onclick="cdrgg()"></div>
     <div id="pagination_campaignPage" class="pagination"></div>
     <div class="zs_bottom over">
         <input type="hidden" id="hiddenCampaignId"/>
@@ -690,6 +690,10 @@
                     <div class="t_list01 fl over">每日预算：</div>
                     <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 budget_5" maxlength="5">
                     </div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over"><span style="color:red;">提示：</span></div>
+                    <div class="t_list06 fl over"><span>输入"&lt;不限定&gt;"则为计划不限定每日预算</span></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动出价比例：</div>

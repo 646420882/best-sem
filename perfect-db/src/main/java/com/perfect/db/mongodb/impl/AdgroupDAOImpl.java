@@ -424,6 +424,28 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         getMongoTemplate().remove(new Query(Criteria.where(ADGROUP_ID).is(aid)),AdgroupBackUpEntity.class);
     }
 
+    @Override
+    public double getCampBgt(String cid) {
+        Query query = new BasicQuery("{}", "{bd: 1}");
+        query.addCriteria(Criteria.where(CAMPAIGN_ID).is(cid));
+        CampaignEntity entity = getMongoTemplate().findOne(query, CampaignEntity.class);
+        if (entity != null) {
+            return entity.getBudget();
+        }
+        return 0;
+    }
+
+    @Override
+    public double getCampBgt(Long cid) {
+        Query query = new BasicQuery("{}", "{bd: 1}");
+        query.addCriteria(Criteria.where(CAMPAIGN_ID).is(cid));
+        CampaignEntity entity = getMongoTemplate().findOne(query, CampaignEntity.class);
+        if (entity != null) {
+            return entity.getBudget();
+        }
+        return 0;
+    }
+
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {
         List<AdgroupEntity> insertList = ObjectUtils.convert(adgroupDTOs, getEntityClass());
         getMongoTemplate().insertAll(insertList);

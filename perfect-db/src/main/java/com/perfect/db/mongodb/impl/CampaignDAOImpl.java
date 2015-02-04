@@ -335,16 +335,26 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        if(!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(newCampaign.getCampaignName())),getEntityClass())){
+
+        if (newCampaign.getCampaignName().equals(campaignEntity.getCampaignName())) {
             getMongoTemplate().updateFirst(query, update, CampaignEntity.class, TBL_CAMPAIGN);
+            CampaignBackUpDTO campaignBackUpDTOFind = campaignBackUpDAO.findByObjectId(newCampaign.getId());
+            if (campaignBackUpDTOFind == null && newCampaign.getLocalStatus() == 2) {
+                CampaignBackUpEntity backUpEntity = new CampaignBackUpEntity();
+                BeanUtils.copyProperties(campaignEntity, backUpEntity);
+                getMongoTemplate().insert(backUpEntity);
+            }
+        }else{
+            if(!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(newCampaign.getCampaignName()).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass())){
+                getMongoTemplate().updateFirst(query, update, CampaignEntity.class, TBL_CAMPAIGN);
+                CampaignBackUpDTO campaignBackUpDTOFind = campaignBackUpDAO.findByObjectId(newCampaign.getId());
+                if (campaignBackUpDTOFind == null && newCampaign.getLocalStatus() == 2) {
+                    CampaignBackUpEntity backUpEntity = new CampaignBackUpEntity();
+                    BeanUtils.copyProperties(campaignEntity, backUpEntity);
+                    getMongoTemplate().insert(backUpEntity);
+                }
+            }
         }
-        CampaignBackUpDTO campaignBackUpDTOFind = campaignBackUpDAO.findByObjectId(newCampaign.getId());
-        if (campaignBackUpDTOFind == null && newCampaign.getLocalStatus() == 2) {
-            CampaignBackUpEntity backUpEntity = new CampaignBackUpEntity();
-            BeanUtils.copyProperties(campaignEntity, backUpEntity);
-            getMongoTemplate().insert(backUpEntity);
-        }
-        logDAO.insertLog(id, LogStatusConstant.ENTITY_CAMPAIGN, LogStatusConstant.OPT_UPDATE);
     }
 
     @Override

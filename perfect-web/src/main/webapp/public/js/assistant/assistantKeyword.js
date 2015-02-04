@@ -415,6 +415,14 @@ function setSelectSelected(matStr) {
         }
     }
 }
+function kadrgg(){
+    var _height=$("#kkeyword").css("height");
+    if(_height=="400px"){
+        $("#kkeyword").css("height","350px");
+    }else{
+        $("#kkeyword").css("height","400px");
+    }
+}
 
 
 /**

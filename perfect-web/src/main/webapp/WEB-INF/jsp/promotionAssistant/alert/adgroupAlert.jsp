@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--添加单元时，如果没有选择计划，则弹出该窗口--%>
 <div class="box" style="display:none" id="adAdd">
-    <h2 id="bAdd">添加创意<a href="javascript:void(0)" onclick="adgroupAddAlertClose()" class="close">关闭</a></h2>
+    <h2 id="bAdd">添加单元<a href="javascript:void(0)" onclick="adgroupAddAlertClose()" class="close">关闭</a></h2>
     <div class="mainlist">
         请选择单元!
         <ul class="zs_set" id="adUi">

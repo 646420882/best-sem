@@ -77,6 +77,7 @@ function initAMenu() {
     });
 }
 function adgroupAddOperate(obj) {
+    var campBgt = $("#campBgt").html();
     var _this = $(obj);
     var _an = _this.find("input:eq(2)");
     var _anStr = getChar(_an.val());
@@ -88,7 +89,19 @@ function adgroupAddOperate(obj) {
     var _mp = _this.find("input:eq(4)").val();
     if (!/^-?\d+\.?\d*$/.test(_mp)) {
         alert("请输入正确的\"单元出价\"");
-        return false;
+        return;
+    } else {
+        if (_mp == "0") {
+            alert("单元出价不能为0");
+            return;
+        } else {
+            if (campBgt != "0") {
+                if (parseInt(_mp) > parseInt(campBgt)) {
+                    alert("单元出价不能大于" + campBgt + "元的计划出价");
+                    return;
+                }
+            }
+        }
     }
     var con = confirm("你确定要添加?");
     if (con) {
@@ -266,7 +279,12 @@ function aon(ts) {
     var status = _this.find("td:eq(2)").html();
     var pause = _this.find("td:eq(3)").html();
     $("#aDiv input").each(function (i, o) {
-        $(o).val(data[i]);
+        if(data[i].indexOf("input")>-1){
+            $(o).val("");
+            return;
+        }else{
+            $(o).val(data[i]);
+        }
     });
     $("#apStatus").html(status);
     if (pause == "启用") {
@@ -308,6 +326,11 @@ function adgroupAddAlertClose() {
     $("#aNoKwd").css("display", "none");
     $("#adUpdate").css("display", "none");
 }
+function initCampBgt() {
+    $.get("/assistantAdgroup/getCampBgt", {cid: plans.cid}, function (res) {
+        $("#campBgt").html(res.data);
+    });
+}
 /**
  * 添加单元方法
  */
@@ -319,8 +342,7 @@ function addAdgroup() {
         jcBox.append("<li>推广计划<select id='aPlan' onchange='getAdgroupPlan(this.value)'><option value='-1'>请选择计划</option></select></li>");
         adAlertShow();
     } else {
-        //$.get("/assistantAdgroup/getPriceRatio", {cid: plans.cid}, function (res) {
-        //    if (res != "0.0") {
+        initCampBgt();
         var i = $("#adGroupTable tbody tr").size();
         var lastTr = $("#adGroupTable tr:eq(" + i + ")").find("td:eq(0) a").html();
         if (lastTr == "删除") {
@@ -341,9 +363,6 @@ function addAdgroup() {
             "<td>&nbsp;</td>" +
             "</tr>";
         _createTable.append(_tbody);
-        //}
-        //});
-
     }
 }
 /**
@@ -644,7 +663,7 @@ function adrgoupUpdateOk() {
         return;
     }
 
-    if (confirm("你确定要修改该计划吗?") == true) {
+    if (confirm("你确定要修改该单元吗?") == true) {
         var _this = $(atmp);
         $("#adgroupUpdateForm").formSubmit("../assistantAdgroup/update", function (rs) {
             if (rs == "1") {
@@ -687,6 +706,14 @@ function adgroupdSelectChange(rs) {
                 _atmp.find("td:eq(3)").html(_this.find("option:selected").text());
             }
         });
+    }
+}
+function adragg() {
+    var _height = $("#aadgroup").css("height");
+    if (_height == "400px") {
+        $("#aadgroup").css("height", "350px");
+    } else {
+        $("#aadgroup").css("height", "400px");
     }
 }
 /**

@@ -465,4 +465,20 @@ public class AssistantAdgroupController extends WebContextSupport {
         }
         return writeMapObject(MSG,"级联上传失败");
     }
+
+    @RequestMapping(value = "/getCampBgt")
+    public ModelAndView getCampBgt(@RequestParam(value = "cid")String cid){
+        Double bgt=0.0;
+        try{
+            if (cid.length()>OBJ_SIZE){
+                bgt= adgroupService.getCampBgt(cid);
+            }else{
+                bgt=adgroupService.getCampBgt(Long.parseLong(cid));
+            }
+            return writeMapObject(DATA,bgt);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return writeMapObject(DATA,bgt);
+    }
 }
