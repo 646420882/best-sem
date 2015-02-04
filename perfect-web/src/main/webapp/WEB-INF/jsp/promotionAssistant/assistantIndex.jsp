@@ -86,7 +86,7 @@
 <div ID="testIframe" Name="testIframe" width="100%" onLoad="iFrameHeight()">
 <div class="content_wraps over">
 <div class="zhushou over wd ">
-<div class="zhushou_menu wd">
+<div class="zhushou_menu">
     <ul class="zs_nav">
         <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
         <li onclick="uploadDialog()"><a><span><img src="../public/img/update.png"></span><span>上传更新</span></a></li>
@@ -134,7 +134,6 @@
             <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img  src="../public/img/zs_function11.png"></span><b>激活</b></a></li>
         </ul>
-        <span class="fr">1/10</span>
     </div>
     <div class="list4" id="kkeyword" style="height:400px;">
         <div class="container">
@@ -254,7 +253,6 @@
             <li><a href="javascript:void(0)" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
             <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function11.png"></span><b>激活</b></a>  </li>
         </ul>
-        <span class="fr">1/10</span>
     </div>
     <div class="list4" style="height:400px;" id="tcreative">
         <div class="container">
@@ -285,85 +283,84 @@
     <div class="zhanghu_input" onclick="dragg()"></div>
     <div id="creativePager" class="pagination"></div>
     <div class="zs_bottom over" id="amsDiv" >
-        <div class="zs_bottom1 over fl " id="sDiv">
-            <ul>
-                <li>
-                    <div class="t_list01 fl over">创意标题：</div>
-                    <div class="t_list03 fl over">
-                        <input type="text" class="zs_input1" id="sTitle"><span>49/50</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">创意描述1：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><span>79/80</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">创意描述2：</div>
-                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><span>79/80</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="t_list04 fl over">
-                        <div class="t_list01 fl over">默认访问URL：</div>
-                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPc"/><span>0/1024</span>
+            <div class="zs_bottom1 over fl " id="sDiv">
+                <ul>
+                    <li>
+                        <div class="t_list01 fl over">创意标题：</div>
+                        <div class="t_list03 fl over">
+                            <input type="text" class="zs_input1" id="sTitle"><span>49/50</span>
                         </div>
-                    </div>
-                    <div class="t_list04 fr over">
-                        <div class="t_list01 fl over">默认显示URL：</div>
-                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>35/36</span>
+                    </li>
+                    <li>
+                        <div class="t_list01 fl over">创意描述1：</div>
+                        <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><span>79/80</span>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="t_list04 fl over">
-                        <div class="t_list01 fl over">移动访问URL：</div>
-                        <div class="t_list05 fl over"><input type="text" class="zs_input3"
-                                                             id="sMib"><span>49/1017</span>
+                    </li>
+                    <li>
+                        <div class="t_list01 fl over">创意描述2：</div>
+                        <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><span>79/80</span>
                         </div>
-                    </div>
-                    <div class="t_list04 fr over">
-                        <div class="t_list01 fl over">移动显示URL：</div>
-                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sMibs"><span>35/36</span>
+                    </li>
+                    <li>
+                        <div class="t_list04 fl over">
+                            <div class="t_list01 fl over">默认访问URL：</div>
+                            <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPc"/><span>0/1024</span>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">创意预览：</div>
-                    <div class="w_list01 fl over" id="sPreview"
-                         style="width:74%;height: 98px;border:1px solid #CCC; padding:1%;"></div>
-                </li>
-            </ul>
+                        <div class="t_list04 fr over">
+                            <div class="t_list01 fl over">默认显示URL：</div>
+                            <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>35/36</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="t_list04 fl over">
+                            <div class="t_list01 fl over">移动访问URL：</div>
+                            <div class="t_list05 fl over"><input type="text" class="zs_input3"
+                                                                 id="sMib"><span>49/1017</span>
+                            </div>
+                        </div>
+                        <div class="t_list04 fr over">
+                            <div class="t_list01 fl over">移动显示URL：</div>
+                            <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sMibs"><span>35/36</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="t_list01 fl over">创意预览：</div>
+                        <div class="w_list01 fl over" id="sPreview"></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="zs_bottom2 over fr" style="border:none;">
+                <ul>
+                    <li>
+                        <div class="t_list01 fl over">状态：</div>
+                        <div class="w_list02 fl over"><b id="sStatus">有效</b></div>
+                    </li>
+                    <li>
+                        <div class="t_list01 fl over">设备偏好：</div>
+                        <div class="w_list02 fl over">
+                            <select id="sD">
+                                <option value="0">全部设备</option>
+                                <option value="1">移动设备优先</option>
+                            </select></div>
+                    </li>
+                    <li>
+                        <div class="t_list01 fl over">启用/暂停：</div>
+                        <div class="w_list02 fl over" >
+                            <select id="sPause">
+                                <option value="true">启用</option>
+                                <option value="false">暂停</option>
+                            </select></div>
+                    </li>
+                    <li>
+                        <div class="t_list01 fl over">您的注册域名为：</div>
+                        <div class="w_list02 fl over"><span class="doMainS" style="color:red;"></span></div>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="zs_bottom2 over fr" style="border:none;">
-            <ul>
-                <li>
-                    <div class="t_list01 fl over">状态：</div>
-                    <div class="w_list02 fl over"><b id="sStatus">有效</b></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">设备偏好：</div>
-                    <div class="w_list02 fl over">
-                        <select id="sD">
-                            <option value="0">全部设备</option>
-                            <option value="1">移动设备优先</option>
-                        </select></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">启用/暂停：</div>
-                    <div class="w_list02 fl over" >
-                        <select id="sPause">
-                            <option value="true">启用</option>
-                            <option value="false">暂停</option>
-                        </select></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over">您的注册域名为：</div>
-                    <div class="w_list02 fl over"><span class="doMainS" style="color:red;"></span></div>
-                </li>
-            </ul>
-        </div>
-    </div>
 </div>
 <!--附加创意-->
 <div class="containers  over hides">
@@ -383,7 +380,6 @@
         <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a>
         </li>
     </ul>
-    <span class="fr">1/10</span>
 </div>
 <div class="list4" style="height:368px;">
 <div class="container">
@@ -548,7 +544,6 @@
             <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
             <li><a href="javascript:void(0)" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
-        <span class="fr">1/10</span>
     </div>
     <div class="list4" style="height:400px;" id="aadgroup">
         <div class="container">
@@ -637,7 +632,6 @@
             <li><a href="#" id="reduction_caipamgin"><span class="zs_top"><img src="../public/img/zs_function9.png"></span><b>还原</b></a></li>
             <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
-        <span class="fr">1/10</span>
     </div>
     <div class="list4" id="ccampaign" style="height: 400px;">
         <div class="container">
@@ -903,7 +897,7 @@
                     <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function19.png"></span><b>上传更新</b></a></li>
                 </ul>
             </div>
-            <div class="list4" style="height:480px;">
+            <div class="list4" style="height:400px;">
                 <div class="container">
                     <table border="0" cellspacing="0" width="100%" class="table2 table-bordered"
                            data-resizable-columns-id="demo-table">

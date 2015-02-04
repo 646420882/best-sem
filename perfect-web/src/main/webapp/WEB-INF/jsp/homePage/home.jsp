@@ -239,24 +239,24 @@
                                                 <span>点击率</span><b>
                                                 <p>
                                                     <input class="one" type="button"
-                                                           onclick="javascript:category = 'ctr';sort = -5;loadPerformance(statDate)">
+                                                           onclick="javascript:category = 'ctr';sort = -6;loadPerformance(statDate)">
                                                 </p>
 
                                                 <p>
                                                     <input class="two" type="button"
-                                                           onclick="javascript:category = 'ctr';sort = 5;loadPerformance(statDate)">
+                                                           onclick="javascript:category = 'ctr';sort = 6;loadPerformance(statDate)">
                                                 </p></b>
                                             </li>
                                             <li>
                                                 <span>平均点击价格</span><b>
                                                 <p>
                                                     <input class="one" type="button"
-                                                           onclick="javascript:category = 'cpc';sort = -6;loadPerformance(statDate)">
+                                                           onclick="javascript:category = 'cpc';sort = -5;loadPerformance(statDate)">
                                                 </p>
 
                                                 <p>
                                                     <input class="two" type="button"
-                                                           onclick="javascript:category = 'cpc';sort = 6;loadPerformance(statDate)">
+                                                           onclick="javascript:category = 'cpc';sort = 5;loadPerformance(statDate)">
                                                 </p></b>
                                             </li>
                                             <li>
