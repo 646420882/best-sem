@@ -225,10 +225,9 @@ public class AssistantCreativeController extends WebContextSupport {
                                @RequestParam(value = "pcDisplayUrl", required = false) String pcs,
                                @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
                                @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
-                               @RequestParam(value = "pause") Boolean bol) {
+                               @RequestParam(value = "pause") Boolean bol,
+                                @RequestParam(value = "devicePreference") Integer device){
         CreativeDTO creativeEntityFind = null;
-        UUID uuidRandom=UUID.randomUUID();
-        String uuid=uuidRandom.toString().replaceAll("-","");
         if (oid.length() > OBJ_SIZE) {
             creativeEntityFind = creativeService.findByObjId(oid);
             creativeEntityFind.setTitle(title);
@@ -239,6 +238,7 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntityFind.setMobileDestinationUrl(mib);
             creativeEntityFind.setMobileDisplayUrl(mibs);
             creativeEntityFind.setPause(bol);
+            creativeEntityFind.setDevicePreference(device);
             creativeEntityFind.setLocalStatus(1);
             creativeService.updateByObjId(creativeEntityFind);
             writeHtml(SUCCESS, response);
@@ -255,7 +255,7 @@ public class AssistantCreativeController extends WebContextSupport {
             creativeEntityFind.setMobileDestinationUrl(mib);
             creativeEntityFind.setMobileDisplayUrl(mibs);
             creativeEntityFind.setPause(bol);
-
+            creativeEntityFind.setDevicePreference(device);
             creativeService.update(creativeEntityFind, creativeEntity);
             writeHtml(SUCCESS, response);
         }

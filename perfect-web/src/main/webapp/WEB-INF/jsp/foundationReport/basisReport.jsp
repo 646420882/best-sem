@@ -247,7 +247,7 @@
                 <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
                 比较范围
                 <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly
-                       style=" display:none;  height:20px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
+                       style=" display:none;height:24px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
                 <label id="dataComputing"></label>
             </li>
             <li id="deviceUser">选择推广设备：
