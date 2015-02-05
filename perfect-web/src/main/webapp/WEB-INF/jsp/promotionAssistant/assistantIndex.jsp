@@ -9,21 +9,22 @@
 <!doctype html>
 <html>
 <head>
+    <title>大数据智能营销</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
+     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
     <style rel="stylesheet" type="text/css">
         #sDiv .span-error {
             color: red;
@@ -35,6 +36,21 @@
         form{
             margin:0 0 5px 0;
         }
+        .footer{
+            position:absolute;
+            background:#fff;
+        }
+        *{
+            box-sizing: border-box;
+        }
+        *:before, *:after {
+            box-sizing: border-box;
+        }
+        *:before, *:after {
+            box-sizing: border-box;
+        }
+
+
     </style>
     <script>
         String.prototype.trims = function () {
@@ -50,7 +66,7 @@
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid over">
+<div class="mid fr over">
 <div class="title_box">
     <div class="on_title over">
         <a href="#">  推广助手</a>
@@ -58,7 +74,7 @@
 </div>
 <div id="tab">
 <div class=" jiangjia_concent over">
-<div class="jingjia_left fl over" id="left">
+<div class="jingjia_left fl over">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
         <a href="javascript:loadTree()"  class="fr">刷新</a>
@@ -82,10 +98,10 @@
         </div>
     </div>
 </div>
-<div class="jingjia_right fl over" id="right">
+<div class="jingjia_right fl over">
 <div ID="testIframe" Name="testIframe" width="100%" onLoad="iFrameHeight()">
 <div class="content_wraps over">
-<div class="zhushou over wd ">
+<div class="zhushou over">
 <div class="zhushou_menu">
     <ul class="zs_nav">
         <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
@@ -1387,14 +1403,14 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var mycheck = $("#navigator_tips,#nav_input1");
-        var ztree_minwidth = $(document.body).width() - 434;
+        var ztree_minwidth = $(document.body).width() - 420;
         var ztree_maxwidth = $(document.body).width() - 260;
-        $(".jingjia_right").css("width", ztree_minwidth);
-            $(window).resize(function () {
+         $(".jingjia_right").css("width", ztree_minwidth);
+         $(window).resize(function () {
                 Tablewidth();
-            });
+         });
             function Tablewidth(){
-                ztree_minwidth = $(document.body).width() - 434;
+                ztree_minwidth = $(document.body).width() - 420;
                 ztree_maxwidth = $(document.body).width() - 260;
                 if ($(".nav_left").css("display") == "none") {
                     $(".jingjia_right").css("width", ztree_maxwidth);

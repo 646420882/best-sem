@@ -9,6 +9,7 @@
     <title>大数据智能营销</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
@@ -69,7 +70,7 @@
                         </div>
                         <div class="jingjia_right fl over">
                             <div class="zhushou_concent over">
-                                <div class="wrap_list01 over wd ">
+                                <div class="wrap_list01 over wd4 ">
                                     <ul>
                                         <li>
                                             <div class="w_list01 fl over">是否参与竞价：</div>
@@ -1344,7 +1345,7 @@
                 records: "records",
                 repeatitems: false
             },
-            height:500,
+            height:480,
             shrinkToFit: true,//此选项用于根据width计算每列宽度的算法,默认值true
             colModel: [
                 // {label: '<input type=\"checkbox\" name=\"check_all\" onclick=\"checkAll();\" id=\"check_all\" >', name: 'checkall', width: 30,
