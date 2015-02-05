@@ -446,10 +446,10 @@ function on(obj) {
 }
 function dragg() {
     var _height = $("#tcreative").css("height");
-    if (_height == "480px") {
+    if (_height == "400px") {
         $("#tcreative").css("height","350px");
     }else{
-        $("#tcreative").css("height","480px");
+        $("#tcreative").css("height","400px");
     }
 
 }
@@ -1169,8 +1169,8 @@ function creativeMulti() {
         id: 'creativeMutli',
         align: 'right bottom',
         content: "<iframe src='/assistantCreative/updateMulti' width='900' height='700' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-        width: '900',
-        height: '700',
+        width: '920',
+        height: '720',
         oniframeload: function () {
 
         },

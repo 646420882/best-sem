@@ -391,6 +391,9 @@ function setKwdValue(obj, kwid) {
 
 function setSelectSelected(matStr) {
     var str = matStr;
+    if(str==undefined){
+        return;
+    }
     if (str.indexOf("-")) {
         str = matStr.split("-")[0];
     }
@@ -413,6 +416,14 @@ function setSelectSelected(matStr) {
             $("#phraseTypeLi").show();
             objSelect2.options[i].selected = true;
         }
+    }
+}
+function kadrgg(){
+    var _height=$("#kkeyword").css("height");
+    if(_height=="400px"){
+        $("#kkeyword").css("height","350px");
+    }else{
+        $("#kkeyword").css("height","400px");
     }
 }
 

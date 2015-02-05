@@ -567,6 +567,8 @@ var loadAccountData = function () {
             var _budget = 0;
             if (result != null) {
                 $("#cost").text("￥" + data.cost);
+                $("#acBgt").html(data.rows.budget);
+                $("#bdAccountId").html(data.rows.id);
                 $("#balance").text("￥" + result.balance);
                 _budget = result.balance;
                 $("#accountBudget").text(result.budget);

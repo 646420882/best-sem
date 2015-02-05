@@ -84,4 +84,8 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     void pdateUpdate(Long aid, AdgroupDTO dto);
 
+    double getCampBgt(String cid);
+
+    double getCampBgt(Long cid);
+
 }

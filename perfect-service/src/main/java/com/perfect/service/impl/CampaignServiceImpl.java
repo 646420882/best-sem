@@ -141,6 +141,7 @@ public class CampaignServiceImpl implements CampaignService {
             }
             campaignType.setRegionTarget(dto.getRegionTarget());
             campaignType.setExcludeIp(dto.getExcludeIp());
+            campaignType.setShowProb(dto.getShowProb());
             campaignType.setNegativeWords(dto.getNegativeWords());
             campaignType.setExactNegativeWords(dto.getExactNegativeWords());
             List<ScheduleType> scheduleTypes = ObjectUtils.convert(dto.getSchedule(), ScheduleType.class);
@@ -263,5 +264,10 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public List<CampaignDTO> getOperateCamp() {
       return  campaignDAO.getOperateCamp();
+    }
+
+    @Override
+    public void deleteByCampaignId(Long cid) {
+        campaignDAO.deleteByCampaignId(cid);
     }
 }

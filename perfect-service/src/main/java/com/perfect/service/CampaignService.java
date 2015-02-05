@@ -82,5 +82,11 @@ public interface CampaignService {
      */
     List<CampaignDTO> getOperateCamp();
 
+    /**
+     * 强制删除本地带凤巢数据
+     * @param cid
+     */
+    void deleteByCampaignId(Long cid);
+
 
 }

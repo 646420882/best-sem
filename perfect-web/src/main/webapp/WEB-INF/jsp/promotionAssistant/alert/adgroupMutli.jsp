@@ -116,33 +116,33 @@
                         </div>
 
 
-                        <div class="containers2 over inputKwdInfoDiv">
-                            <div class="newkeyword_right fr over" style="width: 100%;">
-                                <h3> 删除关键词 </h3>
+                        <%--<div class="containers2 over inputKwdInfoDiv">--%>
+                            <%--<div class="newkeyword_right fr over" style="width: 100%;">--%>
+                                <%--<h3> 删除关键词 </h3>--%>
 
-                                <p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
+                                <%--<p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>--%>
 
-                                <div class="newkeyword_right_mid">
-                                    <p>格式：推广计划名称（必填），推广单元名称（必填），关键词名称（必填）</p>
+                                <%--<div class="newkeyword_right_mid">--%>
+                                    <%--<p>格式：推广计划名称（必填），推广单元名称（必填），关键词名称（必填）</p>--%>
 
-                                    <p>例如：北京推广，礼品，鲜花</p>
-                                    <textarea id="deleteKwdText2"></textarea>
+                                    <%--<p>例如：北京推广，礼品，鲜花</p>--%>
+                                    <%--<textarea id="deleteKwdText2"></textarea>--%>
 
-                                    <p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)
-                                    </p>
+                                    <%--<p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)--%>
+                                    <%--</p>--%>
 
-                                </div>
+                                <%--</div>--%>
 
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
-                                    <div class="w_list03">
-                                        <ul>
-                                            <li class="current delKwdByinputNext">下一步</li>
-                                            <li class="close">取消</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                <%--<div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">--%>
+                                    <%--<div class="w_list03">--%>
+                                        <%--<ul>--%>
+                                            <%--<li class="current delKwdByinputNext">下一步</li>--%>
+                                            <%--<li class="close">取消</li>--%>
+                                        <%--</ul>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
                     </div>
                 </div>

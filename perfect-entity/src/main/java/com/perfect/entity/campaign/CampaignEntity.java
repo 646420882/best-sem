@@ -31,7 +31,7 @@ public class CampaignEntity extends AccountIdEntity {
     @Field("name")
     private String campaignName;
 
-    @Field("b")
+    @Field("bd")
     private Double budget;
 
     @Field("rt")

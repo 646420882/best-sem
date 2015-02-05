@@ -9,21 +9,22 @@
 <!doctype html>
 <html>
 <head>
+    <title>大数据智能营销</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
+     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
     <style rel="stylesheet" type="text/css">
         #sDiv .span-error {
             color: red;
@@ -35,6 +36,23 @@
         form{
             margin:0 0 5px 0;
         }
+        .footer{
+            position:absolute;
+            background:#fff;
+        }
+        *{
+            box-sizing: border-box;
+        }
+        *:before, *:after {
+            box-sizing: border-box;
+        }
+        *:before, *:after {
+            box-sizing: border-box;
+        }
+  .mainlist ul li input{
+      height:30px;
+  }
+
     </style>
     <script>
         String.prototype.trims = function () {
@@ -48,9 +66,10 @@
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
+<jsp:include page="../promotionAssistant/alert/addkeyword.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid over">
+<div class="mid fr over">
 <div class="title_box">
     <div class="on_title over">
         <a href="#">  推广助手</a>
@@ -58,7 +77,7 @@
 </div>
 <div id="tab">
 <div class=" jiangjia_concent over">
-<div class="jingjia_left fl over" id="left">
+<div class="jingjia_left fl over">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
         <a href="javascript:loadTree()"  class="fr">刷新</a>
@@ -82,10 +101,10 @@
         </div>
     </div>
 </div>
-<div class="jingjia_right fl over" id="right">
+<div class="jingjia_right fl over">
 <div ID="testIframe" Name="testIframe" width="100%" onLoad="iFrameHeight()">
 <div class="content_wraps over">
-<div class="zhushou over wd ">
+<div class="zhushou over">
 <div class="zhushou_menu">
     <ul class="zs_nav">
         <li class="showbox"><a id="downloadAccountData"><span><img  src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
@@ -135,7 +154,7 @@
             <li><a href="#"><span class="z_function_hover"><img  src="../public/img/zs_function11.png"></span><b>激活</b></a></li>
         </ul>
     </div>
-    <div class="list4">
+    <div class="list4" id="kkeyword" style="height:400px;">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" class="table1 table-bordered"
                    data-resizable-columns-id="demo-table">
@@ -173,7 +192,7 @@
             <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zhanghu_input"></div>
+    <div class="zhanghu_input" onclick="kadrgg()"></div>
     <div id="pagination_keywordPage" class="pagination"></div>
     <div class="zs_bottom over">
         <input type="hidden" id="hiddenkwid_1"/>
@@ -254,7 +273,7 @@
             <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function11.png"></span><b>激活</b></a>  </li>
         </ul>
     </div>
-    <div class="list4" style="height:480px;" id="tcreative">
+    <div class="list4" style="height:400px;" id="tcreative">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" id="createTable" class="table2 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
@@ -538,14 +557,14 @@
 <div class="containers  over hides">
     <div class="zs_function over">
         <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img  src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+            <li><a href="javascript:void(0)" onclick="addAdgroup()"><span class="zs_top"><img  src="../public/img/zs_function1.png"></span><b>添加</b></a><span style="display: none;" id="campBgt"></span></li>
             <li><a href="javascript:void(0)" onclick="adgroupDel()"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
             <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function3.png"></span><b  onclick="adgroupMutli();">批量添加/更新</b></a></li>
             <li><a href="#"><span class="z_function_hover" id="agReback" onclick="agreBakClick()"><img src="../public/img/zs_function9.png"></span><b onclick="agreBakClick()">还原</b></a></li>
             <li><a href="javascript:void(0)" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
     </div>
-    <div class="list4">
+    <div class="list4" style="height:400px;" id="aadgroup">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" id="adGroupTable" class="table4 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
@@ -589,7 +608,7 @@
             <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zhanghu_input"></div>
+    <div class="zhanghu_input" onclick="adragg()"></div>
     <div id="adgroupPager" class="pagination"></div>
     <div class="zs_bottom over" id="aDiv">
         <div class="zs_bottom1 over fl ">
@@ -633,7 +652,7 @@
             <li><a href="#" class="searchwordReport"><span class="zs_top"><img src="../public/img/zs_function10.png"></span><b>搜索词</b></a></li>
         </ul>
     </div>
-    <div class="list4">
+    <div class="list4" id="ccampaign" style="height: 400px;">
         <div class="container">
             <table border="0" cellspacing="0" width="100%" class="table5 table-bordered" data-resizable-columns-id="demo-table">
                 <thead>
@@ -670,7 +689,7 @@
             <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
         </ul>
     </div>
-    <div class="zhanghu_input"></div>
+    <div class="zhanghu_input" onclick="cdrgg()"></div>
     <div id="pagination_campaignPage" class="pagination"></div>
     <div class="zs_bottom over">
         <input type="hidden" id="hiddenCampaignId"/>
@@ -684,6 +703,10 @@
                     <div class="t_list01 fl over">每日预算：</div>
                     <div class="t_list06 fl over"><input type="text" onblur="whenBlurEditCampaign(2,this.value);"onkeydown="missBlur(event,this);" class="zs_input3 budget_5" maxlength="5">
                     </div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over"><span style="color:red;">提示：</span></div>
+                    <div class="t_list06 fl over"><span>输入"&lt;不限定&gt;"则为计划不限定每日预算</span></div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">移动出价比例：</div>
@@ -1383,14 +1406,14 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var mycheck = $("#navigator_tips,#nav_input1");
-        var ztree_minwidth = $(document.body).width() - 434;
+        var ztree_minwidth = $(document.body).width() - 420;
         var ztree_maxwidth = $(document.body).width() - 260;
-        $(".jingjia_right").css("width", ztree_minwidth);
-            $(window).resize(function () {
+         $(".jingjia_right").css("width", ztree_minwidth);
+         $(window).resize(function () {
                 Tablewidth();
-            });
+         });
             function Tablewidth(){
-                ztree_minwidth = $(document.body).width() - 434;
+                ztree_minwidth = $(document.body).width() - 420;
                 ztree_maxwidth = $(document.body).width() - 260;
                 if ($(".nav_left").css("display") == "none") {
                     $(".jingjia_right").css("width", ztree_maxwidth);

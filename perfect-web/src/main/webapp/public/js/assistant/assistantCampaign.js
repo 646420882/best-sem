@@ -145,7 +145,7 @@ function campaignDataToHtml(obj, index) {
 
     var fd = obj.negativeWords != null ? obj.negativeWords.length : 0;
     var jqfd = obj.exactNegativeWords != null ? obj.exactNegativeWords.length : 0;
-    html = html + until.convert(fd == 0 && jqfd == 0, "<td>未设置</td>:" + "<td>" + fd + ";" + jqfd + "</td>");
+    html = html + until.convert(fd == 0 && jqfd == 0, "<td>未设置</td>:" + "<td>" + fd + "：" + jqfd + "</td>");
 
     html = html + "<td>" + (obj.excludeIp != null ? obj.excludeIp.length : 0) + "</td>";
     html = html + (obj.budgetOfflineTime != null ? "<td>" + obj.budgetOfflineTime.length + "</td>" : "<td>-</td>");
@@ -265,7 +265,18 @@ function whenBlurEditCampaign(num, value) {
                         alert("每日预算必须大于50RMB");
                         return;
                     } else {
-                        jsonData["budget"] = value;
+                        var bgt = $("#acBgt").html();
+                        if (bgt != "") {
+                            if (parseInt(value)>parseInt(bgt)) {
+                                alert("您的每日预算为"+bgt+"，该计划的每日预算不能超过"+bgt+"元");
+                                return;
+                            }else{
+                                jsonData["budget"] = value;
+                            }
+                        } else {
+                            alert("您的账户预算加载失败，请加载成功后再进行修改");
+                              return;
+                        }
                     }
                 }
             } else {
@@ -363,6 +374,7 @@ $(".ntwOk").click(function () {
         negativeWordsValue = negativeWords;
         exactNegativeWordsValue = exactNegativeWords;
     }
+    $(".TB_overlayBG").css({display: "none"});
     $("#setNegtiveWord").hide(0);
 });
 
@@ -550,6 +562,7 @@ $(".excludeIpOk").click(function () {
     } else if (windowName == "inputExcludeIp_add") {
         excludeIpStr = ipList;
     }
+    $(".TB_overlayBG").css({display: "none"});
     $("#setExcludeIp").hide(0);
 });
 
@@ -789,11 +802,12 @@ function showAddCampaignWindow() {
  * 创建推广计划并转到关键词
  */
 $("#createCampaignOk").click(function () {
-    var campaignName = $(".inputCampaignName").val();
-    var budget = $(".inputBudget").val();
-    var priceRatio = $(".inputPriceRatio").val();
-    var campaignPause = $(".inputCampaignPause").val();
-    var showProb = $(".inputShowProb").val();
+    var bgt = $("#acBgt").html();
+    var campaignName = $("input[name='inputCampaignName']").val();
+    var budget = $("input[name='inputBudget']").val();
+    var priceRatio = $("input[name='inputPriceRatio']").val();
+    var campaignPause = $("#inputCampaignPause").val();
+    var showProb = $("#inputShowProb").val();
     var schedule = getInputScheduleData();
 //    var regionTarget =//
     var negativeWords = negativeWordsValue;
@@ -822,6 +836,11 @@ $("#createCampaignOk").click(function () {
             if (parseFloat(budget).toFixed(3) <= 49) {
                 alert("每日预算必须大于50RMB");
                 return;
+            } else {
+                if (parseInt(budget) > parseInt(bgt)) {
+                    alert("每日预算不能大于账户预算值");
+                    return;
+                }
             }
         }
     } else {
@@ -888,12 +907,11 @@ $("#createCampaignOk").click(function () {
                 excludeIpStr = "";
                 $("#plan input[type=text]").val("");
                 $(".TB_overlayBG,#plan").hide(0);
-            }else{
+            } else {
                 alert(data.msg);
             }
         }
     });
-
 
 
     //loadTree();
@@ -922,6 +940,14 @@ function setDialogCss(idSelector) {
         top: ($(window).height() - $("#" + idSelector).height()) / 2 + $(window).scrollTop() + "px",
         display: "block"
     });
+}
+function cdrgg() {
+    var _height = $("#ccampaign").css("height");
+    if (_height == "400px") {
+        $("#ccampaign").css("height", "350px");
+    } else {
+        $("#ccampaign").css("height", "400px");
+    }
 }
 
 $(".closeAddCampaign").click(function () {
@@ -1062,7 +1088,7 @@ function uploadCampagin() {
 }
 function uploadOperate(id, ls) {
     $.get("/assistantCampaign/upload", {cid: id, ls: ls}, function (result) {
-        if (result.msg != "0") {
+        if (result.msg == "1") {
             alert("上传成功!");
             getCampaignList(0);
             setTimeout("loadTree()", 1500);
