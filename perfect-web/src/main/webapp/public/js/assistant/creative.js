@@ -1169,8 +1169,8 @@ function creativeMulti() {
         id: 'creativeMutli',
         align: 'right bottom',
         content: "<iframe src='/assistantCreative/updateMulti' width='900' height='700' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-        width: '900',
-        height: '700',
+        width: '920',
+        height: '720',
         oniframeload: function () {
 
         },

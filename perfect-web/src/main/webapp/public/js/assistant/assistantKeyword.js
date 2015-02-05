@@ -391,6 +391,9 @@ function setKwdValue(obj, kwid) {
 
 function setSelectSelected(matStr) {
     var str = matStr;
+    if(str==undefined){
+        return;
+    }
     if (str.indexOf("-")) {
         str = matStr.split("-")[0];
     }

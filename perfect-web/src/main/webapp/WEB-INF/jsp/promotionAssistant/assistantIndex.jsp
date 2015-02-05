@@ -13,6 +13,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
@@ -21,7 +22,6 @@
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/smartMenu.css">
-   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
@@ -49,7 +49,9 @@
         *:before, *:after {
             box-sizing: border-box;
         }
-
+  .mainlist ul li input{
+      height:30px;
+  }
 
     </style>
     <script>
