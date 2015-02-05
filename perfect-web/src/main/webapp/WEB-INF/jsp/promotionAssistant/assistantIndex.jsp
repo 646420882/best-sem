@@ -48,6 +48,7 @@
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
+<jsp:include page="../promotionAssistant/alert/addkeyword.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
