@@ -9,7 +9,7 @@
 <%
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
 %>
-<div class="top_heade">
+<%--<div class="top_heade">--%>
     <div class="top">
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/top_bg.jpg" width="100%" height="100%">
@@ -63,7 +63,7 @@
             </div>
         </div>
     </div>
-</div>
+<%--</div>--%>
 <%--用户头像修改--%>
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none; width:400px;" id="head_img">

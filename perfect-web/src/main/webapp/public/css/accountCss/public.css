@@ -24,11 +24,15 @@ p {
     margin: 0;
     padding: 0;
 }
+html ,body{
+   height:100%;
+}
 
 body {
     font-family: "微软雅黑";
     font-size: 12px;
     min-width: 900px;
+    overflow-y:scroll
 }
 
 img {
@@ -503,19 +507,21 @@ table tr, table tr td {
 /*底部*/
 .footer {
     width: 100%;
-    height: 88px;
-    paddin: 20px;
+    height:90px;
+    padding: 5px;
     border-top: 1px solid #d1d1d1;
     text-align: center;
-    line-height: 30px;
+    line-height: 24px;
     color: #999999;
     font-family: "微软雅黑";
     position: absolute;
-    bottom: 20px;
-    /* margin-top: 80px;*/
+    bottom: 0px;
 }
 
 .footer a {
     color: #999999;
     padding: 0 10px;
+}
+.footer p{
+    margin:0px;
 }
