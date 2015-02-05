@@ -145,7 +145,7 @@ function campaignDataToHtml(obj, index) {
 
     var fd = obj.negativeWords != null ? obj.negativeWords.length : 0;
     var jqfd = obj.exactNegativeWords != null ? obj.exactNegativeWords.length : 0;
-    html = html + until.convert(fd == 0 && jqfd == 0, "<td>未设置</td>:" + "<td>" + fd + ";" + jqfd + "</td>");
+    html = html + until.convert(fd == 0 && jqfd == 0, "<td>未设置</td>:" + "<td>" + fd + "：" + jqfd + "</td>");
 
     html = html + "<td>" + (obj.excludeIp != null ? obj.excludeIp.length : 0) + "</td>";
     html = html + (obj.budgetOfflineTime != null ? "<td>" + obj.budgetOfflineTime.length + "</td>" : "<td>-</td>");

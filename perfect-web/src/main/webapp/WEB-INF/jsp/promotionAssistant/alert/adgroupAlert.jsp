@@ -120,14 +120,6 @@
 
         </form>--%>
     </div>
-    <div class="main_bottom">
-        <div class="w_list03">
-            <ul>
-                <li onclick="adrgoupUpdateOk()">确认</li>
-                <li onclick="adgroupAddAlertClose()">取消</li>
-            </ul>
-        </div>
-    </div>
 </div>
 
 <%--修改时弹出的否定关键处理框--%>
