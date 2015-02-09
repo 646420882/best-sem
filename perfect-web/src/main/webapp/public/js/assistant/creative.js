@@ -546,8 +546,6 @@ function addCreative() {
         jcBox.append("<li><span>推广计划</span><select id='sPlan' onchange='loadUnit(this.value)'><option value='-1'>请选择计划</option></select></li>");
         jcBox.append("<li><span>推广单元</span><select id='sUnit' onchange='loadAdgroup(this.value)'><option value='-1'>请选择单元</option></select></li>");
         creativeAddBoxShow();
-    } else {
-        alert(sparams.cid + ":" + sparams.aid);
     }
 }
 function getCreativeAId() {

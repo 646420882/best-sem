@@ -286,6 +286,14 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         up.set("s", adgroupEntity.getStatus());
         if(!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(adgroupEntity.getAdgroupName()).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass())){
             getMongoTemplate().updateFirst(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())), up, getEntityClass());
+        }else{
+            Update up2 = new Update();
+            up2.set("max", adgroupEntity.getMaxPrice());
+            up2.set("neg", adgroupEntity.getNegativeWords());
+            up2.set("exneg", adgroupEntity.getExactNegativeWords());
+            up2.set("p", adgroupEntity.getPause());
+            up2.set("s", adgroupEntity.getStatus());
+            getMongoTemplate().updateFirst(new Query(Criteria.where(get_id()).is(adgroupEntity.getId())), up2, getEntityClass());
         }
     }
 
@@ -440,7 +448,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         Query query = new BasicQuery("{}", "{bd: 1}");
         query.addCriteria(Criteria.where(CAMPAIGN_ID).is(cid));
         CampaignEntity entity = getMongoTemplate().findOne(query, CampaignEntity.class);
-        if (entity != null) {
+        if (entity.getBudget() != null) {
             return entity.getBudget();
         }
         return 0;

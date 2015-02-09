@@ -10,6 +10,7 @@ import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by john on 2014/8/19.
@@ -95,5 +96,14 @@ public interface AssistantKeywordService {
      * @return 修改过后的KeywordDTO
      */
     List<KeywordDTO> uploadUpdate(List<Long> kid);
+
+    /**
+     * 查询单元，计划否定关键词
+     * @param aid
+     * @return
+     */
+     Map<String,Map<String,List<String>>> getNoKeywords(Long aid);
+
+     Map<String,Map<String,List<String>>> getNoKeywords(String aid);
 
 }

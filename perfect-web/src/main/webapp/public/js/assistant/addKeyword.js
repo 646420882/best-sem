@@ -5,7 +5,7 @@ var _trade = "";
 var _category = "";
 
 var total = 0;  //当前从系统搜索的关键词总数
-$(function(){
+$(function () {
     rDrag.init(document.getElementById("kAdd"));
     $("#matchType").change(function () {
         if (this.value == "2") {
@@ -31,50 +31,52 @@ $(function(){
 
     $("#campaign_select").change(function () {
         var campaignId = $("#campaign_select option:selected").val();
-        if (campaignId.length < 24) {
-            $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
-                {
-                    campaignId: campaignId,
-                    skip: 0,
-                    limit: 100
-                },
-                function (data) {
-                    var adgroups = "", datas = data.rows;
-                    adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
-                    for (var i = 0, l = datas.length; i < l; i++) {
-                        var _adgroupId = "";
-                        if (datas[i].adgroupId != null) {
-                            _adgroupId = datas[i].adgroupId;
-                        } else {
-                            _adgroupId = datas[i].id;
+        if(campaignId!=""){
+            if (campaignId.length < 24) {
+                $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
+                    function (data) {
+                        var adgroups = "", datas = data.rows;
+                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            var _adgroupId = "";
+                            if (datas[i].adgroupId != null) {
+                                _adgroupId = datas[i].adgroupId;
+                            } else {
+                                _adgroupId = datas[i].id;
+                            }
+                            adgroups += "<option value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
                         }
-                        adgroups += "<option value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
-                    }
-                    $("#adgroup_select").empty();
-                    $("#adgroup_select").append(adgroups);
-                });
-        } else {
-            $.getJSON("/adgroup/getAdgroupByCampaignObjId/" + campaignId,
-                {
-                    campaignId: campaignId,
-                    skip: 0,
-                    limit: 100
-                },
-                function (data) {
-                    var adgroups = "", datas = data.rows;
-                    adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
-                    for (var i = 0, l = datas.length; i < l; i++) {
-                        adgroups += "<option value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
-                    }
-                    $("#adgroup_select").empty();
-                    $("#adgroup_select").append(adgroups);
-                });
+                        $("#adgroup_select").empty();
+                        $("#adgroup_select").append(adgroups);
+                    });
+            } else {
+                $.getJSON("/adgroup/getAdgroupByCampaignObjId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
+                    function (data) {
+                        var adgroups = "", datas = data.rows;
+                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            adgroups += "<option value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
+                        }
+                        $("#adgroup_select").empty();
+                        $("#adgroup_select").append(adgroups);
+                    });
+            }
         }
 
     });
 
 
-    $("#checkbox1").click( function () {
+    $("#checkbox1").click(function () {
         var c1 = $("input[name=baiduKeyword]:checkbox");
         var l = c1.length;
         if ($("#checkbox1").is(':checked')) {
@@ -87,7 +89,7 @@ $(function(){
             }
         }
     });
-    $("#checkbox2").click( function () {
+    $("#checkbox2").click(function () {
         var c2 = $("input[name=perfectKeyword]:checkbox");
         var l = c2.length;
         if ($("#checkbox2").is(':checked')) {
@@ -100,9 +102,6 @@ $(function(){
             }
         }
     });
-
-
-
 
 
     $("#trade").change(function () {
@@ -211,7 +210,7 @@ var loadKeywordFromPerfect = function () {
     });
 };
 
-function addKeywordInitCampSelect(){
+function addKeywordInitCampSelect() {
     $.getJSON("/campaign/getAllCampaign", null, function (data) {
         if (data.rows.length > 0) {
             var campaigns = "", datas = data.rows;
@@ -242,19 +241,20 @@ var saveKeyword = function () {
         alert("请选择推广单元!");
         return;
     }
-    var price=$("#price").val();
-    if(price!=""){
-        if(!/^-?\d+\.?\d*$/.test(price)){
+    var camBgt = $("#acBgt").html();
+    var price = $("#price").val();
+    if (price != "") {
+        if (!/^-?\d+\.?\d*$/.test(price)) {
             alert("输入正确的关键词出价！");
             return;
-        }else{
-            if(parseFloat(price)>999.9){
-                alert("关键词出价为：(0,999.9]<=出价&&<计划预算!");
+        } else {
+            if (parseFloat(price) > 999.9 || parseFloat(price) > parseFloat(camBgt)) {
+                alert("关键词出价为：(0,999.9]<=出价&&<计划预算" + camBgt + "元");
                 return;
             }
         }
-    }else{
-        price=0.1;
+    } else {
+        price = 0.1;
     }
     var matchType = $("#matchType :selected").val();
     var phraseType = $("#phraseType :selected").val();
@@ -273,13 +273,13 @@ var saveKeyword = function () {
                     entity1["adgroupObjId"] = adgroupId;
                 }
                 entity1["keyword"] = $("#" + wordType + i).find("td").eq(1).text();
-                entity1["price"] =price ;
+                entity1["price"] = price;
                 entity1["matchType"] = matchType;
                 entity1["pause"] = false;
                 entity1["status"] = -1;
                 if (matchType == "2") {
                     entity1["phraseType"] = phraseType;
-                }else{
+                } else {
                     entity1["phraseType"] = 1;
                 }
                 entity1["localStatus"] = 1;
@@ -298,13 +298,13 @@ var saveKeyword = function () {
                     entity2["adgroupObjId"] = adgroupId;
                 }
                 entity2["keyword"] = $("#" + wordType + j).find("td").eq(4).text();
-                entity2["price"] =price ;
+                entity2["price"] = price;
                 entity2["matchType"] = matchType;
                 entity2["pause"] = false;
                 entity2["status"] = -1;
                 if (matchType == "2") {
                     entity2["phraseType"] = phraseType;
-                }else{
+                } else {
                     entity2["phraseType"] = 1;
                 }
                 entity2["localStatus"] = 1;
@@ -313,11 +313,51 @@ var saveKeyword = function () {
         }
     }
 
-    if(jsonArr.length == 0){
+    if (jsonArr.length == 0) {
         alert("您没有选择关键词!");
         return;
     }
+    for (var i = 0; i < jsonArr.length; i++) {
+        var adNeg = $("#adNeg").html();
+        var adExNeg = $("#adExNeg").html();
+        var caNeg = $("#caNeg").html();
+        var caExNeg = $("#caExNeg").html();
+        var keyword_selected = jsonArr[i].keyword;
+        if (matchType == 1) {
+            if (adExNeg.indexOf(keyword_selected) > -1) {
 
+                alert("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
+                return;
+            }
+            if (caExNeg.indexOf(keyword_selected) > -1) {
+                alert("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
+                return;
+            }
+        }
+        if (matchType == 3 || matchType == 2) {
+            if (adNeg.indexOf(keyword_selected) > -1) {
+                alert("关键词\"" + keyword_selected + "\"存在于单元广泛，短语否定词中,该词不能被添加!");
+                return;
+            } else {
+                if (adExNeg.indexOf(keyword_selected)>-1) {
+                    alert("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
+                    return;
+                }
+            }
+            if (caNeg.indexOf(keyword_selected) > -1) {
+                alert("关键词\"" + keyword_selected + "\"存在于计划广泛，短语否定词中,该词不能被添加!");
+                return;
+            } else {
+                if (caExNeg.indexOf(keyword_selected)>-1) {
+                    alert("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
+                    return;
+                }
+            }
+        }
+    }
+    if (confirm("是否要添加选中的这些关键词？") == false) {
+        return;
+    }
     $.ajax({
         url: "/keyword/add",
         type: "POST",
@@ -326,7 +366,7 @@ var saveKeyword = function () {
         async: false,
         contentType: "application/json; charset=UTF-8",
         success: function (data, textStatus, jqXHR) {
-            if(data.stat==true){
+            if (data.stat == true) {
                 alert("添加成功");
                 closeAddKeywordDialog();
                 reloadGrid();
@@ -336,9 +376,10 @@ var saveKeyword = function () {
 
 };
 
-var d =  dialog({title: "批量添加/更新",
+var d = dialog({
+    title: "批量添加/更新",
     padding: "5px",
-    align:'right bottom',
+    align: 'right bottom',
     content: "<iframe src='/newkeyword' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
     oniframeload: function () {
     },
@@ -353,14 +394,13 @@ var d =  dialog({title: "批量添加/更新",
 });
 
 
-function closeAddKeywordDialog(){
+function closeAddKeywordDialog() {
     $(".TB_overlayBG").css({display: "none"});
-    $("#addKeywordDiv").css("display","none");
+    $("#addKeywordDiv").css("display", "none");
 }
 $(function () {
-    $("#addKeyword").click(function(){
-        addKeywordInitCampSelect();
-        setDialogCss("addKeywordDiv");
+    $("#addKeyword").click(function () {
+        showSearchWord();
     });
 //    $("#addKeyword").livequery('click', function () {
 //        top.dialog({title: "关键词工具",
@@ -383,9 +423,10 @@ $(function () {
 //        return false;
 //    });
     $("#search_keyword").livequery('click', function () {
-        top.dialog({title: "关键词工具",
+        top.dialog({
+            title: "关键词工具",
             padding: "5px",
-            align:'right bottom',
+            align: 'right bottom',
             content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             oniframeload: function () {
             },
@@ -393,7 +434,7 @@ $(function () {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-               // window.location.reload(true);
+                // window.location.reload(true);
                 whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
             },
             onremove: function () {
@@ -402,9 +443,10 @@ $(function () {
         return false;
     });
     $("#addplan").livequery('click', function () {
-        top.dialog({title: "快速新建计划",
+        top.dialog({
+            title: "快速新建计划",
             padding: "5px",
-            align:'right bottom',
+            align: 'right bottom',
             content: "<iframe src='/addplan' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             oniframeload: function () {
             },
@@ -424,9 +466,10 @@ $(function () {
         return false;
     });
     $("#deletekeyword").livequery('click', function () {
-        top.dialog({title: "批量删除",
+        top.dialog({
+            title: "批量删除",
             padding: "5px",
-            align:'right bottom',
+            align: 'right bottom',
             content: "<iframe src='/deletekeyword' width='900' height='550' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             oniframeload: function () {
             },
@@ -434,7 +477,7 @@ $(function () {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-               // window.location.reload(true);
+                // window.location.reload(true);
             },
             onremove: function () {
             }
@@ -442,9 +485,10 @@ $(function () {
         return false;
     });
     $("#searchword").livequery('click', function () {
-        top.dialog({title: "搜索词报告",
+        top.dialog({
+            title: "搜索词报告",
             padding: "5px",
-            align:'right bottom',
+            align: 'right bottom',
             content: "<iframe src='/searchword' width='900' height='590' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             oniframeload: function () {
             },
@@ -459,7 +503,6 @@ $(function () {
         }).showModal(dockObj);
         return false;
     });
-
 
 
 });

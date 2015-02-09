@@ -10,6 +10,7 @@ import com.perfect.utils.paging.PaginationParam;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by baizz on 2014-7-7.
@@ -125,5 +126,8 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
      */
     void updateLs(KeywordDTO dto);
 
+    Map<String,Map<String,List<String>>> getNoKeywords(Long aid);
+
+    Map<String,Map<String,List<String>>> getNoKeywords(String aid);
 
 }

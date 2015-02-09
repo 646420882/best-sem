@@ -578,4 +578,15 @@ public class AssistantKeywordController extends WebContextSupport{
         }
         return writeMapObject(MSG,"级联上传失败");
     }
+
+    @RequestMapping(value = "assistantKeyword/getNoKeywords")
+    public ModelAndView getNoKeywords(@RequestParam(value = "aid", required = true) String aid) {
+        if (aid.length() > OBJ_SIZE) {
+            Map<String,Map<String,List<String>>> map = assistantKeywordService.getNoKeywords(aid);
+            return  writeMapObject(DATA, map);
+        } else {
+            Map<String,Map<String,List<String>>> map = assistantKeywordService.getNoKeywords(Long.parseLong(aid));
+           return writeMapObject(DATA, map);
+        }
+    }
 }

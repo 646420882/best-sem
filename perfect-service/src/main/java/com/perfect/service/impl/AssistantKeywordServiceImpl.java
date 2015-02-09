@@ -1042,5 +1042,15 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         return returnKeywordDTOs;
     }
 
+    @Override
+    public Map<String,Map<String,List<String>>> getNoKeywords(Long aid) {
+        return keywordDAO.getNoKeywords(aid);
+    }
+
+    @Override
+    public Map<String,Map<String,List<String>>> getNoKeywords(String aid) {
+        return keywordDAO.getNoKeywords(aid);
+    }
+
 
 }

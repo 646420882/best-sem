@@ -15,6 +15,7 @@ import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.KeywordBackUpEntity;
+import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
@@ -34,9 +35,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -662,6 +661,55 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         up.set("s",dto.getStatus());
         getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(dto.getKeywordId())), up, getEntityClass());//执行修改ls状态后，还需要将备份的keywor对应的删掉
         getMongoTemplate().remove(new Query(Criteria.where(KEYWORD_ID).is(dto.getKeywordId())), KeywordBackUpEntity.class);//删除备份的keyword
+    }
+
+    @Override
+    public Map<String, Map<String, List<String>>> getNoKeywords(Long aid) {
+        Map<String, Map<String, List<String>>> map = new HashMap<>();
+        Query query = new BasicQuery("{}", "{neg: 1,exneg:1," + CAMPAIGN_ID + ":1}");
+        query.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).is(aid));
+        AdgroupEntity adgroupEntity = getMongoTemplate().findOne(query, AdgroupEntity.class);
+        Map<String, List<String>> adnokeyword = new HashMap<>();
+        adnokeyword.put("neg", adgroupEntity.getNegativeWords());
+        adnokeyword.put("exneg", adgroupEntity.getExactNegativeWords());
+        map.put("ad", adnokeyword);
+        Query campQ = new BasicQuery("{}", "{neg:1,exneg:1}");
+        campQ.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).is(adgroupEntity.getCampaignId()));
+        CampaignEntity campaignEntity = getMongoTemplate().findOne(campQ, CampaignEntity.class);
+        Map<String, List<String>> canoKeyowrd = new HashMap<>();
+        canoKeyowrd.put("neg", campaignEntity.getNegativeWords());
+        canoKeyowrd.put("exneg", campaignEntity.getExactNegativeWords());
+        map.put("ca", canoKeyowrd);
+        return map;
+    }
+
+    @Override
+    public Map<String, Map<String, List<String>>> getNoKeywords(String aid) {
+        Map<String, Map<String, List<String>>> map = new HashMap<>();
+        Query queryNoObj = new BasicQuery("{}", "{neg: 1,exneg:1," + SYSTEM_ID + ":1,"+CAMPAIGN_ID+":1}");
+        queryNoObj.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(SYSTEM_ID).is(aid));
+        AdgroupEntity adgroupEntity = getMongoTemplate().findOne(queryNoObj, AdgroupEntity.class);
+        Map<String, List<String>> adnokeyword = new HashMap<>();
+        adnokeyword.put("neg", adgroupEntity.getNegativeWords());
+        adnokeyword.put("exneg", adgroupEntity.getExactNegativeWords());
+        map.put("ad", adnokeyword);
+        Query campQ = new BasicQuery("{}", "{neg:1,exneg:1}");
+        campQ.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(SYSTEM_ID).is(adgroupEntity.getCampaignObjId()));
+        CampaignEntity campaignEntity = getMongoTemplate().findOne(campQ, CampaignEntity.class);
+        Map<String, List<String>> canoKeyowrd = new HashMap<>();
+        if (campaignEntity != null) {
+            canoKeyowrd.put("neg", campaignEntity.getNegativeWords());
+            canoKeyowrd.put("exneg", campaignEntity.getExactNegativeWords());
+            map.put("ca", canoKeyowrd);
+        }else{
+            Query campNoObj = new BasicQuery("{}", "{neg:1,exneg:1}");
+            campNoObj.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).is(adgroupEntity.getCampaignId()));
+            campaignEntity = getMongoTemplate().findOne(campNoObj, CampaignEntity.class);
+            canoKeyowrd.put("neg", campaignEntity.getNegativeWords());
+            canoKeyowrd.put("exneg", campaignEntity.getExactNegativeWords());
+            map.put("ca", canoKeyowrd);
+        }
+        return map;
     }
 
     /**

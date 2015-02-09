@@ -1026,6 +1026,7 @@ function reducCpg_update(id) {
             var tr = $("#tbodyClick5").find(".list2_box3");
             tr.replaceWith(html);
             setCampaignValue(html, data.campaignId);
+            loadTree();
         }
     });
 }

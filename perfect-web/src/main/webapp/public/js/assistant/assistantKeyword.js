@@ -46,7 +46,7 @@ var getOptionsFromForm = function (current_page) {
     opt["num_display_entries"] = 4;
 
     //avoid html injections
-    var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
+    var htmlspecialchars = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
     $.each(htmlspecialchars, function (k, v) {
         opt.prev_text = opt.prev_text.replace(k, v);
         opt.next_text = opt.next_text.replace(k, v);
@@ -102,32 +102,32 @@ function getKwdList(nowPage) {
         data: param,
         dataType: "json",
         success: function (data) {
-            if(data!=null){
-            $("#tbodyClick").empty();
-            records = data.totalCount;
-            pageIndex = data.pageNo;
-            $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
+            if (data != null) {
+                $("#tbodyClick").empty();
+                records = data.totalCount;
+                pageIndex = data.pageNo;
+                $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
 
-            if (data.list == null || data.list == undefined || data.list.length == 0) {
-                $("#tbodyClick").html("<tr><td>暂无数据</td></tr>");
-                return;
-            }
+                if (data.list == null || data.list == undefined || data.list.length == 0) {
+                    $("#tbodyClick").html("<tr><td>暂无数据</td></tr>");
+                    return;
+                }
 
-            for (var i = 0; i < data.list.length; i++) {
-                var html = keywordDataToHtml(data.list[i], i);
-                $("#tbodyClick").append(html);
-                if (i == 0) {
-                    setKwdValue($(".firstKeyword"), data.list[i].object.keywordId);
-                    if (data.list[i].object.localStatus != null) {
-                        $("#reduction").find("span").removeClass("z_function_hover");
-                        $("#reduction").find("span").addClass("zs_top");
-                    } else {
-                        $("#reduction").find("span").removeClass("zs_top");
-                        $("#reduction").find("span").addClass("z_function_hover");
+                for (var i = 0; i < data.list.length; i++) {
+                    var html = keywordDataToHtml(data.list[i], i);
+                    $("#tbodyClick").append(html);
+                    if (i == 0) {
+                        setKwdValue($(".firstKeyword"), data.list[i].object.keywordId);
+                        if (data.list[i].object.localStatus != null) {
+                            $("#reduction").find("span").removeClass("z_function_hover");
+                            $("#reduction").find("span").addClass("zs_top");
+                        } else {
+                            $("#reduction").find("span").removeClass("zs_top");
+                            $("#reduction").find("span").addClass("z_function_hover");
+                        }
                     }
                 }
-            }
-        }else{
+            } else {
                 $("#tbodyClick").html("点击树，则加载！");
             }
         }
@@ -172,11 +172,11 @@ function keywordDataToHtml(obj, index) {
     }
 
     //kwid
-    var tmpHtml="";
-    if(obj.object.adgroupId!=undefined){
-        tmpHtml  ="<input type='hidden' camp='" + obj.campaignId + "' adg='" + obj.object.adgroupId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
-    }else{
-        tmpHtml  ="<input type='hidden'  adg='" + obj.object.adgroupObjId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
+    var tmpHtml = "";
+    if (obj.object.adgroupId != undefined) {
+        tmpHtml = "<input type='hidden' camp='" + obj.campaignId + "' adg='" + obj.object.adgroupId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
+    } else {
+        tmpHtml = "<input type='hidden'  adg='" + obj.object.adgroupObjId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
     }
 
     html = html + tmpHtml;
@@ -343,15 +343,14 @@ function keywordDataToHtml(obj, index) {
 function setKwdValue(obj, kwid) {
     $("#hiddenkwid_1").val(kwid);
     $(".keyword_1").val($(obj).find("td:eq(0)").html());
-    var price=$(obj).find("td:eq(3)").html();
-    if (price == "&lt;0.10&gt;"){
+    var price = $(obj).find("td:eq(3)").html();
+    if (price == "&lt;0.10&gt;") {
         $(".price_1").val("<0.10>");
-    } else if(price=="&nbsp;"){
+    } else if (price == "&nbsp;") {
         $(".price_1").val("");
-    }else {
+    } else {
         $(".price_1").val($(obj).find("td:eq(3)").html());
     }
-
 
 
     if ($(obj).find("td:eq(7) a").attr("href") != undefined) {
@@ -391,7 +390,7 @@ function setKwdValue(obj, kwid) {
 
 function setSelectSelected(matStr) {
     var str = matStr;
-    if(str==undefined){
+    if (str == undefined) {
         return;
     }
     if (str.indexOf("-")) {
@@ -418,12 +417,12 @@ function setSelectSelected(matStr) {
         }
     }
 }
-function kadrgg(){
-    var _height=$("#kkeyword").css("height");
-    if(_height=="400px"){
-        $("#kkeyword").css("height","350px");
-    }else{
-        $("#kkeyword").css("height","400px");
+function kadrgg() {
+    var _height = $("#kkeyword").css("height");
+    if (_height == "400px") {
+        $("#kkeyword").css("height", "350px");
+    } else {
+        $("#kkeyword").css("height", "400px");
     }
 }
 
@@ -506,7 +505,7 @@ function whenBlurEditKeyword(num, value) {
                             alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
                             return false;
                         } else {
-                        jsonData["pcDestinationUrl"] = value;
+                            jsonData["pcDestinationUrl"] = value;
                         }
                     }
                 }
@@ -516,22 +515,22 @@ function whenBlurEditKeyword(num, value) {
             break;
         case 4:
             if (value != "") {
-            if (getChar(value) > 1024) {
-                alert("移动访问Url字符不能超过1024个字符");
-                return;
-            } else {
-                if (value.indexOf(dm) == -1) {
-                    alert("\"移动访问Url\"必须包含" + dm + "的域名！");
+                if (getChar(value) > 1024) {
+                    alert("移动访问Url字符不能超过1024个字符");
                     return;
                 } else {
-                    if (value.substr(value.indexOf(dm)) != dm) {
-                        alert("\"移动访问Url\"必须以\"" + dm + "\"结尾！");
-                        return false;
+                    if (value.indexOf(dm) == -1) {
+                        alert("\"移动访问Url\"必须包含" + dm + "的域名！");
+                        return;
                     } else {
-                        jsonData["mobileDestinationUrl"] = value;
+                        if (value.substr(value.indexOf(dm)) != dm) {
+                            alert("\"移动访问Url\"必须以\"" + dm + "\"结尾！");
+                            return false;
+                        } else {
+                            jsonData["mobileDestinationUrl"] = value;
+                        }
                     }
                 }
-            }
             } else {
                 jsonData["mobileDestinationUrl"] = value;
             }
@@ -575,10 +574,10 @@ function deleteKwd() {
     });
 
     if (ids != "") {
-    if (ids.split(",").length == 0) {
-        alert("请选择行再操作!");
-        return;
-    }
+        if (ids.split(",").length == 0) {
+            alert("请选择行再操作!");
+            return;
+        }
     } else {
         alert("请选择要删除的关键词!");
         return;
@@ -618,9 +617,10 @@ $("#addOrUpdateKwd").livequery('click', function () {
 });
 
 function batchAddOrUpdate() {
-    top.dialog({title: "批量添加/更新",
+    top.dialog({
+        title: "批量添加/更新",
         padding: "5px",
-        align:'right bottom',
+        align: 'right bottom',
         content: "<iframe src='/assistantKeyword/showAddOrUpdateKeywordDialog' width='900' height='700' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -629,7 +629,7 @@ function batchAddOrUpdate() {
 //                  $('#value').html(this.returnValue);
 //              }
             if (jsonData.cid != null) {
-            whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
+                whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
             }
         },
         onremove: function () {
@@ -643,9 +643,10 @@ $("#batchDelKwd").livequery('click', function () {
 });
 
 function batchDelKeyword() {
-    top.dialog({title: "批量删除",
+    top.dialog({
+        title: "批量删除",
         padding: "5px",
-        align:'right bottom',
+        align: 'right bottom',
         content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -653,7 +654,7 @@ function batchDelKeyword() {
 //              if (this.returnValue) {
 //                  $('#value').html(this.returnValue);
 //              }
-            whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
+            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
         },
         onremove: function () {
         }
@@ -667,9 +668,10 @@ $(".searchwordReport").livequery('click', function () {
 });
 
 function searchword() {
-    top.dialog({title: "搜索词报告",
+    top.dialog({
+        title: "搜索词报告",
         padding: "5px",
-        align:'right bottom',
+        align: 'right bottom',
         content: "<iframe src='/assistantKeyword/showSearchWordDialog' width='900' height='570' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -681,7 +683,7 @@ function searchword() {
         },
         onremove: function () {
         },
-        position:['left','top']
+        position: ['left', 'top']
     }).showModal(dockObj);
     return false;
 }
@@ -826,15 +828,21 @@ var menu_keyword_add = {
 }
 
 function showSearchWord() {
-    top.dialog({title: "关键词工具",
-        padding: "5px",
-        align:'right bottom',
-        content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-        onclose: function () {
-            /* whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());*/
-        }
-    }).showModal(dockObj);
-    return false;
+    $("#adgroup_select").empty();
+    $("#phraseTypeDiv").hide();
+    $("span[id$=Neg]").empty();
+    $("#trade").get(0).selectedIndex = 0;
+    addKeywordInitCampSelect();
+    setDialogCss("addKeywordDiv");
+    //top.dialog({title: "关键词工具",
+    //    padding: "5px",
+    //    align:'right bottom',
+    //    content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+    //    onclose: function () {
+    //        /* whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());*/
+    //    }
+    //}).showModal(dockObj);
+    //return false;
 }
 /**
  * 右键菜单显示的选项
@@ -860,6 +868,72 @@ var keywordMenuExt = {
         $.smartMenu.remove();
     }
 };
+
+function validateNoAllowKeyword(value) {
+    if (value != "") {
+        $.get("/assistantKeyword/getNoKeywords", {aid: value}, function (res) {
+            var adNeg = "";
+            var adExNeg = "";
+            var caNeg = "";
+            var caExNeg = "";
+            if (res.data.ad.neg != null) {
+                if (res.data.ad.neg.length > 0) {
+                    for (var i = 0; i < res.data.ad.neg.length; i++) {
+                        adNeg = adNeg + res.data.ad.neg[i] + ",";
+                    }
+                    adNeg = adNeg.slice(0, -1);
+                    $("#adNeg").html(adNeg);
+                } else {
+                    $("#adNeg").html(res.data.ad.neg);
+                }
+            } else {
+                $("#adNeg").html(res.data.ad.neg)
+            }
+            if (res.data.ad.exneg != null) {
+                if (res.data.ad.exneg.length > 0) {
+                    for (var i = 0; i < res.data.ad.exneg.length; i++) {
+                        adExNeg = adExNeg + res.data.ad.exneg[i] + ",";
+                    }
+                    adExNeg = adExNeg.slice(0, -1);
+                    $("#adExNeg").html(adExNeg);
+                } else {
+                    $("#adExNeg").html(res.data.ad.exneg);
+                }
+            } else {
+                $("#adExNeg").html(res.data.ad.exneg);
+            }
+            if (res.data.ca.neg != null) {
+                if (res.data.ca.neg.length > 0) {
+                    for (var i = 0; i < res.data.ca.neg.length; i++) {
+                        caNeg = caNeg + res.data.ca.neg[i] + ",";
+                    }
+                    caNeg = caNeg.slice(0, -1);
+                    $("#caNeg").html(caNeg);
+                } else {
+                    $("#caNeg").html(res.data.ca.neg);
+                }
+            } else {
+                $("#caNeg").html(res.data.ca.neg);
+            }
+            if (res.data.ca.exneg != null) {
+                if (res.data.ca.exneg.length > 0) {
+                    for (var i = 0; i < res.data.ca.exneg.length; i++) {
+                        caExNeg = caExNeg + res.data.ca.exneg[i] + ",";
+                    }
+                    caExNeg = caExNeg.slice(0, -1);
+                    $("#caExNeg").html(caExNeg);
+                } else {
+                    $("#caExNeg").html(res.data.ca.exneg);
+                }
+            } else {
+                $("#caExNeg").html(res.data.ca.exneg);
+            }
+        });
+    } else {
+        $("span[id$=Neg]").empty();
+        $("#phraseTypeDiv").hide();
+    }
+}
 
 $("#tbodyClick").on("mousedown", "tr", function () {
     $(this).smartMenu(keywordMenuData, keywordMenuExt);

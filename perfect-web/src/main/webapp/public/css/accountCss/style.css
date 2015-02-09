@@ -3761,7 +3761,7 @@ top: 7.5px;
     margin-top:10px;
 }
 #sPreview{
-    width:80%;height: 100px; background:#fff;border:1px solid #CCC; padding:1%;
+    width:80%;height: 80px; background:#fff;border:1px solid #CCC;
 }
 
 /*input[type=checkbox],
