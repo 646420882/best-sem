@@ -351,7 +351,7 @@
       width: 85%;
   }
   .zs_bottom1 ul li .t_list03 .zs_input1 {
-      width: 85%;
+      width: 90%;
   }
   .w_list01 {
       width: 90px;
@@ -391,7 +391,7 @@
     }
 
     .t_list05 .zs_input3 {
-        width: 60%;
+        width: 70%;
     }
     .cy_bottom1 .zs_input3 {
         width: 70%;
@@ -443,10 +443,10 @@
     }
 
     .t_list05 {
-        width: 58%;
+        width: 100%;
     }
     .t_list05 .zs_input3 {
-        width: 55%;
+        width: 75%;
     }
 
     .zs_bottom2 .t_list06 {
@@ -493,6 +493,9 @@
     .wrap_list01{
     margin-bottom: 10px;
          }
+    .zs_function ul li {
+        margin: 0 5px 0 0;
+    }
 
 
 }
