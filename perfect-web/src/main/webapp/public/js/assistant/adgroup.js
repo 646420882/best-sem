@@ -9,7 +9,6 @@ $(function () {
     rDrag.init(document.getElementById("aKwd"));
     rDrag.init(document.getElementById("adUp"));
     rDrag.init(document.getElementById("apKwd"));
-    rDrag.init(document.getElementById("apKwd"));
     initNoKwdKeyUp();
 });
 var atmp = null;

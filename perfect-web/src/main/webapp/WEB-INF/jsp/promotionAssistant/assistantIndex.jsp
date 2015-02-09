@@ -966,8 +966,7 @@
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;*width:400px;" id="download">
-    <h2 id="box2"><span class="fl">账户下载</span><a href="#" class="close">关闭</a></h2>
-
+    <h2 id="CampaignChange"><span class="fl">账户下载</span><a href="#" class="close">关闭</a></h2>
     <div class="mainlist">
         您希望下载账户的哪个部分？
         <ul class="zs_set">
@@ -1032,7 +1031,7 @@
 </div>
 <!---------查找重复关键词----------->
 <div class="box3" style="display:none;*width:400px;">
-    <h2 id="box3">
+    <h2 id="RepeartChange">
         <span class="fl">查找重复关键词</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -1071,7 +1070,7 @@
 </div>
 <!---------估算工具----------->
 <div class="box4" style="display:none;*width:520px;">
-    <h2 id="box4">
+    <h2 id="GusuanChange">
         <span class="fl">估算工具</span><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
@@ -1135,7 +1134,7 @@
 </div>
 <!---------修改账户预算----------->
 <div class="box5" style="display:none; width: 230px">
-    <h2 id="box5">
+    <h2 id="budgetChange">
         <span class="fl">修改账户预算</span>
         <a href="#" class="close">关闭</a></h2>
 
@@ -1155,7 +1154,7 @@
 </div>
 <!---------IP排除----------->
 <div class="box6" style="display:none;width: 300px">
-    <h2 id="box6">
+    <h2 id="excludeIPChange">
         <span class="fl">IP排除</span>
         <a href="#" class="close">关闭</a></h2>
 
@@ -1175,7 +1174,7 @@
 </div>
 <!---------修改动态创意状态----------->
 <div class="box7" style="display:none; width: 230px">
-    <h2 id="box7"><a href="#" class="close">关闭</a></h2>
+    <h2 id="changeCreative"><a href="#" class="close">关闭</a></h2>
 
     <div class="mainlist">
         <div class="w_list03">

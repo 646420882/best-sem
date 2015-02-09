@@ -43,8 +43,9 @@ window.onload = function () {
     rDrag.init(document.getElementById('box9'));
     rDrag.init(document.getElementById('reachBudget_head'));
     rDrag.init(document.getElementById('downloadBox'));
-};
 
+
+};
 $(function () {
     $("#downloadAccountData").click(function () {
         loadExistsCampaign();
@@ -62,6 +63,17 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $("#download").css("display", "none");
     });
+    rDrag.init(document.getElementById('changeCreative'));
+    rDrag.init(document.getElementById('excludeIPChange'));
+    rDrag.init(document.getElementById('budgetChange'));
+    rDrag.init(document.getElementById('CampaignChange'));
+    rDrag.init(document.getElementById('uploadHead'));
+    rDrag.init(document.getElementById('RepeartChange'));
+    rDrag.init(document.getElementById('GusuanChange'));
+    rDrag.init(document.getElementById('setFdKeywordDiv'));
+    rDrag.init(document.getElementById('setExtensionDiv'));
+    rDrag.init(document.getElementById('setExcludeIpDiv'));
+
 });
 
 /*******查找重复关键词**************/
