@@ -19,6 +19,7 @@ public interface MongoEntityConstants {
     public static final String TBL_ADGROUP = "adgroup";
     public static final String TBL_KEYWORD = "keyword";
     public static final String TBL_CREATIVE = "creative";
+    public static final String TBL_SUBLINK="sublink";
     public static final String TBL_BIDDINGRULE = "bidrule";
     public static final String TBL_LOG = "logs";
     public static final String TBL_ACCOUNT_REPORT = "account_report";
@@ -42,6 +43,7 @@ public interface MongoEntityConstants {
     public static final String ADGROUP_ID = "agid";
     public static final String KEYWORD_ID = "kwid";
     public static final String CREATIVE_ID = "crid";
+    public static final String SUBLINK_ID="sid";
     public static final String CAMPAIGN_ID = "cid";
     public static final String REGION_ID = "rgid";
     public static final String OBJ_CAMPAIGN_ID = "ocid";
