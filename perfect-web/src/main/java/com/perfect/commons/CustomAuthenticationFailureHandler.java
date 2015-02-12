@@ -37,14 +37,14 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             try {
                 jedis = JRedisUtils.get();
                 if (!jedis.exists(key)) {
-                    jedis.set(key, 1 + "");
+                    jedis.incr(key);
                     CustomUserDetailsService.setPasswdBadCredentialsNum(1);
                     jedis.expire(key, 10800);
                 } else {
                     Integer oldValue = Integer.valueOf(jedis.get(key));
                     if (oldValue < 3) {
                         Integer newValue = oldValue + 1;
-                        jedis.set(key, newValue.toString());
+                        jedis.incr(key);
                         CustomUserDetailsService.setPasswdBadCredentialsNum(newValue);
                         jedis.expire(key, 10800);
                     }
