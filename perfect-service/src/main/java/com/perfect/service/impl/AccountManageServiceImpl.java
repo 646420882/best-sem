@@ -8,6 +8,7 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -31,6 +34,8 @@ import java.util.*;
  */
 @Service("accountManageService")
 public class AccountManageServiceImpl implements AccountManageService {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Resource
     private AccountManageDAO accountManageDAO;
@@ -215,9 +220,51 @@ public class AccountManageServiceImpl implements AccountManageService {
     @SuppressWarnings("unchecked")
     public Map<String, Object> getAccountReports(int number) {
         List<Date> dates = (List<Date>) DateUtils.getsLatestAnyDays("yyyy-MM-dd", number).get(DateUtils.KEY_DATE);
-        List<AccountReportDTO> list = accountManageDAO.getAccountReports(dates);
+        List<AccountReportDTO> list = new ArrayList<>(accountManageDAO.getAccountReports(dates));
+
+        List<String> dateStrList = DateUtils.getsLatestAnyDays("yyyy-MM-dd", 7).get(DateUtils.KEY_STRING);
+
+        Map<String, String> accountReportDateStrMap = new HashMap<>();
+        Map<String, AccountReportDTO> accountReportMap = new HashMap<>();
+
+        for (int i = 0, s = list.size(); i < s; i++) {
+            String dateStr = DATE_FORMAT.format(list.get(i).getDate());
+            accountReportDateStrMap.put(dateStr, dateStr);
+            accountReportMap.put(dateStr, list.get(i));
+        }
+
+        list.clear();
+
+        String accountName = "";
+        for (int i = 0, s = dateStrList.size(); i < s; i++) {
+            if (accountReportDateStrMap.containsKey(dateStrList.get(i))) {
+                list.add(accountReportMap.get(dateStrList.get(i)));
+                accountName = list.get(i).getAccountName();
+            } else {
+                AccountReportDTO accountReportDTO = new AccountReportDTO();
+                try {
+                    accountReportDTO.setDate(DATE_FORMAT.parse(dateStrList.get(i)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                accountReportDTO.setAccountName(accountName);
+                accountReportDTO.setCount(AppContext.getAccountId());
+                accountReportDTO.setPcClick(0);
+                accountReportDTO.setPcConversion(0.0);
+                accountReportDTO.setPcCost(BigDecimal.ZERO);
+                accountReportDTO.setPcCpm(BigDecimal.ZERO);
+                accountReportDTO.setPcCtr(0.0);
+                accountReportDTO.setMobileClick(0);
+                accountReportDTO.setMobileConversion(0.0);
+                accountReportDTO.setMobileCost(BigDecimal.ZERO);
+                accountReportDTO.setMobileCpm(BigDecimal.ZERO);
+                accountReportDTO.setMobileCtr(0.0);
+                list.add(accountReportDTO);
+            }
+        }
+
         Map<String, Object> values = JSONUtils.getJsonMapData(list);
-        values.put("dates", JSONUtils.getJsonObjectArray(DateUtils.getsLatestAnyDays("yyyy-MM-dd", 7).get(DateUtils.KEY_STRING)));
+        values.put("dates", JSONUtils.getJsonObjectArray(dateStrList));
         return values;
     }
 

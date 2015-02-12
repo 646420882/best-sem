@@ -99,13 +99,21 @@ var AccountPerformance = function () {
             var results1 = data.rows;
             var results2 = data.dates;
             if (results1 != null && results1.length > 0) {
-                $.each(results1, function (i, item) {
+                for (var _i = results1.length - 1; _i >= 0; _i--) {
+                    var item = results1[_i];
                     arr_impr.push(item.pcImpression + (item.mobileImpression == null ? 0 : item.mobileImpression));
                     arr_click.push(item.pcClick + (item.mobileClick == null ? 0 : item.mobileClick));
                     arr_ctr.push(item.pcCtr + (item.mobileCtr == null ? 0 : item.mobileCtr));
                     arr_cost.push(item.pcCost + (item.mobileCost == null ? 0 : item.mobileCost));
                     arr_conv.push(item.pcConversion + (item.mobileConversion == null ? 0 : item.mobileConversion));
-                });
+                }
+                //$.each(results1, function (i, item) {
+                //    arr_impr.push(item.pcImpression + (item.mobileImpression == null ? 0 : item.mobileImpression));
+                //    arr_click.push(item.pcClick + (item.mobileClick == null ? 0 : item.mobileClick));
+                //    arr_ctr.push(item.pcCtr + (item.mobileCtr == null ? 0 : item.mobileCtr));
+                //    arr_cost.push(item.pcCost + (item.mobileCost == null ? 0 : item.mobileCost));
+                //    arr_conv.push(item.pcConversion + (item.mobileConversion == null ? 0 : item.mobileConversion));
+                //});
             }
 
             if (results2 != null && results2.length > 0) {
