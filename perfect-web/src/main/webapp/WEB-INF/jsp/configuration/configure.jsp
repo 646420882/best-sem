@@ -1,7 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-
 <!doctype html>
 <html>
 <head>
@@ -135,16 +133,14 @@
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>
-
-
 </div>
 <div class="TB_overlayBG"></div>
-<div class="box" id="new_riginality" style="display:none; width:552px;">
-    <h2 id="new_riginality2">同步baidu推广帐号密码-如果您更改了推广帐号密码，请立即同步密码。<a href="#" class="close">关闭</a></h2>
-
-    <div class="mainlist2 over">
+<div class="box" id="new_riginality" style="display:none; width:452px;">
+    <h2 id="new_riginality2">同步密码<a href="#" class="close">关闭</a></h2>
+    <div class="mainlist2 over"  style="width:452px;">
         <div class="mainlist">
             <ul>
+                <li><p style="color:red;">注：同步baidu推广帐号密码-如果您更改了推广帐号密码，请立即同步密码。</p></li>
                 <li>
                     <p>请输入CubeSearch密码，以保证账户安全：</p>
 
@@ -167,7 +163,7 @@
                 </li>
             </ul>
         </div>
-        <div class="main_bottom">
+        <div class="main_bottom" style="margin:0px;">
             <div class="w_list03">
                 <ul>
                     <li class="current">确认</li>
@@ -209,6 +205,5 @@
 
 
 </script>
-
 </body>
 </html>

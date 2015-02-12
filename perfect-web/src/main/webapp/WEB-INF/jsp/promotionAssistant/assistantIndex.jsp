@@ -1140,7 +1140,7 @@
 
     <div class="mainlist">
         <ul class="zs_set">
-            <li><input id="budget_text" type="text" style="width: 180px"/></li>
+            <li><input id="budget_text" type="text" style="width: 350px"/></li>
         </ul>
     </div>
     <div class="main_bottom" style="margin-left: 20%">
@@ -1157,6 +1157,7 @@
     <h2 id="excludeIPChange">
         <span class="fl">IP排除</span>
         <a href="#" class="close">关闭</a></h2>
+
 
     <div class="mainlist">
         <ul class="zs_set">

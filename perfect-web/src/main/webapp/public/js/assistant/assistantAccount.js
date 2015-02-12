@@ -101,11 +101,11 @@ var AccountPerformance = function () {
             if (results1 != null && results1.length > 0) {
                 for (var _i = results1.length - 1; _i >= 0; _i--) {
                     var item = results1[_i];
-                    arr_impr.push(item.pcImpression + (item.mobileImpression == null ? 0 : item.mobileImpression));
-                    arr_click.push(item.pcClick + (item.mobileClick == null ? 0 : item.mobileClick));
-                    arr_ctr.push(item.pcCtr + (item.mobileCtr == null ? 0 : item.mobileCtr));
-                    arr_cost.push(item.pcCost + (item.mobileCost == null ? 0 : item.mobileCost));
-                    arr_conv.push(item.pcConversion + (item.mobileConversion == null ? 0 : item.mobileConversion));
+                    arr_impr.push(item.pcImpression == null ? 0 : item.pcImpression + (item.mobileImpression == null ? 0 : item.mobileImpression));
+                    arr_click.push(item.pcClick == null ? 0 : item.pcClick + (item.mobileClick == null ? 0 : item.mobileClick));
+                    arr_ctr.push(item.pcCtr == null ? 0 : item.pcCtr + (item.mobileCtr == null ? 0 : item.mobileCtr));
+                    arr_cost.push(item.pcCost == null ? 0 : item.pcCost + (item.mobileCost == null ? 0 : item.mobileCost));
+                    arr_conv.push(item.pcConversion == null ? 0 : item.pcConversion + (item.mobileConversion == null ? 0 : item.mobileConversion));
                 }
                 //$.each(results1, function (i, item) {
                 //    arr_impr.push(item.pcImpression + (item.mobileImpression == null ? 0 : item.mobileImpression));
@@ -126,12 +126,12 @@ var AccountPerformance = function () {
 
     $("#containerLegend").empty();
     $("#containerLegend").html("<div class='tu_top over'><ul><li><b>账户表现</b></li>" +
-    "<li><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></li>" +
-    "<li><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></li>" +
-    "<li><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></li>" +
-    "<li><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></li>" +
-    "<li><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></li>" +
-    "<li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+        "<li><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></li>" +
+        "<li><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></li>" +
+        "<li><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></li>" +
+        "<li><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></li>" +
+        "<li><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></li>" +
+        "<li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
     data1 = {
         name: '展现',
         type: 'line',
@@ -166,6 +166,14 @@ var AccountPerformance = function () {
 };
 var mychart = function () {
     var myChart = echarts.init(document.getElementById('container'));
+    var dataNew;
+    if (data1 == "") {
+        dataNew = [data2];
+    } else if (data2 == "") {
+        dataNew = [data1];
+    } else {
+        dataNew = [data1, data2];
+    }
     var option = {
         tooltip: {
             trigger: 'axis'
@@ -200,7 +208,8 @@ var mychart = function () {
                         color: colorOne
                     }
                 }
-            }, {
+            },
+            {
                 type: 'value',
                 name: "click",
                 scale: true,
@@ -215,10 +224,7 @@ var mychart = function () {
                 }
             }
         ],
-        series: [
-            data1,
-            data2
-        ]
+        series: dataNew
     };
     myChart.setOption(option);
 };

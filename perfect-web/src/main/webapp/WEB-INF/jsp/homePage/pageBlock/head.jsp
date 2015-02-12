@@ -169,9 +169,9 @@
         time.innerHTML = "晚上,好！"
     }
     //弹窗
-    window.onload = function () {
+    $(function () {
         rDrag.init(document.getElementById('head_top'));
-    };
+    });
     $(function () {
         $("#head_click").click(function () {
             $(".TB_overlayBG").css({
