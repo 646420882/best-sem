@@ -2,7 +2,9 @@ package com.perfect.commons;
 
 import com.perfect.utils.MD5;
 import com.perfect.utils.redis.JRedisUtils;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import redis.clients.jedis.Jedis;
 
@@ -16,9 +18,6 @@ import java.io.IOException;
  */
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    private static final String usernameNotFound = "org.springframework.security.core.userdetails.UsernameNotFoundException";
-    private static final String badCredentials = "org.springframework.security.authentication.BadCredentialsException";
-
     public CustomAuthenticationFailureHandler(String defaultFailureUrl) {
         super(defaultFailureUrl);
     }
@@ -26,7 +25,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         super.onAuthenticationFailure(request, response, exception);
-        if (badCredentials.equals(exception.getClass().getName())) {
+        if (exception instanceof BadCredentialsException) {
             //密码验证失败
             CustomUserDetailsService.setUsernameNotFound(false);
             String userName = CustomUserDetailsService.getUserName();
@@ -40,21 +39,25 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
                 if (!jedis.exists(key)) {
                     jedis.set(key, 1 + "");
                     CustomUserDetailsService.setPasswdBadCredentialsNum(1);
+                    jedis.expire(key, 10800);
                 } else {
                     Integer oldValue = Integer.valueOf(jedis.get(key));
                     if (oldValue < 3) {
                         Integer newValue = oldValue + 1;
                         jedis.set(key, newValue.toString());
                         CustomUserDetailsService.setPasswdBadCredentialsNum(newValue);
+                        jedis.expire(key, 10800);
+                    }
+                    if (oldValue == 3) {
+                        CustomUserDetailsService.setPasswdBadCredentialsNum(3);
                     }
                 }
-                jedis.expire(key, 10800);
             } finally {
                 if (jedis != null) {
                     JRedisUtils.returnJedis(jedis);
                 }
             }
-        } else if (usernameNotFound.equals(exception.getClass().getName())) {
+        } else if (exception instanceof UsernameNotFoundException) {
             //用户名没有找到
             CustomUserDetailsService.setUsernameNotFound(true);
         }
