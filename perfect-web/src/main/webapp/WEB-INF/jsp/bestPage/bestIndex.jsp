@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-            <div class="serBox" disabled  onclick="window.open('http://seo.best-ad.cn/auth/login?username=${currSystemUserName}')">
+            <div class="serBox disabled">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo2.png"></div>
