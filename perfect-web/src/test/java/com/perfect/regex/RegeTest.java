@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
  */
 public class RegeTest {
     public static void main(String[] args) {
-        Pattern pattern=Pattern.compile("(^javascript:).*||#");
-        Matcher m=pattern.matcher("http://");
-        boolean bol=m.matches();
-        System.out.println(bol);
+//        Pattern pattern=Pattern.compile("(^javascript:).*||#");
+//        Matcher m=pattern.matcher("http://");
+//        boolean bol=m.matches();
+//        System.out.println(bol);
     }
 }

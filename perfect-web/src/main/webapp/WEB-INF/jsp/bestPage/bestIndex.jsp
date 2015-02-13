@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="serBox disabled">
+            <div class="serBox" disabled  onclick="window.open('http://seo.best-ad.cn/auth/login?username=${currSystemUserName}')">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo2.png"></div>
@@ -80,7 +80,7 @@
                     <p>专家级的建议和优化方案</p>
                 </div>
                 <div class="enter">
-                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
+                    <a href="javascript:void(0);">敬请期待</a>
                 </div>
             </div>
         </div>
