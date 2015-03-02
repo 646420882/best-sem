@@ -114,8 +114,8 @@
             </div>
             <div class="txt2"><a  href="javascript:void(0);" onclick="js_method()"  class="a_jump"><span class="tit">百思慧眼</span></a>
                 <div class="tex2_mid">
-                    <p>云端备份数据</p>
-                    <p>快速实现信息同步</p>
+                    <p><b>2015年3月31日</b></p>
+                    <p><b>正式上线</b></p>
                 </div>
                 <div class="enter">
                     <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
