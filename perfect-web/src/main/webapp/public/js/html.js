@@ -259,12 +259,7 @@ $(function () {
     });
 
     /*******附加创意底部****/
-    var $tab_li = $('.w_list05 li');
-    $('.w_list05 li').click(function () {
-        $(this).addClass('current').siblings().removeClass('current');
-        var index = $tab_li.index(this);
-        $('div.w_list06 > div').eq(index).show().siblings().hide();
-    });
+
 
     /*******账户下载设置****/
     var $tab_li = $('.zs_set li input');

@@ -20,6 +20,7 @@ public interface MongoEntityConstants {
     public static final String TBL_KEYWORD = "keyword";
     public static final String TBL_CREATIVE = "creative";
     public static final String TBL_SUBLINK="sublink";
+    public static final String TBL_MOBILESUBLINK="mobilesublink";
     public static final String TBL_BIDDINGRULE = "bidrule";
     public static final String TBL_LOG = "logs";
     public static final String TBL_ACCOUNT_REPORT = "account_report";

@@ -37,7 +37,7 @@ public class WebContextSupport   {
         }
     }
     public void writeObject(Object obj, HttpServletResponse res) {
-        writeJson(obj, res);
+        writeHtml(JSONUtils.getJsonString(obj),res);
     }
 
     public void writeJson(Object obj, HttpServletResponse res) {

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -75,7 +76,10 @@ public class HomePageManageController extends WebContextSupport {
      * @return
      */
     @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView logout() {
+    public ModelAndView logout(HttpServletResponse response) {
+       Cookie cookies=new Cookie("semToken",null);
+        cookies.setMaxAge(0);
+        response.addCookie(cookies);
         return null;
     }
 

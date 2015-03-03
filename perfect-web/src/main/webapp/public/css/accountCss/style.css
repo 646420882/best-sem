@@ -2347,6 +2347,7 @@ h2 .close {
 .list06_textarea {
     width: 95%;
     height: 142px;
+    border-radius:3px;
     border-top: 2px solid #555555;
     border-left: 1px solid #cfcfcf;
     border-right: 1px solid #cfcfcf;

@@ -13,11 +13,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Created by baizz on 2014-10-10.
@@ -71,7 +73,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
-
+        Cookie cookie=new Cookie("semToken",UUID.randomUUID().toString().replaceAll("-",""));
+        cookie.setMaxAge(30*60*60);
+        response.addCookie(cookie);
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 

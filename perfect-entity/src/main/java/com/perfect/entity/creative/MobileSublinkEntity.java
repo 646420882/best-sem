@@ -9,16 +9,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.List;
 
 /**
- * Created by XiaoWei on 2015/2/10.
+ * Created by XiaoWei on 2015/2/27.
  */
-@Document(collection = MongoEntityConstants.TBL_SUBLINK)
-public class SublinkEntity extends AccountIdEntity {
+@Document(collection = MongoEntityConstants.TBL_MOBILESUBLINK)
+public class MobileSublinkEntity extends AccountIdEntity {
     @Id
     private String id;
     @Field(value =MongoEntityConstants.SUBLINK_ID)
     private Long sublinkId;
     @Field(value = "sif")
-    private List<SublinkInfoEntity> sublinkInfos;
+    private List<MobileSublinkInfoEntity> mobileSublinkInfos;
     @Field(value = MongoEntityConstants.ADGROUP_ID)
     private Long adgroupId;
     @Field(value = "p")
@@ -34,6 +34,30 @@ public class SublinkEntity extends AccountIdEntity {
 
     public void setAdgroupId(Long adgroupId) {
         this.adgroupId = adgroupId;
+    }
+
+    public String getAdgroupObjId() {
+        return adgroupObjId;
+    }
+
+    public void setAdgroupObjId(String adgroupObjId) {
+        this.adgroupObjId = adgroupObjId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<MobileSublinkInfoEntity> getMobileSublinkInfos() {
+        return mobileSublinkInfos;
+    }
+
+    public void setMobileSublinkInfos(List<MobileSublinkInfoEntity> mobileSublinkInfos) {
+        this.mobileSublinkInfos = mobileSublinkInfos;
     }
 
     public Boolean getPause() {
@@ -60,37 +84,13 @@ public class SublinkEntity extends AccountIdEntity {
         this.sublinkId = sublinkId;
     }
 
-    public List<SublinkInfoEntity> getSublinkInfos() {
-        return sublinkInfos;
-    }
-
-    public void setSublinkInfos(List<SublinkInfoEntity> sublinkInfos) {
-        this.sublinkInfos = sublinkInfos;
-    }
-
-    public String getAdgroupObjId() {
-        return adgroupObjId;
-    }
-
-    public void setAdgroupObjId(String adgroupObjId) {
-        this.adgroupObjId = adgroupObjId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
-        return "SublinkEntity{" +
+        return "MobileSublinkEntity{" +
                 "adgroupId=" + adgroupId +
                 ", id='" + id + '\'' +
                 ", sublinkId=" + sublinkId +
-                ", sublinkInfos=" + sublinkInfos +
+                ", mobileSublinkInfos=" + mobileSublinkInfos +
                 ", pause=" + pause +
                 ", status=" + status +
                 ", adgroupObjId='" + adgroupObjId + '\'' +

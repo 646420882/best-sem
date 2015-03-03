@@ -1,31 +1,19 @@
-package com.perfect.entity.creative;
+package com.perfect.dto.creative;
 
-import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.entity.account.AccountIdEntity;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import com.perfect.dto.account.AccountIdDTO;
 
 import java.util.List;
 
 /**
- * Created by XiaoWei on 2015/2/10.
+ * Created by XiaoWei on 2015/2/25.
  */
-@Document(collection = MongoEntityConstants.TBL_SUBLINK)
-public class SublinkEntity extends AccountIdEntity {
-    @Id
+public class SublinkDTO extends AccountIdDTO {
     private String id;
-    @Field(value =MongoEntityConstants.SUBLINK_ID)
     private Long sublinkId;
-    @Field(value = "sif")
-    private List<SublinkInfoEntity> sublinkInfos;
-    @Field(value = MongoEntityConstants.ADGROUP_ID)
+    private List<SublinkInfoDTO> sublinkInfos;
     private Long adgroupId;
-    @Field(value = "p")
     private Boolean pause;
-    @Field(value = "s")
     private Integer status;
-    @Field(MongoEntityConstants.OBJ_ADGROUP_ID)
     private String adgroupObjId;
 
     public Long getAdgroupId() {
@@ -34,6 +22,22 @@ public class SublinkEntity extends AccountIdEntity {
 
     public void setAdgroupId(Long adgroupId) {
         this.adgroupId = adgroupId;
+    }
+
+    public String getAdgroupObjId() {
+        return adgroupObjId;
+    }
+
+    public void setAdgroupObjId(String adgroupObjId) {
+        this.adgroupObjId = adgroupObjId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Boolean getPause() {
@@ -60,33 +64,17 @@ public class SublinkEntity extends AccountIdEntity {
         this.sublinkId = sublinkId;
     }
 
-    public List<SublinkInfoEntity> getSublinkInfos() {
+    public List<SublinkInfoDTO> getSublinkInfos() {
         return sublinkInfos;
     }
 
-    public void setSublinkInfos(List<SublinkInfoEntity> sublinkInfos) {
+    public void setSublinkInfos(List<SublinkInfoDTO> sublinkInfos) {
         this.sublinkInfos = sublinkInfos;
-    }
-
-    public String getAdgroupObjId() {
-        return adgroupObjId;
-    }
-
-    public void setAdgroupObjId(String adgroupObjId) {
-        this.adgroupObjId = adgroupObjId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "SublinkEntity{" +
+        return "SublinkDTO{" +
                 "adgroupId=" + adgroupId +
                 ", id='" + id + '\'' +
                 ", sublinkId=" + sublinkId +

@@ -62,6 +62,13 @@ function whenClickTreeLoadData(tabName, param) {
             }
         }
     } else if (tabName == "附加创意") {
+        if (param.cid != null) {
+            if (param.cid != null && param.aid != null) {
+                getSublinkListUnit(param);
+            } else {
+                getSublinkListPlan(param.cid);
+            }
+        }
 
     } else if (tabName == "推广单元") {
         if (param.cid != null) {
