@@ -224,7 +224,7 @@ var _pct = _pct || [];
     };
     h.I = {
         u: "best-ad.cn",
-        P: "182.92.227.79",
+        P: "192.168.1.120",
         S: "pft.gif",
         dk: 8088,
         protocol: "https:" == document.location.protocol ? "https:" : "http:",
