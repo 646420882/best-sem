@@ -23,12 +23,14 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <%--<link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>--%>
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/perfectNew.js"></script>
     <style>
         .page2 .ajc {
             background: #ffb900;
             border: 1px solid #fab30b;
             color: #fff;
         }
+
     </style>
 </head>
 <body>
@@ -1157,7 +1159,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
-<script type="text/javascript"  src="${pageContext.request.contextPath}/public/js/census/perfect.js"></script>
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
