@@ -532,7 +532,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = format.parse(arr[0]);
                     entity1.setDate(date);
-                    entity1.setAccountId(Long.valueOf(arr[1]));
+                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
                     entity1.setAccountName(arr[2]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[3] == null ? "0" : arr[3]));
@@ -587,8 +587,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     }
                     String[] arr = str.split("\\t");
                     CampaignReportDTO entity1 = new CampaignReportDTO();
-                    entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setCampaignId(Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[5] == null ? "0" : arr[5]));
@@ -642,10 +642,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     }
                     String[] arr = str.split("\\t");
                     AdgroupReportDTO entity1 = new AdgroupReportDTO();
-                    entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setCampaignId(Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
-                    entity1.setAdgroupId(Long.valueOf(arr[5]));
+                    entity1.setAdgroupId(arr[5].equals("-")?0L:Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[7] == null ? "0" : arr[7]));
@@ -699,15 +699,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     }
                     String[] arr = str.split("\\t");
                     CreativeReportDTO entity1 = new CreativeReportDTO();
-                    entity1.setCreativeId(Long.valueOf(arr[7]));
+                    entity1.setCreativeId(arr[7].equals("-")?0L:Long.valueOf(arr[7]));
                     entity1.setCreativeTitle(arr[8]);
                     entity1.setDescription1(arr[9]);
                     entity1.setDescription2(arr[10]);
                     entity1.setShowUrl(arr[11]);
-                    entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setCampaignId(Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
-                    entity1.setAdgroupId(Long.valueOf(arr[5]));
+                    entity1.setAdgroupId(arr[5].equals("-")?0L:Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[12] == null ? "0" : arr[12]));
@@ -762,12 +762,12 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     String[] arr = str.split("\\t");
                     KeywordReportDTO entity1 = new KeywordReportDTO();
 
-                    entity1.setKeywordId(Long.valueOf(arr[7]));
+                    entity1.setKeywordId(arr[7].equals("-")?0L:Long.valueOf(arr[7]));
                     entity1.setKeywordName(arr[9]);
-                    entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setCampaignId(Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
-                    entity1.setAdgroupId(Long.valueOf(arr[5]));
+                    entity1.setAdgroupId(arr[5].equals("-")?0L:Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[10] == null ? "0" : arr[10]));
@@ -823,8 +823,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     }
                     String[] arr = str.split("\\t");
                     RegionReportDTO entity1 = new RegionReportDTO();
-                    entity1.setAccountId(Long.valueOf(arr[1]));
-                    entity1.setCampaignId(Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     if (type == 1) {
                         entity1.setAdgroupId(Long.valueOf(arr[5]));
