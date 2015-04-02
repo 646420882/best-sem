@@ -86,11 +86,12 @@
                                             </form>
                                         </span>
                                         <span>
-                                               <dl><input type="image"
-                                                          src="${pageContext.request.contextPath}/public/img/search2.png">
+                                               <dl>
+                                                   <input type="image" src="${pageContext.request.contextPath}/public/img/search2.png">
                                                </dl>
-                                               <dl><input type="checkbox" style=" margin-top:5px;" name="fullmatch"
-                                                          checked="checked">
+                                               <dl>
+                                                   <input type="checkbox" style=" margin-top:5px;" name="fullmatch">
+                                                   精确搜索
                                                </dl>
                                                 <dl>
                                                     <input type="text" class="w_text"

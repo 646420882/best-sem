@@ -140,18 +140,32 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         if (queryParams != null && !queryParams.isEmpty() && queryParams.size() > 0) {
             for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
                 if ("matchType".equals(entry.getKey())) {
-                    Integer matchType = Integer.valueOf(entry.getValue().toString());
-                    if (matchType == 1) {
-                        criteria.and("mt").is(1);
-                    } else if (matchType == 2) {
-                        criteria.and("mt").is(2).and("pt").is(3);
-                    } else if (matchType == 3) {
-                        criteria.and("mt").is(2).and("pt").is(2);
-                    } else if (matchType == 4) {
-                        criteria.and("mt").is(2).and("pt").is(1);
-                    } else if (matchType == 5) {
-                        criteria.and("mt").is(3);
-                    }
+                    List<Integer> matchTypes = new ArrayList<>();
+                    List<Integer> ptTypes = new ArrayList<>();
+                    Arrays.stream(entry.getValue().toString().split(",")).forEach(matchType -> {
+                        Integer _matchType = Integer.parseInt(matchType.trim());
+                        if (_matchType == 1) {
+                            matchTypes.add(1);
+//                            criteria.and("mt").is(1);
+                        } else if (_matchType == 2) {
+                            matchTypes.add(2);
+                            ptTypes.add(3);
+//                            criteria.and("mt").is(2).and("pt").is(3);
+                        } else if (_matchType == 3) {
+                            matchTypes.add(2);
+                            ptTypes.add(2);
+//                            criteria.and("mt").is(2).and("pt").is(2);
+                        } else if (_matchType == 4) {
+                            matchTypes.add(2);
+                            ptTypes.add(1);
+//                            criteria.and("mt").is(2).and("pt").is(1);
+                        } else if (_matchType == 5) {
+                            matchTypes.add(3);
+//                            criteria.and("mt").is(3);
+                        }
+                    });
+
+                    criteria.and("mt").in(matchTypes).and("pt").in(ptTypes);
                 }
 
                 if ("adgroupIds".equals(entry.getKey())) {
@@ -188,20 +202,20 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
     @Override
     public List<KeywordDTO> findHasLocalStatus() {
-       List<KeywordEntity> keywordEntities= getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass());
-        return ObjectUtils.convert(keywordEntities,KeywordDTO.class);
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
     }
 
     @Override
     public List<KeywordDTO> findHasLocalStatusStr(List<String> strs) {
-        List<KeywordEntity> keywordEntities= getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_ADGROUP_ID).in(strs)),getEntityClass());
-        return ObjectUtils.convert(keywordEntities,KeywordDTO.class);
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_ADGROUP_ID).in(strs)), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
     }
 
     @Override
     public List<KeywordDTO> findHasLocalStatusLong(List<Long> longs) {
-        List<KeywordEntity> keywordEntities= getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)),getEntityClass());
-        return ObjectUtils.convert(keywordEntities,KeywordDTO.class);
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
     }
 
     @Override
@@ -628,37 +642,37 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             }
         }
         q.addCriteria(c);
-        KeywordEntity entity=getMongoTemplate().findOne(q, getEntityClass());
-        KeywordDTO dto=ObjectUtils.convert(entity,KeywordDTO.class);
+        KeywordEntity entity = getMongoTemplate().findOne(q, getEntityClass());
+        KeywordDTO dto = ObjectUtils.convert(entity, KeywordDTO.class);
         return dto;
     }
 
     @Override
     public void updateByObjId(KeywordDTO dto) {
-        Update update=new Update();
-        update.set("name",dto.getKeyword());
-        update.set("pr",dto.getPrice());
-        update.set("pc",dto.getPcDestinationUrl());
-        update.set("mt",dto.getMatchType());
-        update.set("p",dto.getPause());
-        update.set("mobile",dto.getMobileDestinationUrl());
+        Update update = new Update();
+        update.set("name", dto.getKeyword());
+        update.set("pr", dto.getPrice());
+        update.set("pc", dto.getPcDestinationUrl());
+        update.set("mt", dto.getMatchType());
+        update.set("p", dto.getPause());
+        update.set("mobile", dto.getMobileDestinationUrl());
         getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(dto.getId())), update, getEntityClass());
     }
 
     @Override
     public void update(String oid, KeywordDTO dto) {
-        Update update=new Update();
-        update.set("ls",null);
-        update.set(KEYWORD_ID,dto.getKeywordId());
-        update.set("s",dto.getStatus());
-        getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(oid)),update,getEntityClass());
+        Update update = new Update();
+        update.set("ls", null);
+        update.set(KEYWORD_ID, dto.getKeywordId());
+        update.set("s", dto.getStatus());
+        getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(oid)), update, getEntityClass());
     }
 
     @Override
     public void updateLs(KeywordDTO dto) {
-        Update up=new Update();
-        up.set("ls",null);
-        up.set("s",dto.getStatus());
+        Update up = new Update();
+        up.set("ls", null);
+        up.set("s", dto.getStatus());
         getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(dto.getKeywordId())), up, getEntityClass());//执行修改ls状态后，还需要将备份的keywor对应的删掉
         getMongoTemplate().remove(new Query(Criteria.where(KEYWORD_ID).is(dto.getKeywordId())), KeywordBackUpEntity.class);//删除备份的keyword
     }
@@ -686,7 +700,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     @Override
     public Map<String, Map<String, List<String>>> getNoKeywords(String aid) {
         Map<String, Map<String, List<String>>> map = new HashMap<>();
-        Query queryNoObj = new BasicQuery("{}", "{neg: 1,exneg:1," + SYSTEM_ID + ":1,"+CAMPAIGN_ID+":1}");
+        Query queryNoObj = new BasicQuery("{}", "{neg: 1,exneg:1," + SYSTEM_ID + ":1," + CAMPAIGN_ID + ":1}");
         queryNoObj.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(SYSTEM_ID).is(aid));
         AdgroupEntity adgroupEntity = getMongoTemplate().findOne(queryNoObj, AdgroupEntity.class);
         Map<String, List<String>> adnokeyword = new HashMap<>();
@@ -701,7 +715,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             canoKeyowrd.put("neg", campaignEntity.getNegativeWords());
             canoKeyowrd.put("exneg", campaignEntity.getExactNegativeWords());
             map.put("ca", canoKeyowrd);
-        }else{
+        } else {
             Query campNoObj = new BasicQuery("{}", "{neg:1,exneg:1}");
             campNoObj.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).is(adgroupEntity.getCampaignId()));
             campaignEntity = getMongoTemplate().findOne(campNoObj, CampaignEntity.class);

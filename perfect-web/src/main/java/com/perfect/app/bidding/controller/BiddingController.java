@@ -334,7 +334,7 @@ public class BiddingController {
                              @RequestParam(value = "q", required = false) String query,
                              @RequestParam(value = "f", required = false, defaultValue = "false") boolean fullMatch,
                              @RequestParam(value = "filter", required = true, defaultValue = "0") int filter,
-                             @RequestParam(value = "matchType", required = false) Integer matchType,
+                             @RequestParam(value = "matchType[]", required = false) Integer[] matchType,
                              @RequestParam(value = "quality", required = false) String quality,
                              @RequestParam(value = "price", required = false) String price,
                              @RequestParam(value = "statusStr", required = false) Integer status,
@@ -353,7 +353,8 @@ public class BiddingController {
             queryParams.put("status", status);
         }
         if (matchType != null) {
-            queryParams.put("matchType", matchType);
+            String matchTypes = Arrays.toString(matchType).replace("[", "").replace("]", "");
+            queryParams.put("matchType", matchTypes);
         }
         BigDecimal minPrice = new BigDecimal(0);
         BigDecimal maxPrice = new BigDecimal(0);
@@ -382,7 +383,7 @@ public class BiddingController {
          * <p/>
          */
         if (keywordQualityConditionSize > 0) {
-            fullMatch = true;
+            fullMatch = false;
         }
 //
 //        //是否启用了高级搜索
@@ -473,7 +474,7 @@ public class BiddingController {
                 }
 
                 if (ids.isEmpty()) {
-                    jsonView.setAttributesMap(new HashMap<String, Object>());
+                    jsonView.setAttributesMap(new HashMap<>());
                     return new ModelAndView(jsonView);
                 }
                 List<BiddingRuleDTO> byKeywordIds = biddingRuleService.findByKeywordIds(ids);

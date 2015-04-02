@@ -397,13 +397,10 @@ $(function () {
         if (document.getElementById("advancedSearch").style.display == "block") {
             //matchType
             var checkedMatchType = $("input[name=matchType]:checked");
-            if (checkedMatchType.length > 1) {
-                alert("请选择一种匹配模式!");
-                return false;
-            }
+            matchType = [];
             $.each(checkedMatchType, function (i, item) {
-                matchType = item.value;
-                return false;
+                matchType.push(item.value);
+                //return false;
             });
 
             //keywordQuality

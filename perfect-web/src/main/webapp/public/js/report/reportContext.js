@@ -1209,8 +1209,8 @@ $(function () {
                                 html_GoAll = html_GoAll + "<tr><td>合计</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
                                 + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
-                                + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
-                                + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
+                                + "<td>" + Math.round(((items.pcClick + items.mobileClick) / ((items.pcImpression + items.mobileImpression)==0?1:items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
+                                + "<td>" + Math.round(((items.pcCost + items.mobileCost) / ((items.pcClick + items.mobileClick)==0?1:(items.pcClick + items.mobileClick))) * 100) / 100 + "</td>"
                                 + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                             } else {
                                 var headTd = "";
