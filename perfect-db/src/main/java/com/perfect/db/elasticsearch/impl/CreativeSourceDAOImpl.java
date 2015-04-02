@@ -135,8 +135,12 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
                     int region = bucket.getKeyAsNumber().intValue();
                     String name = regionMap.get(region);
                     if (name == null) {
-                        regionMap.putAll(RegionalCodeUtils.regionalCode(Arrays.asList(region)));
-                        name = regionMap.get(region);
+                        try {
+                            regionMap.putAll(RegionalCodeUtils.regionalCode(Arrays.asList(region)));
+                            name = regionMap.get(region);
+                        } catch (NullPointerException e) {
+                            name = "-";
+                        }
                     }
                     esSearchResultDTO.addRegions(name, new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
