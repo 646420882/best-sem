@@ -13,10 +13,12 @@ function search() {
 
     $.ajax({
         url: "/creative/q",
-        data: {'q': kw,
+        data: {
+            'q': kw,
             'p': 1,
             's': 10,
-            'r': region},
+            'r': region
+        },
         type: "GET",
         success: function (datas) {
             if (datas.rows == undefined || datas.rows.total == 0) {
@@ -32,7 +34,7 @@ function search() {
 //                li.append($("<div></div>").attr("id", "sPreview").append("<a href='" + item.host + "'><h3>" + item.title + "</h3></a>")
 //                    .append("<br>" + item.body + "<br><a href=''" + item.host + "'>" + item.host + "</a>创意来源: " + item.region));
 
-                li.append($("<div></div>")).append(item.html);
+                li.append($("<div></div>")).append(item.title);
 
                 li.append("<div><span class=\"cretiveunder fr\"><a href=\"#\">置顶</a>|<a href='javascript:void(0)' class=\"showbox\" onclick='reView(this)'>编辑</a>|<a href=\"#\">删除</a></span></div>");
 
