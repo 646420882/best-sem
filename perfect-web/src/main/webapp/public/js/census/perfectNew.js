@@ -19,34 +19,39 @@ var _pct = _pct || [];
     //浏览器版本
     md.achieve.browser = function (a) {
         var t;
-        if (/[Ff]irefox(\/\d+\.\d+)/.test(a)) {
-            t = /([Ff]irefox)\/(\d+\.\d+)/.exec(a);
-            return t[1] + t[2];
-        } else if (/MSIE \d+\.\d+/.test(a)) {
-            t = /MS(IE) (\d+\.\d+)/.exec(a);
-            return t[1] + t[2];
-        } else if (/[Cc]hrome\/\d+/.test(a)) {
-            t = /([Cc]hrome)\/(\d+)/.exec(a);
-            return t[1] + t[2];
-        } else if (/[Vv]ersion\/\d+\.\d+\.\d+(\.\d)* *[Ss]afari/.test(a)) {
-            t = /[Vv]ersion\/(\d+\.\d+\.\d+)(\.\d)* *([Ss]afari)/.exec(a);
-            return t[3] + t[1];
-        } else if (/[Oo]pera.+[Vv]ersion\/\d+\.\d+/.test(a)) {
-            t = /([Oo]pera).+[Vv]ersion\/(\d+)\.\d+/.exec(a);
-            return t[1] + t[2];
-        } else if (/[Tt]rident\/\d+\.\d+/.test(a)) {
-            t = /[Tt]rident\/(\d+)\.\d+/.exec(a);
-            return t[1] + t[2];
-        } else if (/[Aa]ppleWebKit\/\d+\.\d+/.test(a)) {
-            t = /[Aa]ppleWebKit\/(\d+)\.\d+/.exec(a);
-            return t[1] + t[2];
-        } else if (/[Gg]ecko\/\d+\.\d+/.test(a)) {
-            t = /[Gg]ecko\/(\d+)\.\d+/.exec(a);
-            return t[1] + t[2];
-        } else if (/[Kk]HTML\/\d+\.\d+/.test(a)) {
-            t = /[Kk]HTML\/(\d+)\.\d+/.exec(a);
-            return t[1] + t[2];
-        } else return "Other";
+        if(/AppleWebKit.*Mobile/i.test(a) || /Android/i.test(a) || /BlackBerry/i.test(a) || /IEMobile/i.test(a) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(a))){
+            return "Mobile Browser"
+        }else{
+            if (/[Ff]irefox(\/\d+\.\d+)/.test(a)) {
+                t = /([Ff]irefox)\/(\d+\.\d+)/.exec(a);
+                return t[1] + t[2];
+            } else if (/MSIE \d+\.\d+/.test(a)) {
+                t = /MS(IE) (\d+\.\d+)/.exec(a);
+                return t[1] + t[2];
+            } else if (/[Cc]hrome\/\d+/.test(a)) {
+                t = /([Cc]hrome)\/(\d+)/.exec(a);
+                return t[1] + t[2];
+            } else if (/[Vv]ersion\/\d+\.\d+\.\d+(\.\d)* *[Ss]afari/.test(a)) {
+                t = /[Vv]ersion\/(\d+\.\d+\.\d+)(\.\d)* *([Ss]afari)/.exec(a);
+                return t[3] + t[1];
+            } else if (/[Oo]pera.+[Vv]ersion\/\d+\.\d+/.test(a)) {
+                t = /([Oo]pera).+[Vv]ersion\/(\d+)\.\d+/.exec(a);
+                return t[1] + t[2];
+            } else if (/[Tt]rident\/\d+\.\d+/.test(a)) {
+                t = /[Tt]rident\/(\d+)\.\d+/.exec(a);
+                return t[1] + t[2];
+            } else if (/[Aa]ppleWebKit\/\d+\.\d+/.test(a)) {
+                t = /[Aa]ppleWebKit\/(\d+)\.\d+/.exec(a);
+                return t[1] + t[2];
+            } else if (/[Gg]ecko\/\d+\.\d+/.test(a)) {
+                t = /[Gg]ecko\/(\d+)\.\d+/.exec(a);
+                return t[1] + t[2];
+            } else if (/[Kk]HTML\/\d+\.\d+/.test(a)) {
+                t = /[Kk]HTML\/(\d+)\.\d+/.exec(a);
+                return t[1] + t[2];
+            }  else return "Other";
+        }
+
     };
     //flash版本
     md.achieve.flashV = function (a) {
@@ -71,9 +76,9 @@ var _pct = _pct || [];
     //用户使用设备（0 移动端访问网页  1 PC端访问网页）
     md.achieve.PorM = function (a) {
         if (/AppleWebKit.*Mobile/i.test(a) || /Android/i.test(a) || /BlackBerry/i.test(a) || /IEMobile/i.test(a) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(a))) {
-            if (/iPad/i.test(a)) return 1; else return 1;
+            if (/iPad/i.test(a)) return "1"; else return "1";
         } else {
-            return 0;
+            return "0";
         }
     }
 
@@ -100,7 +105,7 @@ var _pct = _pct || [];
     //dt 浏览页面时间
     md.g.dt = Date.parse(new Date());
     //rf 来源页面 url
-    md.g.rf = document.referrer == "" ? "-" : document.referrer;
+    md.g.rf = document.referrer == "" ? "-" : encodeURIComponent(document.referrer);
     //loc 当前页面url
     md.g.loc = window.location.href;
     //v 统计js版本号
@@ -224,7 +229,7 @@ var _pct = _pct || [];
     };
     h.I = {
         u: "best-ad.cn",
-        P: "192.168.1.120",
+        P: "182.92.227.79",
         S: "pft.gif",
         dk: 8088,
         protocol: "https:" == document.location.protocol ? "https:" : "http:",
@@ -395,7 +400,7 @@ var _pct = _pct || [];
                     md.sessionStorage.remove("PFT_API");
                 }
                 for (var i = 0; i < b.length; i++) {
-                    _c[b[i]] != undefined && _c[b[i]] != "" && _c[b[i]] != null ? a = a + b[i] + "\=" + _c[b[i]] + ((b[i] == "v") ? "" : "\&") : "";
+                    _c[b[i]] != undefined && _c[b[i]] != "" && _c[b[i]] != null ? a = a + b[i] + "\=" + _c[b[i]] + ((b[i] == "v") ? "" : "\&")  : "";
                 }
                 return a;
             },
@@ -434,5 +439,5 @@ var _pct = _pct || [];
         };
         return new sta;
     })()
-    //console.log(md.g);
+    console.log(md.g);
 })();
