@@ -53,12 +53,13 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
 
         boolQueryBuilder.must(builder);
         if (regions.length > 0)
-            boolQueryBuilder.must(QueryBuilders.termsQuery("region", regions));
+            boolQueryBuilder.should(QueryBuilders.termsQuery("region", regions));
 
         SearchResponse sr = esClient.prepareSearch("data").setTypes("creative").setQuery(boolQueryBuilder).setFrom(
                 (page - 1) * size).setSize(size).addSort("_score", SortOrder.DESC)
-//                .addHighlightedField("title").addHighlightedField("body").setHighlighterPreTags("<font color='red'>")
-//                .setHighlighterPostTags("</font>")
+                .setHighlighterRequireFieldMatch(false)
+                .addHighlightedField("title").addHighlightedField("body").setHighlighterPreTags("<font color='red'>")
+                .setHighlighterPostTags("</font>")
                 .addAggregation(AggregationBuilders.terms("all").field("title").field("body").size(10))
                 .addAggregation(AggregationBuilders.terms(AGG_KEYWORDS).field("keyword").size(10))
                 .addAggregation(AggregationBuilders.terms(AGG_REGIONS).field("region").size(10))
