@@ -58,7 +58,7 @@ To change this template use File | Settings | File Templates.
 </ul>
 <div class="tab_box">
 <div class="containers over">
-    <div class="list01_top over"><Span>关键词拓词</Span><button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="分为词根拓词和行业拓词，多拓词来源有百度、Google、360等平台抓取调用，并独有百思智能词库作为依托。"></button></div>
+    <div class="list01_top over"><Span>关键词拓词</Span><button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="分为词根拓词和行业拓词，拓词来源有百度、Google、360等平台抓取调用，并独有百思智能词库作为依托。"></button></div>
     <div class="keyword over">
         <div class="keyword_right over">
             <div class="k_r_top over">

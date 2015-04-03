@@ -1242,7 +1242,7 @@
         <a href="javascript:void(0)" onclick="closeSetNegtiveWord();" style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
 
     <div class="mainlist">
-        <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，没词20汉字以内，最多200项。</p>
+        <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，每词20汉字以内，最多200项。</p>
 
         <div class="inputKwdDiv fl">
             <div><p>否定关键词<span id="ntwCount">(0/200)</span></p></div>
