@@ -36,7 +36,7 @@
     <div class="addplan_top over">
         <ul>
             <li class="current">1、输入内容</li>
-            <li><span></span>1、验证数据</li>
+            <li><span></span>2、验证数据</li>
         </ul>
     </div>
     <div class="plan_under">
