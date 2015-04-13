@@ -2,7 +2,7 @@ var _pct = _pct || [];
 (function () {
     var h = {}, md = {}, c = {
         id: "1",
-        version: "1.0"
+        version: "1.1"
     };
 
     md.achieve = {};
@@ -113,7 +113,7 @@ var _pct = _pct || [];
     //tit  title信息
     md.g.tit = document.title;
     //ct 新老客户（0:新客户， 1：老客户）
-    md.g.ct = md.cookie.get("vid") == null ? 0 : 1;
+    md.g.ct = ((md.cookie.get("vid") == null ||md.cookie.get("vid")==undefined||md.cookie.get("vid")=="") ? "0" : "1");
     // tt 用户的访问uv
     // vid cookie  id访客唯一标识
     // u       _trackPageview方法参数          PV跟踪
@@ -229,7 +229,7 @@ var _pct = _pct || [];
     };
     h.I = {
         u: "best-ad.cn",
-        P: "182.92.227.79",
+        P: "192.168.1.112",
         S: "pft.gif",
         dk: 8088,
         protocol: "https:" == document.location.protocol ? "https:" : "http:",
@@ -378,16 +378,30 @@ var _pct = _pct || [];
             getData: function (a) {
                 return cookie.get(a);
             },
+            uv:function (){
+                var date = new Date().getTime();
+            },
             na: function () {
                 var a, b, d;
+                var as = md.g.rf.replace("http://","");
+                as = as.substring(as.indexOf(".")+1,as.indexOf("/"));
+                var ab = md.g.loc.replace("http://,");
+                ab = ab.substring(ab.indexOf(".")+1, ab.indexOf("/"));
                 md.g.tt = a = this.getData("PFT_" + c.id);
                 if (null == a || "" == a) {
                     this.setData("PFT_" + c.id);
                     md.g.tt = this.getData("PFT_" + c.id);
                 }
+
+                if(as != ab){
+                    this.setData("PFT_" + c.id);
+                    md.g.tt = this.getData("PFT_" + c.id);
+                }
+
                 var cookie_pos = document.cookie.indexOf("vid");
                 if (cookie_pos == -1) {
-                    document.cookie = "vid=" + u.createUUID();
+                    var date = new Date().getTime();
+                    document.cookie = "vid=" + u.createUUID() +";expires=" + date*1000;
                 }
                 md.g.vid = this.getData("vid");
             },
