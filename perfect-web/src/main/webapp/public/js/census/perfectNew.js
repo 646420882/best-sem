@@ -2,7 +2,7 @@ var _pct = _pct || [];
 (function () {
     var h = {}, md = {}, c = {
         id: "1",
-        version: "1.1"
+        version: "1.0"
     };
 
     md.achieve = {};
@@ -229,7 +229,7 @@ var _pct = _pct || [];
     };
     h.I = {
         u: "best-ad.cn",
-        P: "192.168.1.112",
+        P: "182.92.227.79",
         S: "pft.gif",
         dk: 8088,
         protocol: "https:" == document.location.protocol ? "https:" : "http:",

@@ -47,8 +47,8 @@ public class SysKeywordServiceImpl implements SysKeywordService {
 
     @Override
     public List<KeywordDTO> findByNames(String[] query, boolean fullMatch, PaginationParam param, Map<String, Object> queryParams) {
-
-        return keywordDAO.findByNames(query, fullMatch, param, queryParams);
+        List<KeywordDTO> keywordDTOs = keywordDAO.findByNames(query, fullMatch, param, queryParams);
+        return keywordDTOs;
     }
 
     @Override
