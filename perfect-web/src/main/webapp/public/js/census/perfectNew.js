@@ -2,7 +2,7 @@ var _pct = _pct || [];
 (function () {
     var h = {}, md = {}, c = {
         id: "1",
-        version: "1.0"
+        version: "1.0.2"
     };
 
     md.achieve = {};
@@ -65,8 +65,13 @@ var _pct = _pct || [];
         return ((v_flash == undefined || v_flash == "") ? "" : v_flash);
     };
     md.cookie = {};
+    md.getDomain=function(){
+        var a = document.location.hostname;
+        var b = a.substring(a.indexOf("."));
+        return b;
+    };
     md.cookie.set = function (a, b) {
-        document.cookie = a + "=" + escape(b) + "; path=/";
+        document.cookie = a + "=" + escape(b) +";domain="+md.getDomain()+"; path=/";
     };
     md.cookie.get = function (a) {
         var arr, reg = new RegExp("(^| )" + a + "=([^;]*)(;|$)");
@@ -401,7 +406,7 @@ var _pct = _pct || [];
                 var cookie_pos = document.cookie.indexOf("vid");
                 if (cookie_pos == -1) {
                     var date = new Date().getTime();
-                    document.cookie = "vid=" + u.createUUID() + ";expires=" + date * 1000;
+                    document.cookie = "vid=" + u.createUUID() + ";expires=" + date * 1000 +";domain="+md.getDomain()+"; path=/";
                 }
                 md.g.vid = this.getData("vid");
             },
