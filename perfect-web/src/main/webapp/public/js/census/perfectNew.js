@@ -19,9 +19,9 @@ var _pct = _pct || [];
     //浏览器版本
     md.achieve.browser = function (a) {
         var t;
-        if(/AppleWebKit.*Mobile/i.test(a) || /Android/i.test(a) || /BlackBerry/i.test(a) || /IEMobile/i.test(a) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(a))){
+        if (/AppleWebKit.*Mobile/i.test(a) || /Android/i.test(a) || /BlackBerry/i.test(a) || /IEMobile/i.test(a) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(a))) {
             return "Mobile Browser"
-        }else{
+        } else {
             if (/[Ff]irefox(\/\d+\.\d+)/.test(a)) {
                 t = /([Ff]irefox)\/(\d+\.\d+)/.exec(a);
                 return t[1] + t[2];
@@ -49,7 +49,7 @@ var _pct = _pct || [];
             } else if (/[Kk]HTML\/\d+\.\d+/.test(a)) {
                 t = /[Kk]HTML\/(\d+)\.\d+/.exec(a);
                 return t[1] + t[2];
-            }  else return "Other";
+            } else return "Other";
         }
 
     };
@@ -113,7 +113,7 @@ var _pct = _pct || [];
     //tit  title信息
     md.g.tit = document.title;
     //ct 新老客户（0:新客户， 1：老客户）
-    md.g.ct = ((md.cookie.get("vid") == null ||md.cookie.get("vid")==undefined||md.cookie.get("vid")=="") ? "0" : "1");
+    md.g.ct = ((md.cookie.get("vid") == null || md.cookie.get("vid") == undefined || md.cookie.get("vid") == "") ? "0" : "1");
     // tt 用户的访问uv
     // vid cookie  id访客唯一标识
     // u       _trackPageview方法参数          PV跟踪
@@ -378,22 +378,22 @@ var _pct = _pct || [];
             getData: function (a) {
                 return cookie.get(a);
             },
-            uv:function (){
+            uv: function () {
                 var date = new Date().getTime();
             },
             na: function () {
                 var a, b, d;
-                var as = md.g.rf.replace("http://","");
-                as = as.substring(as.indexOf(".")+1,as.indexOf("/"));
+                var as = md.g.rf.replace("http://", "");
+                as = as.substring(as.indexOf(".") + 1, as.indexOf("/"));
                 var ab = md.g.loc.replace("http://,");
-                ab = ab.substring(ab.indexOf(".")+1, ab.indexOf("/"));
+                ab = ab.substring(ab.indexOf(".") + 1, ab.indexOf("/"));
                 md.g.tt = a = this.getData("PFT_" + c.id);
                 if (null == a || "" == a) {
                     this.setData("PFT_" + c.id);
                     md.g.tt = this.getData("PFT_" + c.id);
                 }
 
-                if(as != ab){
+                if (as != ab) {
                     this.setData("PFT_" + c.id);
                     md.g.tt = this.getData("PFT_" + c.id);
                 }
@@ -401,7 +401,7 @@ var _pct = _pct || [];
                 var cookie_pos = document.cookie.indexOf("vid");
                 if (cookie_pos == -1) {
                     var date = new Date().getTime();
-                    document.cookie = "vid=" + u.createUUID() +";expires=" + date*1000;
+                    document.cookie = "vid=" + u.createUUID() + ";expires=" + date * 1000;
                 }
                 md.g.vid = this.getData("vid");
             },
@@ -409,12 +409,12 @@ var _pct = _pct || [];
                 var a = "", b = h.I.Q, _c = md.g;
                 md.g.cv = this.getSessionData("PFT_CV_" + c.id);
                 md.g.api = this.getSessionData("PFT_API");
-                if(md.g.cv != null || md.g.cv != undefined || md.g.cv != ""){
+                if (md.g.cv != null || md.g.cv != undefined || md.g.cv != "") {
                     md.sessionStorage.remove("PFT_CV_" + c.id);
                     md.sessionStorage.remove("PFT_API");
                 }
                 for (var i = 0; i < b.length; i++) {
-                    _c[b[i]] != undefined && _c[b[i]] != "" && _c[b[i]] != null ? a = a + b[i] + "\=" + _c[b[i]] + ((b[i] == "v") ? "" : "\&")  : "";
+                    _c[b[i]] != undefined && _c[b[i]] != "" && _c[b[i]] != null ? a = a + b[i] + "\=" + _c[b[i]] + ((b[i] == "v") ? "" : "\&") : "";
                 }
                 return a;
             },
@@ -433,7 +433,7 @@ var _pct = _pct || [];
                 var a = document.createElement("script");
                 a.setAttribute("type", "text/javascript");
                 a.setAttribute("charset", "utf-8");
-                a.setAttribute("src", _c.protocol + "//" + _c.P + ":" + _c.dk + "/" + _c.S + "?t\="+ c.id+"tt\=" + md.g.tt + "\&rf='-'\&ping=" + Date.parse(new Date()));
+                a.setAttribute("src", _c.protocol + "//" + _c.P + ":" + _c.dk + "/" + _c.S + "?t\=" + c.id + "tt\=" + md.g.tt + "\&rf='-'\&ping=" + Date.parse(new Date()));
                 var f = document.getElementsByTagName("script")[0];
                 f.parentNode.insertBefore(a, f);
             },
