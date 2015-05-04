@@ -56,7 +56,7 @@
 
             </div>
             <div class="login_part2">
-                <input type="submit" value="登陆"/>
+                <input type="submit" onclick="_pct.putPar(['_trackEvent', 'Login', 'click', '登陆信息'])" value="登陆"/>
             </div>
         </form>
     </div>

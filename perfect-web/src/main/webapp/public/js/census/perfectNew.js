@@ -111,6 +111,8 @@ var _pct = _pct || [];
     md.g.dt = Date.parse(new Date());
     //rf 来源页面 url
     md.g.rf = document.referrer == "" ? "-" : encodeURIComponent(document.referrer);
+    //域名
+    md.g.rf =
     //loc 当前页面url
     md.g.loc = window.location.href;
     //v 统计js版本号
@@ -405,8 +407,9 @@ var _pct = _pct || [];
 
                 var cookie_pos = document.cookie.indexOf("vid");
                 if (cookie_pos == -1) {
-                    var date = new Date().getTime();
-                    document.cookie = "vid=" + u.createUUID() + ";expires=" + date * 1000 +";domain="+md.getDomain()+"; path=/";
+                    var date = new Date();
+                    date.setTime(date.getTime() * 100);
+                    document.cookie = "vid=" + u.createUUID() + ";expires=" + date.toGMTString() +";domain="+md.getDomain()+"; path=/";
                 }
                 md.g.vid = this.getData("vid");
             },
