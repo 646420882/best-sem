@@ -102,17 +102,15 @@ var _pct = _pct || [];
     //lg 语言
     md.g.lg = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || "";
     //ck 是否支持cookie (0 不支持，1 支持)
-    md.g.ck = (navigator.cookieEnabled ? 1 : 0);
+    md.g.ck = (navigator.cookieEnabled ? "1" : "0");
     //ja 是否支持java (0 不支持 ， 1 支持)
-    md.g.ja = (navigator.javaEnabled() ? 1 : 0);
+    md.g.ja = (navigator.javaEnabled() ? "1" : "0");
     //sc 屏幕颜色
     md.g.sc = window.screen.colorDepth + "-bit";
     //dt 浏览页面时间
     md.g.dt = Date.parse(new Date());
     //rf 来源页面 url
     md.g.rf = document.referrer == "" ? "-" : encodeURIComponent(document.referrer);
-    //域名
-    md.g.rf =
     //loc 当前页面url
     md.g.loc = window.location.href;
     //v 统计js版本号
