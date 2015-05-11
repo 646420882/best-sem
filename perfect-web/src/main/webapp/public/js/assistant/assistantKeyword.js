@@ -501,12 +501,12 @@ function whenBlurEditKeyword(num, value) {
                         alert("\"访问Url\"必须包含" + dm + "的域名！");
                         return;
                     } else {
-                        if (value.substr(value.indexOf(dm)) != dm) {
-                            alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                            return false;
-                        } else {
+                        //if (value.substr(value.indexOf(dm)) != dm) {
+                        //    alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                        //    return false;
+                        //} else {
                             jsonData["pcDestinationUrl"] = value;
-                        }
+                        //}
                     }
                 }
             } else {
@@ -523,12 +523,12 @@ function whenBlurEditKeyword(num, value) {
                         alert("\"移动访问Url\"必须包含" + dm + "的域名！");
                         return;
                     } else {
-                        if (value.substr(value.indexOf(dm)) != dm) {
-                            alert("\"移动访问Url\"必须以\"" + dm + "\"结尾！");
-                            return false;
-                        } else {
+                        //if (value.substr(value.indexOf(dm)) != dm) {
+                        //    alert("\"移动访问Url\"必须以\"" + dm + "\"结尾！");
+                        //    return false;
+                        //} else {
                             jsonData["mobileDestinationUrl"] = value;
-                        }
+                        //}
                     }
                 }
             } else {
