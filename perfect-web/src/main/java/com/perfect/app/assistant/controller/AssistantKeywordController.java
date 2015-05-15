@@ -9,6 +9,7 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
+import com.perfect.dto.account.AccountIdDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
@@ -16,9 +17,11 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
+import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.service.BaiduAccountService;
 import com.perfect.service.KeywordBackUpService;
 import com.perfect.service.SysRegionalService;
+import com.perfect.utils.IdConvertUtils;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.beans.BeanUtils;
@@ -587,6 +590,33 @@ public class AssistantKeywordController extends WebContextSupport{
         } else {
             Map<String,Map<String,List<String>>> map = assistantKeywordService.getNoKeywords(Long.parseLong(aid));
            return writeMapObject(DATA, map);
+        }
+    }
+
+    @RequestMapping(value = "assistantKeyword/addCensus")
+    public ModelAndView addCensus() {
+        try {
+            Iterable<KeywordDTO> list = assistantKeywordService.findAll();
+            BaiduAccountInfoDTO accountIdDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            String domain = accountIdDTO.getRegDomain();
+            list.forEach(s -> {
+                String pcUrl = s.getPcDestinationUrl();
+                if (pcUrl == null) {
+                    s.setPcDestinationUrl("http://www." + domain + "?ca=" + IdConvertUtils.convert(s.getKeywordId()));
+                } else {
+                    if (pcUrl.contains("?")) {
+                        if (!pcUrl.contains("ca=")) {
+                            s.setPcDestinationUrl(pcUrl + "&ca=" + IdConvertUtils.convert(s.getKeywordId()));
+                        }
+                    } else {
+                        s.setPcDestinationUrl(pcUrl + "?ca=" + IdConvertUtils.convert(s.getKeywordId()));
+                    }
+                }
+                assistantKeywordService.updateKeyword(s);
+            });
+            return writeMapObject(MSG, SUCCESS);
+        } catch (Exception e) {
+            return writeMapObject(MSG, FAIL);
         }
     }
 }

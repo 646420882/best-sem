@@ -995,3 +995,15 @@ function kUploadOperate(kid, ls) {
         }
     });
 }
+function addCensus() {
+    if(confirm("是否添加关键字的统计代码？")){
+    $.get("/assistantKeyword/addCensus", function (res) {
+        if (res.msg == "1") {
+            getKwdList(0);
+            alert("添加成功");
+        } else {
+            alert("添加失败")
+        }
+    });
+    }
+}
