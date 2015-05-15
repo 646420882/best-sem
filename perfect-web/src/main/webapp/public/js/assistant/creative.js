@@ -1211,7 +1211,9 @@ function creativeMulti() {
 function creativeUpload() {
     var _this = $(tmp);
     var oid = _this.find("td:eq(0) input").val();
-    var _localStatus = _this.find("td:eq(10) span").attr("step");
+    var _localStatus = _this.find("td:eq(11) span").attr("step");
+    console.log(_this.find("td:eq(11) span"));
+    console.log(_localStatus);
     if (_localStatus != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;
