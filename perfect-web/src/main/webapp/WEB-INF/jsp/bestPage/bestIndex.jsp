@@ -76,7 +76,9 @@
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo2.png"></div>
             <div class="txt1"><span class="tit">百思SEO</span>
                 <p>SEO追踪，集统计、分析和管理</p>
-                <p>专家级的建议和优化方案</p></div>
+                <p>专家级的建议和优化方案</p>
+                <p></p>
+            </div>
             <div class="txt2"><a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span class="tit">百思SEO</span></a>
                 <div class="tex2_mid">
                     <p>SEO追踪，集统计、分析和管理</p>
@@ -84,7 +86,7 @@
                     <p></p>
                 </div>
                 <div class="enter">
-                    <a href="javascript:void(0);">敬请期待</a>
+                    <a href="javascript:void(0);">点击进入</a>
                 </div>
             </div>
         </div>
