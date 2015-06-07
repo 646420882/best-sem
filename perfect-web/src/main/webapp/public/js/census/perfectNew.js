@@ -429,7 +429,7 @@ var _pct = _pct || [];
                         md.cookie.setNull("PFT_" + c.id, u.createUUID());
                         md.g.tt = this.getData("PFT_" + c.id);
                     }
-                    md.g.n = 1;
+                    md.g.n = "1";
                 }
                 var cookie_pos = document.cookie.indexOf("vid");
                 if (cookie_pos == -1) {
