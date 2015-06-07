@@ -123,7 +123,8 @@ var _pct = _pct || [];
     //ct 新老客户（0:新客户， 1：老客户）
     md.g.ct = ((md.cookie.get("vid") == null || md.cookie.get("vid") == undefined || md.cookie.get("vid") == "") ? "0" : "1");
     // n是否是第一次访问
-    // hm 热力图坐标
+    // sm 热力图坐标
+    // api
     // tt 用户的访问uv
     // vid cookie  id访客唯一标识
     // u       _trackPageview方法参数          PV跟踪
@@ -268,7 +269,7 @@ var _pct = _pct || [];
         S: "pft.gif",
         //dk: 8088,":" + _c.dk +
         protocol: "https:" == document.location.protocol ? "https:" : "http:",
-        Q: "os tit br fl pm sr lg ck ja sc dt rf loc tt ct vid u api et cv v".split(" ")
+        Q: "os tit br fl pm sr lg ck ja sc dt rf loc tt ct vid u api et cv sm n v".split(" ")
     };
     //通过闭包 访问 私有变量 sa
     (function () {
