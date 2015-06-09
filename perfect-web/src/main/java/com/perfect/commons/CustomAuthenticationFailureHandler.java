@@ -24,6 +24,12 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+
+        String redirect = request.getParameter("redirect");
+        if (redirect != null && !redirect.isEmpty()) {
+            getRedirectStrategy().sendRedirect(request, response, "/login?error=true&url=" + redirect);
+            return;
+        }
         super.onAuthenticationFailure(request, response, exception);
         if (exception instanceof BadCredentialsException) {
             //密码验证失败
