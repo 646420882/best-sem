@@ -48,6 +48,7 @@ public class HomePageManageController extends WebContextSupport {
     @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getLoginPage(HttpServletRequest request,
                                      ModelMap model,
+                                     @RequestParam(value = "url", required = false) String url,
                                      @RequestParam(value = "error", required = false) boolean error) {
         if (error) {
             int badCredentialsNum = CustomUserDetailsService.getPasswdBadCredentialsNum();
@@ -67,6 +68,8 @@ public class HomePageManageController extends WebContextSupport {
         } else {
             model.put("error", "");
         }
+
+        model.put("redirect_url", url);
         return new ModelAndView("homePage/login", model);
     }
 
@@ -77,7 +80,7 @@ public class HomePageManageController extends WebContextSupport {
      */
     @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView logout(HttpServletResponse response) {
-       Cookie cookies=new Cookie("semToken",null);
+        Cookie cookies = new Cookie("semToken", null);
         cookies.setMaxAge(0);
         response.addCookie(cookies);
         return null;

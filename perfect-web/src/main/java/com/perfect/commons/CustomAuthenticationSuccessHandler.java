@@ -1,6 +1,9 @@
 package com.perfect.commons;
 
+import com.perfect.dto.SystemUserDTO;
+import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
+import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +15,7 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +34,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    @Resource
+    private SystemUserService systemUserService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         handle(request, response, authentication);
@@ -37,6 +44,32 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+
+        String url = request.getParameter("redirect");
+        if (url != null && !url.isEmpty()) {
+            String uuid = UUID.randomUUID().toString();
+            String target = "http://" + url + "/token?tokenid=" + uuid;
+
+
+            SystemUserDTO systemUserDTO = systemUserService.getSystemUser(authentication.getName());
+
+            systemUserDTO.setImg(null);
+            String json = JSONUtils.getJsonString(systemUserDTO);
+
+            Jedis jedis = null;
+            try {
+                jedis = JRedisUtils.get();
+
+                jedis.setex(uuid, 60, json);
+            } finally {
+                if (jedis != null) {
+                    JRedisUtils.returnJedis(jedis);
+                }
+            }
+            redirectStrategy.sendRedirect(request, response, target);
+            return;
+        }
+
 
         String userName = CustomUserDetailsService.getUserName();
         boolean hasBaiduAccont = CustomUserDetailsService.hasBaiduAccount();
@@ -73,8 +106,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
-        Cookie cookie=new Cookie("semToken",UUID.randomUUID().toString().replaceAll("-",""));
-        cookie.setMaxAge(30*60*60);
+        Cookie cookie = new Cookie("semToken", UUID.randomUUID().toString().replaceAll("-", ""));
+        cookie.setMaxAge(30 * 60 * 60);
         response.addCookie(cookie);
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
