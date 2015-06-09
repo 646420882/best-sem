@@ -243,7 +243,7 @@ var _pct = _pct || [];
     //全局变量h.I 访问地址URL设置 如：http://best-ad.cn/pft.gif?query string parameters
     h.I = {
         u: "best-ad.cn",
-        P: "192.168.1.180",
+        P: "182.92.227.79",
         S: "pft.gif",
         dk: 20001,//":" + _c.dk +
         protocol: "https:" == document.location.protocol ? "https:" : "http:",
