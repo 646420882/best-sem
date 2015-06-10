@@ -243,9 +243,9 @@ var _pct = _pct || [];
     //全局变量h.I 访问地址URL设置 如：http://best-ad.cn/pft.gif?query string parameters
     h.I = {
         u: "best-ad.cn",
-        P: "192.168.1.180",
+        P: "log.best-ad.cn",
         S: "pft.gif",
-        dk: 20001,//":" + _c.dk +
+        //dk: 20001,//":" + _c.dk +
         protocol: "https:" == document.location.protocol ? "https:" : "http:",
         Q: "os tit br fl pm sr lg ck ja sc dt rf loc tt ct vid u api et cv xy ut n v".split(" ")
     };
@@ -438,7 +438,7 @@ var _pct = _pct || [];
                 var a = document.createElement("script");
                 a.setAttribute("type", "text/javascript");
                 a.setAttribute("charset", "utf-8");
-                a.setAttribute("src", _c.protocol + "//" + _c.P + ":" + h.I.dk + "/" + _c.S + "?t\=" + c.id + "\&" + this.par());
+                a.setAttribute("src", _c.protocol + "//" + _c.P +  "/" + _c.S + "?t\=" + c.id + "\&" + this.par());
                 var f = document.getElementsByTagName("script")[0];
                 f.parentNode.insertBefore(a, f);
                 f.remove()
@@ -512,9 +512,9 @@ var _pct = _pct || [];
                 dms: performance.timing.domInteractive - performance.timing.fetchStart,  //dom树加载时间
                 let: la("loadEvent").end - nav.start  //事件加载时间
             };
-            var ctime = cookie.get(md.g.tt);
-            if (ctime == null) {
-                cookie.setNull(md.g.tt, "a");
+            var ctime = cookie.get("judge");
+            if (ctime !=  md.g.tt) {
+                cookie.setNull("judge", md.g.tt);
                 md.g.ut = JSON.stringify(a);
                 h.b.sm();
                 md.g.ut = null;
