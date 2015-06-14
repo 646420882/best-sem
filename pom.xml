@@ -48,16 +48,16 @@
             <properties>
                 <env>prod</env>
 
-                <redis.host>web1</redis.host>
-                <redis.port>6379</redis.port>
-                <redis.password>3edcvfr4</redis.password>
+                <redis.host>server1</redis.host>
+                <redis.port>16379</redis.port>
+                <redis.password>3edcxsw2</redis.password>
 
-                <mongo.host>mongo1:23135,mongo2:23136</mongo.host>
+                <mongo.host>server1:27017,server2:27017</mongo.host>
                 <mongo.username>perfect</mongo.username>
                 <mongo.password>perfect</mongo.password>
 
-                <es.host>web1:19300,web2:19300</es.host>
-                <es.cluster>es-cluster</es.cluster>
+                <es.host>server1:30000,server2:30000</es.host>
+                <es.cluster>huiyan_prod</es.cluster>
             </properties>
         </profile>
     </profiles>
