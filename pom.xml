@@ -56,7 +56,7 @@
                 <mongo.username>perfect</mongo.username>
                 <mongo.password>perfect</mongo.password>
 
-                <es.host>server1:30000,server2:30000</es.host>
+                <es.host>server1:30101,server1:30102,server2:30103,server2:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>
             </properties>
         </profile>
