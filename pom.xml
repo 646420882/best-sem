@@ -52,7 +52,7 @@
                 <redis.port>16379</redis.port>
                 <redis.password>3edcxsw2</redis.password>
 
-                <mongo.host>server1:27017,server2:27017</mongo.host>
+                <mongo.host>server1:37017,server2:37017</mongo.host>
                 <mongo.username>perfect</mongo.username>
                 <mongo.password>perfect</mongo.password>
 
