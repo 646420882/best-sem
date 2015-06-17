@@ -52,9 +52,9 @@
                 <redis.port>16379</redis.port>
                 <redis.password>3edcxsw2</redis.password>
 
-                <mongo.host>server1:37017,server2:37017</mongo.host>
-                <mongo.username>perfect</mongo.username>
-                <mongo.password>perfect</mongo.password>
+                <mongo.host>server1:27017,server2:27017</mongo.host>
+                <!--<mongo.username>perfect</mongo.username>-->
+                <!--<mongo.password>perfect</mongo.password>-->
 
                 <es.host>server1:30101,server1:30102,server2:30103,server2:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>
