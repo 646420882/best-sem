@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
+import java.util.stream.Collectors;
 
 /**
  * Created by baizz on 2014-08-07.
@@ -80,24 +81,18 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
         Jedis jc = JRedisUtils.get();
 
-        for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                getSkipPull(jc, systemUser, dateStr + "--用户");
-                continue;
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
+            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--用户");
             }
+            return judge;
+        }).collect(Collectors.toList());
 
+        for (SystemUserDTO systemUser : newEntityList) {
 
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 getStartPull(systemUser, entity, dateStr + "--用户");
 
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -124,11 +119,6 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 try {
                     list = voResult.get();
                     asynchronousReportDAO.getAccountReportData(list, systemUser, dateStr,entity.getBaiduUserName());
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     getEndPull(systemUser, entity, dateStr + "--用户");
 
                 } catch (InterruptedException | ExecutionException e) {
@@ -155,11 +145,16 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             entityList.add(userEntity);
         }
         Jedis jc = JRedisUtils.get();
-        for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
-                getSkipPull(jc, systemUser, dateStr + "--计划");
-                continue;
+
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
+            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--计划");
             }
+            return judge;
+        }).collect(Collectors.toList());
+
+        for (SystemUserDTO systemUser : newEntityList) {
             int i = 1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--计划");
@@ -212,11 +207,16 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             entityList.add(userEntity);
         }
         Jedis jc = JRedisUtils.get();
-        for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
-                getSkipPull(jc, systemUser, dateStr + "--单元");
-                continue;
+
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
+            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--单元");
             }
+            return judge;
+        }).collect(Collectors.toList());
+
+        for (SystemUserDTO systemUser : newEntityList) {
             int i = 1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--单元");
@@ -270,11 +270,16 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             entityList.add(userEntity);
         }
         Jedis jc = JRedisUtils.get();
-        for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
-                getSkipPull(jc, systemUser, dateStr + "--创意");
-                continue;
+
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
+            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--创意");
             }
+            return judge;
+        }).collect(Collectors.toList());
+
+        for (SystemUserDTO systemUser : newEntityList) {
             int i=1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--创意");
@@ -327,11 +332,16 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             entityList.add(userEntity);
         }
         Jedis jc = JRedisUtils.get();
-        for (SystemUserDTO systemUser : entityList) {
-            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
-                getSkipPull(jc, systemUser, dateStr + "--关键字");
-                continue;
+
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
+            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--关键字");
             }
+            return judge;
+        }).collect(Collectors.toList());
+
+        for (SystemUserDTO systemUser : newEntityList) {
             int i = 1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--关键字");
@@ -384,7 +394,16 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             entityList.add(userEntity);
         }
         Jedis jc = JRedisUtils.get();
-        for (SystemUserDTO systemUser : entityList) {
+
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
+            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--地域");
+            }
+            return judge;
+        }).collect(Collectors.toList());
+
+        for (SystemUserDTO systemUser : newEntityList) {
             if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
                 getSkipPull(jc, systemUser, dateStr + "--地域");
                 continue;
