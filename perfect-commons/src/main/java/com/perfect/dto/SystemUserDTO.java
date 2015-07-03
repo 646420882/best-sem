@@ -3,6 +3,7 @@ package com.perfect.dto;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -116,5 +117,21 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     public void setAccountState(Integer accountState) {
         this.accountState = accountState;
+    }
+
+
+    @Override
+    public String toString() {
+        return "SystemUserDTO{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", state=" + state +
+                ", access=" + access +
+                ", img=" + Arrays.toString(img) +
+                ", email='" + email + '\'' +
+                ", baiduAccounts=" + baiduAccounts +
+                ", accountState=" + accountState +
+                '}';
     }
 }

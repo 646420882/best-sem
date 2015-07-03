@@ -82,7 +82,11 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         Jedis jc = JRedisUtils.get();
 
         List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            System.out.println("==================");
+            System.out.println(e);
+            System.out.println(e.toString());
+            System.out.println("==================");
+            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--用户");
             }
@@ -118,7 +122,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<AccountReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getAccountReportData(list, systemUser, dateStr,entity.getBaiduUserName());
+                    asynchronousReportDAO.getAccountReportData(list, systemUser, dateStr, entity.getBaiduUserName());
                     getEndPull(systemUser, entity, dateStr + "--用户");
 
                 } catch (InterruptedException | ExecutionException e) {
@@ -147,7 +151,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         Jedis jc = JRedisUtils.get();
 
         List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--计划");
             }
@@ -181,7 +185,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<CampaignReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getCampaignReportData(list, systemUser, dateStr,i);
+                    asynchronousReportDAO.getCampaignReportData(list, systemUser, dateStr, i);
                     i++;
                     getEndPull(systemUser, entity, dateStr + "--计划");
                 } catch (InterruptedException | ExecutionException e) {
@@ -209,7 +213,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         Jedis jc = JRedisUtils.get();
 
         List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--单元");
             }
@@ -244,7 +248,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<AdgroupReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getAdgroupReportData(list, systemUser, dateStr,i);
+                    asynchronousReportDAO.getAdgroupReportData(list, systemUser, dateStr, i);
                     i++;
                     getEndPull(systemUser, entity, dateStr + "--单元");
                 } catch (InterruptedException | ExecutionException e) {
@@ -272,7 +276,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         Jedis jc = JRedisUtils.get();
 
         List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--创意");
             }
@@ -280,7 +284,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }).collect(Collectors.toList());
 
         for (SystemUserDTO systemUser : newEntityList) {
-            int i=1;
+            int i = 1;
             for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--创意");
                 AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -307,7 +311,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<CreativeReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getCreativeReportData(list, systemUser, dateStr,i);
+                    asynchronousReportDAO.getCreativeReportData(list, systemUser, dateStr, i);
                     i++;
                     getEndPull(systemUser, entity, dateStr + "--创意");
                 } catch (InterruptedException | ExecutionException e) {
@@ -334,7 +338,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         Jedis jc = JRedisUtils.get();
 
         List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--关键字");
             }
@@ -396,7 +400,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         Jedis jc = JRedisUtils.get();
 
         List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0;
+            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--地域");
             }
@@ -436,7 +440,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<RegionReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getRegionReportData(list, systemUser, dateStr,i);
+                    asynchronousReportDAO.getRegionReportData(list, systemUser, dateStr, i);
                     i++;
                     getEndPull(systemUser, entity, dateStr + "--地域");
                 } catch (InterruptedException | ExecutionException e) {
@@ -494,7 +498,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             jc.set(ADMIN_KEY_STRING, jsonData);
             jc.expire(ADMIN_KEY_STRING, 3600);
         }
-        if(jc != null){
+        if (jc != null) {
             JRedisUtils.returnJedis(jc);
         }
     }
@@ -521,7 +525,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             jc.set(ADMIN_KEY_STRING, jsonData);
             jc.expire(ADMIN_KEY_STRING, 3600);
         }
-        if(jc != null){
+        if (jc != null) {
             JRedisUtils.returnJedis(jc);
         }
     }
@@ -529,7 +533,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
     class HttpFileHandler {
 
         public List<AccountReportDTO> getAccountReport(String filePath, int type) {
-            if(filePath == null){
+            if (filePath == null) {
                 return Collections.emptyList();
             }
             List<AccountReportDTO> list = new ArrayList<>();
@@ -551,7 +555,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = format.parse(arr[0]);
                     entity1.setDate(date);
-                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
+                    entity1.setAccountId(arr[1].equals("-") ? 0L : Long.valueOf(arr[1]));
                     entity1.setAccountName(arr[2]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[3] == null ? "0" : arr[3]));
@@ -587,7 +591,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
 
         public List<CampaignReportDTO> getCampaignReport(String filePath, int type) {
-            if(filePath == null){
+            if (filePath == null) {
                 return Collections.emptyList();
             }
             List<CampaignReportDTO> list = new ArrayList<>();
@@ -606,8 +610,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     }
                     String[] arr = str.split("\\t");
                     CampaignReportDTO entity1 = new CampaignReportDTO();
-                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
-                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-") ? 0L : Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-") ? 0L : Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[5] == null ? "0" : arr[5]));
@@ -642,7 +646,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         public List<AdgroupReportDTO> getAdgroupReport(String filePath, int type) {
-            if(filePath == null){
+            if (filePath == null) {
                 return Collections.emptyList();
             }
             List<AdgroupReportDTO> list = new ArrayList<>();
@@ -661,10 +665,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     }
                     String[] arr = str.split("\\t");
                     AdgroupReportDTO entity1 = new AdgroupReportDTO();
-                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
-                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-") ? 0L : Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-") ? 0L : Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
-                    entity1.setAdgroupId(arr[5].equals("-")?0L:Long.valueOf(arr[5]));
+                    entity1.setAdgroupId(arr[5].equals("-") ? 0L : Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[7] == null ? "0" : arr[7]));
@@ -699,7 +703,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         public List<CreativeReportDTO> getCreativeReport(String filePath, int type) {
-            if(filePath == null){
+            if (filePath == null) {
                 return Collections.emptyList();
             }
             List<CreativeReportDTO> list = new ArrayList<>();
@@ -718,15 +722,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     }
                     String[] arr = str.split("\\t");
                     CreativeReportDTO entity1 = new CreativeReportDTO();
-                    entity1.setCreativeId(arr[7].equals("-")?0L:Long.valueOf(arr[7]));
+                    entity1.setCreativeId(arr[7].equals("-") ? 0L : Long.valueOf(arr[7]));
                     entity1.setCreativeTitle(arr[8]);
                     entity1.setDescription1(arr[9]);
                     entity1.setDescription2(arr[10]);
                     entity1.setShowUrl(arr[11]);
-                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
-                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-") ? 0L : Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-") ? 0L : Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
-                    entity1.setAdgroupId(arr[5].equals("-")?0L:Long.valueOf(arr[5]));
+                    entity1.setAdgroupId(arr[5].equals("-") ? 0L : Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[12] == null ? "0" : arr[12]));
@@ -761,7 +765,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         public List<KeywordReportDTO> getKeywordReport(String filePath, int type) {
-            if(filePath == null){
+            if (filePath == null) {
                 return Collections.emptyList();
             }
             List<KeywordReportDTO> list = new ArrayList<>();
@@ -781,12 +785,12 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     String[] arr = str.split("\\t");
                     KeywordReportDTO entity1 = new KeywordReportDTO();
 
-                    entity1.setKeywordId(arr[7].equals("-")?0L:Long.valueOf(arr[7]));
+                    entity1.setKeywordId(arr[7].equals("-") ? 0L : Long.valueOf(arr[7]));
                     entity1.setKeywordName(arr[9]);
-                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
-                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-") ? 0L : Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-") ? 0L : Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
-                    entity1.setAdgroupId(arr[5].equals("-")?0L:Long.valueOf(arr[5]));
+                    entity1.setAdgroupId(arr[5].equals("-") ? 0L : Long.valueOf(arr[5]));
                     entity1.setAdgroupName(arr[6]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[10] == null ? "0" : arr[10]));
@@ -823,7 +827,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
 
         public List<RegionReportDTO> getRegionReport(String filePath, int type) {
-            if(filePath == null){
+            if (filePath == null) {
                 return Collections.emptyList();
             }
             List<RegionReportDTO> list = new ArrayList<>();
@@ -842,8 +846,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     }
                     String[] arr = str.split("\\t");
                     RegionReportDTO entity1 = new RegionReportDTO();
-                    entity1.setAccountId(arr[1].equals("-")?0L:Long.valueOf(arr[1]));
-                    entity1.setCampaignId(arr[3].equals("-")?0L:Long.valueOf(arr[3]));
+                    entity1.setAccountId(arr[1].equals("-") ? 0L : Long.valueOf(arr[1]));
+                    entity1.setCampaignId(arr[3].equals("-") ? 0L : Long.valueOf(arr[3]));
                     entity1.setCampaignName(arr[4]);
                     if (type == 1) {
                         entity1.setAdgroupId(Long.valueOf(arr[5]));
