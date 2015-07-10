@@ -81,12 +81,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            System.out.println("==================");
-            System.out.println(e);
-            System.out.println(e.toString());
-            System.out.println("==================");
-            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--用户");
             }
@@ -150,8 +146,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--计划");
             }
@@ -212,8 +208,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--单元");
             }
@@ -275,8 +271,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--创意");
             }
@@ -337,8 +333,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
                 getSkipPull(jc, e, dateStr + "--关键字");
             }
@@ -399,10 +395,10 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> {
-            boolean judge = (e != null && e.getState() != 0 && (e.getBaiduAccounts() != null && e.getBaiduAccounts().size() > 0) && e.getAccess() == 2 && e.getAccountState() > 0);
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
             if (!judge) {
-                getSkipPull(jc, e, dateStr + "--地域");
+                getSkipPull(jc, e, dateStr + "--地狱");
             }
             return judge;
         }).collect(Collectors.toList());
