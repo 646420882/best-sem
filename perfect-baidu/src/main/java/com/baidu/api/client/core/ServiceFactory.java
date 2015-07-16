@@ -94,6 +94,10 @@ public class ServiceFactory extends VersionService {
 
     public static ServiceFactory getInstance(String username, String password, String token, String target) {
         ServiceFactory service = new ServiceFactory();
+        service.setConfig("username", username);
+        service.setConfig("password", password);
+        service.setConfig("token", token);
+        service.setConfig("target", target);
         service.authHeader.setUsername(username);
         service.authHeader.setPassword(password);
         service.authHeader.setToken(token);
