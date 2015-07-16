@@ -55,7 +55,9 @@ public class JsonConnection {
      */
     public JsonConnection(String url) throws MalformedURLException, IOException {
         super();
-        connection = (HttpURLConnection) new URL(url).openConnection();
+//        https://api.baidu.com/json/du/api/sem/nms/v2/CampaignService/getCampaignId/gzip
+
+        connection = (HttpURLConnection) new URL("https://api.baidu.com/sem/nms/v2/CampaignService/getCampaignId/gzip").openConnection();
     }
 
     /**

@@ -40,6 +40,7 @@ public class GZIPJsonConnection extends JsonConnection {
     @Override
     protected InputStream readResponse() throws ApiException {
         try {
+            System.out.println();
             return new GZIPInputStream(super.readResponse());
         } catch (IOException e) {
             throw new ApiException(e);
