@@ -94,6 +94,14 @@ public abstract class ReportUtil {
                 + " minites, but file still not ready!");
     }
 
+    public static int getReportState(String reportId) {
+        return 0;
+    }
+
+    public static String getReportFileUrl(String reportId) {
+        return "";
+    }
+
     /**
      * Get the account file Url by file Id. We will check the file status internally.
      *

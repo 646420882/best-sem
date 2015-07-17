@@ -21,18 +21,15 @@ package com.baidu.api.client.config;
  * The Config interface
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-7-30$
- *
  */
+@FunctionalInterface
 public interface Config {
     /**
      * Set configurations into Configer class
      *
-     * @param key
-     *            The configuration key
-     * @param value
-     *            The configuration value
+     * @param key   The configuration key
+     * @param value The configuration value
      */
-    public void setConfig(String key, String value);
+    void setConfig(String key, String value);
 }
