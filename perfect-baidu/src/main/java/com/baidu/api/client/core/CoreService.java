@@ -25,9 +25,7 @@ import java.net.URL;
  * Internal use only, please ignore.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-7-30$
- *
  */
 public class CoreService extends Service {
 

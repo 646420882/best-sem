@@ -30,9 +30,7 @@ import java.net.URLConnection;
  * Download file from remote server.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2011-7-22$
- *
  */
 public class DownloadUtil {
 
@@ -44,11 +42,9 @@ public class DownloadUtil {
     private static final int MIN_SIZE = 5;
 
     /**
-     *
      * Download the file pointed by the url and return the content as byte array.
      *
-     * @param strUrl
-     *            The Url to be downloaded.
+     * @param strUrl The Url to be downloaded.
      * @return The file content as byte array.
      */
     public static byte[] downloadFile(String strUrl) {
@@ -58,14 +54,10 @@ public class DownloadUtil {
     /**
      * Download the file pointed by the url and return the content as byte array.
      *
-     * @param strUrl
-     *            The Url to be downloaded.
-     * @param connectTimeout
-     *            Connect timeout in milliseconds.
-     * @param readTimeout
-     *            Read timeout in milliseconds.
-     * @param maxFileSize
-     *            Max file size in BYTE.
+     * @param strUrl         The Url to be downloaded.
+     * @param connectTimeout Connect timeout in milliseconds.
+     * @param readTimeout    Read timeout in milliseconds.
+     * @param maxFileSize    Max file size in BYTE.
      * @return The file content as byte array.
      */
     public static byte[] downloadFile(String strUrl, int connectTimeout, int readTimeout, int maxFileSize) {
@@ -133,6 +125,6 @@ public class DownloadUtil {
     }
 
     private DownloadUtil() {
-        // Utility类，禁止实例化
+        // Utility类, 禁止实例化
     }
 }

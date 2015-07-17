@@ -26,21 +26,19 @@ import java.util.Collection;
  * We only nest into 5 levels.
  * Object fields will be translate like this:
  * {
- *   field1=xxx
- *   field2=zzz
- *   ...
+ * field1=xxx
+ * field2=zzz
+ * ...
  * }
  * Arrays will be translate like this:
  * [
- *   0 => aaa
- *   1 => bbb
- *   ...
+ * 0 => aaa
+ * 1 => bbb
+ * ...
  * ]
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2011-1-24$
- *
  */
 public abstract class ObjToStringUtil {
 
@@ -50,13 +48,13 @@ public abstract class ObjToStringUtil {
      * @param o
      * @return The string representation of this Object.
      */
-    public static final String objToString(Object o) {
+    public static String objToString(Object o) {
         StringBuilder sb = new StringBuilder();
         printFields(o, sb, 2);
         return sb.toString();
     }
 
-    private static final void printFields(Object o, StringBuilder sb, int indentation) {
+    private static void printFields(Object o, StringBuilder sb, int indentation) {
         if (o == null) {
             sb.append("null");
             return;
@@ -119,7 +117,8 @@ public abstract class ObjToStringUtil {
                 sb.append(f.getName()).append("=");
                 printFields(f.get(o), sb, indentation + 2);
                 sb.append("\n");
-            } catch (Exception e) {
+            } catch (IllegalAccessException e) {
+                System.out.println(e.getMessage());
             }
         }
         int i = sb.length() - 2;
@@ -131,7 +130,7 @@ public abstract class ObjToStringUtil {
         }
     }
 
-    private static final void generateIndentation(StringBuilder sb, int indentation) {
+    private static void generateIndentation(StringBuilder sb, int indentation) {
         while ((indentation = indentation - 2) >= 0) {
             sb.append("  ");
         }

@@ -21,9 +21,7 @@ package com.baidu.api.client.core;
  * The exception thrown from this library. It happen rarely, most by environment problem.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-7-30$
- *
  */
 public class ClientInternalException extends RuntimeException {
 

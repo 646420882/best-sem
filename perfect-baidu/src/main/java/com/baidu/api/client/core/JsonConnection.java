@@ -29,9 +29,7 @@ import java.net.URL;
 
 /**
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2011-5-10$
- *
  */
 public class JsonConnection {
 
@@ -95,6 +93,7 @@ public class JsonConnection {
 
     /**
      * 向服务器发送信息
+     *
      * @param body 向服务器发送的信封对象
      */
     public void sendRequest(JsonEnvelop<?, ?> body) {
@@ -140,10 +139,11 @@ public class JsonConnection {
 
     /**
      * 读取服务器返回的信息
+     *
      * @param <T> 返回头类型。
      * @param <K> 返回body类型。
-     * @param t 返回头类型的class
-     * @param k 返回body类型的class
+     * @param t   返回头类型的class
+     * @param k   返回body类型的class
      * @return 服务器返回的信封
      */
     public <T, K> JsonEnvelop<T, K> readResponse(Class<T> t, Class<K> k) {

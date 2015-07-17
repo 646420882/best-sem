@@ -24,9 +24,7 @@ import javax.net.ssl.SSLSession;
  * Internal use only, please ignore.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-12-23$
- *
  */
 public class PassHostnameVerifier implements HostnameVerifier {
 

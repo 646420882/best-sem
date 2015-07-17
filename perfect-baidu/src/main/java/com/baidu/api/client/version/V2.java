@@ -22,9 +22,7 @@ package com.baidu.api.client.version;
  * The current version configuration class, used to configure QName and service address.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-7-30$
- *
  */
 public class V2 extends Version {
     private static final String NAMESPACE_COMMON = "http://api.baidu.com/sem/common/v2";

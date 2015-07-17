@@ -23,9 +23,7 @@ import com.baidu.api.sem.common.v2.ResHeader;
  * Throw if Client operation failed due to header status is not success.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-9-13$
- *
  */
 public class ClientBusinessException extends RuntimeException {
 
@@ -37,10 +35,8 @@ public class ClientBusinessException extends RuntimeException {
     /**
      * The constructor.
      *
-     * @param rheader
-     *            The response header
-     * @param response
-     *            The response, the type will depend on the method you called.
+     * @param rheader  The response header
+     * @param response The response, the type will depend on the method you called.
      */
     public ClientBusinessException(ResHeader rheader, Object response) {
         super();

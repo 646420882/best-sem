@@ -31,9 +31,7 @@ import java.util.List;
  * The response header process utility class
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-8-30$
- *
  */
 public abstract class ResHeaderUtil {
 
@@ -56,11 +54,9 @@ public abstract class ResHeaderUtil {
     /**
      * Get response header from service.
      *
-     * @param proxy
-     *            The service instance
+     * @param proxy The service instance
      * @return The response header
-     * @throws ClientInternalException
-     *             If the Response header does not exist
+     * @throws ClientInternalException If the Response header does not exist
      */
     @SuppressWarnings("unchecked")
     public static ResHeader getResHeader(BindingProvider proxy) {
@@ -95,8 +91,7 @@ public abstract class ResHeaderUtil {
     /**
      * Print the response header to Console.
      *
-     * @param resH
-     *            The response header
+     * @param resH The response header
      */
     public static void printResHeader(ResHeader resH) {
         // output soap response header
@@ -123,10 +118,8 @@ public abstract class ResHeaderUtil {
     /**
      * Get response header from service.
      *
-     * @param proxy
-     *            The service instance
-     * @param print
-     *            Print the response header to Console if <code>true</code>
+     * @param proxy The service instance
+     * @param print Print the response header to Console if <code>true</code>
      * @return The response header
      */
     public static ResHeader getResHeader(Object proxy, boolean print) {

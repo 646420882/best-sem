@@ -21,18 +21,16 @@ import java.security.MessageDigest;
 
 /**
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2011-9-2$
- *
  */
 public abstract class MD5Util {
 
-    public static final boolean md5check(byte[] data, String md5) {
+    public static boolean md5check(byte[] data, String md5) {
         String sum = md5sum(data);
         return sum.equalsIgnoreCase(md5);
     }
 
-    public static final String md5sum(byte[] data) {
+    public static String md5sum(byte[] data) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("MD5");
@@ -43,7 +41,7 @@ public abstract class MD5Util {
         }
     }
 
-    public static final String byteToBase16(byte[] bytes) {
+    public static String byteToBase16(byte[] bytes) {
         if (bytes == null)
             throw new IllegalArgumentException("The parameter should not be null!");
         StringBuilder sb = new StringBuilder(bytes.length * 2);

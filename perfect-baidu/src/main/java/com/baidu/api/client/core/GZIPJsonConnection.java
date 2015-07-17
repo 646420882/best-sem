@@ -26,9 +26,7 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2011-6-2$
- *
  */
 public class GZIPJsonConnection extends JsonConnection {
 

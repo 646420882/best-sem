@@ -28,9 +28,7 @@ import java.util.Map;
  * Internal use only.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-7-30$
- *
  */
 public abstract class Version {
     protected static final Log log = LogFactory.getLog(Version.class);
@@ -46,8 +44,7 @@ public abstract class Version {
     /**
      * Add a new version into the version map.
      *
-     * @param v
-     *            The version to add.
+     * @param v The version to add.
      */
     protected static void addVersion(Version v) {
         verions.put(v.getVersion().toUpperCase(), v);
@@ -56,8 +53,7 @@ public abstract class Version {
     /**
      * Get a version named by the key string.
      *
-     * @param key
-     *            The version name.
+     * @param key The version name.
      * @return The version, null if not found.
      */
     public static Version getVersion(String key) {

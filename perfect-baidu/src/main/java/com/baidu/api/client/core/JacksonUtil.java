@@ -30,9 +30,7 @@ import java.io.OutputStream;
 
 /**
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2011-3-18$
- *
  */
 public abstract class JacksonUtil {
     // can reuse, share globally
@@ -43,24 +41,24 @@ public abstract class JacksonUtil {
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
     }
 
-    public static final String obj2Str(Object o) throws JsonGenerationException, JsonMappingException, IOException {
+    public static String obj2Str(Object o) throws JsonGenerationException, JsonMappingException, IOException {
         return mapper.writeValueAsString(o);
     }
 
-    public static final void writeObj(OutputStream out, Object value) throws JsonGenerationException, JsonMappingException, IOException {
+    public static void writeObj(OutputStream out, Object value) throws JsonGenerationException, JsonMappingException, IOException {
         mapper.writeValue(out, value);
     }
 
-    public static final <T> T str2Obj(String s, Class<T> valueType) throws JsonParseException, JsonMappingException, IOException {
+    public static <T> T str2Obj(String s, Class<T> valueType) throws JsonParseException, JsonMappingException, IOException {
         return mapper.readValue(s, valueType);
     }
 
-    public static final <T> T readObj(InputStream in, Class<T> valueType) throws JsonParseException, JsonMappingException, IOException {
+    public static <T> T readObj(InputStream in, Class<T> valueType) throws JsonParseException, JsonMappingException, IOException {
         return mapper.readValue(in, valueType);
     }
 
     @SuppressWarnings("unchecked")
-    public static final <T> T readObj(InputStream in, JavaType valueType) throws JsonParseException, JsonMappingException, IOException {
+    public static <T> T readObj(InputStream in, JavaType valueType) throws JsonParseException, JsonMappingException, IOException {
         return (T) mapper.readValue(in, valueType);
     }
 

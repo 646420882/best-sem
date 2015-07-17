@@ -27,9 +27,7 @@ import java.util.GregorianCalendar;
  * Tanslate bewteen string and Date.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-11-18$
- *
  */
 public abstract class DateTimeUtil {
 
@@ -46,26 +44,28 @@ public abstract class DateTimeUtil {
     /**
      * Format the current date time to "yyyy-MM-dd HH:mm:ss.SSS" format string.
      */
-    public static final String formatDate2LongStr() {
+    public static String formatDate2LongStr() {
         return formatDate2LongStr(new Date());
     }
 
     /**
      * Format the given date time to "yyyy-MM-dd HH:mm:ss.SSS" format string.
+     *
      * @param date
      * @return
      */
-    public static final String formatDate2LongStr(Date date) {
+    public static String formatDate2LongStr(Date date) {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return s.format(date);
     }
 
     /**
      * Format the given date time to "yyyy-MM-dd HH:mm:ss.SSS" format string.
+     *
      * @param date
      * @return
      */
-    public static final String formatDate2LongStr(long date) {
+    public static String formatDate2LongStr(long date) {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return s.format(new Date(date));
     }
@@ -73,72 +73,79 @@ public abstract class DateTimeUtil {
     /**
      * Format the current date time to "yyyy-MM-dd HH:mm:ss" format string.
      */
-    public static final String formatDate2DateTimeStr() {
+    public static String formatDate2DateTimeStr() {
         return formatDate2DateTimeStr(new Date());
     }
 
     /**
      * Format the given date time to "yyyy-MM-dd HH:mm:ss" format string.
+     *
      * @param date
      * @return
      */
-    public static final String formatDate2DateTimeStr(Date date) {
+    public static String formatDate2DateTimeStr(Date date) {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return s.format(date);
     }
 
     /**
      * Format the given date time to "yyyy-MM-dd HH:mm:ss" format string.
+     *
      * @param date
      * @return
      */
-    public static final String formatDate2DateTimeStr(long date) {
+    public static String formatDate2DateTimeStr(long date) {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return s.format(new Date(date));
     }
 
     /**
      * Format the current date time to "yyyy-MM-dd" format string.
+     *
      * @return
      */
-    public static final String formatDate2DateStr() {
+    public static String formatDate2DateStr() {
         return formatDate2DateStr(new Date());
     }
 
     /**
      * Format the given date time to "yyyy-MM-dd" format string.
+     *
      * @param date
      * @return
      */
-    public static final String formatDate2DateStr(Date date) {
+    public static String formatDate2DateStr(Date date) {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
         return s.format(date);
     }
 
     /**
      * Format the given date time to "yyyy-MM-dd" format string.
+     *
      * @param date
      * @return
      */
-    public static final String formatDate2DateStr(long date) {
+    public static String formatDate2DateStr(long date) {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
         return s.format(new Date(date));
     }
 
     /**
      * Format the current date time to "yyyyMMdd" format string.
+     *
      * @return
      */
-    public static final String formatDate2ShortStr() {
+    public static String formatDate2ShortStr() {
         return formatDate2ShortStr(new Date());
     }
 
     /**
      * Format the given date time to "yyyyMMdd" format string.
+     *
      * @param date
      * @return
      */
-    public static final String formatDate2ShortStr(Date date) {
+    public static String formatDate2ShortStr(Date date) {
         SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");
         return s.format(date);
     }
@@ -147,17 +154,17 @@ public abstract class DateTimeUtil {
     // PARSE DATE FROM STRING
     // /////////////////////////////////////////////////////////////////////////////////////
 
-    public static final Date parseDateFromLongStr(String date) throws ParseException {
+    public static Date parseDateFromLongStr(String date) throws ParseException {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return s.parse(date);
     }
 
-    public static final Date parseDateFromDateTimeStr(String date) throws ParseException {
+    public static Date parseDateFromDateTimeStr(String date) throws ParseException {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return s.parse(date);
     }
 
-    public static final Date parseDateFromDateStr(String date) throws ParseException {
+    public static Date parseDateFromDateStr(String date) throws ParseException {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
         return s.parse(date);
     }
@@ -166,11 +173,11 @@ public abstract class DateTimeUtil {
     // GET SPECIAL DATE BY PARAM
     // /////////////////////////////////////////////////////////////////////////////////////
 
-    public static final Date getLastWeekDay(int weekDay) {
+    public static Date getLastWeekDay(int weekDay) {
         return getLastWeekDay(weekDay, new Date());
     }
 
-    public static final Date getLastWeekDay(Date end) {
+    public static Date getLastWeekDay(Date end) {
         if (end == null)
             throw new IllegalArgumentException("The parameter [end date] should not be null!");
         GregorianCalendar cal = getCalender(end);
@@ -179,7 +186,7 @@ public abstract class DateTimeUtil {
         return cal.getTime();
     }
 
-    public static final Date getLastWeekDay(int weekDay, Date end) {
+    public static Date getLastWeekDay(int weekDay, Date end) {
         if (end == null)
             throw new IllegalArgumentException("The parameter [end date] should not be null!");
         GregorianCalendar cal = getCalender(end);
@@ -191,7 +198,7 @@ public abstract class DateTimeUtil {
         return cal.getTime();
     }
 
-    public static final Date getYesterday() {
+    public static Date getYesterday() {
         GregorianCalendar cal = getCalender(new Date());
         cal.add(Calendar.DAY_OF_MONTH, -1);
         return cal.getTime();
@@ -201,37 +208,37 @@ public abstract class DateTimeUtil {
     // GET DATE PART
     // /////////////////////////////////////////////////////////////////////////////////////
 
-    public static final int getHour(Date date) {
+    public static int getHour(Date date) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
         return cal.get(Calendar.HOUR_OF_DAY);
     }
 
-    public static final int getMinute(Date date) {
+    public static int getMinute(Date date) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
         return cal.get(Calendar.MINUTE);
     }
 
-    public static final int getWeekDay(Date date) {
+    public static int getWeekDay(Date date) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
         return cal.get(Calendar.DAY_OF_WEEK);
     }
 
-    public static final int getDayofMonth(Date date) {
+    public static int getDayofMonth(Date date) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
         return cal.get(Calendar.DAY_OF_MONTH);
     }
 
-    public static final int getMonth(Date date) {
+    public static int getMonth(Date date) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
         return cal.get(Calendar.MONTH);
     }
 
-    private static final GregorianCalendar getCalender(Date date) {
+    private static GregorianCalendar getCalender(Date date) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
         cal.set(Calendar.MILLISECOND, 0);

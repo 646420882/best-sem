@@ -19,9 +19,7 @@ package com.baidu.api.client.core;
 
 /**
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2011-5-9$
- *
  */
 public class JsonEnvelop<T, K> {
 

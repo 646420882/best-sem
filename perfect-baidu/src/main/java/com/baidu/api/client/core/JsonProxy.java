@@ -28,9 +28,7 @@ import java.lang.reflect.Proxy;
 
 /**
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2011-5-10$
- *
  */
 public class JsonProxy<I> implements InvocationHandler {
     protected static final Log log = LogFactory.getLog(JsonProxy.class);
@@ -50,9 +48,9 @@ public class JsonProxy<I> implements InvocationHandler {
     /**
      * Create the proxy instance of api client stub. Proxied by JsonProxy.
      *
-     * @param <T> The proxy instannce type.
+     * @param <T>        The proxy instannce type.
      * @param interfaces The proxy instannce type class.
-     * @param service The original object.
+     * @param service    The original object.
      * @return The proxied object.
      */
     @SuppressWarnings("unchecked")

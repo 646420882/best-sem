@@ -31,31 +31,23 @@ import java.util.zip.ZipInputStream;
 /**
  * @author
  * @author@ (@author-email@)
- *
- * @version
  * @version@, $Date: 2011-3-28$
- *
  */
 public abstract class GZipUtil {
 
-    public static final byte[] unGzip(byte[] data) throws IOException {
-        GZIPInputStream zin = new GZIPInputStream(
-                new ByteArrayInputStream(data));
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
+    public static byte[] unGzip(byte[] data) throws IOException {
+        try (GZIPInputStream zin = new GZIPInputStream(
+                new ByteArrayInputStream(data)); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             data = new byte[10240];
             int len;
             while ((len = zin.read(data)) != -1) {
                 out.write(data, 0, len);
             }
             return out.toByteArray();
-        } finally {
-            zin.close();
-            out.close();
         }
     }
 
-    public static final byte[] unzip(byte[] data) throws IOException {
+    public static byte[] unzip(byte[] data) throws IOException {
         byte[] b = null;
         try {
             ByteArrayInputStream bis = new ByteArrayInputStream(data);
@@ -79,7 +71,7 @@ public abstract class GZipUtil {
         return b;
     }
 
-    public static final byte[] gzip(byte[] data) throws IOException {
+    public static byte[] gzip(byte[] data) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         GZIPOutputStream zout = new GZIPOutputStream(out);
         zout.write(data);
@@ -87,36 +79,30 @@ public abstract class GZipUtil {
         return out.toByteArray();
     }
 
-    public static final byte[] gzipString(String str) throws IOException {
+    public static byte[] gzipString(String str) throws IOException {
         byte[] data = str.getBytes("UTF-8");
         return gzip(data);
     }
 
-    public static final String unGzipString(byte[] data) throws IOException {
+    public static String unGzipString(byte[] data) throws IOException {
         data = unGzip(data);
         return new String(data, "UTF-8");
     }
 
-    public static final <T> T readObj(byte[] data, Class<T> valueType)
+    public static <T> T readObj(byte[] data, Class<T> valueType)
             throws JsonParseException, JsonMappingException, IOException {
-        GZIPInputStream zin = new GZIPInputStream(
-                new ByteArrayInputStream(data));
-        try {
+        try (GZIPInputStream zin = new GZIPInputStream(
+                new ByteArrayInputStream(data))) {
             return JacksonUtil.readObj(zin, valueType);
-        } finally {
-            zin.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public static final <T> T readObj(byte[] data, JavaType valueType)
+    public static <T> T readObj(byte[] data, JavaType valueType)
             throws JsonParseException, JsonMappingException, IOException {
-        GZIPInputStream zin = new GZIPInputStream(
-                new ByteArrayInputStream(data));
-        try {
+        try (GZIPInputStream zin = new GZIPInputStream(
+                new ByteArrayInputStream(data))) {
             return (T) JacksonUtil.readObj(zin, valueType);
-        } finally {
-            zin.close();
         }
     }
 }

@@ -43,9 +43,7 @@ import java.util.Map;
  * Internal use only, please ignore.
  *
  * @author @author@ (@author-email@)
- *
  * @version @version@, $Date: 2010-7-30$
- *
  */
 public abstract class VersionService implements Config {
     protected static final Log log = LogFactory.getLog(VersionService.class);
@@ -68,10 +66,8 @@ public abstract class VersionService implements Config {
     /**
      * Get the client side serivce using the Json protocol.
      *
-     * @param <T>
-     *            The service interface
-     * @param cls
-     *            The service interface
+     * @param <T> The service interface
+     * @param cls The service interface
      * @return The client side serivce stub.
      */
     public final <T> T getJsonService(Class<T> cls) {
@@ -81,10 +77,8 @@ public abstract class VersionService implements Config {
     /**
      * Get the client side serivce stub with the default version.
      *
-     * @param <T>
-     *            The service interface
-     * @param cls
-     *            The service interface
+     * @param <T> The service interface
+     * @param cls The service interface
      * @return The client side serivce stub.
      */
     public final <T> T getService(Class<T> cls) {
@@ -94,12 +88,9 @@ public abstract class VersionService implements Config {
     /**
      * Get the client side serivce stub.
      *
-     * @param <T>
-     *            The service interface
-     * @param cls
-     *            The service interface
-     * @param v
-     *            The version instance
+     * @param <T> The service interface
+     * @param cls The service interface
+     * @param v   The version instance
      * @return The client side serivce stub.
      */
     public final <T> T getService(Class<T> cls, Version v) {
@@ -138,8 +129,7 @@ public abstract class VersionService implements Config {
      * Set the current version to be used when call <code>getService</code> Please do not call this method directly, it
      * will be called automatically when reading the configuration file.
      *
-     * @param str
-     *            The version marker. For example, V2
+     * @param str The version marker. For example, V2
      */
     public void setVersion(String str) {
         currentVersion = Version.getVersion(str);
@@ -160,11 +150,8 @@ public abstract class VersionService implements Config {
     /**
      * Please do not call this method directly, it will be called automatically when reading the configuration file.
      *
-     * @param key
-     *            The configuration key
-     * @param value
-     *            The configuration value
-     *
+     * @param key   The configuration key
+     * @param value The configuration value
      */
     public void setConfig(String key, String value) {
         try {
@@ -196,7 +183,7 @@ public abstract class VersionService implements Config {
 
             Header header = new Header(new QName(currentVersion.getHeaderNameSpace(), "AuthHeader"), authHeader,
                     new JAXBDataBinding(AuthHeader.class));
-            headers = new ArrayList<Header>();
+            headers = new ArrayList<>();
             headers.add(header);
             log.info("Current user: " + username);
         } catch (JAXBException e) {
@@ -207,8 +194,9 @@ public abstract class VersionService implements Config {
 
     /**
      * Change the user in header into another one.
+     *
      * @param authHeader
-     * @param service The client side service sub.
+     * @param service    The client side service sub.
      */
     public void updateHeader(AuthHeader authHeader, Object service) {
         try {
