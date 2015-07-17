@@ -13,7 +13,7 @@ public class BaiduApiExample {
     public BaiduApiExample() {
         // Get service factory. Your authentication information will be popped up automatically from
         // baidu-api.properties
-        VersionService factory = ServiceFactory.getInstance("baidu-renrenche2143339", "Renrenche2015", "58b2073002e0777ae636766b15444201", null);
+        VersionService factory = ServiceFactory.getInstance("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e", null);
         // Get service stub by given the Service interface.
         // Please see the bean-api.tar.gz to get more details about all the service interfaces.
         this.service = factory.getService(ReportService.class);
@@ -30,11 +30,11 @@ public class BaiduApiExample {
 
         //startDate: here is 20110309
         Calendar startDate = Calendar.getInstance();
-        startDate.set(2015, Calendar.JUNE, 1, 0, 0, 0);
+        startDate.set(2015, Calendar.JULY, 16, 0, 0, 0);
         request.setStartDate(startDate.getTime());
         //endDate: here is 20110309
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2015, Calendar.JUNE, 5, 23, 59, 59);
+        endDate.set(2015, Calendar.JULY, 16, 23, 59, 59);
         request.setEndDate(endDate.getTime());
 
         //statRange: 2 means statRange is campaign
@@ -42,7 +42,7 @@ public class BaiduApiExample {
 
         //statIds is not required, default is all the Ids that belong the the statRange specified.
         //If set, the result will limit to only the campaignIds specified
-        long[] campaignIds = new long[]{757446, 757447, 757448};
+        long[] campaignIds = new long[]{4219295, 4222159};
         for (long campaignId : campaignIds) {
             request.getStatIds().add(campaignId);
         }
@@ -122,7 +122,6 @@ public class BaiduApiExample {
         String content = ReportUtil.getFileContent(urlRes.getReportFilePath(),
                 "zip");
         System.out.println(content);
-        System.out.println("=============================");
     }
 
 }
