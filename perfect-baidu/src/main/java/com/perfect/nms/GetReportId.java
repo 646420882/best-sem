@@ -1,7 +1,6 @@
-package com.baidu.api;
+package com.perfect.nms;
 
 import com.baidu.api.client.core.*;
-import com.baidu.api.client.examples.account.GetAccountInfoExample;
 import com.baidu.api.sem.common.v2.ResHeader;
 import com.baidu.api.sem.nms.v2.*;
 
@@ -12,10 +11,10 @@ import java.util.List;
 /**
  * Created by subdong on 15-7-17.
  */
-public class GetReportID {
+public class GetReportId {
     private VersionService factory;
 
-    public GetReportID() {
+    public GetReportId() {
         factory = ServiceFactory.getInstance("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e", null);
     }
 
@@ -85,7 +84,7 @@ public class GetReportID {
         return longs;
     }
     public static void main(String[] args) {
-        GetReportID example = new GetReportID();
+        GetReportId example = new GetReportId();
         //推广组ID   20657783
         //推广计划ID  4222159  4222135  4219295  4073559
         //int s = example.getAdbyGroupId(20657783);
