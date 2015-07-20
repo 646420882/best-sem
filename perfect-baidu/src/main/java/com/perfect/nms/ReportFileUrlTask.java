@@ -1,12 +1,15 @@
 package com.perfect.nms;
 
 import com.baidu.api.client.core.ReportUtil;
+import com.baidu.api.sem.nms.v2.ReportService;
 import com.perfect.utils.redis.JRedisUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,7 +39,7 @@ public class ReportFileUrlTask {
      * e.g.
      * 1|reportId
      */
-    private final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Map<String, ReportService>> queue = new LinkedBlockingQueue<>();
 
     private final ExecutorService executor = Executors.newFixedThreadPool(THREAD_NUMBER, new FileUrlThreadFactory());
 
@@ -45,8 +48,8 @@ public class ReportFileUrlTask {
         handle();
     }
 
-    public void add(String value) {
-        queue.add(value);
+    public void add(Map<String, ReportService> map) {
+        queue.add(map);
     }
 
     public void shutdown() {
@@ -90,21 +93,34 @@ public class ReportFileUrlTask {
         @Override
         public void run() {
             while (true) {
-                String value = queue.poll();
+                Map<String, ReportService> reportServiceMap = queue.poll();
                 try {
                     Jedis jedis = JRedisUtils.get();
 
                     String status = jedis.get(REPORT_ID_COMMIT_STATUS);
-                    if ("1".equals(status) && value == null) {
+                    if ("1".equals(status) && reportServiceMap == null) {
                         jedis.del(REPORT_ID_COMMIT_STATUS);
                         jedis.close();
                         LOGGER.info("Nms report id handle finished.");
                         break;
                     }
 
-                    if (value == null) {
+                    if (reportServiceMap == null) {
                         jedis.close();
                         TimeUnit.SECONDS.sleep(1);
+                        continue;
+                    }
+
+                    String value = null;
+                    ReportService service = null;
+                    for (Map.Entry<String, ReportService> entry : reportServiceMap.entrySet()) {
+                        value = entry.getKey();
+                        service = entry.getValue();
+                        break;
+                    }
+
+                    if (value == null) {
+                        jedis.close();
                         continue;
                     }
 
@@ -116,8 +132,8 @@ public class ReportFileUrlTask {
                         counter += Integer.parseInt(rt[2]);
                     }
 
-                    if (ReportUtil.getReportState(reportId) == REPORT_GENERATE_SUCCESS) {
-                        String fileUrl = ReportUtil.getReportFileUrl(reportId);
+                    if (ReportUtil.getReportState(reportId, service) == REPORT_GENERATE_SUCCESS) {
+                        String fileUrl = ReportUtil.getReportFileUrl(reportId, service);
                         if (StringUtils.isNotEmpty(fileUrl)) {
                             jedis.lpush(REPORT_FILE_URL_SUCCEED, type + "|" + fileUrl);
                             jedis.close();
@@ -133,7 +149,9 @@ public class ReportFileUrlTask {
                         } else {
                             // 重新放入queue
                             counter++;
-                            queue.add(value + "|" + counter);
+                            Map<String, ReportService> m = new HashMap<>();
+                            m.put(value + "|" + counter, service);
+                            queue.add(m);
                         }
                     }
 

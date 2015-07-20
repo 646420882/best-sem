@@ -94,11 +94,11 @@ public abstract class ReportUtil {
                 + " minites, but file still not ready!");
     }
 
-    public static int getReportState(String reportId) {
+    public static int getReportState(String reportId, ReportService service) {
         return 0;
     }
 
-    public static String getReportFileUrl(String reportId) {
+    public static String getReportFileUrl(String reportId, ReportService service) {
         return "";
     }
 
