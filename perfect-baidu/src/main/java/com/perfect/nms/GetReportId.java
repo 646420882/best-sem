@@ -116,24 +116,30 @@ public class GetReportId {
             ReportRequestType reportRequestType = new ReportRequestType();
 
             //取值范围为srch,click,cost,ctr,cpm,acp任意组合,报表按照顺序输出绩效数据。
-            /*srch: 展现次数
-            click：点击次数
-            cost：消费（￥，精确到小数点后两位）
-            ctr：点击率（0.XXXXXX，1表示100%，精确到小数点后6位）
-            cpm：千次展现成本（￥，精确到小数点后两位）
-            acp：平均点击价格（￥，精确到小数点后两位）
-            srchuv：展现独立访客
-            clickuv：点击独立访客
-            srsur：展现频次
-            cusur：独立访客点击率
-            cocur：平均独立访客点击价格
-            arrivalRate：到达率
-            hopRate：二跳率
-            avgResTime：平均访问时间
-            directTrans：直接转换
-            indirectTrans：间接转换*/
+            /*srch: 展现次数  click：点击次数  cost：消费（￥，精确到小数点后两位）  ctr：点击率（0.XXXXXX，1表示100%，精确到小数点后6位）
+            cpm：千次展现成本（￥，精确到小数点后两位）  acp：平均点击价格（￥，精确到小数点后两位）  srchuv：展现独立访客
+            clickuv：点击独立访客  srsur：展现频次  cusur：独立访客点击率  cocur：平均独立访客点击价格
+            arrivalRate：到达率  hopRate：二跳率  avgResTime：平均访问时间  directTrans：直接转换  indirectTrans：间接转换*/
             //方法
             //reportRequestTypeData
+            reportRequestType.getPerformanceData().add("srch");
+            reportRequestType.getPerformanceData().add("click");
+            reportRequestType.getPerformanceData().add("cost");
+            reportRequestType.getPerformanceData().add("ctr");
+            reportRequestType.getPerformanceData().add("cpm");
+            reportRequestType.getPerformanceData().add("acp");
+
+            reportRequestType.getPerformanceData().add("srchuv");
+            reportRequestType.getPerformanceData().add("clickuv");
+            reportRequestType.getPerformanceData().add("srsur");
+            reportRequestType.getPerformanceData().add("cusur");
+            reportRequestType.getPerformanceData().add("cocur");
+            reportRequestType.getPerformanceData().add("arrivalRate");
+
+            reportRequestType.getPerformanceData().add("hopRate");
+            reportRequestType.getPerformanceData().add("avgResTime");
+            reportRequestType.getPerformanceData().add("directTrans");
+            reportRequestType.getPerformanceData().add("indirectTrans");
 
             //报告开始时间
             reportRequestType.setStartDate(startDate);
@@ -162,7 +168,7 @@ public class GetReportId {
             parameter.setReportRequestType(reportRequestType);
 
             GetReportIdResponse reportId = reportService.getReportId(parameter);
-
+            ResHeader rheader = ResHeaderUtil.getResHeader(reportService, true);
             if (reportId == null || reportId.getReportId().equals("")) {
                 i++;
                 if (i <= 3) {
@@ -190,28 +196,31 @@ public class GetReportId {
 
         ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
 
-        //账户报告
+        /*//账户报告
         List<Long> accountId = example.getAccountId();
         String accountIdString = example.getReportAllId(accountId, 1, 1, DateUtils.getYesterday(), DateUtils.getYesterday());
         Map<String,ReportService> accountMap = new HashMap<>();
         accountMap.put("1|" + accountIdString, reportService);
-        reportFileUrlTask.add(accountMap);
+        reportFileUrlTask.add(accountMap);*/
 
-        //计划报告
+        /*//计划报告
         List<Long> campaignId = example.getCampaignId();
         String campaignIdString = example.getReportAllId(campaignId, 2, 2, DateUtils.getYesterday(), DateUtils.getYesterday());
         Map<String,ReportService> campaignMap = new HashMap<>();
         campaignMap.put("2|" + campaignIdString, reportService);
-        reportFileUrlTask.add(campaignMap);
+        reportFileUrlTask.add(campaignMap);*/
 
-        //组报告
+        /*//组报告
+        List<Long> campaignId = example.getCampaignId();
         List<Long> groupId = example.getGroupByGroupId(campaignId);
         String groupIdString = example.getReportAllId(groupId, 3, 3, DateUtils.getYesterday(), DateUtils.getYesterday());
         Map<String,ReportService> groupMap = new HashMap<>();
         groupMap.put("3|" + groupIdString, reportService);
-        reportFileUrlTask.add(groupMap);
+        reportFileUrlTask.add(groupMap);*/
 
         //创意报告
+        List<Long> campaignId = example.getCampaignId();
+        List<Long> groupId = example.getGroupByGroupId(campaignId);
         List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
         String adbyGroupIdString = example.getReportAllId(adbyGroupId, 4, 4, DateUtils.getYesterday(), DateUtils.getYesterday());
         Map<String,ReportService> adbyGroupMap = new HashMap<>();

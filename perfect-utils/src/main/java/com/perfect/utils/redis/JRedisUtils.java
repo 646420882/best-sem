@@ -17,23 +17,17 @@ public class JRedisUtils {
     private static JedisPool pool;
 
     static {
-        ResourceBundle bundle = ResourceBundle.getBundle("redis");
+        /*ResourceBundle bundle = ResourceBundle.getBundle("redis");
         if (bundle == null) {
             throw new IllegalArgumentException(
                     "[redis.properties] is not found!");
-        }
+        }*/
         JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(Integer.valueOf(bundle
-                .getString("redis.pool.maxActive")));
-        config.setMaxIdle(Integer.valueOf(bundle
-                .getString("redis.pool.maxIdle")));
-        config.setTestOnBorrow(Boolean.valueOf(bundle
-                .getString("redis.pool.testOnBorrow")));
-        config.setTestOnReturn(Boolean.valueOf(bundle
-                .getString("redis.pool.testOnReturn")));
-        pool = new JedisPool(config, bundle.getString("redis.ip"),
-                Integer.valueOf(bundle.getString("redis.port")), Protocol.DEFAULT_TIMEOUT,
-                bundle.getString("redis.password"));
+        config.setMaxTotal(20);
+        config.setMaxIdle(10);
+        config.setTestOnBorrow(true);
+        config.setTestOnReturn(true);
+        pool = new JedisPool(config, "192.168.100.10",6379 , Protocol.DEFAULT_TIMEOUT,"3edcvfr4");
     }
 
     public static Jedis get() {
