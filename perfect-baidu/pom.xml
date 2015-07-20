@@ -85,12 +85,6 @@
             <artifactId>XmlSchema</artifactId>
             <version>1.4.7</version>
         </dependency>
-
-        <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava</artifactId>
-            <version>1.0.12</version>
-        </dependency>
     </dependencies>
 
     <build>
