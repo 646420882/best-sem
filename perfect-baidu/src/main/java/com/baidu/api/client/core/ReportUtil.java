@@ -95,11 +95,27 @@ public abstract class ReportUtil {
     }
 
     public static int getReportState(String reportId, ReportService service) {
-        return 0;
+        // This is the request
+        GetReportStateRequest parameters = new GetReportStateRequest();
+        parameters.setReportId(reportId);
+        // Invoke the method.
+        GetReportStateResponse ret = service.getReportState(parameters);
+        if(ret != null){
+            return ret.getIsGenerated();
+        }
+        return -1;
     }
 
     public static String getReportFileUrl(String reportId, ReportService service) {
-        return "";
+        // This is the request
+        GetReportFileUrlRequest parameters = new GetReportFileUrlRequest();
+        parameters.setReportId(reportId);
+        // Invoke the method.
+        GetReportFileUrlResponse ret = service.getReportFileUrl(parameters);
+        if(ret != null){
+            ret.getReportFilePath();
+        }
+        return null;
     }
 
     /**

@@ -9,9 +9,7 @@ import com.perfect.utils.DateUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import redis.clients.jedis.Jedis;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -19,35 +17,42 @@ import java.util.concurrent.TimeUnit;
  * Created by subdong on 15-7-17.
  */
 public class GetReportId {
-    private VersionService factory;
+    private AccountService accountService;
+    private CampaignService campaignService;
+    private GroupService getGroupByCampaignId;
+    private AdService adService;
+    private static ReportService reportService;
 
     public GetReportId() {
-        factory = ServiceFactory.getInstance("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e", null);
+        VersionService factory = ServiceFactory.getInstance("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e", null);
+        accountService = factory.getService(AccountService.class);
+        campaignService = factory.getService(CampaignService.class);
+        getGroupByCampaignId = factory.getService(GroupService.class);
+        adService = factory.getService(AdService.class);
+        reportService = factory.getService(ReportService.class);
     }
 
     //获取账户ID
     public List<Long> getAccountId() {
-        AccountService service = factory.getService(AccountService.class);
+
 
         GetAccountInfoRequest parameters = new GetAccountInfoRequest();
 
-        GetAccountInfoResponse account = service.getAccountInfo(parameters);
+        GetAccountInfoResponse account = accountService.getAccountInfo(parameters);
         List<Long> longs = new ArrayList<>();
         if (account != null) {
             longs.add(account.getAccountInfo().getUserid());
         }
-        ResHeader rheader = ResHeaderUtil.getResHeader(service, true);
         return longs;
 
     }
 
     //获取计划ID
     public List<Long> getCampaignId() {
-        CampaignService service = factory.getService(CampaignService.class);
 
         GetCampaignRequest parameters = new GetCampaignRequest();
 
-        GetCampaignResponse campaign = service.getCampaign(parameters);
+        GetCampaignResponse campaign = campaignService.getCampaign(parameters);
 
         List<Long> longs = new ArrayList<>();
         if (campaign != null) {
@@ -55,13 +60,11 @@ public class GetReportId {
                 longs.add(e.getCampaignId());
             });
         }
-        ResHeader rheader = ResHeaderUtil.getResHeader(service, true);
         return longs;
     }
 
     //获取推广组效果ID
     public List<Long> getGroupByGroupId(List<Long> compaignId) {
-        GroupService service = factory.getService(GroupService.class);
         List<Long> longs = new ArrayList<>();
         if (compaignId != null) {
             for (Long aLong : compaignId) {
@@ -69,7 +72,7 @@ public class GetReportId {
 
                 parameters.setCampaignId(aLong);
 
-                GetGroupByCampaignIdResponse groupByCampaignId = service.getGroupByCampaignId(parameters);
+                GetGroupByCampaignIdResponse groupByCampaignId = getGroupByCampaignId.getGroupByCampaignId(parameters);
 
                 if (groupByCampaignId != null) {
                     groupByCampaignId.getGroupTypes().stream().filter(e -> e != null).forEach(e -> {
@@ -84,16 +87,14 @@ public class GetReportId {
 
     //通过groupID得到创意信息
     public List<Long> getAdbyGroupId(List<Long> groupId) {
-        AdService service = factory.getService(AdService.class);
+
         List<Long> longs = new ArrayList<>();
         if (groupId != null) {
             for (Long aLong : groupId) {
                 GetAdByGroupIdRequest parameters = new GetAdByGroupIdRequest();
                 parameters.setGroupId(aLong);
 
-                GetAdByGroupIdResponse adByGroup = service.getAdByGroupId(parameters);
-
-                ResHeader rheader = ResHeaderUtil.getResHeader(service, true);
+                GetAdByGroupIdResponse adByGroup = adService.getAdByGroupId(parameters);
 
                 if (adByGroup != null) {
                     adByGroup.getAdTypes().stream().filter(e -> e != null).forEach(e -> {
@@ -109,7 +110,6 @@ public class GetReportId {
 
     public String getReportAllId(List<Long> reid, int reportType, int statRange, Date startDate, Date endDate) {
 
-        ReportService service = factory.getService(ReportService.class);
         int i = 1;
         while (true) {
             //创建报告拉去设置容器
@@ -161,9 +161,7 @@ public class GetReportId {
 
             parameter.setReportRequestType(reportRequestType);
 
-            GetReportIdResponse reportId = service.getReportId(parameter);
-
-            ResHeader rheader = ResHeaderUtil.getResHeader(service, true);
+            GetReportIdResponse reportId = reportService.getReportId(parameter);
 
             if (reportId == null || reportId.getReportId().equals("")) {
                 i++;
@@ -195,26 +193,30 @@ public class GetReportId {
         //账户报告
         List<Long> accountId = example.getAccountId();
         String accountIdString = example.getReportAllId(accountId, 1, 1, DateUtils.getYesterday(), DateUtils.getYesterday());
-        accountIdString = "1|" + accountIdString;
-        reportFileUrlTask.add(accountIdString);
+        Map<String,ReportService> accountMap = new HashMap<>();
+        accountMap.put("1|" + accountIdString, reportService);
+        reportFileUrlTask.add(accountMap);
 
         //计划报告
         List<Long> campaignId = example.getCampaignId();
         String campaignIdString = example.getReportAllId(campaignId, 2, 2, DateUtils.getYesterday(), DateUtils.getYesterday());
-        campaignIdString = "2|" + campaignIdString;
-        reportFileUrlTask.add(campaignIdString);
+        Map<String,ReportService> campaignMap = new HashMap<>();
+        campaignMap.put("2|" + campaignIdString, reportService);
+        reportFileUrlTask.add(campaignMap);
 
         //组报告
         List<Long> groupId = example.getGroupByGroupId(campaignId);
         String groupIdString = example.getReportAllId(groupId, 3, 3, DateUtils.getYesterday(), DateUtils.getYesterday());
-        groupIdString = "3|" + groupIdString;
-        reportFileUrlTask.add(groupIdString);
+        Map<String,ReportService> groupMap = new HashMap<>();
+        groupMap.put("3|" + groupIdString, reportService);
+        reportFileUrlTask.add(groupMap);
 
         //创意报告
         List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
         String adbyGroupIdString = example.getReportAllId(adbyGroupId, 4, 4, DateUtils.getYesterday(), DateUtils.getYesterday());
-        adbyGroupIdString = "4|" + adbyGroupIdString;
-        reportFileUrlTask.add(adbyGroupIdString);
+        Map<String,ReportService> adbyGroupMap = new HashMap<>();
+        adbyGroupMap.put("4|" + adbyGroupIdString, reportService);
+        reportFileUrlTask.add(adbyGroupMap);
 
 
         Jedis jc = JRedisUtils.get();
