@@ -23,4 +23,19 @@ public interface AsynchronousReportDAO extends HeyCrudRepository<AccountReportDT
     void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserDTO systemUser, String dateStr,int i);
 
     void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserDTO systemUser, String dateStr,int i);
+
+    /*
+     * 网盟推广
+     */
+    //网盟账户报告
+    void getNmsAccountReportData(List<NmsAccountReportDto> nmsAccountReportDtos, SystemUserDTO systemUser, String dateStr, String baiduUserName);
+
+    //网盟计划报告
+    void getNmsCampaignReportData(List<NmsCampaignReportDTO> nmsCampaignReportDTOs, SystemUserDTO systemUser, String dateStr,int i);
+
+    //网盟组报告
+    void getNmsGroupReportData(List<NmsGroupReportDto> nmsGroupReportDtos, SystemUserDTO systemUser, String dateStr,int i);
+
+    //网盟创意报告
+    void getNmsAdReportData(List<NmsAdReportDTO> nmsAdReportDTOs, SystemUserDTO systemUser, String dateStr,int i);
 }
