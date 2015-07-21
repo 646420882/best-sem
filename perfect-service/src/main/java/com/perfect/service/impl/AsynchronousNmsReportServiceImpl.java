@@ -5,9 +5,6 @@ import com.perfect.dao.report.AsynchronousNmsReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.NmsAccountReportDTO;
-import com.perfect.dto.account.NmsAdReportDTO;
-import com.perfect.dto.account.NmsCampaignReportDTO;
-import com.perfect.dto.account.NmsGroupReportDTO;
 import com.perfect.nms.NmsReportIdAPI;
 import com.perfect.nms.ReportFileUrlTask;
 import com.perfect.service.AsynchronousNmsReportService;
@@ -18,6 +15,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import rx.Observable;
 import rx.functions.Action1;
@@ -26,13 +24,14 @@ import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 import static com.perfect.commons.constants.RedisConstants.REPORT_FILE_URL_SUCCEED;
@@ -41,6 +40,7 @@ import static com.perfect.commons.constants.RedisConstants.REPORT_ID_COMMIT_STAT
 /**
  * Created by subdong on 15-7-21.
  */
+@Service(value = "asynchronousNmsReportService")
 public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportService {
 
     @Resource
@@ -200,6 +200,58 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         @Override
         public void call(String s) {
             // 解析Url生成报告并入库
+            List<NmsAccountReportDTO> list = new ArrayList<>();
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(s);
+
+            try {
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+                HttpEntity entity = response.getEntity();
+                BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
+
+                List<String> str = br.lines().collect(Collectors.toList());
+                str.remove(0);
+
+                if (str != null) {
+                    str.forEach(e -> {
+                        try {
+                            String[] sp = e.split("\\t");
+                            NmsAccountReportDTO account = new NmsAccountReportDTO();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+
+                            Date date = format.parse(sp[0]);
+                            account.setDate(date);
+                            account.setAccountId(Long.valueOf(sp[1]));
+                            account.setAccountName(sp[2]);
+                            account.setImpression(sp[3] == null || sp[3].equals("-1") ? -1 : Integer.valueOf(sp[3]));
+                            account.setClick(sp[4] == null || sp[4].equals("-1") ? -1 : Integer.valueOf(sp[4]));
+                            account.setCost(BigDecimal.valueOf(sp[5] == null || sp[5].equals("-1") ? -1 : Double.valueOf(sp[5])));
+                            account.setCtr(sp[6] == null || sp[6].equals("-1") ? -1 : Double.valueOf(sp[6]));
+                            account.setCpm(BigDecimal.valueOf(sp[7] == null || sp[7].equals("-1") ? -1 : Double.valueOf(sp[7])));
+                            account.setAcp(BigDecimal.valueOf(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8])));
+                            account.setSrchuv(sp[9] == null || sp[9].equals("-1") ? -1 : Integer.valueOf(sp[9]));
+                            account.setClickuv(sp[10] == null || sp[10].equals("-1") ? -1 : Integer.valueOf(sp[10]));
+                            account.setSrsur(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
+                            account.setCusur(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12]));
+                            account.setCocur(BigDecimal.valueOf(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13])));
+                            account.setArrivalRate(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
+                            account.setHopRate(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15]));
+                            account.setAvgResTime(sp[16] == null || sp[16].equals("-1") ? -1 : Long.valueOf(sp[16]));
+                            account.setDirectTrans(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
+                            account.setIndirectTrans(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
+
+                            System.out.println();
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+
+                    });
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -225,5 +277,13 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         public void call(String s) {
             // implement
         }
+    }
+
+    public static void main(String[] args) {
+
+        AsynchronousNmsReportServiceImpl asynchronousNmsReportService = new AsynchronousNmsReportServiceImpl();
+        asynchronousNmsReportService.generateReportId(null, "perfect2015", "1");
+
+        //httpFileHandler.getNmsAccountReport("https://apidata.baidu.com/data/v2/getFile.do?t=1437469726&u=10394588&i=398ad60984563e2f1b846d37ba4080d3&f=%2Fapireport%2F398ad60984563e2f1b846d37ba4080d3&h=400&s=82ec14640ccae476c40d6962442d6d83");
     }
 }
