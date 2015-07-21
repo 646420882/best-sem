@@ -17,6 +17,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -28,7 +29,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -49,6 +49,8 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
     @Resource
     private SystemUserDAO systemUserDAO;
 
+    private final JedisPool pool = JRedisUtils.getPool();
+
 
     @Override
     public void generateReportId(Date[] dates, String... args) {
@@ -64,7 +66,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
             jedis.set(REPORT_ID_COMMIT_STATUS, "0");
         } finally {
             if (jedis != null)
-                jedis.close();
+                closeRedis(jedis);
         }
 
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -137,12 +139,12 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 String value = jedis.rpop(REPORT_FILE_URL_SUCCEED);
                 String status = jedis.get(REPORT_ID_COMMIT_STATUS);
                 if (value == null && "1".equals(status)) {
-                    jedis.close();
+                    closeRedis(jedis);
                     break;
                 }
 
                 if (value == null) {
-                    jedis.close();
+                    closeRedis(jedis);
                     continue;
                 }
 
@@ -172,7 +174,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
             } finally {
                 if (jedis != null)
-                    jedis.close();
+                    closeRedis(jedis);
             }
         }
     }
@@ -209,11 +211,13 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 HttpEntity entity = response.getEntity();
                 BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
 
-                List<String> str = br.lines().collect(Collectors.toList());
-                str.remove(0);
+                List<String> lines = br.lines().collect(Collectors.toList());
+                if (lines != null && !lines.isEmpty())
+                    lines.remove(0);
+                else
+                    return;
 
-                if (str != null) {
-                    str.forEach(e -> {
+                lines.forEach(e -> {
                         try {
                             String[] sp = e.split("\\t");
                             NmsAccountReportDTO account = new NmsAccountReportDTO();
@@ -246,8 +250,6 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                         }
 
                     });
-                }
-
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -276,6 +278,12 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         @Override
         public void call(String s) {
             // implement
+        }
+    }
+
+    private void closeRedis(Jedis jedis) {
+        if (jedis != null && pool.getNumActive() > 0) {
+            jedis.close();
         }
     }
 

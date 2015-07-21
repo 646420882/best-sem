@@ -40,6 +40,10 @@ public class JRedisUtils {
         return pool.getResource();
     }
 
+    public static JedisPool getPool() {
+        return pool;
+    }
+
     public static void returnJedis(Jedis jedis) {
         pool.returnResource(jedis);
     }
@@ -48,7 +52,4 @@ public class JRedisUtils {
         pool.returnBrokenResource(jedis);
     }
 
-    public static void main(String args[]) {
-
-    }
 }

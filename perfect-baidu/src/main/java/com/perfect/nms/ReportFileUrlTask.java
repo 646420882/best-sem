@@ -7,11 +7,18 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static com.perfect.commons.constants.RedisConstants.*;
 
@@ -30,14 +37,13 @@ public class ReportFileUrlTask {
 
     private static final int THREAD_NUMBER = Runtime.getRuntime().availableProcessors() * 2;
 
-    /**
-     * Report Id Queue
-     * e.g.
-     * 1|reportId
-     */
+    private final JedisPool pool = JRedisUtils.getPool();
+
     private final BlockingQueue<Map<String, ReportService>> queue = new LinkedBlockingQueue<>();
 
     private final ExecutorService executor = Executors.newFixedThreadPool(THREAD_NUMBER, new FileUrlThreadFactory());
+
+    private final ReentrantLock lock = new ReentrantLock();
 
 
     public ReportFileUrlTask() {
@@ -49,9 +55,8 @@ public class ReportFileUrlTask {
     }
 
     public void shutdown() {
-        if (!executor.isShutdown()) {
+        if (!executor.isShutdown())
             executor.shutdown();
-        }
     }
 
     private void handle() {
@@ -73,7 +78,6 @@ public class ReportFileUrlTask {
         }
     }
 
-
     class FileUrlThread extends Thread {
         public FileUrlThread(Runnable target) {
             super(target);
@@ -89,20 +93,24 @@ public class ReportFileUrlTask {
         @Override
         public void run() {
             while (true) {
-                Map<String, ReportService> reportServiceMap = queue.poll();
                 try {
-                    Jedis jedis = JRedisUtils.get();
+                    lock.lock();
 
+                    Map<String, ReportService> reportServiceMap = queue.poll();
+
+                    Jedis jedis = pool.getResource();
                     String status = jedis.get(REPORT_ID_COMMIT_STATUS);
                     if ("1".equals(status) && reportServiceMap == null) {
-                        jedis.close();
+                        closeRedis(jedis);
                         LOGGER.info("Nms report id handle finished.");
+                        lock.unlock();
                         break;
                     }
 
                     if (reportServiceMap == null) {
-                        jedis.close();
+                        closeRedis(jedis);
                         TimeUnit.SECONDS.sleep(1);
+                        lock.unlock();
                         continue;
                     }
 
@@ -115,7 +123,8 @@ public class ReportFileUrlTask {
                     }
 
                     if (value == null) {
-                        jedis.close();
+                        closeRedis(jedis);
+                        lock.unlock();
                         continue;
                     }
 
@@ -131,7 +140,8 @@ public class ReportFileUrlTask {
                         String fileUrl = ReportUtil.getReportFileUrl(reportId, service);
                         if (StringUtils.isNotEmpty(fileUrl)) {
                             jedis.lpush(REPORT_FILE_URL_SUCCEED, type + "|" + fileUrl);
-                            jedis.close();
+                            closeRedis(jedis);
+                            lock.unlock();
                             continue;
                         } else {
                             // 报告生成成功, 获取报告的url下载地址失败
@@ -150,13 +160,21 @@ public class ReportFileUrlTask {
                         }
                     }
 
-                    jedis.close();
+                    closeRedis(jedis);
                     TimeUnit.SECONDS.sleep(30);
                 } catch (InterruptedException e) {
                     LOGGER.info("java.lang.InterruptedException");
+                } finally {
+                    lock.unlock();
                 }
             }
 
+        }
+    }
+
+    private void closeRedis(Jedis jedis) {
+        if (jedis != null && pool.getNumActive() > 0) {
+            jedis.close();
         }
     }
 
