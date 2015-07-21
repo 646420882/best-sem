@@ -143,7 +143,7 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getNmsAccountReportData(List<NmsAccountReportDto> nmsAccountReportDtos, SystemUserDTO systemUser, String dateStr, String baiduUserName) {
+    public void getNmsAccountReportData(List<NmsAccountReportDTO> nmsAccountReportDtos, SystemUserDTO systemUser, String dateStr, String baiduUserName) {
 
     }
 
@@ -153,7 +153,7 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getNmsGroupReportData(List<NmsGroupReportDto> nmsGroupReportDtos, SystemUserDTO systemUser, String dateStr, int i) {
+    public void getNmsGroupReportData(List<NmsGroupReportDTO> nmsGroupReportDtos, SystemUserDTO systemUser, String dateStr, int i) {
 
     }
 

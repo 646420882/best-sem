@@ -7,7 +7,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.CAMPAIGN_ID;
 /**
  * Created by subdong on 15-7-21.
  */
-public class NmsGroupReportDto extends AccountIdDTO{
+public class NmsGroupReportDTO extends AccountIdDTO{
 
     private String id;
 
@@ -223,7 +223,7 @@ public class NmsGroupReportDto extends AccountIdDTO{
 
     @Override
     public String toString() {
-        return "NmsGroupReportDto{" +
+        return "NmsGroupReportDTO{" +
                 "id='" + id + '\'' +
                 ", campaignId=" + campaignId +
                 ", campaignName='" + campaignName + '\'' +

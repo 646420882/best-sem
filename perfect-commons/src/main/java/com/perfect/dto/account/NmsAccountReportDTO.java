@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Created by subdong on 15-7-21.
  */
-public class NmsAccountReportDto extends AccountIdDTO{
+public class NmsAccountReportDTO extends AccountIdDTO{
     private String id;
 
     private Integer impression;     // 展现次数
@@ -180,7 +180,7 @@ public class NmsAccountReportDto extends AccountIdDTO{
 
     @Override
     public String toString() {
-        return "NmsAccountReportDto{" +
+        return "NmsAccountReportDTO{" +
                 "id='" + id + '\'' +
                 ", impression=" + impression +
                 ", click=" + click +

@@ -38,9 +38,7 @@ public interface MongoEntityConstants {
 
 
     // Fields
-
     String SYSTEM_ID = "_id";
-
     String ACCOUNT_ID = "acid";
     String ADGROUP_ID = "agid";
     String KEYWORD_ID = "kwid";
@@ -55,19 +53,13 @@ public interface MongoEntityConstants {
     String FOLDER_ID = "fdId";
     String MONITOR_ID = "mtId";
     String MONITOR_ACLID = "aclid";
-
     String NAME = "name";
 
-    //时间查询字段
-    public final static String DATE_FIELD = "dat";
-    //设备查询字段
-    public final static String IPERATE = "ope";
-    //新老客户表示
-    public final static String USERTYPE = "up";
-    //分组字段intoPage（外部链接）
-    public final static String INTOPAGE = "tp";
-    //分组字段searchEngine(搜索引擎)
-    public final static String SEARCHENGINE = "se";
-    //Cookie 分组字段
-    public final static String COOKIE_UUID = "uid";
+
+    String DATE_FIELD = "dat";  //时间查询字段
+    String IPERATE = "ope"; //设备查询字段
+    String USERTYPE = "up"; //新老客户表示
+    String INTOPAGE = "tp"; //分组字段intoPage（外部链接）
+    String SEARCHENGINE = "se"; //分组字段searchEngine(搜索引擎)
+    String COOKIE_UUID = "uid"; //Cookie 分组字段
 }
