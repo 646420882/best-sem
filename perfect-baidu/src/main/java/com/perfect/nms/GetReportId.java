@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.redis.JRedisUtils;
+import org.apache.wml.WMLStrongElement;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
@@ -23,8 +24,8 @@ public class GetReportId {
     private AdService adService;
     private static ReportService reportService;
 
-    public GetReportId() {
-        VersionService factory = ServiceFactory.getInstance("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e", null);
+    public GetReportId(String baiduAccount, String baiduPwd, String token) {
+        VersionService factory = ServiceFactory.getInstance(baiduAccount, baiduPwd, token, null);
         accountService = factory.getService(AccountService.class);
         campaignService = factory.getService(CampaignService.class);
         getGroupByCampaignId = factory.getService(GroupService.class);
@@ -108,7 +109,7 @@ public class GetReportId {
     }
 
 
-    public String getReportAllId(List<Long> reid, int reportType, int statRange, Date startDate, Date endDate) {
+    public Map<String, ReportService> getReportAllId(List<Long> reid, int reportType, int statRange, Date startDate, Date endDate) {
 
         int i = 1;
         while (true) {
@@ -181,7 +182,9 @@ public class GetReportId {
                     break;
                 }
             } else {
-                return reportId.getReportId();
+                Map<String, ReportService> accountMap = new HashMap<>();
+                accountMap.put(reportType + "|" + reportId.getReportId(), reportService);
+                return accountMap;
             }
         }
         return null;
@@ -189,7 +192,8 @@ public class GetReportId {
 
 
     public static void main(String[] args) {
-        GetReportId example = new GetReportId();
+
+        GetReportId example = new GetReportId("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e");
         //推广组ID   20657783
         //推广计划ID  4222159  4222135  4219295  4073559
         //int s = example.getAdbyGroupId(20657783);
@@ -222,21 +226,18 @@ public class GetReportId {
         List<Long> campaignId = example.getCampaignId();
         List<Long> groupId = example.getGroupByGroupId(campaignId);
         List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
-        String adbyGroupIdString = example.getReportAllId(adbyGroupId, 4, 4, DateUtils.getYesterday(), DateUtils.getYesterday());
-        Map<String,ReportService> adbyGroupMap = new HashMap<>();
-        adbyGroupMap.put("4|" + adbyGroupIdString, reportService);
+        Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, DateUtils.getYesterday(), DateUtils.getYesterday());
         reportFileUrlTask.add(adbyGroupMap);
 
 
         Jedis jc = JRedisUtils.get();
         boolean b = jc.exists("nms-report-id-commit-status");
-        if(!b){
-            jc.set("nms-report-id-commit-status","1");
+        if (!b) {
+            jc.set("nms-report-id-commit-status", "1");
         }
         if (jc != null) {
             jc.close();
         }
-
         System.out.println();
     }
 
