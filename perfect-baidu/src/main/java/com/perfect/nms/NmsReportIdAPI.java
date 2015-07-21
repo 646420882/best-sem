@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.perfect.commons.constants.RedisConstants.REPORT_ID_COMMIT_STATUS;
+
 /**
  * Created by subdong on 15-7-21.
  */
@@ -27,13 +29,12 @@ public class NmsReportIdAPI {
      * @param baidPwd
      * @param token
      */
-    public void getAllApi(String baidAccount, String baidPwd, String token, Date... dates) {
-        if (dates.length == 0) {
+    public void getAllApi(String baidAccount, String baidPwd, String token, Date[] dates) {
+        if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
 
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
-
 
 
         //账户报告
@@ -58,9 +59,9 @@ public class NmsReportIdAPI {
 
 
         Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists("nms-report-id-commit-status");
+        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
         if (!b) {
-            jc.set("nms-report-id-commit-status", "1");
+            jc.set(REPORT_ID_COMMIT_STATUS, "1");
         }
         if (jc != null) {
             jc.close();
@@ -74,8 +75,8 @@ public class NmsReportIdAPI {
      * @param baidPwd
      * @param token
      */
-    public void getAccountApi(String baidAccount, String baidPwd, String token, Date... dates) {
-        if (dates.length == 0) {
+    public void getAccountApi(String baidAccount, String baidPwd, String token, Date[] dates) {
+        if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
@@ -86,9 +87,9 @@ public class NmsReportIdAPI {
         reportFileUrlTask.add(accountIdMap);
 
         Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists("nms-report-id-commit-status");
+        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
         if (!b) {
-            jc.set("nms-report-id-commit-status", "1");
+            jc.set(REPORT_ID_COMMIT_STATUS, "1");
         }
         if (jc != null) {
             jc.close();
@@ -102,8 +103,8 @@ public class NmsReportIdAPI {
      * @param baidPwd
      * @param token
      */
-    public void getCampaignApi(String baidAccount, String baidPwd, String token, Date... dates) {
-        if (dates.length == 0) {
+    public void getCampaignApi(String baidAccount, String baidPwd, String token, Date[] dates) {
+        if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
@@ -115,9 +116,9 @@ public class NmsReportIdAPI {
         reportFileUrlTask.add(campaignMap);
 
         Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists("nms-report-id-commit-status");
+        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
         if (!b) {
-            jc.set("nms-report-id-commit-status", "1");
+            jc.set(REPORT_ID_COMMIT_STATUS, "1");
         }
         if (jc != null) {
             jc.close();
@@ -131,8 +132,8 @@ public class NmsReportIdAPI {
      * @param baidPwd
      * @param token
      */
-    public void getGroupApi(String baidAccount, String baidPwd, String token, Date... dates) {
-        if (dates.length == 0) {
+    public void getGroupApi(String baidAccount, String baidPwd, String token, Date[] dates) {
+        if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
@@ -145,9 +146,9 @@ public class NmsReportIdAPI {
         reportFileUrlTask.add(groupMap);
 
         Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists("nms-report-id-commit-status");
+        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
         if (!b) {
-            jc.set("nms-report-id-commit-status", "1");
+            jc.set(REPORT_ID_COMMIT_STATUS, "1");
         }
         if (jc != null) {
             jc.close();
@@ -161,8 +162,8 @@ public class NmsReportIdAPI {
      * @param baidPwd
      * @param token
      */
-    public void getAdbyGroupApi(String baidAccount, String baidPwd, String token, Date... dates) {
-        if (dates.length == 0) {
+    public void getAdbyGroupApi(String baidAccount, String baidPwd, String token, Date[] dates) {
+        if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
@@ -175,9 +176,9 @@ public class NmsReportIdAPI {
         reportFileUrlTask.add(adbyGroupMap);
 
         Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists("nms-report-id-commit-status");
+        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
         if (!b) {
-            jc.set("nms-report-id-commit-status", "1");
+            jc.set(REPORT_ID_COMMIT_STATUS, "1");
         }
         if (jc != null) {
             jc.close();

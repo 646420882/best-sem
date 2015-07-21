@@ -1,10 +1,13 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
-import com.perfect.autosdk.sms.v3.ReportRequestType;
+import com.perfect.dao.report.AsynchronousNmsReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
-import com.perfect.dto.account.*;
+import com.perfect.dto.account.NmsAccountReportDTO;
+import com.perfect.dto.account.NmsAdReportDTO;
+import com.perfect.dto.account.NmsCampaignReportDTO;
+import com.perfect.dto.account.NmsGroupReportDTO;
 import com.perfect.nms.NmsReportIdAPI;
 import com.perfect.nms.ReportFileUrlTask;
 import com.perfect.service.AsynchronousNmsReportService;
@@ -16,6 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import redis.clients.jedis.Jedis;
+import rx.Observable;
 import rx.functions.Action1;
 
 import javax.annotation.Resource;
@@ -26,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.*;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
@@ -40,98 +44,137 @@ import static com.perfect.commons.constants.RedisConstants.REPORT_ID_COMMIT_STAT
 public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportService {
 
     @Resource
+    private AsynchronousNmsReportDAO asynchronousNmsReportDAO;
+
+    @Resource
     private SystemUserDAO systemUserDAO;
 
-    private NmsReportIdAPI nmsReportIdAPI = new NmsReportIdAPI(new ReportFileUrlTask());
-    @Override
-    public void getNmsAccountReportData(Date dateStr, String userName) {
-
-        List<SystemUserDTO> systemUserList = getBaiduUser(userName);
-        systemUserList.forEach(user -> {
-            user.getBaiduAccounts().forEach(baiduAccount -> {
-                nmsReportIdAPI.getAccountApi(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
-            });
-        });
-
-    }
-
-    @Override
-    public void getNmsCampaignReportData(Date dateStr, String userName) {
-
-    }
-
-    @Override
-    public void getNmsGroupReportData(Date dateStr, String userName) {
-
-    }
-
-    @Override
-    public void getNmsAdReportData(Date dateStr, String userName) {
-
-    }
-
-    @Override
-    public void getNmsAllReport(Date date, Map<String, Action1<String>> actionMap) {
-        // 1.设置日期, 生成reportId
-        /**
-         * 2.读取reportFileUrl
-         *
-         */
-
-    }
 
     @Override
     public void generateReportId(Date[] dates, String... args) {
-        NmsReportIdAPI nmsApi = new NmsReportIdAPI();
-        List<SystemUserDTO> systemUserList;
+        if (dates == null || dates.length == 0) {
+            dates = new Date[]{null, null};
+        }
 
-        int l = args.length;
-        if (l == 0) {
-            // 拉取全部报告
-            systemUserList = getBaiduUser(null);
-            if (systemUserList != null && !systemUserList.isEmpty()) {
-                systemUserList.stream().forEach(user -> {
-                });
+        final Date[] _dates = dates;
+
+        Jedis jedis = null;
+        try {
+            jedis = JRedisUtils.get();
+            jedis.set(REPORT_ID_COMMIT_STATUS, "0");
+        } finally {
+            if (jedis != null)
+                jedis.close();
+        }
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            ReportFileUrlTask fileUrlTask = new ReportFileUrlTask();
+            NmsReportIdAPI nmsApi = new NmsReportIdAPI(fileUrlTask);
+            List<SystemUserDTO> systemUserList;
+
+            int l = args.length;
+            if (l == 0) {
+                // 拉取全部报告
+                systemUserList = getBaiduUser(null);
+                if (systemUserList != null && !systemUserList.isEmpty()) {
+                    systemUserList.forEach(sysUser -> {
+                        sysUser.getBaiduAccounts().forEach(ba -> {
+                            nmsApi.getAllApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates);
+                        });
+                    });
+                }
+            } else if (l == 1) {
+                // 拉取指定用户的报告
+                systemUserList = getBaiduUser(args[0]);
+                if (systemUserList != null && !systemUserList.isEmpty()) {
+                    SystemUserDTO systemUser = systemUserList.get(0);
+                    systemUser.getBaiduAccounts()
+                            .forEach(ba -> nmsApi.getAllApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
+                }
+            } else if (l == 2) {
+                // 拉取指定用户的某一类型报告
+                systemUserList = getBaiduUser(args[0]);
+                int type = Integer.parseInt(args[1]);   // 1 -> account, 2 -> campaign, 3 -> group, 4 -> ad
+
+                if (systemUserList != null && !systemUserList.isEmpty()) {
+                    SystemUserDTO systemUser = systemUserList.get(0);
+
+                    switch (type) {
+                        case 1:
+                            systemUser.getBaiduAccounts()
+                                    .forEach(ba -> nmsApi.getAccountApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
+                            break;
+                        case 2:
+                            systemUser.getBaiduAccounts()
+                                    .forEach(ba -> nmsApi.getCampaignApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
+                            break;
+                        case 3:
+                            systemUser.getBaiduAccounts()
+                                    .forEach(ba -> nmsApi.getGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
+                            break;
+                        case 4:
+                            systemUser.getBaiduAccounts()
+                                    .forEach(ba -> nmsApi.getAdbyGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
             }
-        } else if (l == 1) {
-            // 拉取指定用户的报告
-            systemUserList = getBaiduUser(args[0]);
-            if (systemUserList != null && !systemUserList.isEmpty()) {
-                SystemUserDTO systemUser = systemUserList.get(0);
-                // nmsApi
-            }
-            String username = args[0];
-            SystemUserDTO systemUser = getBaiduUser(args[0]).get(0);
-            // 生成报告id
-        } else if (l == 2) {
-            // 拉取指定用户的某一类型报告
-            systemUserList = getBaiduUser(args[0]);
-            int type = Integer.parseInt(args[1]);   // 1 -> account, 2 -> campaign, 3 -> group, 4 -> ad
+        });
 
+        Executors.newSingleThreadExecutor().execute(this::readReportFileUrlFromRedis);
 
-            if (systemUserList != null && !systemUserList.isEmpty()) {
-                SystemUserDTO systemUser = systemUserList.get(0);
-                // nmsApi
+    }
+
+    @Override
+    public void readReportFileUrlFromRedis() {
+        while (true) {
+            Jedis jedis = null;
+            try {
+                jedis = JRedisUtils.get();
+                String value = jedis.rpop(REPORT_FILE_URL_SUCCEED);
+                String status = jedis.get(REPORT_ID_COMMIT_STATUS);
+                if (value == null && "1".equals(status)) {
+                    jedis.close();
+                    break;
+                }
+
+                if (value == null) {
+                    jedis.close();
+                    continue;
+                }
+
+                int type = Integer.parseInt(value.split("\\|")[0]);
+                String fileUrl = value.split("\\|")[1];
+
                 switch (type) {
                     case 1:
-
+                        Observable<String> observable1 = Observable.just(fileUrl);
+                        observable1.subscribe(new AccountAction());
                         break;
                     case 2:
-
+                        Observable<String> observable2 = Observable.just(fileUrl);
+                        observable2.subscribe(new CampaignAction());
                         break;
                     case 3:
-
+                        Observable<String> observable3 = Observable.just(fileUrl);
+                        observable3.subscribe(new GroupAction());
                         break;
                     case 4:
-
+                        Observable<String> observable4 = Observable.just(fileUrl);
+                        observable4.subscribe(new AdAction());
                         break;
                     default:
                         break;
                 }
+
+            } finally {
+                if (jedis != null)
+                    jedis.close();
             }
-
         }
-
     }
 
     //获取用户公用方法
@@ -146,13 +189,46 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
 
         List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
-            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
-            return judge;
+            return (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
         }).collect(Collectors.toList());
         return newEntityList;
     }
 
 
+    class AccountAction implements Action1<String> {
+
+        @Override
+        public void call(String s) {
+            // 解析Url生成报告并入库
+        }
+    }
+
+    class CampaignAction implements Action1<String> {
+
+        @Override
+        public void call(String s) {
+            // implement
+        }
+    }
+
+    class GroupAction implements Action1<String> {
+
+        @Override
+        public void call(String s) {
+            // implement
+        }
+    }
+
+    class AdAction implements Action1<String> {
+
+        @Override
+        public void call(String s) {
+            // implement
+        }
+    }
+
+
+    @Deprecated
     class HttpFileHandler {
 
         private BlockingQueue<String> accountQueue = new LinkedBlockingQueue<>();
@@ -223,8 +299,8 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
 
                 List<String> str = br.lines().collect(Collectors.toList());
-                if(str != null){
-                    str.forEach(e ->{
+                if (str != null) {
+                    str.forEach(e -> {
 
                     });
                 }
