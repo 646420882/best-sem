@@ -1,88 +1,48 @@
-package com.perfect.entity.report;
-
-import com.perfect.entity.account.AccountIdEntity;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
+package com.perfect.dto.account;
 
 import java.math.BigDecimal;
 
-import static com.perfect.commons.constants.MongoEntityConstants.CAMPAIGN_ID;
-
 /**
- * Created by dolphineor on 2015-7-20.
+ * Created by dolphineor on 2015-7-21.
  */
-public class NmsAdReportEntity extends AccountIdEntity {
+public class NmsCampaignReportDTO extends AccountIdDTO {
 
-    @Id
     private String id;
 
-    @Field(value = CAMPAIGN_ID)
     private Long campaignId;
 
-    @Field(value = "cpna")
     private String campaignName;
 
-    @Field(value = "groupid")
-    private Long groupId; // 推广组ID
-
-    @Field(value = "groupn")
-    private String groupName;   // 推广组名称
-
-    @Field(value = "adid")
-    private Long adId;  // 创意ID
-
-    @Field(value = "adtit")
-    private String adTitle; // 创意标题
-
-    @Field(value = "adtype")
-    private Integer adType; // 创意类型
-
-    @Field(value = "impr")
     private Integer impression;     // 展现次数
 
-    @Field(value = "click")
     private Integer click;      // 点击次数
 
-    @Field(value = "ctr")
     private Double ctr;     // 点击率=点击次数/展现次数
 
-    @Field(value = "cost")
     private BigDecimal cost;        // 消费
 
-    @Field(value = "cpm")
     private BigDecimal cpm;       // 千次展现消费
 
-    @Field(value = "acp")
     private BigDecimal acp;     // 平均点击价格=消费/点击次数
 
-    @Field(value = "srchuv")
     private Integer srchuv;     // 展现独立访客
 
-    @Field(value = "clickuv")
     private Integer clickuv;    // 点击独立访客
 
-    @Field(value = "srsur")
     private Integer srsur;  // 展现频次
 
-    @Field(value = "cusur")
     private Double cusur;  // 独立访客点击率
 
-    @Field(value = "cocur")
     private BigDecimal cocur;  // 平均独立访客点击价格
 
-    @Field(value = "ar")
     private Double arrivalRate; // 抵达率
 
-    @Field(value = "hr")
     private Double hopRate;    // 二跳率
 
-    @Field(value = "art")
     private Long avgResTime;  // 平均访问时间
 
-    @Field(value = "dt")
     private Integer directTrans;    // 直接转化
 
-    @Field(value = "idt")
     private Integer indirectTrans;  // 间接转化
 
 
@@ -108,46 +68,6 @@ public class NmsAdReportEntity extends AccountIdEntity {
 
     public void setCampaignName(String campaignName) {
         this.campaignName = campaignName;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public Long getAdId() {
-        return adId;
-    }
-
-    public void setAdId(Long adId) {
-        this.adId = adId;
-    }
-
-    public String getAdTitle() {
-        return adTitle;
-    }
-
-    public void setAdTitle(String adTitle) {
-        this.adTitle = adTitle;
-    }
-
-    public Integer getAdType() {
-        return adType;
-    }
-
-    public void setAdType(Integer adType) {
-        this.adType = adType;
     }
 
     public Integer getImpression() {
@@ -281,15 +201,10 @@ public class NmsAdReportEntity extends AccountIdEntity {
 
     @Override
     public String toString() {
-        return "NmsAdReportEntity{" +
+        return "NmsCampaignReportDTO{" +
                 "id='" + id + '\'' +
                 ", campaignId=" + campaignId +
                 ", campaignName='" + campaignName + '\'' +
-                ", groupId=" + groupId +
-                ", groupName='" + groupName + '\'' +
-                ", adId=" + adId +
-                ", adTitle='" + adTitle + '\'' +
-                ", adType=" + adType +
                 ", impression=" + impression +
                 ", click=" + click +
                 ", ctr=" + ctr +
