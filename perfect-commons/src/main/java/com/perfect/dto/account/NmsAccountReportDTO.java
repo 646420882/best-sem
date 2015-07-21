@@ -1,12 +1,17 @@
 package com.perfect.dto.account;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by subdong on 15-7-21.
  */
 public class NmsAccountReportDTO extends AccountIdDTO{
     private String id;
+
+    private Date date;
+
+    private String accountName;
 
     private Integer impression;     // 展现次数
 
@@ -48,6 +53,22 @@ public class NmsAccountReportDTO extends AccountIdDTO{
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     public Integer getImpression() {
@@ -182,6 +203,8 @@ public class NmsAccountReportDTO extends AccountIdDTO{
     public String toString() {
         return "NmsAccountReportDTO{" +
                 "id='" + id + '\'' +
+                ", date=" + date +
+                ", accountName='" + accountName + '\'' +
                 ", impression=" + impression +
                 ", click=" + click +
                 ", ctr=" + ctr +

@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import static com.perfect.commons.constants.MongoEntityConstants.TBL_NMS_ACCOUNT_REPORT;
 
@@ -17,6 +18,12 @@ public class NmsAccountReportEntity extends AccountIdEntity {
 
     @Id
     private String id;
+
+    @Field(value = "acna")
+    private String accountName;     //账户
+
+    @Field(value = "date")
+    private Date date;
 
     @Field(value = "impr")
     private Integer impression;     // 展现次数
@@ -72,6 +79,22 @@ public class NmsAccountReportEntity extends AccountIdEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Integer getImpression() {
@@ -206,6 +229,8 @@ public class NmsAccountReportEntity extends AccountIdEntity {
     public String toString() {
         return "NmsAccountReportEntity{" +
                 "id='" + id + '\'' +
+                ", accountName='" + accountName + '\'' +
+                ", date=" + date +
                 ", impression=" + impression +
                 ", click=" + click +
                 ", ctr=" + ctr +
