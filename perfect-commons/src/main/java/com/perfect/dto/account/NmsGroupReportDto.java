@@ -1,73 +1,96 @@
-package com.perfect.entity.report;
-
-import com.perfect.entity.account.AccountIdEntity;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
+package com.perfect.dto.account;
 
 import java.math.BigDecimal;
 
-/**
- * Created by subdong on 15-7-20.
- */
-public class NmsAccountReportEntity extends AccountIdEntity {
+import static com.perfect.commons.constants.MongoEntityConstants.CAMPAIGN_ID;
 
-    @Id
+/**
+ * Created by subdong on 15-7-21.
+ */
+public class NmsGroupReportDto extends AccountIdDTO{
+
     private String id;
 
-    @Field(value = "impr")
+    private Long campaignId;
+
+    private String campaignName;
+
+    private Long groupId;
+
+    private String groupName;
+
     private Integer impression;     // 展现次数
 
-    @Field(value = "click")
     private Integer click;      // 点击次数
 
-    @Field(value = "ctr")
     private Double ctr;     // 点击率=点击次数/展现次数
 
-    @Field(value = "cost")
     private BigDecimal cost;        // 消费
 
-    @Field(value = "cpm")
     private BigDecimal cpm;       // 千次展现消费
 
-    @Field(value = "acp")
     private BigDecimal acp;     // 平均点击价格=消费/点击次数
 
-    @Field(value = "srchuv")
     private Integer srchuv;     // 展现独立访客
 
-    @Field(value = "clickuv")
     private Integer clickuv;    // 点击独立访客
 
-    @Field(value = "srsur")
     private Integer srsur;  // 展现频次
 
-    @Field(value = "cusur")
     private Double cusur;  // 独立访客点击率
 
-    @Field(value = "cocur")
     private BigDecimal cocur;  // 平均独立访客点击价格
 
-    @Field(value = "ar")
     private Double arrivalRate; // 抵达率
 
-    @Field(value = "hr")
     private Double hopRate;    // 二跳率
 
-    @Field(value = "art")
     private Long avgResTime;  // 平均访问时间
 
-    @Field(value = "dt")
     private Integer directTrans;    // 直接转化
 
-    @Field(value = "idt")
     private Integer indirectTrans;  // 间接转化
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Long getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
+    }
+
+    public String getCampaignName() {
+        return campaignName;
+    }
+
+    public void setCampaignName(String campaignName) {
+        this.campaignName = campaignName;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public Integer getImpression() {
@@ -200,8 +223,12 @@ public class NmsAccountReportEntity extends AccountIdEntity {
 
     @Override
     public String toString() {
-        return "NmsAccountReportEntity{" +
+        return "NmsGroupReportDto{" +
                 "id='" + id + '\'' +
+                ", campaignId=" + campaignId +
+                ", campaignName='" + campaignName + '\'' +
+                ", groupId=" + groupId +
+                ", groupName='" + groupName + '\'' +
                 ", impression=" + impression +
                 ", click=" + click +
                 ", ctr=" + ctr +
