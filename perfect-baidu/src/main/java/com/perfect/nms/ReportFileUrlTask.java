@@ -99,7 +99,6 @@ public class ReportFileUrlTask {
 
                     String status = jedis.get(REPORT_ID_COMMIT_STATUS);
                     if ("1".equals(status) && reportServiceMap == null) {
-                        jedis.del(REPORT_ID_COMMIT_STATUS);
                         jedis.close();
                         LOGGER.info("Nms report id handle finished.");
                         break;
