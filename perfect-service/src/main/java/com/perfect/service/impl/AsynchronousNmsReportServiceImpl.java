@@ -1,19 +1,26 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
+import com.perfect.autosdk.sms.v3.ReportRequestType;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
-import com.perfect.dto.account.NmsAccountReportDTO;
-import com.perfect.dto.account.NmsAdReportDTO;
-import com.perfect.dto.account.NmsCampaignReportDTO;
-import com.perfect.dto.account.NmsGroupReportDTO;
+import com.perfect.dto.account.*;
 import com.perfect.nms.NmsReportIdAPI;
+import com.perfect.nms.ReportFileUrlTask;
 import com.perfect.service.AsynchronousNmsReportService;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.redis.JRedisUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -33,12 +40,13 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
     @Resource
     private SystemUserDAO systemUserDAO;
 
+    private NmsReportIdAPI nmsReportIdAPI = new NmsReportIdAPI(new ReportFileUrlTask());
     @Override
     public void getNmsAccountReportData(Date dateStr, String userName) {
+
         List<SystemUserDTO> systemUserList = this.getBaiduUser(userName);
         systemUserList.forEach(user -> {
             user.getBaiduAccounts().forEach(baiduAccount -> {
-                NmsReportIdAPI nmsReportIdAPI = new NmsReportIdAPI();
                 nmsReportIdAPI.getAccountApi(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
             });
         });
@@ -136,6 +144,31 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
 
         public List<NmsAccountReportDTO> getNmsAccountReport(String fileUrl) {
+            if (fileUrl == null) {
+                return Collections.emptyList();
+            }
+            List<NmsAccountReportDTO> list = new ArrayList<>();
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(fileUrl);
+
+            try {
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+                HttpEntity entity = response.getEntity();
+                BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
+
+                List<String> str = br.lines().collect(Collectors.toList());
+                if(str != null){
+                    str.forEach(e ->{
+
+                    });
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
             return Collections.emptyList();
         }
 

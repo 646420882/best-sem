@@ -14,6 +14,12 @@ import java.util.Map;
  */
 public class NmsReportIdAPI {
 
+    private final ReportFileUrlTask reportFileUrlTask;
+
+    public NmsReportIdAPI(ReportFileUrlTask reportFileUrlTask) {
+        this.reportFileUrlTask = reportFileUrlTask;
+    }
+
     /**
      * 拉取网盟所有报告
      *
@@ -28,7 +34,7 @@ public class NmsReportIdAPI {
 
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
 
-        ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
+
 
         //账户报告
         List<Long> accountId = example.getAccountId();
@@ -74,7 +80,6 @@ public class NmsReportIdAPI {
         }
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
 
-        ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
         //账户报告
         List<Long> accountId = example.getAccountId();
         Map<String, ReportService> accountIdMap = example.getReportAllId(accountId, 1, 1, dates[0], dates[1]);
@@ -103,7 +108,6 @@ public class NmsReportIdAPI {
         }
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
 
-        ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
 
         //计划报告
         List<Long> campaignId = example.getCampaignId();
@@ -133,7 +137,6 @@ public class NmsReportIdAPI {
         }
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
 
-        ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
 
         //组报告
         List<Long> campaignId = example.getCampaignId();
@@ -164,7 +167,6 @@ public class NmsReportIdAPI {
         }
         GetReportId example = new GetReportId(baidAccount, baidPwd, token);
 
-        ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
 
         List<Long> campaignId = example.getCampaignId();
         List<Long> groupId = example.getGroupByGroupId(campaignId);

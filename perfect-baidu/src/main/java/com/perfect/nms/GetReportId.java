@@ -200,12 +200,10 @@ public class GetReportId {
 
         ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
 
-        /*//账户报告
+        //账户报告
         List<Long> accountId = example.getAccountId();
-        String accountIdString = example.getReportAllId(accountId, 1, 1, DateUtils.getYesterday(), DateUtils.getYesterday());
-        Map<String,ReportService> accountMap = new HashMap<>();
-        accountMap.put("1|" + accountIdString, reportService);
-        reportFileUrlTask.add(accountMap);*/
+        Map<String,ReportService> accountMap = example.getReportAllId(accountId, 1, 1, DateUtils.getYesterday(), DateUtils.getYesterday());
+        reportFileUrlTask.add(accountMap);
 
         /*//计划报告
         List<Long> campaignId = example.getCampaignId();
@@ -222,12 +220,12 @@ public class GetReportId {
         groupMap.put("3|" + groupIdString, reportService);
         reportFileUrlTask.add(groupMap);*/
 
-        //创意报告
+        /*//创意报告
         List<Long> campaignId = example.getCampaignId();
         List<Long> groupId = example.getGroupByGroupId(campaignId);
         List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
         Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, DateUtils.getYesterday(), DateUtils.getYesterday());
-        reportFileUrlTask.add(adbyGroupMap);
+        reportFileUrlTask.add(adbyGroupMap);*/
 
 
         Jedis jc = JRedisUtils.get();
