@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.perfect.commons.constants.RedisConstants.*;
+
 /**
  * Created by dolphineor on 2015-7-20.
  * <p>
@@ -25,12 +27,6 @@ public class ReportFileUrlTask {
     private static final int RETRY_NUM = 20;
 
     private static final int REPORT_GENERATE_SUCCESS = 3;
-
-    private static final String REPORT_ID_COMMIT_STATUS = "nms-report-id-commit-status";
-
-    private static final String REPORT_FILE_URL_SUCCEED = "nms-report-file-url-success";
-
-    private static final String REPORT_FILE_URL_FAILED = "nms-report-file-url-fail";
 
     private static final int THREAD_NUMBER = Runtime.getRuntime().availableProcessors() * 2;
 
@@ -87,7 +83,7 @@ public class ReportFileUrlTask {
 
     /**
      * 每30秒获取一次报告生成状态, 在尝试20次之后仍然没有生成,
-     * 将其放入Redis的fail队列 {@link com.perfect.nms.ReportFileUrlTask#REPORT_FILE_URL_FAILED}
+     * 将其放入Redis的fail队列 {@link com.perfect.commons.constants.RedisConstants#REPORT_FILE_URL_FAILED}
      */
     class FileUrlWorker implements Runnable {
         @Override

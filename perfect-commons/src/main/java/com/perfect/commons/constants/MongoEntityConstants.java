@@ -6,56 +6,57 @@ package com.perfect.commons.constants;
 public interface MongoEntityConstants {
 
     //SYS
-    public static final String SYS_KEYWORD = "sys_keyword";
-    public static final String SYS_CENSUS="sys_census";
-    public static final String SYS_CENSUS_EVERYDAY_REPORT="sys_census_everyday_report";
-    public static final String SYS_CENSUS_CONFIG="sys_census_config";
+    String SYS_KEYWORD = "sys_keyword";
+    String SYS_CENSUS = "sys_census";
+    String SYS_CENSUS_EVERYDAY_REPORT = "sys_census_everyday_report";
+    String SYS_CENSUS_CONFIG = "sys_census_config";
 
     //Jedis static Key
-    public static final String TRADE_KEY="trade_key";
+    String TRADE_KEY = "trade_key";
 
     // Tables
-    public static final String TBL_CAMPAIGN = "campaign";
-    public static final String TBL_ADGROUP = "adgroup";
-    public static final String TBL_KEYWORD = "keyword";
-    public static final String TBL_CREATIVE = "creative";
-    public static final String TBL_SUBLINK="sublink";
-    public static final String TBL_MOBILESUBLINK="mobilesublink";
-    public static final String TBL_BIDDINGRULE = "bidrule";
-    public static final String TBL_LOG = "logs";
-    public static final String TBL_ACCOUNT_REPORT = "account_report";
-    public static final String TBL_MONITORING_FOLDERS = "monitoring_folders";
-    public static final String TBL_MONITORING_TARGETS = "monitoring_targets";
-    public static final String TBL_CUSTOMGROUP="custom_group";
-    public static final String TBL_IMPORTANT_KEYWORD="important_keyword_bidding";
+    String TBL_CAMPAIGN = "campaign";
+    String TBL_ADGROUP = "adgroup";
+    String TBL_KEYWORD = "keyword";
+    String TBL_CREATIVE = "creative";
+    String TBL_SUBLINK = "sublink";
+    String TBL_MOBILESUBLINK = "mobilesublink";
+    String TBL_BIDDINGRULE = "bidrule";
+    String TBL_LOG = "logs";
+    String TBL_ACCOUNT_REPORT = "account_report";
+    String TBL_MONITORING_FOLDERS = "monitoring_folders";
+    String TBL_MONITORING_TARGETS = "monitoring_targets";
+    String TBL_CUSTOMGROUP = "custom_group";
+    String TBL_IMPORTANT_KEYWORD = "important_keyword_bidding";
+    String TBL_NMS_ACCOUNT_REPORT = "nms_account_report";
 
     //backUp
-    public static final String BAK_CREATIVE="creative_bak";
-    public static final String BAK_ADGROUP="adgroup_bak";
-    public static final String BAK_KEYWORD="keyword_bak";
-    public static final String BAK_CAMPAIGN="campaign_bak";
+    String BAK_CREATIVE = "creative_bak";
+    String BAK_ADGROUP = "adgroup_bak";
+    String BAK_KEYWORD = "keyword_bak";
+    String BAK_CAMPAIGN = "campaign_bak";
 
 
     // Fields
 
-    public static final String SYSTEM_ID = "_id";
+    String SYSTEM_ID = "_id";
 
-    public static final String ACCOUNT_ID = "acid";
-    public static final String ADGROUP_ID = "agid";
-    public static final String KEYWORD_ID = "kwid";
-    public static final String CREATIVE_ID = "crid";
-    public static final String SUBLINK_ID="sid";
-    public static final String CAMPAIGN_ID = "cid";
-    public static final String REGION_ID = "rgid";
-    public static final String OBJ_CAMPAIGN_ID = "ocid";
-    public static final String OBJ_ADGROUP_ID = "oagid";
-    public static final String OBJ_ID = "oid";
-    public static final String BAIDU_ID = "bid";
-    public static final String FOLDER_ID = "fdId";
-    public static final String MONITOR_ID = "mtId";
-    public static final String MONITOR_ACLID = "aclid";
+    String ACCOUNT_ID = "acid";
+    String ADGROUP_ID = "agid";
+    String KEYWORD_ID = "kwid";
+    String CREATIVE_ID = "crid";
+    String SUBLINK_ID = "sid";
+    String CAMPAIGN_ID = "cid";
+    String REGION_ID = "rgid";
+    String OBJ_CAMPAIGN_ID = "ocid";
+    String OBJ_ADGROUP_ID = "oagid";
+    String OBJ_ID = "oid";
+    String BAIDU_ID = "bid";
+    String FOLDER_ID = "fdId";
+    String MONITOR_ID = "mtId";
+    String MONITOR_ACLID = "aclid";
 
-    public static final String NAME = "name";
+    String NAME = "name";
 
     //时间查询字段
     public final static String DATE_FIELD = "dat";
@@ -68,5 +69,5 @@ public interface MongoEntityConstants {
     //分组字段searchEngine(搜索引擎)
     public final static String SEARCHENGINE = "se";
     //Cookie 分组字段
-    public final static String COOKIE_UUID ="uid";
+    public final static String COOKIE_UUID = "uid";
 }

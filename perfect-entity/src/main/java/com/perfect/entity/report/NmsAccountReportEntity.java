@@ -2,13 +2,17 @@ package com.perfect.entity.report;
 
 import com.perfect.entity.account.AccountIdEntity;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 
+import static com.perfect.commons.constants.MongoEntityConstants.TBL_NMS_ACCOUNT_REPORT;
+
 /**
  * Created by subdong on 15-7-20.
  */
+@Document(collection = TBL_NMS_ACCOUNT_REPORT)
 public class NmsAccountReportEntity extends AccountIdEntity {
 
     @Id
