@@ -16,6 +16,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import redis.clients.jedis.Jedis;
+import rx.functions.Action1;
 
 import javax.annotation.Resource;
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -44,7 +46,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
     @Override
     public void getNmsAccountReportData(Date dateStr, String userName) {
 
-        List<SystemUserDTO> systemUserList = this.getBaiduUser(userName);
+        List<SystemUserDTO> systemUserList = getBaiduUser(userName);
         systemUserList.forEach(user -> {
             user.getBaiduAccounts().forEach(baiduAccount -> {
                 nmsReportIdAPI.getAccountApi(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
@@ -65,6 +67,70 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
     @Override
     public void getNmsAdReportData(Date dateStr, String userName) {
+
+    }
+
+    @Override
+    public void getNmsAllReport(Date date, Map<String, Action1<String>> actionMap) {
+        // 1.设置日期, 生成reportId
+        /**
+         * 2.读取reportFileUrl
+         *
+         */
+
+    }
+
+    @Override
+    public void generateReportId(Date[] dates, String... args) {
+        NmsReportIdAPI nmsApi = new NmsReportIdAPI();
+        List<SystemUserDTO> systemUserList;
+
+        int l = args.length;
+        if (l == 0) {
+            // 拉取全部报告
+            systemUserList = getBaiduUser(null);
+            if (systemUserList != null && !systemUserList.isEmpty()) {
+                systemUserList.stream().forEach(user -> {
+                });
+            }
+        } else if (l == 1) {
+            // 拉取指定用户的报告
+            systemUserList = getBaiduUser(args[0]);
+            if (systemUserList != null && !systemUserList.isEmpty()) {
+                SystemUserDTO systemUser = systemUserList.get(0);
+                // nmsApi
+            }
+            String username = args[0];
+            SystemUserDTO systemUser = getBaiduUser(args[0]).get(0);
+            // 生成报告id
+        } else if (l == 2) {
+            // 拉取指定用户的某一类型报告
+            systemUserList = getBaiduUser(args[0]);
+            int type = Integer.parseInt(args[1]);   // 1 -> account, 2 -> campaign, 3 -> group, 4 -> ad
+
+
+            if (systemUserList != null && !systemUserList.isEmpty()) {
+                SystemUserDTO systemUser = systemUserList.get(0);
+                // nmsApi
+                switch (type) {
+                    case 1:
+
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
 
     }
 
