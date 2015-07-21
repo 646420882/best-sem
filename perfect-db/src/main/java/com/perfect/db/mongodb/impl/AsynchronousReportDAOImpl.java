@@ -26,10 +26,10 @@ import java.util.List;
  * 2014-11-26 refactor
  */
 @Repository("asynchronousReportDAO")
-public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountReportDTO,Long> implements AsynchronousReportDAO {
+public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountReportDTO, Long> implements AsynchronousReportDAO {
 
     @Override
-    public void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr,String baiduUserName) {
+    public void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr, String baiduUserName) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
@@ -39,29 +39,29 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         String dateString = df.format(date);
 
         List<AccountReportEntity> entities = null;
-        if(!dateStr.equals(dateString)){
+        if (!dateStr.equals(dateString)) {
             try {
                 entities = mongoTemplate.find(Query.query(Criteria.where("date").is(new SimpleDateFormat("yyyy-MM-dd").parse(dateStr)).and("acna").is(baiduUserName)), AccountReportEntity.class);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            if(entities ==null || entities.size() == 0){
+            if (entities == null || entities.size() == 0) {
                 mongoTemplate.insert(accountReportEntities, TBL_ACCOUNT_REPORT);
             }
         }
     }
 
     @Override
-    public void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
+    public void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<CampaignReportEntity> campaignReportEntities = new ArrayList<>(ObjectUtils.convert(campaignReportDTOs, CampaignReportEntity.class));
         List<CampaignReportEntity> campaignReportEntities1;
-        if(mongoTemplate.collectionExists(dateStr + "-campaign")){
-            if(i > 1){
-                campaignReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), CampaignReportEntity.class,dateStr+"-campaign"));
+        if (mongoTemplate.collectionExists(dateStr + "-campaign")) {
+            if (i > 1) {
+                campaignReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), CampaignReportEntity.class, dateStr + "-campaign"));
                 campaignReportEntities.addAll(campaignReportEntities1);
             }
             mongoTemplate.dropCollection(dateStr + "-campaign");
@@ -71,14 +71,14 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
+    public void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<AdgroupReportEntity> adgroupReportEntities = new ArrayList<>(ObjectUtils.convert(adgroupReportDTOs, AdgroupReportEntity.class));
         List<AdgroupReportEntity> adgroupReportEntities1;
-        if(mongoTemplate.collectionExists(dateStr + "-adgroup")){
-            if(i > 1) {
+        if (mongoTemplate.collectionExists(dateStr + "-adgroup")) {
+            if (i > 1) {
                 adgroupReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), AdgroupReportEntity.class, dateStr + "-adgroup"));
                 adgroupReportEntities.addAll(adgroupReportEntities1);
             }
@@ -89,14 +89,14 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
+    public void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<CreativeReportEntity> creativeReportEntities = new ArrayList<>(ObjectUtils.convert(creativeReportDTOs, CreativeReportEntity.class));
         List<CreativeReportEntity> creativeReportEntities1;
-        if(mongoTemplate.collectionExists(dateStr + "-creative")){
-            if(i > 1){
+        if (mongoTemplate.collectionExists(dateStr + "-creative")) {
+            if (i > 1) {
                 creativeReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), CreativeReportEntity.class, dateStr + "-creative"));
                 creativeReportEntities.addAll(creativeReportEntities1);
             }
@@ -107,14 +107,14 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
+    public void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<KeywordReportEntity> keywordReportEntities = new ArrayList<>(ObjectUtils.convert(keywordReportDTOs, KeywordReportEntity.class));
         List<KeywordReportEntity> keywordReportEntities1;
-        if(mongoTemplate.collectionExists(dateStr + "-keyword")){
-            if(i > 1){
+        if (mongoTemplate.collectionExists(dateStr + "-keyword")) {
+            if (i > 1) {
                 keywordReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), KeywordReportEntity.class, dateStr + "-keyword"));
                 keywordReportEntities.addAll(keywordReportEntities1);
             }
@@ -125,14 +125,14 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserDTO systemUser, String dateStr,int i) {
+    public void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<RegionReportEntity> regionReportEntities = new ArrayList<>(ObjectUtils.convert(regionReportDTOs, RegionReportEntity.class));
         List<RegionReportEntity> regionReportEntities1;
-        if(mongoTemplate.collectionExists(dateStr + "-region")){
-            if(i > 1){
+        if (mongoTemplate.collectionExists(dateStr + "-region")) {
+            if (i > 1) {
                 regionReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), RegionReportEntity.class, dateStr + "-region"));
                 regionReportEntities.addAll(regionReportEntities1);
             }
@@ -140,26 +140,6 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
         }
 
         mongoTemplate.insert(regionReportEntities, dateStr + "-region");
-    }
-
-    @Override
-    public void getNmsAccountReportData(List<NmsAccountReportDTO> nmsAccountReportDtos, SystemUserDTO systemUser, String dateStr, String baiduUserName) {
-
-    }
-
-    @Override
-    public void getNmsCampaignReportData(List<NmsCampaignReportDTO> nmsCampaignReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
-
-    }
-
-    @Override
-    public void getNmsGroupReportData(List<NmsGroupReportDTO> nmsGroupReportDtos, SystemUserDTO systemUser, String dateStr, int i) {
-
-    }
-
-    @Override
-    public void getNmsAdReportData(List<NmsAdReportDTO> nmsAdReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
-
     }
 
 
