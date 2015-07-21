@@ -6,6 +6,7 @@ import com.perfect.nms.ReportFileUrlTask;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import redis.clients.jedis.Jedis;
+import rx.functions.Action1;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -27,5 +28,11 @@ public interface AsynchronousNmsReportService {
 
     //拉取创意报告
     void getNmsAdReportData(Date dateStr, String userName);
+
+
+    void getNmsAllReport(Date date, Map<String, Action1<String>> actionMap);
+
+
+    void generateReportId(Date[] dates, String... args);
 
 }
