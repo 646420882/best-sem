@@ -109,7 +109,7 @@ public class ReportFileUrlTask {
 
                     if (reportServiceMap == null) {
                         closeRedis(jedis);
-                        TimeUnit.SECONDS.sleep(1);
+                        sleep(1, TimeUnit.SECONDS);
                         lock.unlock();
                         continue;
                     }
@@ -161,11 +161,13 @@ public class ReportFileUrlTask {
                     }
 
                     closeRedis(jedis);
-                    TimeUnit.SECONDS.sleep(30);
+                    sleep(30, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
                     LOGGER.info("java.lang.InterruptedException");
                 } finally {
-                    lock.unlock();
+                    if (lock.isHeldByCurrentThread()) {
+                        lock.unlock();
+                    }
                 }
             }
 
@@ -176,6 +178,10 @@ public class ReportFileUrlTask {
         if (jedis != null && pool.getNumActive() > 0) {
             jedis.close();
         }
+    }
+
+    private void sleep(long timeout, TimeUnit unit) throws InterruptedException {
+        unit.sleep(timeout);
     }
 
 }

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import static com.perfect.commons.constants.RedisConstants.REPORT_FILE_URL_SUCCEED;
@@ -51,6 +52,8 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
     private final JedisPool pool = JRedisUtils.getPool();
 
+    private final ReentrantLock lock = new ReentrantLock();
+
 
     @Override
     public void generateReportId(Date[] dates, String... args) {
@@ -65,8 +68,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
             jedis = JRedisUtils.get();
             jedis.set(REPORT_ID_COMMIT_STATUS, "0");
         } finally {
-            if (jedis != null)
-                closeRedis(jedis);
+            closeRedis(jedis);
         }
 
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -133,18 +135,21 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
     @Override
     public void readReportFileUrlFromRedis() {
         while (true) {
-            Jedis jedis = null;
             try {
-                jedis = JRedisUtils.get();
+                lock.lock();
+
+                Jedis jedis = JRedisUtils.get();
                 String value = jedis.rpop(REPORT_FILE_URL_SUCCEED);
                 String status = jedis.get(REPORT_ID_COMMIT_STATUS);
                 if (value == null && "1".equals(status)) {
                     closeRedis(jedis);
+                    lock.unlock();
                     break;
                 }
 
                 if (value == null) {
                     closeRedis(jedis);
+                    lock.unlock();
                     continue;
                 }
 
@@ -172,9 +177,11 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                         break;
                 }
 
+                closeRedis(jedis);
             } finally {
-                if (jedis != null)
-                    closeRedis(jedis);
+                if (lock.isHeldByCurrentThread()) {
+                    lock.unlock();
+                }
             }
         }
     }
@@ -218,38 +225,38 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                     return;
 
                 lines.forEach(e -> {
-                        try {
-                            String[] sp = e.split("\\t");
-                            NmsAccountReportDTO account = new NmsAccountReportDTO();
-                            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+                    try {
+                        String[] sp = e.split("\\t");
+                        NmsAccountReportDTO account = new NmsAccountReportDTO();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
-                            Date date = format.parse(sp[0]);
-                            account.setDate(date);
-                            account.setAccountId(Long.valueOf(sp[1]));
-                            account.setAccountName(sp[2]);
-                            account.setImpression(sp[3] == null || sp[3].equals("-1") ? -1 : Integer.valueOf(sp[3]));
-                            account.setClick(sp[4] == null || sp[4].equals("-1") ? -1 : Integer.valueOf(sp[4]));
-                            account.setCost(BigDecimal.valueOf(sp[5] == null || sp[5].equals("-1") ? -1 : Double.valueOf(sp[5])));
-                            account.setCtr(sp[6] == null || sp[6].equals("-1") ? -1 : Double.valueOf(sp[6]));
-                            account.setCpm(BigDecimal.valueOf(sp[7] == null || sp[7].equals("-1") ? -1 : Double.valueOf(sp[7])));
-                            account.setAcp(BigDecimal.valueOf(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8])));
-                            account.setSrchuv(sp[9] == null || sp[9].equals("-1") ? -1 : Integer.valueOf(sp[9]));
-                            account.setClickuv(sp[10] == null || sp[10].equals("-1") ? -1 : Integer.valueOf(sp[10]));
-                            account.setSrsur(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
-                            account.setCusur(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12]));
-                            account.setCocur(BigDecimal.valueOf(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13])));
-                            account.setArrivalRate(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
-                            account.setHopRate(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15]));
-                            account.setAvgResTime(sp[16] == null || sp[16].equals("-1") ? -1 : Long.valueOf(sp[16]));
-                            account.setDirectTrans(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
-                            account.setIndirectTrans(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
+                        Date date = format.parse(sp[0]);
+                        account.setDate(date);
+                        account.setAccountId(Long.valueOf(sp[1]));
+                        account.setAccountName(sp[2]);
+                        account.setImpression(sp[3] == null || sp[3].equals("-1") ? -1 : Integer.valueOf(sp[3]));
+                        account.setClick(sp[4] == null || sp[4].equals("-1") ? -1 : Integer.valueOf(sp[4]));
+                        account.setCost(BigDecimal.valueOf(sp[5] == null || sp[5].equals("-1") ? -1 : Double.valueOf(sp[5])));
+                        account.setCtr(sp[6] == null || sp[6].equals("-1") ? -1 : Double.valueOf(sp[6]));
+                        account.setCpm(BigDecimal.valueOf(sp[7] == null || sp[7].equals("-1") ? -1 : Double.valueOf(sp[7])));
+                        account.setAcp(BigDecimal.valueOf(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8])));
+                        account.setSrchuv(sp[9] == null || sp[9].equals("-1") ? -1 : Integer.valueOf(sp[9]));
+                        account.setClickuv(sp[10] == null || sp[10].equals("-1") ? -1 : Integer.valueOf(sp[10]));
+                        account.setSrsur(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
+                        account.setCusur(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12]));
+                        account.setCocur(BigDecimal.valueOf(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13])));
+                        account.setArrivalRate(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
+                        account.setHopRate(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15]));
+                        account.setAvgResTime(sp[16] == null || sp[16].equals("-1") ? -1 : Long.valueOf(sp[16]));
+                        account.setDirectTrans(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
+                        account.setIndirectTrans(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
 
-                            System.out.println();
-                        } catch (ParseException e1) {
-                            e1.printStackTrace();
-                        }
+                        System.out.println();
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
 
-                    });
+                });
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -287,11 +294,11 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
     }
 
-    public static void main(String[] args) {
-
-        AsynchronousNmsReportServiceImpl asynchronousNmsReportService = new AsynchronousNmsReportServiceImpl();
-        asynchronousNmsReportService.generateReportId(null, "perfect2015", "1");
-
-        //httpFileHandler.getNmsAccountReport("https://apidata.baidu.com/data/v2/getFile.do?t=1437469726&u=10394588&i=398ad60984563e2f1b846d37ba4080d3&f=%2Fapireport%2F398ad60984563e2f1b846d37ba4080d3&h=400&s=82ec14640ccae476c40d6962442d6d83");
-    }
+//    public static void main(String[] args) {
+//
+//        AsynchronousNmsReportServiceImpl asynchronousNmsReportService = new AsynchronousNmsReportServiceImpl();
+//        asynchronousNmsReportService.generateReportId(null, "perfect2015", "1");
+//
+//        //httpFileHandler.getNmsAccountReport("https://apidata.baidu.com/data/v2/getFile.do?t=1437469726&u=10394588&i=398ad60984563e2f1b846d37ba4080d3&f=%2Fapireport%2F398ad60984563e2f1b846d37ba4080d3&h=400&s=82ec14640ccae476c40d6962442d6d83");
+//    }
 }
