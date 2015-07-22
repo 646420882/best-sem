@@ -2,6 +2,7 @@ package com.perfect.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
@@ -46,6 +47,23 @@ public class DateUtils {
         return dateStrList;
     }
 
+    public static List<Date> getDateInterval(Date start, Date end) {
+        long diffAsDays = ChronoUnit.DAYS.between(start.toInstant(), end.toInstant());
+        List<Date> dateList = new ArrayList<>();
+
+        if (diffAsDays == 0) {
+            dateList.add(start);
+            dateList.add(end);
+            return dateList;
+        }
+
+        for (int i = 0; i < diffAsDays + 1; i++) {
+            dateList.add(Date.from(start.toInstant().plus(i, ChronoUnit.DAYS)));
+        }
+
+        return dateList;
+    }
+
     public static Map<String, List> getsLatestAnyDays(String format, int num) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         List<String> anyDays = new ArrayList<>();
@@ -77,4 +95,5 @@ public class DateUtils {
     public static String getYesterdayStr() {
         return getsLatestAnyDays("yyyy-MM-dd", 1).get(KEY_STRING).get(0).toString();
     }
+
 }
