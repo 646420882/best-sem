@@ -54,17 +54,15 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
     }
 
     @Override
-    public void getNmsCampaignReportData(List<NmsCampaignReportDTO> nmsCampaignReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
+    public void getNmsCampaignReportData(List<NmsCampaignReportDTO> nmsCampaignReportDTOs, SystemUserDTO systemUser, String dateStr) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<NmsCampaignReportEntity> campaignReportEntities = new ArrayList<>(ObjectUtils.convert(nmsCampaignReportDTOs, NmsCampaignReportEntity.class));
         List<NmsCampaignReportEntity> campaignReportEntities1;
         if (mongoTemplate.collectionExists(dateStr + "-nms-campaign")) {
-            if (i > 1) {
-                campaignReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsCampaignReportEntity.class, dateStr + "-campaign"));
-                campaignReportEntities.addAll(campaignReportEntities1);
-            }
+            campaignReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsCampaignReportEntity.class, dateStr + "-campaign"));
+            campaignReportEntities.addAll(campaignReportEntities1);
             mongoTemplate.dropCollection(dateStr + "-nms-campaign");
         }
 
@@ -73,17 +71,15 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
     }
 
     @Override
-    public void getNmsGroupReportData(List<NmsGroupReportDTO> nmsGroupReportDtos, SystemUserDTO systemUser, String dateStr, int i) {
+    public void getNmsGroupReportData(List<NmsGroupReportDTO> nmsGroupReportDtos, SystemUserDTO systemUser, String dateStr) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<NmsGroupReportEntity> adgroupReportEntities = new ArrayList<>(ObjectUtils.convert(nmsGroupReportDtos, NmsGroupReportEntity.class));
         List<NmsGroupReportEntity> adgroupReportEntities1;
         if (mongoTemplate.collectionExists(dateStr + "-nms-adgroup")) {
-            if (i > 1) {
-                adgroupReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsGroupReportEntity.class, dateStr + "-nms-adgroup"));
-                adgroupReportEntities.addAll(adgroupReportEntities1);
-            }
+            adgroupReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsGroupReportEntity.class, dateStr + "-nms-adgroup"));
+            adgroupReportEntities.addAll(adgroupReportEntities1);
             mongoTemplate.dropCollection(dateStr + "-nms-adgroup");
         }
 
@@ -91,17 +87,15 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
     }
 
     @Override
-    public void getNmsAdReportData(List<NmsAdReportDTO> nmsAdReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
+    public void getNmsAdReportData(List<NmsAdReportDTO> nmsAdReportDTOs, SystemUserDTO systemUser, String dateStr) {
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<NmsAccountReportEntity> creativeReportEntities = new ArrayList<>(ObjectUtils.convert(nmsAdReportDTOs, NmsAccountReportEntity.class));
         List<NmsAccountReportEntity> creativeReportEntities1;
         if (mongoTemplate.collectionExists(dateStr + "-nms-creative")) {
-            if (i > 1) {
-                creativeReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsAccountReportEntity.class, dateStr + "-creative"));
-                creativeReportEntities.addAll(creativeReportEntities1);
-            }
+            creativeReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsAccountReportEntity.class, dateStr + "-creative"));
+            creativeReportEntities.addAll(creativeReportEntities1);
             mongoTemplate.dropCollection(dateStr + "-nms-creative");
         }
 
