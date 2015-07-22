@@ -300,17 +300,61 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         String[] sp = line.split("\\t");
         NmsGroupReportDTO group = new NmsGroupReportDTO();
 
-        // data handle
+        group.setAccountId(Long.parseLong(sp[1]));
+        group.setCampaignId(Long.parseLong(sp[3]));
+        group.setCampaignName(sp[4] == null || sp[4].equals("-1") ? "-1" : sp[4]);
+        group.setGroupId(Long.parseLong(sp[5]));
+        group.setGroupName(sp[6] == null || sp[6].equals("-1") ? "-1" : sp[6]);
 
+        // data handle
+        group.setImpression(sp[7] == null || sp[7].equals("-1") ? -1 : Integer.valueOf(sp[7]));
+        group.setClick(sp[8] == null || sp[8].equals("-1") ? -1 : Integer.valueOf(sp[8]));
+        group.setCost(BigDecimal.valueOf(sp[9] == null || sp[9].equals("-1") ? -1 : Double.valueOf(sp[9])));
+        group.setCtr(sp[10] == null || sp[10].equals("-1") ? -1 : Double.valueOf(sp[10]));
+        group.setCpm(BigDecimal.valueOf(sp[11] == null || sp[11].equals("-1") ? -1 : Double.valueOf(sp[11])));
+        group.setAcp(BigDecimal.valueOf(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12])));
+        group.setSrchuv(sp[13] == null || sp[13].equals("-1") ? -1 : Integer.valueOf(sp[13]));
+        group.setClickuv(sp[14] == null || sp[14].equals("-1") ? -1 : Integer.valueOf(sp[14]));
+        group.setSrsur(sp[15] == null || sp[15].equals("-1") ? -1 : Integer.valueOf(sp[15]));
+        group.setCusur(sp[16] == null || sp[16].equals("-1") ? -1 : Double.valueOf(sp[16]));
+        group.setCocur(BigDecimal.valueOf(sp[17] == null || sp[17].equals("-1") ? -1 : Double.valueOf(sp[17])));
+        group.setArrivalRate(sp[18] == null || sp[18].equals("-1") ? -1 : Double.valueOf(sp[18]));
+        group.setHopRate(sp[19] == null || sp[19].equals("-1") ? -1 : Double.valueOf(sp[19]));
+        group.setAvgResTime(sp[20] == null || sp[20].equals("-1") ? -1 : Long.valueOf(sp[20]));
+        group.setDirectTrans(sp[21] == null || sp[21].equals("-1") ? -1 : Integer.valueOf(sp[21]));
+        group.setIndirectTrans(sp[22] == null || sp[22].equals("-1") ? -1 : Integer.valueOf(sp[22]));
         return group;
     };
 
     private final Function<String, NmsAdReportDTO> adFunc = (String line) -> {
         String[] sp = line.split("\\t");
         NmsAdReportDTO ad = new NmsAdReportDTO();
+        ad.setAccountId(Long.valueOf(sp[1]));
+        ad.setCampaignId(Long.valueOf(sp[3]));
+        ad.setCampaignName(sp[4] == null || sp[4].equals("-1") ? "-1" : sp[4]);
 
-        // data handle
+        ad.setGroupId(Long.valueOf(sp[5]));
+        ad.setGroupName(sp[6] == null || sp[6].equals("-1") ? "-1" : sp[6]);
+        ad.setAdId(Long.valueOf(sp[7]));
+        ad.setAdTitle(sp[8] == null || sp[8].equals("-1") ? "-1" : sp[8]);
+        ad.setAdType(sp[9] == null || sp[9].equals("-1") ? -1 : Integer.valueOf(sp[9]));
 
+        ad.setImpression(sp[10] == null || sp[10].equals("-1") ? -1 : Integer.valueOf(sp[10]));
+        ad.setClick(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
+        ad.setCost(BigDecimal.valueOf(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12])));
+        ad.setCtr(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13]));
+        ad.setCpm(BigDecimal.valueOf(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14])));
+        ad.setAcp(BigDecimal.valueOf(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15])));
+        ad.setSrchuv(sp[16] == null || sp[16].equals("-1") ? -1 : Integer.valueOf(sp[16]));
+        ad.setClickuv(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
+        ad.setSrsur(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
+        ad.setCusur(sp[19] == null || sp[19].equals("-1") ? -1 : Double.valueOf(sp[19]));
+        ad.setCocur(BigDecimal.valueOf(sp[20] == null || sp[20].equals("-1") ? -1 : Double.valueOf(sp[20])));
+        ad.setArrivalRate(sp[21] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[21]));
+        ad.setHopRate(sp[22] == null || sp[22].equals("-1") ? -1 : Double.valueOf(sp[22]));
+        ad.setAvgResTime(sp[23] == null || sp[23].equals("-1") ? -1 : Long.valueOf(sp[23]));
+        ad.setDirectTrans(sp[24] == null || sp[24].equals("-1") ? -1 : Integer.valueOf(sp[24]));
+        ad.setIndirectTrans(sp[25] == null || sp[25].equals("-1") ? -1 : Integer.valueOf(sp[25]));
         return ad;
     };
 
@@ -322,6 +366,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
             // download report and parse data
             List<NmsAccountReportDTO> accountReportList =
                     readAllLines(s).stream().map(accountFunc).filter(o -> o != null).collect(Collectors.toList());
+
 
             // save to mongodb
 
