@@ -24,12 +24,20 @@ public class GetReportId {
     private AdService adService;
     private static ReportService reportService;
 
-    public GetReportId(String baiduAccount, String baiduPwd, String token) {
+    public GetReportId(String baiduAccount, String baiduPwd, String token, int apiType) {
         VersionService factory = ServiceFactory.getInstance(baiduAccount, baiduPwd, token, null);
-        accountService = factory.getService(AccountService.class);
-        campaignService = factory.getService(CampaignService.class);
-        getGroupByCampaignId = factory.getService(GroupService.class);
-        adService = factory.getService(AdService.class);
+        if (apiType == 0 || apiType == 1) {
+            accountService = factory.getService(AccountService.class);
+        }
+        if (apiType == 0 || apiType == 2) {
+            campaignService = factory.getService(CampaignService.class);
+        }
+        if (apiType == 0 || apiType == 3) {
+            getGroupByCampaignId = factory.getService(GroupService.class);
+        }
+        if (apiType == 0 || apiType == 4) {
+            adService = factory.getService(AdService.class);
+        }
         reportService = factory.getService(ReportService.class);
     }
 
@@ -193,7 +201,7 @@ public class GetReportId {
 
     public static void main(String[] args) {
 
-        GetReportId example = new GetReportId("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e");
+        GetReportId example = new GetReportId("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e",1);
         //推广组ID   20657783
         //推广计划ID  4222159  4222135  4219295  4073559
         //int s = example.getAdbyGroupId(20657783);
@@ -202,7 +210,7 @@ public class GetReportId {
 
         //账户报告
         List<Long> accountId = example.getAccountId();
-        Map<String,ReportService> accountMap = example.getReportAllId(accountId, 1, 1, DateUtils.getYesterday(), DateUtils.getYesterday());
+        Map<String, ReportService> accountMap = example.getReportAllId(accountId, 1, 1, DateUtils.getYesterday(), DateUtils.getYesterday());
         reportFileUrlTask.add(accountMap);
 
         /*//计划报告

@@ -5,6 +5,7 @@ import com.perfect.dao.report.AsynchronousNmsReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.NmsAccountReportDTO;
+import com.perfect.dto.account.NmsCampaignReportDTO;
 import com.perfect.nms.NmsReportIdAPI;
 import com.perfect.nms.ReportFileUrlTask;
 import com.perfect.service.AsynchronousNmsReportService;
@@ -250,6 +251,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                         account.setAvgResTime(sp[16] == null || sp[16].equals("-1") ? -1 : Long.valueOf(sp[16]));
                         account.setDirectTrans(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
                         account.setIndirectTrans(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
+                        list.add(account);
 
                         System.out.println();
                     } catch (ParseException e1) {
@@ -269,6 +271,54 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         @Override
         public void call(String s) {
             // implement
+            List<NmsCampaignReportDTO> list = new ArrayList<>();
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(s);
+
+            try {
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+                HttpEntity entity = response.getEntity();
+                BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
+
+                List<String> lines = br.lines().collect(Collectors.toList());
+                if (lines != null && !lines.isEmpty())
+                    lines.remove(0);
+                else
+                    return;
+
+                lines.forEach(e -> {
+                    String[] sp = e.split("\\t");
+                    NmsCampaignReportDTO campaign = new NmsCampaignReportDTO();
+
+                    campaign.setAccountId(Long.valueOf(sp[1]));
+                    campaign.setCampaignId(Long.valueOf(sp[3]));
+                    campaign.setCampaignName(sp[4] == null || sp[4].equals("-1") ? "-1" : sp[4]);
+
+                    campaign.setImpression(sp[5] == null || sp[5].equals("-1") ? -1 : Integer.valueOf(sp[5]));
+                    campaign.setClick(sp[6] == null || sp[6].equals("-1") ? -1 : Integer.valueOf(sp[6]));
+                    campaign.setCost(BigDecimal.valueOf(sp[7] == null || sp[7].equals("-1") ? -1 : Double.valueOf(sp[7])));
+                    campaign.setCtr(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8]));
+                    campaign.setCpm(BigDecimal.valueOf(sp[9] == null || sp[9].equals("-1") ? -1 : Double.valueOf(sp[9])));
+                    campaign.setAcp(BigDecimal.valueOf(sp[10] == null || sp[10].equals("-1") ? -1 : Double.valueOf(sp[10])));
+                    campaign.setSrchuv(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
+                    campaign.setClickuv(sp[12] == null || sp[12].equals("-1") ? -1 : Integer.valueOf(sp[12]));
+                    campaign.setSrsur(sp[13] == null || sp[13].equals("-1") ? -1 : Integer.valueOf(sp[13]));
+                    campaign.setCusur(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
+                    campaign.setCocur(BigDecimal.valueOf(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15])));
+                    campaign.setArrivalRate(sp[16] == null || sp[16].equals("-1") ? -1 : Double.valueOf(sp[16]));
+                    campaign.setHopRate(sp[17] == null || sp[17].equals("-1") ? -1 : Double.valueOf(sp[17]));
+                    campaign.setAvgResTime(sp[18] == null || sp[18].equals("-1") ? -1 : Long.valueOf(sp[18]));
+                    campaign.setDirectTrans(sp[19] == null || sp[19].equals("-1") ? -1 : Integer.valueOf(sp[19]));
+                    campaign.setIndirectTrans(sp[20] == null || sp[20].equals("-1") ? -1 : Integer.valueOf(sp[20]));
+                    list.add(campaign);
+
+                    System.out.println();
+
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

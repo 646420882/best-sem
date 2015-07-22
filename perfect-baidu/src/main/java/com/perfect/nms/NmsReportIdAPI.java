@@ -34,7 +34,7 @@ public class NmsReportIdAPI {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
 
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token);
+        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 0);
 
 
         //账户报告
@@ -79,7 +79,7 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token);
+        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 1);
 
         //账户报告
         List<Long> accountId = example.getAccountId();
@@ -107,7 +107,7 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token);
+        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 2);
 
 
         //计划报告
@@ -136,7 +136,7 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token);
+        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 3);
 
 
         //组报告
@@ -166,7 +166,7 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token);
+        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 4);
 
 
         List<Long> campaignId = example.getCampaignId();
