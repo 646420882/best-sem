@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public interface AsynchronousNmsReportService {
 
-    void generateReportId(Date[] dates, String... args);
+    void retrieveReport(Date[] dates, String... args);
 
     void readReportFileUrlFromRedis();
 

@@ -9,9 +9,11 @@ public interface RedisConstants {
 
 
     // nms report key
-    String REPORT_ID_COMMIT_STATUS = "nms-report-id-commit-status";
+    String REPORT_ID_COMMIT_STATUS = "nms-report-id-commit-status"; // 0: 未完成, 1: 完成
 
     String REPORT_FILE_URL_SUCCEED = "nms-report-file-url-success";
 
     String REPORT_FILE_URL_FAILED = "nms-report-file-url-fail";
+
+    String REPORT_FILE_URL_GENERATE_COMPLETE = "nms-report-file-url-complete";  // 0: 未完成, 1: 完成
 }

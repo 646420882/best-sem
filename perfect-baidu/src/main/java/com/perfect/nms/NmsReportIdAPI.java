@@ -22,6 +22,21 @@ public class NmsReportIdAPI {
         this.reportFileUrlTask = reportFileUrlTask;
     }
 
+    private void postRedisStatus() {
+        Jedis jedis = null;
+        try {
+            jedis = JRedisUtils.get();
+            jedis.set(REPORT_ID_COMMIT_STATUS, "1");
+        } finally {
+            if (jedis != null)
+                jedis.close();
+        }
+    }
+
+    private void closeTask() {
+        reportFileUrlTask.shutdown();
+    }
+
     /**
      * 拉取网盟所有报告
      *
@@ -57,15 +72,8 @@ public class NmsReportIdAPI {
             reportFileUrlTask.add(adbyGroupMap);
         });
 
-
-        Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
-        if (!b) {
-            jc.set(REPORT_ID_COMMIT_STATUS, "1");
-        }
-        if (jc != null) {
-            jc.close();
-        }
+        postRedisStatus();
+        closeTask();
     }
 
     /**
@@ -88,15 +96,8 @@ public class NmsReportIdAPI {
             reportFileUrlTask.add(accountIdMap);
         });
 
-
-        Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
-        if (!b) {
-            jc.set(REPORT_ID_COMMIT_STATUS, "1");
-        }
-        if (jc != null) {
-            jc.close();
-        }
+        postRedisStatus();
+        closeTask();
     }
 
     /**
@@ -119,14 +120,8 @@ public class NmsReportIdAPI {
             reportFileUrlTask.add(campaignMap);
         });
 
-        Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
-        if (!b) {
-            jc.set(REPORT_ID_COMMIT_STATUS, "1");
-        }
-        if (jc != null) {
-            jc.close();
-        }
+        postRedisStatus();
+        closeTask();
     }
 
     /**
@@ -150,14 +145,8 @@ public class NmsReportIdAPI {
             reportFileUrlTask.add(groupMap);
         });
 
-        Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
-        if (!b) {
-            jc.set(REPORT_ID_COMMIT_STATUS, "1");
-        }
-        if (jc != null) {
-            jc.close();
-        }
+        postRedisStatus();
+        closeTask();
     }
 
     /**
@@ -181,13 +170,7 @@ public class NmsReportIdAPI {
             reportFileUrlTask.add(adbyGroupMap);
         });
 
-        Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
-        if (!b) {
-            jc.set(REPORT_ID_COMMIT_STATUS, "1");
-        }
-        if (jc != null) {
-            jc.close();
-        }
+        postRedisStatus();
+        closeTask();
     }
 }

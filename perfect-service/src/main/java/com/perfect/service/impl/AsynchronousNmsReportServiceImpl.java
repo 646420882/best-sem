@@ -34,13 +34,16 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.perfect.commons.constants.RedisConstants.REPORT_FILE_URL_SUCCEED;
-import static com.perfect.commons.constants.RedisConstants.REPORT_ID_COMMIT_STATUS;
+import static com.perfect.commons.constants.RedisConstants.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -57,85 +60,37 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AsynchronousNmsReportServiceImpl.class);
 
+    public static final String ZERO = "0";
+
+    public static final String ONE = "1";
+
     private final JedisPool pool = JRedisUtils.getPool();
 
     private final ReentrantLock lock = new ReentrantLock();
 
 
     @Override
-    public void generateReportId(Date[] dates, String... args) {
+    public void retrieveReport(Date[] dates, String... args) {
         if (dates == null || dates.length == 0) {
             dates = new Date[]{null, null};
         }
 
+        preSetting();
+
+        ExecutorService reportFileUrlExecutor = Executors.newSingleThreadExecutor();
+        reportFileUrlExecutor.execute(this::readReportFileUrlFromRedis);
+
         final Date[] _dates = dates;
-
-        Jedis jedis = null;
+        final ReportFileUrlTask fileUrlTask = new ReportFileUrlTask();
+        ReportTask task = new ReportTask(fileUrlTask, _dates, args);
+        FutureTask<Boolean> futureTask = new FutureTask<>(task);
         try {
-            jedis = JRedisUtils.get();
-            jedis.set(REPORT_ID_COMMIT_STATUS, "0");
-        } finally {
-            closeRedis(jedis);
-        }
-
-        Executors.newSingleThreadExecutor().execute(() -> {
-            ReportFileUrlTask fileUrlTask = new ReportFileUrlTask();
-            NmsReportIdAPI nmsApi = new NmsReportIdAPI(fileUrlTask);
-            List<SystemUserDTO> systemUserList;
-
-            int l = args.length;
-            if (l == 0) {
-                // 拉取全部报告
-                systemUserList = getBaiduUser(null);
-                if (systemUserList != null && !systemUserList.isEmpty()) {
-                    systemUserList.forEach(sysUser -> {
-                        sysUser.getBaiduAccounts().forEach(ba -> {
-                            nmsApi.getAllApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates);
-                        });
-                    });
-                }
-            } else if (l == 1) {
-                // 拉取指定用户的报告
-                systemUserList = getBaiduUser(args[0]);
-                if (systemUserList != null && !systemUserList.isEmpty()) {
-                    SystemUserDTO systemUser = systemUserList.get(0);
-                    systemUser.getBaiduAccounts()
-                            .forEach(ba -> nmsApi.getAllApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
-                }
-            } else if (l == 2) {
-                // 拉取指定用户的某一类型报告
-                systemUserList = getBaiduUser(args[0]);
-                int type = Integer.parseInt(args[1]);   // 1 -> account, 2 -> campaign, 3 -> group, 4 -> ad
-
-                if (systemUserList != null && !systemUserList.isEmpty()) {
-                    SystemUserDTO systemUser = systemUserList.get(0);
-
-                    switch (type) {
-                        case 1:
-                            systemUser.getBaiduAccounts()
-                                    .forEach(ba -> nmsApi.getAccountApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
-                            break;
-                        case 2:
-                            systemUser.getBaiduAccounts()
-                                    .forEach(ba -> nmsApi.getCampaignApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
-                            break;
-                        case 3:
-                            systemUser.getBaiduAccounts()
-                                    .forEach(ba -> nmsApi.getGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
-                            break;
-                        case 4:
-                            systemUser.getBaiduAccounts()
-                                    .forEach(ba -> nmsApi.getAdbyGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), _dates));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
+            if (futureTask.get()) {
+                reportFileUrlExecutor.shutdown();
             }
-        });
-
-        Executors.newSingleThreadExecutor().execute(this::readReportFileUrlFromRedis);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -147,8 +102,8 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
                 Jedis jedis = JRedisUtils.get();
                 String value = jedis.rpop(REPORT_FILE_URL_SUCCEED);
-                String status = jedis.get(REPORT_ID_COMMIT_STATUS);
-                if (value == null && "1".equals(status)) {
+                String status = jedis.get(REPORT_FILE_URL_GENERATE_COMPLETE);
+                if (value == null && ONE.equals(status)) {
                     closeRedis(jedis);
                     lock.unlock();
                     break;
@@ -210,12 +165,30 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         return newEntityList;
     }
 
+    // 预设置
+    private void preSetting() {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            jedis.set(REPORT_ID_COMMIT_STATUS, ZERO);
+            jedis.set(REPORT_FILE_URL_GENERATE_COMPLETE, ZERO);
+        } finally {
+            closeRedis(jedis);
+        }
+    }
+
     private void closeRedis(Jedis jedis) {
         if (jedis != null && pool.getNumActive() > 0) {
             jedis.close();
         }
     }
 
+    /**
+     * 读取CSV文件的所有行
+     *
+     * @param s
+     * @return
+     */
     private Map<String, List<String>> readAllLines(String s) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(new HttpGet(s));
@@ -328,7 +301,6 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         group.setGroupId(Long.parseLong(sp[5]));
         group.setGroupName(sp[6] == null || sp[6].equals("-1") ? "-1" : sp[6]);
 
-        // data handle
         group.setImpression(sp[7] == null || sp[7].equals("-1") ? -1 : Integer.valueOf(sp[7]));
         group.setClick(sp[8] == null || sp[8].equals("-1") ? -1 : Integer.valueOf(sp[8]));
         group.setCost(BigDecimal.valueOf(sp[9] == null || sp[9].equals("-1") ? -1 : Double.valueOf(sp[9])));
@@ -381,6 +353,9 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
     };
 
 
+    /**
+     * 账户执行器
+     */
     class AccountAction implements Action1<String> {
 
         @Override
@@ -404,6 +379,9 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
     }
 
+    /**
+     * 推广计划执行器
+     */
     class CampaignAction implements Action1<String> {
 
         @Override
@@ -425,6 +403,9 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
     }
 
+    /**
+     * 推广组执行器
+     */
     class GroupAction implements Action1<String> {
 
         @Override
@@ -446,6 +427,9 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
     }
 
+    /**
+     * 创意执行器
+     */
     class AdAction implements Action1<String> {
 
         @Override
@@ -464,6 +448,93 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                     asynchronousNmsReportDAO.getNmsAdReportData(adReportList, systemUserDTO, dateStr);
                 }
             }
+        }
+    }
+
+    /**
+     * 1. 调用百度网盟推广Api生成报告ID
+     * 2. ReportFileUrlTask {@link com.perfect.nms.ReportFileUrlTask},
+     * 依据报告ID解析出报告具体的url下载地址, 解析完毕, 返回任务完成标识
+     */
+    class ReportTask implements Callable<Boolean> {
+
+        private final ReportFileUrlTask fileUrlTask;
+        private final Date[] dates;
+        private final String[] args;
+
+
+        public ReportTask(ReportFileUrlTask fileUrlTask, Date[] dates, String... args) {
+            this.fileUrlTask = fileUrlTask;
+            this.dates = dates;
+            this.args = args;
+        }
+
+        @Override
+        public Boolean call() throws Exception {
+            NmsReportIdAPI nmsApi = new NmsReportIdAPI(fileUrlTask);
+            List<SystemUserDTO> systemUserList;
+
+            int l = args.length;
+            if (l == 0) {
+                // 拉取全部报告
+                systemUserList = getBaiduUser(null);
+                if (systemUserList != null && !systemUserList.isEmpty()) {
+                    systemUserList.forEach(sysUser -> {
+                        sysUser.getBaiduAccounts().forEach(ba -> {
+                            nmsApi.getAllApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates);
+                        });
+                    });
+                }
+            } else if (l == 1) {
+                // 拉取指定用户的报告
+                systemUserList = getBaiduUser(args[0]);
+                if (systemUserList != null && !systemUserList.isEmpty()) {
+                    SystemUserDTO systemUser = systemUserList.get(0);
+                    systemUser.getBaiduAccounts()
+                            .forEach(ba -> nmsApi.getAllApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
+                }
+            } else if (l == 2) {
+                // 拉取指定用户的某一类型报告
+                systemUserList = getBaiduUser(args[0]);
+                int type = Integer.parseInt(args[1]);   // 1 -> account, 2 -> campaign, 3 -> group, 4 -> ad
+
+                if (systemUserList != null && !systemUserList.isEmpty()) {
+                    SystemUserDTO systemUser = systemUserList.get(0);
+
+                    switch (type) {
+                        case 1:
+                            systemUser.getBaiduAccounts()
+                                    .forEach(ba -> nmsApi.getAccountApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
+                            break;
+                        case 2:
+                            systemUser.getBaiduAccounts()
+                                    .forEach(ba -> nmsApi.getCampaignApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
+                            break;
+                        case 3:
+                            systemUser.getBaiduAccounts()
+                                    .forEach(ba -> nmsApi.getGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
+                            break;
+                        case 4:
+                            systemUser.getBaiduAccounts()
+                                    .forEach(ba -> nmsApi.getAdbyGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+
+            // SET COMPLETE STATUS
+            Jedis jedis = null;
+            try {
+                jedis = pool.getResource();
+                jedis.set(REPORT_FILE_URL_GENERATE_COMPLETE, ONE);
+            } finally {
+                closeRedis(jedis);
+            }
+
+            return true;
         }
     }
 
