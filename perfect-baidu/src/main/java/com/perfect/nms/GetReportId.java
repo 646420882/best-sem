@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class GetReportId {
     private AccountService accountService;
     private CampaignService campaignService;
-    private GroupService getGroupByCampaignId;
+    private GroupService groupService;
     private AdService adService;
     private static ReportService reportService;
 
@@ -33,7 +33,7 @@ public class GetReportId {
             campaignService = factory.getService(CampaignService.class);
         }
         if (apiType == 0 || apiType == 3) {
-            getGroupByCampaignId = factory.getService(GroupService.class);
+            groupService = factory.getService(GroupService.class);
         }
         if (apiType == 0 || apiType == 4) {
             adService = factory.getService(AdService.class);
@@ -48,6 +48,9 @@ public class GetReportId {
         GetAccountInfoRequest parameters = new GetAccountInfoRequest();
 
         GetAccountInfoResponse account = accountService.getAccountInfo(parameters);
+
+        ResHeader rheader = ResHeaderUtil.getResHeader(accountService, true);
+
         List<Long> longs = new ArrayList<>();
         if (account != null) {
             longs.add(account.getAccountInfo().getUserid());
@@ -62,6 +65,8 @@ public class GetReportId {
         GetCampaignRequest parameters = new GetCampaignRequest();
 
         GetCampaignResponse campaign = campaignService.getCampaign(parameters);
+
+        ResHeader rheader = ResHeaderUtil.getResHeader(campaignService, true);
 
         List<Long> longs = new ArrayList<>();
         if (campaign != null) {
@@ -81,7 +86,9 @@ public class GetReportId {
 
                 parameters.setCampaignId(aLong);
 
-                GetGroupByCampaignIdResponse groupByCampaignId = getGroupByCampaignId.getGroupByCampaignId(parameters);
+                GetGroupByCampaignIdResponse groupByCampaignId = groupService.getGroupByCampaignId(parameters);
+
+                ResHeader rheader = ResHeaderUtil.getResHeader(groupService, true);
 
                 if (groupByCampaignId != null) {
                     groupByCampaignId.getGroupTypes().stream().filter(e -> e != null).forEach(e -> {
@@ -104,6 +111,8 @@ public class GetReportId {
                 parameters.setGroupId(aLong);
 
                 GetAdByGroupIdResponse adByGroup = adService.getAdByGroupId(parameters);
+
+                ResHeader rheader = ResHeaderUtil.getResHeader(adService, true);
 
                 if (adByGroup != null) {
                     adByGroup.getAdTypes().stream().filter(e -> e != null).forEach(e -> {
