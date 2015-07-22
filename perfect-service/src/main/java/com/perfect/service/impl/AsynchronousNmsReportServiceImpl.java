@@ -370,7 +370,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 List<NmsAccountReportDTO> accountReportList =
                         lines.stream().map(accountFunc).filter(o -> o != null).collect(Collectors.toList());
                 // save to mongodb
-                if (accountReportList.size() != 0) {
+                if (!accountReportList.isEmpty()) {
                     SystemUserDTO systemUserDTO = systemUserDAO.findByAid(accountReportList.get(0).getAccountId());
                     asynchronousNmsReportDAO.getNmsAccountReportData(accountReportList, systemUserDTO, dateStr, accountReportList.get(0).getAccountName());
                 }
@@ -395,7 +395,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 List<NmsCampaignReportDTO> campaignReportList =
                         lines.stream().map(campaignFunc).collect(Collectors.toList());
                 // save to mongodb
-                if (campaignReportList.size() != 0) {
+                if (!campaignReportList.isEmpty()) {
                     SystemUserDTO systemUserDTO = systemUserDAO.findByAid(campaignReportList.get(0).getAccountId());
                     asynchronousNmsReportDAO.getNmsCampaignReportData(campaignReportList, systemUserDTO, dateStr);
                 }
@@ -419,7 +419,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 List<NmsGroupReportDTO> groupReportList =
                         lines.stream().map(groupFunc).collect(Collectors.toList());
                 // save to mongodb
-                if (groupReportList.size() != 0) {
+                if (!groupReportList.isEmpty()) {
                     SystemUserDTO systemUserDTO = systemUserDAO.findByAid(groupReportList.get(0).getAccountId());
                     asynchronousNmsReportDAO.getNmsGroupReportData(groupReportList, systemUserDTO, dateStr);
                 }
@@ -443,7 +443,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 List<NmsAdReportDTO> adReportList =
                         lines.stream().map(adFunc).collect(Collectors.toList());
                 // save to mongodb
-                if (adReportList.size() != 0) {
+                if (!adReportList.isEmpty()) {
                     SystemUserDTO systemUserDTO = systemUserDAO.findByAid(adReportList.get(0).getAccountId());
                     asynchronousNmsReportDAO.getNmsAdReportData(adReportList, systemUserDTO, dateStr);
                 }
