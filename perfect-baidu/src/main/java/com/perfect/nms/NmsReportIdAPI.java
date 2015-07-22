@@ -33,29 +33,29 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
+        DateUtils.getDateInterval(dates[0], dates[1]).forEach(date -> {
 
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 0);
+            GetReportId example = new GetReportId(baidAccount, baidPwd, token, 0);
+            //账户报告
+            List<Long> accountId = example.getAccountId();
+            Map<String, ReportService> accountIdMap = example.getReportAllId(accountId, 1, 1, date, date);
+            reportFileUrlTask.add(accountIdMap);
 
+            //计划报告
+            List<Long> campaignId = example.getCampaignId();
+            Map<String, ReportService> campaignMap = example.getReportAllId(campaignId, 2, 2, date, date);
+            reportFileUrlTask.add(campaignMap);
 
-        //账户报告
-        List<Long> accountId = example.getAccountId();
-        Map<String, ReportService> accountIdMap = example.getReportAllId(accountId, 1, 1, dates[0], dates[1]);
-        reportFileUrlTask.add(accountIdMap);
+            //组报告
+            List<Long> groupId = example.getGroupByGroupId(campaignId);
+            Map<String, ReportService> groupMap = example.getReportAllId(groupId, 3, 3, date, date);
+            reportFileUrlTask.add(groupMap);
 
-        //计划报告
-        List<Long> campaignId = example.getCampaignId();
-        Map<String, ReportService> campaignMap = example.getReportAllId(campaignId, 2, 2, dates[0], dates[1]);
-        reportFileUrlTask.add(campaignMap);
-
-        //组报告
-        List<Long> groupId = example.getGroupByGroupId(campaignId);
-        Map<String, ReportService> groupMap = example.getReportAllId(groupId, 3, 3, dates[0], dates[1]);
-        reportFileUrlTask.add(groupMap);
-
-        //创意报告
-        List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
-        Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, dates[0], dates[1]);
-        reportFileUrlTask.add(adbyGroupMap);
+            //创意报告
+            List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
+            Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, date, date);
+            reportFileUrlTask.add(adbyGroupMap);
+        });
 
 
         Jedis jc = JRedisUtils.get();
@@ -79,12 +79,15 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 1);
+        DateUtils.getDateInterval(dates[0], dates[1]).forEach(date -> {
+            GetReportId example = new GetReportId(baidAccount, baidPwd, token, 1);
 
-        //账户报告
-        List<Long> accountId = example.getAccountId();
-        Map<String, ReportService> accountIdMap = example.getReportAllId(accountId, 1, 1, dates[0], dates[1]);
-        reportFileUrlTask.add(accountIdMap);
+            //账户报告
+            List<Long> accountId = example.getAccountId();
+            Map<String, ReportService> accountIdMap = example.getReportAllId(accountId, 1, 1, date, date);
+            reportFileUrlTask.add(accountIdMap);
+        });
+
 
         Jedis jc = JRedisUtils.get();
         boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
@@ -107,13 +110,14 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 2);
+        DateUtils.getDateInterval(dates[0], dates[1]).forEach(date -> {
+            GetReportId example = new GetReportId(baidAccount, baidPwd, token, 2);
 
-
-        //计划报告
-        List<Long> campaignId = example.getCampaignId();
-        Map<String, ReportService> campaignMap = example.getReportAllId(campaignId, 2, 2, dates[0], dates[1]);
-        reportFileUrlTask.add(campaignMap);
+            //计划报告
+            List<Long> campaignId = example.getCampaignId();
+            Map<String, ReportService> campaignMap = example.getReportAllId(campaignId, 2, 2, date, date);
+            reportFileUrlTask.add(campaignMap);
+        });
 
         Jedis jc = JRedisUtils.get();
         boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
@@ -136,14 +140,15 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 3);
+        DateUtils.getDateInterval(dates[0], dates[1]).forEach(date -> {
+            GetReportId example = new GetReportId(baidAccount, baidPwd, token, 3);
 
-
-        //组报告
-        List<Long> campaignId = example.getCampaignId();
-        List<Long> groupId = example.getGroupByGroupId(campaignId);
-        Map<String, ReportService> groupMap = example.getReportAllId(groupId, 3, 3, dates[0], dates[1]);
-        reportFileUrlTask.add(groupMap);
+            //组报告
+            List<Long> campaignId = example.getCampaignId();
+            List<Long> groupId = example.getGroupByGroupId(campaignId);
+            Map<String, ReportService> groupMap = example.getReportAllId(groupId, 3, 3, date, date);
+            reportFileUrlTask.add(groupMap);
+        });
 
         Jedis jc = JRedisUtils.get();
         boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
@@ -166,14 +171,15 @@ public class NmsReportIdAPI {
         if (dates[0] == null && dates[1] == null) {
             dates = new Date[]{DateUtils.getYesterday(), DateUtils.getYesterday()};
         }
-        GetReportId example = new GetReportId(baidAccount, baidPwd, token, 4);
+        DateUtils.getDateInterval(dates[0], dates[1]).forEach(date -> {
+            GetReportId example = new GetReportId(baidAccount, baidPwd, token, 4);
 
-
-        List<Long> campaignId = example.getCampaignId();
-        List<Long> groupId = example.getGroupByGroupId(campaignId);
-        List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
-        Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, dates[0], dates[1]);
-        reportFileUrlTask.add(adbyGroupMap);
+            List<Long> campaignId = example.getCampaignId();
+            List<Long> groupId = example.getGroupByGroupId(campaignId);
+            List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
+            Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, date, date);
+            reportFileUrlTask.add(adbyGroupMap);
+        });
 
         Jedis jc = JRedisUtils.get();
         boolean b = jc.exists(REPORT_ID_COMMIT_STATUS);
