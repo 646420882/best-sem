@@ -13,6 +13,7 @@ import com.perfect.nms.ReportFileUrlTask;
 import com.perfect.service.AsynchronousNmsReportService;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.redis.JRedisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -32,10 +33,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
@@ -218,21 +216,45 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
     }
 
-    private List<String> readAllLines(String s) {
+    private Map<String, List<String>> readAllLines(String s) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(new HttpGet(s));
              BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), UTF_8))) {
             List<String> lines = br.lines().collect(Collectors.toList());
             if (lines != null && !lines.isEmpty()) {
                 lines.remove(0);
-                return lines;
+                String dateStr = lines.stream().findFirst().get().split("\\t")[0];
+                dateStr = dateStr.substring(0, 4) + "-" + dateStr.substring(4, 6) + "-" + dateStr.substring(6);
+                Map<String, List<String>> linesMap = new HashMap<>();
+                linesMap.put(dateStr, lines);
+                return linesMap;
             }
         } catch (IOException e) {
             LOGGER.info("java.io.IOException");
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return Collections.emptyMap();
+    }
+
+    private String headKey(Map<String, List<String>> map) {
+        String key = null;
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            key = entry.getKey();
+            break;
+        }
+
+        return key;
+    }
+
+    private List<String> headValue(Map<String, List<String>> map) {
+        List<String> lines = null;
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            lines = entry.getValue();
+            break;
+        }
+
+        return lines == null ? Collections.emptyList() : lines;
     }
 
     private final Function<String, NmsAccountReportDTO> accountFunc = (String line) -> {
@@ -364,12 +386,16 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         @Override
         public void call(String s) {
             // download report and parse data
-            List<NmsAccountReportDTO> accountReportList =
-                    readAllLines(s).stream().map(accountFunc).filter(o -> o != null).collect(Collectors.toList());
+            Map<String, List<String>> linesMap = readAllLines(s);
+            String dateStr = headKey(linesMap);
+            List<String> lines = headValue(linesMap);
 
+            if (StringUtils.isNotEmpty(dateStr) && !lines.isEmpty()) {
+                List<NmsAccountReportDTO> accountReportList =
+                        lines.stream().map(accountFunc).filter(o -> o != null).collect(Collectors.toList());
+                // save to mongodb
 
-            // save to mongodb
-
+            }
         }
     }
 
@@ -378,11 +404,16 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         @Override
         public void call(String s) {
             // download report and parse data
-            List<NmsCampaignReportDTO> campaignReportList =
-                    readAllLines(s).stream().map(campaignFunc).collect(Collectors.toList());
+            Map<String, List<String>> linesMap = readAllLines(s);
+            String dateStr = headKey(linesMap);
+            List<String> lines = headValue(linesMap);
 
-            // save to mongodb
+            if (StringUtils.isNotEmpty(dateStr) && !lines.isEmpty()) {
+                List<NmsCampaignReportDTO> campaignReportList =
+                        lines.stream().map(campaignFunc).collect(Collectors.toList());
+                // save to mongodb
 
+            }
         }
     }
 
@@ -391,11 +422,16 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         @Override
         public void call(String s) {
             // download report and parse data
-            List<NmsGroupReportDTO> groupReportList =
-                    readAllLines(s).stream().map(groupFunc).collect(Collectors.toList());
+            Map<String, List<String>> linesMap = readAllLines(s);
+            String dateStr = headKey(linesMap);
+            List<String> lines = headValue(linesMap);
 
-            // save to mongodb
+            if (StringUtils.isNotEmpty(dateStr) && !lines.isEmpty()) {
+                List<NmsGroupReportDTO> groupReportList =
+                        lines.stream().map(groupFunc).collect(Collectors.toList());
+                // save to mongodb
 
+            }
         }
     }
 
@@ -404,17 +440,17 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         @Override
         public void call(String s) {
             // download report and parse data
-            List<NmsAdReportDTO> adReportList =
-                    readAllLines(s).stream().map(adFunc).collect(Collectors.toList());
+            Map<String, List<String>> linesMap = readAllLines(s);
+            String dateStr = headKey(linesMap);
+            List<String> lines = headValue(linesMap);
 
-            // save to mongodb
+            if (StringUtils.isNotEmpty(dateStr) && !lines.isEmpty()) {
+                List<NmsAdReportDTO> adReportList =
+                        lines.stream().map(adFunc).collect(Collectors.toList());
+                // save to mongodb
 
+            }
         }
     }
 
-//    public static void main(String[] args) {
-//
-//        AsynchronousNmsReportServiceImpl asynchronousNmsReportService = new AsynchronousNmsReportServiceImpl();
-//        asynchronousNmsReportService.generateReportId(null, "perfect2015", "1");
-//    }
 }
