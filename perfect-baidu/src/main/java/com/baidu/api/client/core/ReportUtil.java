@@ -100,7 +100,7 @@ public abstract class ReportUtil {
         parameters.setReportId(reportId);
         // Invoke the method.
         GetReportStateResponse ret = service.getReportState(parameters);
-        if(ret != null){
+        if (ret != null) {
             return ret.getIsGenerated();
         }
         return -1;
@@ -112,8 +112,8 @@ public abstract class ReportUtil {
         parameters.setReportId(reportId);
         // Invoke the method.
         GetReportFileUrlResponse ret = service.getReportFileUrl(parameters);
-        if(ret != null){
-            ret.getReportFilePath();
+        if (ret != null) {
+            return ret.getReportFilePath();
         }
         return null;
     }

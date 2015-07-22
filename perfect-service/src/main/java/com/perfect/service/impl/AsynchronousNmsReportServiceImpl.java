@@ -5,17 +5,20 @@ import com.perfect.dao.report.AsynchronousNmsReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.NmsAccountReportDTO;
+import com.perfect.dto.account.NmsAdReportDTO;
 import com.perfect.dto.account.NmsCampaignReportDTO;
+import com.perfect.dto.account.NmsGroupReportDTO;
 import com.perfect.nms.NmsReportIdAPI;
 import com.perfect.nms.ReportFileUrlTask;
 import com.perfect.service.AsynchronousNmsReportService;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.redis.JRedisUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -30,14 +33,17 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.perfect.commons.constants.RedisConstants.REPORT_FILE_URL_SUCCEED;
 import static com.perfect.commons.constants.RedisConstants.REPORT_ID_COMMIT_STATUS;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Created by subdong on 15-7-21.
@@ -50,6 +56,8 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
     @Resource
     private SystemUserDAO systemUserDAO;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AsynchronousNmsReportServiceImpl.class);
 
     private final JedisPool pool = JRedisUtils.getPool();
 
@@ -188,7 +196,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
     }
 
     //获取用户公用方法
-    public List<SystemUserDTO> getBaiduUser(String userName) {
+    private List<SystemUserDTO> getBaiduUser(String userName) {
         List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
             Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
@@ -204,65 +212,119 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         return newEntityList;
     }
 
+    private void closeRedis(Jedis jedis) {
+        if (jedis != null && pool.getNumActive() > 0) {
+            jedis.close();
+        }
+    }
+
+    private List<String> readAllLines(String s) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(new HttpGet(s));
+             BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), UTF_8))) {
+            List<String> lines = br.lines().collect(Collectors.toList());
+            if (lines != null && !lines.isEmpty()) {
+                lines.remove(0);
+                return lines;
+            }
+        } catch (IOException e) {
+            LOGGER.info("java.io.IOException");
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+    private final Function<String, NmsAccountReportDTO> accountFunc = (String line) -> {
+        try {
+            String[] sp = line.split("\\t");
+            NmsAccountReportDTO account = new NmsAccountReportDTO();
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+
+            Date date = format.parse(sp[0]);
+            account.setDate(date);
+            account.setAccountId(Long.valueOf(sp[1]));
+            account.setAccountName(sp[2]);
+            account.setImpression(sp[3] == null || sp[3].equals("-1") ? -1 : Integer.valueOf(sp[3]));
+            account.setClick(sp[4] == null || sp[4].equals("-1") ? -1 : Integer.valueOf(sp[4]));
+            account.setCost(BigDecimal.valueOf(sp[5] == null || sp[5].equals("-1") ? -1 : Double.valueOf(sp[5])));
+            account.setCtr(sp[6] == null || sp[6].equals("-1") ? -1 : Double.valueOf(sp[6]));
+            account.setCpm(BigDecimal.valueOf(sp[7] == null || sp[7].equals("-1") ? -1 : Double.valueOf(sp[7])));
+            account.setAcp(BigDecimal.valueOf(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8])));
+            account.setSrchuv(sp[9] == null || sp[9].equals("-1") ? -1 : Integer.valueOf(sp[9]));
+            account.setClickuv(sp[10] == null || sp[10].equals("-1") ? -1 : Integer.valueOf(sp[10]));
+            account.setSrsur(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
+            account.setCusur(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12]));
+            account.setCocur(BigDecimal.valueOf(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13])));
+            account.setArrivalRate(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
+            account.setHopRate(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15]));
+            account.setAvgResTime(sp[16] == null || sp[16].equals("-1") ? -1 : Long.valueOf(sp[16]));
+            account.setDirectTrans(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
+            account.setIndirectTrans(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
+            return account;
+        } catch (ParseException e1) {
+            e1.printStackTrace();
+        }
+
+        return null;
+    };
+
+    private final Function<String, NmsCampaignReportDTO> campaignFunc = (String line) -> {
+        String[] sp = line.split("\\t");
+        NmsCampaignReportDTO campaign = new NmsCampaignReportDTO();
+
+        campaign.setAccountId(Long.valueOf(sp[1]));
+        campaign.setCampaignId(Long.valueOf(sp[3]));
+        campaign.setCampaignName(sp[4] == null || sp[4].equals("-1") ? "-1" : sp[4]);
+
+        campaign.setImpression(sp[5] == null || sp[5].equals("-1") ? -1 : Integer.valueOf(sp[5]));
+        campaign.setClick(sp[6] == null || sp[6].equals("-1") ? -1 : Integer.valueOf(sp[6]));
+        campaign.setCost(BigDecimal.valueOf(sp[7] == null || sp[7].equals("-1") ? -1 : Double.valueOf(sp[7])));
+        campaign.setCtr(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8]));
+        campaign.setCpm(BigDecimal.valueOf(sp[9] == null || sp[9].equals("-1") ? -1 : Double.valueOf(sp[9])));
+        campaign.setAcp(BigDecimal.valueOf(sp[10] == null || sp[10].equals("-1") ? -1 : Double.valueOf(sp[10])));
+        campaign.setSrchuv(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
+        campaign.setClickuv(sp[12] == null || sp[12].equals("-1") ? -1 : Integer.valueOf(sp[12]));
+        campaign.setSrsur(sp[13] == null || sp[13].equals("-1") ? -1 : Integer.valueOf(sp[13]));
+        campaign.setCusur(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
+        campaign.setCocur(BigDecimal.valueOf(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15])));
+        campaign.setArrivalRate(sp[16] == null || sp[16].equals("-1") ? -1 : Double.valueOf(sp[16]));
+        campaign.setHopRate(sp[17] == null || sp[17].equals("-1") ? -1 : Double.valueOf(sp[17]));
+        campaign.setAvgResTime(sp[18] == null || sp[18].equals("-1") ? -1 : Long.valueOf(sp[18]));
+        campaign.setDirectTrans(sp[19] == null || sp[19].equals("-1") ? -1 : Integer.valueOf(sp[19]));
+        campaign.setIndirectTrans(sp[20] == null || sp[20].equals("-1") ? -1 : Integer.valueOf(sp[20]));
+        return campaign;
+    };
+
+    private final Function<String, NmsGroupReportDTO> groupFunc = (String line) -> {
+        String[] sp = line.split("\\t");
+        NmsGroupReportDTO group = new NmsGroupReportDTO();
+
+        // data handle
+
+        return group;
+    };
+
+    private final Function<String, NmsAdReportDTO> adFunc = (String line) -> {
+        String[] sp = line.split("\\t");
+        NmsAdReportDTO ad = new NmsAdReportDTO();
+
+        // data handle
+
+        return ad;
+    };
+
 
     class AccountAction implements Action1<String> {
 
         @Override
         public void call(String s) {
-            // 解析Url生成报告并入库
-            List<NmsAccountReportDTO> list = new ArrayList<>();
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet(s);
+            // download report and parse data
+            List<NmsAccountReportDTO> accountReportList =
+                    readAllLines(s).stream().map(accountFunc).filter(o -> o != null).collect(Collectors.toList());
 
-            try {
-                CloseableHttpResponse response = httpClient.execute(httpGet);
-                HttpEntity entity = response.getEntity();
-                BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
+            // save to mongodb
 
-                List<String> lines = br.lines().collect(Collectors.toList());
-                if (lines != null && !lines.isEmpty())
-                    lines.remove(0);
-                else
-                    return;
-
-                lines.forEach(e -> {
-                    try {
-                        String[] sp = e.split("\\t");
-                        NmsAccountReportDTO account = new NmsAccountReportDTO();
-                        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-
-                        Date date = format.parse(sp[0]);
-                        account.setDate(date);
-                        account.setAccountId(Long.valueOf(sp[1]));
-                        account.setAccountName(sp[2]);
-                        account.setImpression(sp[3] == null || sp[3].equals("-1") ? -1 : Integer.valueOf(sp[3]));
-                        account.setClick(sp[4] == null || sp[4].equals("-1") ? -1 : Integer.valueOf(sp[4]));
-                        account.setCost(BigDecimal.valueOf(sp[5] == null || sp[5].equals("-1") ? -1 : Double.valueOf(sp[5])));
-                        account.setCtr(sp[6] == null || sp[6].equals("-1") ? -1 : Double.valueOf(sp[6]));
-                        account.setCpm(BigDecimal.valueOf(sp[7] == null || sp[7].equals("-1") ? -1 : Double.valueOf(sp[7])));
-                        account.setAcp(BigDecimal.valueOf(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8])));
-                        account.setSrchuv(sp[9] == null || sp[9].equals("-1") ? -1 : Integer.valueOf(sp[9]));
-                        account.setClickuv(sp[10] == null || sp[10].equals("-1") ? -1 : Integer.valueOf(sp[10]));
-                        account.setSrsur(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
-                        account.setCusur(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12]));
-                        account.setCocur(BigDecimal.valueOf(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13])));
-                        account.setArrivalRate(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
-                        account.setHopRate(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15]));
-                        account.setAvgResTime(sp[16] == null || sp[16].equals("-1") ? -1 : Long.valueOf(sp[16]));
-                        account.setDirectTrans(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
-                        account.setIndirectTrans(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
-                        list.add(account);
-
-                        System.out.println();
-                    } catch (ParseException e1) {
-                        e1.printStackTrace();
-                    }
-
-                });
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -270,55 +332,12 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
         @Override
         public void call(String s) {
-            // implement
-            List<NmsCampaignReportDTO> list = new ArrayList<>();
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet(s);
+            // download report and parse data
+            List<NmsCampaignReportDTO> campaignReportList =
+                    readAllLines(s).stream().map(campaignFunc).collect(Collectors.toList());
 
-            try {
-                CloseableHttpResponse response = httpClient.execute(httpGet);
-                HttpEntity entity = response.getEntity();
-                BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
+            // save to mongodb
 
-                List<String> lines = br.lines().collect(Collectors.toList());
-                if (lines != null && !lines.isEmpty())
-                    lines.remove(0);
-                else
-                    return;
-
-                lines.forEach(e -> {
-                    String[] sp = e.split("\\t");
-                    NmsCampaignReportDTO campaign = new NmsCampaignReportDTO();
-
-                    campaign.setAccountId(Long.valueOf(sp[1]));
-                    campaign.setCampaignId(Long.valueOf(sp[3]));
-                    campaign.setCampaignName(sp[4] == null || sp[4].equals("-1") ? "-1" : sp[4]);
-
-                    campaign.setImpression(sp[5] == null || sp[5].equals("-1") ? -1 : Integer.valueOf(sp[5]));
-                    campaign.setClick(sp[6] == null || sp[6].equals("-1") ? -1 : Integer.valueOf(sp[6]));
-                    campaign.setCost(BigDecimal.valueOf(sp[7] == null || sp[7].equals("-1") ? -1 : Double.valueOf(sp[7])));
-                    campaign.setCtr(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8]));
-                    campaign.setCpm(BigDecimal.valueOf(sp[9] == null || sp[9].equals("-1") ? -1 : Double.valueOf(sp[9])));
-                    campaign.setAcp(BigDecimal.valueOf(sp[10] == null || sp[10].equals("-1") ? -1 : Double.valueOf(sp[10])));
-                    campaign.setSrchuv(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
-                    campaign.setClickuv(sp[12] == null || sp[12].equals("-1") ? -1 : Integer.valueOf(sp[12]));
-                    campaign.setSrsur(sp[13] == null || sp[13].equals("-1") ? -1 : Integer.valueOf(sp[13]));
-                    campaign.setCusur(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
-                    campaign.setCocur(BigDecimal.valueOf(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15])));
-                    campaign.setArrivalRate(sp[16] == null || sp[16].equals("-1") ? -1 : Double.valueOf(sp[16]));
-                    campaign.setHopRate(sp[17] == null || sp[17].equals("-1") ? -1 : Double.valueOf(sp[17]));
-                    campaign.setAvgResTime(sp[18] == null || sp[18].equals("-1") ? -1 : Long.valueOf(sp[18]));
-                    campaign.setDirectTrans(sp[19] == null || sp[19].equals("-1") ? -1 : Integer.valueOf(sp[19]));
-                    campaign.setIndirectTrans(sp[20] == null || sp[20].equals("-1") ? -1 : Integer.valueOf(sp[20]));
-                    list.add(campaign);
-
-                    System.out.println();
-
-                });
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -326,7 +345,12 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
         @Override
         public void call(String s) {
-            // implement
+            // download report and parse data
+            List<NmsGroupReportDTO> groupReportList =
+                    readAllLines(s).stream().map(groupFunc).collect(Collectors.toList());
+
+            // save to mongodb
+
         }
     }
 
@@ -334,13 +358,12 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
         @Override
         public void call(String s) {
-            // implement
-        }
-    }
+            // download report and parse data
+            List<NmsAdReportDTO> adReportList =
+                    readAllLines(s).stream().map(adFunc).collect(Collectors.toList());
 
-    private void closeRedis(Jedis jedis) {
-        if (jedis != null && pool.getNumActive() > 0) {
-            jedis.close();
+            // save to mongodb
+
         }
     }
 
@@ -348,7 +371,5 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 //
 //        AsynchronousNmsReportServiceImpl asynchronousNmsReportService = new AsynchronousNmsReportServiceImpl();
 //        asynchronousNmsReportService.generateReportId(null, "perfect2015", "1");
-//
-//        //httpFileHandler.getNmsAccountReport("https://apidata.baidu.com/data/v2/getFile.do?t=1437469726&u=10394588&i=398ad60984563e2f1b846d37ba4080d3&f=%2Fapireport%2F398ad60984563e2f1b846d37ba4080d3&h=400&s=82ec14640ccae476c40d6962442d6d83");
 //    }
 }
