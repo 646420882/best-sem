@@ -541,10 +541,16 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
             Jedis jedis = null;
             try {
                 jedis = pool.getResource();
+                jedis.set(REPORT_ID_COMMIT_STATUS, ONE);
                 jedis.set(REPORT_FILE_URL_GENERATE_COMPLETE, ONE);
             } finally {
                 closeRedis(jedis);
             }
+
+            /**
+             * shutdown nmsReportFileUrlTask {@link #fileUrlTask}
+             */
+            fileUrlTask.shutdown();
 
             return true;
         }

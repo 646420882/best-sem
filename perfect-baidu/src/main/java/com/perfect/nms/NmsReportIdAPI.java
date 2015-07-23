@@ -2,14 +2,10 @@ package com.perfect.nms;
 
 import com.baidu.api.sem.nms.v2.ReportService;
 import com.perfect.utils.DateUtils;
-import com.perfect.utils.redis.JRedisUtils;
-import redis.clients.jedis.Jedis;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static com.perfect.commons.constants.RedisConstants.REPORT_ID_COMMIT_STATUS;
 
 /**
  * Created by subdong on 15-7-21.
@@ -22,20 +18,6 @@ public class NmsReportIdAPI {
         this.reportFileUrlTask = reportFileUrlTask;
     }
 
-    private void postRedisStatus() {
-        Jedis jedis = null;
-        try {
-            jedis = JRedisUtils.get();
-            jedis.set(REPORT_ID_COMMIT_STATUS, "1");
-        } finally {
-            if (jedis != null)
-                jedis.close();
-        }
-    }
-
-    private void closeTask() {
-        reportFileUrlTask.shutdown();
-    }
 
     /**
      * 拉取网盟所有报告
@@ -54,7 +36,7 @@ public class NmsReportIdAPI {
             //账户报告
             List<Long> accountId = example.getAccountId();
             Map<String, ReportService> accountIdMap = example.getReportAllId(accountId, 1, 1, date, date);
-            if(accountIdMap != null){
+            if (accountIdMap != null) {
                 reportFileUrlTask.add(accountIdMap);
             }
 
@@ -62,26 +44,24 @@ public class NmsReportIdAPI {
             //计划报告
             List<Long> campaignId = example.getCampaignId();
             Map<String, ReportService> campaignMap = example.getReportAllId(campaignId, 2, 2, date, date);
-            if(campaignMap != null) {
+            if (campaignMap != null) {
                 reportFileUrlTask.add(campaignMap);
             }
             //组报告
             List<Long> groupId = example.getGroupByGroupId(campaignId);
             Map<String, ReportService> groupMap = example.getReportAllId(groupId, 3, 3, date, date);
-            if(groupMap != null) {
+            if (groupMap != null) {
                 reportFileUrlTask.add(groupMap);
             }
 
             //创意报告
             List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
             Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, date, date);
-            if(adbyGroupMap != null) {
+            if (adbyGroupMap != null) {
                 reportFileUrlTask.add(adbyGroupMap);
             }
         });
 
-        postRedisStatus();
-        closeTask();
     }
 
     /**
@@ -101,13 +81,11 @@ public class NmsReportIdAPI {
             //账户报告
             List<Long> accountId = example.getAccountId();
             Map<String, ReportService> accountIdMap = example.getReportAllId(accountId, 1, 1, date, date);
-            if(accountIdMap != null) {
+            if (accountIdMap != null) {
                 reportFileUrlTask.add(accountIdMap);
             }
         });
 
-        postRedisStatus();
-        closeTask();
     }
 
     /**
@@ -127,13 +105,11 @@ public class NmsReportIdAPI {
             //计划报告
             List<Long> campaignId = example.getCampaignId();
             Map<String, ReportService> campaignMap = example.getReportAllId(campaignId, 2, 2, date, date);
-            if(campaignMap != null) {
+            if (campaignMap != null) {
                 reportFileUrlTask.add(campaignMap);
             }
         });
 
-        postRedisStatus();
-        closeTask();
     }
 
     /**
@@ -154,13 +130,11 @@ public class NmsReportIdAPI {
             List<Long> campaignId = example.getCampaignId();
             List<Long> groupId = example.getGroupByGroupId(campaignId);
             Map<String, ReportService> groupMap = example.getReportAllId(groupId, 3, 3, date, date);
-            if(groupMap != null) {
+            if (groupMap != null) {
                 reportFileUrlTask.add(groupMap);
             }
         });
 
-        postRedisStatus();
-        closeTask();
     }
 
     /**
@@ -181,12 +155,10 @@ public class NmsReportIdAPI {
             List<Long> groupId = example.getGroupByGroupId(campaignId);
             List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
             Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, date, date);
-            if(adbyGroupMap != null) {
+            if (adbyGroupMap != null) {
                 reportFileUrlTask.add(adbyGroupMap);
             }
         });
 
-        postRedisStatus();
-        closeTask();
     }
 }
