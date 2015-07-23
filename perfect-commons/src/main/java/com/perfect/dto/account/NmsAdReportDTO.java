@@ -39,7 +39,7 @@ public class NmsAdReportDTO extends AccountIdDTO {
 
     private Integer clickuv;    // 点击独立访客
 
-    private Integer srsur;  // 展现频次
+    private Double srsur;  // 展现频次
 
     private Double cusur;  // 独立访客点击率
 
@@ -186,11 +186,11 @@ public class NmsAdReportDTO extends AccountIdDTO {
         this.clickuv = clickuv;
     }
 
-    public Integer getSrsur() {
+    public Double getSrsur() {
         return srsur;
     }
 
-    public void setSrsur(Integer srsur) {
+    public void setSrsur(Double srsur) {
         this.srsur = srsur;
     }
 
