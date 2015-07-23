@@ -181,8 +181,6 @@ public class GetReportId {
 
             GetReportIdRequest parameter = new GetReportIdRequest();
 
-            ReportRequestType request = new ReportRequestType();
-
             parameter.setReportRequestType(reportRequestType);
 
             GetReportIdResponse reportId = reportService.getReportId(parameter);
@@ -208,52 +206,52 @@ public class GetReportId {
     }
 
 
-    public static void main(String[] args) {
-
-        GetReportId example = new GetReportId("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e",1);
-        //推广组ID   20657783
-        //推广计划ID  4222159  4222135  4219295  4073559
-        //int s = example.getAdbyGroupId(20657783);
-
-        ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
-
-        //账户报告
-        List<Long> accountId = example.getAccountId();
-        Map<String, ReportService> accountMap = example.getReportAllId(accountId, 1, 1, DateUtils.getYesterday(), DateUtils.getYesterday());
-        reportFileUrlTask.add(accountMap);
-
-        /*//计划报告
-        List<Long> campaignId = example.getCampaignId();
-        String campaignIdString = example.getReportAllId(campaignId, 2, 2, DateUtils.getYesterday(), DateUtils.getYesterday());
-        Map<String,ReportService> campaignMap = new HashMap<>();
-        campaignMap.put("2|" + campaignIdString, reportService);
-        reportFileUrlTask.add(campaignMap);*/
-
-        /*//组报告
-        List<Long> campaignId = example.getCampaignId();
-        List<Long> groupId = example.getGroupByGroupId(campaignId);
-        String groupIdString = example.getReportAllId(groupId, 3, 3, DateUtils.getYesterday(), DateUtils.getYesterday());
-        Map<String,ReportService> groupMap = new HashMap<>();
-        groupMap.put("3|" + groupIdString, reportService);
-        reportFileUrlTask.add(groupMap);*/
-
-        /*//创意报告
-        List<Long> campaignId = example.getCampaignId();
-        List<Long> groupId = example.getGroupByGroupId(campaignId);
-        List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
-        Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, DateUtils.getYesterday(), DateUtils.getYesterday());
-        reportFileUrlTask.add(adbyGroupMap);*/
-
-
-        Jedis jc = JRedisUtils.get();
-        boolean b = jc.exists("nms-report-id-commit-status");
-        if (!b) {
-            jc.set("nms-report-id-commit-status", "1");
-        }
-        if (jc != null) {
-            jc.close();
-        }
-        System.out.println();
-    }
+//    public static void main(String[] args) {
+//
+//        GetReportId example = new GetReportId("baidu-perfect2151880", "Ab1234890", "2c5fb53fc0003f407bc495b391d05e2e", 1);
+//        //推广组ID   20657783
+//        //推广计划ID  4222159  4222135  4219295  4073559
+//        //int s = example.getAdbyGroupId(20657783);
+//
+//        ReportFileUrlTask reportFileUrlTask = new ReportFileUrlTask();
+//
+//        //账户报告
+//        List<Long> accountId = example.getAccountId();
+//        Map<String, ReportService> accountMap = example.getReportAllId(accountId, 1, 1, DateUtils.getYesterday(), DateUtils.getYesterday());
+//        reportFileUrlTask.add(accountMap);
+//
+//        /*//计划报告
+//        List<Long> campaignId = example.getCampaignId();
+//        String campaignIdString = example.getReportAllId(campaignId, 2, 2, DateUtils.getYesterday(), DateUtils.getYesterday());
+//        Map<String,ReportService> campaignMap = new HashMap<>();
+//        campaignMap.put("2|" + campaignIdString, reportService);
+//        reportFileUrlTask.add(campaignMap);*/
+//
+//        /*//组报告
+//        List<Long> campaignId = example.getCampaignId();
+//        List<Long> groupId = example.getGroupByGroupId(campaignId);
+//        String groupIdString = example.getReportAllId(groupId, 3, 3, DateUtils.getYesterday(), DateUtils.getYesterday());
+//        Map<String,ReportService> groupMap = new HashMap<>();
+//        groupMap.put("3|" + groupIdString, reportService);
+//        reportFileUrlTask.add(groupMap);*/
+//
+//        /*//创意报告
+//        List<Long> campaignId = example.getCampaignId();
+//        List<Long> groupId = example.getGroupByGroupId(campaignId);
+//        List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
+//        Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, DateUtils.getYesterday(), DateUtils.getYesterday());
+//        reportFileUrlTask.add(adbyGroupMap);*/
+//
+//
+//        Jedis jc = JRedisUtils.get();
+//        boolean b = jc.exists("nms-report-id-commit-status");
+//        if (!b) {
+//            jc.set("nms-report-id-commit-status", "1");
+//        }
+//        if (jc != null) {
+//            jc.close();
+//        }
+//        System.out.println();
+//    }
 
 }

@@ -35,7 +35,7 @@ import java.util.List;
  */
 public abstract class ResHeaderUtil {
 
-    static ThreadLocal<ResHeader> resHeader = new ThreadLocal<ResHeader>();
+    static ThreadLocal<ResHeader> resHeader = new ThreadLocal<>();
 
     /**
      * Get response header if using Json protocol.
@@ -95,24 +95,24 @@ public abstract class ResHeaderUtil {
      */
     public static void printResHeader(ResHeader resH) {
         // output soap response header
-        System.out.println("Status \t: " + resH.getStatus());
-        System.out.println("Desc \t: " + resH.getDesc());
-        if (resH.getStatus() != 3) {
-            System.out.println("Oprs \t: " + resH.getOprs());
-            System.out.println("Oprtime\t: " + resH.getOprtime());
-            System.out.println("Quota \t: " + resH.getQuota());
-            System.out.println("Rquota \t: " + resH.getRquota());
-        }
-        List<Failure> failures = resH.getFailures();
-        if (failures != null && failures.size() > 0) {
-            for (int i = 0; i < failures.size(); i++) {
-                System.out.println("Failure [" + i + "] :");
-                System.out.println("\tcode \t\t: " + failures.get(i).getCode());
-                System.out.println("\tmessage \t: " + failures.get(i).getMessage());
-                System.out.println("\tposition \t: " + failures.get(i).getPosition());
-                System.out.println("\tcontent \t: " + failures.get(i).getContent());
-            }
-        }
+//        System.out.println("Status \t: " + resH.getStatus());
+//        System.out.println("Desc \t: " + resH.getDesc());
+//        if (resH.getStatus() != 3) {
+//            System.out.println("Oprs \t: " + resH.getOprs());
+//            System.out.println("Oprtime\t: " + resH.getOprtime());
+//            System.out.println("Quota \t: " + resH.getQuota());
+//            System.out.println("Rquota \t: " + resH.getRquota());
+//        }
+//        List<Failure> failures = resH.getFailures();
+//        if (failures != null && failures.size() > 0) {
+//            for (int i = 0; i < failures.size(); i++) {
+//                System.out.println("Failure [" + i + "] :");
+//                System.out.println("\tcode \t\t: " + failures.get(i).getCode());
+//                System.out.println("\tmessage \t: " + failures.get(i).getMessage());
+//                System.out.println("\tposition \t: " + failures.get(i).getPosition());
+//                System.out.println("\tcontent \t: " + failures.get(i).getContent());
+//            }
+//        }
     }
 
     /**

@@ -1,14 +1,14 @@
 /**
  * JsonConnection.java
- *
+ * <p>
  * Copyright 2011 Baidu, Inc.
- *
+ * <p>
  * Baidu licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -55,9 +55,7 @@ public class JsonConnection {
      */
     public JsonConnection(String url) throws MalformedURLException, IOException {
         super();
-//        https://api.baidu.com/json/du/api/sem/nms/v2/CampaignService/getCampaignId/gzip
-
-        connection = (HttpURLConnection) new URL("https://api.baidu.com/sem/nms/v2/CampaignService/getCampaignId/gzip").openConnection();
+        connection = (HttpURLConnection) new URL(url).openConnection();
     }
 
     /**
