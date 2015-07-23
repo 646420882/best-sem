@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AccountManageService;
+import com.perfect.service.AsynchronousNmsReportService;
 import com.perfect.service.AsynchronousReportService;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.json.JSONUtils;
@@ -33,6 +34,9 @@ public class ReportPullController extends WebContextSupport {
 
     @Resource
     private AccountManageService accountManageService;
+
+    @Resource
+    private AsynchronousNmsReportService asynchronousNmsReportService;
 
 
     /**
@@ -107,6 +111,15 @@ public class ReportPullController extends WebContextSupport {
         if (jc != null) {
             JRedisUtils.returnJedis(jc);
         }
+    }
+
+
+    @RequestMapping(value = "/admin/getPullNmsDatas", method = {RequestMethod.GET, RequestMethod.POST})
+    public void getPullNmsDatas(HttpServletResponse response) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        Date[] date = new Date[]{cal.getTime(),cal.getTime()};
+        asynchronousNmsReportService.retrieveReport(date);
     }
 
 
