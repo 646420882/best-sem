@@ -201,11 +201,14 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
             List<String> lines = br.lines().collect(Collectors.toList());
             if (lines != null && !lines.isEmpty()) {
                 lines.remove(0);
-                String dateStr = lines.stream().findFirst().get().split("\\t")[0];
-                dateStr = dateStr.substring(0, 4) + "-" + dateStr.substring(4, 6) + "-" + dateStr.substring(6);
-                Map<String, List<String>> linesMap = new HashMap<>();
-                linesMap.put(dateStr, lines);
-                return linesMap;
+                Optional<String> optional = lines.stream().findFirst();
+                if (optional.isPresent()) {
+                    String dateStr = optional.get().split("\\t")[0];
+                    dateStr = dateStr.substring(0, 4) + "-" + dateStr.substring(4, 6) + "-" + dateStr.substring(6);
+                    Map<String, List<String>> linesMap = new HashMap<>();
+                    linesMap.put(dateStr, lines);
+                    return linesMap;
+                }
             }
         } catch (IOException e) {
             LOGGER.info("java.io.IOException");
