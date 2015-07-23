@@ -49,7 +49,7 @@ public class NmsAdReportDTO extends AccountIdDTO {
 
     private Double hopRate;    // 二跳率
 
-    private Long avgResTime;  // 平均访问时间
+    private Double avgResTime;  // 平均访问时间
 
     private Integer directTrans;    // 直接转化
 
@@ -226,11 +226,11 @@ public class NmsAdReportDTO extends AccountIdDTO {
         this.hopRate = hopRate;
     }
 
-    public Long getAvgResTime() {
+    public Double getAvgResTime() {
         return avgResTime;
     }
 
-    public void setAvgResTime(Long avgResTime) {
+    public void setAvgResTime(Double avgResTime) {
         this.avgResTime = avgResTime;
     }
 

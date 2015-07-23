@@ -265,7 +265,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
             account.setCocur(BigDecimal.valueOf(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13])));
             account.setArrivalRate(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
             account.setHopRate(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15]));
-            account.setAvgResTime(sp[16] == null || sp[16].equals("-1") ? -1 : Long.valueOf(sp[16]));
+            account.setAvgResTime(sp[16] == null || sp[16].equals("-1") ? -1 : Double.valueOf(sp[16]));
             account.setDirectTrans(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
             account.setIndirectTrans(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
             return account;
@@ -297,7 +297,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         campaign.setCocur(BigDecimal.valueOf(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15])));
         campaign.setArrivalRate(sp[16] == null || sp[16].equals("-1") ? -1 : Double.valueOf(sp[16]));
         campaign.setHopRate(sp[17] == null || sp[17].equals("-1") ? -1 : Double.valueOf(sp[17]));
-        campaign.setAvgResTime(sp[18] == null || sp[18].equals("-1") ? -1 : Long.valueOf(sp[18]));
+        campaign.setAvgResTime(sp[18] == null || sp[18].equals("-1") ? -1 : Double.valueOf(sp[18]));
         campaign.setDirectTrans(sp[19] == null || sp[19].equals("-1") ? -1 : Integer.valueOf(sp[19]));
         campaign.setIndirectTrans(sp[20] == null || sp[20].equals("-1") ? -1 : Integer.valueOf(sp[20]));
         return campaign;
@@ -326,7 +326,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         group.setCocur(BigDecimal.valueOf(sp[17] == null || sp[17].equals("-1") ? -1 : Double.valueOf(sp[17])));
         group.setArrivalRate(sp[18] == null || sp[18].equals("-1") ? -1 : Double.valueOf(sp[18]));
         group.setHopRate(sp[19] == null || sp[19].equals("-1") ? -1 : Double.valueOf(sp[19]));
-        group.setAvgResTime(sp[20] == null || sp[20].equals("-1") ? -1 : Long.valueOf(sp[20]));
+        group.setAvgResTime(sp[20] == null || sp[20].equals("-1") ? -1 : Double.valueOf(sp[20]));
         group.setDirectTrans(sp[21] == null || sp[21].equals("-1") ? -1 : Integer.valueOf(sp[21]));
         group.setIndirectTrans(sp[22] == null || sp[22].equals("-1") ? -1 : Integer.valueOf(sp[22]));
         return group;
@@ -358,7 +358,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         ad.setCocur(BigDecimal.valueOf(sp[20] == null || sp[20].equals("-1") ? -1 : Double.valueOf(sp[20])));
         ad.setArrivalRate(sp[21] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[21]));
         ad.setHopRate(sp[22] == null || sp[22].equals("-1") ? -1 : Double.valueOf(sp[22]));
-        ad.setAvgResTime(sp[23] == null || sp[23].equals("-1") ? -1 : Long.valueOf(sp[23]));
+        ad.setAvgResTime(sp[23] == null || sp[23].equals("-1") ? -1 : Double.valueOf(sp[23]));
         ad.setDirectTrans(sp[24] == null || sp[24].equals("-1") ? -1 : Integer.valueOf(sp[24]));
         ad.setIndirectTrans(sp[25] == null || sp[25].equals("-1") ? -1 : Integer.valueOf(sp[25]));
         return ad;
