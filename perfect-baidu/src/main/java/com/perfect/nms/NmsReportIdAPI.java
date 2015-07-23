@@ -127,7 +127,7 @@ public class NmsReportIdAPI {
             //计划报告
             List<Long> campaignId = example.getCampaignId();
             Map<String, ReportService> campaignMap = example.getReportAllId(campaignId, 2, 2, date, date);
-            if(campaignId != null) {
+            if(campaignMap != null) {
                 reportFileUrlTask.add(campaignMap);
             }
         });
@@ -154,7 +154,7 @@ public class NmsReportIdAPI {
             List<Long> campaignId = example.getCampaignId();
             List<Long> groupId = example.getGroupByGroupId(campaignId);
             Map<String, ReportService> groupMap = example.getReportAllId(groupId, 3, 3, date, date);
-            if(groupId != null) {
+            if(groupMap != null) {
                 reportFileUrlTask.add(groupMap);
             }
         });
@@ -181,7 +181,7 @@ public class NmsReportIdAPI {
             List<Long> groupId = example.getGroupByGroupId(campaignId);
             List<Long> adbyGroupId = example.getAdbyGroupId(groupId);
             Map<String, ReportService> adbyGroupMap = example.getReportAllId(adbyGroupId, 4, 4, date, date);
-            if(adbyGroupId != null) {
+            if(adbyGroupMap != null) {
                 reportFileUrlTask.add(adbyGroupMap);
             }
         });

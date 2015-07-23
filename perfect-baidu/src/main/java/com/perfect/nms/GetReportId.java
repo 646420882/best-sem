@@ -49,7 +49,7 @@ public class GetReportId {
 
         GetAccountInfoResponse account = accountService.getAccountInfo(parameters);
 
-        ResHeader rheader = ResHeaderUtil.getResHeader(accountService, true);
+//        ResHeader rheader = ResHeaderUtil.getResHeader(accountService, true);
 
         List<Long> longs = new ArrayList<>();
         if (account != null) {
@@ -65,8 +65,8 @@ public class GetReportId {
         GetCampaignRequest parameters = new GetCampaignRequest();
 
         GetCampaignResponse campaign = campaignService.getCampaign(parameters);
-
-        ResHeader rheader = ResHeaderUtil.getResHeader(campaignService, true);
+//
+//        ResHeader rheader = ResHeaderUtil.getResHeader(campaignService, true);
 
         List<Long> longs = new ArrayList<>();
         if (campaign != null) {
@@ -88,7 +88,7 @@ public class GetReportId {
 
                 GetGroupByCampaignIdResponse groupByCampaignId = groupService.getGroupByCampaignId(parameters);
 
-                ResHeader rheader = ResHeaderUtil.getResHeader(groupService, true);
+//                ResHeader rheader = ResHeaderUtil.getResHeader(groupService, true);
 
                 if (groupByCampaignId != null) {
                     groupByCampaignId.getGroupTypes().stream().filter(e -> e != null).forEach(e -> {
@@ -112,7 +112,7 @@ public class GetReportId {
 
                 GetAdByGroupIdResponse adByGroup = adService.getAdByGroupId(parameters);
 
-                ResHeader rheader = ResHeaderUtil.getResHeader(adService, true);
+//                ResHeader rheader = ResHeaderUtil.getResHeader(adService, true);
 
                 if (adByGroup != null) {
                     adByGroup.getAdTypes().stream().filter(e -> e != null).forEach(e -> {
@@ -186,7 +186,7 @@ public class GetReportId {
             parameter.setReportRequestType(reportRequestType);
 
             GetReportIdResponse reportId = reportService.getReportId(parameter);
-            ResHeader rheader = ResHeaderUtil.getResHeader(reportService, true);
+//            ResHeader rheader = ResHeaderUtil.getResHeader(reportService, true);
             if (reportId == null || reportId.getReportId().equals("")) {
                 i++;
                 if (i <= 3) {
