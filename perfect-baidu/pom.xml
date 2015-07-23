@@ -56,33 +56,47 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+
         <dependency>
-            <groupId>com.baidu</groupId>
-            <artifactId>api-gateway</artifactId>
+            <groupId>com.baidu.api.sem</groupId>
+            <artifactId>api-gateway-jdk6</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
             <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/api-gateway-jdk6.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.apache.neethi</groupId>
             <artifactId>neethi</artifactId>
+            <version>2.0.4</version>
+            <type>jar</type>
             <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/neethi-2.0.4.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf</artifactId>
+            <version>2.2.9</version>
+            <type>jar</type>
             <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/cxf-2.2.9.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>wsdl4j</groupId>
             <artifactId>wsdl4j</artifactId>
+            <version>1.6.2</version>
+            <type>jar</type>
             <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/wsdl4j-1.6.2.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.apache.ws.commons.schema</groupId>
             <artifactId>XmlSchema</artifactId>
+            <version>1.4.7</version>
         </dependency>
     </dependencies>
 

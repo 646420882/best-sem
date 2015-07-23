@@ -20,6 +20,11 @@
 
         <dependency>
             <groupId>com.perfect</groupId>
+            <artifactId>perfect-baidu</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.perfect</groupId>
             <artifactId>perfect-commons</artifactId>
         </dependency>
 
@@ -159,35 +164,6 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baidu</groupId>
-            <artifactId>api-gateway</artifactId>
-            <scope>system</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.neethi</groupId>
-            <artifactId>neethi</artifactId>
-            <scope>system</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf</artifactId>
-            <scope>system</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>wsdl4j</groupId>
-            <artifactId>wsdl4j</artifactId>
-            <scope>system</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.ws.commons.schema</groupId>
-            <artifactId>XmlSchema</artifactId>
         </dependency>
 
         <!-- test -->

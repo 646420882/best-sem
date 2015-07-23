@@ -1,55 +1,66 @@
-package com.perfect.utils.redis;
+package com.baidu.api.client.examples.campaign;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Protocol;
+import com.baidu.api.client.core.*;
+import com.baidu.api.sem.common.v2.ResHeader;
+import com.baidu.api.sem.nms.v2.AddCampaignRequest;
+import com.baidu.api.sem.nms.v2.AddCampaignResponse;
+import com.baidu.api.sem.nms.v2.CampaignService;
+import com.baidu.api.sem.nms.v2.CampaignType;
 
-import java.util.ResourceBundle;
+import java.rmi.RemoteException;
 
 /**
- * Created by yousheng on 2014/8/7.
+ * ClassName: AddCompaignExample  <br>
+ * Function: TODO ADD FUNCTION
  *
- * @author yousheng
+ * @author Baidu API Team
+ * @date Feb 9, 2012
  */
-public class JRedisUtils {
+public class AddCompaignExample {
 
-    private static JedisPool pool;
+    private CampaignService service;
 
-    static {
-        ResourceBundle bundle = ResourceBundle.getBundle("redis");
-        if (bundle == null) {
-            throw new IllegalArgumentException(
-                    "[redis.properties] is not found!");
+    public AddCompaignExample() {
+        // Get service factory. Your authentication information will be popped up automatically from
+        // baidu-api.properties
+        VersionService factory = ServiceFactory.getInstance();
+        // Get service stub by given the Service interface.
+        // Please see the bean-api.tar.gz to get more details about all the service interfaces.
+        this.service = factory.getService(CampaignService.class);
+    }
+
+    public AddCampaignResponse addCampaign() {
+        // Prepare your parameters.
+        AddCampaignRequest parameters = new AddCampaignRequest();
+        CampaignType campaign = new CampaignType();
+        campaign.setCampaignName("TestCampaign");
+        campaign.setStartDate(DateTimeUtil.getDate(2012, 2, 10));
+        campaign.setEndDate(DateTimeUtil.getDate(2012, 3, 10));
+        campaign.setBudget(100);
+        campaign.setStatus(0);
+        parameters.getCampaignTypes().add(campaign);
+        // Invoke the method.
+        AddCampaignResponse ret = service.addCampaign(parameters);
+        // Deal with the response header, the second parameter controls whether to print the response header to console
+        // or not.
+        ResHeader rheader = ResHeaderUtil.getResHeader(service, true);
+        // If status equals zero, there is no error. Otherwise, you need to check the errors in the response header.
+        if (rheader.getStatus() == 0) {
+            System.out.println("result\n" + ObjToStringUtil.objToString(ret.getCampaignTypes()));
+            return ret;
+        } else {
+            throw new ClientBusinessException(rheader, ret);
         }
-        JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(Integer.valueOf(bundle
-                .getString("redis.pool.maxActive")));
-        config.setMaxIdle(Integer.valueOf(bundle
-                .getString("redis.pool.maxIdle")));
-        config.setTestOnBorrow(Boolean.valueOf(bundle
-                .getString("redis.pool.testOnBorrow")));
-        config.setTestOnReturn(Boolean.valueOf(bundle
-                .getString("redis.pool.testOnReturn")));
-        pool = new JedisPool(config, bundle.getString("redis.ip"),
-                Integer.valueOf(bundle.getString("redis.port")), Protocol.DEFAULT_TIMEOUT,
-                bundle.getString("redis.password"));
     }
 
-    public static Jedis get() {
-        return pool.getResource();
-    }
-
-    public static JedisPool getPool() {
-        return pool;
-    }
-
-    public static void returnJedis(Jedis jedis) {
-        pool.returnResource(jedis);
-    }
-
-    public static void returnBrokenJedis(Jedis jedis) {
-        pool.returnBrokenResource(jedis);
+    /**
+     * @param args
+     * @throws Throwable
+     * @throws RemoteException
+     */
+    public static void main(String[] args) throws Throwable {
+        AddCompaignExample example = new AddCompaignExample();
+        example.addCampaign();
     }
 
 }
