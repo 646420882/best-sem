@@ -260,7 +260,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
             account.setAcp(BigDecimal.valueOf(sp[8] == null || sp[8].equals("-1") ? -1 : Double.valueOf(sp[8])));
             account.setSrchuv(sp[9] == null || sp[9].equals("-1") ? -1 : Integer.valueOf(sp[9]));
             account.setClickuv(sp[10] == null || sp[10].equals("-1") ? -1 : Integer.valueOf(sp[10]));
-            account.setSrsur(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
+            account.setSrsur(sp[11] == null || sp[11].equals("-1") ? -1 : Double.valueOf(sp[11]));
             account.setCusur(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12]));
             account.setCocur(BigDecimal.valueOf(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13])));
             account.setArrivalRate(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
@@ -292,7 +292,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         campaign.setAcp(BigDecimal.valueOf(sp[10] == null || sp[10].equals("-1") ? -1 : Double.valueOf(sp[10])));
         campaign.setSrchuv(sp[11] == null || sp[11].equals("-1") ? -1 : Integer.valueOf(sp[11]));
         campaign.setClickuv(sp[12] == null || sp[12].equals("-1") ? -1 : Integer.valueOf(sp[12]));
-        campaign.setSrsur(sp[13] == null || sp[13].equals("-1") ? -1 : Integer.valueOf(sp[13]));
+        campaign.setSrsur(sp[13] == null || sp[13].equals("-1") ? -1 : Double.valueOf(sp[13]));
         campaign.setCusur(sp[14] == null || sp[14].equals("-1") ? -1 : Double.valueOf(sp[14]));
         campaign.setCocur(BigDecimal.valueOf(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15])));
         campaign.setArrivalRate(sp[16] == null || sp[16].equals("-1") ? -1 : Double.valueOf(sp[16]));
@@ -321,7 +321,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         group.setAcp(BigDecimal.valueOf(sp[12] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[12])));
         group.setSrchuv(sp[13] == null || sp[13].equals("-1") ? -1 : Integer.valueOf(sp[13]));
         group.setClickuv(sp[14] == null || sp[14].equals("-1") ? -1 : Integer.valueOf(sp[14]));
-        group.setSrsur(sp[15] == null || sp[15].equals("-1") ? -1 : Integer.valueOf(sp[15]));
+        group.setSrsur(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15]));
         group.setCusur(sp[16] == null || sp[16].equals("-1") ? -1 : Double.valueOf(sp[16]));
         group.setCocur(BigDecimal.valueOf(sp[17] == null || sp[17].equals("-1") ? -1 : Double.valueOf(sp[17])));
         group.setArrivalRate(sp[18] == null || sp[18].equals("-1") ? -1 : Double.valueOf(sp[18]));
@@ -353,7 +353,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         ad.setAcp(BigDecimal.valueOf(sp[15] == null || sp[15].equals("-1") ? -1 : Double.valueOf(sp[15])));
         ad.setSrchuv(sp[16] == null || sp[16].equals("-1") ? -1 : Integer.valueOf(sp[16]));
         ad.setClickuv(sp[17] == null || sp[17].equals("-1") ? -1 : Integer.valueOf(sp[17]));
-        ad.setSrsur(sp[18] == null || sp[18].equals("-1") ? -1 : Integer.valueOf(sp[18]));
+        ad.setSrsur(sp[18] == null || sp[18].equals("-1") ? -1 : Double.valueOf(sp[18]));
         ad.setCusur(sp[19] == null || sp[19].equals("-1") ? -1 : Double.valueOf(sp[19]));
         ad.setCocur(BigDecimal.valueOf(sp[20] == null || sp[20].equals("-1") ? -1 : Double.valueOf(sp[20])));
         ad.setArrivalRate(sp[21] == null || sp[12].equals("-1") ? -1 : Double.valueOf(sp[21]));
