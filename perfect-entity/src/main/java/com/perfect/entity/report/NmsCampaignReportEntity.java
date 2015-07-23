@@ -62,7 +62,7 @@ public class NmsCampaignReportEntity extends AccountIdEntity {
     private Double hopRate;    // 二跳率
 
     @Field(value = "art")
-    private Long avgResTime;  // 平均访问时间
+    private Double avgResTime;  // 平均访问时间
 
     @Field(value = "dt")
     private Integer directTrans;    // 直接转化
@@ -198,11 +198,11 @@ public class NmsCampaignReportEntity extends AccountIdEntity {
         this.hopRate = hopRate;
     }
 
-    public Long getAvgResTime() {
+    public Double getAvgResTime() {
         return avgResTime;
     }
 
-    public void setAvgResTime(Long avgResTime) {
+    public void setAvgResTime(Double avgResTime) {
         this.avgResTime = avgResTime;
     }
 
