@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.baidu</groupId>
             <artifactId>api-gateway</artifactId>
-            <version>1.0.0</version>
+            <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/resources/lib/api-gateway-jdk6.jar</systemPath>
         </dependency>
