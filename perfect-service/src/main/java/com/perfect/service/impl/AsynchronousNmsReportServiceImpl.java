@@ -198,16 +198,20 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(new HttpGet(s));
              BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), UTF_8))) {
-            List<String> lines = br.lines().collect(Collectors.toList());
-            if (lines != null && !lines.isEmpty()) {
+            List<String> lines = br.lines().filter(l -> l != null).collect(Collectors.toList());
+            if (!lines.isEmpty()) {
                 lines.remove(0);
                 Optional<String> optional = lines.stream().findFirst();
                 if (optional.isPresent()) {
                     String dateStr = optional.get().split("\\t")[0];
-                    dateStr = dateStr.substring(0, 4) + "-" + dateStr.substring(4, 6) + "-" + dateStr.substring(6);
-                    Map<String, List<String>> linesMap = new HashMap<>();
-                    linesMap.put(dateStr, lines);
-                    return linesMap;
+                    if (StringUtils.isEmpty(dateStr.trim())) {
+                        return Collections.emptyMap();
+                    } else {
+                        dateStr = dateStr.substring(0, 4) + "-" + dateStr.substring(4, 6) + "-" + dateStr.substring(6);
+                        Map<String, List<String>> linesMap = new HashMap<>();
+                        linesMap.put(dateStr, lines);
+                        return linesMap;
+                    }
                 }
             }
         } catch (IOException e) {
