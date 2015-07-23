@@ -82,8 +82,13 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
         final Date[] _dates = dates;
         final ReportFileUrlTask fileUrlTask = new ReportFileUrlTask();
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         ReportTask task = new ReportTask(fileUrlTask, _dates, args);
         FutureTask<Boolean> futureTask = new FutureTask<>(task);
+        executor.submit(futureTask);
+        executor.shutdown();
+
         try {
             if (futureTask.get()) {
                 reportFileUrlExecutor.shutdown();
