@@ -35,7 +35,8 @@ public class ReportFileUrlTask {
 
     private static final int REPORT_GENERATE_SUCCESS = 3;
 
-    private static final int THREAD_NUMBER = Runtime.getRuntime().availableProcessors() * 2;
+    private static final int THREAD_NUMBER = Runtime.getRuntime().availableProcessors() + 1;
+
 
     private final JedisPool pool = JRedisUtils.getPool();
 

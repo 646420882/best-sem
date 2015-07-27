@@ -64,6 +64,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
     public static final String ONE = "1";
 
+
     private final JedisPool pool = JRedisUtils.getPool();
 
     private final ReentrantLock lock = new ReentrantLock();
