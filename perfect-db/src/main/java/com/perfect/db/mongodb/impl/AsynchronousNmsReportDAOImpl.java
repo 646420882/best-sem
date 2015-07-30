@@ -9,6 +9,7 @@ import com.perfect.dto.account.NmsAdReportDTO;
 import com.perfect.dto.account.NmsCampaignReportDTO;
 import com.perfect.dto.account.NmsGroupReportDTO;
 import com.perfect.entity.report.NmsAccountReportEntity;
+import com.perfect.entity.report.NmsAdReportEntity;
 import com.perfect.entity.report.NmsCampaignReportEntity;
 import com.perfect.entity.report.NmsGroupReportEntity;
 import com.perfect.utils.ObjectUtils;
@@ -91,15 +92,15 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
         MongoTemplate mongoTemplate;
         mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
-        List<NmsAccountReportEntity> creativeReportEntities = new ArrayList<>(ObjectUtils.convert(nmsAdReportDTOs, NmsAccountReportEntity.class));
-        List<NmsAccountReportEntity> creativeReportEntities1;
+        List<NmsAdReportEntity> adReportEntities = new ArrayList<>(ObjectUtils.convert(nmsAdReportDTOs, NmsAdReportEntity.class));
+        List<NmsAdReportEntity> adReportEntities1;
         if (mongoTemplate.collectionExists(dateStr + "-nms-creative")) {
-            creativeReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsAccountReportEntity.class, dateStr + "-creative"));
-            creativeReportEntities.addAll(creativeReportEntities1);
+            adReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsAdReportEntity.class, dateStr + "-creative"));
+            adReportEntities.addAll(adReportEntities1);
             mongoTemplate.dropCollection(dateStr + "-nms-creative");
         }
 
-        mongoTemplate.insert(creativeReportEntities, dateStr + "-nms-creative");
+        mongoTemplate.insert(adReportEntities, dateStr + "-nms-creative");
     }
 
     @Override
