@@ -52,7 +52,7 @@ public class DateUtils {
         List<Date> dateList = new ArrayList<>();
 
         if (diffAsDays == 0) {
-            dateList.add(start);
+//            dateList.add(start);
             dateList.add(end);
             return dateList;
         }
