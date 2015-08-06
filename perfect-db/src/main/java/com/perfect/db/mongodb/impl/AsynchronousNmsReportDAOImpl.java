@@ -63,7 +63,7 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
         List<NmsCampaignReportEntity> campaignReportEntities1;
         if (mongoTemplate.collectionExists(dateStr + "-nms-campaign")) {
             campaignReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsCampaignReportEntity.class, dateStr + "-nms-campaign"));
-            campaignReportEntities.addAll(campaignReportEntities1);
+            //campaignReportEntities.addAll(campaignReportEntities1);
             mongoTemplate.dropCollection(dateStr + "-nms-campaign");
         }
 
@@ -80,7 +80,7 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
         List<NmsGroupReportEntity> adgroupReportEntities1;
         if (mongoTemplate.collectionExists(dateStr + "-nms-adgroup")) {
             adgroupReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsGroupReportEntity.class, dateStr + "-nms-adgroup"));
-            adgroupReportEntities.addAll(adgroupReportEntities1);
+            //adgroupReportEntities.addAll(adgroupReportEntities1);
             mongoTemplate.dropCollection(dateStr + "-nms-adgroup");
         }
 
@@ -96,7 +96,7 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
         List<NmsAdReportEntity> adReportEntities1;
         if (mongoTemplate.collectionExists(dateStr + "-nms-creative")) {
             adReportEntities1 = new ArrayList<>(mongoTemplate.find(new Query(), NmsAdReportEntity.class, dateStr + "-nms-creative"));
-            adReportEntities.addAll(adReportEntities1);
+            //adReportEntities.addAll(adReportEntities1);
             mongoTemplate.dropCollection(dateStr + "-nms-creative");
         }
 
