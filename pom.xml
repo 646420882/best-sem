@@ -21,7 +21,7 @@
     </modules>
 
     <scm>
-        <connection>scm:git:https://coding.net/javayou/best-web.git</connection>
+        <connection>scm:git@github.com:zerocoolys/best-sem.git</connection>
     </scm>
 
     <profiles>

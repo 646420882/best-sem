@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.perfect.core.AppContext;
 import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.service.BasisReportDownService;
 import com.perfect.service.BasisReportService;
+import com.perfect.service.BasisReportUCService;
 import com.perfect.utils.DateUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -30,6 +32,10 @@ import java.util.*;
 public class BasisReportController {
     @Resource
     private BasisReportService basisReportService;
+    @Resource
+    private BasisReportDownService basisReportDownService;
+    @Resource
+    private BasisReportUCService basisReportUCService;
 
     @RequestMapping(value = "/reportIndex")
     public ModelAndView getbasisReportPage() {
@@ -180,7 +186,7 @@ public class BasisReportController {
                 cal.setTimeInMillis(kk);
                 endDate4 = cal.getTime();
             }
-            returnAccount = basisReportService.getAccountDateVS(endDate1, endDate2, endDate3, endDate4, dateType, devices, compare, sortVS, startVS, limitVS);
+            returnAccount = basisReportUCService.getAccountDateVS(endDate1, endDate2, endDate3, endDate4, dateType, devices, compare, sortVS, startVS, limitVS);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -230,7 +236,7 @@ public class BasisReportController {
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
             os = response.getOutputStream();
-            basisReportService.downReportCSV(os, redisKey, dateType, devices, reportType, dateHead);
+            basisReportDownService.downReportCSV(os, redisKey, dateType, devices, reportType, dateHead);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -303,7 +309,7 @@ public class BasisReportController {
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
             os = response.getOutputStream();
-            basisReportService.downAccountReportCSV(os, endDate1, endDate2, endDate3, endDate4, dateType, devices, sortVS, startVS, limitVS);
+            basisReportDownService.downAccountReportCSV(os, endDate1, endDate2, endDate3, endDate4, dateType, devices, sortVS, startVS, limitVS);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

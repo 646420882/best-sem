@@ -41,9 +41,6 @@ public class BasisReportServiceImpl implements BasisReportService {
     private AccountManageService accountManageService;
 
     private static int REDISKEYTIME = 1 * 60 * 60;
-    private static final String DEFAULT_DELIMITER = ",";
-    private static final String DEFAULT_END = "\r\n";
-    private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
 
     /**
      * 生成报告
@@ -75,7 +72,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     List<StructureReportDTO> objectsList = new ArrayList<>();
                     //获取需要的数据
                     for (int i = 0; i < date.length; i++) {
-                        List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
+                        List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + BasisReportCalculateUtil.getTableType(reportType), dataId, dateName));
                         if (object.size() != 0) {
                             objectsList.addAll(object);
                         }
@@ -83,7 +80,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     ForkJoinPool joinPool = new ForkJoinPool();
 
                     //计算合计数据
-                    List<StructureReportDTO> returnListAll = dataALL(objectsList);
+                    List<StructureReportDTO> returnListAll = BasisReportCalculateUtil.dataALL(objectsList);
 
                     dateObject0.setDate(date[0] + " 至 " + date[date.length - 1]);
                     dateMap0.add(dateObject0);
@@ -96,7 +93,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         //得到处理结果
                         map = joinTask.get();
                         //计算百分比
-                        map1 = percentage(map);
+                        map1 = BasisReportCalculateUtil.percentage(map);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
@@ -127,13 +124,13 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
                         if (reportType == 4) {
                             //计算饼状图 展现数据
-                            List<StructureReportDTO> pieIpmr = getPieData(returnList, terminal, REPORT_IMPR, REPORT_FUYI);
+                            List<StructureReportDTO> pieIpmr = BasisReportCalculateUtil.getPieData(returnList, terminal, REPORT_IMPR, REPORT_FUYI);
                             //计算饼状图 点击数据
-                            List<StructureReportDTO> pieClick = getPieData(returnList, terminal, REPORT_CLICK, REPORT_FUER);
+                            List<StructureReportDTO> pieClick = BasisReportCalculateUtil.getPieData(returnList, terminal, REPORT_CLICK, REPORT_FUER);
                             //计算饼状图 消费数据
-                            List<StructureReportDTO> pieCost = getPieData(returnList, terminal, REPORT_COST, REPORT_FUSAN);
+                            List<StructureReportDTO> pieCost = BasisReportCalculateUtil.getPieData(returnList, terminal, REPORT_COST, REPORT_FUSAN);
                             //计算饼状图 转化数据
-                            List<StructureReportDTO> pieConv = getPieData(returnList, terminal, REPORT_CONV, REPORT_FULIU);
+                            List<StructureReportDTO> pieConv = BasisReportCalculateUtil.getPieData(returnList, terminal, REPORT_CONV, REPORT_FULIU);
 
                             listMap.put(REPORT_IMPR, pieIpmr);
                             listMap.put(REPORT_CLICK, pieClick);
@@ -148,7 +145,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
                         ReportPageDetails pageDetails = new ReportPageDetails();
                         List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPageObj(returnList, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
-                        List<StructureReportDTO> entityList1 = getCountStructure(listMap);
+                        List<StructureReportDTO> entityList1 = BasisReportCalculateUtil.getCountStructure(listMap);
                         listMap.put(REPORT_STATISTICS, returnListAll);
                         listMap.put(REPORT_COUNTDATA, entityList1);
                         listMap.put(REPORT_ROWS, pageReport);
@@ -159,13 +156,13 @@ public class BasisReportServiceImpl implements BasisReportService {
                     } else {
                         if (reportType == 4) {
                             //计算饼状图 展现数据
-                            List<StructureReportDTO> pieIpmr = getPieData(list, terminal, REPORT_IMPR, REPORT_FUYI);
+                            List<StructureReportDTO> pieIpmr = BasisReportCalculateUtil.getPieData(list, terminal, REPORT_IMPR, REPORT_FUYI);
                             //计算饼状图 点击数据
-                            List<StructureReportDTO> pieClick = getPieData(list, terminal, REPORT_CLICK, REPORT_FUER);
+                            List<StructureReportDTO> pieClick = BasisReportCalculateUtil.getPieData(list, terminal, REPORT_CLICK, REPORT_FUER);
                             //计算饼状图 消费数据
-                            List<StructureReportDTO> pieCost = getPieData(list, terminal, REPORT_COST, REPORT_FUSAN);
+                            List<StructureReportDTO> pieCost = BasisReportCalculateUtil.getPieData(list, terminal, REPORT_COST, REPORT_FUSAN);
                             //计算饼状图 转化数据
-                            List<StructureReportDTO> pieConv = getPieData(list, terminal, REPORT_CONV, REPORT_FULIU);
+                            List<StructureReportDTO> pieConv = BasisReportCalculateUtil.getPieData(list, terminal, REPORT_CONV, REPORT_FULIU);
 
                             listMap.put(REPORT_IMPR, pieIpmr);
                             listMap.put(REPORT_CLICK, pieClick);
@@ -180,7 +177,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
                         ReportPageDetails pageDetails = new ReportPageDetails();
                         List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPageObj(list, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
-                        List<StructureReportDTO> entityList1 = getCountStructure(listMap);
+                        List<StructureReportDTO> entityList1 = BasisReportCalculateUtil.getCountStructure(listMap);
                         listMap.put(REPORT_STATISTICS, returnListAll);
                         listMap.put(REPORT_COUNTDATA, entityList1);
                         listMap.put(REPORT_ROWS, pageReport);
@@ -203,13 +200,13 @@ public class BasisReportServiceImpl implements BasisReportService {
                     Map<String, List<StructureReportDTO>> listMap = new HashMap<>();
                     if (reportType == 4) {
                         //计算饼状图 展现数据
-                        List<StructureReportDTO> pieIpmr = getPieData(list, terminal, REPORT_IMPR, REPORT_FUYI);
+                        List<StructureReportDTO> pieIpmr = BasisReportCalculateUtil.getPieData(list, terminal, REPORT_IMPR, REPORT_FUYI);
                         //计算饼状图 点击数据
-                        List<StructureReportDTO> pieClick = getPieData(list, terminal, REPORT_CLICK, REPORT_FUER);
+                        List<StructureReportDTO> pieClick = BasisReportCalculateUtil.getPieData(list, terminal, REPORT_CLICK, REPORT_FUER);
                         //计算饼状图 消费数据
-                        List<StructureReportDTO> pieCost = getPieData(list, terminal, REPORT_COST, REPORT_FUSAN);
+                        List<StructureReportDTO> pieCost = BasisReportCalculateUtil.getPieData(list, terminal, REPORT_COST, REPORT_FUSAN);
                         //计算饼状图 转化数据
-                        List<StructureReportDTO> pieConv = getPieData(list, terminal, REPORT_CONV, REPORT_FULIU);
+                        List<StructureReportDTO> pieConv = BasisReportCalculateUtil.getPieData(list, terminal, REPORT_CONV, REPORT_FULIU);
 
                         listMap.put(REPORT_IMPR, pieIpmr);
                         listMap.put(REPORT_CLICK, pieClick);
@@ -221,7 +218,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         sort = REPORT_FUYI;
                     }
                     List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPageObj(list, terminal, sort, start, limit, date[0] + " 至 " + date[date.length - 1]);
-                    List<StructureReportDTO> entityList1 = getCountStructure(listMap);
+                    List<StructureReportDTO> entityList1 = BasisReportCalculateUtil.getCountStructure(listMap);
                     listMap.put(REPORT_STATISTICS, listAll);
                     listMap.put(REPORT_COUNTDATA, entityList1);
                     listMap.put(REPORT_ROWS, pageReport);
@@ -243,7 +240,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     //获得需要的数据
                     for (int i = 0; i < date.length; i++) {
                         StructureReportDTO dateObject = new StructureReportDTO();
-                        List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
+                        List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + BasisReportCalculateUtil.getTableType(reportType), dataId, dateName));
                         if (object.size() == 0) {
                             StructureReportDTO entity = new StructureReportDTO();
                             entity.setKeywordId(0l);
@@ -284,7 +281,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     }
 
                     //计算合计数据
-                    List<StructureReportDTO> returnListAll = dataALL(entityListAll);
+                    List<StructureReportDTO> returnListAll = BasisReportCalculateUtil.dataALL(entityListAll);
 
 
                     Map<String, List<StructureReportDTO>> mapDay1 = null;
@@ -300,9 +297,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc1.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
 
-                        List<StructureReportDTO> entityList1 = getCountStructure(listMap1);
+                        List<StructureReportDTO> entityList1 = BasisReportCalculateUtil.getCountStructure(listMap1);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart = getLineChart(listMap1, terminal);
+                        List<StructureReportDTO> lineChart = BasisReportCalculateUtil.getLineChart(listMap1, terminal);
                         ReportPageDetails pageDetails = new ReportPageDetails();
                         List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                         listMap1.put(REPORT_STATISTICS, returnListAll);
@@ -315,7 +312,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         return listMap1;
                     } else {
                         //对相应的数据进行计算百分比
-                        mapDay1 = percentageList(mapDay, userName, reportType);
+                        mapDay1 = BasisReportCalculateUtil.percentageList(mapDay, userName, reportType);
                     }
                     //数据放入redis中
                     String lists = new Gson().toJson(mapDay1);
@@ -325,10 +322,10 @@ public class BasisReportServiceImpl implements BasisReportService {
                     jc1.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                     jc1.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                    List<StructureReportDTO> entityList1 = getCountStructure(mapDay1);
+                    List<StructureReportDTO> entityList1 = BasisReportCalculateUtil.getCountStructure(mapDay1);
 
                     //曲线图数据计算
-                    List<StructureReportDTO> lineChart = getLineChart(mapDay1, terminal);
+                    List<StructureReportDTO> lineChart = BasisReportCalculateUtil.getLineChart(mapDay1, terminal);
                     ReportPageDetails pageDetails = new ReportPageDetails();
                     List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPage(mapDay1, terminal, sort, start, limit, categoryTime);
                     mapDay.put(REPORT_STATISTICS, returnListAll);
@@ -351,9 +348,9 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                     Map<String, List<StructureReportDTO>> listMap1 = new HashMap<>();
 
-                    List<StructureReportDTO> entityList1 = getCountStructure(list);
+                    List<StructureReportDTO> entityList1 = BasisReportCalculateUtil.getCountStructure(list);
                     //曲线图数据计算
-                    List<StructureReportDTO> lineChart = getLineChart(list, terminal);
+                    List<StructureReportDTO> lineChart = BasisReportCalculateUtil.getLineChart(list, terminal);
                     ReportPageDetails pageDetails = new ReportPageDetails();
                     List<StructureReportDTO> pageReport = pageDetails.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
                     listMap1.put(REPORT_STATISTICS, listAll);
@@ -390,7 +387,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 if (i >= date.length) {
                                     continue;
                                 }
-                                List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
+                                List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + BasisReportCalculateUtil.getTableType(reportType), dataId, dateName));
                                 if (object.size() != 0) {
                                     objectsList1.addAll(object);
                                 }
@@ -440,7 +437,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
 
                         //计算合计数据
-                        List<StructureReportDTO> returnListAll = dataALL(entityListAll);
+                        List<StructureReportDTO> returnListAll = BasisReportCalculateUtil.dataALL(entityListAll);
 
                         for (Map.Entry<String, List<StructureReportDTO>> entry1 : stringListMap.entrySet()) {
                             //创建一个并行计算框架
@@ -459,7 +456,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                             }
 
                             //对相应的数据进行计算百分比
-                            Map<String, StructureReportDTO> reportEntities1 = percentage(reportEntities);
+                            Map<String, StructureReportDTO> reportEntities1 = BasisReportCalculateUtil.percentage(reportEntities);
 
                             //关闭并行计算框架
                             joinPoolTow.shutdown();
@@ -477,9 +474,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                             jc2.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                             jc2.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                            List<StructureReportDTO> entityList2 = getCountStructure(listMap1);
+                            List<StructureReportDTO> entityList2 = BasisReportCalculateUtil.getCountStructure(listMap1);
                             //曲线图数据计算
-                            List<StructureReportDTO> lineChart1 = getLineChart(listMap1, terminal);
+                            List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(listMap1, terminal);
                             ReportPageDetails pageDetails1 = new ReportPageDetails();
                             List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                             listMap1.put(REPORT_STATISTICS, returnListAll);
@@ -500,9 +497,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc2.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                         jc2.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                        List<StructureReportDTO> entityList2 = getCountStructure(endListMap);
+                        List<StructureReportDTO> entityList2 = BasisReportCalculateUtil.getCountStructure(endListMap);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart1 = getLineChart(endListMap, terminal);
+                        List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(endListMap, terminal);
                         ReportPageDetails pageDetails1 = new ReportPageDetails();
                         List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(endListMap, terminal, sort, start, limit, categoryTime);
                         endListMap.put(REPORT_STATISTICS, returnListAll);
@@ -519,14 +516,14 @@ public class BasisReportServiceImpl implements BasisReportService {
                         List<StructureReportDTO> objectsList = new ArrayList<>();
                         //如果用户选择的时间范围小于或者等于7天
                         for (int i = 0; i < date.length; i++) {
-                            List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
+                            List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + BasisReportCalculateUtil.getTableType(reportType), dataId, dateName));
                             if (object.size() != 0) {
                                 objectsList.addAll(object);
                             }
                         }
 
                         //计算合计数据
-                        List<StructureReportDTO> returnListAll = dataALL(objectsList);
+                        List<StructureReportDTO> returnListAll = BasisReportCalculateUtil.dataALL(objectsList);
 
                         dateObject2else.setDate(date[0] + " 至 " + date[date.length - 1]);
                         dateMap2else.add(dateObject2else);
@@ -543,7 +540,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                             e.printStackTrace();
                         }
                         //对相应的数据进行计算百分比
-                        Map<String, StructureReportDTO> reportEntities1 = percentage(reportEntities);
+                        Map<String, StructureReportDTO> reportEntities1 = BasisReportCalculateUtil.percentage(reportEntities);
 
                         //关闭并行计算框架
                         joinPoolTow.shutdown();
@@ -559,9 +556,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                             jc2.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                             jc2.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                            List<StructureReportDTO> entityList2 = getCountStructure(endListMap);
+                            List<StructureReportDTO> entityList2 = BasisReportCalculateUtil.getCountStructure(endListMap);
                             //曲线图数据计算
-                            List<StructureReportDTO> lineChart1 = getLineChart(listMap1, terminal);
+                            List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(listMap1, terminal);
                             ReportPageDetails pageDetails1 = new ReportPageDetails();
                             List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                             listMap1.put(REPORT_STATISTICS, returnListAll);
@@ -582,9 +579,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc2.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsALL);
                         jc2.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                        List<StructureReportDTO> entityList2 = getCountStructure(endListMap);
+                        List<StructureReportDTO> entityList2 = BasisReportCalculateUtil.getCountStructure(endListMap);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart1 = getLineChart(endListMap, terminal);
+                        List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(endListMap, terminal);
                         ReportPageDetails pageDetails1 = new ReportPageDetails();
                         List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(endListMap, terminal, sort, start, limit, categoryTime);
                         endListMap.put(REPORT_STATISTICS, returnListAll);
@@ -607,9 +604,9 @@ public class BasisReportServiceImpl implements BasisReportService {
 
                     Map<String, List<StructureReportDTO>> endListMap = new HashMap<>();
 
-                    List<StructureReportDTO> entityList2 = getCountStructure(list);
+                    List<StructureReportDTO> entityList2 = BasisReportCalculateUtil.getCountStructure(list);
                     //曲线图数据计算
-                    List<StructureReportDTO> lineChart1 = getLineChart(list, terminal);
+                    List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(list, terminal);
                     ReportPageDetails pageDetails1 = new ReportPageDetails();
                     List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
                     endListMap.put(REPORT_STATISTICS, listAll);
@@ -696,7 +693,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                                     index = 0;
                                 }
 
-                                List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[j] + getTableType(reportType), dataId, dateName));
+                                List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[j] + BasisReportCalculateUtil.getTableType(reportType), dataId, dateName));
                                 if (object.size() != 0) {
                                     objectsList.addAll(object);
                                 }
@@ -745,7 +742,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
 
                         //计算合计数据
-                        List<StructureReportDTO> returnListAll = dataALL(entityListAll);
+                        List<StructureReportDTO> returnListAll = BasisReportCalculateUtil.dataALL(entityListAll);
 
 
                         for (Map.Entry<String, List<StructureReportDTO>> entry1 : stringListMap1.entrySet()) {
@@ -764,7 +761,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                                 e.printStackTrace();
                             }
                             //对相应的数据进行计算百分比
-                            Map<String, StructureReportDTO> reportEntities2 = percentage(reportEntities1);
+                            Map<String, StructureReportDTO> reportEntities2 = BasisReportCalculateUtil.percentage(reportEntities1);
 
                             //关闭并行计算框架
                             joinPoolTow.shutdown();
@@ -782,9 +779,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                             jc3.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsAll);
                             jc3.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                            List<StructureReportDTO> entityList3 = getCountStructure(listMap1);
+                            List<StructureReportDTO> entityList3 = BasisReportCalculateUtil.getCountStructure(listMap1);
                             //曲线图数据计算
-                            List<StructureReportDTO> lineChart1 = getLineChart(listMap1, terminal);
+                            List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(listMap1, terminal);
                             ReportPageDetails pageDetails1 = new ReportPageDetails();
                             List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                             listMap1.put(REPORT_STATISTICS, returnListAll);
@@ -804,9 +801,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc3.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsAll);
                         jc3.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                        List<StructureReportDTO> entityList3 = getCountStructure(endListMap1);
+                        List<StructureReportDTO> entityList3 = BasisReportCalculateUtil.getCountStructure(endListMap1);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart1 = getLineChart(endListMap1, terminal);
+                        List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(endListMap1, terminal);
                         ReportPageDetails pageDetails1 = new ReportPageDetails();
                         List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(endListMap1, terminal, sort, start, limit, categoryTime);
                         endListMap1.put(REPORT_STATISTICS, returnListAll);
@@ -822,13 +819,13 @@ public class BasisReportServiceImpl implements BasisReportService {
                         StructureReportDTO dateObject3else = new StructureReportDTO();
                         //如果用户选择的时间范围小于或者等于30天
                         for (int i = 0; i < date.length; i++) {
-                            List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + getTableType(reportType), dataId, dateName));
+                            List<StructureReportDTO> object = new ArrayList<>(basisReportDAO.getUnitReportDate(date[i] + BasisReportCalculateUtil.getTableType(reportType), dataId, dateName));
                             if (object.size() != 0) {
                                 objectsList.addAll(object);
                             }
                         }
                         //计算合计数据
-                        List<StructureReportDTO> returnListAll = dataALL(objectsList);
+                        List<StructureReportDTO> returnListAll = BasisReportCalculateUtil.dataALL(objectsList);
 
                         dateObject3else.setDate(date[0] + " 至 " + date[date.length - 1]);
                         dateMap3else.add(dateObject3else);
@@ -846,7 +843,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                         }
                         DecimalFormat df = new DecimalFormat("#.00");
                         //对相应的数据进行计算百分比
-                        Map<String, StructureReportDTO> reportEntities2 = percentage(reportEntities1);
+                        Map<String, StructureReportDTO> reportEntities2 = BasisReportCalculateUtil.percentage(reportEntities1);
 
                         //关闭并行计算框架
                         joinPoolTow.shutdown();
@@ -862,9 +859,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                             jc3.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsAll);
                             jc3.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                            List<StructureReportDTO> entityList3 = getCountStructure(listMap1);
+                            List<StructureReportDTO> entityList3 = BasisReportCalculateUtil.getCountStructure(listMap1);
                             //曲线图数据计算
-                            List<StructureReportDTO> lineChart1 = getLineChart(listMap1, terminal);
+                            List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(listMap1, terminal);
                             ReportPageDetails pageDetails1 = new ReportPageDetails();
                             List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(listMap1, terminal, sort, start, limit, categoryTime);
                             listMap1.put(REPORT_STATISTICS, returnListAll);
@@ -884,9 +881,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                         jc3.set((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), listsAll);
                         jc3.expire((date[0] + "|" + date[date.length - 1] + "|" + terminal + "|" + categoryTime + "|" + reportType + "|" + AppContext.getAccountId() + "|" + dataId + "|Statist"), REDISKEYTIME);
 
-                        List<StructureReportDTO> entityList3 = getCountStructure(endListMap1);
+                        List<StructureReportDTO> entityList3 = BasisReportCalculateUtil.getCountStructure(endListMap1);
                         //曲线图数据计算
-                        List<StructureReportDTO> lineChart1 = getLineChart(endListMap1, terminal);
+                        List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(endListMap1, terminal);
                         ReportPageDetails pageDetails1 = new ReportPageDetails();
                         List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(endListMap1, terminal, sort, start, limit, categoryTime);
                         endListMap1.put(REPORT_STATISTICS, returnListAll);
@@ -909,9 +906,9 @@ public class BasisReportServiceImpl implements BasisReportService {
                     }.getType());
 
                     Map<String, List<StructureReportDTO>> endListMap1 = new HashMap<>();
-                    List<StructureReportDTO> entityList3 = getCountStructure(list);
+                    List<StructureReportDTO> entityList3 = BasisReportCalculateUtil.getCountStructure(list);
                     //曲线图数据计算
-                    List<StructureReportDTO> lineChart1 = getLineChart(list, terminal);
+                    List<StructureReportDTO> lineChart1 = BasisReportCalculateUtil.getLineChart(list, terminal);
                     ReportPageDetails pageDetails1 = new ReportPageDetails();
                     List<StructureReportDTO> pageReport1 = pageDetails1.getReportDetailsPage(list, terminal, sort, start, limit, categoryTime);
                     endListMap1.put(REPORT_STATISTICS, listAll);
@@ -988,1412 +985,6 @@ public class BasisReportServiceImpl implements BasisReportService {
         return map;
     }
 
-    @Override
-    public Map<String, List<Object>> getAccountDateVS(Date startDate, Date endDate, Date startDate1, Date endDate1, int dateType, int devices, int compare, String sortVS, int startVS, int limitVS) {
-        Date[] dateOne = getDateProcessing(startDate, endDate);
-        Date[] dateTow = getDateProcessing(startDate1, endDate1);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        switch (dateType) {
-            case 0:
-                //默认
-                Map<String, List<Object>> retrunMap = new HashMap<>();
-                List<Object> objectListDate1 = new ArrayList<>();
-                List<Object> objectListDate2 = new ArrayList<>();
-                //获取数据
-                List<AccountReportDTO> listOne = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
-                //获取用户统计数据
-                List<Object> userProAll = new ArrayList<>();
-                List<AccountReportDTO> userPro = AccountReportStatisticsUtil.getUserPro(listOne);
-                List<AccountReportDTO> userProAcerage = AccountReportStatisticsUtil.getAveragePro(userPro);
-                userProAll.addAll(userProAcerage);
-                //统计数据
-                Map<String, List<AccountReportDTO>> responseMapOne = getUserDataPro(listOne, dateOne[0], dateOne[1]);
-                Map<String, List<AccountReportDTO>> responseMapTow = null;
-                //比较数据
-                if (compare == 1) {
-                    List<AccountReportDTO> listTow = new ArrayList<>(basisReportDAO.getAccountReport(dateTow[0], dateTow[1]));
-                    responseMapTow = getUserDataPro(listTow, dateTow[0], dateTow[1]);
-                }
-                //如果要求是全部数据
-                if (devices == 0) {
-                    Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne);
-                    List<Object> objectList = new ArrayList<>();
-
-                    //比较数据
-                    if (compare == 1) {
-                        Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow);
-                        objectList.add(responseMapDevicesTow);
-                        objectListDate2.add(dateFormat.format(dateTow[0]) + " 至 " + dateFormat.format(dateTow[1]));
-                        retrunMap.put("date1", objectListDate2);
-                    }
-                    //计算点击率、平均价格
-                    Map<String, List<AccountReportDTO>> responseMapAverageOne = getAverage(responseMapDevicesOne);
-
-                    objectList.add(responseMapAverageOne);
-                    objectListDate1.add(dateFormat.format(dateOne[0]) + " 至 " + dateFormat.format(dateOne[1]));
-                    retrunMap.put(REPORT_STATISTICS, userProAll);
-                    retrunMap.put(REPORT_ROWS, objectList);
-                    retrunMap.put("date", objectListDate1);
-
-                    return retrunMap;
-                }
-
-                //计算点击率、平均价格
-                Map<String, List<AccountReportDTO>> responseMapAverageOne = getAverage(responseMapOne);
-                List<Object> objectList = new ArrayList<>();
-                objectList.add(responseMapAverageOne);
-
-                //比较数据
-                if (compare == 1) {
-                    Map<String, List<AccountReportDTO>> responseMapAverageTow = getAverage(responseMapTow);
-                    objectList.add(responseMapAverageTow);
-                    objectListDate2.add(dateFormat.format(dateTow[0]) + " 至 " + dateFormat.format(dateTow[1]));
-                    retrunMap.put("date1", objectListDate2);
-                }
-                objectListDate1.add(dateFormat.format(dateOne[0]) + " 至 " + dateFormat.format(dateOne[1]));
-                retrunMap.put(REPORT_STATISTICS, userProAll);
-                retrunMap.put(REPORT_ROWS, objectList);
-                retrunMap.put("date", objectListDate1);
-
-
-                return retrunMap;
-            case 1:
-                //分日
-                Map<String, List<Object>> retrunMap1 = new HashMap<>();
-                Map<String, List<AccountReportDTO>> responseMapOne1 = new HashMap<>();
-                Map<String, List<AccountReportDTO>> responseMapTow1 = new HashMap<>();
-
-                List<AccountReportDTO> listOne1 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
-                //获取用户统计数据
-                List<Object> userProAll1 = new ArrayList<>();
-                List<AccountReportDTO> userPro1 = AccountReportStatisticsUtil.getUserPro(listOne1);
-                List<AccountReportDTO> userProAcerage1 = AccountReportStatisticsUtil.getAveragePro(userPro1);
-                userProAll1.addAll(userProAcerage1);
-
-
-                List<Object> objectListDateOne1 = new ArrayList<>();
-                List<Object> objectListDateTow1 = new ArrayList<>();
-                for (AccountReportDTO listEnd : listOne1) {
-                    List<AccountReportDTO> list = new ArrayList<>();
-                    list.add(listEnd);
-                    responseMapOne1.put(dateFormat.format(listEnd.getDate()), list);
-                }
-                List<String> dateString = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
-                String[] newDate = dateString.toArray(new String[dateString.size()]);
-                for (String s : newDate) {
-                    objectListDateOne1.add(s);
-                }
-
-
-                //比较数据
-                if (compare == 1) {
-                    List<AccountReportDTO> listTow1 = new ArrayList<>(basisReportDAO.getAccountReport(dateTow[0], dateTow[1]));
-                    for (AccountReportDTO listEnd : listTow1) {
-                        List<AccountReportDTO> list = new ArrayList<>();
-                        list.add(listEnd);
-                        responseMapTow1.put(dateFormat.format(listEnd.getDate()), list);
-                    }
-                    List<String> dateString1 = DateUtils.getPeriod(dateFormat.format(dateTow[0]), dateFormat.format(dateTow[1]));
-                    String[] newDate1 = dateString1.toArray(new String[dateString1.size()]);
-                    for (String s : newDate1) {
-                        objectListDateTow1.add(s);
-                    }
-                }
-                if (devices == 0) {
-                    Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne1);
-                    List<Object> objectList1 = new ArrayList<>();
-                    objectList1.add(responseMapDevicesOne);
-
-                    //比较数据
-                    if (compare == 1) {
-                        Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow1);
-                        for (Object o : objectListDateTow1) {
-                            if (responseMapDevicesTow.get(o) == null) {
-                                List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
-                                AccountReportDTO accountReportDTO = new AccountReportDTO();
-                                accountReportDTOs.add(accountReportDTO);
-                                responseMapDevicesTow.put(o.toString(), accountReportDTOs);
-                            }
-                        }
-                        objectList1.add(responseMapDevicesTow);
-                        retrunMap1.put("date1", objectListDateTow1);
-                    }
-                    for (Object o : objectListDateOne1) {
-                        if (responseMapDevicesOne.get(o) == null) {
-                            List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
-                            AccountReportDTO accountReportDTO = new AccountReportDTO();
-                            accountReportDTOs.add(accountReportDTO);
-                            responseMapDevicesOne.put(o.toString(), accountReportDTOs);
-                        }
-                    }
-                    if (compare != 1) {
-                        ReportPage reportPage = new ReportPage();
-                        List<Object> pageDate = reportPage.getReportPage(responseMapDevicesOne, devices, sortVS, startVS, limitVS);
-                        retrunMap1.put(REPORT_STATISTICS, userProAll1);
-                        retrunMap1.put(REPORT_ROWS, objectList1);
-                        retrunMap1.put("date", pageDate);
-                    } else {
-                        retrunMap1.put(REPORT_ROWS, objectList1);
-                        retrunMap1.put("date", objectListDateOne1);
-                    }
-                    return retrunMap1;
-                }
-
-                Map<String, List<AccountReportDTO>> responseMapDevicesOne1 = getPcPlusMobileDate(responseMapOne1);
-
-                List<Object> objectList1 = new ArrayList<>();
-                objectList1.add(responseMapDevicesOne1);
-                //比较数据
-                if (compare == 1) {
-                    for (Object o : objectListDateTow1) {
-                        if (responseMapTow1.get(o) == null) {
-                            List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
-                            AccountReportDTO accountReportDTO = new AccountReportDTO();
-                            accountReportDTOs.add(accountReportDTO);
-                            responseMapTow1.put(o.toString(), accountReportDTOs);
-                        }
-                    }
-                    objectList1.add(responseMapTow1);
-                    retrunMap1.put("date1", objectListDateTow1);
-                }
-                for (Object o : objectListDateOne1) {
-                    if (responseMapOne1.get(o) == null) {
-                        List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
-                        AccountReportDTO accountReportDTO = new AccountReportDTO();
-                        accountReportDTOs.add(accountReportDTO);
-                        responseMapOne1.put(o.toString(), accountReportDTOs);
-                    }
-                }
-                if (compare != 1) {
-                    ReportPage reportPage = new ReportPage();
-                    List<Object> pageDate = reportPage.getReportPage(responseMapOne1, devices, sortVS, startVS, limitVS);
-                    objectList1.add(responseMapOne1);
-                    retrunMap1.put(REPORT_STATISTICS, userProAll1);
-                    retrunMap1.put(REPORT_ROWS, objectList1);
-                    retrunMap1.put("date", pageDate);
-                } else {
-                    retrunMap1.put(REPORT_ROWS, objectList1);
-                    retrunMap1.put("date", objectListDateOne1);
-                }
-                return retrunMap1;
-            case 2:
-                ///分周
-                Map<String, List<Object>> retrunMap2 = new HashMap<>();
-
-                List<Object> objectListDateOne2 = new ArrayList<>();
-                List<Object> objectListDateTow2 = new ArrayList<>();
-                List<Object> objectListDateOne21 = new ArrayList<>();
-                List<Object> objectListDateTow21 = new ArrayList<>();
-
-                List<AccountReportDTO> listOne2 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
-
-                //获取用户统计数据
-                List<Object> userProAll2 = new ArrayList<>();
-                List<AccountReportDTO> userPro2 = AccountReportStatisticsUtil.getUserPro(listOne2);
-                List<AccountReportDTO> userProAcerage2 = AccountReportStatisticsUtil.getAveragePro(userPro2);
-                userProAll2.addAll(userProAcerage2);
-
-                SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
-                List<String> dateListString = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
-                boolean judgei = true;
-                for (String s : dateListString) {
-                    Date judgeDate = null;
-                    try {
-                        judgeDate = sim.parse(s);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    for (AccountReportDTO dto : listOne2) {
-                        if (judgeDate.getTime() == dto.getDate().getTime()) {
-                            dto.setOrderBy("1");
-                            judgei = false;
-                            break;
-                        } else {
-                            judgei = true;
-                        }
-                    }
-                    if (judgei) {
-                        AccountReportDTO reportDTO = new AccountReportDTO();
-                        reportDTO.setMobileClick(0);
-                        reportDTO.setMobileConversion(0d);
-                        reportDTO.setMobileCost(BigDecimal.ZERO);
-                        reportDTO.setMobileCpc(BigDecimal.ZERO);
-                        reportDTO.setMobileCpm(BigDecimal.ZERO);
-                        reportDTO.setMobileImpression(0);
-                        reportDTO.setPcClick(0);
-                        reportDTO.setPcConversion(0d);
-                        reportDTO.setPcCost(BigDecimal.ZERO);
-                        reportDTO.setPcCpc(BigDecimal.ZERO);
-                        reportDTO.setPcCpm(BigDecimal.ZERO);
-                        reportDTO.setPcImpression(0);
-                        reportDTO.setDate(judgeDate);
-                        reportDTO.setOrderBy("1");
-                        listOne2.add(reportDTO);
-                    }
-                }
-                Collections.sort(listOne2);
-
-                for (AccountReportDTO responseZou : listOne2) {
-                    objectListDateOne2.add(responseZou.getDate());
-                }
-
-                List<Object> objectList2 = new ArrayList<>();
-                List<AccountReportDTO> listTow2 = null;
-                //比较数据
-                if (compare == 1) {
-                    listTow2 = new ArrayList<>(basisReportDAO.getAccountReport(dateTow[0], dateTow[1]));
-                    List<String> dateListStrings = DateUtils.getPeriod(dateFormat.format(dateTow[0]), dateFormat.format(dateTow[1]));
-                    boolean judgeis = true;
-                    for (String s : dateListStrings) {
-                        Date judgeDate = null;
-                        try {
-                            judgeDate = sim.parse(s);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        for (AccountReportDTO dto : listTow2) {
-                            if (judgeDate.getTime() == dto.getDate().getTime()) {
-                                dto.setOrderBy("1");
-                                judgeis = false;
-                                break;
-                            } else {
-                                judgeis = true;
-                            }
-                        }
-                        if (judgeis || listTow2.size() == 0) {
-                            AccountReportDTO reportDTO = new AccountReportDTO();
-                            reportDTO.setMobileClick(0);
-                            reportDTO.setMobileConversion(0d);
-                            reportDTO.setMobileCost(BigDecimal.ZERO);
-                            reportDTO.setMobileCpc(BigDecimal.ZERO);
-                            reportDTO.setMobileCpm(BigDecimal.ZERO);
-                            reportDTO.setMobileImpression(0);
-                            reportDTO.setPcClick(0);
-                            reportDTO.setPcConversion(0d);
-                            reportDTO.setPcCost(BigDecimal.ZERO);
-                            reportDTO.setPcCpc(BigDecimal.ZERO);
-                            reportDTO.setPcCpm(BigDecimal.ZERO);
-                            reportDTO.setPcImpression(0);
-                            reportDTO.setDate(judgeDate);
-                            reportDTO.setOrderBy("1");
-                            listTow2.add(reportDTO);
-                        }
-                    }
-
-                    for (AccountReportDTO responseTowZou : listTow2) {
-                        objectListDateTow2.add(responseTowZou.getDate());
-                    }
-                }
-
-                int s = 0;
-                int endNumber = 0;
-                int steep = (objectListDateOne2.size() % 7 == 0) ? (objectListDateOne2.size() / 7) : (objectListDateOne2.size() / 7) + 1;
-                for (int i = 0; i < steep; i++) {
-                    List<AccountReportDTO> listDateOne = new ArrayList<>();
-                    List<AccountReportDTO> listDateTow = new ArrayList<>();
-                    Date[] newDateOne = null;
-                    Date[] newDateTow = null;
-                    for (s = endNumber; s < endNumber + 7; s++) {
-                        if (endNumber >= objectListDateOne2.size() || s >= objectListDateOne2.size()) {
-                            continue;
-                        }
-                        listDateOne.add(listOne2.get(s));
-                        //比较数据
-                        if (compare == 1) {
-                            if (endNumber >= objectListDateTow2.size() || s >= objectListDateTow2.size()) {
-                                continue;
-                            }
-                            listDateTow.add(listTow2.get(s));
-                        }
-                    }
-                    endNumber = s;
-                    Map<String, List<AccountReportDTO>> responseMapTow3 = null;
-                    //获取数据
-                    Map<String, List<AccountReportDTO>> responseMapOne3 = getUserDataPro(listDateOne, listDateOne.get(0).getDate(), listDateOne.get(listDateOne.size() - 1).getDate());
-                    newDateOne = new Date[]{listDateOne.get(0).getDate(), listDateOne.get(listDateOne.size() - 1).getDate()};
-
-                    //比较数据
-                    if (compare == 1) {
-                        responseMapTow3 = getUserDataPro(listDateTow, listDateTow.get(0).getDate(), listDateTow.get(listDateTow.size() - 1).getDate());
-                        newDateTow = new Date[]{listDateTow.get(0).getDate(), listDateTow.get(listDateTow.size() - 1).getDate()};
-                    }
-                    if (devices == 0) {
-                        Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne3);
-
-                        //比较数据
-                        if (compare == 1) {
-                            Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow3);
-                            objectList2.add(responseMapDevicesTow);
-                            objectListDateTow21.add(dateFormat.format(newDateTow[0]) + " 至 " + dateFormat.format(newDateTow[1]));
-                        }
-
-                        objectList2.add(responseMapDevicesOne);
-                        objectListDateOne21.add(dateFormat.format(newDateOne[0]) + " 至 " + dateFormat.format(newDateOne[1]));
-                    } else {
-                        //比较数据
-                        if (compare == 1) {
-                            objectList2.add(responseMapTow3);
-                            objectListDateTow21.add(dateFormat.format(newDateTow[0]) + " 至 " + dateFormat.format(newDateTow[1]));
-                        }
-                        objectList2.add(responseMapOne3);
-                        objectListDateOne21.add(dateFormat.format(newDateOne[0]) + " 至 " + dateFormat.format(newDateOne[1]));
-                    }
-                }
-                if (compare != 1) {
-                    ReportPage reportPage1 = new ReportPage();
-                    List<Object> pageDate1 = reportPage1.getReportPageObj(objectList2, devices, sortVS, startVS, limitVS);
-                    retrunMap2.put(REPORT_STATISTICS, userProAll2);
-                    retrunMap2.put(REPORT_ROWS, objectList2);
-                    retrunMap2.put("date", pageDate1);
-                } else {
-                    retrunMap2.put(REPORT_ROWS, objectList2);
-                    retrunMap2.put("date", objectListDateOne21);
-                }
-                //比较数据
-                if (compare == 1) {
-                    retrunMap2.put("date1", objectListDateTow21);
-                }
-                return retrunMap2;
-            case 3:
-                //分月
-                Map<String, List<Object>> retrunMap3 = new HashMap<>();
-
-                List<Object> objectListDateOne3 = new ArrayList<>();
-                List<Object> objectListDateTow3 = new ArrayList<>();
-                List<Object> objectListDateOne31 = (List<Object>) new ArrayList<>();
-                List<Object> objectListDateTow31 = new ArrayList<>();
-
-                List<AccountReportDTO> listOne3 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
-                //获取用户统计数据
-                List<Object> userProAll3 = new ArrayList<>();
-                List<AccountReportDTO> userPro3 = AccountReportStatisticsUtil.getUserPro(listOne3);
-                List<AccountReportDTO> userProAcerage3 = AccountReportStatisticsUtil.getAveragePro(userPro3);
-                userProAll3.addAll(userProAcerage3);
-
-
-                SimpleDateFormat simt = new SimpleDateFormat("yyyy-MM-dd");
-                List<String> dateListStringt = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
-                boolean judgeit = true;
-                for (String st : dateListStringt) {
-                    Date judgeDate = null;
-                    try {
-                        judgeDate = simt.parse(st);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    for (AccountReportDTO dto : listOne3) {
-                        if (judgeDate.getTime() == dto.getDate().getTime()) {
-                            dto.setOrderBy("1");
-                            judgeit = false;
-                            break;
-                        } else {
-                            judgeit = true;
-                        }
-                    }
-                    if (judgeit) {
-                        AccountReportDTO reportDTO = new AccountReportDTO();
-                        reportDTO.setMobileClick(0);
-                        reportDTO.setMobileConversion(0d);
-                        reportDTO.setMobileCost(BigDecimal.ZERO);
-                        reportDTO.setMobileCpc(BigDecimal.ZERO);
-                        reportDTO.setMobileCpm(BigDecimal.ZERO);
-                        reportDTO.setMobileImpression(0);
-                        reportDTO.setPcClick(0);
-                        reportDTO.setPcConversion(0d);
-                        reportDTO.setPcCost(BigDecimal.ZERO);
-                        reportDTO.setPcCpc(BigDecimal.ZERO);
-                        reportDTO.setPcCpm(BigDecimal.ZERO);
-                        reportDTO.setPcImpression(0);
-                        reportDTO.setDate(judgeDate);
-                        reportDTO.setOrderBy("1");
-                        listOne3.add(reportDTO);
-                    }
-                }
-                Collections.sort(listOne3);
-
-                for (AccountReportDTO responseYue : listOne3) {
-                    objectListDateOne3.add(responseYue.getDate());
-                }
-                List<AccountReportDTO> listTow3 = null;
-                List<String> dateListStringst = null;
-
-                //比较数据
-                if (compare == 1) {
-                    listTow3 = new ArrayList<>(basisReportDAO.getAccountReport(dateTow[0], dateTow[1]));
-
-                    dateListStringst = DateUtils.getPeriod(dateFormat.format(dateTow[0]), dateFormat.format(dateTow[1]));
-                    boolean judgeist = true;
-                    for (String st : dateListStringst) {
-                        Date judgeDate = null;
-                        try {
-                            judgeDate = simt.parse(st);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        for (AccountReportDTO dto : listTow3) {
-                            if (judgeDate.getTime() == dto.getDate().getTime()) {
-                                dto.setOrderBy("1");
-                                judgeist = false;
-                                break;
-                            } else {
-                                judgeist = true;
-                            }
-                        }
-                        if (judgeist || listTow3.size() == 0) {
-                            AccountReportDTO reportDTO = new AccountReportDTO();
-                            reportDTO.setMobileClick(0);
-                            reportDTO.setMobileConversion(0d);
-                            reportDTO.setMobileCost(BigDecimal.ZERO);
-                            reportDTO.setMobileCpc(BigDecimal.ZERO);
-                            reportDTO.setMobileCpm(BigDecimal.ZERO);
-                            reportDTO.setMobileImpression(0);
-                            reportDTO.setPcClick(0);
-                            reportDTO.setPcConversion(0d);
-                            reportDTO.setPcCost(BigDecimal.ZERO);
-                            reportDTO.setPcCpc(BigDecimal.ZERO);
-                            reportDTO.setPcCpm(BigDecimal.ZERO);
-                            reportDTO.setPcImpression(0);
-                            reportDTO.setDate(judgeDate);
-                            reportDTO.setOrderBy("1");
-                            listTow3.add(reportDTO);
-                        }
-                    }
-                    Collections.sort(listTow3);
-
-                    for (AccountReportDTO responseTowYue : listTow3) {
-                        objectListDateTow3.add(responseTowYue.getDate());
-                    }
-                }
-
-                List<Object> objectList3 = new ArrayList<>();
-
-
-                Calendar calendar = Calendar.getInstance();
-                int index = 0;
-                int im = Integer.parseInt(dateListStringt.get(0).substring(dateListStringt.get(0).length() - 2, dateListStringt.get(0).length()));
-
-                if (im == 1) {
-                    index = 0;
-                } else {
-                    index = im - 1;
-                }
-
-                int numbert = 0;
-                try {
-                    calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dateListStringt.get(0)));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                List<AccountReportDTO> listDateOne1 = new ArrayList<>();
-                for (int j = 0; j < dateListStringt.size() - 1; j++) {
-                    int is = 0;
-                    if (im != 1) {
-                        is = (numbert + index) - (im - 1);
-                    } else {
-                        is = (numbert + index);
-                    }
-                    index++;
-
-                    listDateOne1.add(listOne3.get(j));
-
-                    if (index == calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                        //获取数据
-                        Map<String, List<AccountReportDTO>> responseMapOne4 = null;
-                        try {
-                            responseMapOne4 = getUserDataPro(listDateOne1, dateFormat.parse(dateListStringt.get(numbert)), dateFormat.parse(dateListStringt.get(is)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-
-                        if (devices == 0) {
-                            Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne4);
-                            objectList3.add(responseMapDevicesOne);
-                            objectListDateOne31.add(dateListStringt.get(numbert) + " 至 " + dateListStringt.get(is));
-
-                        } else {
-                            objectList3.add(responseMapOne4);
-                            objectListDateOne31.add(dateListStringt.get(numbert) + " 至 " + dateListStringt.get(is));
-
-                        }
-                        if (im != 1) {
-                            numbert = (numbert + index) - (im - 1);
-                            im = 1;
-                        } else {
-                            numbert = numbert + index;
-                        }
-
-
-                        index = 0;
-                        listDateOne1 = new ArrayList<>();
-
-                    }
-                    try {
-                        calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dateListStringt.get(j)));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (dateListStringt.size() == 1) {
-                    listDateOne1.add(listOne3.get(0));
-                }
-                if (index > 0) {
-                    //获取数据
-                    Map<String, List<AccountReportDTO>> responseMapOne4 = null;
-                    try {
-                        responseMapOne4 = getUserDataPro(listDateOne1, dateFormat.parse(dateListStringt.get(numbert)), dateFormat.parse(dateListStringt.get((numbert + index) - (im - 1))));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    if (devices == 0) {
-                        Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne4);
-                        objectList3.add(responseMapDevicesOne);
-                        objectListDateOne31.add(dateListStringt.get(numbert) + " 至 " + dateListStringt.get((numbert + index) - (im - 1)));
-
-                    } else {
-                        objectList3.add(responseMapOne4);
-                        objectListDateOne31.add(dateListStringt.get(numbert) + " 至 " + dateListStringt.get((numbert + index) - (im - 1)));
-                    }
-                }
-
-
-                //比较数据
-                if (compare == 1) {
-
-                    Calendar calendar1 = Calendar.getInstance();
-                    int index1 = 0;
-                    int imt = Integer.parseInt(dateListStringst.get(0).substring(dateListStringst.get(0).length() - 2, dateListStringst.get(0).length()));
-
-                    if (imt == 1) {
-                        index1 = 0;
-                    } else {
-                        index1 = imt - 1;
-                    }
-
-                    int numbert1 = 0;
-                    try {
-                        calendar1.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dateListStringst.get(0)));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    List<AccountReportDTO> listDateTow1 = new ArrayList<>();
-                    for (int j = 0; j < dateListStringst.size() - 1; j++) {
-                        int is = 0;
-                        if (imt != 1) {
-                            is = (numbert1 + index1) - (imt - 1);
-                        } else {
-                            is = (numbert1 + index1);
-                        }
-
-                        index1++;
-
-                        listDateTow1.add(listTow3.get(j));
-
-
-                        if (index1 == calendar1.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-
-                            //比较数据
-                            Map<String, List<AccountReportDTO>> responseMapTow4 = null;
-                            try {
-                                responseMapTow4 = getUserDataPro(listDateTow1, dateFormat.parse(dateListStringst.get(numbert1)), dateFormat.parse(dateListStringst.get(is)));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                            if (devices == 0) {
-                                //比较数据
-                                Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow4);
-                                objectList3.add(responseMapDevicesTow);
-                                objectListDateTow31.add(dateListStringst.get(numbert1) + " 至 " + dateListStringst.get(is));
-                            } else {
-                                //比较数据
-                                objectList3.add(responseMapTow4);
-                                objectListDateTow31.add(dateListStringst.get(numbert1) + " 至 " + dateListStringst.get(is));
-                            }
-                            if (imt != 1) {
-                                numbert1 = (numbert1 + index1) - (imt - 1);
-                                imt = 1;
-                            } else {
-                                numbert1 = numbert1 + index1;
-                            }
-                            index1 = 0;
-                            listDateTow1 = new ArrayList<>();
-
-                        }
-                        try {
-                            calendar1.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dateListStringst.get(j)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    if (index1 > 0) {
-                        //比较数据
-                        Map<String, List<AccountReportDTO>> responseMapTow4 = null;
-                        try {
-                            responseMapTow4 = getUserDataPro(listDateTow1, dateFormat.parse(dateListStringst.get(numbert1)), dateFormat.parse(dateListStringst.get((numbert1 + index1) - (imt - 1))));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        if (devices == 0) {
-                            //比较数据
-                            Map<String, List<AccountReportDTO>> responseMapDevicesTow = getPcPlusMobileDate(responseMapTow4);
-                            objectList3.add(responseMapDevicesTow);
-                            objectListDateTow31.add(dateListStringst.get(numbert1) + " 至 " + dateListStringst.get((numbert1 + index1) - (imt - 1)));
-                        } else {
-                            //比较数据
-                            objectList3.add(responseMapTow4);
-                            objectListDateTow31.add(dateListStringst.get(numbert1) + " 至 " + dateListStringst.get((numbert1 + index1) - (imt - 1)));
-                        }
-                    }
-                }
-
-
-                if (compare != 1) {
-                    ReportPage reportPage2 = new ReportPage();
-                    List<Object> pageDate2 = reportPage2.getReportPageObj(objectList3, devices, sortVS, startVS, limitVS);
-                    retrunMap3.put(REPORT_STATISTICS, userProAll3);
-                    retrunMap3.put(REPORT_ROWS, objectList3);
-                    retrunMap3.put("date", pageDate2);
-                } else {
-                    retrunMap3.put(REPORT_STATISTICS, userProAll3);
-                    retrunMap3.put(REPORT_ROWS, objectList3);
-                    retrunMap3.put("date", objectListDateOne31);
-                }
-                //比较数据
-                if (compare == 1) {
-                    retrunMap3.put(REPORT_STATISTICS, userProAll3);
-                    retrunMap3.put("date1", objectListDateTow31);
-                }
-                return retrunMap3;
-        }
-        return null;
-    }
-
-    @Override
-    public void downReportCSV(OutputStream os, String redisKey, int dateType, int terminal, int reportType, String dateHead) {
-        Jedis jc = JRedisUtils.get();
-        Gson gson = new Gson();
-        String data = jc.get(redisKey);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DecimalFormat df = new DecimalFormat("#.0000");
-        String head = ReportDownUtil.getHead(reportType);
-        if (dateType < 1) {
-            List<StructureReportDTO> list = gson.fromJson(data, new TypeToken<List<StructureReportDTO>>() {
-            }.getType());
-            try {
-
-                os.write(Bytes.concat(commonCSVHead, (head).getBytes(StandardCharsets.UTF_8)));
-                if (terminal != 2) {
-                    for (StructureReportDTO entity : list) {
-                        os.write(Bytes.concat(commonCSVHead, (dateHead +
-                                ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount().replace(",","，")) +
-                                ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName().replace(",","，")) +
-                                ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName().replace(",","，")) +
-                                ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName().replace(",","，")) +
-                                ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle().replace(",","，")) +
-                                ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName().replace(",","，")) +
-                                DEFAULT_DELIMITER + entity.getPcImpression() +
-                                DEFAULT_DELIMITER + entity.getPcClick() +
-                                DEFAULT_DELIMITER + entity.getPcCost() +
-                                DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                DEFAULT_DELIMITER + entity.getPcCpc() +
-                                DEFAULT_DELIMITER + entity.getPcConversion() +
-                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                    }
-                } else {
-                    for (StructureReportDTO entity : list) {
-                        os.write(Bytes.concat(commonCSVHead, (dateHead +
-                                ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount().replace(",","，")) +
-                                ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName().replace(",","，")) +
-                                ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName().replace(",","，")) +
-                                ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName().replace(",","，")) +
-                                ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle().replace(",","，")) +
-                                ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName().replace(",","，")) +
-                                DEFAULT_DELIMITER + entity.getMobileImpression() +
-                                DEFAULT_DELIMITER + entity.getMobileClick() +
-                                DEFAULT_DELIMITER + entity.getMobileCost() +
-                                DEFAULT_DELIMITER + entity.getMobileCtr() * 100 / 100 + "%" +
-                                DEFAULT_DELIMITER + entity.getMobileCpc() +
-                                DEFAULT_DELIMITER + entity.getMobileConversion() +
-                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                    }
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Map<String, List<StructureReportDTO>> responseMap = gson.fromJson(data, new TypeToken<Map<String, List<StructureReportDTO>>>() {
-            }.getType());
-
-            try {
-
-                os.write(Bytes.concat(commonCSVHead, (head).getBytes(StandardCharsets.UTF_8)));
-                if (terminal != 2) {
-                    for (Map.Entry<String, List<StructureReportDTO>> voEntity : responseMap.entrySet()) {
-                        for (StructureReportDTO entity : voEntity.getValue()) {
-                            os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                    ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount().replace(",","，")) +
-                                    ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName().replace(",","，")) +
-                                    ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName().replace(",","，")) +
-                                    ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName().replace(",","，")) +
-                                    ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle().replace(",","，")) +
-                                    ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName().replace(",","，")) +
-                                    DEFAULT_DELIMITER + entity.getPcImpression() +
-                                    DEFAULT_DELIMITER + entity.getPcClick() +
-                                    DEFAULT_DELIMITER + entity.getPcCost() +
-                                    DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                    DEFAULT_DELIMITER + entity.getPcCpc() +
-                                    DEFAULT_DELIMITER + entity.getPcConversion() +
-                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                        }
-                    }
-                } else {
-                    for (Map.Entry<String, List<StructureReportDTO>> voEntity : responseMap.entrySet()) {
-                        for (StructureReportDTO entity : voEntity.getValue()) {
-                            os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                    ((entity.getAccount() == null) ? "" : DEFAULT_DELIMITER + entity.getAccount().replace(",","，")) +
-                                    ((entity.getCampaignName() == null) ? "" : DEFAULT_DELIMITER + entity.getCampaignName().replace(",","，")) +
-                                    ((entity.getAdgroupName() == null) ? "" : DEFAULT_DELIMITER + entity.getAdgroupName().replace(",","，")) +
-                                    ((entity.getKeywordName() == null) ? "" : DEFAULT_DELIMITER + entity.getKeywordName().replace(",","，")) +
-                                    ((entity.getCreativeTitle() == null) ? "" : DEFAULT_DELIMITER + entity.getCreativeTitle().replace(",","，")) +
-                                    ((entity.getRegionName() == null) ? "" : DEFAULT_DELIMITER + entity.getRegionName().replace(",","，")) +
-                                    DEFAULT_DELIMITER + entity.getMobileImpression() +
-                                    DEFAULT_DELIMITER + entity.getMobileClick() +
-                                    DEFAULT_DELIMITER + entity.getMobileCost() +
-                                    DEFAULT_DELIMITER + entity.getMobileCtr() * 100 / 100 + "%" +
-                                    DEFAULT_DELIMITER + entity.getMobileCpc() +
-                                    DEFAULT_DELIMITER + entity.getMobileConversion() +
-                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                        }
-                    }
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-    }
-
-    @Override
-    public void downAccountReportCSV(OutputStream os, Date startDate, Date endDate, Date startDate1, Date endDate1, int dateType, int devices, String sortVS, int startVS, int limitVS) {
-        Date[] dateOne = getDateProcessing(startDate, endDate);
-        Date[] dateTow = getDateProcessing(startDate1, endDate1);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        switch (dateType) {
-            case 0:
-                //获取数据
-                List<AccountReportDTO> listOne = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
-                //获取用户统计数据
-                List<Object> userProAll = new ArrayList<>();
-                List<AccountReportDTO> userPro = AccountReportStatisticsUtil.getUserPro(listOne);
-                List<AccountReportDTO> userProAcerage = AccountReportStatisticsUtil.getAveragePro(userPro);
-                userProAll.addAll(userProAcerage);
-                //统计数据
-                Map<String, List<AccountReportDTO>> responseMapOne = getUserDataPro(listOne, dateOne[0], dateOne[1]);
-
-                //如果要求是全部数据
-                if (devices == 0) {
-                    Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne);
-
-                    //计算点击率、平均价格
-                    Map<String, List<AccountReportDTO>> responseMapAverageOne = getAverage(responseMapDevicesOne);
-                    try {
-                        os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                DEFAULT_DELIMITER + "展现量" +
-                                DEFAULT_DELIMITER + "点击量" +
-                                DEFAULT_DELIMITER + "消费" +
-                                DEFAULT_DELIMITER + "点击率" +
-                                DEFAULT_DELIMITER + "平均点击价格" +
-                                DEFAULT_DELIMITER + "转化(页面)" +
-                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                        for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapAverageOne.entrySet()) {
-                            for (AccountReportDTO entity : voEntity.getValue()) {
-                                os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                        DEFAULT_DELIMITER + entity.getPcImpression() +
-                                        DEFAULT_DELIMITER + entity.getPcClick() +
-                                        DEFAULT_DELIMITER + entity.getPcCost() +
-                                        DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                        DEFAULT_DELIMITER + entity.getPcCpc() +
-                                        DEFAULT_DELIMITER + entity.getPcConversion() +
-                                        DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    //计算点击率、平均价格
-                    Map<String, List<AccountReportDTO>> responseMapAverageOne = getAverage(responseMapOne);
-
-                    if (devices == 1) {
-                        try {
-                            os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                    DEFAULT_DELIMITER + "展现量" +
-                                    DEFAULT_DELIMITER + "点击量" +
-                                    DEFAULT_DELIMITER + "消费" +
-                                    DEFAULT_DELIMITER + "点击率" +
-                                    DEFAULT_DELIMITER + "平均点击价格" +
-                                    DEFAULT_DELIMITER + "转化(页面)" +
-                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                            for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapAverageOne.entrySet()) {
-                                for (AccountReportDTO entity : voEntity.getValue()) {
-                                    os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                            DEFAULT_DELIMITER + entity.getPcImpression() +
-                                            DEFAULT_DELIMITER + entity.getPcClick() +
-                                            DEFAULT_DELIMITER + entity.getPcCost() +
-                                            DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                            DEFAULT_DELIMITER + entity.getPcCpc() +
-                                            DEFAULT_DELIMITER + entity.getPcConversion() +
-                                            DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else if (devices == 2) {
-                        try {
-                            os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                    DEFAULT_DELIMITER + "展现量" +
-                                    DEFAULT_DELIMITER + "点击量" +
-                                    DEFAULT_DELIMITER + "消费" +
-                                    DEFAULT_DELIMITER + "点击率" +
-                                    DEFAULT_DELIMITER + "平均点击价格" +
-                                    DEFAULT_DELIMITER + "转化(页面)" +
-                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                            for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapAverageOne.entrySet()) {
-                                for (AccountReportDTO entity : voEntity.getValue()) {
-                                    os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                            DEFAULT_DELIMITER + entity.getMobileImpression() +
-                                            DEFAULT_DELIMITER + entity.getMobileClick() +
-                                            DEFAULT_DELIMITER + entity.getMobileCost() +
-                                            DEFAULT_DELIMITER + entity.getMobileCtr() * 100 / 100 + "%" +
-                                            DEFAULT_DELIMITER + entity.getMobileCpc() +
-                                            DEFAULT_DELIMITER + entity.getMobileConversion() +
-                                            DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                break;
-            case 1:
-                //分日
-                Map<String, List<AccountReportDTO>> responseMapOne1 = new HashMap<>();
-
-                List<AccountReportDTO> listOne1 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
-                //获取用户统计数据
-                List<Object> userProAll1 = new ArrayList<>();
-                List<AccountReportDTO> userPro1 = AccountReportStatisticsUtil.getUserPro(listOne1);
-                List<AccountReportDTO> userProAcerage1 = AccountReportStatisticsUtil.getAveragePro(userPro1);
-                userProAll1.addAll(userProAcerage1);
-
-
-                List<Object> objectListDateOne1 = new ArrayList<>();
-                for (AccountReportDTO listEnd : listOne1) {
-                    List<AccountReportDTO> list = new ArrayList<>();
-                    list.add(listEnd);
-                    responseMapOne1.put(dateFormat.format(listEnd.getDate()), list);
-                }
-                List<String> dateString = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
-                String[] newDate = dateString.toArray(new String[dateString.size()]);
-                for (String s : newDate) {
-                    objectListDateOne1.add(s);
-                }
-
-
-                if (devices == 0) {
-                    Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne1);
-                    List<Object> objectList1 = new ArrayList<>();
-                    objectList1.add(responseMapDevicesOne);
-
-
-                    for (Object o : objectListDateOne1) {
-                        if (responseMapDevicesOne.get(o) == null) {
-                            List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
-                            AccountReportDTO accountReportDTO = new AccountReportDTO();
-                            accountReportDTOs.add(accountReportDTO);
-                            responseMapDevicesOne.put(o.toString(), accountReportDTOs);
-                        }
-                    }
-
-                    try {
-                        os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                DEFAULT_DELIMITER + "展现量" +
-                                DEFAULT_DELIMITER + "点击量" +
-                                DEFAULT_DELIMITER + "消费" +
-                                DEFAULT_DELIMITER + "点击率" +
-                                DEFAULT_DELIMITER + "平均点击价格" +
-                                DEFAULT_DELIMITER + "转化(页面)" +
-                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-
-                        for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapDevicesOne.entrySet()) {
-                            for (AccountReportDTO entity : voEntity.getValue()) {
-                                os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                        DEFAULT_DELIMITER + entity.getPcImpression() +
-                                        DEFAULT_DELIMITER + entity.getPcClick() +
-                                        DEFAULT_DELIMITER + entity.getPcCost() +
-                                        DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                        DEFAULT_DELIMITER + entity.getPcCpc() +
-                                        DEFAULT_DELIMITER + entity.getPcConversion() +
-                                        DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    for (Object o : objectListDateOne1) {
-                        if (responseMapOne1.get(o) == null) {
-                            List<AccountReportDTO> accountReportDTOs = new ArrayList<>();
-                            AccountReportDTO accountReportDTO = new AccountReportDTO();
-                            accountReportDTOs.add(accountReportDTO);
-                            responseMapOne1.put(o.toString(), accountReportDTOs);
-                        }
-                    }
-
-                    if (devices == 1) {
-                        try {
-                            os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                    DEFAULT_DELIMITER + "展现量" +
-                                    DEFAULT_DELIMITER + "点击量" +
-                                    DEFAULT_DELIMITER + "消费" +
-                                    DEFAULT_DELIMITER + "点击率" +
-                                    DEFAULT_DELIMITER + "平均点击价格" +
-                                    DEFAULT_DELIMITER + "转化(页面)" +
-                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-
-                            for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapOne1.entrySet()) {
-                                for (AccountReportDTO entity : voEntity.getValue()) {
-                                    os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                            DEFAULT_DELIMITER + entity.getPcImpression() +
-                                            DEFAULT_DELIMITER + entity.getPcClick() +
-                                            DEFAULT_DELIMITER + entity.getPcCost() +
-                                            DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                            DEFAULT_DELIMITER + entity.getPcCpc() +
-                                            DEFAULT_DELIMITER + entity.getPcConversion() +
-                                            DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        try {
-                            os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                    DEFAULT_DELIMITER + "展现量" +
-                                    DEFAULT_DELIMITER + "点击量" +
-                                    DEFAULT_DELIMITER + "消费" +
-                                    DEFAULT_DELIMITER + "点击率" +
-                                    DEFAULT_DELIMITER + "平均点击价格" +
-                                    DEFAULT_DELIMITER + "转化(页面)" +
-                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                            for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapOne1.entrySet()) {
-                                for (AccountReportDTO entity : voEntity.getValue()) {
-                                    os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                            DEFAULT_DELIMITER + entity.getMobileImpression() +
-                                            DEFAULT_DELIMITER + entity.getMobileClick() +
-                                            DEFAULT_DELIMITER + entity.getMobileCost() +
-                                            DEFAULT_DELIMITER + entity.getMobileCtr() * 100 / 100 + "%" +
-                                            DEFAULT_DELIMITER + entity.getMobileCpc() +
-                                            DEFAULT_DELIMITER + entity.getMobileConversion() +
-                                            DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                break;
-            case 2:
-                ///分周
-
-                List<Object> objectListDateOne2 = new ArrayList<>();
-                List<AccountReportDTO> listOne2 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
-
-                //获取用户统计数据
-                List<Object> userProAll2 = new ArrayList<>();
-                List<AccountReportDTO> userPro2 = AccountReportStatisticsUtil.getUserPro(listOne2);
-                List<AccountReportDTO> userProAcerage2 = AccountReportStatisticsUtil.getAveragePro(userPro2);
-                userProAll2.addAll(userProAcerage2);
-
-                SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
-                List<String> dateListString = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
-                boolean judgei = true;
-                for (String s : dateListString) {
-                    Date judgeDate = null;
-                    try {
-                        judgeDate = sim.parse(s);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    for (AccountReportDTO dto : listOne2) {
-                        if (judgeDate.getTime() == dto.getDate().getTime()) {
-                            dto.setOrderBy("1");
-                            judgei = false;
-                            break;
-                        } else {
-                            judgei = true;
-                        }
-                    }
-                    if (judgei) {
-                        AccountReportDTO reportDTO = new AccountReportDTO();
-                        reportDTO.setMobileClick(0);
-                        reportDTO.setMobileConversion(0d);
-                        reportDTO.setMobileCost(BigDecimal.ZERO);
-                        reportDTO.setMobileCpc(BigDecimal.ZERO);
-                        reportDTO.setMobileCpm(BigDecimal.ZERO);
-                        reportDTO.setMobileImpression(0);
-                        reportDTO.setPcClick(0);
-                        reportDTO.setPcConversion(0d);
-                        reportDTO.setPcCost(BigDecimal.ZERO);
-                        reportDTO.setPcCpc(BigDecimal.ZERO);
-                        reportDTO.setPcCpm(BigDecimal.ZERO);
-                        reportDTO.setPcImpression(0);
-                        reportDTO.setDate(judgeDate);
-                        reportDTO.setOrderBy("1");
-                        listOne2.add(reportDTO);
-                    }
-                }
-                Collections.sort(listOne2);
-
-                for (AccountReportDTO responseZou : listOne2) {
-                    objectListDateOne2.add(responseZou.getDate());
-                }
-
-                try {
-                    os.write(Bytes.concat(commonCSVHead, ("时间" +
-                            DEFAULT_DELIMITER + "展现量" +
-                            DEFAULT_DELIMITER + "点击量" +
-                            DEFAULT_DELIMITER + "消费" +
-                            DEFAULT_DELIMITER + "点击率" +
-                            DEFAULT_DELIMITER + "平均点击价格" +
-                            DEFAULT_DELIMITER + "转化(页面)" +
-                            DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                int s = 0;
-                int endNumber = 0;
-                int steep = (objectListDateOne2.size() % 7 == 0) ? (objectListDateOne2.size() / 7) : (objectListDateOne2.size() / 7) + 1;
-                for (int i = 0; i < steep; i++) {
-                    List<AccountReportDTO> listDateOne = new ArrayList<>();
-                    for (s = endNumber; s < endNumber + 7; s++) {
-                        if (endNumber >= objectListDateOne2.size() || s >= objectListDateOne2.size()) {
-                            continue;
-                        }
-                        listDateOne.add(listOne2.get(s));
-
-                    }
-                    endNumber = s;
-
-                    //获取数据
-                    Map<String, List<AccountReportDTO>> responseMapOne3 = getUserDataPro(listDateOne, listDateOne.get(0).getDate(), listDateOne.get(listDateOne.size() - 1).getDate());
-                    if (devices == 0) {
-                        Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne3);
-
-                        try {
-                            for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapDevicesOne.entrySet()) {
-                                for (AccountReportDTO entity : voEntity.getValue()) {
-                                    os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                            DEFAULT_DELIMITER + entity.getPcImpression() +
-                                            DEFAULT_DELIMITER + entity.getPcClick() +
-                                            DEFAULT_DELIMITER + entity.getPcCost() +
-                                            DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                            DEFAULT_DELIMITER + entity.getPcCpc() +
-                                            DEFAULT_DELIMITER + entity.getPcConversion() +
-                                            DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        if (devices == 1) {
-                            try {
-                                for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapOne3.entrySet()) {
-                                    for (AccountReportDTO entity : voEntity.getValue()) {
-                                        os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                                DEFAULT_DELIMITER + entity.getPcImpression() +
-                                                DEFAULT_DELIMITER + entity.getPcClick() +
-                                                DEFAULT_DELIMITER + entity.getPcCost() +
-                                                DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                                DEFAULT_DELIMITER + entity.getPcCpc() +
-                                                DEFAULT_DELIMITER + entity.getPcConversion() +
-                                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                    }
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMapOne3.entrySet()) {
-                                    for (AccountReportDTO entity : voEntity.getValue()) {
-                                        os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                                DEFAULT_DELIMITER + entity.getMobileImpression() +
-                                                DEFAULT_DELIMITER + entity.getMobileClick() +
-                                                DEFAULT_DELIMITER + entity.getMobileCost() +
-                                                DEFAULT_DELIMITER + entity.getMobileCtr() * 100 / 100 + "%" +
-                                                DEFAULT_DELIMITER + entity.getMobileCpc() +
-                                                DEFAULT_DELIMITER + entity.getMobileConversion() +
-                                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                    }
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-
-
-                break;
-            case 3:
-                //分月
-
-                List<Object> objectListDateOne3 = new ArrayList<>();
-                List<Object> objectListDateOne31 = new ArrayList<>();
-
-                List<AccountReportDTO> listOne3 = new ArrayList<>(basisReportDAO.getAccountReport(dateOne[0], dateOne[1]));
-                //获取用户统计数据
-                List<Object> userProAll3 = new ArrayList<>();
-                List<AccountReportDTO> userPro3 = AccountReportStatisticsUtil.getUserPro(listOne3);
-                List<AccountReportDTO> userProAcerage3 = AccountReportStatisticsUtil.getAveragePro(userPro3);
-                userProAll3.addAll(userProAcerage3);
-
-
-                SimpleDateFormat simt = new SimpleDateFormat("yyyy-MM-dd");
-                List<String> dateListStringt = DateUtils.getPeriod(dateFormat.format(dateOne[0]), dateFormat.format(dateOne[1]));
-                boolean judgeit = true;
-                for (String st : dateListStringt) {
-                    Date judgeDate = null;
-                    try {
-                        judgeDate = simt.parse(st);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    for (AccountReportDTO dto : listOne3) {
-                        if (judgeDate.getTime() == dto.getDate().getTime()) {
-                            dto.setOrderBy("1");
-                            judgeit = false;
-                            break;
-                        } else {
-                            judgeit = true;
-                        }
-                    }
-                    if (judgeit) {
-                        AccountReportDTO reportDTO = new AccountReportDTO();
-                        reportDTO.setMobileClick(0);
-                        reportDTO.setMobileConversion(0d);
-                        reportDTO.setMobileCost(BigDecimal.ZERO);
-                        reportDTO.setMobileCpc(BigDecimal.ZERO);
-                        reportDTO.setMobileCpm(BigDecimal.ZERO);
-                        reportDTO.setMobileImpression(0);
-                        reportDTO.setPcClick(0);
-                        reportDTO.setPcConversion(0d);
-                        reportDTO.setPcCost(BigDecimal.ZERO);
-                        reportDTO.setPcCpc(BigDecimal.ZERO);
-                        reportDTO.setPcCpm(BigDecimal.ZERO);
-                        reportDTO.setPcImpression(0);
-                        reportDTO.setDate(judgeDate);
-                        reportDTO.setOrderBy("1");
-                        listOne3.add(reportDTO);
-                    }
-                }
-                Collections.sort(listOne3);
-
-                for (AccountReportDTO responseYue : listOne3) {
-                    objectListDateOne3.add(responseYue.getDate());
-                }
-
-
-                Map<String, List<AccountReportDTO>> objectList3 = new HashMap<>();
-
-
-                Calendar calendar = Calendar.getInstance();
-                int index = 0;
-                int im = Integer.parseInt(dateListStringt.get(0).substring(dateListStringt.get(0).length() - 2, dateListStringt.get(0).length()));
-
-                if (im == 1) {
-                    index = 0;
-                } else {
-                    index = im - 1;
-                }
-
-                int numbert = 0;
-                try {
-                    calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dateListStringt.get(0)));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                List<AccountReportDTO> listDateOne1 = new ArrayList<>();
-                for (int j = 0; j < dateListStringt.size() - 1; j++) {
-                    int is = 0;
-                    if (im != 1) {
-                        is = (numbert + index) - (im - 1);
-                    } else {
-                        is = (numbert + index);
-                    }
-                    index++;
-
-                    listDateOne1.add(listOne3.get(j));
-
-                    if (index == calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                        //获取数据
-                        Map<String, List<AccountReportDTO>> responseMapOne4 = null;
-                        try {
-                            responseMapOne4 = getUserDataPro(listDateOne1, dateFormat.parse(dateListStringt.get(numbert)), dateFormat.parse(dateListStringt.get(is)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-
-                        if (devices == 0) {
-                            Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne4);
-                            objectList3.putAll(responseMapDevicesOne);
-                            objectListDateOne31.add(dateListStringt.get(numbert) + " 至 " + dateListStringt.get(is));
-
-                        } else {
-                            objectList3.putAll(responseMapOne4);
-                            objectListDateOne31.add(dateListStringt.get(numbert) + " 至 " + dateListStringt.get(is));
-
-                        }
-                        if (im != 1) {
-                            numbert = (numbert + index) - (im - 1);
-                            im = 1;
-                        } else {
-                            numbert = numbert + index;
-                        }
-
-
-                        index = 0;
-                        listDateOne1 = new ArrayList<>();
-
-                    }
-                    try {
-                        calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dateListStringt.get(j)));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (dateListStringt.size() == 1) {
-                    listDateOne1.add(listOne3.get(0));
-                }
-                if (index > 0) {
-                    //获取数据
-                    Map<String, List<AccountReportDTO>> responseMapOne4 = null;
-                    try {
-                        responseMapOne4 = getUserDataPro(listDateOne1, dateFormat.parse(dateListStringt.get(numbert)), dateFormat.parse(dateListStringt.get((numbert + index) - (im - 1))));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    if (devices == 0) {
-                        Map<String, List<AccountReportDTO>> responseMapDevicesOne = getPcPlusMobileDate(responseMapOne4);
-                        objectList3.putAll(responseMapDevicesOne);
-
-                    } else {
-                        objectList3.putAll(responseMapOne4);
-                    }
-                }
-
-                if (devices == 0) {
-                    try {
-                        os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                DEFAULT_DELIMITER + "展现量" +
-                                DEFAULT_DELIMITER + "点击量" +
-                                DEFAULT_DELIMITER + "消费" +
-                                DEFAULT_DELIMITER + "点击率" +
-                                DEFAULT_DELIMITER + "平均点击价格" +
-                                DEFAULT_DELIMITER + "转化(页面)" +
-                                DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-
-                        for (Map.Entry<String, List<AccountReportDTO>> voEntity : objectList3.entrySet()) {
-                            for (AccountReportDTO entity : voEntity.getValue()) {
-                                os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                        DEFAULT_DELIMITER + entity.getPcImpression() +
-                                        DEFAULT_DELIMITER + entity.getPcClick() +
-                                        DEFAULT_DELIMITER + entity.getPcCost() +
-                                        DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                        DEFAULT_DELIMITER + entity.getPcCpc() +
-                                        DEFAULT_DELIMITER + entity.getPcConversion() +
-                                        DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    if (devices == 1) {
-                        try {
-                            os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                    DEFAULT_DELIMITER + "展现量" +
-                                    DEFAULT_DELIMITER + "点击量" +
-                                    DEFAULT_DELIMITER + "消费" +
-                                    DEFAULT_DELIMITER + "点击率" +
-                                    DEFAULT_DELIMITER + "平均点击价格" +
-                                    DEFAULT_DELIMITER + "转化(页面)" +
-                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-
-                            for (Map.Entry<String, List<AccountReportDTO>> voEntity : objectList3.entrySet()) {
-                                for (AccountReportDTO entity : voEntity.getValue()) {
-                                    os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                            DEFAULT_DELIMITER + entity.getPcImpression() +
-                                            DEFAULT_DELIMITER + entity.getPcClick() +
-                                            DEFAULT_DELIMITER + entity.getPcCost() +
-                                            DEFAULT_DELIMITER + entity.getPcCtr() * 100 / 100 + "%" +
-                                            DEFAULT_DELIMITER + entity.getPcCpc() +
-                                            DEFAULT_DELIMITER + entity.getPcConversion() +
-                                            DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        try {
-                            os.write(Bytes.concat(commonCSVHead, ("时间" +
-                                    DEFAULT_DELIMITER + "展现量" +
-                                    DEFAULT_DELIMITER + "点击量" +
-                                    DEFAULT_DELIMITER + "消费" +
-                                    DEFAULT_DELIMITER + "点击率" +
-                                    DEFAULT_DELIMITER + "平均点击价格" +
-                                    DEFAULT_DELIMITER + "转化(页面)" +
-                                    DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                            for (Map.Entry<String, List<AccountReportDTO>> voEntity : objectList3.entrySet()) {
-                                for (AccountReportDTO entity : voEntity.getValue()) {
-                                    os.write(Bytes.concat(commonCSVHead, (voEntity.getKey() +
-                                            DEFAULT_DELIMITER + entity.getMobileImpression() +
-                                            DEFAULT_DELIMITER + entity.getMobileClick() +
-                                            DEFAULT_DELIMITER + entity.getMobileCost() +
-                                            DEFAULT_DELIMITER + entity.getMobileCtr() * 100 / 100 + "%" +
-                                            DEFAULT_DELIMITER + entity.getMobileCpc() +
-                                            DEFAULT_DELIMITER + entity.getMobileConversion() +
-                                            DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        }
-    }
-
     /**
      * ****************API****************************
      */
@@ -2422,158 +1013,6 @@ public class BasisReportServiceImpl implements BasisReportService {
             }
         }
         return listMap;
-    }
-
-
-    /**
-     * 账户 计算所有数据  包含PC端 、 移动端
-     *
-     * @param responseMap
-     * @return
-     */
-    public Map<String, List<AccountReportDTO>> getPcPlusMobileDate(Map<String, List<AccountReportDTO>> responseMap) {
-        Map<String, List<AccountReportDTO>> respons = new HashMap<>();
-
-
-        DecimalFormat df = new DecimalFormat("#.0000");
-        for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMap.entrySet()) {
-            List<AccountReportDTO> list = new ArrayList<>();
-            AccountReportDTO dto = new AccountReportDTO();
-            for (AccountReportDTO response : voEntity.getValue()) {
-                dto.setPcImpression(((response.getPcImpression() == null)?0:response.getPcImpression()) + ((response.getMobileImpression() == null) ? 0 : response.getMobileImpression()));
-                dto.setPcConversion(((response.getPcConversion() == null)?0:response.getPcConversion()) + ((response.getMobileConversion() == null) ? 0 : response.getMobileConversion()));
-                dto.setPcClick(((response.getPcClick() == null)?0:response.getPcClick()) + ((response.getMobileClick() == null) ? 0 : response.getMobileClick()));
-                dto.setPcCost(response.getPcCost().add((response.getMobileCost() == null) ? BigDecimal.valueOf(0) : response.getMobileCost()));
-                //计算点击率
-                if (((response.getPcImpression() == null) ? 0 : response.getPcImpression()) == 0) {
-                    dto.setPcCtr(0.00);
-                } else {
-                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((response.getPcClick().doubleValue() / response.getPcImpression().doubleValue()))));
-                    BigDecimal big = new BigDecimal(100);
-                    double divide = ctrBig.multiply(big).doubleValue();
-                    dto.setPcCtr(divide);
-                }
-
-                //计算平均点击价格
-                if (((response.getPcClick() == null) ? 0 : response.getPcClick()) == 0) {
-                    dto.setPcCpc(BigDecimal.valueOf(0));
-                } else {
-                    dto.setPcCpc(response.getPcCost().divide(BigDecimal.valueOf(response.getPcClick()), 2, BigDecimal.ROUND_UP));
-                }
-
-                dto.setMobileImpression(0);
-                dto.setMobileClick(0);
-                dto.setMobileConversion(0.00);
-                dto.setMobileCost(BigDecimal.ZERO);
-                dto.setMobileCpc(BigDecimal.ZERO);
-                dto.setMobileCpm(BigDecimal.ZERO);
-                dto.setMobileCtr(0.00);
-                list.add(dto);
-            }
-            respons.put(voEntity.getKey(), list);
-        }
-        return respons;
-    }
-
-    /**
-     * 账户计算点击率 平均价格等
-     */
-    private Map<String, List<AccountReportDTO>> getAverage(Map<String, List<AccountReportDTO>> responseMap) {
-        DecimalFormat df = new DecimalFormat("#.0000");
-        for (Map.Entry<String, List<AccountReportDTO>> voEntity : responseMap.entrySet()) {
-            for (AccountReportDTO response : voEntity.getValue()) {
-                if (response.getMobileImpression() == null || response.getMobileImpression() == 0) {
-                    response.setMobileCtr(0.00);
-                } else {
-                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(response.getMobileClick().doubleValue() / response.getMobileImpression().doubleValue())));
-                    BigDecimal big = new BigDecimal(100);
-                    double divide = ctrBig.multiply(big).doubleValue();
-                    response.setMobileCtr(divide);
-                }
-                if (response.getMobileClick() == null || response.getMobileClick() == 0) {
-                    response.setMobileCpc(BigDecimal.valueOf(0.00));
-                } else {
-                    response.setMobileCpc(response.getMobileCost().divide(BigDecimal.valueOf(response.getMobileClick()), 2, BigDecimal.ROUND_UP));
-                }
-
-                if (response.getPcImpression() == null || response.getPcImpression() == 0) {
-                    response.setPcCtr(0.00);
-                } else {
-                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(response.getPcClick().doubleValue() / response.getPcImpression().doubleValue())));
-                    BigDecimal big = new BigDecimal(10000);
-                    double divide = ctrBig.multiply(big).doubleValue();
-                    response.setPcCtr(divide / 100);
-                }
-                if (response.getPcClick() == null || response.getPcClick() == 0) {
-                    response.setPcCpc(BigDecimal.valueOf(0.00));
-                } else {
-                    response.setPcCpc(response.getPcCost().divide(BigDecimal.valueOf(response.getPcClick()), 2, BigDecimal.ROUND_UP));
-                }
-            }
-        }
-        return responseMap;
-    }
-
-    /**
-     * 账户对用户数据进行处理
-     *
-     * @param responses 用户List 数据
-     * @param date1     数据开始时间
-     * @param date2     数据结束时间
-     * @return
-     */
-    private Map<String, List<AccountReportDTO>> getUserDataPro(List<AccountReportDTO> responses, Date date1, Date date2) {
-        Map<String, List<AccountReportDTO>> responseMap = new HashMap<>();
-        List<AccountReportDTO> responseList = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (AccountReportDTO enit : responses) {
-            if (responseList.size() > 0) {
-                responseList.get(0).setPcImpression(responseList.get(0).getPcImpression() + ((enit.getPcImpression() == null) ? 0 : enit.getPcImpression()));
-                responseList.get(0).setPcClick(responseList.get(0).getPcClick() + ((enit.getPcClick() == null) ? 0 : enit.getPcClick()));
-                responseList.get(0).setPcCost(responseList.get(0).getPcCost().add((enit.getPcCost() == null) ? BigDecimal.valueOf(0) : enit.getPcCost()));
-                responseList.get(0).setPcConversion(responseList.get(0).getPcConversion() + ((enit.getPcConversion() == null) ? 0 : enit.getPcConversion()));
-                responseList.get(0).setPcCtr(0d);
-                responseList.get(0).setPcCpc(BigDecimal.valueOf(0));
-                responseList.get(0).setMobileImpression(((responseList.get(0).getMobileImpression() == null) ? 0 : responseList.get(0).getMobileImpression()) + ((enit.getMobileImpression() == null) ? 0 : enit.getMobileImpression()));
-                responseList.get(0).setMobileClick(((responseList.get(0).getMobileClick() == null) ? 0 : responseList.get(0).getMobileClick()) + ((enit.getMobileClick() == null) ? 0 : enit.getMobileClick()));
-                responseList.get(0).setMobileCost(((responseList.get(0).getMobileCost() == null) ? BigDecimal.valueOf(0) : responseList.get(0).getMobileCost()).add((enit.getMobileCost() == null) ? BigDecimal.valueOf(0) : enit.getMobileCost()));
-                responseList.get(0).setMobileConversion(((responseList.get(0).getMobileConversion() == null) ? 0 : responseList.get(0).getMobileConversion()) + ((enit.getMobileConversion() == null) ? 0 : enit.getMobileConversion()));
-                responseList.get(0).setMobileCtr(0d);
-                responseList.get(0).setMobileCpc(BigDecimal.valueOf(0));
-            } else {
-                enit.setDateRep(dateFormat.format(enit.getDate()));
-                responseList.add(enit);
-            }
-        }
-        responseMap.put(dateFormat.format(date1) + " 至 " + dateFormat.format(date2), responseList);
-        return responseMap;
-    }
-
-    /**
-     * 账户时间处理
-     *
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    private Date[] getDateProcessing(Date startDate, Date endDate) {
-        Date dateOne = null;
-        Date dateTow = null;
-        if (startDate == null && endDate != null) {
-            dateOne = endDate;
-        }
-        if (endDate == null && startDate != null) {
-            dateTow = startDate;
-        }
-        if (startDate == null && endDate == null) {
-            dateOne = new Date();
-            dateTow = new Date();
-        } else {
-            dateOne = startDate;
-            dateTow = endDate;
-        }
-        Date[] dates = {dateOne, dateTow};
-        return dates;
     }
 
     /**
@@ -2629,369 +1068,4 @@ public class BasisReportServiceImpl implements BasisReportService {
         }
         return listMapDay;
     }
-
-    /**
-     * 获取表结尾单词
-     *
-     * @param reportType
-     * @return
-     */
-    public String getTableType(int reportType) {
-        String reportName = "";
-        switch (reportType) {
-            case 0:
-                //计划表结尾
-                reportName = "-campaign";
-                break;
-            case 1:
-                //单元表结尾
-                reportName = "-adgroup";
-                break;
-            case 2:
-                //创意表结尾
-                reportName = "-keyword";
-                break;
-            case 3:
-                //关键字表结尾
-                reportName = "-creative";
-                break;
-            case 4:
-                //地域表结尾
-                reportName = "-region";
-                break;
-            case 5:
-                //地域表结尾
-                reportName = "-region";
-                break;
-            case 6:
-                //地域表结尾
-                reportName = "-region";
-                break;
-            case 7:
-                //地域表结尾
-                reportName = "-keyword";
-                break;
-        }
-
-        return reportName;
-    }
-
-    //对单个的数据进行计算百分比
-    private Map<String, StructureReportDTO> percentage(Map<String, StructureReportDTO> map) {
-        DecimalFormat df = new DecimalFormat("#.00");
-        for (Map.Entry<String, StructureReportDTO> voEntity : map.entrySet()) {
-            if (voEntity.getValue().getMobileImpression() == null || voEntity.getValue().getMobileImpression() == 0) {
-                voEntity.getValue().setMobileCtr(0.00);
-            } else {
-                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(voEntity.getValue().getMobileClick().doubleValue() / voEntity.getValue().getMobileImpression().doubleValue())));
-                BigDecimal big = new BigDecimal(100);
-                double divide = ctrBig.multiply(big).doubleValue();
-                voEntity.getValue().setMobileCtr(divide);
-            }
-            if (voEntity.getValue().getMobileClick() == null || voEntity.getValue().getMobileClick() == 0) {
-                voEntity.getValue().setMobileCpc(BigDecimal.valueOf(0.00));
-            } else {
-                voEntity.getValue().setMobileCpc(voEntity.getValue().getMobileCost().divide(BigDecimal.valueOf(voEntity.getValue().getMobileClick()), 3, BigDecimal.ROUND_UP));
-            }
-
-            if (voEntity.getValue().getPcImpression() == null || voEntity.getValue().getPcImpression() == 0) {
-                voEntity.getValue().setPcCtr(0.00);
-            } else {
-                double ctrAve = voEntity.getValue().getPcClick().doubleValue() / voEntity.getValue().getPcImpression();
-                double divide = ctrAve * 10000;
-                voEntity.getValue().setPcCtr(divide / 100);
-            }
-            if (voEntity.getValue().getPcClick() == null || voEntity.getValue().getPcClick() == 0) {
-                voEntity.getValue().setPcCpc(BigDecimal.valueOf(0.00));
-            } else {
-                voEntity.getValue().setPcCpc(voEntity.getValue().getPcCost().divide(BigDecimal.valueOf(voEntity.getValue().getPcClick().doubleValue()), 2, BigDecimal.ROUND_UP));
-            }
-        }
-        return map;
-    }
-
-    //对一个集合中的数据进行计算百分比
-    private Map<String, List<StructureReportDTO>> percentageList(Map<String, List<StructureReportDTO>> mapDay, String userName, int reportType) {
-        DecimalFormat df = new DecimalFormat("#.0000");
-        Map<String, List<StructureReportDTO>> stringListMap = new HashMap<>();
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : mapDay.entrySet()) {
-            for (StructureReportDTO entity : voEntity.getValue()) {
-                entity.setAccount(userName);
-                if (entity.getMobileImpression() == null || entity.getMobileImpression() == 0) {
-                    entity.setMobileCtr(0.00);
-                } else {
-                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(entity.getMobileClick().doubleValue() / entity.getMobileImpression().doubleValue())));
-                    BigDecimal big = new BigDecimal(100);
-                    double divide = ctrBig.multiply(big).doubleValue();
-                    entity.setMobileCtr(divide);
-                }
-                if (entity.getMobileClick() == null || entity.getMobileClick() == 0) {
-                    entity.setMobileCpc(BigDecimal.valueOf(0.00));
-                } else {
-                    entity.setMobileCpc(entity.getMobileCost().divide(BigDecimal.valueOf(entity.getMobileClick()), 2, BigDecimal.ROUND_UP));
-                }
-
-                if (entity.getPcImpression() == null || entity.getPcImpression() == 0) {
-                    entity.setPcCtr(0.00);
-                } else {
-                    BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format(entity.getPcClick().doubleValue() / entity.getPcImpression().doubleValue())));
-                    BigDecimal big = new BigDecimal(100);
-                    double divide = ctrBig.multiply(big).doubleValue();
-                    entity.setPcCtr(divide);
-                }
-                if (entity.getPcClick() == null || entity.getPcClick() == 0) {
-                    entity.setPcCpc(BigDecimal.valueOf(0.00));
-                } else {
-                    entity.setPcCpc(entity.getPcCost().divide(BigDecimal.valueOf(entity.getPcClick()), 2, BigDecimal.ROUND_UP));
-                }
-            }
-
-        }
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : mapDay.entrySet()) {
-            Map<String, StructureReportDTO> objects = new HashMap<>();
-            ForkJoinPool joinPoolTow = new ForkJoinPool();
-            //开始对数据进行处理
-            Future<Map<String, StructureReportDTO>> joinTasks = joinPoolTow.submit(new BasisReportPCus(voEntity.getValue(), 0, voEntity.getValue().size(), reportType));
-            try {
-                //得到处理后的数据
-                objects = joinTasks.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            List<StructureReportDTO> entities1 = new ArrayList<>();
-            for (Iterator<Map.Entry<String, StructureReportDTO>> entry2 = objects.entrySet().iterator(); entry2.hasNext(); ) {
-                entities1.add(entry2.next().getValue());
-            }
-            stringListMap.put(voEntity.getKey(), entities1);
-        }
-
-
-        return stringListMap;
-    }
-
-    //统计当前查出数据的总和（分标示）
-    private List<StructureReportDTO> getCountStructure(Map<String, List<StructureReportDTO>> dateMap) {
-        StructureReportDTO objEntity = new StructureReportDTO();
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : dateMap.entrySet()) {
-            for (StructureReportDTO entity : voEntity.getValue()) {
-                objEntity.setMobileImpression(((objEntity.getMobileImpression() == null) ? 0 : objEntity.getMobileImpression()) + ((entity.getMobileImpression() == null) ? 0 : entity.getMobileImpression()));
-                objEntity.setMobileClick(((objEntity.getMobileClick() == null) ? 0 : objEntity.getMobileClick()) + ((entity.getMobileClick() == null) ? 0 : entity.getMobileClick()));
-                objEntity.setMobileCost(((objEntity.getMobileCost() == null) ? BigDecimal.valueOf(0) : objEntity.getMobileCost()).add((entity.getMobileCost() == null) ? BigDecimal.valueOf(0) : entity.getMobileCost()));
-                objEntity.setMobileConversion(((objEntity.getMobileConversion() == null) ? 0 : objEntity.getMobileConversion()) + ((entity.getMobileConversion() == null) ? 0 : entity.getMobileConversion()));
-
-                objEntity.setPcImpression(((objEntity.getPcImpression() == null) ? 0 : objEntity.getPcImpression()) + ((entity.getPcImpression() == null) ? 0 : entity.getPcImpression()));
-                objEntity.setPcClick(((objEntity.getPcClick() == null) ? 0 : objEntity.getPcClick()) + ((entity.getPcClick() == null) ? 0 : entity.getPcClick()));
-                objEntity.setPcCost(((objEntity.getPcCost() == null) ? BigDecimal.valueOf(0) : objEntity.getPcCost()).add((entity.getPcCost() == null) ? BigDecimal.valueOf(0) : entity.getPcCost()));
-                objEntity.setPcConversion(((objEntity.getPcConversion() == null) ? 0 : objEntity.getPcConversion()) + ((entity.getPcConversion() == null) ? 0 : entity.getPcConversion()));
-            }
-        }
-        List<StructureReportDTO> entityList = new ArrayList<>();
-        entityList.add(objEntity);
-        return entityList;
-    }
-
-    //获取饼状图需要数据
-    private List<StructureReportDTO> getPieData(List<StructureReportDTO> returnList, int terminal, String sortField, String sort) {
-        for (StructureReportDTO entity : returnList) {
-            entity.setOrderBy(sort);
-            entity.setTerminal(terminal);
-        }
-        Collections.sort(returnList);
-        int i = 0;
-        List<StructureReportDTO> entityList = new ArrayList<>();
-        StructureReportDTO entity = new StructureReportDTO();
-        for (StructureReportDTO entityReport : returnList) {
-            StructureReportDTO entity1 = new StructureReportDTO();
-            if (i < 10) {
-                i++;
-                switch (sortField) {
-                    case REPORT_IMPR:
-                        //如果用户只查询手机
-                        if (terminal == 2) {
-                            entity1.setMobileImpression(entityReport.getMobileImpression());
-                            entity1.setRegionName(entityReport.getRegionName());
-                            entityList.add(entity1);
-                        } else {
-                            entity1.setPcImpression(entityReport.getPcImpression());
-                            entity1.setRegionName(entityReport.getRegionName());
-                            entityList.add(entity1);
-                        }
-                        break;
-                    case REPORT_CLICK:
-                        if (terminal == 2) {
-                            entity1.setMobileClick(entityReport.getMobileClick());
-                            entity1.setRegionName(entityReport.getRegionName());
-                            entityList.add(entity1);
-                        } else {
-                            entity1.setPcClick(entityReport.getPcClick());
-                            entity1.setRegionName(entityReport.getRegionName());
-                            entityList.add(entity1);
-                        }
-                        break;
-                    case REPORT_COST:
-                        if (terminal == 2) {
-                            entity1.setMobileCost(entityReport.getMobileCost());
-                            entity1.setRegionName(entityReport.getRegionName());
-                            entityList.add(entity1);
-                        } else {
-                            entity1.setPcCost(entityReport.getPcCost());
-                            entity1.setRegionName(entityReport.getRegionName());
-                            entityList.add(entity1);
-                        }
-                        break;
-                    case REPORT_CONV:
-                        if (terminal == 2) {
-                            entity1.setMobileConversion(entityReport.getMobileConversion());
-                            entity1.setRegionName(entityReport.getRegionName());
-                            entityList.add(entity1);
-                        } else {
-                            entity1.setPcConversion(entityReport.getPcConversion());
-                            entity1.setRegionName(entityReport.getRegionName());
-                            entityList.add(entity1);
-                        }
-                }
-            } else {
-                switch (sortField) {
-                    case REPORT_IMPR:
-                        //如果用户只查询手机
-                        if (terminal == 2) {
-                            entity.setMobileImpression(((entity.getMobileImpression() == null) ? 0 : entity.getMobileImpression()) + entityReport.getMobileImpression());
-                        } else {
-                            entity.setPcImpression(((entity.getPcImpression() == null) ? 0 : entity.getPcImpression()) + entityReport.getPcImpression());
-                        }
-                        break;
-                    case REPORT_CLICK:
-                        if (terminal == 2) {
-                            entity.setMobileClick(((entity.getMobileClick() == null) ? 0 : entity.getMobileClick()) + entityReport.getMobileClick());
-                        } else {
-                            entity.setPcClick(((entity.getPcClick() == null) ? 0 : entity.getPcClick()) + entityReport.getPcClick());
-                        }
-                        break;
-                    case REPORT_COST:
-                        if (terminal == 2) {
-                            entity.setMobileCost(((entity.getMobileCost() == null) ? BigDecimal.valueOf(0) : entity.getMobileCost()).add(entityReport.getMobileCost()));
-                        } else {
-                            entity.setPcCost(((entity.getPcCost() == null) ? BigDecimal.valueOf(0) : entity.getPcCost()).add(entityReport.getPcCost()));
-                        }
-                        break;
-                    case REPORT_CONV:
-                        if (terminal == 2) {
-                            entity.setMobileConversion(((entity.getMobileConversion() == null) ? 0 : entity.getMobileConversion()) + entityReport.getMobileConversion());
-                        } else {
-                            entity.setPcConversion(((entity.getPcImpression() == null) ? 0 : entity.getPcConversion()) + entityReport.getPcConversion());
-                        }
-                }
-            }
-        }
-        if (entity != null) {
-            entity.setRegionName("其他");
-            entityList.add(entity);
-        }
-        return entityList;
-    }
-
-    //数据排序
-    private List<StructureReportDTO> dataSort(List<StructureReportDTO> returnList, String sort, int terminal, int start, int limit) {
-        for (StructureReportDTO entity : returnList) {
-            entity.setOrderBy(sort);
-            entity.setTerminal(terminal);
-        }
-        List<StructureReportDTO> finalList = new ArrayList<>();
-
-        if (returnList.size() > limit) {
-            for (int i = start; i < limit; i++) {
-                finalList.add(returnList.get(i));
-            }
-            Collections.sort(finalList);
-            return finalList;
-        } else {
-            Collections.sort(returnList);
-            return returnList;
-        }
-    }
-
-    //曲线图数据计算
-    private List<StructureReportDTO> getLineChart(Map<String, List<StructureReportDTO>> listMap, int dive) {
-        List<StructureReportDTO> entityList = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (Map.Entry<String, List<StructureReportDTO>> voEntity : listMap.entrySet()) {
-            StructureReportDTO e = new StructureReportDTO();
-            List<StructureReportDTO> entity = voEntity.getValue();
-
-            for (StructureReportDTO entity1 : entity) {
-                e.setPcImpression(((e.getPcImpression() == null) ? 0 : e.getPcImpression()) + ((entity1.getPcImpression() == null) ? 0 : entity1.getPcImpression()));
-                e.setPcClick(((e.getPcClick() == null) ? 0 : e.getPcClick()) + ((entity1.getPcClick() == null) ? 0 : entity1.getPcClick()));
-                e.setPcCost(((e.getPcCost() == null) ? BigDecimal.valueOf(0) : e.getPcCost()).add((entity1.getPcCost() == null) ? BigDecimal.valueOf(0) : entity1.getPcCost()));
-                e.setPcConversion(((e.getPcConversion() == null) ? 0 : e.getPcConversion()) + ((entity1.getPcConversion() == null) ? 0 : entity1.getPcConversion()));
-
-                e.setMobileImpression(((e.getMobileImpression() == null) ? 0 : e.getMobileImpression()) + ((entity1.getMobileImpression() == null) ? 0 : entity1.getMobileImpression()));
-                e.setMobileClick(((e.getMobileClick() == null) ? 0 : e.getMobileClick()) + ((entity1.getMobileClick() == null) ? 0 : entity1.getMobileClick()));
-                e.setMobileCost(((e.getMobileCost() == null) ? BigDecimal.valueOf(0) : e.getMobileCost()).add((entity1.getMobileCost() == null) ? BigDecimal.valueOf(0) : entity1.getMobileCost()));
-                e.setMobileConversion(((e.getMobileConversion() == null) ? 0 : e.getMobileConversion()) + ((entity1.getMobileConversion() == null) ? 0 : entity1.getMobileConversion()));
-            }
-            //----
-            if (e.getPcClick() == null || e.getPcClick() == 0) {
-                e.setPcCpc(BigDecimal.valueOf(0.00));
-            } else {
-                e.setPcCpc(e.getPcCost().divide(BigDecimal.valueOf(e.getPcClick()), 2, BigDecimal.ROUND_UP));
-            }
-            //----
-            if (e.getPcImpression() == null || e.getPcImpression() == 0) {
-                e.setPcCtr(0.00);
-            } else {
-                e.setPcCtr(e.getPcClick().doubleValue() / e.getPcImpression().doubleValue());
-            }
-            //---
-            if (e.getMobileClick() == null || e.getMobileClick() == 0) {
-                e.setMobileCpc(BigDecimal.valueOf(0.00));
-            } else {
-                e.setMobileCpc(e.getMobileCost().divide(BigDecimal.valueOf(e.getMobileClick()), 2, BigDecimal.ROUND_UP));
-            }
-            //---
-            if (e.getMobileImpression() == null || e.getMobileImpression() == 0) {
-                e.setMobileCtr(0.00);
-            } else {
-                e.setMobileCtr(e.getMobileClick().doubleValue() / e.getMobileImpression().doubleValue());
-            }
-            e.setDate(voEntity.getKey());
-            e.setTerminal(dive);
-            e.setOrderBy("11");
-            try {
-                e.setDateRep(dateFormat.parse(voEntity.getKey().substring(0, 10)));
-            } catch (ParseException e1) {
-                e1.printStackTrace();
-            }
-            entityList.add(e);
-        }
-        Collections.sort(entityList);
-        return entityList;
-    }
-
-    /**
-     * 计算合计数据
-     *
-     * @param list
-     * @return
-     */
-    private List<StructureReportDTO> dataALL(List<StructureReportDTO> list) {
-        ForkJoinPool joinPool = new ForkJoinPool();
-        Map<String, StructureReportDTO> mapAll = new HashMap<>();
-        try {
-
-            Future<Map<String, StructureReportDTO>> joinTaskAll = joinPool.submit(new ReportStatisticsUtil(list, 0, list.size()));
-
-            mapAll = percentage(joinTaskAll.get());
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        List<StructureReportDTO> returnListAll = new ArrayList<>(mapAll.values());
-        return returnListAll;
-    }
-
 }
