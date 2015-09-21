@@ -39,275 +39,272 @@ To change this template use File | Settings | File Templates.
 <div id="background" class="background"></div>
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>
-<jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid over">
-<div class="title_box">
-    <div class="on_title over">
-        <a href="#">
-            智能结构
-        </a>
-        &nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>关键词拓词</span>
-    </div>
-</div>
+<jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div id="tab">
-<ul class="tab_menu" id="tab_menu">
+<%--<ul class="tab_menu" id="tab_menu">
     <li class="selected">关键词拓词</li>
     <li>创意推荐</li>
-</ul>
+</ul>--%>
 <div class="tab_box">
-<div class="containers over">
-    <div class="list01_top over"><Span>关键词拓词</Span><button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="分为词根拓词和行业拓词，拓词来源有百度、Google、360等平台抓取调用，并独有百思智能词库作为依托。"></button></div>
-    <div class="keyword over">
-        <div class="keyword_right over">
-            <div class="k_r_top over">
-                <ul class="tab_menu2 over">
-                    <li class="current"><a>词根拓词</a></li>
-                    <li><a>行业拓词</a></li>
-                </ul>
-                <div class="table_concent2 over">
-                    <div class="k_r_top2 over">
-                        <div class="k_r_middle over">
-                            <div class="k_top2_text fl">
-                                <div class="k_top2_text1">
-                                    <textarea id="textarea1" style="overflow:auto; resize: none"></textarea>
-                                </div>
-                                <p>可输入词根100/100</p>
-                                <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
-                            </div>
-                            <div class="K_top2_detali fl over">
-                                <div class="k_top2_detali2 over">
-                                    <div class="list01_top2 over">
-                                        <span>拓词来源</span>
+<div class="first firstTable">
+    <div class="containers over">
+        <div class="list01_top over"><Span>关键词拓词</Span><button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="分为词根拓词和行业拓词，拓词来源有百度、Google、360等平台抓取调用，并独有百思智能词库作为依托。"></button></div>
+        <div class="keyword over">
+            <div class="keyword_right over">
+                <div class="k_r_top over">
+                    <ul class="tab_menu2 over">
+                        <li class="current"><a>词根拓词</a></li>
+                        <li><a>行业拓词</a></li>
+                    </ul>
+                    <div class="table_concent2 over">
+                        <div class="k_r_top2 over">
+                            <div class="k_r_middle over">
+                                <div class="k_top2_text fl">
+                                    <div class="k_top2_text1">
+                                        <textarea id="textarea1" style="overflow:auto; resize: none"></textarea>
                                     </div>
-                                    <ul>
-                                        <li>·百度、Google、360等搜索引擎平台抓取调用</li>
-                                        <li>·百思智能词库</li>
-                                    </ul>
+                                    <p>可输入词根100/100</p>
+                                    <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="k_r_under over">
-                            <div class="download over ">
-                                <%--<a class="fr" href="javascript: save1Keyword();">保存</a>--%>
-                                <a class="fr" href="javascript: downloadCSV();">下载全部</a>
-                            </div>
-                            <div class="list3 tuoci over">
-                                <table border="0" cellspacing="0">
-                                    <thead>
-                                    <tr class="list2_top">
-                                        <td><span>分组</span></td>
-                                        <td><span>种子词</span></td>
-                                        <td><span>关键词</span></td>
-                                        <td><span>日均搜索量</span><b>
-                                            <p>
-                                                <input type="button"
-                                                       onclick="javascript:fieldName = 'dsQuantity';sort = 1;findWordFromBaidu();"
-                                                       class="one">
-                                            </p>
-
-                                            <p>
-                                                <input type="button"
-                                                       onclick="javascript:fieldName = 'dsQuantity';sort = -1;findWordFromBaidu();"
-                                                       class="two">
-                                            </p></b></td>
-                                        <td><span>竞争激烈程度</span><b>
-                                            <p>
-                                                <input type="button"
-                                                       onclick="javascript:fieldName = 'competition';sort = 1;findWordFromBaidu();"
-                                                       class="one">
-                                            </p>
-
-                                            <p>
-                                                <input type="button"
-                                                       onclick="javascript:fieldName = 'competition';sort = -1;findWordFromBaidu();"
-                                                       class="two">
-                                            </p></b></td>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tbody1">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="pagination1" class="pagination"></div>
-                    </div>
-                    <div class="k_r_top2 hides over">
-                        <div class="k_r_middle over">
-                            <div class="k_top2_text fl">
-                                <div class="k_top2_text1">
-                                    <select id="trade">
-                                        <option selected="selected" value="">请选择行业</option>
-                                        <option value="电商">电商</option>
-                                        <option value="房产">房产</option>
-                                        <option value="教育">教育</option>
-                                        <option value="金融">金融</option>
-                                        <option value="旅游">旅游</option>
-                                    </select>
-                                    <select id="category">
-                                    </select>
-                                </div>
-                                <a href="javascript:findWordFromSystem();" class="become2">开始拓词</a>
-                            </div>
-                            <div class="K_top2_detali fl over">
-                                <div class="k_top2_detali2 over">
-                                    <div class="list01_top2 over">
-                                        <span>拓词来源</span>
+                                <div class="K_top2_detali fl over">
+                                    <div class="k_top2_detali2 over">
+                                        <div class="list01_top2 over">
+                                            <span>拓词来源</span>
+                                        </div>
+                                        <ul>
+                                            <li>·百度、Google、360等搜索引擎平台抓取调用</li>
+                                            <li>·百思智能词库</li>
+                                        </ul>
                                     </div>
-                                    <ul>
-                                        <li>·百度、Google、360等搜索引擎平台抓取调用</li>
-                                        <li>·百思智能词库</li>
-                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                        <div class="k_r_under over">
-                            <div class="download over ">
-                                <%--<a class="fr" href="javascript: save2Keyword();">保存</a>--%>
-                                <a class="fr" href="javascript: downloadCSV();">下载全部</a>
+                            <div class="k_r_under over">
+                                <div class="download over ">
+                                    <%--<a class="fr" href="javascript: save1Keyword();">保存</a>--%>
+                                    <a class="fr" href="javascript: downloadCSV();">下载全部</a>
+                                </div>
+                                <div class="list3 tuoci over">
+                                    <table border="0" cellspacing="0">
+                                        <thead>
+                                        <tr class="list2_top">
+                                            <td><span>分组</span></td>
+                                            <td><span>种子词</span></td>
+                                            <td><span>关键词</span></td>
+                                            <td><span>日均搜索量</span><b>
+                                                <p>
+                                                    <input type="button"
+                                                           onclick="javascript:fieldName = 'dsQuantity';sort = 1;findWordFromBaidu();"
+                                                           class="one">
+                                                </p>
+
+                                                <p>
+                                                    <input type="button"
+                                                           onclick="javascript:fieldName = 'dsQuantity';sort = -1;findWordFromBaidu();"
+                                                           class="two">
+                                                </p></b></td>
+                                            <td><span>竞争激烈程度</span><b>
+                                                <p>
+                                                    <input type="button"
+                                                           onclick="javascript:fieldName = 'competition';sort = 1;findWordFromBaidu();"
+                                                           class="one">
+                                                </p>
+
+                                                <p>
+                                                    <input type="button"
+                                                           onclick="javascript:fieldName = 'competition';sort = -1;findWordFromBaidu();"
+                                                           class="two">
+                                                </p></b></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody1">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="list3 hangyetuoci over">
-                                <table border="0" cellspacing="0">
-                                    <thead>
-                                    <tr class="list2_top">
-                                        <td><span>行业</span></td>
-                                        <td><span>计划</span></td>
-                                        <td><span>单元</span></td>
-                                        <td><span>关键词</span></td>
-                                    </tr>
-                                    </thead>
-                                    </thead>
-                                    <tbody id="tbody2">
-                                    </tbody>
-                                </table>
-                            </div>
+                            <div id="pagination1" class="pagination"></div>
                         </div>
-                        <div id="pagination2" class="pagination"></div>
+                        <div class="k_r_top2 hides over">
+                            <div class="k_r_middle over">
+                                <div class="k_top2_text fl">
+                                    <div class="k_top2_text1">
+                                        <select id="trade">
+                                            <option selected="selected" value="">请选择行业</option>
+                                            <option value="电商">电商</option>
+                                            <option value="房产">房产</option>
+                                            <option value="教育">教育</option>
+                                            <option value="金融">金融</option>
+                                            <option value="旅游">旅游</option>
+                                        </select>
+                                        <select id="category">
+                                        </select>
+                                    </div>
+                                    <a href="javascript:findWordFromSystem();" class="become2">开始拓词</a>
+                                </div>
+                                <div class="K_top2_detali fl over">
+                                    <div class="k_top2_detali2 over">
+                                        <div class="list01_top2 over">
+                                            <span>拓词来源</span>
+                                        </div>
+                                        <ul>
+                                            <li>·百度、Google、360等搜索引擎平台抓取调用</li>
+                                            <li>·百思智能词库</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="k_r_under over">
+                                <div class="download over ">
+                                    <%--<a class="fr" href="javascript: save2Keyword();">保存</a>--%>
+                                    <a class="fr" href="javascript: downloadCSV();">下载全部</a>
+                                </div>
+                                <div class="list3 hangyetuoci over">
+                                    <table border="0" cellspacing="0">
+                                        <thead>
+                                        <tr class="list2_top">
+                                            <td><span>行业</span></td>
+                                            <td><span>计划</span></td>
+                                            <td><span>单元</span></td>
+                                            <td><span>关键词</span></td>
+                                        </tr>
+                                        </thead>
+                                        </thead>
+                                        <tbody id="tbody2">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="pagination2" class="pagination"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="containers over hides">
-    <div class="list01_top over"><span>创意推荐</span><button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="系统自动抓取搜索引擎页面信息，进行分析提取与当前创意相关的优秀词根及优秀创意作为新创意的参考，从而提升创意质量。"></button><b>输入关键词，系统为您推荐有限创意和优秀词根；关键词之间的相关性会影响推荐创意的质量。</b><a
-            href="#">同步账户</a></div>
-    <div class="originality over">
-        <div class="originality_left fl">
-            <ul>
-                <li><input type="radio" checked="checked" name="searchType" value="1"> 选择已有关键词</li>
-                <li><span>计划：</span>
-                    <select id="campagin">
-                        <option value="-1">请选择计划</option>
-                    </select></li>
-                <li><span>单元：</span>
-                    <select id="adgroup">
-                        <option value="-1">请选择单元</option>
-                    </select>
-                </li>
-                <li>
-                    <textarea id="txt1" name="" style="overflow:auto; resize: none"></textarea>
-                </li>
-                <%--<li style="color: #f00">1/20行</li>--%>
-            </ul>
+<div class="first firstTable">
+    <div class="containers over ">
+        <div class="list01_top over"><span>创意推荐</span><button type="button" class="question  btn btn-default" data-toggle="tooltip" data-placement="bottom" title="系统自动抓取搜索引擎页面信息，进行分析提取与当前创意相关的优秀词根及优秀创意作为新创意的参考，从而提升创意质量。"></button><b>输入关键词，系统为您推荐有限创意和优秀词根；关键词之间的相关性会影响推荐创意的质量。</b><a
+                href="#">同步账户</a></div>
+        <div class="originality over">
+            <div class="originality_left fl">
+                <ul>
+                    <li><input type="radio" checked="checked" name="searchType" value="1"> 选择已有关键词</li>
+                    <li><span>计划：</span>
+                        <select id="campagin">
+                            <option value="-1">请选择计划</option>
+                        </select></li>
+                    <li><span>单元：</span>
+                        <select id="adgroup">
+                            <option value="-1">请选择单元</option>
+                        </select>
+                    </li>
+                    <li>
+                        <textarea id="txt1" name="" style="overflow:auto; resize: none"></textarea>
+                    </li>
+                    <%--<li style="color: #f00">1/20行</li>--%>
+                </ul>
+            </div>
+            <div class="originality_right fl">
+                <ul>
+                    <li><input type="radio" name="searchType" value="2"> 输入新单元词</li>
+                    <li>
+                        <textarea id="txt2" name="txt2" style="overflow:auto; resize: none"></textarea>
+                    </li>
+                    <%--<li style="color: #f00">1/20行</li>--%>
+                </ul>
+            </div>
         </div>
-        <div class="originality_right fl">
-            <ul>
-                <li><input type="radio" name="searchType" value="2"> 输入新单元词</li>
-                <li>
-                    <textarea id="txt2" name="txt2" style="overflow:auto; resize: none"></textarea>
-                </li>
-                <%--<li style="color: #f00">1/20行</li>--%>
-            </ul>
-        </div>
-    </div>
-    <div class="riginality_middle over">
+        <div class="riginality_middle over">
 <span>选择创意来源：<select id="region">
     <option value="1">河北</option>
 </select></span>
-        <span><a class="become2" href="javascript: search();">智能推荐</a></span>
-    </div>
-    <div class="riginality_under over">
-        <div class="r_under_left fl">
-            <div class="r_under_top over">
-                <h3 class="fl">推荐创意</h3>
-                <%--<a href="#" class="fr" id="bulid">新建创意</a>--%>
-            </div>
-            <ul id="creativeList">
-            </ul>
+            <span><a class="become2" href="javascript: search();">智能推荐</a></span>
         </div>
-        <div class="r_under_mid fl">
-            <div class="r_under_right">
+        <div class="riginality_under over">
+            <div class="r_under_left fl">
                 <div class="r_under_top over">
-                    <ul>
-                        <li><h3>推荐词根</h3></li>
-                        <li><h3>词频占比</h3></li>
-                    </ul>
+                    <h3 class="fl">推荐创意</h3>
+                    <%--<a href="#" class="fr" id="bulid">新建创意</a>--%>
                 </div>
-                <div class="r_under_bottom over ">
-                    <ul id="terms">
-                    </ul>
-                </div>
+                <ul id="creativeList">
+                </ul>
             </div>
-
-            <div class="r_under_right">
-                <div class="r_under_top over">
-                    <ul>
-                        <li><h3>竞争对手</h3></li>
-                        <li><h3>创意占比</h3></li>
-                    </ul>
-                </div>
-                <div class="r_under_bottom over ">
-                    <ul id="hosts">
-                    </ul>
-                </div>
-            </div>
-
-            <div class="r_under_right">
-                <div class="r_under_top over">
-                    <ul>
-                        <li><h3>地域</h3></li>
-                        <li><h3>创意占比</h3></li>
-                    </ul>
-                </div>
-                <div class="r_under_bottom over ">
-                    <ul id="regions">
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-        <div class="r_under_mid fl" id="reOkView" style="display: none;">
-
-            <div class="r_under_top over">
-                <h3 class="fl">上传创意预览</h3>
-            </div>
-
-            <ul id="reViewUl">
-                <li>
-                    <div></div>
-                    <a data-is-main-url="true" href="javascript:void(0);" class="EC_t EC_BL" id="rTitle">
-                        暂无</a>
-                    <br>
-                    <a id="bdfs1" href="javascript:void(0);" class="EC_BL EC_desc"><font size="-1"
-                                                                                         id="rDesc">暂无</font><br>
-                        <font size="-1" class="EC_url" id="rUrl">暂无</font></a>
-
-                    <div class="c-tools" style="margin-left:5px;" id="tools_2">
-                        <a class="c-tip-icon"></a>
+            <div class="r_under_mid fl">
+                <div class="r_under_right">
+                    <div class="r_under_top over">
+                        <ul>
+                            <li><h3>推荐词根</h3></li>
+                            <li><h3>词频占比</h3></li>
+                        </ul>
                     </div>
-                    <div>
-                        <input type="button" value="保存" class="chuanyi_input" onclick="addCreativeOk()"/>
-                        <input type="button" value="返回编辑" class="chuanyi_input" onclick="callBackEditor()"/>
+                    <div class="r_under_bottom over ">
+                        <ul id="terms">
+                        </ul>
                     </div>
-                </li>
-            </ul>
+                </div>
+
+                <div class="r_under_right">
+                    <div class="r_under_top over">
+                        <ul>
+                            <li><h3>竞争对手</h3></li>
+                            <li><h3>创意占比</h3></li>
+                        </ul>
+                    </div>
+                    <div class="r_under_bottom over ">
+                        <ul id="hosts">
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="r_under_right">
+                    <div class="r_under_top over">
+                        <ul>
+                            <li><h3>地域</h3></li>
+                            <li><h3>创意占比</h3></li>
+                        </ul>
+                    </div>
+                    <div class="r_under_bottom over ">
+                        <ul id="regions">
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="r_under_mid fl" id="reOkView" style="display: none;">
+
+                <div class="r_under_top over">
+                    <h3 class="fl">上传创意预览</h3>
+                </div>
+
+                <ul id="reViewUl">
+                    <li>
+                        <div></div>
+                        <a data-is-main-url="true" href="javascript:void(0);" class="EC_t EC_BL" id="rTitle">
+                            暂无</a>
+                        <br>
+                        <a id="bdfs1" href="javascript:void(0);" class="EC_BL EC_desc"><font size="-1"
+                                                                                             id="rDesc">暂无</font><br>
+                            <font size="-1" class="EC_url" id="rUrl">暂无</font></a>
+
+                        <div class="c-tools" style="margin-left:5px;" id="tools_2">
+                            <a class="c-tip-icon"></a>
+                        </div>
+                        <div>
+                            <input type="button" value="保存" class="chuanyi_input" onclick="addCreativeOk()"/>
+                            <input type="button" value="返回编辑" class="chuanyi_input" onclick="callBackEditor()"/>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+
         </div>
-
-
     </div>
 </div>
+
 </div>
 </div>
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>

@@ -33,16 +33,11 @@
 <body>
 <div id="background" class="background hides"></div>
 <div id="progressBar" class="progressBar hides">数据加载中，请稍等...</div>
-<jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
     <jsp:include page="../homePage/pageBlock/nav.jsp"/>
     <div id="main" class="mid fr over">
-        <div class="title_box">
-            <div class="on_title over">
-                <a href="#"> 智能竞价 </a>
-            </div>
-        </div>
-        <div id="tab">
+    <jsp:include page="../homePage/pageBlock/head.jsp"/>
+        <div id="tab" class="tab_box">
             <ul class="tab_menu">
                 <li class="selected">智能竞价</li>
                 <li>重点词竞价</li>

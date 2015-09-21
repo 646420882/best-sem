@@ -109,22 +109,24 @@
                 </div>
             </div>
         </div>
-        <div class="serBox disabled">
+        <div class="serBox" onclick="window.open('http://seo.best-ad.cn/auth/login?username=${currSystemUserName}')">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan2.png"></div>
             <div class="txt1">
                 <span class="tit">百思慧眼</span>
                 <p>云端备份数据</p>
-               <p>快速实现信息同步！</p>
+                <p>快速实现信息同步</p>
+                <p></p>
             </div>
             <div class="txt2"><a  href="javascript:void(0);" onclick="js_method()"  class="a_jump"><span class="tit">百思慧眼</span></a>
                 <div class="tex2_mid">
-                    <p><b>2015年5月15日</b></p>
-                    <p><b>正式上线</b></p>
+                    <p>云端备份数据</p>
+                    <p>快速实现信息同步</p>
+                    <p></p>
                 </div>
                 <div class="enter">
-                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
+                    <a href="javascript:void(0);">点击进入</a>
                 </div>
             </div>
         </div>

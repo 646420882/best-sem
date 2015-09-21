@@ -8,8 +8,6 @@
 
 }
 .pagination a {
-    background: none repeat scroll 0 0 #e4eafa;
-    border: 1px solid #f3f5fd;
     color: #000;
     *height: 24px;
     margin-right: 8px;
@@ -26,13 +24,13 @@
 
 }
 .pagination .current {
-    background: #ffb900;
-    border: 1px solid #fab30b;
+    background: #01aef0;
+    border: 1px solid #01aef0;
     color: #fff;
 }
 
 .pagination .current.prev, .pagination .current.next{
-    background: none repeat scroll 0 0 #e4eafa;
-    border: 1px solid #f3f5fd;
+    background: none;
+    border: none;
     color: #000;
 }

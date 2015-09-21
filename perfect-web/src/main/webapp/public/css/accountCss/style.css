@@ -2,16 +2,17 @@
 /***mid***/
 .mid {
     min-height:100%;
-    float: right;
-    width: 90%;
+    float: left;
+    width: 100%;
     padding-bottom:100px;
+    padding-left:75px;
+    background:#f0f0f0;
 
 }
 
 .concent {
     width: 100%;
     min-height:100%;
-    padding-top:94px;
     position: relative;
     background: #fff;
     font-family: "微软雅黑";
@@ -50,6 +51,7 @@
 
 .tab_box {
     clear: both;
+    margin-top:60px;
 }
 
 .tab_menu .selected {
@@ -63,7 +65,7 @@
 }
 
 .tab_box {
-    padding: 20px 2% 0px 2%;
+    padding: 20px 15px 0px 15px;
 
 }
 
@@ -92,8 +94,9 @@
 }
 
 .list01_top span {
-    background: url(/public/img/point.png) left no-repeat;
-    padding-left: 20px;
+   // background: url(/public/img/point.png) left no-repeat;
+    padding-left: 10px;
+    border-left:3px solid #01aeef;
     overflow: hidden;
 }
 .list01_under3 .list01_top{
@@ -101,6 +104,7 @@
 }
 .list01_under3 .download{
     margin:0px;
+    float:right;
 }
 .question {
     float:left;
@@ -123,15 +127,12 @@
     display: block;
     float: left;
     height: 25px;
-    margin-left: 25px;
-    border: 1px solid #d6d6d6;
+    margin:0px;
     background: #fff;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
     position: relative;
     z-index: 3;
     overflow: hidden;
+    margin-left:5px;
 }
 
 .list01_top ul li {
@@ -144,10 +145,10 @@
 }
 
 .list01_top ul li a {
-    width: 88.5px;
+     padding:0 4px 0 0 ;
     line-height: 25px;
     text-align: center;
-    color: #000000;
+    color: #979797;
     cursor: default;
 }
 
@@ -156,13 +157,12 @@
 }
 
 .list01_top ul .current {
-    background: #f5b802;
-    color: #fff;
+   color: #f5b802;
 }
 
 .list01_top ul .current a {
-    color: #fff;
-    background: url(/public/img/colock.png) 8px 4px no-repeat;
+    color: #f5b802;
+    //background: url(/public/img/colock.png) 8px 4px no-repeat;
     text-decoration: none;
     height: 25px;
 }
@@ -176,9 +176,11 @@
 }
 
 .list01_top ul .date input {
-    position: absolute;
-    top: 3px;
-    right: 6px;
+  background:none;
+    border:none;
+}
+.list01_top ul .date input:hover,.list01_top ul .date input:active{
+    border:none;
 }
 
 /***账户诊断***/
@@ -222,15 +224,17 @@
 }
 
 .wd1 {
-    width: 40%;
-    height: 100px;
+    width: 64px;
+    height:64px;
+    border-radius: 50%;
 }
 
 .wd2 {
     width: 50%;
     *width: 48%;
-    padding: 0 5%;
+    margin-left:14px;
     height: 100px;
+    padding-top:6px;
 }
 .wd4{
    margin-bottom:10px;
@@ -243,37 +247,39 @@
 }
 
 .list01_under2 ul li {
-    display: block;
-    float: left;
-    width: 24%;
-    *width: 23.9%;
-    height: 100px;
-    margin-right: 1%;
+    //height: 100px;
     margin-bottom: 10px;
     white-space: nowrap;
     overflow: hidden;
+}
+.list01_under2 ul li .cos{
+    font-size:12px;
+}
+.list01_under2 ul li .cos ,.list01_under2 ul li .click,.list01_under2 ul li .impression,.list01_under2 ul li .conversion{
+    font-size:14px;
+    font-family: "微软雅黑";
 }
 
 .list01_under2 ul li span {
     display: block;
     font-size: 30px;
-    color: #fff;
+    color: #666666;
     font-family: "Arial";
-    padding-top: 26px;
 }
 
 .list01_under2 ul li p {
-    color: #fff;
+    color: #666666;
     line-height: 20px;
     font-size: 14px;
 }
 
 .list01_under2 ul li .blue1 {
     background: #34befe url(/public/img/blue1.png) center no-repeat;
+
 }
 
 .list01_under2 ul li .blue2 {
-    background: #30b0eb;
+
 }
 
 .list01_under2 ul li .green1 {
@@ -281,7 +287,7 @@
 }
 
 .list01_under2 ul li .green2 {
-    background: #43bca5;
+
 }
 
 .list01_under2 ul li .red1 {
@@ -289,7 +295,6 @@
 }
 
 .list01_under2 ul li .red2 {
-    background: #ed5f01;
 }
 
 .list01_under2 ul li .yellow1 {
@@ -297,7 +302,7 @@
 }
 
 .list01_under2 ul li .yellow2 {
-    background: #e1b749;
+
 }
 
 /***数据分析***/
@@ -326,6 +331,7 @@
 .download select {
     height: 22px;
     border: 1px solid #bdbdbd;
+    margin-top:10px;
 }
 
 .download span {
@@ -442,7 +448,7 @@
     float: left;
     *display: inline-block;
     *float: none;
-    color: #fff;
+    color: #000000;
 }
 
 .list3 table span {
@@ -465,7 +471,7 @@
 
 .list2 table .list2_top, .list2_top {
     height: 30px;
-    background: #272537;
+    background: #eeeeee;
     font-weight: bold;
     overflow: hidden;
 }
@@ -499,7 +505,7 @@
 }
 
 .list2 table .list2_box1 {
-    background: #f7f9fb;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .list2 table .list2_box1:hover, .list2 table .list2_box2:hover {
@@ -507,8 +513,7 @@
 }
 
 .list2 table .list2_box2 {
-    background: #ecf3f9;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .paihang {
@@ -1089,6 +1094,7 @@
 /***智能竞价***/
 .jiangjia_concent {
     width: 100%;
+    position:relative;
 }
 
 .j_l_top span {
@@ -1119,10 +1125,13 @@
     background: none repeat scroll 0 0 #e4eafa;
     padding: 12px 6px;
     width: 220px;
+    position:absolute;
 }
 
 .jingjia_right {
    margin-left:20px;
+    width:100%;
+    padding-left:220px;
 }
 
 .j_list01 {
@@ -2528,15 +2537,14 @@ h2 .close {
 .list01_top b, .list01_top a {
     display: block;
     float: left;
-    margin-left: 5px;
     font-size: 12px;
     color: #737373;
     font-weight: normal;
-    line-height: 20px;
+
 }
 
 .list01_top a {
-    color: #276ee3;
+    color: #000;
 }
 
 .originality {
@@ -3812,3 +3820,26 @@ input[type=checkbox]:focus {
 }*/
 
 /* CSS Document */
+/* 改版 */
+.first{
+    width:100%;
+    position:relative;
+    margin-bottom:10px;
+    overflow:hidden;
+    background: #fff;
+}
+.firstContent{
+    width: 300px;
+    padding: 15px;
+    /* float: left; */
+    position: absolute;
+   border-right:10px solid #f0f0f0;
+}
+.secendContent{
+    width:100%;
+    padding:15px;
+   padding-left:315px;
+}
+.firstTable{
+padding:15px;
+}

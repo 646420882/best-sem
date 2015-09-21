@@ -11,50 +11,48 @@
     Long accountId = AppContext.getAccountId();
 %>
 <div id="navigator" class="nav fl">
+    <div class="totle_menu fl">
+        <img src="${pageContext.request.contextPath}../public/img/total_menu.png">
+
+    </div>
     <div class="nav_left fl over ">
-        <div class="nav_bg">
-            <img src="${pageContext.request.contextPath}/public/img/nav_bg.jpg" width="100%" height="100%">
-        </div>
-        <div class="nav_mid">
-            <div class="nav_under over">
                 <ul>
                     <li class="current">
                         <a href="${pageContext.request.contextPath}/home">
                             <span class="list_1"></span>
-
-                            <h3>帐户全景</h3>
+                          <%--  <h3>帐户全景</h3>--%>
                         </a>
                     </li>
                     <li>
                         <a href="/assistant/index">
                             <span class="list_2"></span>
-                            <h3>推广助手</h3>
+                           <%-- <h3>推广助手</h3>--%>
                         </a>
                     </li>
                     <li>
                         <a href="${pageContext.request.contextPath}/keyword_group"><span class="list_3"></span>
 
-                            <h3>智能结构</h3></a>
+                            <%--<h3>智能结构</h3>--%></a>
                     </li>
                     <li>
                         <a href="${pageContext.request.contextPath}/bidding/index"><span class="list_4"></span>
 
-                            <h3>智能竞价</h3></a>
+                            <%--<h3>智能竞价</h3>--%></a>
                     </li>
                     <li>
                         <a href="${pageContext.request.contextPath}/reportIndex"><span class="list_5"></span>
 
-                            <h3>数据报告</h3></a>
+                           <%-- <h3>数据报告</h3>--%></a>
                     </li>
                 </ul>
-            </div>
-        </div>
+
     </div>
-    <div id="navigator_tips" class="tips fl" title="点击隐藏导航">
+<%--    <div id="navigator_tips" class="tips fl" title="点击隐藏导航">
         <span class="nav_input hides"></span>
-    </div>
+    </div>--%>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript">
     var baiduAccountId = <%=accountId%>;
     var loadBaiduAccount = function () {
@@ -86,11 +84,11 @@
     });
     $(function () {
         //取屏幕宽度
-        var mid_width = $(document.body).width() - 180;
+        var mid_width = $(document.body).width() - 60;
         var max_width = $(document.body).width() - 8;
-        $(".mid").css("width", mid_width);
+/*        $(".mid").css("width", mid_width);
         $(window).resize(function () {
-            mid_width = $(document.body).width() - 180;
+            mid_width = $(document.body).width() - 60;
             max_width = $(document.body).width() - 8;
             if ($(".nav_left").css("display") == "none") {
                 $(".mid").css("width", max_width);
@@ -98,7 +96,7 @@
             else {
                 $(".mid").css("width", mid_width);
             }
-        });
+        });*/
         var top_width = $(document.body).width();
         $(".top").css("width", top_width);
         $(window).resize(function () {
@@ -110,7 +108,7 @@
                 $(".nav_left").show();
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
-                $(".nav").css("width", "180px");
+                $(".nav").css("width", "60px");
                 $(".mid").css("width", mid_width);
                 $(".nav_input").css("display", "none");
                 $(".tips").attr('title', "点击隐藏导航");

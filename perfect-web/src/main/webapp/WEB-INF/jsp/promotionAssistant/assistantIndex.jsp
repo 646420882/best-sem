@@ -64,18 +64,13 @@
 <body>
 <div id="background" class="background"></div>
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
-<jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <jsp:include page="../promotionAssistant/alert/addkeyword.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
-<div class="mid fr over">
-<div class="title_box">
-    <div class="on_title over">
-        <a href="#">  推广助手</a>
-    </div>
-</div>
-<div id="tab">
+<div class="mid over">
+<jsp:include page="../homePage/pageBlock/head.jsp"/>
+<div id="tab" class="tab_box">
 <div class=" jiangjia_concent over">
 <div class="jingjia_left fl over">
     <div class="j_l_top over">
@@ -1425,7 +1420,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantsublink.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        var mycheck = $("#navigator_tips,#nav_input1");
+/*        var mycheck = $("#navigator_tips,#nav_input1");
         var ztree_minwidth = $(document.body).width() - 420;
         var ztree_maxwidth = $(document.body).width() - 260;
          $(".jingjia_right").css("width", ztree_minwidth);
@@ -1445,7 +1440,7 @@
         mycheck.click(function () {
             Tablewidth();
 
-        });
+        });*/
     });
     $(function () {
         window.dialog = dialog;
