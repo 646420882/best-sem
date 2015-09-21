@@ -442,19 +442,5 @@ color:#01aeef;
     height:24px;
 
 }
-.list_1{
-
-    background: url(/public/img/bg.png) no-repeat -10px -514px  ;
-}
-.list_2{
-    background: url(/public/img/bg.png) no-repeat -88px -551px  ;
-}
-.list_3{
-    background: url(/public/img/bg.png) no-repeat -50px -551px  ;
-}
-.list_4{
-    background: url(/public/img/bg.png) no-repeat -125px -551px  ;
-}
-.list_5{
-    background: url(/public/img/bg.png) no-repeat -172px -551px  ;
-}
+@import "main.css";
+@import "index.css";
