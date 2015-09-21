@@ -17,7 +17,6 @@ import com.perfect.service.KeywordGroupService;
 import com.perfect.utils.TopN;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.json.SerializeUtils;
-import com.perfect.utils.paging.Pager;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.redis.JRedisUtils;
 import org.apache.http.HttpEntity;
@@ -35,10 +34,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 /**
- * Created by baizz on 2014-08-09.
- * 2014-12-2 refactor
+ * Created on 2014-08-09.
+ *
+ * @author dolphineor
+ * @update 2015-09-21
  */
 @Service("keywordGroupService")
 public class KeywordGroupServiceImpl implements KeywordGroupService {
@@ -60,8 +64,9 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
     @Resource
     private AccountManageDAO accountManageDAO;
 
+
     public Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String krFileId, int sort, String fieldName) {
-        if (krFileId == null || "".equals(krFileId)) {
+        if (isNull(krFileId) || Objects.equals("", krFileId)) {
             Map<String, Object> map = getKRResult(seedWordList, skip, limit, sort, fieldName);
             map.put("krFileId", _krFileId);
             map.put("total", resultSize);
@@ -78,13 +83,17 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                     return map;
                 }
                 list = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             } finally {
                 if (jedis != null) {
                     JRedisUtils.returnJedis(jedis);
                 }
             }
+
+            if (list == null)
+                return Collections.emptyMap();
+
             //sort
             int s = list.size();
             BaiduKeywordDTO[] keywordVOs = TopN.getTopN(list.toArray(new BaiduKeywordDTO[s]), s, fieldName, sort);
@@ -111,259 +120,8 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         Integer total = keywordGroupDAO.getCurrentRowsSize(params);
         values.put("total", total);
 
-//        //获取记录总数
-//        if (status == 1) {//在进行分页操作
-//            Jedis jedis = null;
-//            try {
-//                jedis = JRedisUtils.get();
-//                if (jedis.ttl("keyword_total") == -1) {
-//                    Integer total = keywordGroupDAO.getCurrentRowsSize(params);
-//                    Map<String, String> tempMap = new HashMap<>();
-//                    tempMap.put("total", total.toString());
-//                    saveToRedis("keyword_total", tempMap);
-//                    values.put("total", total);
-//                }
-//                values.put("total", jedis.hgetAll("keyword_total").get("total"));
-//            } catch (final Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                if (jedis != null) {
-//                    JRedisUtils.returnJedis(jedis);
-//                }
-//            }
-//        } else {//在进行查询操作
-//            Jedis jedis = null;
-//            try {
-//                jedis = JRedisUtils.get();
-//                Integer total = keywordGroupDAO.getCurrentRowsSize(params);
-//                Map<String, String> tempMap = new HashMap<>();
-//                tempMap.put("total", total.toString());
-//                saveToRedis("keyword_total", tempMap);
-//                values.put("total", total);
-//            } catch (final Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                if (jedis != null) {
-//                    JRedisUtils.returnJedis(jedis);
-//                }
-//            }
-//        }
-
         return values;
     }
-
-//    public void saveKeywordFromBaidu(List<String> seedWordList, String krFileId, String newCampaignName) {
-//        if (krFileId == null) {
-//            List<BaiduKeywordDTO> list = getKRResult(seedWordList);
-//            genericSave(list, newCampaignName);
-//        } else {
-//            List<BaiduKeywordDTO> list1 = new ArrayList<>();
-//            Jedis jedis = null;
-//            try {
-//                jedis = JRedisUtils.get();
-//                if (jedis.ttl(SerializeUtils.serialize(krFileId)) == -1) {
-//                    List<BaiduKeywordDTO> list = getKRResult(seedWordList);
-//                    genericSave(list, newCampaignName);
-//                    return;
-//                }
-//                list1 = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
-//            } catch (final Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                if (jedis != null) {
-//                    JRedisUtils.returnJedis(jedis);
-//                }
-//            }
-//            genericSave(list1, newCampaignName);
-//        }
-//    }
-
-//    private void genericSave(List<BaiduKeywordDTO> list, String newCampaignName) {
-//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-//        Long accountId = AppContext.getAccountId();
-//
-//        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(NAME).is(newCampaignName)), CampaignEntity.class) != null) {
-//            throw new DuplicateKeyException("\"" + newCampaignName + "\"" + " already exists");
-//        }
-//
-//        //save a new campaign
-//        CampaignEntity campaignEntity = new CampaignEntity();
-//        campaignEntity.setAccountId(accountId);
-//        campaignEntity.setCampaignName(newCampaignName);
-//        campaignEntity.setNegativeWords(new ArrayList<String>());
-//        campaignEntity.setExactNegativeWords(new ArrayList<String>());
-//        campaignEntity.setPause(false);
-//        campaignEntity.setShowProb(1);
-//        campaignEntity.setDevice(0);
-//        campaignEntity.setIsDynamicCreative(true);
-//        CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
-//        String campaignObjectId = campaign.getId();
-//
-//        for (BaiduKeywordDTO dto : list) {
-//            String adgroupName = dto.getGroupName();
-//            String keyword = dto.getKeywordName();
-//            String adgroupObjectId;
-//
-//            Aggregation aggregation = newAggregation(
-//                    match(Criteria.where(ACCOUNT_ID).is(accountId).and(OBJ_CAMPAIGN_ID).is(campaignObjectId).and(NAME).is(adgroupName)),
-//                    project(ACCOUNT_ID, OBJ_CAMPAIGN_ID, NAME)
-//            );
-//
-//            AdgroupEntity _adgroup = mongoTemplate.aggregate(aggregation, TBL_ADGROUP, AdgroupEntity.class).getUniqueMappedResult();
-//            if (_adgroup != null) {
-//                //当前分组在数据库中已经存在, 直接新增关键词即可
-//                KeywordEntity keywordEntity = new KeywordEntity();
-//                keywordEntity.setAccountId(accountId);
-//                keywordEntity.setAdgroupObjId(_adgroup.getId());
-//                keywordEntity.setKeyword(keyword);
-//                keywordEntity.setPrice(BigDecimal.ONE);
-//                keywordEntity.setMatchType(1);
-//                keywordEntity.setPause(false);
-//                keywordEntity.setStatus(-1);
-//                keywordEntity.setPhraseType(1);
-//
-//                save(keywordEntity);
-//            } else {
-//                //新增一个分组
-//                AdgroupEntity adgroupEntity = new AdgroupEntity();
-//                adgroupEntity.setAccountId(accountId);
-//                adgroupEntity.setCampaignObjId(campaignObjectId);
-//                adgroupEntity.setAdgroupName(adgroupName);
-//                adgroupEntity.setMaxPrice(1.0);
-//                adgroupEntity.setNegativeWords(new ArrayList<String>());
-//                adgroupEntity.setExactNegativeWords(new ArrayList<String>());
-//                adgroupEntity.setPause(false);
-//                adgroupEntity.setStatus(-1);
-//                adgroupEntity.setMib(0.0);
-//                adgroupObjectId = ((AdgroupEntity) save(adgroupEntity)).getId();
-//
-//                KeywordEntity keywordEntity = new KeywordEntity();
-//                keywordEntity.setAccountId(accountId);
-//                keywordEntity.setAdgroupObjId(adgroupObjectId);
-//                keywordEntity.setKeyword(keyword);
-//                keywordEntity.setPrice(BigDecimal.ONE);
-//                keywordEntity.setMatchType(1);
-//                keywordEntity.setPause(false);
-//                keywordEntity.setStatus(-1);
-//                keywordEntity.setPhraseType(1);
-//
-//                save(keywordEntity);
-//            }
-//        }
-//
-//    }
-
-//    public void saveKeywordFromSystem(String trade, String category, String newCampaignName) {
-//        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo();
-//        Long accountId = AppContext.getAccountId();
-//
-//        if (mongoTemplate.findOne(Query.query(Criteria.where(ACCOUNT_ID).is(accountId).and(NAME).is(newCampaignName)), CampaignEntity.class) != null) {
-//            throw new DuplicateKeyException("\"" + newCampaignName + "\"" + " already exists");
-//        }
-//
-//        CampaignEntity campaignEntity = new CampaignEntity();
-//        campaignEntity.setAccountId(accountId);
-//        campaignEntity.setCampaignName(newCampaignName);
-//        campaignEntity.setNegativeWords(new ArrayList<String>());
-//        campaignEntity.setExactNegativeWords(new ArrayList<String>());
-//        campaignEntity.setPause(false);
-//        campaignEntity.setShowProb(1);
-//        campaignEntity.setDevice(0);
-//        campaignEntity.setIsDynamicCreative(true);
-//        CampaignEntity campaign = (CampaignEntity) save(campaignEntity);
-//        String campaignObjectId = campaign.getId();
-//
-//        Aggregation aggregation = newAggregation(
-//                match(Criteria.where("tr").is(trade).and("cg").is(category)),
-//                project("gr", "kw").andExclude(SYSTEM_ID),
-////                project("tr", "cg", "gr", "kw").andExclude(SYSTEM_ID),
-////                group("gr", "kw"),
-//                sort(Sort.Direction.ASC, "gr")
-//        );
-//
-//        AggregationResults<LexiconEntity> results = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName())
-//                .aggregate(aggregation, SYS_KEYWORD, LexiconEntity.class);
-//
-//        Iterator<LexiconEntity> iterator = results.iterator();
-//        List<KeywordEntity> keywordEntities = new ArrayList<>();
-//        String group = null;
-//        String adgroupObjectId = null;
-//        while (iterator.hasNext()) {
-//            LexiconEntity entity = iterator.next();
-//
-//            if (group == null) {
-//                group = entity.getGroup();
-//
-//                AdgroupEntity adgroup = new AdgroupEntity();
-//                adgroup.setAccountId(accountId);
-//                adgroup.setCampaignObjId(campaignObjectId);
-//                adgroup.setAdgroupName(group);
-//                adgroup.setMaxPrice(1.0);
-//                adgroup.setNegativeWords(new ArrayList<String>());
-//                adgroup.setExactNegativeWords(new ArrayList<String>());
-//                adgroup.setPause(false);
-//                adgroup.setStatus(-1);
-//                adgroup.setMib(0.0);
-//                adgroupObjectId = ((AdgroupEntity) save(adgroup)).getId();
-//
-//                KeywordEntity keyword = new KeywordEntity();
-//                keyword.setAdgroupObjId(adgroupObjectId);
-//                keyword.setKeyword(entity.getKeyword());
-//                keyword.setAccountId(accountId);
-//                keyword.setPrice(BigDecimal.ONE);
-//                keyword.setMatchType(1);
-//                keyword.setPause(false);
-//                keyword.setStatus(-1);
-//                keyword.setPhraseType(1);
-//                keywordEntities.add(keyword);
-//                continue;
-//            }
-//            if (group.equals(entity.getGroup())) {
-//                KeywordEntity keyword = new KeywordEntity();
-//                keyword.setAdgroupObjId(adgroupObjectId);
-//                keyword.setKeyword(entity.getKeyword());
-//                keyword.setAccountId(accountId);
-//                keyword.setPrice(BigDecimal.ONE);
-//                keyword.setMatchType(1);
-//                keyword.setPause(false);
-//                keyword.setStatus(-1);
-//                keyword.setPhraseType(1);
-//                keywordEntities.add(keyword);
-//            } else {
-//                save(keywordEntities);
-//                keywordEntities.clear();
-//
-//                group = entity.getGroup();
-//                AdgroupEntity adgroup = new AdgroupEntity();
-//                adgroup.setAccountId(accountId);
-//                adgroup.setCampaignObjId(campaignObjectId);
-//                adgroup.setAdgroupName(group);
-//                adgroup.setMaxPrice(1.0);
-//                adgroup.setNegativeWords(new ArrayList<String>());
-//                adgroup.setExactNegativeWords(new ArrayList<String>());
-//                adgroup.setPause(false);
-//                adgroup.setStatus(-1);
-//                adgroup.setMib(0.0);
-//                adgroupObjectId = ((AdgroupEntity) save(adgroup)).getId();
-//
-//                KeywordEntity keyword = new KeywordEntity();
-//                keyword.setAdgroupObjId(adgroupObjectId);
-//                keyword.setKeyword(entity.getKeyword());
-//                keyword.setAccountId(accountId);
-//                keyword.setPrice(BigDecimal.ONE);
-//                keyword.setMatchType(1);
-//                keyword.setPause(false);
-//                keyword.setStatus(-1);
-//                keyword.setPhraseType(1);
-//                keywordEntities.add(keyword);
-//            }
-//        }
-//
-//        if (!keywordEntities.isEmpty()) {
-//            save(keywordEntities);
-//            keywordEntities.clear();
-//        }
-//    }
 
     public void downloadCSV(String trade, String category, OutputStream os) {
         //查询参数
@@ -401,7 +159,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                     dtoList = getKRResult(seedWordList);
                 }
                 dtoList = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             } finally {
                 if (jedis != null) {
@@ -409,6 +167,9 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                 }
             }
         }
+
+        if (dtoList == null || dtoList.isEmpty())
+            return;
 
         //CSV文件写入
         try {
@@ -429,27 +190,28 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
     @Override
     public Map<String, Object> getKRbySeedWord(String seedWord) {
         KRService krService = getKRService();
+        if (krService == null)
+            return Collections.emptyMap();
+
         GetKRbySeedWordRequest getKRbySeedWordRequest = new GetKRbySeedWordRequest();
         getKRbySeedWordRequest.setSeedWord(seedWord);
         getKRbySeedWordRequest.setDevice(1);
         GetKRbySeedWordResponse getKRbySeedWordResponse = krService.getKRbySeedWord(getKRbySeedWordRequest);
         List<KRResult> list = getKRbySeedWordResponse.getKrResult();
-        List<KRResultDTO> results = new ArrayList<>();
-        for (KRResult entity : list) {
+        List<KRResultDTO> results = list.stream().map(e -> {
             KRResultDTO krResultDTO = new KRResultDTO();
-            krResultDTO.setWord(entity.getWord());
-            krResultDTO.setExactPV(entity.getExactPV());
-            krResultDTO.setCompetition(entity.getCompetition());
-            krResultDTO.setFlag1(entity.getFlag1());
-            results.add(krResultDTO);
-        }
-        Map<String, Object> map = JSONUtils.getJsonMapData(results);
-        return map;
+            krResultDTO.setWord(e.getWord());
+            krResultDTO.setExactPV(e.getExactPV());
+            krResultDTO.setCompetition(e.getCompetition());
+            krResultDTO.setFlag1(e.getFlag1());
+            return krResultDTO;
+        }).collect(Collectors.toList());
+
+        return JSONUtils.getJsonMapData(results);
     }
 
     @Override
     public Map<String, Object> findTr() {
-
         return JSONUtils.getJsonMapData(keywordGroupDAO.findTr());
     }
 
@@ -466,7 +228,6 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     @Override
     public PagerInfo findByPager(Map<String, Object> params, int page, int limit) {
-
         return keywordGroupDAO.findByPager(params, page, limit);
     }
 
@@ -482,6 +243,9 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     public Map<String, Object> getKRResult(List<String> seedWordList, int skip, int limit, int sort, String fieldName) {
         KRService krService = getKRService();
+        if (krService == null)
+            return Collections.emptyMap();
+
         GetKRFileIdbySeedWordRequest getKRFileIdbySeedWordRequest = new GetKRFileIdbySeedWordRequest();
         getKRFileIdbySeedWordRequest.setSeedWords(seedWordList);
         GetKRFileIdbySeedWordResponse getKRFileIdbySeedWordResponse = krService.getKRFileIdbySeedWord(getKRFileIdbySeedWordRequest);
@@ -521,13 +285,13 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
     private KRService getKRService() {
         BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService service = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
-        KRService krService = null;
         try {
-            krService = service.getService(KRService.class);
+            if (service != null)
+                return service.getService(KRService.class);
         } catch (ApiException e) {
             e.printStackTrace();
         }
-        return krService;
+        return null;
     }
 
 
@@ -539,14 +303,10 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
      */
     private List<BaiduKeywordDTO> httpFileHandler(String url) {
         List<BaiduKeywordDTO> keywordList = new ArrayList<>();
-        //create HttpClient
-        CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
         //create HTTP GET request
         HttpGet httpGet = new HttpGet(url);
 
-        try {
-            //execute GET request
-            CloseableHttpResponse response = closeableHttpClient.execute(httpGet);
+        try (CloseableHttpClient closeableHttpClient = HttpClients.createDefault(); CloseableHttpResponse response = closeableHttpClient.execute(httpGet)) {
             //get response body entity
             HttpEntity entity = response.getEntity();
             BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "GBK"));
@@ -567,12 +327,6 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
             saveToRedis(SerializeUtils.serialize(_krFileId), SerializeUtils.serialize(keywordList));
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                closeableHttpClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         return keywordList;
@@ -601,29 +355,12 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
      */
     private Map<String, String> sortMapByKey(Map<String, String> map) {
         if (map == null || map.isEmpty()) {
-            return null;
+            return Collections.emptyMap();
         }
 
-        Map<String, String> sortMap = new TreeMap<>(new MapKeyComparator());
+        Map<String, String> sortMap = new TreeMap<>(String::compareTo);
         sortMap.putAll(map);
         return sortMap;
-    }
-
-    public Class getEntityClass() {
-        return null;
-    }
-
-    public Pager findByPager(int start, int pageSize, Map q, int orderBy) {
-        return null;
-    }
-
-    //Map,key比较器
-    private class MapKeyComparator implements Comparator<String> {
-
-        @Override
-        public int compare(String str1, String str2) {
-            return str1.compareTo(str2);
-        }
     }
 
     //分页
@@ -642,6 +379,9 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     private List<BaiduKeywordDTO> getKRResult(List<String> seedWordList) {
         KRService krService = getKRService();
+        if (krService == null)
+            return Collections.emptyList();
+
         GetKRFileIdbySeedWordRequest getKRFileIdbySeedWordRequest = new GetKRFileIdbySeedWordRequest();
         getKRFileIdbySeedWordRequest.setSeedWords(seedWordList);
         GetKRFileIdbySeedWordResponse getKRFileIdbySeedWordResponse = krService.getKRFileIdbySeedWord(getKRFileIdbySeedWordRequest);
@@ -664,6 +404,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                 results = httpFileHandler(krFilePath);
                 break;
             }
+
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {

@@ -183,7 +183,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
                 jedis.setex(key, (int) TimeUnit.DAYS.toSeconds(1) * 7, value);
                 return returnList;
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         } finally {
             JRedisUtils.returnJedis(jedis);
