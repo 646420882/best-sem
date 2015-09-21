@@ -9,8 +9,8 @@
 <html>
 <head>
     <title>重点关键词监控</title>
-    <link rel="stylesheet" href="../public/css/accountCss/public.css"/>
-    <link rel="stylesheet" href="../public/css/accountCss/style.css"/>
+    <link rel="stylesheet" href="../public/css/public/public.css"/>
+    <link rel="stylesheet" href="../public/css/public/style.css"/>
     <link rel="stylesheet" href="../public/js/plugs/grid.css"/>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="../public/js/plugs/framework.js"></script>

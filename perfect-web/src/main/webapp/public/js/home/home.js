@@ -716,6 +716,7 @@ $("#liClick").click(function () {
 });
 var curve = function () {
     var myChart = echarts.init(document.getElementById('container'));
+    window.onresize = myChart.resize;
     var dataNew;
     if (dataOne == "") {
         dataNew = [dataTow];

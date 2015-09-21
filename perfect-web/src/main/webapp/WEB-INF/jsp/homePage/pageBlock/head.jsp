@@ -190,6 +190,7 @@
             $(".TB_overlayBG").css("display", "none");
             $("#head_img").css("display", "none");
         });
+
     });
 </script>
 

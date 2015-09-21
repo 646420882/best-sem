@@ -10,7 +10,7 @@
 <head>
     <title>大数据智能营销</title>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css/css/public/public.css/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">

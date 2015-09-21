@@ -10,8 +10,8 @@
 <head>
     <title>审核帐号</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/public/css/accountCss/backstage.css">
 </head>

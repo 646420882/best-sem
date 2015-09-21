@@ -433,14 +433,14 @@ color:#01aeef;
     width:40px;
     height:40px;
     vertical-align: middle;
+    padding-top:10px;
     margin:auto;
 }
 .nav_left ul li a span{
     display:block;
-    float:left;
     width:24px;
     height:24px;
-    margin: 8px 0 0 12px;
+
 }
 .list_1{
 
