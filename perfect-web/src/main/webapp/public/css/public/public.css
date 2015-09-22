@@ -11,7 +11,7 @@ a {
 a:link,
 a:visited,
 a:hover,
-a:active{
+a:active {
     text-decoration: none;
 }
 
@@ -24,16 +24,17 @@ p {
     margin: 0;
     padding: 0;
 }
-html ,body{
-   height:100%;
+
+html, body {
+    height: 100%;
 }
 
 body {
     font-family: "微软雅黑";
     font-size: 12px;
     min-width: 900px;
-    overflow-y:scroll;
-    background:#f0f0f0;
+    overflow-y: scroll;
+    background: #f0f0f0;
 }
 
 img {
@@ -89,7 +90,7 @@ table tr, table tr td {
     height: 60px;
     top: 0px;
     left: 0px;
-/*background: url(/public/img/top_bg.jpg) center repeat;*/
+    /*background: url(/public/img/top_bg.jpg) center repeat;*/
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -97,8 +98,8 @@ table tr, table tr td {
     vertical-align: middle;
     z-index: 100;
     min-width: 700px;
-    background:#fff;
-    position:fixed;
+    background: #fff;
+    position: fixed;
     border-bottom: 1px solid #f0f0f0;
 
 }
@@ -108,7 +109,7 @@ table tr, table tr td {
     height: 60px;
     background: url(/public/img/top_left.png) left no-repeat;
     position: relative;
-    padding-left:75px;
+    padding-left: 75px;
 
 }
 
@@ -148,7 +149,7 @@ table tr, table tr td {
     height: 34px;
     line-height: 34px;
     background: #dfdfdf;
-    //position: fixed;
+/ / position : fixed;
     z-index: 98;
 }
 
@@ -175,8 +176,8 @@ table tr, table tr td {
 /*nav*/
 .nav {
     height: 100%;
-    width:75px;
-    float:left;
+    width: 75px;
+    float: left;
     position: fixed;
     z-index: 112;
     left: 0px;
@@ -188,7 +189,7 @@ table tr, table tr td {
     position: relative;
     width: 75px;
     z-index: 111;
-    background:#01aeef;
+    background: #01aeef;
 }
 
 .nav_bg {
@@ -197,9 +198,10 @@ table tr, table tr td {
     height: 100%;
     z-index: -1;
 }
-.nav_left ul .current a{
+
+.nav_left ul .current a {
     border-radius: 100%;
-background:#018bbf;
+    background: #018bbf;
 }
 
 .nav_top {
@@ -222,7 +224,7 @@ background:#018bbf;
 
 .user_mid {
     *width: 40%;
-    height:60px;
+    height: 60px;
     vertical-align: middle;
 }
 
@@ -253,10 +255,10 @@ background:#018bbf;
     /* padding:0 2%;*/
     *width: 245px;
     position: relative;
-    background:#f9f9f9;
-    padding:0 24px;
-    border-left:1px solid #ededed;
-    border-right:1px solid #ededed;
+    background: #f9f9f9;
+    padding: 0 24px;
+    border-left: 1px solid #ededed;
+    border-right: 1px solid #ededed;
 }
 
 .user_logo1 {
@@ -264,7 +266,8 @@ background:#018bbf;
 }
 
 .user_logo2 {
-color:#01aeef;
+    color: #01aeef;
+    margin-left: 5px;
 
 }
 
@@ -288,7 +291,7 @@ color:#01aeef;
 
 .user_select {
     width: 100%;
-    margin-top:5px;
+    margin-top: 5px;
     position: relative;
 }
 
@@ -302,8 +305,8 @@ color:#01aeef;
 .user_top span {
     color: #01aeef;
     font-weight: bold;
-    border-right:1px solid #ccc;
-    padding-right:10px;
+    border-right: 1px solid #ccc;
+    padding-right: 10px;
 
 }
 
@@ -334,6 +337,7 @@ color:#01aeef;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 .user_names {
@@ -344,28 +348,29 @@ color:#01aeef;
     font-weight: bold;
     padding: 10px;
 
-
     z-index: 120;
 }
 
 .user_names ul li {
     cursor: pointer;
     margin-bottom: 10px;
-    padding:0 5px;
+    padding: 0 5px;
 }
-.user_names ul li:hover{
-           background: #ffffff;
-    color:#999c9e;
+
+.user_names ul li:hover {
+    background: #ffffff;
+    color: #999c9e;
 }
-.login_out{
-    line-height:60px;
-    padding:0 24px;
+
+.login_out {
+    line-height: 60px;
+    padding: 0 24px;
 }
+
 .user_text h3 {
     color: #f2ab00;
     font-size: 1.5em;
 }
-
 
 .user_detali {
 }
@@ -386,13 +391,14 @@ color:#01aeef;
     color: #f2ab00;
 }
 
-.nav_mid{
-    height:100%;
+.nav_mid {
+    height: 100%;
 }
+
 /*底部*/
 .footer {
     width: 100%;
-    height:90px;
+    height: 90px;
     padding: 5px;
     border-top: 1px solid #d1d1d1;
     text-align: center;
@@ -407,40 +413,47 @@ color:#01aeef;
     color: #999999;
     padding: 0 10px;
 }
-.footer p{
-    margin:0px;
+
+.footer p {
+    margin: 0px;
 }
-.totle_menu{
-    width:75px;
-    height:60px;
-    line-height:60px;
+
+.totle_menu {
+    width: 75px;
+    height: 60px;
+    line-height: 60px;
     text-align: center;
-    background:#1fbdf8;
+    background: #1fbdf8;
     vertical-align: middle;
     cursor: pointer;
 }
+
 .nav_left ul {
-    margin-top:18px;
+    margin-top: 18px;
     text-align: center;
     vertical-align: middle;
 
 }
-.nav_left ul li{
+
+.nav_left ul li {
     margin-bottom: 12px;
 }
-.nav_left ul li a{
-    display:block;
-    width:40px;
-    height:40px;
+
+.nav_left ul li a {
+    display: block;
+    width: 40px;
+    height: 40px;
     vertical-align: middle;
-    padding-top:10px;
-    margin:auto;
+    padding-top: 10px;
+    margin: auto;
 }
-.nav_left ul li a span{
-    display:block;
-    width:24px;
-    height:24px;
+
+.nav_left ul li a span {
+    display: block;
+    width: 24px;
+    height: 24px;
 
 }
+
 @import "main.css";
 @import "index.css";

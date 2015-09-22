@@ -76,6 +76,7 @@ function skipCampaignPage() {
  */
 $("#tbodyClick5").delegate("tr", "click", function () {
     var span = $(this).find("td:last");
+    $("#planBottom").fadeIn("slow");
     if (span.html() != "&nbsp;") {
         $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
         $("#reduction_caipamgin").find("span").addClass("zs_top");
@@ -267,15 +268,15 @@ function whenBlurEditCampaign(num, value) {
                     } else {
                         var bgt = $("#acBgt").html();
                         if (bgt != "") {
-                            if (parseInt(value)>parseInt(bgt)) {
-                                alert("您的每日预算为"+bgt+"，该计划的每日预算不能超过"+bgt+"元");
+                            if (parseInt(value) > parseInt(bgt)) {
+                                alert("您的每日预算为" + bgt + "，该计划的每日预算不能超过" + bgt + "元");
                                 return;
-                            }else{
+                            } else {
                                 jsonData["budget"] = value;
                             }
                         } else {
                             alert("您的账户预算加载失败，请加载成功后再进行修改");
-                              return;
+                            return;
                         }
                     }
                 }

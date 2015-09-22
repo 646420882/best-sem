@@ -270,12 +270,19 @@ $(function () {
     });
 
     $(".pinned").pin()
-    $("#jingjia_adds").click(function(){
+    $("#jingjia_adds").click(function () {
         $("#jiangjia_add").show();
     });
-    $("#jiangjia_chongfu").click(function(){
+    $("#jiangjia_chongfu").click(function () {
         $("#jiangjia_add").hide();
 
+    })
+    //编辑弹窗关闭方法
+    $(".bottom_close").click(function () {
+        $(".bottom_close").parent().parent().fadeOut("slow");
+    })
+    $(".zh_menu2").click(function () {
+        $(".bottom_close").parent().parent().fadeOut("slow");
     })
 
 });
