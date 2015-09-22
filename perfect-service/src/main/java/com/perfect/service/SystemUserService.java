@@ -17,6 +17,8 @@ public interface SystemUserService {
 
     void updateAccountData(String userName, long accountId);
 
+    boolean updateBaiDuName(String name,Long baiduId);
+
     void updateAccountData(String userName, long accountId, List<Long> camIds);
 
     void updateBaiduAccountInfo(String userName, Long accountId, BaiduAccountInfoDTO dto);

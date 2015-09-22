@@ -78,6 +78,7 @@
                                 <td>&nbsp;<b>已绑定推广账户</b></td>
                                 <td>&nbsp;<b>推广URL</b></td>
                                 <td>&nbsp;<b>Token</b></td>
+                                <td>&nbsp;<b>备注名(双击更改)</b></td>
                                 <td>&nbsp;<b>操作</b></td>
                             </tr>
                             </thead>
@@ -89,14 +90,39 @@
                                             class="fl">${i.baiduUserName}</b></td>
                                     <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
                                     <td>&nbsp;${i.token}</td>
+                                    <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}" style="background-color: #f0f0f0;border: none" value="${i.baiduRemarkName}" width="10px" readonly></td>
                                     <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}" data-userName="${currSystemUserName}" class="delBtn" style="cursor: pointer">删除</a></td>
                                 </tr>
 
                             </c:forEach>
                             <script type="application/javascript">
+                                $("#updateInput").dblclick(function(){
+                                    if($("#updateInput").attr("readonly")=="readonly"){
+                                        $("#updateInput").attr("style","background-color:#fff;border: none");
+                                        $("#updateInput").removeAttr("readonly");
+                                    }
+                                });
+                                $("#updateInput").blur(function(){
+                                    if($("#updateInput").attr("readonly") != "readonly"){
+                                        $.ajax({
+                                            url:"/configuration/acc/upBaiduName",
+                                            type:"GET",
+                                            dataType:"json",
+                                            data:{
+                                                id:$(this).attr("data-baidu-id"),
+                                                name:$(this).val()
+                                            },
+                                            success: function(datas){
+                                                alert(datas.rows);
+                                            }
+                                        })
+                                    }
+                                    $("#updateInput").attr("style","background-color:#f0f0f0;border: none");
+                                    $("#updateInput").attr("readonly","readonly");
+                                });
                                 $('.delBtn').click(function () {
-                                    var id = $('.delBtn').attr('data-id');
-                                    var userName = $('.delBtn').attr('data-userName');
+                                    var id = $(this).attr('data-id');
+                                    var userName = $(this).attr('data-userName');
                                     if(confirm("是否确定删除此帐号")){
                                         $.ajax({
                                             url: "/configuration/acc/deletebdUser",

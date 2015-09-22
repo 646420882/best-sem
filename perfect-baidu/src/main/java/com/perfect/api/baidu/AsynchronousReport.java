@@ -156,7 +156,7 @@ public class AsynchronousReport {
                 return null;
             }
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -185,7 +185,12 @@ public class AsynchronousReport {
         int isGenerated = 0;
         int sleepTime = 15 * 1000;
         int views = 0;
-        isGenerated = reportStateResponse.getIsGenerated();
+        try {
+            isGenerated = reportStateResponse.getIsGenerated();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         String fileUrl = null;
         do {
@@ -215,7 +220,13 @@ public class AsynchronousReport {
                 if (reportState == null) {
                     continue;
                 }
-                isGenerated = reportState.getIsGenerated();
+                try {
+                    isGenerated = reportState.getIsGenerated();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
             } else if (isGenerated == 3) {
                 GetReportFileUrlRequest fileUrlRequest = new GetReportFileUrlRequest();
                 fileUrlRequest.setReportId(reportId);

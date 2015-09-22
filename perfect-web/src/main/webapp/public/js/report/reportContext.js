@@ -116,6 +116,11 @@ $(function () {
     }
 
     $(document).ready(function () {
+        //数据初始化
+        judgeVS = 0;
+        $("#pagination1").empty();
+        reportDataVS();
+        //
         //加载日历控件
         $("input[name=reservation]").daterangepicker();
         $("#inputTow").cxCalendar();
@@ -1461,7 +1466,8 @@ $(function () {
                 }
             }
         });
-    }
+    };
+    reportDataVS
     /**
      *
      * 账户基础报告

@@ -11,13 +11,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created by XiaoWei on 2015/2/27.
+ * Created by subdong on 15-9-21.
  */
 @Repository("mobileSublinkDAO")
-class MobileSublinkDAOImpl extends AbstractSysBaseDAOImpl<MobileSublinkDTO,Long> implements MobileSublinkDAO {
+public class MobileSublinkDAOImpl extends AbstractSysBaseDAOImpl<MobileSublinkDTO,Long> implements MobileSublinkDAO {
     @Override
     public void customSave(MobileSublinkDTO mobileSublinkDTO) {
-        MobileSublinkEntity entity= ObjectUtils.convert(mobileSublinkDTO,MobileSublinkEntity.class);
+        MobileSublinkEntity entity= ObjectUtils.convert(mobileSublinkDTO, MobileSublinkEntity.class);
         getMongoTemplate().save(entity);
     }
 

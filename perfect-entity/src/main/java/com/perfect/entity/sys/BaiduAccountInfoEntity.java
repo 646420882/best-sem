@@ -15,6 +15,8 @@ public class BaiduAccountInfoEntity {
 
     private String baiduUserName;
 
+    private String baiduRemarkName;
+
     private String baiduPassword;
 
     private String token;
@@ -236,5 +238,13 @@ public class BaiduAccountInfoEntity {
 
     public void setState(Long state) {
         this.state = state;
+    }
+
+    public String getBaiduRemarkName() {
+        return baiduRemarkName;
+    }
+
+    public void setBaiduRemarkName(String baiduRemarkName) {
+        this.baiduRemarkName = baiduRemarkName;
     }
 }
