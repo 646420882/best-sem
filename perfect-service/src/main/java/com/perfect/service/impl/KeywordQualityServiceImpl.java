@@ -61,7 +61,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         fieldName = "pc" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
         List<KeywordReportDTO> list = keywordQualityDAO.findYesterdayKeywordReport();
         if (list.size() == 0)
-            return null;
+            return Collections.emptyMap();
 
         //getYesterdayAllKeywordId
         List<Long> keywordIds = new ArrayList<>();
@@ -87,23 +87,6 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         } finally {
             forkJoinPool2.shutdown();
         }
-
-//        //计算点击率和平均点击价格
-//        for (Map.Entry<String, KeywordReportDTO> entry : map.entrySet()) {
-//            KeywordReportDTO vo = entry.getValue();
-//            Double cost = vo.getPcCost();
-//            Double ctr = (vo.getPcClick() + .0) / vo.getPcImpression();
-//            Double cpc = .0;
-//            cost = new BigDecimal(cost).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-//            ctr = new BigDecimal(ctr * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-//            if (vo.getPcClick() > 0)
-//                cpc = vo.getPcCost() / vo.getPcClick();
-//            cpc = new BigDecimal(cpc).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-//            vo.setPcCost(cost);
-//            vo.setPcCtr(ctr);
-//            vo.setPcCpc(cpc);
-//            entry.setValue(vo);
-//        }
 
         list = new ArrayList<>(map.values());
         QualityDTO allQualityData = getQualityData(list);
@@ -183,19 +166,23 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 qualityList.add(qualityDTO);
 
                 //每个质量度下具体的关键词信息
-                KeywordReportDTO topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), n, finalFieldName, sort);
+                Optional<KeywordReportDTO[]> keywordReportTopNDataOptional =
+                        Optional.ofNullable(TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), n, finalFieldName, sort));
 
-                if ((skip + 1) * n > topNData.length) {
-                    List<KeywordReportDTO> data = new ArrayList<>();
+                if (keywordReportTopNDataOptional.isPresent()) {
+                    KeywordReportDTO topNData[] = keywordReportTopNDataOptional.get();
+                    if ((skip + 1) * n > topNData.length) {
+                        List<KeywordReportDTO> data = new ArrayList<>();
 //                    for (int j = skip * n; j < topNData.length; j++) {
 //                        data.add(topNData[j]);
 //                    }
-                    data.addAll(Arrays.asList(topNData).subList(skip * n, topNData.length));
-                    reportList.add(new KeywordQualityReportVO(i, data));
-                } else {
-                    KeywordReportDTO arrData[] = new KeywordReportDTO[n];
-                    System.arraycopy(topNData, skip * n, arrData, 0, n);
-                    reportList.add(new KeywordQualityReportVO(i, Arrays.asList(arrData)));
+                        data.addAll(Arrays.asList(topNData).subList(skip * n, topNData.length));
+                        reportList.add(new KeywordQualityReportVO(i, data));
+                    } else {
+                        KeywordReportDTO arrData[] = new KeywordReportDTO[n];
+                        System.arraycopy(topNData, skip * n, arrData, 0, n);
+                        reportList.add(new KeywordQualityReportVO(i, Arrays.asList(arrData)));
+                    }
                 }
             }
         });
@@ -211,6 +198,10 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
     public List<Quality10Type> getKeyword10Quality(List<Long> keywordIds) {
         BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
+        if (commonService == null) {
+            return Collections.emptyList();
+        }
+
         List<Quality10Type> quality10TypeList = new ArrayList<>();
         try {
             KeywordService keywordService = commonService.getService(KeywordService.class);
@@ -356,8 +347,11 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
                 qualityDTOMap.put(i, qualityDTO);
 
                 //每个质量度下具体的关键词信息
-                KeywordReportDTO topNData[] = TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), tempList.size(), "pcImpression", -1);
-                reportList.add(new KeywordQualityReportVO(i, Arrays.asList(topNData)));
+                Optional<KeywordReportDTO[]> keywordReportTopNDataOptional =
+                        Optional.ofNullable(TopN.getTopN(tempList.toArray(new KeywordReportDTO[tempList.size()]), tempList.size(), "pcImpression", -1));
+                if (keywordReportTopNDataOptional.isPresent()) {
+                    reportList.add(new KeywordQualityReportVO(i, Arrays.asList(keywordReportTopNDataOptional.get())));
+                }
             }
         });
 
