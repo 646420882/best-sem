@@ -8,18 +8,17 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /**
- * TopN algorithm, include QuickSort and TimSort
+ * <p>TopN algorithm, include QuickSort and TimSort.
  * Date: 2014-08-16
- * 2014-12-01 refactor
  *
- * @author baizz
+ * @author dolphineor
  */
 @SuppressWarnings("unchecked")
 public class TopN {
 
-    private static Method method;  //the field's declared method
+    private static Method method;  // the field's declared method
 
-    private static int sort = -1;  //default DESC
+    private static int sort = -1;  // default DESC
 
     private TopN() {
     }
@@ -46,7 +45,7 @@ public class TopN {
             e.printStackTrace();
         }
 
-        //TopN数组
+        // TopN数组
         T topNData[];
         int l = ts.length;
         if (l >= n) {
@@ -56,10 +55,10 @@ public class TopN {
             topNData = ts;
         }
 
-        //采用快速排序
+        // 采用快速排序
         quickSort(topNData, 0, topNData.length - 1);
 
-        //遍历剩余部分
+        // 遍历剩余部分(最小堆)
         try {
             for (int i = n; i < l; i++) {
                 int index = (l >= n) ? (n - 1) : (l - 1);
@@ -90,21 +89,21 @@ public class TopN {
         if (l >= h)
             return;
 
-        //确定指针方向的逻辑变量
+        // 确定指针方向的逻辑变量
         boolean transfer = true;
 
         try {
             while (l != h) {
                 if (((Comparable) TopN.method.invoke(arr[l])).compareTo(TopN.method.invoke(arr[h])) == TopN.sort) {
-                    //交换数据
+                    // 交换数据
                     T tempObj = arr[l];
                     arr[l] = arr[h];
                     arr[h] = tempObj;
-                    //决定下标移动, 还是上标移动
+                    // 决定下标移动, 还是上标移动
                     transfer = !transfer;
                 }
 
-                //将指针向前或者向后移动
+                // 将指针向前或者向后移动
                 if (transfer)
                     h--;
                 else
@@ -114,7 +113,7 @@ public class TopN {
             e.printStackTrace();
         }
 
-        //将数组分开两半, 确定每个数字的正确位置
+        // 将数组分开两半, 确定每个数字的正确位置
         l--;
         h++;
         quickSort(arr, low, l);
@@ -161,9 +160,9 @@ public class TopN {
             return (t1, t2) -> {
                 try {
                     int compareResult = ((Comparable) _method.invoke(t1)).compareTo(_method.invoke(t2));
-                    if (sort == -1) {//DESC
+                    if (sort == -1) {// DESC
                         return ~compareResult;
-                    } else {//ASC
+                    } else {// ASC
                         return compareResult;
                     }
                 } catch (IllegalAccessException | InvocationTargetException e) {

@@ -140,7 +140,9 @@ function getKwdList(nowPage) {
  */
 $("#tbodyClick").delegate("tr", "click", function () {
     var span = $(this).find("td:last");
+     $("#keywordbottom").fadeIn("slow");
     if (span.html() != "&nbsp;") {
+
         $("#reduction").find("span").removeClass("z_function_hover");
         $("#reduction").find("span").addClass("zs_top");
     } else {

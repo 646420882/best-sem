@@ -113,6 +113,7 @@ function getChar(str) {
 function InitMenu() {
     $("#createTable").on("mousedown", "tr", function () {
         $(this).smartMenu(menuData, menuExt);
+        $("#amsDiv").fadeIn("slow");
     });
     $("#createTable").on("keydown", "tr", function (event) {
         if (event.keyCode == 13) {

@@ -95,7 +95,7 @@ var loadKeywordQualityData = function () {
                         else
                             _class = "list2_box2";
 
-                        var _div = "<div><ul class='" + _class + "'><li class='home_quality'></li><li><span>" + item.keywordName + "</span></li>" +
+                        var _div = "<div><ul class='" + _class + "'><li class='home_quality'></li><li><span><a href='/assistant/index'>" + item.keywordName + "</a></span></li>" +
                             "<li>" + item.pcImpression + "</li><li>" + item.pcClick + "</li><li>" + item.pcCtr + "%</li><li>" + item.pcCost + "</li>" +
                             "<li>" + item.pcCpc + "</li><li>" + item.pcConversion + "</li></ul></div>";
                         $("#keywordQuality" + grade).append(_div);
