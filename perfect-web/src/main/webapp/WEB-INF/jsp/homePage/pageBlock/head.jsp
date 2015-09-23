@@ -15,7 +15,7 @@
             <img src="${pageContext.request.contextPath}/public/img/top_bg.jpg" width="100%" height="100%">
         </div>
         <div class="top_middle" >
-            <div class="user_mid fl">
+            <div class="user_mid fr">
                 <div class="user_logo fl">
                     <div class="user_logo1">
                         <div class="user_img fl over">
@@ -56,7 +56,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="top_mid fr over">
+            <div class="top_mid fl over">
                 <div class="logo">
                     <a href="http://best-ad.cn/" target="_blank"><img src="${pageContext.request.contextPath}/public/img/logo.png"></a>
                 </div>

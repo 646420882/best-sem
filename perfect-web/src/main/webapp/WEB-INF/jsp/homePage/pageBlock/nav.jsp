@@ -28,6 +28,7 @@
                     <li>
                         <a href="/assistant/index">
                             <span class="list_2"></span>
+
                             <h3>推广助手</h3>
                         </a>
                     </li>
@@ -86,68 +87,41 @@
     });
     $(function () {
         //取屏幕宽度
-        var mid_width = $(document.body).width() - 180;
-        var max_width = $(document.body).width() - 8;
-        $(".mid").css("width", mid_width);
-        $(window).resize(function () {
-            mid_width = $(document.body).width() - 180;
-            max_width = $(document.body).width() - 8;
-            if ($(".nav_left").css("display") == "none") {
-                $(".mid").css("width", max_width);
-            }
-            else {
-                $(".mid").css("width", mid_width);
-            }
-        });
-        var top_width = $(document.body).width();
-        $(".top").css("width", top_width);
-        $(window).resize(function () {
-            top_width = $(document.body).width();
-            $(".top").css("width", top_width);
-        });
-        $(".tips").on("click",function () {
+        /*     var top_width = $(document.body).width();
+         $(".top").css("width", top_width);
+         $(window).resize(function () {
+         top_width = $(document.body).width();
+         $(".top").css("width", top_width);
+         });*/
+        function NavClick() {
             if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").show();
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
                 $(".nav").css("width", "180px");
-                $(".mid").css("width", mid_width);
                 $(".nav_input").css("display", "none");
                 $(".tips").attr('title', "点击隐藏导航");
+                $(".mid").css("padding-left", "180px");
             }
             else {
                 $(".nav_left").hide();
                 $(".nav").css("width", "8px");
+                $(".mid").css("padding-left", "8px");
                 $(".tips").css("position", "fixed");
                 $(".nav").css("z-index", "111");
-                $(".mid").css("width", " 99.6%");
                 $(".nav_input").css("display", "block");
                 $(".tips").attr("title", "点击显示导航");
+
             }
+        }
+
+        $(".tips").on("click", function () {
+            NavClick()
         });
         $(".nav_input1").click(function () {
             $(this).parent().removeAttr('href');
             $(".nav_input1").attr('title', "点击隐藏导航");
-            if ($(".nav_left").css("display") == "none") {//隐藏
-                $(".nav_left").show();
-                $(".tips").css("position", "relative");
-                $(".nav").css("z-index", "200");
-                $(".mid").css("width", mid_width);
-                $(".nav_input").css("display", "none");
-                $(".tips").attr('title', "点击隐藏导航");
-            }
-            else {
-                $(".nav_left").hide();
-                $(".tips").css("position", "fixed");
-                $(".nav").css("z-index", "111");
-                $(".nav").css("width", "8px");
-                $(".mid").css("width", "99.6%");
-                $(".nav_input").css("display", "block");
-                $(".tips").attr("title", "点击显示导航");
-                $(".nav ul li a").attr('href');
-
-
-            }
+            NavClick()
         });
         if (parseInt(baiduAccountId) != -1) {
             loadBaiduAccount();

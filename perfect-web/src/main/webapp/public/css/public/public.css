@@ -11,7 +11,7 @@ a {
 a:link,
 a:visited,
 a:hover,
-a:active{
+a:active {
     text-decoration: none;
 }
 
@@ -24,15 +24,16 @@ p {
     margin: 0;
     padding: 0;
 }
-html ,body{
-   height:100%;
+
+html, body {
+    height: 100%;
 }
 
 body {
     font-family: "微软雅黑";
     font-size: 12px;
     min-width: 900px;
-    overflow-y:scroll
+    overflow-y: scroll
 }
 
 img {
@@ -108,8 +109,6 @@ table tr, table tr td {
 }
 
 .top_mid {
-    /*  line-height: 94px;*/
-    margin-right: 3%;
 
 }
 
@@ -120,7 +119,7 @@ table tr, table tr td {
 }
 
 .logo img {
-
+    max-width: 100%;
 }
 
 .logo_text {
@@ -212,7 +211,6 @@ table tr, table tr td {
 .user_mid {
     *width: 40%;
     padding-top: 20px;
-    margin-left: 20px;
 }
 
 .user_img {
@@ -338,10 +336,11 @@ table tr, table tr td {
 .user_names ul li {
     cursor: pointer;
     margin-bottom: 10px;
-    padding:0 5px;
+    padding: 0 5px;
 }
-.user_names ul li:hover{
-           background: #497ca5;
+
+.user_names ul li:hover {
+    background: #497ca5;
 }
 
 .user_text h3 {
@@ -405,7 +404,7 @@ table tr, table tr td {
 .nav_under {
     width: 172px;
     position: relative;
-    height:100%;
+    height: 100%;
 }
 
 .nav_under ul li .nav_input1 {
@@ -501,13 +500,15 @@ table tr, table tr td {
 .nav_under ul li .list12 {
     background: url(/public/img/bg.png) -73px -71px no-repeat;
 }
-.nav_mid{
-    height:100%;
+
+.nav_mid {
+    height: 100%;
 }
+
 /*底部*/
 .footer {
     width: 100%;
-    height:90px;
+    height: 90px;
     padding: 5px;
     border-top: 1px solid #d1d1d1;
     text-align: center;
@@ -522,6 +523,7 @@ table tr, table tr td {
     color: #999999;
     padding: 0 10px;
 }
-.footer p{
-    margin:0px;
+
+.footer p {
+    margin: 0px;
 }
