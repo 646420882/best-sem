@@ -65,7 +65,7 @@
                     if (results != null && results.length > 0) {
                         var lis = "";
                         $.each(results, function (i, item) {
-                            var _item = item.baiduUserName.substring(6);
+                            var _item = item.baiduRemarkName;
                             if (baiduAccountId == item.id) {
                                 $('.user_name span').html(_item);
                             }

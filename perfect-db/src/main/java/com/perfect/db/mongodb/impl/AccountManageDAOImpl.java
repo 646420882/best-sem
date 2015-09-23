@@ -203,6 +203,15 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
+    public boolean updateBaiDuName(String name, Long baiduId) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Update update = new Update();
+        update.set("bdAccounts.$.baiduRemarkName", name);
+        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("bdAccounts._id").is(baiduId)), update, "sys_user");
+        return writeResult.isUpdateOfExisting();
+    }
+
+    @Override
     public boolean updateSysAccount(String userName, Long state) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Update update = new Update();

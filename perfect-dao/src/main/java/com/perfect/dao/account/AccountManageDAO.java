@@ -74,6 +74,14 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     boolean updateBaiDuAccount(String userName, Long baiduId, Long state);
 
     /**
+     * 更新百度账号备注名
+     * @param name
+     * @param baiduId
+     * @return
+     */
+    boolean updateBaiDuName(String name,Long baiduId);
+
+    /**
      * 百度帐号启用/停用状态更改
      *
      * @return
