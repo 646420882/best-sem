@@ -48,7 +48,7 @@ var aAdd = {
     }
 }
 var aMeunData = [
-    [aAdd, aDel, aUpdate, aAddMutli, aReBack, aUpload, ]
+    [aAdd, aDel, aUpdate, aAddMutli, aReBack, aUpload,]
 ];
 /**
  * 初始化单元右键菜单
@@ -67,8 +67,6 @@ var aMenuExt = {
 function initAMenu() {
     $("#adGroupTable").on("mousedown", "tr", function () {
         $(this).smartMenu(aMeunData, aMenuExt);
-        $("#aDiv").fadeIn("slow");
-
     });
     $("#adGroupTable").on("keydown", "tr", function (event) {
         if (event.keyCode == 13) {
@@ -280,10 +278,10 @@ function aon(ts) {
     var status = _this.find("td:eq(2)").html();
     var pause = _this.find("td:eq(3)").html();
     $("#aDiv input").each(function (i, o) {
-        if (data[i].indexOf("input") > -1) {
+        if(data[i].indexOf("input")>-1){
             $(o).val("");
             return;
-        } else {
+        }else{
             $(o).val(data[i]);
         }
     });

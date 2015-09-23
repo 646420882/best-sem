@@ -11,18 +11,16 @@
 %>
 <%--<div class="top_heade">--%>
     <div class="top">
+        <div class="nav_bg">
+            <img src="${pageContext.request.contextPath}/public/img/top_bg.jpg" width="100%" height="100%">
+        </div>
         <div class="top_middle" >
-            <div class="top_mid fl over">
-                <div class="logo fl">
-                    <a href="http://best-ad.cn/" target="_blank"><img src="${pageContext.request.contextPath}/public/img/new_logo_02.png"></a>
-                </div>
-            </div>
-            <div class="user_mid fr">
+            <div class="user_mid fl">
                 <div class="user_logo fl">
                     <div class="user_logo1">
                         <div class="user_img fl over">
-                            <span id="head_click">
-                                <img  id="user_img"  src="${pageContext.request.contextPath}/account/getImg"  class="img-circle"></span>
+                            <span id="head_click"><img id="user_img"
+                                                       src="${pageContext.request.contextPath}/account/getImg"></span>
                         </div>
                         <div class="user_text fl">
                             <div class="user_top over">
@@ -30,8 +28,10 @@
                                             href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
                                     </div>
                                     <div class="user_logo2 fr">
-
-                                        余额
+                                        <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
+                                            <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
+                                                   onclick="$('form[logout]').submit();"/>
+                                        </form>
                                     </div>
                             </div>
 
@@ -48,22 +48,19 @@
 
                     </div>
                 </div>
-                <div class="login_out fl">
-                      <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
-                                          <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
-                                                 onclick="$('form[logout]').submit();"/>
-                                      </form>
-
-                </div>
-            <%--    <div class="user_detali fl over" id="argDialogDiv" style="min-width:300px;">
+                <div class="user_detali fl over" id="argDialogDiv" style="min-width:300px;">
                     <ul>
                         <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
                                                                                style="color: white">.</a></li>
                         <li><span>余额预计可消费：${remainderDays}天</span><span>日预算：${accountBudget}元</span></li>
                     </ul>
-                </div>--%>
+                </div>
             </div>
-
+            <div class="top_mid fr over">
+                <div class="logo">
+                    <a href="http://best-ad.cn/" target="_blank"><img src="${pageContext.request.contextPath}/public/img/logo.png"></a>
+                </div>
+            </div>
         </div>
     </div>
 <%--</div>--%>
@@ -172,9 +169,9 @@
         time.innerHTML = "晚上,好！"
     }
     //弹窗
-    $(function () {
+    window.onload = function () {
         rDrag.init(document.getElementById('head_top'));
-    });
+    };
     $(function () {
         $("#head_click").click(function () {
             $(".TB_overlayBG").css({
@@ -190,7 +187,6 @@
             $(".TB_overlayBG").css("display", "none");
             $("#head_img").css("display", "none");
         });
-
     });
 </script>
 
