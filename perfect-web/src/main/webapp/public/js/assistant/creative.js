@@ -41,48 +41,92 @@ $(function () {
     initsDivKeyup();
     initUpdateInputKeyUp();
 });
-
+//全选
+function CtrlA() {
+    $(document).keydown(function (event) {
+        alert(1111);
+        if (event.ctrlKey && event.keyCode == 65) {
+            jQuery('#tbodyClick2 tr').css('background', '#fcefc5');
+        }
+        ;
+        return false;
+    });
+}
+function CtrlAll() {
+    jQuery('#tbodyClick2 tr').css('background', '#fcefc5');
+}
+function CtrlCancel() {
+    jQuery('#tbodyClick2 tr').css('background', '')
+}
 /**
  * 菜单名，方法
  * @type {{text: string, func: func}}
  */
 var add = {
-    text: "添加创意",
-    func: function () {
-        addCreative();
+        text: "添加创意",
+        img: "../public/img/zs_function1.png",
+        func: function () {
+            addCreative();
+        }
+    }, del = {
+        text: "删除",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            deleteByObjectId();
+        }
+    }, cAddMutli = {
+        text: "批量添加创意",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            creativeMulti();
+        }
+    }, creBack = {
+        text: "还原",
+        img: "../public/img/zs_function9.png",
+        func: function () {
+            reBakClick();
+        }
+    }, update = {
+        text: "编辑",
+        img: "../public/img/zs_function7.png",
+        func: function () {
+            updateCreatvie();
+        }
+    }, cUpload = {
+        text: "上传到凤巢",
+        img: "../public/img/update2.png",
+        func: function () {
+            creativeUpload();
+        }
+
+    } , menu_keyword_copy = {
+        text: "复制",
+        img: "../public/img/zs_function13.png"
+
     }
-}, del = {
-    text: "删除",
-    func: function () {
-        deleteByObjectId();
+    , menu_keyword_shear = {
+        text: "剪切",
+        img: "../public/img/zs_function14.png"
+
     }
-}, cAddMutli = {
-    text: "批量添加创意",
-    func: function () {
-        creativeMulti();
+    , menu_keyword_paste = {
+        text: "粘贴",
+        img: "../public/img/zs_function15.png"
     }
-}, creBack = {
-    text: "还原",
-    func: function () {
-        reBakClick();
+    , menu_keyword_select = {
+        text: "全选",
+        img: "../public/img/zs_function16.png",
+        func: function () {
+            CtrlAll();
+        }
+
     }
-}, update = {
-    text: "编辑",
-    func: function () {
-        updateCreatvie();
-    }
-}, cUpload = {
-    text: "上传到凤巢",
-    func: function () {
-        creativeUpload();
-    }
-}
 /**
  * 右键菜单显示的选项
  * @type {*[]}
  */
 var menuData = [
-    [add, del, update, cAddMutli, creBack, cUpload]
+    [add, del, update, cAddMutli, creBack, cUpload, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
 ];
 /**
  * 用户缓存右键点击的对象
@@ -461,9 +505,9 @@ function on(obj) {
 function dragg() {
     var _height = $("#tcreative").css("height");
     if (_height == "400px") {
-        $("#tcreative").css("height","350px");
-    }else{
-        $("#tcreative").css("height","400px");
+        $("#tcreative").css("height", "350px");
+    } else {
+        $("#tcreative").css("height", "400px");
     }
 
 }

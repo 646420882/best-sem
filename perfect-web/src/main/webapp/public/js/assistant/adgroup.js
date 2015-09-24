@@ -17,38 +17,66 @@ var sp = null;
 var nn = null;
 var ne = null;
 var aAdd = {
-    text: "添加单元",
-    func: function () {
-        addAdgroup();
+        text: "添加单元",
+        img: "../public/img/zs_function1.png",
+        func: function () {
+            addAdgroup();
+        }
+    }, aDel = {
+        text: "删除单元",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            adgroupDel();
+        }
+    }, aUpdate = {
+        text: "修改单元",
+        img: "../public/img/zs_function4.png",
+        func: function () {
+            adgroupUpdate();
+        }
+    }, aAddMutli = {
+        text: "批量添加单元",
+        img: "../public/img/zs_function3.png",
+        func: function () {
+            adgroupMutli();
+        }
+    }, aReBack = {
+        text: "还原",
+        img: "../public/img/zs_function9.png",
+        func: function () {
+            agreBakClick();
+        }
+    }, aUpload = {
+        text: "更新到凤巢",
+        img: "../public/img/update2.png",
+        func: function () {
+            adgroupUpload();
+        }
     }
-}, aDel = {
-    text: "删除单元",
-    func: function () {
-        adgroupDel();
+    , menu_keyword_copy = {
+        text: "复制",
+        img: "../public/img/zs_function13.png"
+
     }
-}, aUpdate = {
-    text: "修改单元",
-    func: function () {
-        adgroupUpdate();
+    , menu_keyword_shear = {
+        text: "剪切",
+        img: "../public/img/zs_function14.png"
+
     }
-}, aAddMutli = {
-    text: "批量添加单元",
-    func: function () {
-        adgroupMutli();
+    , menu_keyword_paste = {
+        text: "粘贴",
+        img: "../public/img/zs_function15.png"
     }
-}, aReBack = {
-    text: "还原",
-    func: function () {
-        agreBakClick();
+    , menu_keyword_select = {
+        text: "全选",
+        img: "../public/img/zs_function16.png",
+        func: function () {
+            CtrlAll();
+        }
+
     }
-}, aUpload = {
-    text: "更新到凤巢",
-    func: function () {
-        adgroupUpload();
-    }
-}
 var aMeunData = [
-    [aAdd, aDel, aUpdate, aAddMutli, aReBack, aUpload,]
+    [aAdd, aDel, aUpdate, aAddMutli, aReBack, aUpload, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
 ];
 /**
  * 初始化单元右键菜单
@@ -278,10 +306,10 @@ function aon(ts) {
     var status = _this.find("td:eq(2)").html();
     var pause = _this.find("td:eq(3)").html();
     $("#aDiv input").each(function (i, o) {
-        if(data[i].indexOf("input")>-1){
+        if (data[i].indexOf("input") > -1) {
             $(o).val("");
             return;
-        }else{
+        } else {
             $(o).val(data[i]);
         }
     });

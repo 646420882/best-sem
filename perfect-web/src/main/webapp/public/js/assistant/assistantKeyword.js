@@ -140,7 +140,7 @@ function getKwdList(nowPage) {
  */
 $("#tbodyClick").delegate("tr", "click", function () {
     var span = $(this).find("td:last");
-     $("#keywordbottom").fadeIn("slow");
+    $("#keywordbottom").fadeIn("slow");
     if (span.html() != "&nbsp;") {
 
         $("#reduction").find("span").removeClass("z_function_hover");
@@ -153,8 +153,6 @@ $("#tbodyClick").delegate("tr", "click", function () {
     var keywordId = obj.find("input[type=hidden]").val();
     setKwdValue(obj, keywordId);
 });
-
-
 /**
  *将一条数据加到html中
  */
@@ -507,7 +505,7 @@ function whenBlurEditKeyword(num, value) {
                         //    alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
                         //    return false;
                         //} else {
-                            jsonData["pcDestinationUrl"] = value;
+                        jsonData["pcDestinationUrl"] = value;
                         //}
                     }
                 }
@@ -529,7 +527,7 @@ function whenBlurEditKeyword(num, value) {
                         //    alert("\"移动访问Url\"必须以\"" + dm + "\"结尾！");
                         //    return false;
                         //} else {
-                            jsonData["mobileDestinationUrl"] = value;
+                        jsonData["mobileDestinationUrl"] = value;
                         //}
                     }
                 }
@@ -786,6 +784,22 @@ function reducKwd_del(id) {
     });
 }
 
+//全选
+function CtrlA() {
+    $(document).keydown(function (event) {
+        if (event.ctrlKey && event.keyCode == 65) {
+            jQuery('#tbodyClick tr').css('background', '#fcefc5');
+        }
+        ;
+        return false;
+    });
+}
+function CtrlAll() {
+    jQuery('#tbodyClick tr').css('background', '#fcefc5');
+}
+function CtrlCancel() {
+    jQuery('#tbodyClick tr').css('background', '')
+}
 
 /************************************************************关键词的右击菜单************************************************************/
 /**
@@ -793,41 +807,72 @@ function reducKwd_del(id) {
  * @type {{text: string, func: func}}
  */
 var menu_keyword_add = {
-    text: "添加关键词",
-    func: function () {
-        showSearchWord();
+        text: "添加关键词",
+        img: "../public/img/zs_function1.png",
+        func: function () {
+            showSearchWord();
+        }
+    }, menu_keyword_del = {
+        text: "删除",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            deleteKwd();
+        }
+    }, menu_keyword_batchAddOrUpdate = {
+        text: "批量添加/更新",
+        img: "../public/img/zs_function3.png",
+        func: function () {
+            batchAddOrUpdate();
+        }
+    }, menu_keyword_batchDel = {
+        text: "批量删除",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            batchDelKeyword();
+        }
+    }, menu_keyword_redu = {
+        text: "还原",
+        img: "../public/img/zs_function9.png",
+        func: function () {
+            reductionKeyword();
+        }
+    }, menu_keyword_upload = {
+        text: "更新到凤巢",
+        img: "../public/img/update2.png",
+        func: function () {
+            kUpload();
+        }
+    }, menu_keyword_searchWord = {
+        text: "搜索词",
+        img: "../public/img/zs_function10.png",
+        func: function () {
+            c
+            searchword();
+        }
+
     }
-}, menu_keyword_del = {
-    text: "删除",
-    func: function () {
-        deleteKwd();
+    , menu_keyword_copy = {
+        text: "复制",
+        img: "../public/img/zs_function13.png"
+
     }
-}, menu_keyword_batchAddOrUpdate = {
-    text: "批量添加/更新",
-    func: function () {
-        batchAddOrUpdate();
+    , menu_keyword_shear = {
+        text: "剪切",
+        img: "../public/img/zs_function14.png"
+
     }
-}, menu_keyword_batchDel = {
-    text: "批量删除",
-    func: function () {
-        batchDelKeyword();
+    , menu_keyword_paste = {
+        text: "粘贴",
+        img: "../public/img/zs_function15.png"
     }
-}, menu_keyword_redu = {
-    text: "还原",
-    func: function () {
-        reductionKeyword();
+    , menu_keyword_select = {
+        text: "全选",
+        img: "../public/img/zs_function16.png",
+        func: function () {
+            CtrlAll();
+        }
+
     }
-}, menu_keyword_upload = {
-    text: "更新到凤巢",
-    func: function () {
-        kUpload();
-    }
-}, menu_keyword_searchWord = {
-    text: "搜索词",
-    func: function () {
-        searchword();
-    }
-}
 
 function showSearchWord() {
     $("#adgroup_select").empty();
@@ -851,7 +896,7 @@ function showSearchWord() {
  * @type {*[]}
  */
 var keywordMenuData = [
-    [menu_keyword_add, menu_keyword_batchAddOrUpdate, menu_keyword_del, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_upload, menu_keyword_searchWord]
+    [menu_keyword_add, menu_keyword_batchAddOrUpdate, menu_keyword_del, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_upload, menu_keyword_searchWord, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
 ];
 /**
  * 用户缓存右键点击的对象
@@ -998,14 +1043,14 @@ function kUploadOperate(kid, ls) {
     });
 }
 function addCensus() {
-    if(confirm("是否添加关键字的统计代码？")){
-    $.get("/assistantKeyword/addCensus", function (res) {
-        if (res.msg == "1") {
-            getKwdList(0);
-            alert("添加成功");
-        } else {
-            alert("添加失败")
-        }
-    });
+    if (confirm("是否添加关键字的统计代码？")) {
+        $.get("/assistantKeyword/addCensus", function (res) {
+            if (res.msg == "1") {
+                getKwdList(0);
+                alert("添加成功");
+            } else {
+                alert("添加失败")
+            }
+        });
     }
 }

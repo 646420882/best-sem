@@ -166,6 +166,7 @@ var AccountPerformance = function () {
 };
 var mychart = function () {
     var myChart = echarts.init(document.getElementById('container'));
+    window.onresize = myChart.resize;
     var dataNew;
     if (data1 == "") {
         dataNew = [data2];

@@ -317,7 +317,7 @@
     line-height: 20px;
 }
 
-.list01_top .download a ,.download a {
+.list01_top .download a, .download a {
     display: block;
     /*  float: left;*/
     height: 26px;
@@ -337,7 +337,7 @@
 
 .download span {
     display: block;
-    margin-top:10px;
+    margin-top: 10px;
 }
 
 .download a:hover {
@@ -652,10 +652,11 @@
 }
 
 /****账户报告****/
-.zhushou_concent{
-    margin:10px 20px 0 0 ;
+.zhushou_concent {
+    margin: 10px 20px 0 0;
 
 }
+
 .list03 table {
     width: 100%;
     border: 6px solid #eaf0f3;
@@ -1133,13 +1134,13 @@
     background: none repeat scroll 0 0 #e4eafa;
     padding: 12px 6px;
     width: 190px;
-    margin-left:-100%;
+    margin-left: -100%;
 
 }
 
 .jingjia_right {
     width: 100%;
-    overflow:visible;
+    overflow: visible;
 }
 
 .j_list01 {
@@ -2081,7 +2082,7 @@ h2 .close {
 
 .zs_function ul {
     height: 28px;
-    width:100%;
+    width: 100%;
 }
 
 .zs_function ul li {
@@ -2122,13 +2123,18 @@ h2 .close {
 }
 
 .zs_top, .z_function_hover {
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
     display: block;
     float: left;
     margin: 7px 5px 0 0;
     position: relative;
-    width: 15px;
-    height: 15px;
     z-index: 1;
+}
+
+.smart_menu_li .zs_top {
+    margin: 5px 5px 0 0;
 }
 
 .zs_top {
@@ -3816,7 +3822,7 @@ h2 .close {
 }
 
 #jiangkong_box2 {
-    margin: 10px 20px 0 0 ;
+    margin: 10px 20px 0 0;
 }
 
 #sPreview {
@@ -3825,9 +3831,11 @@ h2 .close {
     background: #fff;
     border: 1px solid #CCC;
 }
-.zhushou{
-    padding-left:210px;
+
+.zhushou {
+    padding-left: 210px;
 }
+
 /*input[type=checkbox],
 input[type=radio]{
     -webkit-appearance: none;
@@ -3875,3 +3883,6 @@ input[type=checkbox]:focus {
 }*/
 
 /* CSS Document */
+.list2_box2.list2_box3 {
+    background: #fcefc5;
+}

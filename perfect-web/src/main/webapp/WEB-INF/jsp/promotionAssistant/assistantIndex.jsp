@@ -9,7 +9,6 @@
 <!doctype html>
 <html>
 <head>
-    <title>大数据智能营销</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
@@ -155,7 +154,7 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody id="tbodyClick">
+                <tbody id="tbodyClick" onmousedown="CtrlA()" onclick="CtrlCancel();">
                 </tbody>
             </table>
         </div>
@@ -274,7 +273,7 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody id="tbodyClick2">
+                <tbody id="tbodyClick2"  onmousedown="CtrlA()" onclick="CtrlCancel();">
                 </tbody>
             </table>
         </div>
@@ -578,7 +577,7 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody id="tbodyClick_campaign">
+                <tbody id="tbodyClick_campaign" onmousedown="CtrlA()" onclick="CtrlCancel();">
                 <%--<tr class="list2_box3">--%>
                 <%--<td>&nbsp;北京{婚博会}<span class="editor"></span></td>--%>
                 <%--<td>&nbsp;有效<span class="editor"></span></td>--%>
@@ -669,7 +668,7 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody id="tbodyClick5">
+                <tbody id="tbodyClick5" onmousedown="CtrlA()" onclick="CtrlCancel();">
                 </tbody>
             </table>
         </div>
@@ -1402,7 +1401,7 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu-min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>

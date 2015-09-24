@@ -1169,42 +1169,65 @@ $(window).on("keydown keyup", function (event) {
  * @type {{text: string, func: func}}
  */
 var menu_campaign_add = {
-    text: "添加计划",
-    func: function () {
-        showAddCampaignWindow();
+        text: "添加计划",
+        img: "../public/img/zs_function1.png",
+        func: function () {
+            showAddCampaignWindow();
+        }
+    }, menu_campaign_quickCreatePlan = {
+        text: "快速创建计划",
+        img: "../public/img/zs_function17.png",
+        func: function () {
+            showQuickAddPlanWindow();
+        }
+    }, menu_campaign_del = {
+        text: "删除计划",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            deleteCampaign();
+        }
+    }, menu_campaign_redu = {
+        text: "还原",
+        img: "../public/img/zs_function9.png",
+        func: function () {
+            showReductionCampaignWindow();
+        }
+    }, menu_campaign_upload = {
+        text: "更新到凤巢",
+        img: "../public/img/update2.png",
+        func: function () {
+            uploadCampagin();
+        }
+    }, menu_campaign_searchWord = {
+        text: "搜索词",
+        img: "../public/img/zs_function10.png",
+        func: function () {
+            searchword();
+        }
     }
-}, menu_campaign_quickCreatePlan = {
-    text: "快速创建计划",
-    func: function () {
-        showQuickAddPlanWindow();
+    , menu_keyword_copy = {
+        text: "复制",
+        img: "../public/img/zs_function13.png"
+
     }
-}, menu_campaign_del = {
-    text: "删除计划",
-    func: function () {
-        deleteCampaign();
+    , menu_keyword_paste = {
+        text: "粘贴",
+        img: "../public/img/zs_function15.png"
     }
-}, menu_campaign_redu = {
-    text: "还原",
-    func: function () {
-        showReductionCampaignWindow();
+    , menu_keyword_select = {
+        text: "全选",
+        img: "../public/img/zs_function16.png",
+        func: function () {
+            CtrlAll();
+        }
+
     }
-}, menu_campaign_upload = {
-    text: "更新到凤巢",
-    func: function () {
-        uploadCampagin();
-    }
-}, menu_campaign_searchWord = {
-    text: "搜索词",
-    func: function () {
-        searchword();
-    }
-}
 /**
  * 右键菜单显示的选项
  * @type {*[]}
  */
 var campaignMenuData = [
-    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu, menu_campaign_upload, menu_campaign_searchWord]
+    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu, menu_campaign_upload, menu_campaign_searchWord, menu_keyword_copy, menu_keyword_paste, menu_keyword_select]
 ];
 /**
  * 用户缓存右键点击的对象

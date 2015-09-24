@@ -10,6 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
@@ -1902,6 +1903,7 @@
     });
     var curve = function () {
         var myChart = echarts.init(document.getElementById('container'));
+        window.onresize = myChart.resize;
         var dataNew;
         if (dataOne == "") {
             dataNew = [dataTow];
