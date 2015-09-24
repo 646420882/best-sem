@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/index.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -81,7 +82,7 @@
                                                            value="关键词精准查询，多个关键词用半角逗号隔开"
                                                            onfocus="if(value=='关键词精准查询，多个关键词用半角逗号隔开') {value=''}"
                                                            onblur="if (value=='') {value='关键词精准查询，多个关键词用半角逗号隔开'}">
-                                                    <input type="image" name="search"
+                                                    <input style="height: 23px;" type="image" name="search"
                                                            src="${pageContext.request.contextPath}/public/img/search3.png">
                                                 </dl>
                                           </span>
@@ -205,7 +206,7 @@
                                         <span class="fl">当前显示数据日期：昨天</span>
                                     </div>
                                 </div>
-                                <div>
+                                <div class="gridcss">
                                     <table id="table1" border="0" cellspacing="0" width="100%">
                                     </table>
                                 </div>

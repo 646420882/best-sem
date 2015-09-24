@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
+
      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
@@ -25,6 +26,7 @@
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap-responsive.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/grid/ui.jqgrid.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/index.css">
     <style rel="stylesheet" type="text/css">
         #sDiv .span-error {
             color: red;
@@ -380,12 +382,12 @@
                 </li>
             </ul>
         </div>
-        <div class="container">
+        <div class="container gridcss ">
             <table id="subTable">
             </table>
             <div id="subPager"></div>
         </div>
-        <div class="zs_bottom3 over">
+        <div class="zs_bottom3 over g">
             <div class="zs_bottom1 over fl " style="width:100%; border:none;" name="subLinkReView">
                 <span id="onePage"></span>
                 <ul>
