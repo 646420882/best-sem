@@ -178,11 +178,12 @@
                                     </a>
                                 </li>
                             </ul>
+                            <div class="download fr over">
+                                <a href="/account/downAccountCSV" >下载全部 </a>
+                            </div>
                         </div>
                         <div class="datebox hides"></div>
-                        <div class="download over">
-                            <a href="/account/downAccountCSV" class="fr">下载全部 </a>
-                        </div>
+
                         <div class="list2 fenrilist wd">
                             <table border="0" cellspacing="0" cellspacing="0">
                                 <thead>
@@ -992,11 +993,12 @@
                                     </a>
                                 </li>
                             </ul>
+                            <div class="download fr over">
+                                <a href="javascript:void(0)"  onclick="importDownload(this);">下载全部 </a>
+                            </div>
                         </div>
                         <div class="datebox hides" style="margin-bottom:0px;"></div>
-                        <div class="download over">
-                            <a href="javascript:void(0)" class="fr" onclick="importDownload(this);">下载全部 </a>
-                        </div>
+
                         <div class="list2 gjclist wd">
                             <table border="0" cellspacing="0" cellspacing="0">
                                 <tr class="list2_top">

@@ -90,7 +90,7 @@
                                             class="fl">${i.baiduUserName}</b></td>
                                     <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
                                     <td>&nbsp;${i.token}</td>
-                                    <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}" style="background-color: #f0f0f0;border: none" value="${i.baiduRemarkName}" width="10px" readonly></td>
+                                    <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}" style="border: none" value="${i.baiduRemarkName}" width="10px" readonly></td>
                                     <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}" data-userName="${currSystemUserName}" class="delBtn" style="cursor: pointer">删除</a></td>
                                 </tr>
 
@@ -98,7 +98,7 @@
                             <script type="application/javascript">
                                 $("#updateInput").dblclick(function(){
                                     if($("#updateInput").attr("readonly")=="readonly"){
-                                        $("#updateInput").attr("style","background-color:#fff;border: none");
+                                        $("#updateInput").attr("style","border: none");
                                         $("#updateInput").removeAttr("readonly");
                                     }
                                 });
@@ -117,7 +117,7 @@
                                             }
                                         })
                                     }
-                                    $("#updateInput").attr("style","background-color:#f0f0f0;border: none");
+                                    $("#updateInput").attr("style","border: none");
                                     $("#updateInput").attr("readonly","readonly");
                                 });
                                 $('.delBtn').click(function () {

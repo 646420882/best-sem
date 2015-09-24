@@ -362,6 +362,7 @@
         padding:0 4px;
         margin-right:5px;
     }
+
 }
 
 /******1152************/
@@ -439,8 +440,11 @@
     .wrap_list01{
     margin-bottom: 10px;
          }
-    .zs_function ul li {
-        margin: 0 5px 0 0;
+    .zs_function{
+        padding:0 1px;
+    }
+    .zs_function ul li{
+        margin: 0px 0.5% 0px 0;
     }
 
 
@@ -451,9 +455,7 @@
         margin-right: 0px;
     }
 
-    .zs_function ul li {
-        margin: 0px 0px 0px 0;
-    }
+
 
     .zs_function ul li b {
         margin-right: 0px;
@@ -574,6 +576,10 @@
         margin-right: 2px;
 
     }
+    .zs_function ul li{
+        margin: 0px 0.1% 0px 0;
+    }
+
 }
 @media screen and (max-width: 900px){
     .user_mid{
@@ -582,7 +588,7 @@
     }
 }
 @media \0screen {
-        .zs_function ul li { margin: 0px 2px 0px 0; }
+
     }
 
 /* CSS Document */

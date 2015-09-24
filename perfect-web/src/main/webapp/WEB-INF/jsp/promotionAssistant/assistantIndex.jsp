@@ -77,30 +77,6 @@
 </div>
 <div id="tab">
 <div class=" jiangjia_concent over">
-<div class="jingjia_left fl over">
-    <div class="j_l_top over">
-        <span class="fl"><h3>账户目录</h3></span>
-        <a href="javascript:loadTree()"  class="fr">刷新</a>
-    </div>
-    <div class="j_l_top2 over">
-        <span class="fl">查找计划单元</span>
-        <input class="fr" type="image" src="../public/img/search.png">
-    </div>
-    <div class="j_list01 over">
-        <div id="loading">
-        </div>
-        <ul id="zTree" class="ztree over">
-        </ul>
-    </div>
-    <div class="j_l_under over">
-        <a href="javascript:void(0)" class="jiangkong">监控文件夹</a>
-        <div class="j_list02 hides" style="height:100px; background:#fff;overflow:auto;">
-            <div id="jiangkong_box">监控文件夹</div>
-            <ul id="zTree2" class="ztree over" style="height:100px;">
-            </ul>
-        </div>
-    </div>
-</div>
 <div class="jingjia_right fl over">
 <div ID="testIframe" Name="testIframe" width="100%" onLoad="iFrameHeight()">
 <div class="content_wraps over">
@@ -112,8 +88,8 @@
         <li class="current"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span><img src="../public/img/Advanced_search.png"></span><span >高级搜索</span></a></li>
         <li class="nav_menu"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span><img src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
             <%--<ul>--%>
-                <%--<li class="showbox3 current">重复关键词</li>--%>
-                <%--<li>设置</li>--%>
+            <%--<li class="showbox3 current">重复关键词</li>--%>
+            <%--<li>设置</li>--%>
             <%--</ul>--%>
         </li>
         <li class="showbox4"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"> <span><img src="../public/img/Estimate.png"></span><span>估算工具</span></a></li>
@@ -304,203 +280,203 @@
     <div class="zhanghu_input" onclick="dragg()"></div>
     <div id="creativePager" class="pagination"></div>
     <div class="zs_bottom over" id="amsDiv" >
-            <div class="zs_bottom1 over fl " id="sDiv">
-                <ul>
-                    <li>
-                        <div class="t_list01 fl over">创意标题：</div>
-                        <div class="t_list03 fl over">
-                            <input type="text" class="zs_input1" id="sTitle"><span>49/50</span>
+        <div class="zs_bottom1 over fl " id="sDiv">
+            <ul>
+                <li>
+                    <div class="t_list01 fl over">创意标题：</div>
+                    <div class="t_list03 fl over">
+                        <input type="text" class="zs_input1" id="sTitle"><span>49/50</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">创意描述1：</div>
+                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><span>79/80</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">创意描述2：</div>
+                    <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><span>79/80</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="t_list04 fl over">
+                        <div class="t_list01 fl over">默认访问URL：</div>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPc"/><span>0/1024</span>
                         </div>
-                    </li>
-                    <li>
-                        <div class="t_list01 fl over">创意描述1：</div>
-                        <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes1"><span>79/80</span>
+                    </div>
+                    <div class="t_list04 fr over">
+                        <div class="t_list01 fl over">默认显示URL：</div>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>35/36</span>
                         </div>
-                    </li>
-                    <li>
-                        <div class="t_list01 fl over">创意描述2：</div>
-                        <div class="t_list03 fl over"><input type="text" class="zs_input1" id="sDes2"><span>79/80</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="t_list04 fl over">
+                        <div class="t_list01 fl over">移动访问URL：</div>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3"
+                                                             id="sMib"><span>49/1017</span>
                         </div>
-                    </li>
-                    <li>
-                        <div class="t_list04 fl over">
-                            <div class="t_list01 fl over">默认访问URL：</div>
-                            <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPc"/><span>0/1024</span>
-                            </div>
+                    </div>
+                    <div class="t_list04 fr over">
+                        <div class="t_list01 fl over">移动显示URL：</div>
+                        <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sMibs"><span>35/36</span>
                         </div>
-                        <div class="t_list04 fr over">
-                            <div class="t_list01 fl over">默认显示URL：</div>
-                            <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sPcs"/><span>35/36</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="t_list04 fl over">
-                            <div class="t_list01 fl over">移动访问URL：</div>
-                            <div class="t_list05 fl over"><input type="text" class="zs_input3"
-                                                                 id="sMib"><span>49/1017</span>
-                            </div>
-                        </div>
-                        <div class="t_list04 fr over">
-                            <div class="t_list01 fl over">移动显示URL：</div>
-                            <div class="t_list05 fl over"><input type="text" class="zs_input3" id="sMibs"><span>35/36</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="t_list01 fl over">创意预览：</div>
-                        <div class="w_list01 fl over" id="sPreview"></div>
-                    </li>
-                </ul>
-            </div>
-            <div class="zs_bottom2 over fr" style="border:none;">
-                <ul>
-                    <li>
-                        <div class="t_list01 fl over">状态：</div>
-                        <div class="w_list02 fl over"><b id="sStatus">有效</b></div>
-                    </li>
-                    <li>
-                        <div class="t_list01 fl over">设备偏好：</div>
-                        <div class="w_list02 fl over">
-                            <select id="sD">
-                                <option value="0">全部设备</option>
-                                <option value="1">移动设备优先</option>
-                            </select></div>
-                    </li>
-                    <li>
-                        <div class="t_list01 fl over">启用/暂停：</div>
-                        <div class="w_list02 fl over" >
-                            <select id="sPause">
-                                <option value="true">启用</option>
-                                <option value="false">暂停</option>
-                            </select></div>
-                    </li>
-                    <li>
-                        <div class="t_list01 fl over">您的注册域名为：</div>
-                        <div class="w_list02 fl over"><span class="doMainS" style="color:red;"></span></div>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">创意预览：</div>
+                    <div class="w_list01 fl over" id="sPreview"></div>
+                </li>
+            </ul>
         </div>
+        <div class="zs_bottom2 over fr" style="border:none;">
+            <ul>
+                <li>
+                    <div class="t_list01 fl over">状态：</div>
+                    <div class="w_list02 fl over"><b id="sStatus">有效</b></div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">设备偏好：</div>
+                    <div class="w_list02 fl over">
+                        <select id="sD">
+                            <option value="0">全部设备</option>
+                            <option value="1">移动设备优先</option>
+                        </select></div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">启用/暂停：</div>
+                    <div class="w_list02 fl over" >
+                        <select id="sPause">
+                            <option value="true">启用</option>
+                            <option value="false">暂停</option>
+                        </select></div>
+                </li>
+                <li>
+                    <div class="t_list01 fl over">您的注册域名为：</div>
+                    <div class="w_list02 fl over"><span class="doMainS" style="color:red;"></span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 <!--附加创意-->
 <div class="containers  over hides">
-<div class="cy_menu over">
-    <ul id="sublinkMenu">
-        <li class="current">蹊径子链</li>
-        <li>推广电话</li>
-        <li>商桥移动质询</li>
-    </ul>
-</div>
-
-<div class="list4" style="height:760px;" id="stb1">
-    <div class="zs_function over">
-        <ul class="fl">
-            <li><a href="javascript:void(0)" onclick="addSublink();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
-            <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
-            <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
-            <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a>
-            </li>
+    <div class="cy_menu over">
+        <ul id="sublinkMenu">
+            <li class="current">蹊径子链</li>
+            <li>推广电话</li>
+            <li>商桥移动质询</li>
         </ul>
     </div>
-<div class="container">
-<table id="subTable">
-</table>
-    <div id="subPager"></div>
-</div>
-    <div class="zs_bottom3 over">
-        <div class="zs_bottom1 over fl " style="width:100%; border:none;" name="subLinkReView">
-            <span id="onePage"></span>
-            <ul>
-                <li>
-                    <div class="cy_bottom1 fl over">
-                        <span>子链一 名称</span>
-                        <input type="text" class="zs_input3" name="linkName1">
-                    </div>
-                    <div class="cy_bottom1 fl over">
-                        <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
-                    </div>
-                </li>
-                <li>
-                    <div class="cy_bottom1 fl over">
-                        <span>子链二 名称</span>
-                        <input type="text" class="zs_input3" name="linkName2">
-                    </div>
-                    <div class="cy_bottom1 fl over">
-                        <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
-                    </div>
-                </li>
-                <li>
-                    <div class="cy_bottom1 fl over">
-                        <span>子链三 名称</span>
-                        <input type="text" class="zs_input3" name="linkName3">
-                    </div>
-                    <div class="cy_bottom1 fl over">
-                        <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
-                    </div>
-                </li>
-                <li>
-                    <div class="cy_bottom1 fl over">
-                        <span>子链四 名称</span>
-                        <input type="text" class="zs_input3" name="linkName4">
-                    </div>
-                    <div class="cy_bottom1 fl over">
-                        <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
-                    </div>
-                </li>
-                <li id="liLink5">
-                    <div class="cy_bottom1 fl over">
-                        <span>子链五名称</span>
-                        <input type="text" class="zs_input3" name="linkName5">
-                    </div>
-                    <div class="cy_bottom1 fl over">
-                        <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
-                    </div>
+
+    <div class="list4" style="height:760px;" id="stb1">
+        <div class="zs_function over">
+            <ul class="fl">
+                <li><a href="javascript:void(0)" onclick="addSublink();"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除</b></a></li>
+                <li><a href="#"><span class="zs_top"> <img src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a></li>
+                <li><a href="#"><span class="zs_top"><img src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input type="image" src="../public/img/zs_input.png"></b></a></li>
+                <li><a href="#"><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原</b></a>
                 </li>
             </ul>
         </div>
-    </div>
-    <div class="zs_bottom over">
-        <div class="zs_bottom1 over fl ">
-            <div class="w_list01 fl over">关键词名称：</div>
-            <div class="w_list04 fl over">
-                <ul class="w_list05 over">
-                    <li class="current">推广位 <span>|</span><span class="list06_point"></span></li>
-                    <li>推广链接位</li>
+        <div class="container">
+            <table id="subTable">
+            </table>
+            <div id="subPager"></div>
+        </div>
+        <div class="zs_bottom3 over">
+            <div class="zs_bottom1 over fl " style="width:100%; border:none;" name="subLinkReView">
+                <span id="onePage"></span>
+                <ul>
+                    <li>
+                        <div class="cy_bottom1 fl over">
+                            <span>子链一 名称</span>
+                            <input type="text" class="zs_input3" name="linkName1">
+                        </div>
+                        <div class="cy_bottom1 fl over">
+                            <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cy_bottom1 fl over">
+                            <span>子链二 名称</span>
+                            <input type="text" class="zs_input3" name="linkName2">
+                        </div>
+                        <div class="cy_bottom1 fl over">
+                            <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cy_bottom1 fl over">
+                            <span>子链三 名称</span>
+                            <input type="text" class="zs_input3" name="linkName3">
+                        </div>
+                        <div class="cy_bottom1 fl over">
+                            <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cy_bottom1 fl over">
+                            <span>子链四 名称</span>
+                            <input type="text" class="zs_input3" name="linkName4">
+                        </div>
+                        <div class="cy_bottom1 fl over">
+                            <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
+                        </div>
+                    </li>
+                    <li id="liLink5">
+                        <div class="cy_bottom1 fl over">
+                            <span>子链五名称</span>
+                            <input type="text" class="zs_input3" name="linkName5">
+                        </div>
+                        <div class="cy_bottom1 fl over">
+                            <span>URL：</span><input type="text" class="zs_input3" name="linkUrl1">
+                        </div>
+                    </li>
                 </ul>
-                <div class="w_list06 over">
-                    <div class="list06_concent">
-                    <div class="list06_textarea" style="padding: 3px;"></div>
-                    </div>
-                    <div class="list06_concent hides">
-                    <div class="list06_textarea" style="padding: 3px;"></div>
+            </div>
+        </div>
+        <div class="zs_bottom over">
+            <div class="zs_bottom1 over fl ">
+                <div class="w_list01 fl over">关键词名称：</div>
+                <div class="w_list04 fl over">
+                    <ul class="w_list05 over">
+                        <li class="current">推广位 <span>|</span><span class="list06_point"></span></li>
+                        <li>推广链接位</li>
+                    </ul>
+                    <div class="w_list06 over">
+                        <div class="list06_concent">
+                            <div class="list06_textarea" style="padding: 3px;"></div>
+                        </div>
+                        <div class="list06_concent hides">
+                            <div class="list06_textarea" style="padding: 3px;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="zs_bottom2 over fr">
-            <ul>
-                <li>
-                    <div class="t_list01 fl over"><span>状态:</span></div>
-                    <div class="w_list02 fl over"><b></b></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over"><span>设备偏好：</span></div>
-                    <div class="w_list02 fl over"><select>
-                        <option>全部</option>
-                    </select></div>
-                </li>
-                <li>
-                    <div class="t_list01 fl over"><span>启用/暂停：</span></div>
-                    <div class="w_list02 fl over"><select>
-                        <option>启用</option>
-                    </select></div>
-                </li>
-            </ul>
+            <div class="zs_bottom2 over fr">
+                <ul>
+                    <li>
+                        <div class="t_list01 fl over"><span>状态:</span></div>
+                        <div class="w_list02 fl over"><b></b></div>
+                    </li>
+                    <li>
+                        <div class="t_list01 fl over"><span>设备偏好：</span></div>
+                        <div class="w_list02 fl over"><select>
+                            <option>全部</option>
+                        </select></div>
+                    </li>
+                    <li>
+                        <div class="t_list01 fl over"><span>启用/暂停：</span></div>
+                        <div class="w_list02 fl over"><select>
+                            <option>启用</option>
+                        </select></div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
     <div class="list4" style="height:358px;display:none;" id="stb2">
         <div class="zs_function over">
             <ul class="fl">
@@ -559,17 +535,17 @@
             </table>
         </div>
     </div>
-<div class="more_list over" style="display:none;">
-    <ul>
-        <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广计划</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除推广计划</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证推广计划</b></li>
-        <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原推广计划</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
-        <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
-    </ul>
-</div>
+    <div class="more_list over" style="display:none;">
+        <ul>
+            <li class="current"><span class="zs_top"><img src="../public/img/zs_function1.png"></span><b>添加推广计划</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function2.png"></span><b>删除推广计划</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function12.png"></span><b>验证推广计划</b></li>
+            <li><span class="z_function_hover"><img src="../public/img/zs_function9.png"></span><b>还原推广计划</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function13.png"></span><b>复制</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function15.png"></span><b>粘贴</b></li>
+            <li><span class="zs_top"><img src="../public/img/zs_function16.png"></span><b>全选</b></li>
+        </ul>
+    </div>
 </div>
 <!--推广单元-->
 <div class="containers  over hides">
@@ -976,6 +952,31 @@
 </div>
 </div>
 </div>
+<div class="jingjia_left fl over">
+    <div class="j_l_top over">
+        <span class="fl"><h3>账户目录</h3></span>
+        <a href="javascript:loadTree()"  class="fr">刷新</a>
+    </div>
+    <div class="j_l_top2 over">
+        <span class="fl">查找计划单元</span>
+        <input class="fr" type="image" src="../public/img/search.png">
+    </div>
+    <div class="j_list01 over">
+        <div id="loading">
+        </div>
+        <ul id="zTree" class="ztree over">
+        </ul>
+    </div>
+    <div class="j_l_under over">
+        <a href="javascript:void(0)" class="jiangkong">监控文件夹</a>
+        <div class="j_list02 hides" style="height:100px; background:#fff;overflow:auto;">
+            <div id="jiangkong_box">监控文件夹</div>
+            <ul id="zTree2" class="ztree over" style="height:100px;">
+            </ul>
+        </div>
+    </div>
+</div>
+
 </div>
 </div>
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>
@@ -1424,7 +1425,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/uploadMerge.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/assistantsublink.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
+/*    $(document).ready(function () {
         var mycheck = $("#navigator_tips,#nav_input1");
         var ztree_minwidth = $(document.body).width() - 420;
         var ztree_maxwidth = $(document.body).width() - 260;
@@ -1446,7 +1447,7 @@
             Tablewidth();
 
         });
-    });
+    });*/
     $(function () {
         window.dialog = dialog;
     });

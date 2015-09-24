@@ -48,7 +48,7 @@
 
                     </div>
                 </div>
-                <div class="user_detali fl over" id="argDialogDiv" style="min-width:300px;">
+                <div class="user_detali fl over"  style="min-width:300px;">
                     <ul>
                         <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
                                                                                style="color: white">.</a></li>
@@ -56,7 +56,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="top_mid fl over">
+            <div class="top_mid fl over" id="argDialogDiv">
                 <div class="logo">
                     <a href="http://best-ad.cn/" target="_blank"><img src="${pageContext.request.contextPath}/public/img/logo.png"></a>
                 </div>

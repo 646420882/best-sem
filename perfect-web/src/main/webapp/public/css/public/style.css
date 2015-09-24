@@ -234,7 +234,7 @@
 }
 
 .wd2 {
-    width: 50%;
+    width: 60%;
     *width: 48%;
     padding: 0 5%;
     height: 100px;
@@ -317,7 +317,7 @@
     line-height: 20px;
 }
 
-.download a {
+.list01_top .download a ,.download a {
     display: block;
     /*  float: left;*/
     height: 26px;
@@ -337,6 +337,7 @@
 
 .download span {
     display: block;
+    margin-top:10px;
 }
 
 .download a:hover {
@@ -651,10 +652,10 @@
 }
 
 /****账户报告****/
-/*.zhushou_concent{
-    padding:0 2% 0  0;
+.zhushou_concent{
+    margin:10px 20px 0 0 ;
 
-}*/
+}
 .list03 table {
     width: 100%;
     border: 6px solid #eaf0f3;
@@ -1131,11 +1132,14 @@
 .jingjia_left {
     background: none repeat scroll 0 0 #e4eafa;
     padding: 12px 6px;
-    width: 220px;
+    width: 190px;
+    margin-left:-100%;
+
 }
 
 .jingjia_right {
-    margin-left: 20px;
+    width: 100%;
+    overflow:visible;
 }
 
 .j_list01 {
@@ -2077,12 +2081,13 @@ h2 .close {
 
 .zs_function ul {
     height: 28px;
+    width:100%;
 }
 
 .zs_function ul li {
     display: block;
     float: left;
-    margin: 0px 15px 0px 0;
+    margin: 0px 1% 0px 0;
     height: 28px;
     line-height: 28px;
     vertical-align: middle;
@@ -2904,7 +2909,7 @@ h2 .close {
 }
 
 .configure_under table tr td span {
-    margin: 2px 5px 0 0;
+    margin: 0px 5px 0 0;
 }
 
 .configure_under table tr td span img {
@@ -3811,7 +3816,7 @@ h2 .close {
 }
 
 #jiangkong_box2 {
-    margin-top: 10px;
+    margin: 10px 20px 0 0 ;
 }
 
 #sPreview {
@@ -3820,7 +3825,9 @@ h2 .close {
     background: #fff;
     border: 1px solid #CCC;
 }
-
+.zhushou{
+    padding-left:210px;
+}
 /*input[type=checkbox],
 input[type=radio]{
     -webkit-appearance: none;

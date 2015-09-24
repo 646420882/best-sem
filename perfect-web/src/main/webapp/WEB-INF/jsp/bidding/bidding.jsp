@@ -50,26 +50,8 @@
             <div class="tab_box">
                 <div class="containers over">
                     <div class=" jiangjia_concent over">
-                        <div class="jingjia_left fl over">
-                            <div class="j_l_top over">
-                                <span class="fl"><h3>账户目录</h3></span>
-                                <a href="javascript:refreshAccountTree();" class="fr">刷新</a>
-                            </div>
-                            <div class="j_l_top2 over">
-                                <span class="fl">查找计划单元</span>
-                                <input class="fr" type="image"
-                                       src="${pageContext.request.contextPath}/public/img/search.png">
-                            </div>
-                            <div class="j_list01 over">
-                                <ul id="zTree" class="ztree over">
-                                </ul>
-                            </div>
-                            <%--<div class="j_l_under over">
-                                <a href="#">监控文件夹</a>
-                            </div>--%>
-                        </div>
                         <div class="jingjia_right fl over">
-                            <div class="zhushou_concent over">
+                            <div class="zhushou_concent zhushou over">
                                 <div class="wrap_list01 over wd4 ">
                                     <ul>
                                         <li>
@@ -230,14 +212,10 @@
                                 <div id="pagination1" class="pagination"></div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="containers over hides">
-                    <div class=" jiangjia_concent over">
                         <div class="jingjia_left fl over">
                             <div class="j_l_top over">
                                 <span class="fl"><h3>账户目录</h3></span>
-                                <a href="javascript:;" onclick="initImzTree(true);" class="fr">刷新</a>
+                                <a href="javascript:refreshAccountTree();" class="fr">刷新</a>
                             </div>
                             <div class="j_l_top2 over">
                                 <span class="fl">查找计划单元</span>
@@ -245,16 +223,20 @@
                                        src="${pageContext.request.contextPath}/public/img/search.png">
                             </div>
                             <div class="j_list01 over">
-                                <ul id="zTreeImport" class="ztree over">
+                                <ul id="zTree" class="ztree over">
                                 </ul>
                             </div>
-                            <%--<div class="j_l_under over">--%>
-                            <%--<a href="#">监控文件夹</a>--%>
-                            <%--</div>--%>
+                            <%--<div class="j_l_under over">
+                                <a href="#">监控文件夹</a>
+                            </div>--%>
                         </div>
+                    </div>
+                </div>
+                <div class="containers over hides">
+                    <div class=" jiangjia_concent over">
                         <div class="jingjia_right fl over">
                             <div>
-                                <div class="zhushou_concent over">
+                                <div class="zhushou_concent zhushou over">
                                     <div class="w_list03">
                                         <ul class="jiangjia_list">
                                             <li class="current Screenings"><img src="${pageContext.request.contextPath}/public/img/shuaixuan.png">筛选</li>
@@ -297,6 +279,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="jingjia_left fl over">
+                            <div class="j_l_top over">
+                                <span class="fl"><h3>账户目录</h3></span>
+                                <a href="javascript:;" onclick="initImzTree(true);" class="fr">刷新</a>
+                            </div>
+                            <div class="j_l_top2 over">
+                                <span class="fl">查找计划单元</span>
+                                <input class="fr" type="image"
+                                       src="${pageContext.request.contextPath}/public/img/search.png">
+                            </div>
+                            <div class="j_list01 over">
+                                <ul id="zTreeImport" class="ztree over">
+                                </ul>
+                            </div>
+                            <%--<div class="j_l_under over">--%>
+                            <%--<a href="#">监控文件夹</a>--%>
+                            <%--</div>--%>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -786,24 +787,20 @@
         var myId = document.getElementById("nav_input1");
         var ztree_minwidth = $(document.body).width() - 452;
         var ztree_maxwidth = $(document.body).width() - 272;
-         $(".jingjia_right").css("width", ztree_minwidth);
          $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
          $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
         $(window).resize(function () {
              $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
              $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
-              Tablewidth();
         });
         function Tablewidth(){
             ztree_minwidth = $(document.body).width() - 452;
             ztree_maxwidth = $(document.body).width() - 272;
                 if ($(".nav_left").css("display") == "none") {
-                    $(".jingjia_right").css("width", ztree_maxwidth);
                     $("#table1").jqGrid("setGridWidth", $(document.body).width() - 272, true);
                     $("#table2").jqGrid("setGridWidth", $(document.body).width() - 272, true);
                 }
                 else {
-                    $(".jingjia_right").css("width", ztree_minwidth);
                     $("#table1").jqGrid("setGridWidth", $(document.body).width() - 452, true);
                     $("#table2").jqGrid("setGridWidth",$(document.body).width() - 452, true);
                 }
