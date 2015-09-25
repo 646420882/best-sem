@@ -19,14 +19,22 @@ public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, String> {
      * @param trade
      * @return
      */
-    List<? extends Object> findCategories(String trade);
+    List<?> findCategories(String trade);
+
+    /**
+     * <p>查询行业词库下的二级目录.
+     *
+     * @param categories
+     * @return
+     */
+    List<?> findSecondDirectoryByCategories(List<String> categories);
 
     /**
      * 加载行业库
      *
      * @return
      */
-    List<? extends Object> findTr();
+    List<?> findTr();
 
     /**
      * 添加行业库数据
@@ -41,7 +49,7 @@ public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, String> {
      * @param params
      * @return
      */
-    int getCurrentRowsSize(Map<String, Object> params);
+    long getCurrentRowsSize(Map<String, Object> params);
 
     /**
      * 分页查询行业库

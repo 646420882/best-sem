@@ -35,8 +35,11 @@ import static com.perfect.commons.constants.RedisConstants.CATEGORY_KEY;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
- * Created by baizz on 2014-08-20.
- * 2014-12-2 refactor
+ * Created on 2014-08-20.
+ * <p>关键词拓词.
+ *
+ * @author dolphineor
+ * @update 2015-09-24
  */
 @Repository("keywordGroupDAO")
 public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, String> implements KeywordGroupDAO {
@@ -62,39 +65,31 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
     public List<LexiconDTO> find(Map<String, Object> params, int skip, int limit) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         boolean status = !(skip == -1 && limit == -1);
-        Query query = null;
-        int s = params.size();
-        if (s == 1) {
-            //只选择的是行业
-            if (status) {
-                query = new BasicQuery("{}", "{cg : 1, gr : 1, kw : 1, _id : 0}");
-            } else {
-                query = new BasicQuery("{}", "{tr : 1, cg : 1, gr : 1, kw : 1, _id : 0}");
-            }
-        } else if (s == 2) {
-            //选择的是行业和计划
-            if (status) {
-                query = new BasicQuery("{}", "{gr : 1, kw : 1, _id : 0}");
-            } else {
-                query = new BasicQuery("{}", "{tr : 1, cg : 1, gr : 1, kw : 1, _id : 0}");
-            }
+        Query query;
+        if (status) {
+            query = new BasicQuery("{}", "{cg : 1, gr : 1, kw : 1, _id : 0}");
+        } else {
+            query = new BasicQuery("{}", "{tr : 1, cg : 1, gr : 1, kw : 1, _id : 0}");
         }
 
         Criteria criteria = Criteria.where(SYSTEM_ID).ne(null);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
-            criteria.and(entry.getKey()).is(entry.getValue());
+            if (entry.getValue() instanceof List) {
+                criteria.and(entry.getKey()).in((List) entry.getValue());
+            } else {
+                criteria.and(entry.getKey()).is(entry.getValue());
+            }
         }
 
-        if (query == null) {
-            query = new Query(criteria);
-        } else {
-            query.addCriteria(criteria);
-        }
+        query.addCriteria(criteria);
 
         if (status) {
             query.with(new PageRequest(skip, limit));
         }
-        return ObjectUtils.convert(mongoTemplate.find(query, getEntityClass()), getDTOClass());
+
+        List<LexiconEntity> lexiconList = mongoTemplate.find(query, getEntityClass());
+
+        return ObjectUtils.convert(lexiconList, getDTOClass());
     }
 
     @Override
@@ -140,9 +135,7 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
 
     @Override
     public List<CategoryVO> findCategories(String trade) {
-
         // redis 缓存数据
-
         Jedis jedis = JRedisUtils.get();
         try {
 
@@ -183,8 +176,8 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
                 jedis.setex(key, (int) TimeUnit.DAYS.toSeconds(1) * 7, value);
                 return returnList;
             }
-        } catch (Exception ignored) {
-
+        } catch (final Exception e) {
+            e.printStackTrace();
         } finally {
             JRedisUtils.returnJedis(jedis);
         }
@@ -193,20 +186,32 @@ public class KeywordGroupDAOImpl extends AbstractSysBaseDAOImpl<LexiconDTO, Stri
     }
 
     @Override
-    public int getCurrentRowsSize(Map<String, Object> params) {
+    public List<CategoryVO> findSecondDirectoryByCategories(List<String> categories) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Aggregation aggregation = Aggregation.newAggregation(
+                match(Criteria.where("cg").in(categories)),
+                project("gr"),
+                group("gr").count().as("count"),
+                sort(Sort.Direction.ASC, "gr")
+        ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
+        AggregationResults<CategoryVO> aggregationResults = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, CategoryVO.class);
+        return aggregationResults.getMappedResults();
+    }
+
+    @Override
+    public long getCurrentRowsSize(Map<String, Object> params) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
 
         Criteria criteria = Criteria.where(SYSTEM_ID).ne(null);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
-            criteria.and(entry.getKey()).is(entry.getValue());
+            if (entry.getValue() instanceof List) {
+                criteria.and(entry.getKey()).in((List) entry.getValue());
+            } else {
+                criteria.and(entry.getKey()).is(entry.getValue());
+            }
         }
 
-        Aggregation aggregation = Aggregation.newAggregation(
-                match(criteria),
-                project("kw")
-        );
-        AggregationResults<Object> results = mongoTemplate.aggregate(aggregation, SYS_KEYWORD, Object.class);
-        return results.getMappedResults().size();
+        return mongoTemplate.count(Query.query(criteria), getEntityClass());
     }
 
     @Override
