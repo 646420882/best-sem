@@ -111,9 +111,6 @@
                                             data:{
                                                 id:$(this).attr("data-baidu-id"),
                                                 name:$(this).val()
-                                            },
-                                            success: function(datas){
-                                                alert(datas.rows);
                                             }
                                         })
                                     }

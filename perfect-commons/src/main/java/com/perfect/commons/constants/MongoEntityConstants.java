@@ -7,6 +7,7 @@ public interface MongoEntityConstants {
 
     //SYS
     String SYS_KEYWORD = "sys_keyword";
+    String TBL_ANSWERS = "sys_answers";
     String SYS_CENSUS = "sys_census";
     String SYS_CENSUS_EVERYDAY_REPORT = "sys_census_everyday_report";
     String SYS_CENSUS_CONFIG = "sys_census_config";

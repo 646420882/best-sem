@@ -64,6 +64,9 @@
                 <li>
                     关键词监控
                 </li>
+                <li>
+                    助手详情
+                </li>
             </ul>
             <div class="tab_box">
                 <div class="containers">
@@ -116,6 +119,7 @@
                                     </div>
                                 </li>
                             </ul>
+
                         </div>
                     </div>
                 </div>
@@ -1141,6 +1145,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="containers hides over">
+                    <div class="list01 over">
+                        <div class="list01_top over">
+                            <Span>助手详情</Span>
+                        </div>
+                        <div class="list01_under2 over">
+                            <ul id="countAssisted">
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
@@ -1186,6 +1202,7 @@
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
+
 </script>
 <script type="text/javascript">
 
@@ -1215,6 +1232,22 @@
     var clickdddd = null;
 
     $(function () {
+        /////count
+        $.ajax({
+            url: "/account/countAssistant",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $("#countAssisted").empty();
+                var classArray = ["blue","green","red","yellow"];
+                var html = "";
+                data.rows.forEach(function(item, i){
+                        html = html + "<li><div class='"+ classArray[i] +"1 fl wd1'></div><div class='"+ classArray[i] +"2 fl wd2'><p><br/>"+ item.name +"<br/>共: "+ item.countNumber +" 个<br/>修改: "+ item.modifiyNumber +" 个</p></div></li>";
+                });
+                $("#countAssisted").append(html)
+            }});
+
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');

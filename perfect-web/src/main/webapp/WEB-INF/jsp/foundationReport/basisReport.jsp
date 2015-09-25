@@ -118,6 +118,7 @@
 <ul class="tab_menu">
     <li class="selected">账户报告</li>
     <li>明细数据</li>
+    <li>搜索词报告</li>
 </ul>
 <div class="tab_box" style=" padding:inherit;">
 <div class="containers  over">
