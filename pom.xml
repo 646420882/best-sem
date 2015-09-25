@@ -39,8 +39,8 @@
                 <mongo.username>perfect</mongo.username>
                 <mongo.password>perfect</mongo.password>
 
-                <es.host>192.168.100.10:19300</es.host>
-                <es.cluster>es-cluster</es.cluster>
+                <es.host>192.168.100.10:9300</es.host>
+                <es.cluster>es-intern-cluster</es.cluster>
             </properties>
         </profile>
         <profile>
@@ -86,15 +86,9 @@
         </repository>
 
         <repository>
-            <id>spring-release</id>
-            <url>http://repo.springsource.org/libs-release</url>
+            <id>spring-releases</id>
+            <url>https://repo.springsource.org/libs-release/</url>
         </repository>
-
-        <!--<repository>-->
-        <!--<id>ibiblio.mirrors</id>-->
-        <!--<url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>-->
-        <!--</repository>-->
-
     </repositories>
 
     <dependencyManagement>

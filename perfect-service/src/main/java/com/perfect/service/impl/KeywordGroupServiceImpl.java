@@ -105,19 +105,23 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         }
     }
 
-    public Map<String, Object> getKeywordFromSystem(String trade, String category, int skip, int limit, int status) {
+    public Map<String, Object> getKeywordFromSystem(String trade, List<String> categories, List<String> groups, int skip, int limit, int status) {
         //查询参数
         Map<String, Object> params = new HashMap<>();
         if (trade != null) {
             params.put("tr", trade);
         }
-        if (category != null) {
-            params.put("cg", category);
+        if (categories != null) {
+            params.put("cg", categories);
+        }
+
+        if (groups != null) {
+            params.put("gr", groups);
         }
 
         List<LexiconDTO> list = keywordGroupDAO.find(params, skip, limit);
         Map<String, Object> values = Maps.newHashMap(JSONUtils.getJsonMapData(list));
-        Integer total = keywordGroupDAO.getCurrentRowsSize(params);
+        long total = keywordGroupDAO.getCurrentRowsSize(params);
         values.put("total", total);
 
         return values;
@@ -185,6 +189,11 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     public Map<String, Object> findCategories(String trade) {
         return JSONUtils.getJsonMapData(keywordGroupDAO.findCategories(trade));
+    }
+
+    @Override
+    public Map<String, Object> findKeywordByCategories(List<String> categories) {
+        return JSONUtils.getJsonMapData(keywordGroupDAO.findSecondDirectoryByCategories(categories));
     }
 
     @Override

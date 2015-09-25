@@ -1,6 +1,7 @@
 package com.perfect.app.keyword.controller;
 
 import com.perfect.service.KeywordGroupService;
+import com.perfect.utils.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,19 +69,27 @@ public class KeywordGroupController {
      * 从系统词库获取关键词
      *
      * @param trade
-     * @param category
+     * @param categories
+     * @param groups
      * @param skip
      * @param limit
      * @return
      */
     @RequestMapping(value = "/p", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getKeywordFromSystem(@RequestParam(value = "trade", required = false) String trade,
-                                             @RequestParam(value = "category", required = false) String category,
+                                             @RequestParam(value = "categories", required = false) String categories,
+                                             @RequestParam(value = "groups", required = false) String groups,
                                              @RequestParam(value = "skip", required = false, defaultValue = "0") Integer skip,
                                              @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
                                              @RequestParam(value = "status", required = false, defaultValue = "0") Integer status) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> values = keywordGroupService.getKeywordFromSystem(trade, category, skip, limit, status);
+        List<String> _categories = null;
+        if (categories != null && !Objects.equals("[]", categories))
+            _categories = JSONUtils.getObjectListByJson(categories, String.class);
+        List<String> _groups = null;
+        if (groups != null && !Objects.equals("[]", groups))
+            _groups = JSONUtils.getObjectListByJson(groups, String.class);
+        Map<String, Object> values = keywordGroupService.getKeywordFromSystem(trade, _categories, _groups, skip, limit, status);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
     }
@@ -96,6 +105,16 @@ public class KeywordGroupController {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
         Map<String, Object> values = keywordGroupService.findCategories(trade);
         jsonView.setAttributesMap(values);
+        return new ModelAndView(jsonView);
+    }
+
+    @RequestMapping(value = "/findKeywordByCategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getKeywordGroup(@RequestParam String categories) {
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        List<String> _categories = JSONUtils.getObjectListByJson(categories, String.class);
+        Map<String, Object> values = keywordGroupService.findKeywordByCategories(_categories);
+        jsonView.setAttributesMap(values);
+
         return new ModelAndView(jsonView);
     }
 
