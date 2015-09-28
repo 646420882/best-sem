@@ -10,3 +10,14 @@
     font-weight: normal;
     color: #FFFFFF;
 }
+.aline  input{
+    float: left;
+}
+.aline  p{
+    float: left;
+    margin: -2px 0 0 5px;
+}
+.aline2  p{
+    float: left;
+    margin: 3px 0 0 5px;
+}
