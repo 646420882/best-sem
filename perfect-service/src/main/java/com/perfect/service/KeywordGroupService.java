@@ -8,9 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by baizz on 2014-08-09.
+ * Created on 2014-08-09.
+ *
+ * @author dolphineor
+ * @update 2015-09-28
  */
 public interface KeywordGroupService {
+
+    String KR_FIELD_ID = "krFileId";
+    String RESULT_TOTAL = "total";
+    String LEXICON_TRADE = "tr";
+    String LEXICON_CATEGORY = "cg";
+    String LEXICON_GROUP = "gr";
+
 
     /**
      * <br>-----------------------</br>
@@ -54,10 +64,11 @@ public interface KeywordGroupService {
      * CSV文件下载
      *
      * @param trade
-     * @param category
+     * @param categories
+     * @param groups
      * @param os
      */
-    void downloadCSV(String trade, String category, OutputStream os);
+    void downloadCSV(String trade, List<String> categories, List<String> groups, OutputStream os);
 
     /**
      * 凤巢CSV文件下载

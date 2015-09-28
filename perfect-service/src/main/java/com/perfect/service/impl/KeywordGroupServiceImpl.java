@@ -32,17 +32,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.isNull;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * Created on 2014-08-09.
  *
  * @author dolphineor
- * @update 2015-09-21
+ * @update 2015-09-28
  */
 @Service("keywordGroupService")
 public class KeywordGroupServiceImpl implements KeywordGroupService {
@@ -58,6 +59,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
     private int resultSize;
 
+
     @Resource
     private KeywordGroupDAO keywordGroupDAO;
 
@@ -68,8 +70,8 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
     public Map<String, Object> getKeywordFromBaidu(List<String> seedWordList, int skip, int limit, String krFileId, int sort, String fieldName) {
         if (isNull(krFileId) || Objects.equals("", krFileId)) {
             Map<String, Object> map = getKRResult(seedWordList, skip, limit, sort, fieldName);
-            map.put("krFileId", _krFileId);
-            map.put("total", resultSize);
+            map.put(KR_FIELD_ID, _krFileId);
+            map.put(RESULT_TOTAL, resultSize);
             return map;
         } else {
             List<BaiduKeywordDTO> list = new ArrayList<>();
@@ -78,8 +80,8 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                 jedis = JRedisUtils.get();
                 if (jedis.ttl(SerializeUtils.serialize(krFileId)) == -1) {
                     Map<String, Object> map = getKRResult(seedWordList, skip, limit, sort, fieldName);
-                    map.put("krFileId", _krFileId);
-                    map.put("total", resultSize);
+                    map.put(KR_FIELD_ID, _krFileId);
+                    map.put(RESULT_TOTAL, resultSize);
                     return map;
                 }
                 list = SerializeUtils.deSerializeList(jedis.get(SerializeUtils.serialize(krFileId)), BaiduKeywordDTO.class);
@@ -87,7 +89,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                 e.printStackTrace();
             } finally {
                 if (jedis != null) {
-                    JRedisUtils.returnJedis(jedis);
+                    jedis.close();
                 }
             }
 
@@ -99,52 +101,59 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
             BaiduKeywordDTO[] keywordVOs = TopN.getTopN(list.toArray(new BaiduKeywordDTO[s]), s, fieldName, sort);
             List<BaiduKeywordDTO> voList = paging(keywordVOs, skip, limit);
             Map<String, Object> map = JSONUtils.getJsonMapData(voList);
-            map.put("krFileId", krFileId);
-            map.put("total", resultSize);
+            map.put(KR_FIELD_ID, krFileId);
+            map.put(RESULT_TOTAL, resultSize);
             return map;
         }
     }
 
     public Map<String, Object> getKeywordFromSystem(String trade, List<String> categories, List<String> groups, int skip, int limit, int status) {
         //查询参数
-        Map<String, Object> params = new HashMap<>();
-        if (trade != null) {
-            params.put("tr", trade);
-        }
-        if (categories != null) {
-            params.put("cg", categories);
+        Map<String, Object> params = Maps.newHashMap();
+        params.put(LEXICON_TRADE, trade);
+
+        if (categories != null && !categories.isEmpty()) {
+            params.put(LEXICON_CATEGORY, categories);
         }
 
-        if (groups != null) {
-            params.put("gr", groups);
+        if (groups != null && !groups.isEmpty()) {
+            params.put(LEXICON_GROUP, groups);
         }
 
         List<LexiconDTO> list = keywordGroupDAO.find(params, skip, limit);
         Map<String, Object> values = Maps.newHashMap(JSONUtils.getJsonMapData(list));
         long total = keywordGroupDAO.getCurrentRowsSize(params);
-        values.put("total", total);
+        values.put(RESULT_TOTAL, total);
 
         return values;
     }
 
-    public void downloadCSV(String trade, String category, OutputStream os) {
+    public void downloadCSV(String trade, List<String> categories, List<String> groups, OutputStream os) {
         //查询参数
-        Map<String, Object> params = new HashMap<>();
-        if (trade != null) {
-            params.put("tr", trade);
+        Map<String, Object> params = Maps.newHashMap();
+        params.put(LEXICON_TRADE, trade);
+
+        if (categories != null && !categories.isEmpty()) {
+            params.put(LEXICON_CATEGORY, categories);
         }
-        if (category != null && category.trim().length() > 0) {
-            params.put("cg", category);
+        if (groups != null && !groups.isEmpty()) {
+            params.put(LEXICON_GROUP, groups);
         }
 
         List<LexiconDTO> list = keywordGroupDAO.find(params, -1, -1);
 
         //CSV文件写入
         try {
-            os.write(Bytes.concat(commonCSVHead, ("行业" + DEFAULT_DELIMITER + "计划" + DEFAULT_DELIMITER + "单元" + DEFAULT_DELIMITER + "关键词" + DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
+            os.write(Bytes.concat(commonCSVHead, ("行业" + DEFAULT_DELIMITER +
+                    "计划" + DEFAULT_DELIMITER +
+                    "单元" + DEFAULT_DELIMITER +
+                    "关键词" + DEFAULT_END).getBytes(UTF_8)));
             for (LexiconDTO entity : list) {
-                String bytes = (entity.getTrade() + DEFAULT_DELIMITER + entity.getCategory() + DEFAULT_DELIMITER + entity.getGroup() + DEFAULT_DELIMITER + entity.getKeyword() + DEFAULT_END);
-                os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
+                String bytes = (entity.getTrade() + DEFAULT_DELIMITER +
+                        entity.getCategory() + DEFAULT_DELIMITER +
+                        entity.getGroup() + DEFAULT_DELIMITER +
+                        entity.getKeyword() + DEFAULT_END);
+                os.write(Bytes.concat(commonCSVHead, bytes.getBytes(UTF_8)));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -167,7 +176,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                 e.printStackTrace();
             } finally {
                 if (jedis != null) {
-                    JRedisUtils.returnJedis(jedis);
+                    jedis.close();
                 }
             }
         }
@@ -177,10 +186,18 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
 
         //CSV文件写入
         try {
-            os.write(Bytes.concat(commonCSVHead, ("分组" + DEFAULT_DELIMITER + "种子词" + DEFAULT_DELIMITER + "关键词" + DEFAULT_DELIMITER + "日均搜索量" + DEFAULT_DELIMITER + "竞争激烈程度" + DEFAULT_END).getBytes(StandardCharsets.UTF_8)));
+            os.write(Bytes.concat(commonCSVHead, ("分组" + DEFAULT_DELIMITER +
+                    "种子词" + DEFAULT_DELIMITER +
+                    "关键词" + DEFAULT_DELIMITER +
+                    "日均搜索量" + DEFAULT_DELIMITER +
+                    "竞争激烈程度" + DEFAULT_END).getBytes(UTF_8)));
             for (BaiduKeywordDTO entity : dtoList) {
-                String bytes = (entity.getGroupName() + DEFAULT_DELIMITER + entity.getSeedWord() + DEFAULT_DELIMITER + entity.getKeywordName() + DEFAULT_DELIMITER + entity.getDsQuantity() + DEFAULT_DELIMITER + entity.getCompetition() + "%" + DEFAULT_END);
-                os.write(Bytes.concat(commonCSVHead, bytes.getBytes(StandardCharsets.UTF_8)));
+                String bytes = (entity.getGroupName() + DEFAULT_DELIMITER +
+                        entity.getSeedWord() + DEFAULT_DELIMITER +
+                        entity.getKeywordName() + DEFAULT_DELIMITER +
+                        entity.getDsQuantity() + DEFAULT_DELIMITER +
+                        entity.getCompetition() + "%" + DEFAULT_END);
+                os.write(Bytes.concat(commonCSVHead, bytes.getBytes(UTF_8)));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -282,7 +299,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
                 break;
             }
             try {
-                Thread.sleep(500);
+                MILLISECONDS.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -351,7 +368,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
             e.printStackTrace();
         } finally {
             if (jedis != null) {
-                JRedisUtils.returnJedis(jedis);
+                jedis.close();
             }
         }
     }
@@ -415,7 +432,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
             }
 
             try {
-                Thread.sleep(500);
+                MILLISECONDS.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

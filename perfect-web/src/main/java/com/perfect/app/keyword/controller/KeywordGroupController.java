@@ -76,7 +76,7 @@ public class KeywordGroupController {
      * @return
      */
     @RequestMapping(value = "/p", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getKeywordFromSystem(@RequestParam(value = "trade", required = false) String trade,
+    public ModelAndView getKeywordFromSystem(@RequestParam(value = "trade") String trade,
                                              @RequestParam(value = "categories", required = false) String categories,
                                              @RequestParam(value = "groups", required = false) String groups,
                                              @RequestParam(value = "skip", required = false, defaultValue = "0") Integer skip,
@@ -89,6 +89,7 @@ public class KeywordGroupController {
         List<String> _groups = null;
         if (groups != null && !Objects.equals("[]", groups))
             _groups = JSONUtils.getObjectListByJson(groups, String.class);
+
         Map<String, Object> values = keywordGroupService.getKeywordFromSystem(trade, _categories, _groups, skip, limit, status);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
@@ -125,16 +126,15 @@ public class KeywordGroupController {
      * @return
      */
     @RequestMapping(value = "/downloadBaiduCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView downloadBaiduCSV(HttpServletResponse response,
-                                         @RequestParam(value = "seedWords", required = false) String seedWords,
-                                         @RequestParam(value = "krFileId") String krFileId) throws IOException {
+    public void downloadBaiduCSV(HttpServletResponse response,
+                                 @RequestParam(value = "seedWords", required = false) String seedWords,
+                                 @RequestParam(value = "krFileId") String krFileId) throws IOException {
         List<String> seedWordList = new ArrayList<>(Arrays.asList(seedWords.split(",")));
         String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
         response.addHeader("Content-Disposition", "attachment;filename=" + filename);
         try (OutputStream os = response.getOutputStream()) {
             keywordGroupService.downloadBaiduCSV(seedWordList, krFileId, os);
         }
-        return null;
     }
 
     /**
@@ -142,19 +142,23 @@ public class KeywordGroupController {
      *
      * @param response
      * @param trade
-     * @param category
+     * @param categories
+     * @param groups
      * @return
      */
     @RequestMapping(value = "/downloadCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView downloadCSV(HttpServletResponse response,
-                                    @RequestParam(value = "trade", required = false) String trade,
-                                    @RequestParam(value = "category", required = false) String category) throws IOException {
+    public void downloadCSV(HttpServletResponse response,
+                            @RequestParam(value = "trade") String trade,
+                            @RequestParam(value = "categories", required = false) String categories,
+                            @RequestParam(value = "groups", required = false) String groups) throws IOException {
+        List<String> _categories = JSONUtils.getObjectListByJson(categories, String.class);
+        List<String> _groups = JSONUtils.getObjectListByJson(groups, String.class);
+
         String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
         response.addHeader("Content-Disposition", "attachment;filename=" + filename);
         try (OutputStream os = response.getOutputStream()) {
-            keywordGroupService.downloadCSV(trade, category, os);
+            keywordGroupService.downloadCSV(trade, _categories, _groups, os);
         }
-        return null;
     }
 
 //    /**
