@@ -90,7 +90,7 @@
                                             class="fl">${i.baiduUserName}</b></td>
                                     <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
                                     <td>&nbsp;${i.token}</td>
-                                    <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}" style="border: none" value="${i.baiduRemarkName}" width="10px" readonly></td>
+                                    <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}" style="border: none" remarkName="${i.baiduRemarkName}" value="${i.baiduRemarkName}" width="10px" readonly></td>
                                     <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}" data-userName="${currSystemUserName}" class="delBtn" style="cursor: pointer">删除</a></td>
                                 </tr>
 
@@ -104,15 +104,21 @@
                                 });
                                 $("#updateInput").blur(function(){
                                     if($("#updateInput").attr("readonly") != "readonly"){
-                                        $.ajax({
-                                            url:"/configuration/acc/upBaiduName",
-                                            type:"GET",
-                                            dataType:"json",
-                                            data:{
-                                                id:$(this).attr("data-baidu-id"),
-                                                name:$(this).val()
-                                            }
-                                        })
+                                        if($(this).val() != ""){
+                                            $.ajax({
+                                                url:"/configuration/acc/upBaiduName",
+                                                type:"GET",
+                                                dataType:"json",
+                                                data:{
+                                                    id:$(this).attr("data-baidu-id"),
+                                                    name:$(this).val()
+                                                }
+                                            })
+                                        }else{
+                                            $(this).val($(this).attr("remarkName"));
+                                            alert("备注名不能为空！！")
+                                        }
+
                                     }
                                     $("#updateInput").attr("style","border: none");
                                     $("#updateInput").attr("readonly","readonly");

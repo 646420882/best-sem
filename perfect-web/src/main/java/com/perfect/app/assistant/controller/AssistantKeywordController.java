@@ -34,6 +34,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,7 +48,7 @@ import java.util.*;
  */
 @RestController
 @Scope("prototype")
-public class AssistantKeywordController extends WebContextSupport{
+public class AssistantKeywordController extends WebContextSupport {
     private static final String RES_SUCCESS = "success";
     private static Integer OBJ_SIZE = 18;
 
@@ -62,8 +64,9 @@ public class AssistantKeywordController extends WebContextSupport{
     @Resource
     private SysRegionalService sysRegionalService;
 
-
-
+    private static final String DEFAULT_DELIMITER = ",";
+    private static final String DEFAULT_END = "\r\n";
+    private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
     /**
      * 批量添加或者修改关键词
      */
@@ -88,13 +91,13 @@ public class AssistantKeywordController extends WebContextSupport{
                 String[] pricesStr = prices.split("\n");
                 String[] pcsStr = pcs.split("\n");
                 String[] mibStr = mibs.split("\n");
-                String[] ptsStr=pts.split("\n");
+                String[] ptsStr = pts.split("\n");
                 String[] pauseStr = pauses.split("\n");
                 for (int i = 0; i < aidStr.length; i++) {
-                    innerUpdate(isReplace, kwdStr[i], aidStr[i], mtStr[i],ptsStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i]);
+                    innerUpdate(isReplace, kwdStr[i], aidStr[i], mtStr[i], ptsStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i]);
                 }
             } else {
-                innerUpdate(isReplace, kwds, aids, mts, pts,prices, pcs, mibs, pauses);
+                innerUpdate(isReplace, kwds, aids, mts, pts, prices, pcs, mibs, pauses);
             }
             writeHtml(SUCCESS, response);
         } catch (Exception e) {
@@ -104,12 +107,12 @@ public class AssistantKeywordController extends WebContextSupport{
 
     }
 
-    private void innerUpdate(Boolean isReplace, String name, String aid, String mt,String pt, String price, String pc, String mib, String pause) {
-        if(pc.equals("空")){
-            pc=null;
+    private void innerUpdate(Boolean isReplace, String name, String aid, String mt, String pt, String price, String pc, String mib, String pause) {
+        if (pc.equals("空")) {
+            pc = null;
         }
-        if(mib.equals("空")){
-            mib=null;
+        if (mib.equals("空")) {
+            mib = null;
         }
         Map<String, Object> map = new HashMap<>();
         map.put("name", name);
@@ -181,13 +184,13 @@ public class AssistantKeywordController extends WebContextSupport{
      */
     @RequestMapping(value = "assistantKeyword/list", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAllKeywordList(HttpServletResponse response,
-                                  @RequestParam(value = "cid",required = false,defaultValue = "")String cid,
-                                  @RequestParam(value = "aid",required = false,defaultValue = "")String aid,
-                                  @RequestParam(value = "nowPage")int nowPage,
-                                  @RequestParam(value = "pageSize")int pageSize){
-        PagerInfo page=null;
-        if(!aid.equals("-1")){
-            page= assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
+                                  @RequestParam(value = "cid", required = false, defaultValue = "") String cid,
+                                  @RequestParam(value = "aid", required = false, defaultValue = "") String aid,
+                                  @RequestParam(value = "nowPage") int nowPage,
+                                  @RequestParam(value = "pageSize") int pageSize) {
+        PagerInfo page = null;
+        if (!aid.equals("-1")) {
+            page = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
         }
         writeJson(page, response);
     }
@@ -391,8 +394,16 @@ public class AssistantKeywordController extends WebContextSupport{
     @RequestMapping(value = "assistantKeyword/getSearchWordReport", method = {RequestMethod.GET, RequestMethod.POST})
     public void getSearchWordReport(HttpServletResponse response, Integer levelOfDetails, String startDate, String endDate, String attributes, Integer device, Integer searchType) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        List<AttributeType> list = null;
 
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String yesterday = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(cal.getTime());
+
+        List<AttributeType> list = null;
+        if (startDate == null || startDate.equals("") || (startDate != null && endDate == null)) {
+            startDate = yesterday;
+            endDate = yesterday;
+        }
         if (attributes != null && attributes != "") {
             list = new ArrayList<>();
             String[] attrs = attributes.split(",");
@@ -405,14 +416,14 @@ public class AssistantKeywordController extends WebContextSupport{
 
         List<RealTimeQueryResultType> resultList = null;
         try {
-            BaiduAccountInfoDTO accountInfoDTO=baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(),AppContext.getAccountId());
-            resultList = getSearchTermsReprot(accountInfoDTO,levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
+            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            resultList = getSearchTermsReprot(accountInfoDTO, levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         List<SearchwordReportDTO> dtoList = new ArrayList<>();
-        if (resultList!=null) {
+        if (resultList != null) {
             for (RealTimeQueryResultType resultType : resultList) {
                 SearchwordReportDTO searchwordReportDTO = new SearchwordReportDTO();
                 searchwordReportDTO.setKeyword(resultType.getQueryInfo(3));
@@ -432,6 +443,8 @@ public class AssistantKeywordController extends WebContextSupport{
         }
         writeJson(dtoList, response);
     }
+
+
     /**
      * 将搜索词报告中关键词添加到现登录的账户
      */
@@ -477,7 +490,7 @@ public class AssistantKeywordController extends WebContextSupport{
     public List<RealTimeQueryResultType> getSearchTermsReprot(BaiduAccountInfoDTO accountInfoDTO, Integer levelOfDetails, Date startDate, Date endDate, List<AttributeType> attributes, Integer device, Integer searchType) {
         DateFormat df = new SimpleDateFormat("hh:mm:ss");
         CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getBaiduUserName(), accountInfoDTO.getBaiduPassword(), accountInfoDTO.getToken());
-        List<RealTimeQueryResultType> resList=new ArrayList<>();
+        List<RealTimeQueryResultType> resList = new ArrayList<>();
         try {
             Date baseDate = df.parse("11:51:00");
             Calendar beforeYesterDay = Calendar.getInstance();
@@ -506,7 +519,7 @@ public class AssistantKeywordController extends WebContextSupport{
                     endDate = yesterDay.getTime();
                 }
             }
-            ReportService  reportService = commonService.getService(ReportService.class);
+            ReportService reportService = commonService.getService(ReportService.class);
             //设置请求参数
             RealTimeQueryRequestType realTimeQueryRequestType = new RealTimeQueryRequestType();
             String[] returnFileds = new String[]{"click", "impression"};
@@ -527,7 +540,7 @@ public class AssistantKeywordController extends WebContextSupport{
             if (response1 == null) {
                 return new ArrayList<>();
             } else {
-                resList= response1.getRealTimeQueryResultTypes();
+                resList = response1.getRealTimeQueryResultTypes();
             }
         } catch (ApiException e) {
             e.printStackTrace();
@@ -573,23 +586,23 @@ public class AssistantKeywordController extends WebContextSupport{
     }
 
     @RequestMapping(value = "assistantKeyword/uploadAddByUp")
-    public ModelAndView uploadAddByUp(@RequestParam(value = "kid",required = true)String kid){
-        List<KeywordDTO> returnKeywordDTO=assistantKeywordService.uploadAddByUp(kid);
-        if(returnKeywordDTO.size()>0){
-            returnKeywordDTO.stream().filter(s->s.getKeywordId()!=null).forEach(s -> assistantKeywordService.update(kid, s));
-            return  writeMapObject(MSG,SUCCESS);
+    public ModelAndView uploadAddByUp(@RequestParam(value = "kid", required = true) String kid) {
+        List<KeywordDTO> returnKeywordDTO = assistantKeywordService.uploadAddByUp(kid);
+        if (returnKeywordDTO.size() > 0) {
+            returnKeywordDTO.stream().filter(s -> s.getKeywordId() != null).forEach(s -> assistantKeywordService.update(kid, s));
+            return writeMapObject(MSG, SUCCESS);
         }
-        return writeMapObject(MSG,"级联上传失败");
+        return writeMapObject(MSG, "级联上传失败");
     }
 
     @RequestMapping(value = "assistantKeyword/getNoKeywords")
     public ModelAndView getNoKeywords(@RequestParam(value = "aid", required = true) String aid) {
         if (aid.length() > OBJ_SIZE) {
-            Map<String,Map<String,List<String>>> map = assistantKeywordService.getNoKeywords(aid);
-            return  writeMapObject(DATA, map);
+            Map<String, Map<String, List<String>>> map = assistantKeywordService.getNoKeywords(aid);
+            return writeMapObject(DATA, map);
         } else {
-            Map<String,Map<String,List<String>>> map = assistantKeywordService.getNoKeywords(Long.parseLong(aid));
-           return writeMapObject(DATA, map);
+            Map<String, Map<String, List<String>>> map = assistantKeywordService.getNoKeywords(Long.parseLong(aid));
+            return writeMapObject(DATA, map);
         }
     }
 

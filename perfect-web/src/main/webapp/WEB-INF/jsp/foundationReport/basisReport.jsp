@@ -240,7 +240,7 @@
     </div>
     <div class="shuju_detali over">
         <ul>
-            <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31"
+            <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="请选择查询时间,默认昨天"
                                            readonly>
                 <input name="reservation" type="image" cname="dateClick"
                        onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
@@ -379,7 +379,7 @@
         <div class="shuju_detali over">
             <ul>
                 <li>选择时间范围：
-                    <input type="text" class="time_input" placeholder="2014-01-30 至 2014-01-31" readonly>
+                    <input type="text" class="time_input" placeholder="请选择查询时间,默认昨天" readonly>
                     <input name="reservation" type="image" cname="dateClick"
                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                            src="${pageContext.request.contextPath}/public/img/date.png" readonly>
@@ -456,8 +456,100 @@
     </div>
 </div>
 
+<%-----------------------------------------------------------------------------------------------------------------------------%>
+
+    <div class="containers hides over">
+        <div class="number_concent over">
+            <div class="list01_top over"><Span>搜索词报告</Span>
+            </div>
+            <div class="shuju_detali over">
+                <ul>
+                    <li>选择时间范围：
+                        <input type="text" class="time_input" placeholder="请选择查询时间,默认昨天" readonly>
+                        <input name="reservation" type="image" cname="dateClick"
+                               onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                               src="${pageContext.request.contextPath}/public/img/date.png" readonly>
+                    </li>
+                    <li id="putin">选择投放设备：
+                        <a href="javascript:" class="current" cname="0">全部</a><span>|</span>
+                        <a href="javascript:" cname="1">计算机</a><span>|</span>
+                        <a href="javascript:" cname="2">移动设备</a>
+                    </li>
+                    <li>地域范围:
+                        <a href="javascript:void(0)" id="chooseRegion">选择地域</a>
+                        <input type="image" src="../public/img/zs_input.png">
+                    </li>
+                </ul>
+
+                <a href="javascript:" id="createReport" class="become fl" style="margin-right:50px; "> 生成报告</a>
+
+                <div id="downReportSearch">
+
+                </div>
+                <input type="hidden" id="jindut1" value="">
+            </div>
+        </div>
+        <div class="contant over">
+            <%--<div class="download over fr"><a href="#">下载全部</a></div>--%>
+            <div class="list01_under3 over">
+                <div class="tubiao2 over" style="width: 80%;margin:0 auto; ">
+                    <div id="imprDiv1" style="width:100%;height:530px;display: none;"></div>
+                    <div id="pm_data1" style="display: none;"></div>
+                </div>
+                <div class="list3 wd" style="overflow-x: auto; width: 100%;">
+                    <table border="0" cellspacing="0" cellspacing="0">
+                        <thead id="shujuthead1">
+                        <tr class='list2_top'><td>&nbsp;<span>时间</span><b><p><input class='one' type='button'onclick='javascript:sorts = -11;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 11;reportData()'></p></b></td>
+                            <td>&nbsp;<span>推广计划</span><b><p><input class='one' type='button'></p><p><input class='two' type='button'></p></b></td>
+                            <td>&nbsp;<span>推广单元</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>
+                            <td>&nbsp;<span>创意标题</span><b><p><input class='one' type='button' onclick='javascript:sorts = -7;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 7;reportData()'></p></b></td>
+                            <td>&nbsp;<span>创意描述1</span><b><p><input class='one' type='button' onclick='javascript:sorts = -1;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 1;reportData()'></p></b></td>
+                            <td>&nbsp;<span>创意描述2</span><b><p><input class='one' type='button' onclick='javascript:sorts = -2;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 2;reportData()'></p></b></td>
+                            <td>&nbsp;<span>搜索引擎</span><b><p><input class='one' type='button' onclick='javascript:sorts = -3;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 3;reportData()'></p></b></td>
+                            <td>&nbsp;<span>点击量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -5;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 5;reportData()'></p></b></td>
+                            <td>&nbsp;<span>展现量</span><b><p><input class='one' type='button' onclick='javascript:sorts = -4;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 4;reportData()'></p></b></td>
+                            <td>&nbsp;<span>搜索词</span><b><p><input class='one' type='button' onclick='javascript:sorts = -6;reportData()'></p><p><input class='two' type='button' onclick='javascript:sorts = 6;reportData()'></p></b></td>
+                            <td>&nbsp;<span>关键词</span><b><p></p><p></p></b></td>
+                            <td>&nbsp;<span>精确匹配扩展(地域词)触发</span><b><p></p><p></p></b></td></tr>
+                        </thead>
+                        <tbody id="searchWordTbody">
+
+                        </tbody>
+                        <tbody id="shujuAll1">
+
+                        </tbody>
+                    </table>
+                    <img style="margin-left: 50%; display: none" id="pathImages1" src='${pageContext.request.contextPath}/public/img/loading.gif'/>
+                </div>
+                <div id="pageNumberDetSelect1" class="over">
+                <span class='fr'>每页显示<select id='importKeywordSelDet1' onchange='selectChangeDet()'>
+                    <option value='20'>20个</option>
+                    <option value='50'>50个</option>
+                    <option value='100'>100个</option>
+                </select> </span>
+                </div>
+                <div id="pagination3" class="pagination over"></div>
+                <br/>
+
+                <div class="tubiao2 over">
+                    <div id="containerLegend1"></div>
+                    <div id="container1" style="width:100%;height:400px;display: none"></div>
+                </div>
+
+            </div>
+        </div>
+        <input type="hidden" id="putinInfo" value="0">
+    </div>
+
+
+
+
+<%----------------------------------------------------------------------------————---------------------------------------------%>
+
 </div>
 </div>
+<%--设置推广地域--%>
+<jsp:include page="../promotionAssistant/alert/Region.jsp"/>
 <jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
 </div>
