@@ -39,6 +39,12 @@ public class HomePageManageController extends WebContextSupport {
     @Resource
     private AccountRegisterService accountRegisterService;
 
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView index() {
+        return new ModelAndView("bestPage/bestIndex");
+    }
+
     /**
      * 登陆页面
      *
@@ -79,11 +85,10 @@ public class HomePageManageController extends WebContextSupport {
      * @return
      */
     @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView logout(HttpServletResponse response) {
+    public void logout(HttpServletResponse response) {
         Cookie cookies = new Cookie("semToken", null);
         cookies.setMaxAge(0);
         response.addCookie(cookies);
-        return null;
     }
 
     /**
