@@ -11,7 +11,7 @@ To change this template use File | Settings | File Templates.
 <head>
     <title>大数据智能营销</title>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" <%--content="IE=10"--%>>
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/multiple-select.css">
@@ -542,8 +542,7 @@ To change this template use File | Settings | File Templates.
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
@@ -674,16 +673,11 @@ To change this template use File | Settings | File Templates.
                     {trade: trade},
                     function (data) {
                         var category = "", datas = data.rows;
-//                    category += "<option value='' selected='selected'>请选择类别</option>";
                         var _l = datas.length;
-                        for (var i = _l; i > 0; i--) {
-//                        if (i == _l) {
-//                            category += "<option value='" + datas[i - 1].category + "' selected='selected'>" + datas[i - 1].category + "</option>";
-//                            _category = datas[i - 1].category;
-//                            continue;
-//                        }
-                            category += "<option value='" + datas[i - 1].category + "'>" + datas[i - 1].category + "</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            category += "<option value='" + datas[i].category + "'>" + datas[i].category + "</option>";
                         }
+
                         $("#category").empty();
                         $("#category").append(category);
                         $("#category").multipleSelect({
@@ -692,28 +686,40 @@ To change this template use File | Settings | File Templates.
                             minumimCountSelected: 20,
                             multiple: true,
                             onClose: function () {
-//                            _category = $("#category option:selected").val();
                                 _category = $("#category").multipleSelect('getSelects');
+                                if (_category.length > 0) {
+                                    $.getJSON('/getKRWords/findKeywordByCategories',
+                                            {categories: JSON.stringify(_category)},
+                                            function (data) {
+                                                var datum = data.rows;
+                                                var keywordGroupOfTrade = "";
+                                                for (var j = 0, s = datum.length; j < s; j++) {
+                                                    keywordGroupOfTrade += "<option value='" + datum[j].category + "'>" + datum[j].category + "</option>";
+                                                }
 
-                                $.getJSON('/getKRWords/findKeywordByCategories',
-                                        {categories: JSON.stringify($("#category").multipleSelect('getSelects'))},
-                                        function (data) {
-                                            var datum = data.rows;
-                                            var keywordGroupOfTrade = "";
-                                            for (var j = 0, s = datum.length; j < s; j++) {
-                                                keywordGroupOfTrade += "<option value='" + datum[j].category + "'>" + datum[j].category + "</option>";
-                                            }
-
-                                            $('#keyword_group').empty();
-                                            $('#keyword_group').append(keywordGroupOfTrade);
-                                            $('#keyword_group').multipleSelect({
-                                                placeholder: "请选择分组",
-                                                selectAll: false,
-                                                minumimCountSelected: 20,
-                                                multiple: true
+                                                $('#keyword_group').empty();
+                                                $('#keyword_group').append(keywordGroupOfTrade);
+                                                $('#keyword_group').multipleSelect({
+                                                    placeholder: "请选择分组",
+                                                    selectAll: false,
+                                                    minumimCountSelected: 20,
+                                                    multiple: true
+                                                });
                                             });
-                                        });
+                                } else {
+                                    $('#keyword_group').empty();
+                                }
                             }
+                        });
+
+                        // Clear
+                        $('#keyword_group').empty();
+                        $('#keyword_group').append("");
+                        $('#keyword_group').multipleSelect({
+                            placeholder: "请选择分组",
+                            selectAll: false,
+                            minumimCountSelected: 20,
+                            multiple: true
                         });
                     });
         });
@@ -771,7 +777,10 @@ To change this template use File | Settings | File Templates.
             if (_trade == null || _trade == "") {
                 return;
             }
-            _url = "/getKRWords/downloadCSV?trade=" + _trade + "&category=" + _category;
+
+            _url = "/getKRWords/downloadCSV?trade=" + _trade
+                    + "&categories=" + JSON.stringify($("#category").multipleSelect('getSelects'))
+                    + "&groups=" + JSON.stringify($("#keyword_group").multipleSelect('getSelects'));
 
             if (!!window.ActiveXObject || "ActiveXObject" in window) {
                 document.getElementById("background").style.display = "block";

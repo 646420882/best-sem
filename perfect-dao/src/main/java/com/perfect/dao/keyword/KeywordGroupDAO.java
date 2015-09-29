@@ -8,10 +8,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by baizz on 2014-8-21.
- * 2014-12-2 refactor
+ * Created on 2014-08-21.
+ *
+ * @author dolphineor
+ * @update 2015-09-28
  */
 public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, String> {
+
+    String LEXICON_TRADE = "tr";
+
+    String LEXICON_CATEGORY = "cg";
+
+    String LEXICON_GROUP = "gr";
+
+    String LEXICON_KEYWORD = "kw";
+
+    String LEXICON_URL = "url";
 
     /**
      * 查询行业词库下的类别
