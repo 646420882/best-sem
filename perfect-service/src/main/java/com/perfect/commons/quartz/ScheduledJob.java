@@ -23,11 +23,11 @@ public class ScheduledJob {
     private final String jobGroup;
 
     /**
-     * 0 禁用
-     * 1 启用
-     * 2 删除
+     * 0  暂停
+     * 1  启用
+     * -1  删除
      */
-    private final String jobStatus;
+    private final int jobStatus;
 
     /**
      * 任务运行时间表达式
@@ -40,7 +40,7 @@ public class ScheduledJob {
     private final String jobDescription;
 
 
-    private ScheduledJob(String jobId, String jobName, String jobGroup, String jobStatus, String cronExpression, String jobDescription) {
+    private ScheduledJob(String jobId, String jobName, String jobGroup, int jobStatus, String cronExpression, String jobDescription) {
         this.jobId = jobId;
         this.jobName = jobName;
         this.jobGroup = jobGroup;
@@ -53,7 +53,7 @@ public class ScheduledJob {
         private String jobId;
         private String jobName;
         private String jobGroup;
-        private String jobStatus;
+        private int jobStatus;
         private String cronExpression;
         private String jobDescription;
 
@@ -72,7 +72,7 @@ public class ScheduledJob {
             return this;
         }
 
-        public Builder jobStatus(String jobStatus) {
+        public Builder jobStatus(int jobStatus) {
             this.jobStatus = jobStatus;
             return this;
         }
@@ -104,7 +104,7 @@ public class ScheduledJob {
         return jobGroup;
     }
 
-    public String getJobStatus() {
+    public int getJobStatus() {
         return jobStatus;
     }
 
