@@ -181,7 +181,14 @@ $(function () {
             var index = $tab_li.index(this);
             $('div.tab_box > div').eq(index).show().siblings().hide();
             $("#pageDet").empty();
+            if ($("#reportType>a").eq(4).attr("class") == "current") {
+                SearchClass();
+            }
         });
+        $('.tab_menu li:first').click(function () {
+            $(".searh_report").hide();
+        })
+
         $("#reportType>a").click(function () {
             $("#reportType>a").removeClass("current");
             $(this).addClass("current");
@@ -1157,12 +1164,12 @@ $(function () {
                                 $("#containerLegend").empty();
                                 /*初始化曲线图所用需求*/
                                 $("#containerLegend").html("<div class='tu_top over'><ul><li>展示曲线</li>"
-                                + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-                                + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-                                + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-                                + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-                                + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-                                + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+                                    + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
+                                    + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
+                                    + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
+                                    + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
+                                    + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
+                                    + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
                                 dataOne = {
                                     name: '展现',
@@ -1566,7 +1573,8 @@ $(function () {
                             color: colorOne
                         }
                     }
-                }, {
+                },
+                {
                     type: 'value',
                     name: nameTow,
                     scale: true,
@@ -1641,7 +1649,8 @@ $(function () {
                         emphasis: {label: {show: true}}
                     },
                     data: showData[0]
-                }, {
+                },
+                {
                     name: showName[1],
                     type: 'map',
                     mapType: 'china',
@@ -1650,7 +1659,8 @@ $(function () {
                         emphasis: {label: {show: true}}
                     },
                     data: showData[1]
-                }, {
+                },
+                {
                     name: showName[2],
                     type: 'map',
                     mapType: 'china',
@@ -1659,7 +1669,8 @@ $(function () {
                         emphasis: {label: {show: true}}
                     },
                     data: showData[2]
-                }, {
+                },
+                {
                     name: showName[3],
                     type: 'map',
                     mapType: 'china',
@@ -1907,7 +1918,7 @@ $(function () {
      */
     $("#chooseRegion").click(function () {
         $("#ctrldialogplanRegionDialog").css("top", ($(this).offset().top + $(this).outerHeight()) + "px")
-                                        .css("left", ($(this).offset().left + $(this).outerWidth()) + "px");
+            .css("left", ($(this).offset().left + $(this).outerWidth()) + "px");
         $("#ctrldialogplanRegionDialog").show(0);
     });
 
@@ -1922,8 +1933,21 @@ $(function () {
         });
         return regions;
     }
-    $("#ctrlbuttonregionOklabel").click(function(){
+
+    $("#ctrlbuttonregionOklabel").click(function () {
         $("#downReportSearch").empty();
     });
+    /**搜索词报告*/
+    function SearchClass() {
+        $(".searh_report").show();
+        $(".number_concent").css("border", "none");
+        $(".number_concent").css("padding-bottom", "0px");
+        $(".searchhide").hide();
+    }
+
+    $("#SearchReport").click(function () {
+        SearchClass();
+    });
+
     /**********************************************************************************/
 });
