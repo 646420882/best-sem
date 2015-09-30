@@ -695,4 +695,6 @@ function closeAlert() {
     $("#addMonitorDiv ").css("display", "none");
     //监控文件夹窗口关闭
     $("#addFolderDiv ").css("display", "none");
+    //检查更改窗口关闭
+    $("#CheckCompletion ").css("display", "none");
 }

@@ -1,7 +1,19 @@
+var listnumber = null;
 $("tbody").delegate("tr", "click", function (event) {
+    listnumber = $(this);
+    console.log(listnumber);
     $(this).parent().find("tr").removeClass("list2_box3");
     $(this).addClass("list2_box3");
 });
+//复制
+function Copy() {
+    listnumber.html();
+}
+//粘贴
+function Paste() {
+    console.log($(".table-bordered").append(listnumber));
+    $(".table-bordered").append(listnumber);
+};
 
 /*=======================================公用函数=====================================*/
 /**

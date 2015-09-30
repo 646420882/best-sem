@@ -43,6 +43,7 @@ window.onload = function () {
     rDrag.init(document.getElementById('box9'));
     rDrag.init(document.getElementById('reachBudget_head'));
     rDrag.init(document.getElementById('downloadBox'));
+    rDrag.init(document.getElementById('CheckCompletion'));
 
 
 };
@@ -271,11 +272,10 @@ $(function () {
 
     $(".pinned").pin()
     $("#jingjia_adds").click(function () {
-        $("#jiangjia_add").show();
+        $("#jiangjia_add").hide();
     });
     $("#jiangjia_chongfu").click(function () {
-        $("#jiangjia_add").hide();
-
+        $("#jiangjia_add").fadeIn();
     })
     //编辑弹窗关闭方法
     $(".bottom_close").click(function () {
@@ -284,5 +284,45 @@ $(function () {
     $(".zh_menu2").click(function () {
         $(".bottom_close").parent().parent().fadeOut("slow");
     })
+    $(function () {
+        //绑定需要拖拽改变大小的元素对象
+        bindResize(document.getElementById('kkeyword'));
+        bindResize(document.getElementById('tcreative'));
+        bindResize(document.getElementById('aadgroup'));
+        bindResize(document.getElementById('ccampaign'));
+    });
+    function bindResize(el) {
+        var els = el.style,
+            y = 0;
+        $(".zhanghu_input").mousedown(function (e) {
+
+            /*     x = e.clientX - el.offsetWidth,*/
+            y = e.clientY - el.offsetHeight;
+            el.setCapture ? (
+                el.setCapture(),
+                    el.onmousemove = function (ev) {
+                        mouseMove(ev || event);
+                    },
+                    el.onmouseup = mouseUp
+                ) : (
+                $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
+                );
+            e.preventDefault();
+        });
+        function mouseMove(e) {
+//            els.width = e.clientX - x + 'px',
+            els.height = e.clientY - y + 'px';
+
+        }
+
+        function mouseUp() {
+            el.releaseCapture ? (
+                el.releaseCapture(),
+                    el.onmousemove = el.onmouseup = null
+                ) : (
+                $(document).unbind("mousemove", mouseMove).unbind("mouseup", mouseUp)
+                );
+        }
+    }
 
 });

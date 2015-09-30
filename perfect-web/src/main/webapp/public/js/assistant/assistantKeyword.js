@@ -92,7 +92,6 @@ function getKwdList(nowPage) {
     if (param == null) {
         param = {};
     }
-
     param["nowPage"] = nowPage;
     param["pageSize"] = items_per_page;
 
@@ -133,8 +132,6 @@ function getKwdList(nowPage) {
         }
     });
 }
-
-
 /**
  * 单击某一行时将该行的值放入相应的文本框内
  */
@@ -417,16 +414,6 @@ function setSelectSelected(matStr) {
         }
     }
 }
-function kadrgg() {
-    var _height = $("#kkeyword").css("height");
-    if (_height == "400px") {
-        $("#kkeyword").css("height", "350px");
-    } else {
-        $("#kkeyword").css("height", "400px");
-    }
-}
-
-
 /**
  * 编辑关键词信息
  * @param value
@@ -784,23 +771,6 @@ function reducKwd_del(id) {
     });
 }
 
-//全选
-function CtrlA() {
-    $(document).keydown(function (event) {
-        if (event.ctrlKey && event.keyCode == 65) {
-            jQuery('#tbodyClick tr').css('background', '#fcefc5');
-        }
-        ;
-        return false;
-    });
-}
-function CtrlAll() {
-    jQuery('#tbodyClick tr').css('background', '#fcefc5');
-}
-function CtrlCancel() {
-    jQuery('#tbodyClick tr').css('background', '')
-}
-
 /************************************************************关键词的右击菜单************************************************************/
 /**
  * 菜单名，方法
@@ -846,14 +816,16 @@ var menu_keyword_add = {
         text: "搜索词",
         img: "../public/img/zs_function10.png",
         func: function () {
-            c
             searchword();
         }
 
     }
     , menu_keyword_copy = {
         text: "复制",
-        img: "../public/img/zs_function13.png"
+        img: "../public/img/zs_function13.png",
+        func: function () {
+            Copy();
+        }
 
     }
     , menu_keyword_shear = {
@@ -863,7 +835,10 @@ var menu_keyword_add = {
     }
     , menu_keyword_paste = {
         text: "粘贴",
-        img: "../public/img/zs_function15.png"
+        img: "../public/img/zs_function15.png",
+        func: function () {
+            Paste()
+        }
     }
     , menu_keyword_select = {
         text: "全选",

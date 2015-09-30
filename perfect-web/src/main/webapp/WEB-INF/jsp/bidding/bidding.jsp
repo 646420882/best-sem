@@ -199,7 +199,7 @@
                                         <li id="showbox7"><img src="${pageContext.request.contextPath}/public/img/qidong.png">启动竞价</li>
                                         <li id="showbox3"><img src="${pageContext.request.contextPath}/public/img/zanting.png">暂停竞价</li>
                                         <li id="showbox4"><img src="${pageContext.request.contextPath}/public/img/wangzhi.png">修改访问网址</li>
-                                        <li id="showbox5"><img src="${pageContext.request.contextPath}/public/img/fenzu.png">分组</li>
+                                        <li id="showbox5"><img src="${pageContext.request.contextPath}/public/img/fenzu.png">监控</li>
                                         <li id="showbox6"><img src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列</li>
                                     </ul>
                                     <div class="over wd">
@@ -449,12 +449,7 @@
                     <li>
                         <p><input type="radio" name="auto" value="1" id="jingjia_adds"><span>单次竞价</span></p>
                     </li>
-                    <li class="hides" id="jiangjia_add">
-                        <input type="radio" name="sbid" value="everyday"><span>每天执行</span>
-                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times"
-                                                                                                 type="text"
-                                                                                                 name="bytimes">
-                    </li>
+
                     <li><input type="radio" name="auto" value="2" checked="checked" id="jiangjia_chongfu"><span>重复竞价速度 每隔
                         <select id="interval">
                             <option value="20">20分钟</option>
@@ -463,7 +458,12 @@
                             <option value="120">2小时</option>
                         </select> 竞价一次</span>
                     </li>
-
+                    <li id="jiangjia_add">
+                        <input type="radio" name="sbid" value="everyday"><span>每天执行</span>
+                        <input type="radio" name="sbid" value="bytime"> <span>竞价次数:</span><input class="times"
+                                                                                                 type="text"
+                                                                                                 name="bytimes">
+                    </li>
                 </ul>
 
             </li>

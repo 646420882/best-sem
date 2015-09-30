@@ -942,15 +942,6 @@ function setDialogCss(idSelector) {
         display: "block"
     });
 }
-function cdrgg() {
-    var _height = $("#ccampaign").css("height");
-    if (_height == "400px") {
-        $("#ccampaign").css("height", "350px");
-    } else {
-        $("#ccampaign").css("height", "400px");
-    }
-}
-
 $(".closeAddCampaign").click(function () {
     //关闭该窗口时重新赋值
     jsonSchdule_add = null;
@@ -1161,8 +1152,6 @@ $(window).on("keydown keyup", function (event) {
         }
     }
 });
-
-
 /************************************************************关键词的右击菜单************************************************************/
 /**
  * 菜单名，方法
@@ -1207,12 +1196,18 @@ var menu_campaign_add = {
     }
     , menu_keyword_copy = {
         text: "复制",
-        img: "../public/img/zs_function13.png"
+        img: "../public/img/zs_function13.png",
+        func: function () {
+            Copy();
+        }
 
     }
     , menu_keyword_paste = {
         text: "粘贴",
-        img: "../public/img/zs_function15.png"
+        img: "../public/img/zs_function15.png",
+        func: function () {
+            Paste();
+        }
     }
     , menu_keyword_select = {
         text: "全选",
@@ -1246,7 +1241,6 @@ var campaignMenuExt = {
         $.smartMenu.remove();
     }
 };
-
 $("#tbodyClick5").on("mousedown", "tr", function () {
     $(this).smartMenu(campaignMenuData, campaignMenuExt);
 });

@@ -4,7 +4,7 @@
 function uploadDialog() {
     openUploadDialog();
 }
-function openUploadDialog(){
+function openUploadDialog() {
     loadOperateCampainList();
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height()
@@ -19,8 +19,8 @@ function closeUploadDialog() {
     $(".TB_overlayBG").css("display", "none");
     $("#uploadMerge").css("display", "none");
 }
-function loadOperateCampainList(){
-    $.get("/uploadMerge/getCampList",function(res){
+function loadOperateCampainList() {
+    $.get("/uploadMerge/getCampList", function (res) {
         $("#existsCamp ul").empty();
         var results = res.data;
         if (results.length > 0) {
@@ -40,7 +40,21 @@ function loadOperateCampainList(){
 function allOnCheck() {
     $("input[name='camp_o']:checked").attr("checked", false);
 }
-function uploadDialogOk(){
+function CheckCompletion() {
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height()
+    });
+    $("#CheckCompletion").css({
+        left: ($("body").width() - $("#CheckCompletion").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#CheckCompletion").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $("#CheckCompletion").css("display", "none");
+    });
+}
+function uploadDialogOk() {
     var uploadType = "";
     var allChose = document.getElementsByName("up1");
     for (var i = 0; i < allChose.length; i++) {
@@ -54,10 +68,10 @@ function uploadDialogOk(){
             if (conf) {
                 $.get("/uploadMerge/uploadByAll", function (res) {
                     if (res.msg == "1") {
-                        alert("上传成功");
                         reloadGrid();
                         loadTree();
                         closeUploadDialog();
+                        CheckCompletion();
                     } else {
                         alert(res.msg);
                         reloadGrid();
@@ -70,22 +84,22 @@ function uploadDialogOk(){
             var campaignIds = "";
             $.each($("input[name='camp_o']:checked"), function (i, item) {
                 if (item.checked) {
-                    campaignIds+=item.id+","
+                    campaignIds += item.id + ","
                 }
             });
             if (campaignIds.length == 0) {
                 alert("请选择要上传的计划！");
                 return;
             } else {
-                campaignIds=campaignIds.slice(0,-1);
+                campaignIds = campaignIds.slice(0, -1);
                 var conf = confirm("是否上传选择的这些计划？");
                 if (conf) {
                     $.post("/uploadMerge/uploadBySomeCamp", {cids: campaignIds}, function (res) {
                         if (res.msg == "1") {
-                            alert("上传成功");
                             reloadGrid();
                             loadTree();
                             closeUploadDialog();
+                            CheckCompletion();
                         } else {
                             alert(res.msg);
                             reloadGrid();
@@ -102,10 +116,10 @@ function uploadDialogOk(){
 }
 function reloadGrid() {
     var choseTable = $("#tabMenu li");
-    var tabName ="";
-    choseTable.each(function(i,o){
-        if($(o).attr("class")=="current"){
-            tabName=$(o).html();
+    var tabName = "";
+    choseTable.each(function (i, o) {
+        if ($(o).attr("class") == "current") {
+            tabName = $(o).html();
         }
     });
     if (tabName == "关键词") {
@@ -130,3 +144,6 @@ function reloadGrid() {
         }
     }
 }
+$(function () {
+    $("#tabs").tabs();
+});

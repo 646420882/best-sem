@@ -65,7 +65,7 @@
                             </select></li>
                             <li>
                                 <div class="assembly_search over">
-                                    <span style="margin-left: 10%;">
+                                    <span>
                                     <input id="price" type="text" placeholder="请输入关键词出价,默认为0.1" onkeypress='until.regDouble(this)' maxlength="5">
                                     </span>
                                 </div>

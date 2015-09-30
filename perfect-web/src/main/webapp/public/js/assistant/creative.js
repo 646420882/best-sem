@@ -41,23 +41,7 @@ $(function () {
     initsDivKeyup();
     initUpdateInputKeyUp();
 });
-//全选
-function CtrlA() {
-    $(document).keydown(function (event) {
-        alert(1111);
-        if (event.ctrlKey && event.keyCode == 65) {
-            jQuery('#tbodyClick2 tr').css('background', '#fcefc5');
-        }
-        ;
-        return false;
-    });
-}
-function CtrlAll() {
-    jQuery('#tbodyClick2 tr').css('background', '#fcefc5');
-}
-function CtrlCancel() {
-    jQuery('#tbodyClick2 tr').css('background', '')
-}
+
 /**
  * 菜单名，方法
  * @type {{text: string, func: func}}
@@ -101,17 +85,22 @@ var add = {
 
     } , menu_keyword_copy = {
         text: "复制",
-        img: "../public/img/zs_function13.png"
-
+        img: "../public/img/zs_function13.png",
+        func: function () {
+            Copy();
+        }
     }
     , menu_keyword_shear = {
         text: "剪切",
         img: "../public/img/zs_function14.png"
-
     }
     , menu_keyword_paste = {
         text: "粘贴",
-        img: "../public/img/zs_function15.png"
+        img: "../public/img/zs_function15.png",
+        func: function () {
+            Paste();
+        }
+
     }
     , menu_keyword_select = {
         text: "全选",

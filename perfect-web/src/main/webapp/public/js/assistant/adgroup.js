@@ -55,8 +55,10 @@ var aAdd = {
     }
     , menu_keyword_copy = {
         text: "复制",
-        img: "../public/img/zs_function13.png"
-
+        img: "../public/img/zs_function13.png",
+        func: function () {
+            Copy();
+        }
     }
     , menu_keyword_shear = {
         text: "剪切",
@@ -65,7 +67,10 @@ var aAdd = {
     }
     , menu_keyword_paste = {
         text: "粘贴",
-        img: "../public/img/zs_function15.png"
+        img: "../public/img/zs_function15.png",
+        func: function () {
+            Paste();
+        }
     }
     , menu_keyword_select = {
         text: "全选",
