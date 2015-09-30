@@ -1,5 +1,8 @@
 package com.perfect.service;
 
+import com.perfect.commons.quartz.ScheduledJob;
+import com.perfect.core.AppContext;
+
 /**
  * Created on 2015-09-29.
  *
@@ -7,5 +10,22 @@ package com.perfect.service;
  */
 public interface MaterialsScheduledService {
 
-    void configureScheduler();
+    String MATERIALS_JOB_GROUP = "SEM_MATERIALS";
+
+
+    void configureScheduler(String cronExpression, String jobDescription);
+
+    void pauseJob();
+
+    void resumeJob();
+
+    void deleteJob();
+
+
+    default ScheduledJob getScheduledJob() {
+        return new ScheduledJob.Builder()
+                .jobName(AppContext.getUser())
+                .jobGroup(MATERIALS_JOB_GROUP)
+                .build();
+    }
 }

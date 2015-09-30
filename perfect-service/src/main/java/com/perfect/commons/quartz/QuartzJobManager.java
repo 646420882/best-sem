@@ -7,7 +7,10 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * Created on 2015-09-29.
@@ -25,7 +28,10 @@ public class QuartzJobManager {
     private final Scheduler scheduler = schedulerFactoryBean.getScheduler();
 
 
-    public void run() throws SchedulerException {
+    public void start() throws SchedulerException {
+        if (!scheduler.isShutdown())
+            scheduler.start();
+
         for (ScheduledJob job : getAllScheduledJob()) {
             TriggerKey triggerKey = TriggerKey.triggerKey(job.getJobName(), job.getJobGroup());
 
@@ -64,8 +70,84 @@ public class QuartzJobManager {
     }
 
 
+    public void pauseJob(ScheduledJob scheduledJob) {
+        JobKey jobKey = JobKey.jobKey(scheduledJob.getJobName(), scheduledJob.getJobGroup());
+        try {
+            scheduler.pauseJob(jobKey);
+
+            jobMap.searchValues(1, new Function<ScheduledJob, Optional<ScheduledJob>>() {
+                @Override
+                public Optional<ScheduledJob> apply(ScheduledJob job) {
+                    if ((Objects.equals(scheduledJob.getJobName(), job.getJobName())) &&
+                            (Objects.equals(scheduledJob.getJobGroup(), scheduledJob.getJobName())))
+                        return Optional.of(job);
+
+                    return Optional.empty();
+                }
+            }).ifPresent(job ->
+                    jobMap.put(job.getJobId(), new ScheduledJob.Builder()
+                            .jobId(job.getJobId())
+                            .jobName(job.getJobName())
+                            .jobGroup(job.getJobGroup())
+                            .jobStatus(JobStatus.PAUSE.value())
+                            .cronExpression(job.getCronExpression())
+                            .jobDescription(job.getJobDescription())
+                            .build()));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resumeJob(ScheduledJob scheduledJob) {
+        JobKey jobKey = JobKey.jobKey(scheduledJob.getJobName(), scheduledJob.getJobGroup());
+        try {
+            scheduler.resumeJob(jobKey);
+
+            jobMap.searchValues(1, new Function<ScheduledJob, Optional<ScheduledJob>>() {
+                @Override
+                public Optional<ScheduledJob> apply(ScheduledJob job) {
+                    if ((Objects.equals(scheduledJob.getJobName(), job.getJobName())) &&
+                            (Objects.equals(scheduledJob.getJobGroup(), scheduledJob.getJobName())))
+                        return Optional.of(job);
+
+                    return Optional.empty();
+                }
+            }).ifPresent(job ->
+                    jobMap.put(job.getJobId(), new ScheduledJob.Builder()
+                            .jobId(job.getJobId())
+                            .jobName(job.getJobName())
+                            .jobGroup(job.getJobGroup())
+                            .jobStatus(JobStatus.ACTIVE.value())
+                            .cronExpression(job.getCronExpression())
+                            .jobDescription(job.getJobDescription())
+                            .build()));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteJob(ScheduledJob scheduledJob) {
+        JobKey jobKey = JobKey.jobKey(scheduledJob.getJobName(), scheduledJob.getJobGroup());
+        try {
+            scheduler.deleteJob(jobKey);
+
+            /**
+             * Remove job from {@link #jobMap}
+             */
+            jobMap.searchValues(1, job -> {
+                if ((Objects.equals(scheduledJob.getJobName(), job.getJobName())) &&
+                        (Objects.equals(scheduledJob.getJobGroup(), scheduledJob.getJobName())))
+                    return Optional.of(job.getJobId());
+
+                return Optional.empty();
+            }).ifPresent(jobMap::remove);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addJob(ScheduledJob scheduledJob) {
-        jobMap.put(scheduledJob.getJobGroup() + "_" + scheduledJob.getJobName(), scheduledJob);
+        jobMap.put(scheduledJob.getJobId(), scheduledJob);
     }
 
     public List<ScheduledJob> getAllScheduledJob() {

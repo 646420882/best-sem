@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -32,10 +34,11 @@ public class MaterialsScheduledController {
 
 
     @RequestMapping(value = "/upload/schedule", method = GET, produces = "application/json")
-    public String configureScheduler(@RequestParam(value = "date") Long dateMilli) {
-        long delay = dateMilli - System.currentTimeMillis();
+    public String configureScheduler(@RequestParam(value = "date") Long dateMilli,
+                                     @RequestParam(value = "jobDescription", required = false) String jobDescription) {
+        Date date = new Date(dateMilli);
 
-        materialsScheduledService.configureScheduler();
+        materialsScheduledService.configureScheduler("*/3 * * * * ?", jobDescription);
 
         return "success";
     }
