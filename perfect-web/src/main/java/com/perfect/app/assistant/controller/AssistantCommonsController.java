@@ -59,14 +59,7 @@ public class AssistantCommonsController extends WebContextSupport {
                 System.out.println("campaign");
                 break;
         }
-//        findDto.stream().forEach(s -> {
-//            System.out.println(s.getKeyword());
-//        });
-        if (forp.getForType() == 0) {//forType为0，表示查找文字
             return writeMapObject(DATA, findDto);
-        } else {//其次就为1，表示查找并替换
-            return writeMapObject(DATA, null);
-        }
     }
 
     /**
@@ -83,58 +76,53 @@ public class AssistantCommonsController extends WebContextSupport {
             kidStr.stream().forEach(s -> {
                 if (s.length() > OBJ_SIZE) {
                     KeywordInfoDTO dto = assistantKeywordService.findByInfoStrId(s);
-                    switch (forp.getForPlace()) {
-                        case "keyword":
-                            KeywordInfoDTO keyword = getRuleData(forp, 1, dto);
-                            if (keyword != null)
-                                returnResult.add(keyword);
-                            break;
-                        case "pcUrl":
-                            KeywordInfoDTO pcUrl = getRuleData(forp, 2, dto);
-                            if (pcUrl != null)
-                                returnResult.add(pcUrl);
-                            break;
-                        case "mibUrl":
-                            KeywordInfoDTO mibUrl = getRuleData(forp, 3, dto);
-                            if (mibUrl != null)
-                                returnResult.add(mibUrl);
-                            break;
-                        case "allUrl":
-                            KeywordInfoDTO allUrl = getRuleData(forp, 4, dto);
-                            if (allUrl != null)
-                                returnResult.add(allUrl);
-                            break;
-                    }
+                    switchCaseKeyword(forp, dto, returnResult);
                 } else {
                     KeywordInfoDTO dto = assistantKeywordService.findByInfoLongId(Long.valueOf(s));
-                    switch (forp.getForPlace()) {
-                        case "keyword":
-                            KeywordInfoDTO keyword = getRuleData(forp, 1, dto);
-                            if (keyword != null)
-                                returnResult.add(keyword);
-                            break;
-                        case "pcUrl":
-                            KeywordInfoDTO pcUrl = getRuleData(forp, 2, dto);
-                            if (pcUrl != null)
-                                returnResult.add(pcUrl);
-                            break;
-                        case "mibUrl":
-                            KeywordInfoDTO mibUrl = getRuleData(forp, 3, dto);
-                            if (mibUrl != null)
-                                returnResult.add(mibUrl);
-                            break;
-                        case "allUrl":
-                            KeywordInfoDTO allUrl = getRuleData(forp, 4, dto);
-                            if (allUrl != null)
-                                returnResult.add(allUrl);
-                            break;
-                    }
+                    switchCaseKeyword(forp, dto, returnResult);
                 }
             });
         } else {
-            System.out.println("查找所有");
+            if (forp.getCampaignId() != null) {
+                if (forp.getCampaignId().length() > OBJ_SIZE) {
+                    List<KeywordInfoDTO> keywordInfoDTOLis = assistantKeywordService.getKeywordInfoByCampaignIdStr(forp.getCampaignId());
+                    keywordInfoDTOLis.stream().forEach(s -> {
+                        switchCaseKeyword(forp, s, returnResult);
+                    });
+                } else {
+                    List<KeywordInfoDTO> keywordInfoDTOLis = assistantKeywordService.getKeywordInfoByCampaignIdLong(Long.valueOf(forp.getCampaignId()));
+                    keywordInfoDTOLis.stream().forEach(s -> {
+                        switchCaseKeyword(forp, s, returnResult);
+                    });
+                }
+            }
         }
         return returnResult;
+    }
+
+    private void switchCaseKeyword(FindOrReplaceParam forp, KeywordInfoDTO dto, List<KeywordInfoDTO> returnResult) {
+        switch (forp.getForPlace()) {
+            case "keyword":
+                KeywordInfoDTO keyword = getRuleData(forp, 1, dto);
+                if (keyword != null)
+                    returnResult.add(keyword);
+                break;
+            case "pcUrl":
+                KeywordInfoDTO pcUrl = getRuleData(forp, 2, dto);
+                if (pcUrl != null)
+                    returnResult.add(pcUrl);
+                break;
+            case "mibUrl":
+                KeywordInfoDTO mibUrl = getRuleData(forp, 3, dto);
+                if (mibUrl != null)
+                    returnResult.add(mibUrl);
+                break;
+            case "allUrl":
+                KeywordInfoDTO allUrl = getRuleData(forp, 4, dto);
+                if (allUrl != null)
+                    returnResult.add(allUrl);
+                break;
+        }
     }
 
     private KeywordInfoDTO getRuleData(FindOrReplaceParam forp, Integer type, KeywordInfoDTO dto) {
@@ -145,9 +133,9 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getKeyword().contains(forp.getFindText())) {
                         if (forp.getReplaceText() != null) {
                             dto.getObject().setKeyword(dto.getObject().getKeyword().replaceAll(forp.getFindText(), forp.getReplaceText()));
-                            KeywordDTO updateDTO=dto.getObject();
+                            KeywordDTO updateDTO = dto.getObject();
                             assistantKeywordService.updateKeyword(updateDTO);
-                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于关键字!!!!!!!!");
+//                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于关键字!!!!!!!!");
                             return dto;
                         } else {
                             return dto;
@@ -158,7 +146,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于默认访问Url");
+//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于默认访问Url");
                             } else {
                                 return dto;
                             }
@@ -169,7 +157,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于移动访问Url");
+//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于移动访问Url");
                             } else {
                                 return dto;
                             }
@@ -183,7 +171,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
+//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
                             } else {
                                 findOrReplaceCount++;
                             }
@@ -192,7 +180,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
+//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
                             } else {
                                 findOrReplaceCount++;
                             }
@@ -209,7 +197,7 @@ public class AssistantCommonsController extends WebContextSupport {
                 case 1:
                     if (dto.getObject().getKeyword().equals(forp.getFindText())) {
                         if (forp.getReplaceText() != null) {
-                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于关键字");
+//                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于关键字");
                         } else {
                             return dto;
                         }
@@ -219,7 +207,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于默认访问Url");
+//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于默认访问Url");
                             } else {
                                 return dto;
                             }
@@ -230,7 +218,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于移动访问Url");
+//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于移动访问Url");
                             } else {
                                 return dto;
                             }
@@ -242,7 +230,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
+//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
                             } else {
                                 findOrReplaceCount++;
                             }
@@ -252,7 +240,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
+//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
                             } else {
                                 findOrReplaceCount++;
                             }
@@ -269,7 +257,7 @@ public class AssistantCommonsController extends WebContextSupport {
                 case 1:
                     if (dto.getObject().getKeyword().trim().contains(forp.getFindText())) {
                         if (forp.getReplaceText() != null) {
-                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位于关键字");
+//                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位于关键字");
                         } else {
                             return dto;
                         }
@@ -279,7 +267,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().trim().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位默认访问Url");
+//                                System.out.println("将访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位默认访问Url");
                             } else {
                                 return dto;
                             }
@@ -290,7 +278,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().trim().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将移动访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位移动访问Url");
+//                                System.out.println("将移动访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位移动访问Url");
                             } else {
                                 return dto;
                             }
@@ -303,7 +291,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().trim().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将移动访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位移动访问Url");
+//                                System.out.println("将移动访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位移动访问Url");
                             } else {
                                 findOrReplaceCount++;
                             }
@@ -313,7 +301,73 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().trim().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-                                System.out.println("将访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位默认访问Url");
+//                                System.out.println("将访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位默认访问Url");
+                            } else {
+                                findOrReplaceCount++;
+                            }
+                        }
+                    }
+                    if (findOrReplaceCount > 0) {
+                        return dto;
+                    }
+                    break;
+            }
+        }
+
+        if (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm()) {
+            switch (type) {
+                case 1:
+                    if (dto.getObject().getKeyword().contains(forp.getFindText())) {
+                        if (forp.getReplaceText() != null) {
+                            dto.getObject().setKeyword(dto.getObject().getKeyword().replaceAll(forp.getFindText(), forp.getReplaceText()));
+                            KeywordDTO updateDTO = dto.getObject();
+                            assistantKeywordService.updateKeyword(updateDTO);
+//                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于关键字!!!!!!!!");
+                            return dto;
+                        } else {
+                            return dto;
+                        }
+                    }
+                    break;
+                case 2:
+                    if (dto.getObject().getPcDestinationUrl() != null) {
+                        if (dto.getObject().getPcDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
+                            if (forp.getReplaceText() != null) {
+//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于默认访问Url");
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    if (dto.getObject().getMobileDestinationUrl() != null) {
+                        if (dto.getObject().getMobileDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
+                            if (forp.getReplaceText() != null) {
+//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于移动访问Url");
+                            } else {
+                                return dto;
+                            }
+                        }
+                    } else {
+                        return null;
+                    }
+                    break;
+                case 4:
+                    int findOrReplaceCount = 0;
+                    if (dto.getObject().getMobileDestinationUrl() != null) {
+                        if (dto.getObject().getMobileDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
+                            if (forp.getReplaceText() != null) {
+//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
+                            } else {
+                                findOrReplaceCount++;
+                            }
+                        }
+                    }
+                    if (dto.getObject().getPcDestinationUrl() != null) {
+                        if (dto.getObject().getPcDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
+                            if (forp.getReplaceText() != null) {
+//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
                             } else {
                                 findOrReplaceCount++;
                             }

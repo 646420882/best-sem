@@ -732,6 +732,26 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         return map;
     }
 
+    @Override
+    public List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(adgroupIds));
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
+        return dtos;
+    }
+
+    @Override
+    public List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds));
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
+        return dtos;
+    }
+
     /**
      * 根据mongodbID修改
      *

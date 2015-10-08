@@ -1111,10 +1111,71 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
     @Override
-    public void replace(KeywordDTO baseDTO, KeywordDTO updateKeywordDTO) {
-        KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
-//        BeanUtils.copyProperties(newKeywordDTO, keywordBackUpDTO);
+    public List<KeywordInfoDTO> getKeywordInfoByCampaignIdStr(String cid) {
+        List<KeywordInfoDTO> keywordInfoDTOs = new ArrayList<>();
 
+        List<String> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
+
+        List<KeywordDTO> keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(adgroupIds);
+
+        keywordDTOs.stream().forEach(s -> {
+            KeywordDTO kwd = s;
+            KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+            AdgroupDTO ad = kwd.getAdgroupId() == null ? adgroupDAO.findByObjId(kwd.getAdgroupObjId()) : adgroupDAO.findOne(kwd.getAdgroupId());
+            CampaignDTO cam = ad.getCampaignId() == null ? campaignDAO.findByObjectId(ad.getCampaignObjId()) : campaignDAO.findOne(ad.getCampaignId());
+
+            keywordInfoDTO.setObject(kwd);//设置keyword对象
+
+            keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
+            keywordInfoDTO.setCampaignName(cam.getCampaignName());
+            keywordInfoDTO.setCampaignId(cam.getCampaignId());
+            keywordInfoDTOs.add(keywordInfoDTO);
+        });
+        return keywordInfoDTOs;
+    }
+
+    @Override
+    public List<KeywordInfoDTO> getKeywordInfoByCampaignIdLong(Long cid) {
+        List<KeywordInfoDTO> keywordInfoDTOs=new ArrayList<>();
+
+        List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
+
+        List<KeywordDTO> keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(adgroupIds);
+
+        keywordDTOs.stream().forEach(s -> {
+            KeywordDTO kwd = s;
+
+            KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+            AdgroupDTO ad = adgroupDAO.findOne(kwd.getAdgroupId());
+            CampaignDTO cam = campaignDAO.findOne(ad.getCampaignId());
+
+            keywordInfoDTO.setObject(kwd);//设置keyword对象
+
+            keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
+            keywordInfoDTO.setCampaignName(cam.getCampaignName());
+            keywordInfoDTO.setCampaignId(cam.getCampaignId());
+
+
+            //设置关键词质量度
+            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+            BaiduApiService apiService = new BaiduApiService(commonService);
+
+            if (kwd.getKeywordId() != null) {//添加质量度相关数据
+                List<Long> ids = new ArrayList<>();
+                ids.add(kwd.getKeywordId());
+                List<QualityType> qualityList = apiService.getKeywordQuality(ids);
+                for (QualityType qualityType : qualityList) {
+                    if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
+                        keywordInfoDTO.setQuality(qualityType.getQuality());
+                        keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
+                        break;
+                    }
+                }
+            }
+            keywordInfoDTOs.add(keywordInfoDTO);
+        });
+        return keywordInfoDTOs;
     }
 
 

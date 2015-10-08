@@ -72,15 +72,15 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByLongId(Long oid);
 
-    PagerInfo findByPageInfoForAcctounId( int pageSize, int pageNo);
+    PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo);
 
-    PagerInfo findByPageInfoForLongId(Long  aid, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo);
 
-    PagerInfo findByPageInfoForStringId(String  aid, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo);
 
-    PagerInfo findByPageInfoForLongIds(List<Long>  longIds, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForLongIds(List<Long> longIds, int pageSize, int pageNo);
 
-    PagerInfo findByPageInfoForStringIds(List<String>  stringIds, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForStringIds(List<String> stringIds, int pageSize, int pageNo);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 
@@ -114,22 +114,34 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     void insertAll(List<KeywordDTO> dtos);
 
-    List<KeywordDTO> findByParams(Map<String,Object> mapParams);
+    List<KeywordDTO> findByParams(Map<String, Object> mapParams);
 
-    KeywordDTO findByParamsObject(Map<String,Object> mapParams);
+    KeywordDTO findByParamsObject(Map<String, Object> mapParams);
 
     void updateByObjId(KeywordDTO dto);
 
-    void update(String oid,KeywordDTO dto);
+    void update(String oid, KeywordDTO dto);
 
     /**
      * 只用于修改上传修改成功的ls状态,以及获取到的Stauts
+     *
      * @param dto 只包含Status和kid
      */
     void updateLs(KeywordDTO dto);
 
-    Map<String,Map<String,List<String>>> getNoKeywords(Long aid);
+    Map<String, Map<String, List<String>>> getNoKeywords(Long aid);
 
-    Map<String,Map<String,List<String>>> getNoKeywords(String aid);
+    Map<String, Map<String, List<String>>> getNoKeywords(String aid);
+
+
+    /**
+     * 做文字查找或替换时如果用户选取的该计划下所有的数据时，用于查询所有关键词，紧接着的下一个方法也是做改功能的方法，只是这个是id类型不一样
+     *
+     * @param adgroupIds
+     * @return
+     */
+    List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds);
+
+    List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds);
 
 }
