@@ -22,8 +22,9 @@ public interface MaterialsScheduledService {
     void deleteJob();
 
 
-    default ScheduledJob getScheduledJob() {
+    default ScheduledJob getScheduledJob(String jobId) {
         return new ScheduledJob.Builder()
+                .jobId(jobId)
                 .jobName(AppContext.getUser())
                 .jobGroup(MATERIALS_JOB_GROUP)
                 .build();

@@ -1,4 +1,4 @@
-package com.perfect.commons.quartz;
+package com.perfect.commons.constants;
 
 /**
  * Created on 2015-09-30.

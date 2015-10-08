@@ -1,10 +1,11 @@
 package com.perfect.commons.quartz;
 
 import com.google.common.collect.Lists;
+import com.perfect.commons.constants.JobStatus;
 import com.perfect.commons.context.ApplicationContextHelper;
+import com.perfect.dto.ScheduledJobDTO;
 import org.quartz.*;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,15 +18,15 @@ import java.util.function.Function;
  *
  * @author dolphineor
  */
-@Component
-public class QuartzJobManager {
+//@Component
+public abstract class QuartzJobManager {
 
     private final ConcurrentHashMap<String, ScheduledJob> jobMap = new ConcurrentHashMap<>();
 
     private final SchedulerFactoryBean schedulerFactoryBean =
             (SchedulerFactoryBean) ApplicationContextHelper.getBeanByName("schedulerFactoryBean");
 
-    private final Scheduler scheduler = schedulerFactoryBean.getScheduler();
+    protected final Scheduler scheduler = schedulerFactoryBean.getScheduler();
 
 
     public void start() throws SchedulerException {
@@ -152,5 +153,18 @@ public class QuartzJobManager {
 
     public List<ScheduledJob> getAllScheduledJob() {
         return Lists.newArrayList(jobMap.values());
+    }
+
+    protected ScheduledJobDTO buildScheduledJobDTO(ScheduledJob scheduledJob) {
+        ScheduledJobDTO scheduledJobDTO = new ScheduledJobDTO();
+
+        scheduledJobDTO.setJobId(scheduledJob.getJobId());
+        scheduledJobDTO.setJobName(scheduledJob.getJobName());
+        scheduledJobDTO.setJobGroup(scheduledJob.getJobGroup());
+        scheduledJobDTO.setJobStatus(scheduledJob.getJobStatus());
+        scheduledJobDTO.setCronExpression(scheduledJob.getCronExpression());
+        scheduledJobDTO.setJobDescription(scheduledJob.getJobDescription());
+
+        return scheduledJobDTO;
     }
 }
