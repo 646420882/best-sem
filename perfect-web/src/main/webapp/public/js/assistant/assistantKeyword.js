@@ -177,6 +177,7 @@ function keywordDataToHtml(obj, index) {
     }
 
     html = html + tmpHtml;
+    html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -339,50 +340,45 @@ function keywordDataToHtml(obj, index) {
 
 function setKwdValue(obj, kwid) {
     $("#hiddenkwid_1").val(kwid);
-    $(".keyword_1").val($(obj).find("td:eq(0)").html());
-    var price = $(obj).find("td:eq(3)").html();
+    $(".keyword_1").val($(obj).find("td:eq(1)").html());
+    var price = $(obj).find("td:eq(4)").html();
     if (price == "&lt;0.10&gt;") {
         $(".price_1").val("<0.10>");
     } else if (price == "&nbsp;") {
         $(".price_1").val("");
     } else {
-        $(".price_1").val($(obj).find("td:eq(3)").html());
+        $(".price_1").val($(obj).find("td:eq(4)").html());
     }
 
 
-    if ($(obj).find("td:eq(7) a").attr("href") != undefined) {
-        $(".pcurl_1").val($(obj).find("td:eq(7) a").attr("href"));
-        $(".pcurlSize_1").html($(obj).find("td:eq(7) a").attr("href").length + "/1024");
+    if ($(obj).find("td:eq(8) a").attr("href") != undefined) {
+        $(".pcurl_1").val($(obj).find("td:eq(8) a").attr("href"));
+        $(".pcurlSize_1").html($(obj).find("td:eq(8) a").attr("href").length + "/1024");
     } else {
         $(".pcurl_1").val("");
         $(".pcurlSize_1").html("0/1024");
     }
 
-    if ($(obj).find("td:eq(8) a").attr("href") != undefined) {
-        $(".mourl_1").val($(obj).find("td:eq(8) a").attr("href"));
-        $(".mourlSize_1").html($(obj).find("td:eq(8) a").attr("href").length + "/1017");
+    if ($(obj).find("td:eq(9) a").attr("href") != undefined) {
+        $(".mourl_1").val($(obj).find("td:eq(9) a").attr("href"));
+        $(".mourlSize_1").html($(obj).find("td:eq(9) a").attr("href").length + "/1017");
     } else {
         $(".mourl_1").val("");
         $(".mourlSize_1").html("0/1017");
     }
 
     $("#genusFolderCount").html(obj.find("input").attr("dircount") + "个");
-    $(".matchModel_1").html($(obj).find("td:eq(6)").html());
-    $(".status_1").html($(obj).find("td:eq(2)").html());
+    $(".matchModel_1").html($(obj).find("td:eq(7)").html());
+    $(".status_1").html($(obj).find("td:eq(3)").html());
 
-    if ($(obj).find("td:eq(2)").html() == "启用") {
-        $(".pause_1").html("<option value='true'>暂停</option><option value='false' selected='selected'>启用</option>");
+    if ($(obj).find("td:eq(3)").html() == "启用") {
+        $(".pause_1").html("<option value='false'>暂停</option><option value='true' selected='selected'>启用</option>");
     } else {
-        $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
+        $(".pause_1").html("<option value='false' selected='selected'>暂停</option><option value='true' >启用</option>");
     }
-    var matchType = $(obj).find("td:eq(6)").html();
+    var matchType = $(obj).find("td:eq(7)").html();
     setSelectSelected(matchType);
 
-    //if ( == "启用") {
-    //    $(".pause_1").html("<option value='true'>暂停</option><option value='false' selected='selected'>启用</option>");
-    //} else {
-    //    $(".pause_1").html("<option value='true' selected='selected'>暂停</option><option value='false' >启用</option>");
-    //}
 }
 
 function setSelectSelected(matStr) {
@@ -430,9 +426,9 @@ function editKwdInfo(jsonData) {
         success: function (data) {
             var jsonData = {};
             jsonData["object"] = data;
-            jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(9)").html();
-            jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(4)").attr("cname");
-            jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
+            jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(10)").html();
+            jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
+            jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(6)").attr("cname");
             jsonData["campaignId"] = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("camp");
             jsonData["folderCount"] = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("dirCount");
 
@@ -740,9 +736,9 @@ function reducKwd_update(id) {
         success: function (data) {
             var jsonData = {};
             jsonData["object"] = data;
-            jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(9)").html();
-            jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(4)").attr("cname");
-            jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
+            jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(10)").html();
+            jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
+            jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(6)").attr("cname");
 
             var dirCount = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("dirCount");
             jsonData["folderCount"] = dirCount;
@@ -769,6 +765,13 @@ function reducKwd_del(id) {
             $("#tbodyClick").find(".list2_box3 td:last").html("&nbsp;");
         }
     });
+}
+
+function CtrlAll() {
+    jQuery('#tbodyClick tr').css('background', '#fcefc5');
+}
+function CtrlCancel() {
+    jQuery('#tbodyClick tr').css('background', '')
 }
 
 /************************************************************关键词的右击菜单************************************************************/

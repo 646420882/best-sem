@@ -12,9 +12,9 @@
         line-height: 28px;
     }
 
-    .list2_box2 {
-        background: none repeat scroll 0 0 #ecf3f9;
-    }
+    /*.list2_box2 {*/
+        /*background: none repeat scroll 0 0 #ecf3f9;*/
+    /*}*/
 </style>
 <%--添加附加创意子链弹出框--%>
 <div class="box" style="display:none" id="addSublinkDiv">

@@ -134,6 +134,59 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
     @Override
+    public KeywordInfoDTO findByInfoStrId(String obj) {
+        KeywordDTO kwd = keywordDAO.findByObjectId(obj);
+        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+        AdgroupDTO ad = kwd.getAdgroupId() == null ? adgroupDAO.findByObjId(kwd.getAdgroupObjId()) : adgroupDAO.findOne(kwd.getAdgroupId());
+        CampaignDTO cam = ad.getCampaignId() == null ? campaignDAO.findByObjectId(ad.getCampaignObjId()) : campaignDAO.findOne(ad.getCampaignId());
+
+        keywordInfoDTO.setObject(kwd);//设置keyword对象
+
+        keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
+        keywordInfoDTO.setCampaignName(cam.getCampaignName());
+        keywordInfoDTO.setCampaignId(cam.getCampaignId());
+
+        return keywordInfoDTO;
+    }
+
+    @Override
+    public KeywordInfoDTO findByInfoLongId(Long id) {
+
+
+        KeywordDTO kwd = keywordDAO.findByLongId(id);
+
+        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+        AdgroupDTO ad = adgroupDAO.findOne(kwd.getAdgroupId());
+        CampaignDTO cam = campaignDAO.findOne(ad.getCampaignId());
+
+        keywordInfoDTO.setObject(kwd);//设置keyword对象
+
+        keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
+        keywordInfoDTO.setCampaignName(cam.getCampaignName());
+        keywordInfoDTO.setCampaignId(cam.getCampaignId());
+
+
+        //设置关键词质量度
+        BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+        BaiduApiService apiService = new BaiduApiService(commonService);
+
+        if (kwd.getKeywordId() != null) {//添加质量度相关数据
+            List<Long> ids = new ArrayList<>();
+            ids.add(kwd.getKeywordId());
+            List<QualityType> qualityList = apiService.getKeywordQuality(ids);
+            for (QualityType qualityType : qualityList) {
+                if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
+                    keywordInfoDTO.setQuality(qualityType.getQuality());
+                    keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
+                    break;
+                }
+            }
+        }
+        return keywordInfoDTO;
+    }
+
+    @Override
     public KeywordDTO findByLongId(Long id) {
         return keywordDAO.findOne(id);
     }
@@ -145,7 +198,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Override
     public void update(KeywordDTO keywordDTO, KeywordDTO keywordBackUpDTO) {
-        keywordDAO.update(keywordDTO,keywordBackUpDTO);
+        keywordDAO.update(keywordDTO, keywordBackUpDTO);
     }
 
     @Override
@@ -330,23 +383,18 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         //若cid和aid都不为空，就是查询某单元下的关键词,在aid为空的时候就查询该计划下的关键词
         if (cid != null && !"".equals(cid) && aid != null && !"".equals(aid)) {
             if (aid.matches(regex)) {
-//                query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(aid)));
                 page = keywordDAO.findByPageInfoForLongId(Long.parseLong(aid), pageSize, nowPage);
             } else {
-//                query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(aid));
                 page = keywordDAO.findByPageInfoForStringId(aid, pageSize, nowPage);
             }
         } else if (cid != null && !"".equals(cid) && (aid == null || "".equals(aid))) {
-//            Query adQuery = new Query();
             if (campaignDTO.getCampaignId() != null) {
                 List<Long> longIds = new ArrayList<>();
                 longIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignDTO.getCampaignId()));
-//                adQuery.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(longIds));
                 page = keywordDAO.findByPageInfoForLongIds(longIds, pageSize, nowPage);
             } else {
                 List<String> objIds = new ArrayList<>();
                 objIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignDTO.getId()));
-//                adQuery.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(objIds));
                 page = keywordDAO.findByPageInfoForStringIds(objIds, pageSize, nowPage);
             }
         } else {
@@ -449,11 +497,17 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
         BeanUtils.copyProperties(newKeywordDTO, keywordBackUpDTO);
 
+
         if (newKeywordDTO.getKeywordId() == null) {
             newKeywordDTO.setLocalStatus(1);
         } else {
             newKeywordDTO.setLocalStatus(2);
         }
+
+        if (kwd.getKeyword() != null) {
+            newKeywordDTO.setKeyword(kwd.getKeyword());
+        }
+
         if (kwd.getPrice() != null) {
             newKeywordDTO.setPrice(kwd.getPrice());
         }
@@ -501,7 +555,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         Iterable<CampaignDTO> campaignList = campaignDAO.findAll();
 
         for (CampaignDTO campaignDTO : campaignList) {
-            List<AdgroupDTO> adgroupList = adgroupDAO.findByTwoParams(campaignDTO.getCampaignId(),AppContext.getAccountId());
+            List<AdgroupDTO> adgroupList = adgroupDAO.findByTwoParams(campaignDTO.getCampaignId(), AppContext.getAccountId());
             CampaignTreeDTO campaignTree = new CampaignTreeDTO();
             campaignTree.setRootNode(campaignDTO);//设置根节点
             campaignTree.setChildNode(adgroupList);//设置子节点
@@ -512,7 +566,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Override
     public Iterable<KeywordDTO> findAll() {
-       return keywordDAO.findAll();
+        return keywordDAO.findAll();
     }
 
     @Override
@@ -522,9 +576,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Override
     public List<KeywordDTO> findHasLocalStatusStr(List<AdgroupDTO> adgroupDTOStr) {
-        List<String> strs=new ArrayList<>();
-        for (AdgroupDTO str:adgroupDTOStr){
-            if(str.getAdgroupId()==null){
+        List<String> strs = new ArrayList<>();
+        for (AdgroupDTO str : adgroupDTOStr) {
+            if (str.getAdgroupId() == null) {
                 strs.add(str.getId());
             }
         }
@@ -533,9 +587,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Override
     public List<KeywordDTO> findHasLocalStatusLong(List<AdgroupDTO> adgroupDTOLong) {
-        List<Long> longs=new ArrayList<>();
-        for (AdgroupDTO str:adgroupDTOLong){
-            if(str.getAdgroupId()!=null){
+        List<Long> longs = new ArrayList<>();
+        for (AdgroupDTO str : adgroupDTOLong) {
+            if (str.getAdgroupId() != null) {
                 longs.add(str.getAdgroupId());
             }
         }
@@ -568,15 +622,15 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             for (String name : names) {
                 List<KeywordDTO> list;
                 if (fileds[1].matches(regex)) {
-                    list=keywordDAO.findByParams(new HashMap<String,Object>(){{
-                        put(MongoEntityConstants.ADGROUP_ID,Long.parseLong(fileds[1]));
-                        put("name",name);
+                    list = keywordDAO.findByParams(new HashMap<String, Object>() {{
+                        put(MongoEntityConstants.ADGROUP_ID, Long.parseLong(fileds[1]));
+                        put("name", name);
                     }});
 //                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.parseLong(fileds[1])).and("name").is(name)));
                 } else {
-                    list=keywordDAO.findByParams(new HashMap<String,Object>(){{
-                        put(MongoEntityConstants.OBJ_ADGROUP_ID,fileds[1]);
-                        put("name",name);
+                    list = keywordDAO.findByParams(new HashMap<String, Object>() {{
+                        put(MongoEntityConstants.OBJ_ADGROUP_ID, fileds[1]);
+                        put("name", name);
                     }});
 //                    list = keywordDAO.findByQuery(new Query().addCriteria(Criteria.where(.MongoEntityConstantsOBJ_ADGROUP_ID).is(fileds[1]).and("name").is(name)));
                 }
@@ -906,12 +960,12 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         kids.stream().forEach(s -> {
             KeywordDTO keywordDTO = keywordDAO.findByObjectId(s);
 //            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
-            if (keywordDTO.getAdgroupId()!=null) {
+            if (keywordDTO.getAdgroupId() != null) {
                 KeywordType keywordType = new KeywordType();
                 keywordType.setAdgroupId(keywordDTO.getAdgroupId());
                 keywordType.setKeyword(keywordDTO.getKeyword());
                 keywordType.setMatchType(keywordDTO.getMatchType());
-                keywordType.setPrice(Double.parseDouble(keywordDTO.getPrice()+""));
+                keywordType.setPrice(Double.parseDouble(keywordDTO.getPrice() + ""));
                 keywordType.setPcDestinationUrl(keywordDTO.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(keywordDTO.getMobileDestinationUrl());
                 keywordType.setPause(keywordDTO.getPause());
@@ -945,53 +999,57 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Override
     public List<KeywordDTO> uploadAddByUp(String kid) {
-        List<KeywordDTO> returnKeywordDTOs=new ArrayList<>();
-            KeywordDTO keywordDTOFind=keywordDAO.findByObjectId(kid);//查询出要上传的关键字的oagid，根据oagid去查询本地的单元，根据oaid查询ocid查询出计划，并两者上传
-            AdgroupDTO adgroupDTOFind=adgroupDAO.findByObjId(keywordDTOFind.getAdgroupObjId());//根据关键字的oagid查询到本地的单元记录
-            if (adgroupDTOFind!=null){//如果本地的数据还存在
+        List<KeywordDTO> returnKeywordDTOs = new ArrayList<>();
+        KeywordDTO keywordDTOFind = keywordDAO.findByObjectId(kid);//查询出要上传的关键字的oagid，根据oagid去查询本地的单元，根据oaid查询ocid查询出计划，并两者上传
+        AdgroupDTO adgroupDTOFind = adgroupDAO.findByObjId(keywordDTOFind.getAdgroupObjId());//根据关键字的oagid查询到本地的单元记录
+        if (adgroupDTOFind != null) {//如果本地的数据还存在
 
-                //计划级联上传 star
-               //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
-                if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
-                    List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
-                    dtos.stream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
-                }
-                //计划级联上传 end
-
-                //单元级联上传 star
-                //如果上面判断了计划，则肯定只有单元没有上传了，这里就不需要判断了，如果有agid则根本不会进入这个方法，所以不用判断单元是否上传
-                List<AdgroupDTO> returnAids = adgroupService.uploadAdd(new ArrayList<String>() {{
-                    add(keywordDTOFind.getAdgroupObjId());
-                }});
-                //上传完毕后执行修改单元操作
-                returnAids.stream().forEach(f -> adgroupService.update(keywordDTOFind.getAdgroupObjId(), f));
-                //单元级联上传 end
-
-                //最后上传关键字
-                returnKeywordDTOs = uploadAdd(new ArrayList<String>() {{
-                    add(kid);
-                }});
+            //计划级联上传 star
+            //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
+            if (adgroupDTOFind.getCampaignId() == null) {//如果计划cid已经有了，则不需要再上传了
+                List<CampaignDTO> dtos = campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
+                dtos.stream().forEach(j -> campaignService.update(j, adgroupDTOFind.getCampaignObjId()));
             }
+            //计划级联上传 end
+
+            //单元级联上传 star
+            //如果上面判断了计划，则肯定只有单元没有上传了，这里就不需要判断了，如果有agid则根本不会进入这个方法，所以不用判断单元是否上传
+            List<AdgroupDTO> returnAids = adgroupService.uploadAdd(new ArrayList<String>() {{
+                add(keywordDTOFind.getAdgroupObjId());
+            }});
+            //上传完毕后执行修改单元操作
+            returnAids.stream().forEach(f -> adgroupService.update(keywordDTOFind.getAdgroupObjId(), f));
+            //单元级联上传 end
+
+            //最后上传关键字
+            returnKeywordDTOs = uploadAdd(new ArrayList<String>() {{
+                add(kid);
+            }});
+        }
         return returnKeywordDTOs;
     }
 
     @Override
     public void update(String oid, KeywordDTO dto) {
-        keywordDAO.update(oid,dto);
+        keywordDAO.update(oid, dto);
     }
 
     @Override
     public Integer uploadDel(Long kid) {
-        Integer result=0;
+        Integer result = 0;
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         try {
             KeywordService keywordService = commonService.getService(KeywordService.class);
-            DeleteKeywordRequest deleteKeywordRequest=new DeleteKeywordRequest();
-            deleteKeywordRequest.setKeywordIds(new ArrayList<Long>(){{add(kid);}});
-            DeleteKeywordResponse deleteKeywordResponse=keywordService.deleteKeyword(deleteKeywordRequest);
-            if(deleteKeywordResponse.getResult()==1){//如果全部删除成功，则执行删除本地的关键字
-                keywordDAO.deleteByIds(new ArrayList<Long>(){{add(kid);}});
+            DeleteKeywordRequest deleteKeywordRequest = new DeleteKeywordRequest();
+            deleteKeywordRequest.setKeywordIds(new ArrayList<Long>() {{
+                add(kid);
+            }});
+            DeleteKeywordResponse deleteKeywordResponse = keywordService.deleteKeyword(deleteKeywordRequest);
+            if (deleteKeywordResponse.getResult() == 1) {//如果全部删除成功，则执行删除本地的关键字
+                keywordDAO.deleteByIds(new ArrayList<Long>() {{
+                    add(kid);
+                }});
             }
             return deleteKeywordResponse.getResult();
         } catch (ApiException e) {
@@ -1002,16 +1060,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Override
     public List<KeywordDTO> uploadUpdate(List<Long> kid) {
-        List<KeywordDTO> returnKeywordDTOs=new ArrayList<>();
-        List<KeywordType> keywordTypes=new ArrayList<>();
-        kid.stream().forEach(s->{
-            KeywordDTO dtoFind=keywordDAO.findOne(s);
-            if(dtoFind!=null){
-                KeywordType keywordType=new KeywordType();
+        List<KeywordDTO> returnKeywordDTOs = new ArrayList<>();
+        List<KeywordType> keywordTypes = new ArrayList<>();
+        kid.stream().forEach(s -> {
+            KeywordDTO dtoFind = keywordDAO.findOne(s);
+            if (dtoFind != null) {
+                KeywordType keywordType = new KeywordType();
                 keywordType.setKeywordId(dtoFind.getKeywordId());
                 keywordType.setAdgroupId(dtoFind.getAdgroupId());
                 keywordType.setMatchType(dtoFind.getMatchType());
-                keywordType.setPrice(Double.parseDouble(dtoFind.getPrice()+""));
+                keywordType.setPrice(Double.parseDouble(dtoFind.getPrice() + ""));
                 keywordType.setPhraseType(dtoFind.getPhraseType());
                 keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
@@ -1019,17 +1077,17 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordTypes.add(keywordType);
             }
         });
-        if(keywordTypes.size()>0){
+        if (keywordTypes.size() > 0) {
             BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
             try {
                 KeywordService keywordService = commonService.getService(KeywordService.class);
-                UpdateKeywordRequest updateKeywordRequest=new UpdateKeywordRequest();
+                UpdateKeywordRequest updateKeywordRequest = new UpdateKeywordRequest();
                 updateKeywordRequest.setKeywordTypes(keywordTypes);
-                UpdateKeywordResponse updateKeywordResponse=keywordService.updateKeyword(updateKeywordRequest);
-                List<KeywordType> returnKeywordTypes=updateKeywordResponse.getKeywordTypes();
-                returnKeywordTypes.stream().filter(s->s!=null).forEach(s->{//这里进行判定，如果返回不为null，则进行修改本地的ls为null，表示上传修改操作已经完成
-                    KeywordDTO keywordDTO=new KeywordDTO();
+                UpdateKeywordResponse updateKeywordResponse = keywordService.updateKeyword(updateKeywordRequest);
+                List<KeywordType> returnKeywordTypes = updateKeywordResponse.getKeywordTypes();
+                returnKeywordTypes.stream().filter(s -> s != null).forEach(s -> {//这里进行判定，如果返回不为null，则进行修改本地的ls为null，表示上传修改操作已经完成
+                    KeywordDTO keywordDTO = new KeywordDTO();
                     keywordDTO.setKeywordId(s.getKeywordId());
                     keywordDTO.setStatus(s.getStatus());
                     keywordDAO.updateLs(keywordDTO);
@@ -1043,13 +1101,20 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
     @Override
-    public Map<String,Map<String,List<String>>> getNoKeywords(Long aid) {
+    public Map<String, Map<String, List<String>>> getNoKeywords(Long aid) {
         return keywordDAO.getNoKeywords(aid);
     }
 
     @Override
-    public Map<String,Map<String,List<String>>> getNoKeywords(String aid) {
+    public Map<String, Map<String, List<String>>> getNoKeywords(String aid) {
         return keywordDAO.getNoKeywords(aid);
+    }
+
+    @Override
+    public void replace(KeywordDTO baseDTO, KeywordDTO updateKeywordDTO) {
+        KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
+//        BeanUtils.copyProperties(newKeywordDTO, keywordBackUpDTO);
+
     }
 
 

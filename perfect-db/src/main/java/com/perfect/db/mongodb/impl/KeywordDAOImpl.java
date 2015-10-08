@@ -327,6 +327,12 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
+    public KeywordDTO findByLongId(Long oid) {
+        KeywordEntity entity = getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(oid)), getEntityClass());
+        return ObjectUtils.convert(entity, getDTOClass());
+    }
+
+    @Override
     public PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));

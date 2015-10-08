@@ -54,6 +54,10 @@ public interface AssistantKeywordService {
 
     KeywordDTO findByObjId(String obj);
 
+    KeywordInfoDTO findByInfoStrId(String id);
+
+    KeywordInfoDTO findByInfoLongId(Long id);
+
     KeywordDTO findByLongId(Long id);
 
     void updateByObjId(KeywordDTO dto);
@@ -106,4 +110,5 @@ public interface AssistantKeywordService {
 
      Map<String,Map<String,List<String>>> getNoKeywords(String aid);
 
+    void replace(KeywordDTO baseDTO,KeywordDTO updateKeywordDTO);
 }

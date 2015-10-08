@@ -70,6 +70,8 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByObjectId(String oid);
 
+    KeywordDTO findByLongId(Long oid);
+
     PagerInfo findByPageInfoForAcctounId( int pageSize, int pageNo);
 
     PagerInfo findByPageInfoForLongId(Long  aid, int pageSize, int pageNo);

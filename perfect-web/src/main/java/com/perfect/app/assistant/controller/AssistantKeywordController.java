@@ -1,7 +1,5 @@
 package com.perfect.app.assistant.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
@@ -9,15 +7,12 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
-import com.perfect.dto.account.AccountIdDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
-import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.service.BaiduAccountService;
 import com.perfect.service.KeywordBackUpService;
 import com.perfect.service.SysRegionalService;
@@ -26,10 +21,7 @@ import com.perfect.utils.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -443,7 +435,6 @@ public class AssistantKeywordController extends WebContextSupport {
         }
         writeJson(dtoList, response);
     }
-
 
     /**
      * 将搜索词报告中关键词添加到现登录的账户
