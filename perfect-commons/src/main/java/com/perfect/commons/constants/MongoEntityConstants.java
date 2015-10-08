@@ -30,6 +30,7 @@ public interface MongoEntityConstants {
     String TBL_CUSTOMGROUP = "custom_group";
     String TBL_IMPORTANT_KEYWORD = "important_keyword_bidding";
     String TBL_NMS_ACCOUNT_REPORT = "nms_account_report";
+    String TBL_MATERIALS_SCHEDULER = "sys_materials_scheduler";
 
     //backUp
     String BAK_CREATIVE = "creative_bak";

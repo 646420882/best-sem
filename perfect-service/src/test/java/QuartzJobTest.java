@@ -1,5 +1,5 @@
 import com.google.common.collect.Lists;
-import com.perfect.commons.quartz.JobStatus;
+import com.perfect.commons.constants.JobStatus;
 import com.perfect.commons.quartz.QuartzJobFactory;
 import com.perfect.commons.quartz.ScheduledJob;
 import org.junit.Before;
