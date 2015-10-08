@@ -394,7 +394,7 @@
                     <a href="javascript:" onclick="OtherSearch();" cname="2">关键词报告</a><span>|</span>
                     <a href="javascript:" onclick="OtherSearch();" cname="3">创意报告</a><span>|</span>
                     <%--<a href="javascript:">附加创意报告</a><span>|</span>--%>
-                    <a href="javascript:" onclick="OtherSearch();" cname="4">分地域报告</a>
+                    <a href="javascript:" onclick="OtherSearch();" cname="4">分地域报告</a><span>|</span>
                     <a href="javascript:" id="SearchReport">搜索词报告</a>
                 </li>
                 <li id="device" class="searchhide">选择推广设备：

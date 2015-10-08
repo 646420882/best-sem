@@ -2,6 +2,7 @@ package com.perfect.app.admin.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.perfect.api.baidu.BaiduApiQuota;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.AsynchronousNmsReportService;
@@ -62,6 +63,8 @@ public class ReportPullController extends WebContextSupport {
             userName = null;
         }
         int flag = 0;
+        //重置quota类所有属性
+        BaiduApiQuota.clearQuota();
         try {
             for (String dateStr : list) {
                 if (pullObj == 0) {
@@ -108,6 +111,7 @@ public class ReportPullController extends WebContextSupport {
         String jsonData = new Gson().toJson(strings);
         jc.set("_administrator_PullLog", jsonData);
         jc.expire("_administrator_PullLog", 10);
+        BaiduApiQuota.printlnQuota();
         if (jc != null) {
             JRedisUtils.returnJedis(jc);
         }
