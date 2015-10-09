@@ -1,32 +1,21 @@
 package com.perfect.commons.quartz;
 
-import com.google.common.collect.Lists;
-import com.perfect.commons.constants.JobStatus;
-import com.perfect.commons.context.ApplicationContextHelper;
-import com.perfect.dto.ScheduledJobDTO;
 import org.quartz.*;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /**
  * Created on 2015-09-29.
  *
  * @author dolphineor
  */
-//@Component
 public abstract class QuartzJobManager {
 
-    private final ConcurrentHashMap<String, ScheduledJob> jobMap = new ConcurrentHashMap<>();
+    protected final Scheduler scheduler;
 
-    private final SchedulerFactoryBean schedulerFactoryBean =
-            (SchedulerFactoryBean) ApplicationContextHelper.getBeanByName("schedulerFactoryBean");
-
-    protected final Scheduler scheduler = schedulerFactoryBean.getScheduler();
+    protected QuartzJobManager(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
 
 
     public void start() throws SchedulerException {
@@ -71,100 +60,13 @@ public abstract class QuartzJobManager {
     }
 
 
-    public void pauseJob(ScheduledJob scheduledJob) {
-        JobKey jobKey = JobKey.jobKey(scheduledJob.getJobName(), scheduledJob.getJobGroup());
-        try {
-            scheduler.pauseJob(jobKey);
+    public abstract void addJob(ScheduledJob scheduledJob);
 
-            jobMap.searchValues(1, new Function<ScheduledJob, Optional<ScheduledJob>>() {
-                @Override
-                public Optional<ScheduledJob> apply(ScheduledJob job) {
-                    if ((Objects.equals(scheduledJob.getJobName(), job.getJobName())) &&
-                            (Objects.equals(scheduledJob.getJobGroup(), scheduledJob.getJobName())))
-                        return Optional.of(job);
+    public abstract void pauseJob(ScheduledJob scheduledJob);
 
-                    return Optional.empty();
-                }
-            }).ifPresent(job ->
-                    jobMap.put(job.getJobId(), new ScheduledJob.Builder()
-                            .jobId(job.getJobId())
-                            .jobName(job.getJobName())
-                            .jobGroup(job.getJobGroup())
-                            .jobStatus(JobStatus.PAUSE.value())
-                            .cronExpression(job.getCronExpression())
-                            .jobDescription(job.getJobDescription())
-                            .build()));
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
+    public abstract void resumeJob(ScheduledJob scheduledJob);
 
-    public void resumeJob(ScheduledJob scheduledJob) {
-        JobKey jobKey = JobKey.jobKey(scheduledJob.getJobName(), scheduledJob.getJobGroup());
-        try {
-            scheduler.resumeJob(jobKey);
+    public abstract void deleteJob(ScheduledJob scheduledJob);
 
-            jobMap.searchValues(1, new Function<ScheduledJob, Optional<ScheduledJob>>() {
-                @Override
-                public Optional<ScheduledJob> apply(ScheduledJob job) {
-                    if ((Objects.equals(scheduledJob.getJobName(), job.getJobName())) &&
-                            (Objects.equals(scheduledJob.getJobGroup(), scheduledJob.getJobName())))
-                        return Optional.of(job);
-
-                    return Optional.empty();
-                }
-            }).ifPresent(job ->
-                    jobMap.put(job.getJobId(), new ScheduledJob.Builder()
-                            .jobId(job.getJobId())
-                            .jobName(job.getJobName())
-                            .jobGroup(job.getJobGroup())
-                            .jobStatus(JobStatus.ACTIVE.value())
-                            .cronExpression(job.getCronExpression())
-                            .jobDescription(job.getJobDescription())
-                            .build()));
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteJob(ScheduledJob scheduledJob) {
-        JobKey jobKey = JobKey.jobKey(scheduledJob.getJobName(), scheduledJob.getJobGroup());
-        try {
-            scheduler.deleteJob(jobKey);
-
-            /**
-             * Remove job from {@link #jobMap}
-             */
-            jobMap.searchValues(1, job -> {
-                if ((Objects.equals(scheduledJob.getJobName(), job.getJobName())) &&
-                        (Objects.equals(scheduledJob.getJobGroup(), scheduledJob.getJobName())))
-                    return Optional.of(job.getJobId());
-
-                return Optional.empty();
-            }).ifPresent(jobMap::remove);
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addJob(ScheduledJob scheduledJob) {
-        jobMap.put(scheduledJob.getJobId(), scheduledJob);
-    }
-
-    public List<ScheduledJob> getAllScheduledJob() {
-        return Lists.newArrayList(jobMap.values());
-    }
-
-    protected ScheduledJobDTO buildScheduledJobDTO(ScheduledJob scheduledJob) {
-        ScheduledJobDTO scheduledJobDTO = new ScheduledJobDTO();
-
-        scheduledJobDTO.setJobId(scheduledJob.getJobId());
-        scheduledJobDTO.setJobName(scheduledJob.getJobName());
-        scheduledJobDTO.setJobGroup(scheduledJob.getJobGroup());
-        scheduledJobDTO.setJobStatus(scheduledJob.getJobStatus());
-        scheduledJobDTO.setCronExpression(scheduledJob.getCronExpression());
-        scheduledJobDTO.setJobDescription(scheduledJob.getJobDescription());
-
-        return scheduledJobDTO;
-    }
+    public abstract List<ScheduledJob> getAllScheduledJob();
 }

@@ -3,10 +3,8 @@ package com.perfect.commons.quartz;
 import com.perfect.dao.MaterialsScheduledDAO;
 import com.perfect.dto.ScheduledJobDTO;
 import org.quartz.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,14 +13,13 @@ import java.util.stream.Collectors;
  *
  * @author dolphineor
  */
-@Component
 public class QuartzJobPersistenceManager extends QuartzJobManager {
 
-    @Autowired
+    @Resource(name = "materialsScheduledDAO")
     private MaterialsScheduledDAO msDAO;
 
-    public void setMaterialsScheduledDAO(@Qualifier("materialsScheduledDAO") MaterialsScheduledDAO materialsScheduledDAO) {
-        this.msDAO = materialsScheduledDAO;
+    public QuartzJobPersistenceManager(Scheduler scheduler) {
+        super(scheduler);
     }
 
 
@@ -108,5 +105,19 @@ public class QuartzJobPersistenceManager extends QuartzJobManager {
                 .jobStatus(o.getJobStatus())
                 .cronExpression(o.getCronExpression())
                 .jobDescription(o.getJobDescription()).build()).collect(Collectors.toList());
+    }
+
+
+    protected ScheduledJobDTO buildScheduledJobDTO(ScheduledJob scheduledJob) {
+        ScheduledJobDTO scheduledJobDTO = new ScheduledJobDTO();
+
+        scheduledJobDTO.setJobId(scheduledJob.getJobId());
+        scheduledJobDTO.setJobName(scheduledJob.getJobName());
+        scheduledJobDTO.setJobGroup(scheduledJob.getJobGroup());
+        scheduledJobDTO.setJobStatus(scheduledJob.getJobStatus());
+        scheduledJobDTO.setCronExpression(scheduledJob.getCronExpression());
+        scheduledJobDTO.setJobDescription(scheduledJob.getJobDescription());
+
+        return scheduledJobDTO;
     }
 }
