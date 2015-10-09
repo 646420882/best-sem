@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Created on 2015-09-29.
+ * <p>物料上传任务执行器.
  *
  * @author dolphineor
  */
@@ -20,7 +21,7 @@ public class QuartzJobFactory implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         ScheduledJob scheduledJob = (ScheduledJob) context.getMergedJobDataMap().get("scheduledJob");
-        logger.info(scheduledJob.getJobName());
-        System.out.println("========scheduledJob'name: " + scheduledJob.getJobName() + "==========================================");
+        // TODO 物料定时上传
+//        logger.info("scheduledJob'name: {}, cronExpression: {}", scheduledJob.getJobName(), scheduledJob.getCronExpression());
     }
 }

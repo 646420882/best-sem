@@ -19,35 +19,35 @@ public interface MaterialsScheduledDAO extends HeyCrudRepository<ScheduledJobDTO
 
 
     /**
-     * <p>添加任务</p>
+     * <p>添加任务.
      *
      * @param scheduledJob
      */
     void addJob(ScheduledJobDTO scheduledJob);
 
     /**
-     * <p>暂停任务</p>
+     * <p>暂停任务.
      *
      * @param scheduledJob
      */
     void pauseJob(ScheduledJobDTO scheduledJob);
 
     /**
-     * <p>重新恢复任务</p>
+     * <p>重新恢复任务.
      *
      * @param scheduledJob
      */
     void resumeJob(ScheduledJobDTO scheduledJob);
 
     /**
-     * <p>删除任务</p>
+     * <p>删除任务.
      *
      * @param scheduledJob
      */
     void deleteJob(ScheduledJobDTO scheduledJob);
 
     /**
-     * <p>获取所有任务</p>
+     * <p>获取所有任务.
      *
      * @return {@code List<ScheduledJobDTO>}
      */
