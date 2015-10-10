@@ -1238,7 +1238,6 @@
             type: "GET",
             dataType: "json",
             success: function (data) {
-                console.log(data);
                 $("#countAssisted").empty();
                 var classArray = ["blue","green","red","yellow"];
                 var html = "";

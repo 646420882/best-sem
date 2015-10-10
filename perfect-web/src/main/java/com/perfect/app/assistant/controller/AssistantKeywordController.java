@@ -1,5 +1,6 @@
 package com.perfect.app.assistant.controller;
 
+import com.google.common.collect.Lists;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
@@ -7,6 +8,7 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
+import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
@@ -19,6 +21,8 @@ import com.perfect.service.SysRegionalService;
 import com.perfect.utils.IdConvertUtils;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.service.AssistantKeywordService;
+import com.perfect.utils.report.AssistantKwdUtil;
+import com.perfect.utils.report.BasistReportPCPlusMobUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +34,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 
 /**
  * Created by john on 2014/8/14.
@@ -59,6 +67,7 @@ public class AssistantKeywordController extends WebContextSupport {
     private static final String DEFAULT_DELIMITER = ",";
     private static final String DEFAULT_END = "\r\n";
     private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+
     /**
      * 批量添加或者修改关键词
      */
@@ -384,7 +393,14 @@ public class AssistantKeywordController extends WebContextSupport {
      * 从百度上获取搜索词报告
      */
     @RequestMapping(value = "assistantKeyword/getSearchWordReport", method = {RequestMethod.GET, RequestMethod.POST})
-    public void getSearchWordReport(HttpServletResponse response, Integer levelOfDetails, String startDate, String endDate, String attributes, Integer device, Integer searchType) {
+    public void getSearchWordReport(HttpServletResponse response,
+                                    Integer levelOfDetails,
+                                    String startDate,
+                                    String endDate,
+                                    String attributes,
+                                    Integer device,
+                                    Integer searchType,
+                                    @RequestParam(defaultValue = "1") Integer status) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         Calendar cal = Calendar.getInstance();
@@ -415,6 +431,7 @@ public class AssistantKeywordController extends WebContextSupport {
         }
 
         List<SearchwordReportDTO> dtoList = new ArrayList<>();
+        DecimalFormat dft = new DecimalFormat("0.00");
         if (resultList != null) {
             for (RealTimeQueryResultType resultType : resultList) {
                 SearchwordReportDTO searchwordReportDTO = new SearchwordReportDTO();
@@ -422,6 +439,8 @@ public class AssistantKeywordController extends WebContextSupport {
                 searchwordReportDTO.setSearchWord(resultType.getQuery());
                 searchwordReportDTO.setClick(resultType.getKPI(0));
                 searchwordReportDTO.setImpression(resultType.getKPI(1));
+                double rate = Double.parseDouble(resultType.getKPI(0)) / Double.parseDouble(resultType.getKPI(1));
+                searchwordReportDTO.setClickRate(dft.format(BigDecimal.valueOf(rate * 100)) + "%");
                 searchwordReportDTO.setSearchEngine(resultType.getQueryInfo(8));
                 searchwordReportDTO.setAdgroupName(resultType.getQueryInfo(2));
                 searchwordReportDTO.setCampaignName(resultType.getQueryInfo(1));
@@ -433,7 +452,25 @@ public class AssistantKeywordController extends WebContextSupport {
                 dtoList.add(searchwordReportDTO);
             }
         }
-        writeJson(dtoList, response);
+
+        if (status == 0) {
+            List<SearchwordReportDTO> returnList = Lists.newArrayList();
+            ForkJoinPool joinPoolTow = new ForkJoinPool();
+            String[] date = new String[]{startDate, endDate};
+            try {
+                Future<List<SearchwordReportDTO>> joinTaskTow = joinPoolTow.submit(new AssistantKwdUtil(dtoList, 0, list.size(), date));
+                returnList = joinTaskTow.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } finally {
+                joinPoolTow.shutdown();
+            }
+            writeJson(returnList, response);
+        } else {
+            writeJson(dtoList, response);
+        }
     }
 
     /**
@@ -483,14 +520,14 @@ public class AssistantKeywordController extends WebContextSupport {
         CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getBaiduUserName(), accountInfoDTO.getBaiduPassword(), accountInfoDTO.getToken());
         List<RealTimeQueryResultType> resList = new ArrayList<>();
         try {
-            Date baseDate = df.parse("11:51:00");
+            //Date baseDate = df.parse("11:51:00");
             Calendar beforeYesterDay = Calendar.getInstance();
             beforeYesterDay.add(Calendar.DAY_OF_YEAR, -2);//前天的日期
             Calendar yesterDay = Calendar.getInstance();
             yesterDay.add(Calendar.DAY_OF_YEAR, -1);//昨天的日期
 
             //若小于baseDate，则是11:51之前的,否则是11:51之后的,     请求时间在当天中午11:51前，startDate范围可取：[前天，前天-30] 请求时间在当天中午11:51后，startDate范围可取：[昨天，昨天-30]
-            if (df.parse(df.format(startDate)).getTime() < baseDate.getTime()) {
+            /*if (df.parse(df.format(startDate)).getTime() < baseDate.getTime()) {
                 //若开始日期大于了前天，就将开始日期置为前天
                 if (startDate.getTime() > beforeYesterDay.getTime().getTime()) {
                     startDate = beforeYesterDay.getTime();
@@ -509,7 +546,7 @@ public class AssistantKeywordController extends WebContextSupport {
                 if (endDate.getTime() > yesterDay.getTime().getTime()) {
                     endDate = yesterDay.getTime();
                 }
-            }
+            }*/
             ReportService reportService = commonService.getService(ReportService.class);
             //设置请求参数
             RealTimeQueryRequestType realTimeQueryRequestType = new RealTimeQueryRequestType();
@@ -535,9 +572,9 @@ public class AssistantKeywordController extends WebContextSupport {
             }
         } catch (ApiException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
+        }/* catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
         return resList;
     }
 

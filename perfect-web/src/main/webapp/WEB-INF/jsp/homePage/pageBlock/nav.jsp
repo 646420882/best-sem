@@ -65,12 +65,14 @@
                     var results = data.rows;
                     if (results != null && results.length > 0) {
                         var lis = "";
+                        var index = results[0].baiduUserName.length;
                         $.each(results, function (i, item) {
                             var _item = item.baiduRemarkName;
+                            if (_item == undefined) _item = item.baiduUserName.substring(0, (i > 0 ? index - 3 : index)) + (item.baiduUserName.length > index ? "..." : "");
                             if (baiduAccountId == item.id) {
-                                $('.user_name span').html(_item);
+                                $('.user_name span').html(  _item);
                             }
-                            lis += "<li value='" + item.id + "'>" + _item + "</li>";
+                            lis += "<li title='" + item.baiduUserName + "' value='" + item.id + "'>" + _item + "</li>";
                         });
                         $("#switchAccount_ul").empty();
                         $("#switchAccount_ul").append(lis);

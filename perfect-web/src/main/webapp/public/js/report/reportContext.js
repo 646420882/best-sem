@@ -1164,12 +1164,12 @@ $(function () {
                                 $("#containerLegend").empty();
                                 /*初始化曲线图所用需求*/
                                 $("#containerLegend").html("<div class='tu_top over'><ul><li>展示曲线</li>"
-                                    + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-                                    + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-                                    + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-                                    + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-                                    + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-                                    + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+                                + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
+                                + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
+                                + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
+                                + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
+                                + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
+                                + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
                                 dataOne = {
                                     name: '展现',
@@ -1846,8 +1846,7 @@ $(function () {
 
         var device = $("#putinInfo").val();//投放设备
         var regions = getRegionNames();//推广地域
-//        var searchEngine = $("#searchEngine").val();//搜索引擎范围
-
+        var dateUnit = $("#dateUnit .current").attr("cname");
         $("#searchWordTbody").html("正在联网为您获取搜索词报告...");
         $.ajax({
             url: "/assistantKeyword/getSearchWordReport",
@@ -1857,7 +1856,8 @@ $(function () {
                 "startDate": _startDate != null ? _startDate.Format("yyyy-MM-dd hh:mm:ss") : _startDate,
                 "endDate": _endDate != null ? _endDate.Format("yyyy-MM-dd hh:mm:ss") : _endDate,
                 "device": device,
-                "attributes": regions
+                "attributes": regions,
+                "status": dateUnit
             },
             dataType: "json",
             success: function (data) {
@@ -1871,12 +1871,13 @@ $(function () {
                             basisHtml = basisHtml + "<tr class='list2_box1'><td>&nbsp;" + item.date + "</td>"
                                 + "<td><span>&nbsp;" + item.campaignName + "</td>"
                                 + "<td><span>&nbsp;" + item.adgroupName + "</td>"
-                                + "<td><span>&nbsp;" + item.createTitle + "</td>"
-                                + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
-                                + "<td><span>&nbsp;" + item.createDesc2 + "</td>"
+                                    /*+ "<td><span>&nbsp;" + item.createTitle + "</td>"
+                                     + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
+                                     + "<td><span>&nbsp;" + item.createDesc2 + "</td>"*/
                                 + "<td><span>&nbsp;" + item.searchEngine + "</td>"
                                 + "<td><span>&nbsp;" + item.click + "</td>"
                                 + "<td><span>&nbsp;" + item.impression + "</td>"
+                                + "<td><span>&nbsp;" + item.clickRate + "</td>"
                                 + "<td><span>&nbsp;" + item.searchWord + "</td>"
                                 + "<td><span>&nbsp;" + item.keyword + "</td>"
                                 + "<td><span>&nbsp;" + item.parseExtent + "</td>"
@@ -1885,12 +1886,13 @@ $(function () {
                             basisHtml = basisHtml + "<tr class='list2_box2'><td>&nbsp;" + item.date + "</td>"
                                 + "<td><span>&nbsp;" + item.campaignName + "</td>"
                                 + "<td><span>&nbsp;" + item.adgroupName + "</td>"
-                                + "<td><span>&nbsp;" + item.createTitle + "</td>"
-                                + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
-                                + "<td><span>&nbsp;" + item.createDesc2 + "</td>"
+                                    /*+ "<td><span>&nbsp;" + item.createTitle + "</td>"
+                                     + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
+                                     + "<td><span>&nbsp;" + item.createDesc2 + "</td>"*/
                                 + "<td><span>&nbsp;" + item.searchEngine + "</td>"
                                 + "<td><span>&nbsp;" + item.click + "</td>"
                                 + "<td><span>&nbsp;" + item.impression + "</td>"
+                                + "<td><span>&nbsp;" + item.clickRate + "</td>"
                                 + "<td><span>&nbsp;" + item.searchWord + "</td>"
                                 + "<td><span>&nbsp;" + item.keyword + "</td>"
                                 + "<td><span>&nbsp;" + item.parseExtent + "</td>"
@@ -1911,6 +1913,11 @@ $(function () {
         $("#putin>a").removeClass("current");
         $(this).addClass("current");
         $("#putinInfo").val($(this).attr("cname"));
+        $("#downReportSearch").empty();
+    });
+    $("#dateUnit>a").click(function () {
+        $("#dateUnit>a").removeClass("current");
+        $(this).addClass("current");
         $("#downReportSearch").empty();
     });
     /**

@@ -61,7 +61,7 @@ public class QuestionAnswersController {
     }
 
     /**
-     * 通过id删除问答
+     * 通过查询问答
      *
      * @return
      */
