@@ -3935,3 +3935,6 @@ input[type=checkbox]:focus {
 #sublinkAddInput input {
     width: 62%;
 }
+#downReportSearch a{
+    margin:10px 0 10px 10px;
+}

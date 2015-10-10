@@ -493,7 +493,7 @@
                             </ul>
 
                             <a href="javascript:" id="createReport" class="become fl"
-                               style="margin:10px 50px 10px 0 ; "> 生成报告</a>
+                               style="margin:10px 0 10px 0;"> 生成报告</a>
 
                             <div id="downReportSearch">
 
@@ -577,7 +577,7 @@
                                         <td>&nbsp;<span>关键词</span><b><p></p>
 
                                             <p></p></b></td>
-                                        <td>&nbsp;<span>精确匹配扩展(地域词)触发</span><b><p></p>
+                                        <td style="width:160px;">&nbsp;<span>精确匹配扩展(地域词)触发</span><b><p></p>
 
                                             <p></p></b></td>
                                     </tr>

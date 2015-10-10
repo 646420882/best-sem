@@ -458,7 +458,7 @@ public class AssistantKeywordController extends WebContextSupport {
             ForkJoinPool joinPoolTow = new ForkJoinPool();
             String[] date = new String[]{startDate, endDate};
             try {
-                Future<List<SearchwordReportDTO>> joinTaskTow = joinPoolTow.submit(new AssistantKwdUtil(dtoList, 0, list.size(), date));
+                Future<List<SearchwordReportDTO>> joinTaskTow = joinPoolTow.submit(new AssistantKwdUtil(dtoList, 0, dtoList.size(), date));
                 returnList = joinTaskTow.get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
