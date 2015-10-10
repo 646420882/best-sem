@@ -9,6 +9,7 @@ import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
@@ -17,6 +18,7 @@ import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
 import com.perfect.service.CreativeService;
 import com.perfect.utils.paging.PagerInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,9 +67,9 @@ public class CreativeServiceImpl implements CreativeService {
 
     @Override
     public List<CreativeDTO> findHasLocalStatusStr(List<AdgroupDTO> adgroupDTOStr) {
-        List<String> strs=new ArrayList<>();
-        for (AdgroupDTO str:adgroupDTOStr){
-            if(str.getAdgroupId()==null){
+        List<String> strs = new ArrayList<>();
+        for (AdgroupDTO str : adgroupDTOStr) {
+            if (str.getAdgroupId() == null) {
                 strs.add(str.getId());
             }
         }
@@ -76,9 +78,9 @@ public class CreativeServiceImpl implements CreativeService {
 
     @Override
     public List<CreativeDTO> findHasLocalStatusLong(List<AdgroupDTO> adgroupDTOLong) {
-        List<Long> longs=new ArrayList<>();
-        for (AdgroupDTO str:adgroupDTOLong){
-            if(str.getAdgroupId()!=null){
+        List<Long> longs = new ArrayList<>();
+        for (AdgroupDTO str : adgroupDTOLong) {
+            if (str.getAdgroupId() != null) {
                 longs.add(str.getAdgroupId());
             }
         }
@@ -106,6 +108,65 @@ public class CreativeServiceImpl implements CreativeService {
     }
 
     @Override
+    public void updateCreative(CreativeDTO creativeDTO) {
+        CreativeDTO newCreativeDTO;
+
+        if (creativeDTO.getCreativeId() == null) {
+            newCreativeDTO = creativeDAO.findByObjId(creativeDTO.getId());
+        } else {
+            newCreativeDTO = creativeDAO.findOne(creativeDTO.getCreativeId());
+        }
+
+        CreativeBackUpDTO creativeBackUpDTO = new CreativeBackUpDTO();
+        BeanUtils.copyProperties(newCreativeDTO, creativeBackUpDTO);
+
+        if (newCreativeDTO.getCreativeId() == null) {
+            newCreativeDTO.setLocalStatus(1);
+        } else {
+            newCreativeDTO.setLocalStatus(2);
+        }
+
+        if(creativeDTO.getTitle()!=null){
+            newCreativeDTO.setTitle(creativeDTO.getTitle());
+        }
+
+        if(creativeDTO.getDescription1()!=null){
+            newCreativeDTO.setDescription1(creativeDTO.getDescription1());
+        }
+
+        if(creativeDTO.getDescription2()!=null){
+            newCreativeDTO.setDescription2(creativeDTO.getDescription2());
+        }
+
+        if(creativeDTO.getPcDestinationUrl()!=null){
+            newCreativeDTO.setPcDestinationUrl(creativeDTO.getPcDestinationUrl());
+        }
+
+        if(creativeDTO.getPcDisplayUrl()!=null){
+            newCreativeDTO.setPcDisplayUrl(creativeDTO.getPcDisplayUrl());
+        }
+
+        if(creativeDTO.getMobileDestinationUrl()!=null){
+            newCreativeDTO.setMobileDestinationUrl(creativeDTO.getMobileDestinationUrl());
+        }
+
+        if(creativeDTO.getMobileDisplayUrl()!=null){
+            newCreativeDTO.setMobileDisplayUrl(creativeDTO.getMobileDisplayUrl());
+        }
+
+        if(creativeDTO.getPause()!=null){
+            newCreativeDTO.setPause(creativeDTO.getPause());
+        }
+
+        if(creativeDTO.getDevicePreference()!=null){
+            newCreativeDTO.setDevicePreference(creativeDTO.getDevicePreference());
+        }
+
+        creativeDAO.update(newCreativeDTO,creativeBackUpDTO);
+
+    }
+
+    @Override
     public void delete(Long creativeId) {
         creativeDAO.delete(creativeId);
     }
@@ -117,18 +178,18 @@ public class CreativeServiceImpl implements CreativeService {
 
     @Override
     public PagerInfo findByPagerInfo(Map<String, Object> map, int nowPage, int pageSize) {
-        return creativeDAO.findByPagerInfo(map,nowPage,pageSize);
+        return creativeDAO.findByPagerInfo(map, nowPage, pageSize);
     }
 
     @Override
     public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize) {
-        return creativeDAO.findByPagerInfo(l,nowPage,pageSize);
+        return creativeDAO.findByPagerInfo(l, nowPage, pageSize);
     }
 
 
     @Override
     public PagerInfo findByPagerInfoForLong(List<Long> longs, int nowpage, int pageSize) {
-        return creativeDAO.findByPagerInfoForLong(longs,nowpage,pageSize);
+        return creativeDAO.findByPagerInfoForLong(longs, nowpage, pageSize);
     }
 
     @Override
@@ -139,7 +200,7 @@ public class CreativeServiceImpl implements CreativeService {
     @Override
     public void deleteByCacheId(Long cacheCreativeId) {
         creativeDAO.deleteByCacheId(cacheCreativeId);
-}
+    }
 
     @Override
     public void deleteByCacheId(String cacheCreativeId) {
@@ -218,15 +279,15 @@ public class CreativeServiceImpl implements CreativeService {
 
     @Override
     public List<CreativeDTO> uploadAddByUp(String crid) {
-        List<CreativeDTO> returnCreativeDTO=new ArrayList<>();
-        CreativeDTO creativeDTOFind=creativeDAO.findByObjId(crid);//查询出要上传的创意的oagid，根据oagid去查询本地的单元，根据oaid查询ocid查询出计划，并两者上传
-        AdgroupDTO adgroupDTOFind=adgroupDAO.findByObjId(creativeDTOFind.getAdgroupObjId());//根据关键字的oagid查询到本地的单元记录
-        if (adgroupDTOFind!=null) {//如果本地的数据还存在
+        List<CreativeDTO> returnCreativeDTO = new ArrayList<>();
+        CreativeDTO creativeDTOFind = creativeDAO.findByObjId(crid);//查询出要上传的创意的oagid，根据oagid去查询本地的单元，根据oaid查询ocid查询出计划，并两者上传
+        AdgroupDTO adgroupDTOFind = adgroupDAO.findByObjId(creativeDTOFind.getAdgroupObjId());//根据关键字的oagid查询到本地的单元记录
+        if (adgroupDTOFind != null) {//如果本地的数据还存在
             //计划级联上传 star
             //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
-            if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
-                List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
-                dtos.stream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+            if (adgroupDTOFind.getCampaignId() == null) {//如果计划cid已经有了，则不需要再上传了
+                List<CampaignDTO> dtos = campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
+                dtos.stream().forEach(j -> campaignService.update(j, adgroupDTOFind.getCampaignObjId()));
             }
             //计划级联上传 end
 
@@ -302,12 +363,12 @@ public class CreativeServiceImpl implements CreativeService {
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
             try {
                 com.perfect.autosdk.sms.v3.CreativeService creativeService = commonService.getService(com.perfect.autosdk.sms.v3.CreativeService.class);
-                UpdateCreativeRequest updateCreativeRequest=new UpdateCreativeRequest();
+                UpdateCreativeRequest updateCreativeRequest = new UpdateCreativeRequest();
                 updateCreativeRequest.setCreativeTypes(creativeTypes);
-                UpdateCreativeResponse updateCreativeResponse=creativeService.updateCreative(updateCreativeRequest);
-                List<CreativeType> returnCreativeTypes=updateCreativeResponse.getCreativeTypes();
-                returnCreativeTypes.stream().filter(s -> s.getCreativeId() != null).forEach(s->{
-                    CreativeDTO returnCreativeDTO=new CreativeDTO();
+                UpdateCreativeResponse updateCreativeResponse = creativeService.updateCreative(updateCreativeRequest);
+                List<CreativeType> returnCreativeTypes = updateCreativeResponse.getCreativeTypes();
+                returnCreativeTypes.stream().filter(s -> s.getCreativeId() != null).forEach(s -> {
+                    CreativeDTO returnCreativeDTO = new CreativeDTO();
                     returnCreativeDTO.setCreativeId(s.getCreativeId());
                     returnCreativeDTO.setStatus(s.getStatus());
                     returnCreativeDTOs.add(returnCreativeDTO);
@@ -322,6 +383,6 @@ public class CreativeServiceImpl implements CreativeService {
 
     @Override
     public void updateLs(Long crid, CreativeDTO dto) {
-        creativeDAO.updateLs(crid,dto);
+        creativeDAO.updateLs(crid, dto);
     }
 }

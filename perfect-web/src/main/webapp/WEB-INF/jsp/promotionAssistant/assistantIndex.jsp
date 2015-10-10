@@ -370,6 +370,8 @@
                 <thead>
                 <tr class="list02_top">
                     <th style="width: 40px;">&nbsp;操作</th>
+                    <th><input type="checkbox" name='creativeAllCheck'
+                               onchange="$.foRCheckAll('creativeAllCheck')"/></th>
                     <th>&nbsp;创意标题</th>
                     <th>&nbsp;创意描述1</th>
                     <th>&nbsp;创意描述2</th>

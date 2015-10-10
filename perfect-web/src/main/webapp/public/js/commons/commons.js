@@ -120,7 +120,7 @@ $.fn.extend({
         switch (type) {
             case "creative":
                 $("#forTitle").html("替换项目中的文字");
-                var _p_opt = "<option value='cTile'>创意标题</option>" +
+                var _p_opt = "<option value='cTitle'>创意标题</option>" +
                     "<option value='cDesc1'>创意描述1</option>" +
                     "<option value='cDesc2'>创意描述2</option>" +
                     "<option value='titleAndDesc'>创意标题和描述</option>" +
@@ -200,6 +200,12 @@ $.fn.extend({
         }
         if (!errorCount) {
             if (url) {
+                var ajaxbg = $("#background,#progressBar");
+                ajaxbg.hide();
+                    $(document).ajaxStart(function () {
+                        ajaxbg.show();
+                    })
+
                 $.ajax({
                     url: url,
                     data: JSON.stringify(formData),
@@ -209,6 +215,9 @@ $.fn.extend({
                         if (cb) {
                             cb(result, errorCount);
                         }
+                        $(document).ajaxStop(function () {
+                            ajaxbg.hide();
+                        });
                     }
                 });
             }

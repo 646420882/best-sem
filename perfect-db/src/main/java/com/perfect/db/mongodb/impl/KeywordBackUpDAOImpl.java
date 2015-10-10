@@ -74,7 +74,9 @@ public class KeywordBackUpDAOImpl extends AbstractUserBaseDAOImpl<KeywordBackUpD
         List<KeywordBackUpEntity> list = mongoTemplate.find(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(id)), KeywordBackUpEntity.class, MongoEntityConstants.BAK_KEYWORD);
         KeywordBackUpEntity keywordBackUpEntity = list.size() == 0 ? null : list.get(0);
         KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
-        BeanUtils.copyProperties(keywordBackUpEntity, keywordBackUpDTO);
+        if (keywordBackUpEntity != null)
+            BeanUtils.copyProperties(keywordBackUpEntity, keywordBackUpDTO);
+
         return keywordBackUpDTO;
     }
 

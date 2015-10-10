@@ -2,11 +2,13 @@ package com.perfect.app.assistant.controller;
 
 import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.service.AssistantKeywordService;
+import com.perfect.service.CreativeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -39,27 +41,29 @@ public class AssistantCommonsController extends WebContextSupport {
     @Resource
     private AssistantKeywordService assistantKeywordService;
 
+    @Resource
+    private CreativeService creativeService;
+
 
     private static Integer OBJ_SIZE = 18;
 
     @RequestMapping(value = "/checkSome", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView findOrReplace(@RequestBody FindOrReplaceParam forp) {
-        List<KeywordInfoDTO> findDto = null;
         switch (forp.getType()) {
             case "keyword":
-                findDto = keyWordFindOrReplace(forp);
-                break;
+                List<KeywordInfoDTO> findDto = keyWordFindOrReplace(forp);
+                return writeMapObject(DATA, findDto);
             case "creative":
-                System.out.println("creative");
-                break;
+                List<CreativeDTO> creativeDTOs = creativeWordFindOrReplace(forp);
+                return writeMapObject(DATA, creativeDTOs);
             case "adgroup":
                 System.out.println("adgroup");
-                break;
+                return writeMapObject(DATA, null);
             case "campaign":
                 System.out.println("campaign");
-                break;
+                return writeMapObject(DATA, null);
         }
-            return writeMapObject(DATA, findDto);
+        return writeMapObject(DATA, null);
     }
 
     /**
@@ -68,6 +72,8 @@ public class AssistantCommonsController extends WebContextSupport {
      * @param forp
      * @return
      */
+
+    //start keywordTextFindOrReplace
     private List<KeywordInfoDTO> keyWordFindOrReplace(final FindOrReplaceParam forp) {
         List<KeywordInfoDTO> returnResult = new ArrayList<>();
         if (forp.getForType() == 0) {
@@ -132,10 +138,9 @@ public class AssistantCommonsController extends WebContextSupport {
                 case 1:
                     if (dto.getObject().getKeyword().contains(forp.getFindText())) {
                         if (forp.getReplaceText() != null) {
-                            dto.getObject().setKeyword(dto.getObject().getKeyword().replaceAll(forp.getFindText(), forp.getReplaceText()));
+                            dto.getObject().setKeyword(dto.getObject().getKeyword().replace(forp.getFindText(), forp.getReplaceText()));
                             KeywordDTO updateDTO = dto.getObject();
                             assistantKeywordService.updateKeyword(updateDTO);
-//                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于关键字!!!!!!!!");
                             return dto;
                         } else {
                             return dto;
@@ -146,7 +151,10 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于默认访问Url");
+                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
+                                return dto;
                             } else {
                                 return dto;
                             }
@@ -157,39 +165,36 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于移动访问Url");
+                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
+                                return dto;
                             } else {
                                 return dto;
                             }
                         }
-                    } else {
-                        return null;
                     }
                     break;
                 case 4:
-                    int findOrReplaceCount = 0;
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
-                            } else {
-                                findOrReplaceCount++;
+                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
                             }
                         }
                     }
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
-                            } else {
-                                findOrReplaceCount++;
+                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTOPc = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTOPc);
                             }
                         }
                     }
-                    if (findOrReplaceCount > 0) {
-                        return dto;
-                    }
-                    break;
+                    return dto;
             }
         }
         if (forp.isfQcaseAll()) {//isfQigonreTirm
@@ -197,7 +202,10 @@ public class AssistantCommonsController extends WebContextSupport {
                 case 1:
                     if (dto.getObject().getKeyword().equals(forp.getFindText())) {
                         if (forp.getReplaceText() != null) {
-//                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于关键字");
+                            dto.getObject().setKeyword(dto.getObject().getKeyword().replace(forp.getFindText(), forp.getReplaceText()));
+                            KeywordDTO updateDTO = dto.getObject();
+                            assistantKeywordService.updateKeyword(updateDTO);
+                            return dto;
                         } else {
                             return dto;
                         }
@@ -207,7 +215,10 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于默认访问Url");
+                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
+                                return dto;
                             } else {
                                 return dto;
                             }
@@ -218,7 +229,10 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配整个字词，位置位于移动访问Url");
+                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
+                                return dto;
                             } else {
                                 return dto;
                             }
@@ -226,30 +240,25 @@ public class AssistantCommonsController extends WebContextSupport {
                     }
                     break;
                 case 4:
-                    int findOrReplaceCount = 0;
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
-                            } else {
-                                findOrReplaceCount++;
+                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
                             }
                         }
                     }
-
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
-                            } else {
-                                findOrReplaceCount++;
+                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTOPc = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTOPc);
                             }
                         }
                     }
-                    if (findOrReplaceCount > 0) {
-                        return dto;
-                    }
-                    break;
+                    return dto;
             }
         }
         if (forp.isfQigonreTirm()) {//isfQcaseAll
@@ -257,7 +266,10 @@ public class AssistantCommonsController extends WebContextSupport {
                 case 1:
                     if (dto.getObject().getKeyword().trim().contains(forp.getFindText())) {
                         if (forp.getReplaceText() != null) {
-//                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位于关键字");
+                            dto.getObject().setKeyword(dto.getObject().getKeyword().replace(forp.getFindText(), forp.getReplaceText()));
+                            KeywordDTO updateDTO = dto.getObject();
+                            assistantKeywordService.updateKeyword(updateDTO);
+                            return dto;
                         } else {
                             return dto;
                         }
@@ -267,7 +279,10 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().trim().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位默认访问Url");
+                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
+                                return dto;
                             } else {
                                 return dto;
                             }
@@ -278,7 +293,10 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().trim().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将移动访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位移动访问Url");
+                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
+                                return dto;
                             } else {
                                 return dto;
                             }
@@ -286,31 +304,27 @@ public class AssistantCommonsController extends WebContextSupport {
                     }
                     break;
                 case 4:
-                    int findOrReplaceCount = 0;
-
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().trim().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将移动访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位移动访问Url");
-                            } else {
-                                findOrReplaceCount++;
+                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
+                                return dto;
                             }
                         }
                     }
 
                     if (dto.getObject().getPcDestinationUrl() != null) {
-                        if (dto.getObject().getPcDestinationUrl().trim().contains(forp.getFindText())) {
+                        if (dto.getObject().getPcDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将访问Url为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "忽略文字两端空格，位置位默认访问Url");
-                            } else {
-                                findOrReplaceCount++;
+                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTOPc = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTOPc);
                             }
                         }
                     }
-                    if (findOrReplaceCount > 0) {
-                        return dto;
-                    }
-                    break;
+                    return dto;
             }
         }
 
@@ -319,10 +333,9 @@ public class AssistantCommonsController extends WebContextSupport {
                 case 1:
                     if (dto.getObject().getKeyword().contains(forp.getFindText())) {
                         if (forp.getReplaceText() != null) {
-                            dto.getObject().setKeyword(dto.getObject().getKeyword().replaceAll(forp.getFindText(), forp.getReplaceText()));
+                            dto.getObject().setKeyword(dto.getObject().getKeyword().replace(forp.getFindText(), forp.getReplaceText()));
                             KeywordDTO updateDTO = dto.getObject();
                             assistantKeywordService.updateKeyword(updateDTO);
-//                            System.out.println("将关键词为：" + dto.getKeyword() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于关键字!!!!!!!!");
                             return dto;
                         } else {
                             return dto;
@@ -333,7 +346,10 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getPcDestinationUrl() != null) {
                         if (dto.getObject().getPcDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于默认访问Url");
+                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTOPc = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTOPc);
+                                return dto;
                             } else {
                                 return dto;
                             }
@@ -344,41 +360,566 @@ public class AssistantCommonsController extends WebContextSupport {
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText() + "匹配大小写，位置位于移动访问Url");
+                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
+                                return dto;
                             } else {
                                 return dto;
                             }
                         }
-                    } else {
-                        return null;
                     }
                     break;
                 case 4:
-                    int findOrReplaceCount = 0;
                     if (dto.getObject().getMobileDestinationUrl() != null) {
                         if (dto.getObject().getMobileDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将移动访问Url为：" + dto.getObject().getMobileDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
-                            } else {
-                                findOrReplaceCount++;
+                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTO = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTO);
                             }
                         }
                     }
                     if (dto.getObject().getPcDestinationUrl() != null) {
-                        if (dto.getObject().getPcDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
+                        if (dto.getObject().getPcDestinationUrl().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
-//                                System.out.println("将默认访问Url为：" + dto.getObject().getPcDestinationUrl() + "的文字替换为：" + forp.getReplaceText());
-                            } else {
-                                findOrReplaceCount++;
+                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                KeywordDTO updateDTOPc = dto.getObject();
+                                assistantKeywordService.updateKeyword(updateDTOPc);
                             }
                         }
                     }
-                    if (findOrReplaceCount > 0) {
-                        return dto;
-                    }
-                    break;
+                    return dto;
             }
         }
         return keywordDTO;
     }
+    //end keywordTextFindOrReplace
+
+
+    //start creativeTextFindOrReplace
+
+    private List<CreativeDTO> creativeWordFindOrReplace(final FindOrReplaceParam forp) {
+        List<CreativeDTO> returnResult = new ArrayList<>();
+        if (forp.getForType() == 0) {//判断是否是选中某些数据进行文字查找或替换
+            String[] creativeIds = forp.getCheckData().split(",");
+            List<String> cridStr = Arrays.asList(creativeIds);
+            cridStr.stream().forEach(crid -> {//如果选中是本地添加的创意
+                if (crid.length() > OBJ_SIZE) {
+                    CreativeDTO creativeDTO = creativeService.findByObjId(crid);
+                    switchCaseCreative(forp, creativeDTO, returnResult);
+                } else {
+                    CreativeDTO creativeDTO = creativeService.findOne(Long.valueOf(crid));
+                    switchCaseCreative(forp, creativeDTO, returnResult);
+                }
+            });
+
+        }
+        return returnResult;
+    }
+
+    private void switchCaseCreative(FindOrReplaceParam forp, CreativeDTO dto, List<CreativeDTO> returnResult) {
+        switch (forp.getForPlace()) {
+            case "cTitle":
+                CreativeDTO creativeTitle = getRuleData(forp, 1, dto);
+                if (creativeTitle != null)
+                    returnResult.add(creativeTitle);
+                break;
+            case "cDesc1":
+                CreativeDTO creativeDesc1 = getRuleData(forp, 2, dto);
+                if (creativeDesc1 != null)
+                    returnResult.add(creativeDesc1);
+                break;
+            case "cDesc2":
+                CreativeDTO creativeDesc2 = getRuleData(forp, 3, dto);
+                if (creativeDesc2 != null)
+                    returnResult.add(creativeDesc2);
+                break;
+            case "titleAndDesc":
+                CreativeDTO creativeTitleAndDesc = getRuleData(forp, 4, dto);
+                if (creativeTitleAndDesc != null)
+                    returnResult.add(creativeTitleAndDesc);
+                break;
+            case "pcUrl":
+                CreativeDTO creativePcUrl = getRuleData(forp, 5, dto);
+                if (creativePcUrl != null)
+                    returnResult.add(creativePcUrl);
+                break;
+            case "pcsUrl":
+                CreativeDTO creativePcsUrl = getRuleData(forp, 6, dto);
+                if (creativePcsUrl != null)
+                    returnResult.add(creativePcsUrl);
+                break;
+            case "pcAllUrl":
+                CreativeDTO creativePcsAllUrl = getRuleData(forp, 7, dto);
+                if (creativePcsAllUrl != null)
+                    returnResult.add(creativePcsAllUrl);
+                break;
+            case "mibUrl":
+                CreativeDTO creativeMibUrl = getRuleData(forp, 8, dto);
+                if (creativeMibUrl != null)
+                    returnResult.add(creativeMibUrl);
+                break;
+            case "mibsUrl":
+                CreativeDTO creativeMibsUrl = getRuleData(forp, 9, dto);
+                if (creativeMibsUrl != null)
+                    returnResult.add(creativeMibsUrl);
+                break;
+            case "mibAllUrl":
+                CreativeDTO creativemMibAllUrl = getRuleData(forp, 10, dto);
+                if (creativemMibAllUrl != null)
+                    returnResult.add(creativemMibAllUrl);
+                break;
+            case "AllUrl":
+                CreativeDTO creativeAllUrl = getRuleData(forp, 11, dto);
+                if (creativeAllUrl != null)
+                    returnResult.add(creativeAllUrl);
+                break;
+        }
+
+    }
+
+    private CreativeDTO getRuleData(FindOrReplaceParam forp, Integer type, CreativeDTO dto) {
+        CreativeDTO creativeDTO = null;
+        if (forp.isfQcaseLowerAndUpper()) {//isfQcaseLowerAndUpper
+            switch (type) {
+                case 1:
+                    if (dto.getTitle() != null) {
+                        if (dto.getTitle().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setTitle(dto.getTitle().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    if (dto.getDescription1() != null) {
+                        if (dto.getDescription1().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription1(dto.getDescription1().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    if (dto.getDescription2() != null) {
+                        if (dto.getDescription2().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription2(dto.getDescription2().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 4:
+                    if (dto.getTitle() != null) {
+                        if (dto.getTitle().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setTitle(dto.getTitle().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getDescription1() != null) {
+                        if (dto.getDescription1().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription1(dto.getDescription1().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getDescription2() != null) {
+                        if (dto.getDescription2().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription2(dto.getDescription2().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
+                case 5:
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 6:
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 7:
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
+                case 8:
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 9:
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 10:
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
+                case 11:
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
+            }
+        }
+
+        if (forp.isfQcaseAll()) {
+            switch (type) {
+                case 1:
+                    if (dto.getTitle() != null) {
+                        if (dto.getTitle().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setTitle(dto.getTitle().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    if (dto.getDescription1() != null) {
+                        if (dto.getDescription1().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription1(dto.getDescription1().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    if (dto.getDescription2() != null) {
+                        if (dto.getDescription2().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription2(dto.getDescription2().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 4:
+                    if (dto.getTitle() != null) {
+                        if (dto.getTitle().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setTitle(dto.getTitle().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getDescription1() != null) {
+                        if (dto.getDescription1().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription1(dto.getDescription1().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getDescription2() != null) {
+                        if (dto.getDescription2().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription2(dto.getDescription2().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
+                case 5:
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 6:
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 7:
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
+                case 8:
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 9:
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+                case 10:
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
+                case 11:
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
+            }
+        }
+
+        if (forp.isfQigonreTirm()) {
+            switch (type) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    break;
+                case 11:
+                    break;
+            }
+        }
+
+        if (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm()) {
+            switch (type) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    break;
+                case 11:
+                    break;
+            }
+        }
+
+        return creativeDTO;
+    }
+
 }
