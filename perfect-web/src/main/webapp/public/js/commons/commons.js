@@ -9,20 +9,32 @@ var $rootScope = {
 };
 
 var commons = {
-    foRShow: function (type) {
+    foRShow: function (type, _this) {
         var exist_selected = jsonData;
         if (!exist_selected.cid) {
             alert("请选择一个推广计划！");
             return;
         }
-        $(".TB_overlayBG").css({
-            display: "block", height: $(document).height()
+        if ($(_this).find("ul").attr("class") == "hide") {
+            $(_this).find("ul").removeClass("hide");
+            $(_this).find("ul").mouseleave(function () {
+                $(_this).find("ul").addClass("hide");
+            });
+        }
+        else {
+            $(_this).find("ul").addClass("hide");
+        }
+        $(".Textreplacement").click(function () {
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });
+            $("#findOrReplace").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });
         });
-        $("#findOrReplace").css({
-            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-            display: "block"
-        });
+
         $("input[name='findText'],input[name='replaceText']").attr("style", "").val('');
         if (type) {
             $("#forType").val(type);
@@ -183,7 +195,7 @@ $.fn.extend({
         if (!params.forType) {
             formData["checkData"] = params.checkData.toString();
         }
-        if(params.campaignId){
+        if (params.campaignId) {
             formData["campaignId"] = params.campaignId;
         }
         if (!errorCount) {

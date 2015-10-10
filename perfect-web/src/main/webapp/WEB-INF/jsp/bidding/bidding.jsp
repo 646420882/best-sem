@@ -48,7 +48,7 @@
                 <li class="selected">智能竞价</li>
                 <li>重点词竞价</li>
             </ul>
-            <div class="tab_box">
+            <div class="tab_box bidding_box">
                 <div class="containers over">
                     <div class=" jiangjia_concent over">
                         <div class="jingjia_right fl over">
@@ -790,6 +790,7 @@
         var ztree_maxwidth = $(document.body).width() - 272;
          $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
          $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
+
         $(window).resize(function () {
              $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
              $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
@@ -916,6 +917,8 @@
             });
 
             $("#table1").jqGrid("setGridParam", tmpValue1).trigger("reloadGrid");
+            $(".jingjia_left").height($(".jingjia_right")[0].offsetHeight-20+"px");
+            $("#zTree").height($(".jingjia_right")[0].offsetHeight-130+"px");
 
         } else if (treeNode.level == 1) {
             //点击的是子节点(推广单元),则应该展示其下属的关键词数据

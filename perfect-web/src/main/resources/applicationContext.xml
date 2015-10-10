@@ -18,8 +18,8 @@
     <context:component-scan base-package="com.perfect.*"/>
 
 
-    <bean name="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
-    <bean name="quartzJobManager" class="com.perfect.commons.quartz.QuartzJobPersistenceManager" init-method="start"/>
+    <bean id="stdScheduler" lazy-init="false" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
 
 
     <!-- ============================================= -->
