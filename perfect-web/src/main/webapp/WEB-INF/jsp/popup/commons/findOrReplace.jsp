@@ -10,38 +10,57 @@
 <div class="box" style="display:none;*width:400px;" id="findOrReplace">
     <form submit-type="ajax">
         <input id="forType" type="hidden"/>
-
         <h2 id="findOrReplaceH"><span class="fl">文字替换</span><a href="#" class="close"
                                                                onclick="commons.foRClose()">关闭</a>
         </h2>
-
-
         <div class="mainlist">
             <label id="forTitle">替换所选项目中的文字(不能替换已提交的关键字名称)</label>
-            <label>物料选择方式：</label>
-            <select name="checkType" no-sub="true">
-                <option value="0">当前选中</option>
-                <option value="1">所有</option>
-            </select>
-
-            <label>查找文字：</label>
-            <input name="findText" type="text" required/>
-
-            <label>位于：</label>
-            <select id="forPlace" name="forPlace">
-            </select>
-
-            <label class="checkbox-inline"><input type="checkbox" checked="checked" name="fQcaseLowerAndUpper"
-                                                  />匹配大小写</label>
-            <label class="checkbox-inline"><input type="checkbox" name="fQcaseAll" >匹配整个字词</label>
-            <label class="checkbox-inline"><input type="checkbox" name="fQigonreTirm" >忽略文字两端空格</label>
-
-
-            <label>替换为：</label>
-            <input name="replaceText" type="text"/>
-
-            <label class="checkbox-inline"><input type="checkbox" name="rQigonreTirm" />忽略文字两端空格</label>
-
+            <ul>
+                <li>
+                    <div class="replaceleft fl">
+                        <label>物料选择方式：</label>
+                    </div>
+                    <div class="replaceright fl">
+                        <select name="checkType" no-sub="true">
+                            <option value="0">当前选中</option>
+                            <option value="1">所有</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="replaceleft fl">
+                        <label>查找文字：</label>
+                    </div>
+                    <div class="replaceright fl">
+                        <input name="findText" type="text" required/>
+                    </div>
+                </li>
+                <li>
+                    <div class="replaceleft fl">
+                        <label>位于：</label>
+                    </div>
+                    <div class="replaceright fl">
+                        <select id="forPlace" name="forPlace">
+                        </select>
+                        </div>
+                </li>
+                <li>
+                    <label class="checkbox-inline fl"><input type="checkbox" checked="checked" name="fQcaseLowerAndUpper"
+                            />匹配大小写</label>
+                    <label class="checkbox-inline fl"><input type="checkbox" name="fQcaseAll" >匹配整个字词</label>
+                    <label class="checkbox-inline fl"><input type="checkbox" name="fQigonreTirm" >忽略文字两端空格</label>
+                </li>
+                <li>
+                    <div class="replaceleft fl">
+                        <label>替换为：</label>
+                    </div>
+                    <div class="replaceright fl">
+                        <input name="replaceText" type="text"/>
+                        <label class="checkbox-inline"><input type="checkbox" name="rQigonreTirm" />复制相匹配的项目。然后替换所复制项目中的文字</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="rQigonreTirm" />忽略文字两端空格</label>
+                    </div>
+                </li>
+            </ul>
             <%--<ul class="zs_set">--%>
             <%--<li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>--%>
             <%--<li><input type="radio" name="no1">&nbsp; 已下载的推广计划</li>--%>

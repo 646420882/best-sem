@@ -190,11 +190,18 @@ $(document).ready(function () {
 });
 /*******二级菜单****/
 $(document).ready(function () {
+/**推广助手自适应***/
+    $(".jingjia_left").height($(".jingjia_right")[0].offsetHeight-20+"px");
+    $("#zTree").height($(".jingjia_right")[0].offsetHeight-130+"px")
     var $tab_li = $('.zh_menu2 li');
     $('.zh_menu2 li').click(function () {
+        //alert($(".jingjia_right")[0].offsetHeight)
         $(this).addClass('current').siblings().removeClass('current');
+        $(".zs_function ul li ul").addClass("hide");
         var index = $tab_li.index(this);
         $('div.zs_box > div').eq(index).show().siblings().hide();
+        $(".jingjia_left").height($(".jingjia_right")[0].offsetHeight - 20 + "px");
+        $("#zTree").height($(".jingjia_right")[0].offsetHeight - 130 + "px");
         var xx = $(this).attr("cname");
         setTimeout(function () {
             resizable(xx)

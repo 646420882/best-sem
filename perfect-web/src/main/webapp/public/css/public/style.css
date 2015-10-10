@@ -1908,15 +1908,15 @@ h2 .close {
 .TB_overlayBG {
     background-color: #666;
     position: fixed;
-    z-index: 999;
+    z-index: 998;
     left: 0;
     top: 0;
     display: none;
     width: 100%;
     height: 100%;
     opacity: 0.5;
-    filter: alpha(opacity=50);
-    -moz-opacity: 0.5;
+    filter: alpha(opacity=20);
+    -moz-opacity: 0.2;
 }
 
 .time_select, .time_select01 {
@@ -2100,9 +2100,11 @@ h2 .close {
 .zs_function ul li ul {
     position: absolute;
     top: 28px;
-    z-index: 12;
-    background: url(/public/img/zs_function_bg.png) repeat-x;
+    z-index: 100;
+    background: #fff;
     padding: 0 12px;
+    height:auto;
+    min-width:98px;
 }
 
 .zs_function ul li a:hover {
@@ -3901,4 +3903,26 @@ input[type=checkbox]:focus {
 }
 #tabs .ui-state-default a, .ui-state-default a:link{
     color:#000;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor{
+    background:#f9f8f8;
+}
+.mainlist ul li .replaceleft{
+    width:100px;
+    overflow:hidden;
+}
+.replaceright input[type=text],.replaceright select{
+    width:300px;
+}
+.checkbox-inline{
+    margin-right:10px;
+}
+.checkbox-inline input[type=checkbox]{
+    margin:0 2px 0 0 ;
+}
+#sublinkAddInput label,#sublinkAddInput input,#sublinkAddInput span{
+    float:left;
+}
+#sublinkAddInput input{
+    width:62%;
 }

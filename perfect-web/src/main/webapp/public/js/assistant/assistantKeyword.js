@@ -106,7 +106,6 @@ function getKwdList(nowPage) {
                 records = data.totalCount;
                 pageIndex = data.pageNo;
                 $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
-
                 if (data.list == null || data.list == undefined || data.list.length == 0) {
                     $("#tbodyClick").html("<tr><td>暂无数据</td></tr>");
                     return;
