@@ -192,7 +192,7 @@ $(document).ready(function () {
 $(document).ready(function () {
 /**推广助手自适应***/
     $(".jingjia_left").height($(".jingjia_right")[0].offsetHeight-20+"px");
-    $("#zTree").height($(".jingjia_right")[0].offsetHeight-130+"px")
+    $("#zTree").height($(".jingjia_right")[0].offsetHeight-130+"px");
     var $tab_li = $('.zh_menu2 li');
     $('.zh_menu2 li').click(function () {
         //alert($(".jingjia_right")[0].offsetHeight)

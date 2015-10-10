@@ -585,7 +585,6 @@
     border-top: 1px solid #dadadd;
 }
 
-
 .shuju_detali ul li {
     line-height: 20px;
     color: #000000;
@@ -1163,6 +1162,14 @@
     color: #333;
     height: 530px;
     overflow: auto;
+}
+
+.bidding_box .ztree {
+    min-height: 500px;
+}
+
+.bidding_box .jingjia_left {
+    min-height: 640px;
 }
 
 .ztree li {
@@ -2103,8 +2110,8 @@ h2 .close {
     z-index: 100;
     background: #fff;
     padding: 0 12px;
-    height:auto;
-    min-width:98px;
+    height: auto;
+    min-width: 98px;
 }
 
 .zs_function ul li a:hover {
@@ -2171,7 +2178,7 @@ h2 .close {
     height: 11px;
     background: url(/public/img/zh_bottom.jpg) no-repeat;
     margin-left: 45%;
-    cursor:n-resize;
+    cursor: n-resize;
     overflow: hidden;
 }
 
@@ -3890,39 +3897,50 @@ input[type=checkbox]:focus {
 .list2_box2.list2_box3 {
     background: #fcefc5;
 }
-.list2_box2.table_ctrl,.list2_box1.table_ctrl{
+
+.list2_box2.table_ctrl, .list2_box1.table_ctrl {
     background: #fcefc5;
 }
-.searh_report .number_concent{
-    padding-top:0px;
-    border-top:none;
+
+.searh_report .number_concent {
+    padding-top: 0px;
+    border-top: none;
     border-bottom: 1px solid #dadadd
 }
-#tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt{
-   background:#f0f0f0;
+
+#tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {
+    background: #f0f0f0;
 }
-#tabs .ui-state-default a, .ui-state-default a:link{
-    color:#000;
+
+#tabs .ui-state-default a, .ui-state-default a:link {
+    color: #000;
 }
-.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor{
-    background:#f9f8f8;
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+    background: #f9f8f8;
 }
-.mainlist ul li .replaceleft{
-    width:100px;
-    overflow:hidden;
+
+.mainlist ul li .replaceleft {
+    width: 100px;
+    overflow: hidden;
 }
-.replaceright input[type=text],.replaceright select{
-    width:300px;
+
+.replaceright input[type=text], .replaceright select {
+    width: 300px;
 }
-.checkbox-inline{
-    margin-right:10px;
+
+.checkbox-inline {
+    margin-right: 10px;
 }
-.checkbox-inline input[type=checkbox]{
-    margin:0 2px 0 0 ;
+
+.checkbox-inline input[type=checkbox] {
+    margin: 0 2px 0 0;
 }
-#sublinkAddInput label,#sublinkAddInput input,#sublinkAddInput span{
-    float:left;
+
+#sublinkAddInput label, #sublinkAddInput input, #sublinkAddInput span {
+    float: left;
 }
-#sublinkAddInput input{
-    width:62%;
+
+#sublinkAddInput input {
+    width: 62%;
 }
