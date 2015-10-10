@@ -89,7 +89,7 @@
 </div>
 <div id="tab">
 <div class=" jiangjia_concent over">
-<div class="jingjia_right fl over">
+<div class="jingjia_right assistant_right fl over">
 <div ID="testIframe" Name="testIframe" width="100%" onLoad="iFrameHeight()">
 <div class="content_wraps over">
 <div class="zhushou over">
@@ -1264,7 +1264,7 @@
 </div>
 </div>
 </div>
-<div class="jingjia_left fl over">
+<div class="jingjia_left assistant_left fl over">
     <div class="j_l_top over">
         <span class="fl"><h3>账户目录</h3></span>
         <a href="javascript:loadTree()" class="fr">刷新</a>
