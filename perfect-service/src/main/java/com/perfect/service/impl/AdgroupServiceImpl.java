@@ -122,6 +122,43 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
+    public void updateAdgroup(AdgroupDTO dto) {
+        AdgroupDTO adgroupDTO;
+
+        if(dto.getAdgroupId()==null){
+            adgroupDTO=adgroupDAO.findOne(dto.getAdgroupId());
+        }else{
+            adgroupDTO=adgroupDAO.findByObjId(dto.getId());
+        }
+
+        AdgroupBackupDTO adgroupBackupDTO = new AdgroupBackupDTO();
+        BeanUtils.copyProperties(adgroupDTO, adgroupBackupDTO);
+
+        if (adgroupDTO.getAdgroupId() == null) {
+            adgroupDTO.setLocalStatus(1);
+        } else {
+            adgroupDTO.setLocalStatus(2);
+        }
+
+        if(dto.getAdgroupName()!=null){
+            adgroupDTO.setAdgroupName(dto.getAdgroupName());
+        }
+        if(dto.getMaxPrice()!=null){
+            adgroupDTO.setMaxPrice(dto.getMaxPrice());
+        }
+        if(dto.getNegativeWords()!=null){
+            adgroupDTO.setNegativeWords(dto.getNegativeWords());
+        }
+        if(dto.getExactNegativeWords()!=null){
+            adgroupDTO.setExactNegativeWords(dto.getExactNegativeWords());
+        }
+
+        adgroupDAO.update(adgroupDTO,adgroupBackupDTO);
+
+
+    }
+
+    @Override
     public void delete(Long id) {
         adgroupDAO.delete(id);
     }

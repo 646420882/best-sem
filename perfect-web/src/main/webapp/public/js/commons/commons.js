@@ -202,9 +202,9 @@ $.fn.extend({
             if (url) {
                 var ajaxbg = $("#background,#progressBar");
                 ajaxbg.hide();
-                    $(document).ajaxStart(function () {
-                        ajaxbg.show();
-                    })
+                $(document).ajaxStart(function () {
+                    ajaxbg.show();
+                })
 
                 $.ajax({
                     url: url,
@@ -353,38 +353,82 @@ $.extend({
         }
     },
     foRComplete: function (result) {
+        var replaceText = $("input[name='replaceText']").val();
         switch (result.type) {
             case "creative":
                 var _createTable = $("#createTable tbody");
-                if (result.data != undefined) {
-                    var json = result.data;
-                    _createTable.empty();
-                    var _trClass = "";
-                    for (var i = 0; i < json.length; i++) {
-                        var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
-                        var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
-                        var ls = getLocalStatus(parseInt(_edit));
-                        _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                        var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                            "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
-                            "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "'/></td>" +
-                            "<td >" + until.substring(10, json[i].title) + "</td>" +
-                            " <td >" + until.substring(10, json[i].description1) + "</td>" +
-                            " <td >" + until.substring(10, json[i].description2) + "</td>" +
-                            " <td ><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
-                            " <td >" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
-                            " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
-                            " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
-                            " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                            " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
-                            "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>" +
-                            " <td >" + ls + "</td>" +
-                            "</tr>";
-                        _createTable.append(_tbody);
+                if (result.data) {
+                    if (result.data.length) {
+                        var json = result.data;
+                        _createTable.empty();
+                        var _trClass = "";
+                        for (var i = 0; i < json.length; i++) {
+                            var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
+                            var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                            var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
+                            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                            var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                                "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "'/></td>" +
+                                "<td >" + until.substring(10, json[i].title) + "</td>" +
+                                " <td >" + until.substring(10, json[i].description1) + "</td>" +
+                                " <td >" + until.substring(10, json[i].description2) + "</td>" +
+                                " <td ><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
+                                " <td >" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
+                                " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
+                                " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
+                                " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
+                                " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
+                                "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>" +
+                                " <td >" + ls + "</td>" +
+                                "</tr>";
+                            _createTable.append(_tbody);
+                        }
+                    } else {
+                        _createTable.empty();
+                        _createTable.append("<tr><td>没有找到类似的数据</td></tr>");
                     }
+                } else {
+                    createTable.empty();
+                    _createTable.append("<tr><td>没有找到类似的数据</td></tr>");
                 }
                 break;
             case "adgroup":
+                var _adGroudTable = $("#adGroupTable tbody");
+                if (result.data) {
+                    if (result.data.length > 0) {
+                        _adGroudTable.empty();
+                        var _trClass = "";
+                        var json = result.data;
+                        for (var i = 0; i < json.length; i++) {
+                            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                            var _id = json[i].adgroupId != null ? json[i].adgroupId : json[i].id;
+                            var _maxPrice = json[i].maxPrice != null ? json[i].maxPrice : 0.0;
+                            var nn = json[i].negativeWords != null ? json[i].negativeWords : "";
+                            var ne = json[i].exactNegativeWords != null ? json[i].exactNegativeWords : "";
+                            var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                            var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
+                            var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
+                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                                "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "'/></td>" +
+                                "<td >" + json[i].adgroupName + "</td>" +
+                                "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
+                                "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
+                                "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
+                                "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
+                                "<td >" + json[i].campaignName + "</td>" +
+                                "<td >" + ls + "</td>" +
+                                "</tr>";
+                            _adGroudTable.append(_tbody);
+                        }
+                    } else {
+                        _adGroudTable.empty();
+                        _adGroudTable.append("<tr><td>没有找到类似的数据</td></tr>");
+                    }
+                } else {
+                    _adGroudTable.empty();
+                    _adGroudTable.append("<tr><td>没有找到类似的数据</td></tr>");
+                }
                 break;
             case "campaign":
                 break;

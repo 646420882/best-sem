@@ -771,12 +771,13 @@
                 <thead>
                 <tr class="list02_top">
                     <th>&nbsp;操作</th>
+                    <th><input type="checkbox" name='adgroupAllCheck'
+                               onchange="$.foRCheckAll('adgroupAllCheck')"/></th>
                     <th>&nbsp;推广单元名称</th>
                     <th>&nbsp;推广单元状态</th>
                     <th>&nbsp;启动/暂停</th>
                     <th>&nbsp;出价</th>
                     <th>&nbsp;否定关键词</th>
-                    <th>&nbsp;</th>
                     <th>&nbsp;推广计划名称</th>
                     <th class="username-column" data-noresize>
                         <div class="set fr"></div>

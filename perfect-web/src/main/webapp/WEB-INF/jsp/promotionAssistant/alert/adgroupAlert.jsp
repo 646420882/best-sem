@@ -67,6 +67,7 @@
                     <div class="planbox1 fl"> 推广单元名称</div>
                     <div class="planbox2 fl">
                         <input type="hidden" name="oid"/>
+                        <input type="hidden" name="cn"/>
                         <input type="text" onblur="if (value=='') {value='&lt;请输入推广单元名称&gt;'}" onfocus="if(value=='&lt;请输入推广单元名称&gt;') {value=''}" value="&lt;请输入推广单元名称&gt;" class="plan_input inputCampaignName" name="adgroupName">
                     </div>
                 </li>
@@ -103,7 +104,6 @@
                     </div>
                     <div class="planbox2 fl">
                         <input type="hidden"  name="negativeWords"/><input type="hidden" name="exactNegativeWords"/>
-                        <input type="hidden" name="cn"/>
                     </div>
                 </li>
 

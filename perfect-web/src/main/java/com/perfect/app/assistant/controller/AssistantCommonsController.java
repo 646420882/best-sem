@@ -3,6 +3,7 @@ package com.perfect.app.assistant.controller;
 import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
@@ -10,6 +11,7 @@ import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.AssistantKeywordService;
+import com.perfect.service.CampaignService;
 import com.perfect.service.CreativeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
@@ -49,6 +51,8 @@ public class AssistantCommonsController extends WebContextSupport {
     @Resource
     private AdgroupService adgroupService;
 
+    @Resource
+    private CampaignService campaignService;
 
     private static Integer OBJ_SIZE = 18;
 
@@ -62,8 +66,9 @@ public class AssistantCommonsController extends WebContextSupport {
                 List<CreativeDTO> creativeDTOs = creativeWordFindOrReplace(forp);
                 return writeMapObject(DATA, creativeDTOs);
             case "adgroup":
-                System.out.println("adgroup");
-                return writeMapObject(DATA, null);
+                List<AdgroupDTO> adgroupDTOs = adgroudFindOreReplace(forp);
+                setCampaignNameByLongId(adgroupDTOs);
+                return writeMapObject(DATA, adgroupDTOs);
             case "campaign":
                 System.out.println("campaign");
                 return writeMapObject(DATA, null);
@@ -1016,7 +1021,7 @@ public class AssistantCommonsController extends WebContextSupport {
 
     //start adgroupTextFindOrReplace
 
-    private List<AdgroupDTO> adgroudfinedOreReplace(final FindOrReplaceParam forp) {
+    private List<AdgroupDTO> adgroudFindOreReplace(final FindOrReplaceParam forp) {
         List<AdgroupDTO> returnResult = new ArrayList<>();
         if (forp.getForType() == 0) {
             String[] ids = forp.getCheckData().split(",");
@@ -1031,7 +1036,17 @@ public class AssistantCommonsController extends WebContextSupport {
                 }
             });
         } else {
-
+            if (forp.getCampaignId().length() > OBJ_SIZE) {
+                List<AdgroupDTO> adgroupDTOs = adgroupService.getAdgroupByCampaignObjId(forp.getCampaignId());
+                adgroupDTOs.stream().forEach(s -> {
+                    switchCaseAdgroup(forp, s, returnResult);
+                });
+            } else {
+                List<AdgroupDTO> adgroupDTOs = adgroupService.getAdgroupByCampaignId(Long.valueOf(forp.getCampaignId()));
+                adgroupDTOs.stream().forEach(s -> {
+                    switchCaseAdgroup(forp, s, returnResult);
+                });
+            }
         }
 
         return returnResult;
@@ -1046,6 +1061,7 @@ public class AssistantCommonsController extends WebContextSupport {
     }
 
     private AdgroupDTO getRuleData(FindOrReplaceParam forp, Integer type, AdgroupDTO dto) {
+        AdgroupDTO adgroupDTO=null;
         if (forp.isfQcaseLowerAndUpper() || (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm())) {//isfQcaseLowerAndUpper
             switch (type) {
                 case 1:
@@ -1053,7 +1069,7 @@ public class AssistantCommonsController extends WebContextSupport {
                         if (dto.getAdgroupName().contains(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
                                 dto.setAdgroupName(dto.getAdgroupName().replace(forp.getFindText(), forp.getReplaceText()));
-                                adgroupService.update(dto);
+                                adgroupService.updateAdgroup(dto);
                                 return dto;
                             } else {
                                 return dto;
@@ -1071,7 +1087,7 @@ public class AssistantCommonsController extends WebContextSupport {
                         if (dto.getAdgroupName().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
                                 dto.setAdgroupName(dto.getAdgroupName().replace(forp.getFindText(), forp.getReplaceText()));
-                                adgroupService.update(dto);
+                                adgroupService.updateAdgroup(dto);
                                 return dto;
                             } else {
                                 return dto;
@@ -1089,7 +1105,7 @@ public class AssistantCommonsController extends WebContextSupport {
                         if (dto.getAdgroupName().trim().equals(forp.getFindText())) {
                             if (forp.getReplaceText() != null) {
                                 dto.setAdgroupName(dto.getAdgroupName().trim().replace(forp.getFindText(), forp.getReplaceText()));
-                                adgroupService.update(dto);
+                                adgroupService.updateAdgroup(dto);
                                 return dto;
                             }
                         }
@@ -1098,8 +1114,44 @@ public class AssistantCommonsController extends WebContextSupport {
             }
         }
 
-        return dto;
+        return adgroupDTO;
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void setCampaignNameByLongId(List<AdgroupDTO> list) {
+        if (list.size() > 0) {
+            List<CampaignDTO> campaignEntity = (List<CampaignDTO>) campaignService.findAll();
+            for (int i = 0; i < campaignEntity.size(); i++) {
+                for (AdgroupDTO a : list) {
+                    if (a.getCampaignId() != null) {
+                        if (a.getCampaignId().equals(campaignEntity.get(i).getCampaignId())) {
+                            a.setCampaignName(campaignEntity.get(i).getCampaignName());
+                        }
+                    } else {
+                        if (a.getCampaignObjId().equals(campaignEntity.get(i).getId())) {
+                            a.setCampaignName(campaignEntity.get(i).getCampaignName());
+                        }
+                    }
+
+                }
+            }
+        }
+    }
 }

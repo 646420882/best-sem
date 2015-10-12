@@ -235,6 +235,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                 adgroupDTOFind.setMaxPrice(maxPrice);
                 adgroupDTOFind.setNegativeWords(nn);
                 adgroupDTOFind.setExactNegativeWords(ne);
+                adgroupDTOFind.setPause(p);
                 adgroupService.updateByObjId(adgroupDTOFind);
                 writeHtml(SUCCESS, response);
             } else {
@@ -246,6 +247,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                 adgroupDTOFind.setMaxPrice(maxPrice);
                 adgroupDTOFind.setNegativeWords(nn);
                 adgroupDTOFind.setExactNegativeWords(ne);
+                adgroupDTOFind.setPause(p);
                 adgroupService.update(adgroupDTOFind, adgroupDTO);
                 writeHtml(SUCCESS, response);
             }

@@ -322,7 +322,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        if(!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(adgroupDTO.getAdgroupName())),getEntityClass())){
+//        if(!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(adgroupDTO.getAdgroupName())),getEntityClass())){
             getMongoTemplate().updateFirst(query, update, getEntityClass());
             AdgroupBackupDTO adgroupBackupDTOFind = adgroupBackUpDAO.findOne(adgroupDTO.getId());
             if (adgroupBackupDTOFind.getId() == null) {
@@ -330,7 +330,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
                 BeanUtils.copyProperties(bakadgroupDTO, adgroupBakcUpEntity);
                 getMongoTemplate().insert(adgroupBakcUpEntity);
             }
-        }
+//        }
 
     }
 

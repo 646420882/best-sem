@@ -39,6 +39,8 @@ public interface AdgroupService {
 
     void update(AdgroupDTO adgroupDTO);
 
+    void updateAdgroup(AdgroupDTO dto);//用于文字替换的修改
+
     void delete(Long id);
 
     void deleteByIds(List<Long> ids);

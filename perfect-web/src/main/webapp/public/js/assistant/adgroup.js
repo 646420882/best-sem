@@ -226,12 +226,12 @@ function loadAdgroupData(page_index) {
                     var _ls = getLocalStatus(parseInt(_edit));
                     var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
                         "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                        "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "'/></td>" +
                         "<td >" + json[i].adgroupName + "</td>" +
                         "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                         "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                         "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
                         "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
-                        "<td >&nbsp;</td>" +
                         "<td >" + json[i].campaignName + "</td>" +
                         "<td >" + _ls + "</td>" +
                         "</tr>";
@@ -305,11 +305,11 @@ function aon(ts) {
         initAgReback();
     }
     var data = {};
-    data[0] = _this.find("td:eq(1)").html();
-    data[1] = _this.find("td:eq(4)").html();
+    data[0] = _this.find("td:eq(2)").html();
+    data[1] = _this.find("td:eq(5)").html();
     data[2] = _this.find("td:eq(6)").html();
-    var status = _this.find("td:eq(2)").html();
-    var pause = _this.find("td:eq(3)").html();
+    var status = _this.find("td:eq(3)").html();
+    var pause = _this.find("td:eq(4)").html();
     $("#aDiv input").each(function (i, o) {
         if (data[i].indexOf("input") > -1) {
             $(o).val("");
@@ -385,6 +385,7 @@ function addAdgroup() {
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
             "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden'  name='oid' value='" + getRandomId() + "'/><input type='hidden' name='cid' value='" + getAdgroupId() + "'/></td>" +
+            "<td>&nbsp;</td>" +
             "<td><input name='adgroupName' style='width:140px;' maxlength='30'></td>" +
             "<td><input type='hidden' name='status' value='-1'><span>本地新增</span></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
@@ -403,7 +404,6 @@ function addAdgroup() {
 function adgroupDel() {
     var _this = $(atmp);
     var oid = _this.find("td:eq(0) input").val();
-    var td1 = _this.find("td:eq(1) input").val();
     if (oid != undefined) {
         var con = confirm("是否删除该单元？");
         if (con) {
@@ -424,7 +424,7 @@ function adgroupDel() {
 function adgroupUpdate() {
     var _tr = $(atmp);
     var oid = _tr.find("td:eq(0) input").val();
-    var td1 = _tr.find("td:eq(1) input").val();
+    var td1 = _tr.find("td:eq(2) input").val();
     if (td1 == undefined) {
         var _adAdd = $("#adUpdate");
         $(".TB_overlayBG").css({
@@ -438,13 +438,13 @@ function adgroupUpdate() {
         });
         $("#adgroupUpdateForm input").empty();
         var oid = _tr.find("td:eq(0) input").val();
-        var name = _tr.find("td:eq(1)").html();
-        var status = _tr.find("td:eq(2) input").val();
-        var pause = _tr.find("td:eq(3)").html();
-        var maxPrice = _tr.find("td:eq(4)").html();
-        var sp = _tr.find("td:eq(5) span").html();
-        var nn = _tr.find("td:eq(5) input").val();
-        var ne = _tr.find("td:eq(5) input:eq(1)").val();
+        var name = _tr.find("td:eq(2)").html();
+        var status = _tr.find("td:eq(3) input").val();
+        var pause = _tr.find("td:eq(4)").html();
+        var maxPrice = _tr.find("td:eq(5)").html();
+        var sp = _tr.find("td:eq(6) span").html();
+        var nn = _tr.find("td:eq(6) input").val();
+        var ne = _tr.find("td:eq(6) input:eq(1)").val();
         var cn = _tr.find("td:eq(7)").html();
         $("#adgroupUpdateForm input[name='oid']").val(oid);
         $("#adgroupUpdateForm input[name='adgroupName']").val(name);
@@ -704,12 +704,12 @@ function adrgoupUpdateOk() {
                 var _edit = formData["oid"].length > 18 ? "<span class='pen' step='1'></span>" : "<span class='pen' step='2'></span>";
                 var _tbody =
                     "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
+                    "<td><input type='checkbox' name='adgroupCheck' value='"+formData["oid"]+"'/></td>"+
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
                     " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
                     "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</td>" +
                     "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
-                    "<td>&nbsp;</td>" +
                     "<td>" + formData["cn"] + "</td>" +
                     "<td>" + _edit + "</td>";
                 $(atmp).html(_tbody);
@@ -735,7 +735,7 @@ function adgroupdSelectChange(rs) {
         }
         $.get("../assistantAdgroup/updateByChange", params, function (rs) {
             if (rs == "1") {
-                _atmp.find("td:eq(3)").html(_this.find("option:selected").text());
+                _atmp.find("td:eq(4)").html(_this.find("option:selected").text());
             }
         });
     }
@@ -807,12 +807,12 @@ function agReBack(oid) {
                 var _ls = getLocalStatus(parseInt(_edit));
                 var _tbody =
                     "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                    "<td><input type='checkbox' name='adgroupCheck' value='" + _id + "'></td>" +
                     "<td >" + json.data.adgroupName + "</td>" +
                     "<td ><input type='hidden' value='" + json.data.status + "'/>" + until.getAdgroupStatus(json.data.status) + "</td>" +
                     "<td >" + until.convert(json.data.pause, "启用:暂停") + "</td>" +
                     "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
                     "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
-                    "<td >&nbsp;</td>" +
                     "<td >" + plans.cn + "</td>" +
                     "<td >" + _ls + "</td>" +
                     "</tr>";
