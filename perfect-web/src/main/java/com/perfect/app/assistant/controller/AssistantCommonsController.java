@@ -2,11 +2,13 @@ package com.perfect.app.assistant.controller;
 
 import com.perfect.autosdk.sms.v3.KeywordInfo;
 import com.perfect.commons.web.WebContextSupport;
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.service.AdgroupService;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.CreativeService;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +45,9 @@ public class AssistantCommonsController extends WebContextSupport {
 
     @Resource
     private CreativeService creativeService;
+
+    @Resource
+    private AdgroupService adgroupService;
 
 
     private static Integer OBJ_SIZE = 18;
@@ -133,7 +138,7 @@ public class AssistantCommonsController extends WebContextSupport {
 
     private KeywordInfoDTO getRuleData(FindOrReplaceParam forp, Integer type, KeywordInfoDTO dto) {
         KeywordInfoDTO keywordDTO = null;
-        if (forp.isfQcaseLowerAndUpper()) {//isfQcaseLowerAndUpper
+        if (forp.isfQcaseLowerAndUpper() || (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm())) {//isfQcaseLowerAndUpper
             switch (type) {
                 case 1:
                     if (dto.getObject().getKeyword().contains(forp.getFindText())) {
@@ -327,71 +332,6 @@ public class AssistantCommonsController extends WebContextSupport {
                     return dto;
             }
         }
-
-        if (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm()) {
-            switch (type) {
-                case 1:
-                    if (dto.getObject().getKeyword().contains(forp.getFindText())) {
-                        if (forp.getReplaceText() != null) {
-                            dto.getObject().setKeyword(dto.getObject().getKeyword().replace(forp.getFindText(), forp.getReplaceText()));
-                            KeywordDTO updateDTO = dto.getObject();
-                            assistantKeywordService.updateKeyword(updateDTO);
-                            return dto;
-                        } else {
-                            return dto;
-                        }
-                    }
-                    break;
-                case 2:
-                    if (dto.getObject().getPcDestinationUrl() != null) {
-                        if (dto.getObject().getPcDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
-                            if (forp.getReplaceText() != null) {
-                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
-                                KeywordDTO updateDTOPc = dto.getObject();
-                                assistantKeywordService.updateKeyword(updateDTOPc);
-                                return dto;
-                            } else {
-                                return dto;
-                            }
-                        }
-                    }
-                    break;
-                case 3:
-                    if (dto.getObject().getMobileDestinationUrl() != null) {
-                        if (dto.getObject().getMobileDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
-                            if (forp.getReplaceText() != null) {
-                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
-                                KeywordDTO updateDTO = dto.getObject();
-                                assistantKeywordService.updateKeyword(updateDTO);
-                                return dto;
-                            } else {
-                                return dto;
-                            }
-                        }
-                    }
-                    break;
-                case 4:
-                    if (dto.getObject().getMobileDestinationUrl() != null) {
-                        if (dto.getObject().getMobileDestinationUrl().toLowerCase().contains(forp.getFindText().toLowerCase())) {
-                            if (forp.getReplaceText() != null) {
-                                dto.getObject().setMobileDestinationUrl(dto.getObject().getMobileDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
-                                KeywordDTO updateDTO = dto.getObject();
-                                assistantKeywordService.updateKeyword(updateDTO);
-                            }
-                        }
-                    }
-                    if (dto.getObject().getPcDestinationUrl() != null) {
-                        if (dto.getObject().getPcDestinationUrl().equals(forp.getFindText())) {
-                            if (forp.getReplaceText() != null) {
-                                dto.getObject().setPcDestinationUrl(dto.getObject().getPcDestinationUrl().replace(forp.getFindText(), forp.getReplaceText()));
-                                KeywordDTO updateDTOPc = dto.getObject();
-                                assistantKeywordService.updateKeyword(updateDTOPc);
-                            }
-                        }
-                    }
-                    return dto;
-            }
-        }
         return keywordDTO;
     }
     //end keywordTextFindOrReplace
@@ -401,7 +341,7 @@ public class AssistantCommonsController extends WebContextSupport {
 
     private List<CreativeDTO> creativeWordFindOrReplace(final FindOrReplaceParam forp) {
         List<CreativeDTO> returnResult = new ArrayList<>();
-        if (forp.getForType() == 0) {//判断是否是选中某些数据进行文字查找或替换
+        if (forp.getForType() == 0) {//操作选中
             String[] creativeIds = forp.getCheckData().split(",");
             List<String> cridStr = Arrays.asList(creativeIds);
             cridStr.stream().forEach(crid -> {//如果选中是本地添加的创意
@@ -413,7 +353,18 @@ public class AssistantCommonsController extends WebContextSupport {
                     switchCaseCreative(forp, creativeDTO, returnResult);
                 }
             });
-
+        } else {//操作整个计划下的创意
+            if (forp.getCampaignId().length() > OBJ_SIZE) {
+                List<CreativeDTO> creativeDTOs = creativeService.getByCampaignIdStr(forp.getCampaignId());
+                creativeDTOs.stream().forEach(s -> {
+                    switchCaseCreative(forp, s, returnResult);
+                });
+            } else {
+                List<CreativeDTO> creativeDTOs = creativeService.getByCampaignIdLong(Long.valueOf(forp.getCampaignId()));
+                creativeDTOs.stream().forEach(s -> {
+                    switchCaseCreative(forp, s, returnResult);
+                });
+            }
         }
         return returnResult;
     }
@@ -481,7 +432,7 @@ public class AssistantCommonsController extends WebContextSupport {
 
     private CreativeDTO getRuleData(FindOrReplaceParam forp, Integer type, CreativeDTO dto) {
         CreativeDTO creativeDTO = null;
-        if (forp.isfQcaseLowerAndUpper()) {//isfQcaseLowerAndUpper
+        if (forp.isfQcaseLowerAndUpper() || (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm())) {//isfQcaseLowerAndUpper
             switch (type) {
                 case 1:
                     if (dto.getTitle() != null) {
@@ -868,58 +819,287 @@ public class AssistantCommonsController extends WebContextSupport {
         if (forp.isfQigonreTirm()) {
             switch (type) {
                 case 1:
+                    if (dto.getTitle() != null) {
+                        if (dto.getTitle().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setTitle(dto.getTitle().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
                     break;
                 case 2:
+                    if (dto.getDescription1() != null) {
+                        if (dto.getDescription1().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription1(dto.getDescription1().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
                     break;
                 case 3:
+                    if (dto.getDescription2() != null) {
+                        if (dto.getDescription2().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription2(dto.getDescription2().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
                     break;
                 case 4:
-                    break;
+                    if (dto.getTitle() != null) {
+                        if (dto.getTitle().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setTitle(dto.getTitle().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getDescription1() != null) {
+                        if (dto.getDescription1().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription1(dto.getDescription1().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getDescription2() != null) {
+                        if (dto.getDescription2().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setDescription2(dto.getDescription2().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
                 case 5:
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
                     break;
                 case 6:
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
                     break;
                 case 7:
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
                     break;
                 case 8:
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
                     break;
                 case 9:
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
                     break;
                 case 10:
-                    break;
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
                 case 11:
-                    break;
-            }
-        }
-
-        if (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm()) {
-            switch (type) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
-                    break;
-                case 9:
-                    break;
-                case 10:
-                    break;
-                case 11:
-                    break;
+                    if (dto.getPcDestinationUrl() != null) {
+                        if (dto.getPcDestinationUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDestinationUrl(dto.getPcDestinationUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getPcDisplayUrl() != null) {
+                        if (dto.getPcDisplayUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setPcDisplayUrl(dto.getPcDisplayUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDestinationUrl() != null) {
+                        if (dto.getMobileDestinationUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDestinationUrl(dto.getMobileDestinationUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    if (dto.getMobileDisplayUrl() != null) {
+                        if (dto.getMobileDisplayUrl().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setMobileDisplayUrl(dto.getMobileDisplayUrl().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                creativeService.updateCreative(dto);
+                            }
+                        }
+                    }
+                    return dto;
             }
         }
 
         return creativeDTO;
     }
+
+    //end creativeTextFindOrReplace
+
+
+    //start adgroupTextFindOrReplace
+
+    private List<AdgroupDTO> adgroudfinedOreReplace(final FindOrReplaceParam forp) {
+        List<AdgroupDTO> returnResult = new ArrayList<>();
+        if (forp.getForType() == 0) {
+            String[] ids = forp.getCheckData().split(",");
+            List<String> strIds = Arrays.asList(ids);
+            strIds.stream().forEach(s -> {
+                if (s.length() > OBJ_SIZE) {
+                    AdgroupDTO adgroupDTO = adgroupService.findByObjId(s);
+                    switchCaseAdgroup(forp, adgroupDTO, returnResult);
+                } else {
+                    AdgroupDTO adgroupDTO = adgroupService.findOne(Long.valueOf(s));
+                    switchCaseAdgroup(forp, adgroupDTO, returnResult);
+                }
+            });
+        } else {
+
+        }
+
+        return returnResult;
+    }
+
+    private void switchCaseAdgroup(FindOrReplaceParam forp, AdgroupDTO dto, List<AdgroupDTO> returnResult) {
+        if (forp.getForPlace().equals("adgroupName")) {
+            AdgroupDTO creativeTitle = getRuleData(forp, 1, dto);
+            if (creativeTitle != null)
+                returnResult.add(creativeTitle);
+        }
+    }
+
+    private AdgroupDTO getRuleData(FindOrReplaceParam forp, Integer type, AdgroupDTO dto) {
+        if (forp.isfQcaseLowerAndUpper() || (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm())) {//isfQcaseLowerAndUpper
+            switch (type) {
+                case 1:
+                    if (dto.getAdgroupName() != null) {
+                        if (dto.getAdgroupName().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setAdgroupName(dto.getAdgroupName().replace(forp.getFindText(), forp.getReplaceText()));
+                                adgroupService.update(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        if (forp.isfQcaseAll()) {
+            switch (type) {
+                case 1:
+                    if (dto.getAdgroupName() != null) {
+                        if (dto.getAdgroupName().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setAdgroupName(dto.getAdgroupName().replace(forp.getFindText(), forp.getReplaceText()));
+                                adgroupService.update(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        if (forp.isfQigonreTirm()) {
+            switch (type) {
+                case 1:
+                    if (dto.getAdgroupName() != null) {
+                        if (dto.getAdgroupName().trim().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setAdgroupName(dto.getAdgroupName().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                adgroupService.update(dto);
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        return dto;
+    }
+
 
 }

@@ -355,6 +355,34 @@ $.extend({
     foRComplete: function (result) {
         switch (result.type) {
             case "creative":
+                var _createTable = $("#createTable tbody");
+                if (result.data != undefined) {
+                    var json = result.data;
+                    _createTable.empty();
+                    var _trClass = "";
+                    for (var i = 0; i < json.length; i++) {
+                        var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
+                        var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                        var ls = getLocalStatus(parseInt(_edit));
+                        _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                        var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                            "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                            "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "'/></td>" +
+                            "<td >" + until.substring(10, json[i].title) + "</td>" +
+                            " <td >" + until.substring(10, json[i].description1) + "</td>" +
+                            " <td >" + until.substring(10, json[i].description2) + "</td>" +
+                            " <td ><a href='" + json[i].pcDestinationUrl + "' target='_blank'>" + until.substring(10, json[i].pcDestinationUrl) + "</a></td>" +
+                            " <td >" + until.substring(10, json[i].pcDisplayUrl) + "</td>" +
+                            " <td>" + until.substring(10, json[i].mobileDestinationUrl) + "</td>" +
+                            " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
+                            " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
+                            " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
+                            "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>" +
+                            " <td >" + ls + "</td>" +
+                            "</tr>";
+                        _createTable.append(_tbody);
+                    }
+                }
                 break;
             case "adgroup":
                 break;

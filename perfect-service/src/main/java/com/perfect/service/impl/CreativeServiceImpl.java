@@ -126,43 +126,43 @@ public class CreativeServiceImpl implements CreativeService {
             newCreativeDTO.setLocalStatus(2);
         }
 
-        if(creativeDTO.getTitle()!=null){
+        if (creativeDTO.getTitle() != null) {
             newCreativeDTO.setTitle(creativeDTO.getTitle());
         }
 
-        if(creativeDTO.getDescription1()!=null){
+        if (creativeDTO.getDescription1() != null) {
             newCreativeDTO.setDescription1(creativeDTO.getDescription1());
         }
 
-        if(creativeDTO.getDescription2()!=null){
+        if (creativeDTO.getDescription2() != null) {
             newCreativeDTO.setDescription2(creativeDTO.getDescription2());
         }
 
-        if(creativeDTO.getPcDestinationUrl()!=null){
+        if (creativeDTO.getPcDestinationUrl() != null) {
             newCreativeDTO.setPcDestinationUrl(creativeDTO.getPcDestinationUrl());
         }
 
-        if(creativeDTO.getPcDisplayUrl()!=null){
+        if (creativeDTO.getPcDisplayUrl() != null) {
             newCreativeDTO.setPcDisplayUrl(creativeDTO.getPcDisplayUrl());
         }
 
-        if(creativeDTO.getMobileDestinationUrl()!=null){
+        if (creativeDTO.getMobileDestinationUrl() != null) {
             newCreativeDTO.setMobileDestinationUrl(creativeDTO.getMobileDestinationUrl());
         }
 
-        if(creativeDTO.getMobileDisplayUrl()!=null){
+        if (creativeDTO.getMobileDisplayUrl() != null) {
             newCreativeDTO.setMobileDisplayUrl(creativeDTO.getMobileDisplayUrl());
         }
 
-        if(creativeDTO.getPause()!=null){
+        if (creativeDTO.getPause() != null) {
             newCreativeDTO.setPause(creativeDTO.getPause());
         }
 
-        if(creativeDTO.getDevicePreference()!=null){
+        if (creativeDTO.getDevicePreference() != null) {
             newCreativeDTO.setDevicePreference(creativeDTO.getDevicePreference());
         }
 
-        creativeDAO.update(newCreativeDTO,creativeBackUpDTO);
+        creativeDAO.update(newCreativeDTO, creativeBackUpDTO);
 
     }
 
@@ -384,5 +384,19 @@ public class CreativeServiceImpl implements CreativeService {
     @Override
     public void updateLs(Long crid, CreativeDTO dto) {
         creativeDAO.updateLs(crid, dto);
+    }
+
+    @Override
+    public List<CreativeDTO> getByCampaignIdStr(String cid) {
+        List<String> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
+        List<CreativeDTO> creativeDTOs = creativeDAO.getAllsByAdgroupIdsForString(adgroupIds);
+        return creativeDTOs;
+    }
+
+    @Override
+    public List<CreativeDTO> getByCampaignIdLong(Long cid) {
+        List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
+        List<CreativeDTO> creativeDTOs = creativeDAO.getAllsByAdgroupIds(adgroupIds);
+        return creativeDTOs;
     }
 }

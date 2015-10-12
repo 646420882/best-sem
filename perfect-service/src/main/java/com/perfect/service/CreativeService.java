@@ -115,4 +115,8 @@ public interface CreativeService {
      * @param dto  获取status的对象
      */
     void updateLs(Long crid, CreativeDTO dto);
+
+    List<CreativeDTO> getByCampaignIdStr(String cid);
+
+    List<CreativeDTO> getByCampaignIdLong(Long cid);
 }
