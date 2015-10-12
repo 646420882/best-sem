@@ -122,6 +122,7 @@ $(function () {
         reportDataVS();
         //
         //加载日历控件
+
         $("input[name=reservation]").daterangepicker();
         $("#inputTow").cxCalendar();
         $("input[cname=dateClick]").click(function () {

@@ -331,6 +331,25 @@ public class AssistantKeywordController extends WebContextSupport {
         return new ModelAndView("promotionAssistant/alert/searchwordReport");
     }
 
+    /**
+     * 显示定时暂停更新弹出窗口
+     *
+     * @return
+     */
+
+    @RequestMapping(value = "assistantKeyword/showTimingPauseDialog", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView showTimingPauseDialog() {
+        return new ModelAndView("promotionAssistant/alert/TimingPauseDialog");
+    }
+    /**
+     * 显示定时上传更新弹出窗口
+     *
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/showTimingDelDialog", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView showTimingDelDialog() {
+        return new ModelAndView("promotionAssistant/alert/TimingDelDialog");
+    }
 
     /**
      * 还原新增的关键词

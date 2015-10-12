@@ -34,6 +34,8 @@ $.fn.selectionTp = function () {
     return {start: s, end: e, text: te};
 };
 var dockObj = document.getElementById('argDialogDiv');
+var dackObj = document.getElementById('addOrUpdateKwd');
+
 $(function () {
     InitMenu();
     rDrag.init(document.getElementById("dAdd"));

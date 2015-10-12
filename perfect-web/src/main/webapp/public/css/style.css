@@ -326,7 +326,7 @@ input, select, textarea {
 }
 .region-secondarea-select .leaf .first-area-container-hover {
 	width: 93px;
-	width\0: 95px;
+	width: 95px;
 	height: 25px;
      *height:24px;
 	padding-left: 9px;
@@ -343,7 +343,7 @@ input, select, textarea {
 	position: absolute;
 	top: 0;
 	right: -424px;
-	right\0: -424px;
+	right: -424px;
 	width: 420px;
 	padding: 0 10px;
 	border: 1px solid #999;

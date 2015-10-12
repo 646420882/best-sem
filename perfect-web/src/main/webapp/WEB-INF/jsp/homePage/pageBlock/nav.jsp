@@ -47,8 +47,16 @@
 
                             <h3>数据报告</h3></a>
                     </li>
+
                 </ul>
+               <div style="text-align: center;position: absolute;bottom: 111px;left: 30%">
+                   <img src="${pageContext.request.contextPath}/public/img/best_img/Question.png" alt=""/>
+                <a href="${pageContext.request.contextPath}/qa/getPage"><span class="list_5" style="display: block;float: right;padding: 2px 0 0 4px;color: #000000">帮助中心</span>   </a>
+               </div>
             </div>
+
+
+
         </div>
     </div>
     <div id="navigator_tips" class="tips fl" title="点击隐藏导航">

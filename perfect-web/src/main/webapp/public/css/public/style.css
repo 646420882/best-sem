@@ -2080,7 +2080,6 @@ h2 .close {
 }
 
 .zs_function ul {
-    height: 28px;
     width: 100%;
 }
 
@@ -2097,12 +2096,20 @@ h2 .close {
 
 .zs_function ul li ul {
     position: absolute;
+    width: 100px;
     top: 28px;
+
     z-index: 100;
     background: #fff;
     padding: 0 12px;
     height: auto;
     min-width: 98px;
+
+    /*z-index: 12;*/
+    /*background: #FFFFFF;*/
+    /*padding: 0 12px;*/
+    /*box-shadow: 3px 3px 5px black;*/
+
 }
 
 .zs_function ul li a:hover {
@@ -2141,6 +2148,18 @@ h2 .close {
 .zs_top {
     background: url(/public/img/bg.png) -10px -420px no-repeat;
 }
+.zs_top1{
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    display: block;
+    float: left;
+    margin: 7px 5px 0 0;
+    position: relative;
+    z-index: 1;
+
+}
+
 
 .z_function_hover {
     width: 15px;
@@ -3899,9 +3918,9 @@ input[type=checkbox]:focus {
     border-bottom: 1px solid #dadadd
 }
 
-#tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {
-    background: #f0f0f0;
-}
+/*#tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {*/
+    /*background: #f0f0f0;*/
+/*}*/
 
 #tabs .ui-state-default a, .ui-state-default a:link {
     color: #000;
@@ -3935,6 +3954,7 @@ input[type=checkbox]:focus {
 #sublinkAddInput input {
     width: 62%;
 }
+
 #downReportSearch a{
     margin:10px 0 10px 10px;
 }

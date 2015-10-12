@@ -38,6 +38,19 @@ public class QuestionAnswersController {
      *
      * @return
      */
+    @RequestMapping(value = "/getPage", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getPage() {
+        return new ModelAndView("help/help");
+    }
+
+
+
+
+    /**
+     * 添加问答
+     *
+     * @return
+     */
     @RequestMapping(value = "/addAnswers", method = {RequestMethod.GET, RequestMethod.POST})
     public void addAnswers(@RequestParam(value = "querstions") String querstions,
                            @RequestParam(value = "answers") String answers,

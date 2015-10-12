@@ -621,6 +621,7 @@ function batchAddOrUpdate() {
 }
 
 $("#batchDelKwd").livequery('click', function () {
+
     batchDelKeyword();
 });
 
@@ -644,6 +645,47 @@ function batchDelKeyword() {
     return false;
 }
 
+$("#timediglogUp").livequery('click', function () {
+
+    timeUpdiglog();
+});
+
+function timeUpdiglog() {
+    top.dialog({
+        title: "定时上传",
+        padding: "5px",
+        align: 'left bottom',
+        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='330' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        oniframeload: function () {
+        },
+        onclose: function () {
+
+        },
+        onremove: function () {
+        }
+    }).showModal(dackObj);
+    return false;
+}
+$("#timediglogDown").livequery('click', function () {
+
+    timediglogDown();
+});
+function timediglogDown() {
+    top.dialog({
+        title: "定时暂停",
+        padding: "5px",
+        align: 'left bottom',
+        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='500' height='330' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        oniframeload: function () {
+        },
+        onclose: function () {
+
+        },
+        onremove: function () {
+        }
+    }).showModal(dackObj);
+    return false;
+}
 
 $(".searchwordReport").livequery('click', function () {
     searchword();
@@ -802,6 +844,13 @@ var menu_keyword_add = {
         func: function () {
             batchDelKeyword();
         }
+    },
+    menu_keyword_timing = {
+        text: "定时上传",
+        img: "../public/img/zs_function21.png",
+        func: function () {
+            timeUpdiglog();
+        }
     }, menu_keyword_redu = {
         text: "还原",
         img: "../public/img/zs_function9.png",
@@ -873,7 +922,7 @@ function showSearchWord() {
  * @type {*[]}
  */
 var keywordMenuData = [
-    [menu_keyword_add, menu_keyword_batchAddOrUpdate, menu_keyword_del, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_upload, menu_keyword_searchWord, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
+    [menu_keyword_add, menu_keyword_batchAddOrUpdate, menu_keyword_del, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_upload, menu_keyword_searchWord, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select, menu_keyword_timing]
 ];
 /**
  * 用户缓存右键点击的对象

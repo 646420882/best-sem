@@ -28,6 +28,19 @@ $(document).ready(function () {
         }
 
     });
+    $("#timing").click(function () {
+        if ($("#timing1").css("display") == "none") {//隐藏
+            $("#timing1").show();
+            $("#timing1").mouseleave(function () {
+                $("#timing1").css("display", "none");
+            });
+        }
+        else {
+            $("#timing1").hide();
+
+        }
+
+    });
 });
 
 /*******下载账户**************/

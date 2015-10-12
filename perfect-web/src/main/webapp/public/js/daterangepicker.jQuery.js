@@ -9,7 +9,7 @@
  * Copyright (c) 2008 Filament Group, Inc
  * Dual licensed under the MIT (filamentgroup.com/examples/mit-license.txt) and GPL (filamentgroup.com/examples/gpl-license.txt) licenses.
  *
- * Dependencies: jquery, jquery UI datepicker, date.js library (included at bottom), jQuery UI CSS Framework
+ * Dependencies: jquery, jquery UI datepicker,   date.js library (included at bottom), jQuery UI CSS Framework
  * Changelog:
  *  2008.10.23 initial Version
  *  2008.11.12 changed dateFormat option to allow custom date formatting (credit: http://alexgoldstone.com/)
