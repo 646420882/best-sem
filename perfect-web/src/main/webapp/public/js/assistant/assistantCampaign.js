@@ -111,6 +111,8 @@ function campaignDataToHtml(obj, index) {
     }
 
     html = html + "<input type='hidden' value = " + obj.campaignId + " />";
+
+    html = html + "<td><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "'/></td>";
     html = html + "<td>" + obj.campaignName + "</td>";
 
     switch (obj.status) {
@@ -172,39 +174,39 @@ function campaignDataToHtml(obj, index) {
 function setCampaignValue(obj, campaignId) {
     $("#hiddenCampaignId").val(campaignId);
     var _tr = $(obj);
-    $(".campaignName_5").val(_tr.find("td:eq(0)").html());
+    $(".campaignName_5").val(_tr.find("td:eq(1)").html());
 
-    if (/^[0-9]+|[0-9]+.[0-9]*$/.test(_tr.find("td:eq(3)").html())) {
-        $(".budget_5").val(_tr.find("td:eq(3)").html());
+    if (/^[0-9]+|[0-9]+.[0-9]*$/.test(_tr.find("td:eq(4)").html())) {
+        $(".budget_5").val(_tr.find("td:eq(4)").html());
     } else {
         $(".budget_5").val("<不限定>");
     }
 
     $(".priceRatio_5").val(_tr.find(".hidden").val());
-    $(".schedule_5").html("<a>" + _tr.find("td:eq(6)").html() + "</a>");
-    $(".regionTarget_5").html("<a>" + _tr.find("td:eq(7)").html() + "</a>");
-    $(".isDynamicCreative_5").html("<a>" + _tr.find("td:eq(5)").html() + "</a>");
-    $(".negativeWords_5").html(until.convert(_tr.find("td:eq(8)").html() != "未设置", "<a>已设置(" + _tr.find("td:eq(8)").html() + ")</a>:<a>未设置</a>"));
-    $(".excluedIp_5").html(until.convert(_tr.find("td:eq(9)").html() == "0", "<a>未设置</a>" + ":" + "<a>已设置(" + _tr.find("td:eq(9)").html() + ")</a>"));
+    $(".schedule_5").html("<a>" + _tr.find("td:eq(7)").html() + "</a>");
+    $(".regionTarget_5").html("<a>" + _tr.find("td:eq(8)").html() + "</a>");
+    $(".isDynamicCreative_5").html("<a>" + _tr.find("td:eq(6)").html() + "</a>");
+    $(".negativeWords_5").html(until.convert(_tr.find("td:eq(9)").html() != "未设置", "<a>已设置(" + _tr.find("td:eq(9)").html() + ")</a>:<a>未设置</a>"));
+    $(".excluedIp_5").html(until.convert(_tr.find("td:eq(10)").html() == "0", "<a>未设置</a>" + ":" + "<a>已设置(" + _tr.find("td:eq(10)").html() + ")</a>"));
 
-    if (_tr.find("td:eq(4)").html() == "优选") {
+    if (_tr.find("td:eq(5)").html() == "优选") {
         $(".selectShowProb_5").html("<option value = '1' selected='selected'>优选</option><option value='2'>轮显</option>");
     } else {
         $(".selectShowProb_5").html("<option value = '1' >优选</option><option value='2' selected='selected'>轮显</option>");
     }
 
-    $(".status_5").html(_tr.find("td:eq(1)").html());
+    $(".status_5").html(_tr.find("td:eq(2)").html());
 
-    if (_tr.find("td:eq(10)").html() == "-") {
+    if (_tr.find("td:eq(11)").html() == "-") {
         //达到预算下线
         $(".budgetOfflineTime_5").html("0次");
     } else {
         //达到预算下线
-        $(".budgetOfflineTime_5").html(_tr.find("td:eq(10)").html() + "次");
+        $(".budgetOfflineTime_5").html(_tr.find("td:eq(11)").html() + "次");
     }
 
     //推广计划状态
-    if (_tr.find("td:eq(2)").html() == "启用") {
+    if (_tr.find("td:eq(3)").html() == "启用") {
         $(".selectPause_5").html("<option value = 'true' selected='selected'>启用</option><option value='false'>暂停</option>");
     } else {
         $(".selectPause_5").html("<option value = 'true' >启用</option><option value='false' selected='selected'>暂停</option>");

@@ -1061,7 +1061,7 @@ public class AssistantCommonsController extends WebContextSupport {
     }
 
     private AdgroupDTO getRuleData(FindOrReplaceParam forp, Integer type, AdgroupDTO dto) {
-        AdgroupDTO adgroupDTO=null;
+        AdgroupDTO adgroupDTO = null;
         if (forp.isfQcaseLowerAndUpper() || (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm())) {//isfQcaseLowerAndUpper
             switch (type) {
                 case 1:
@@ -1117,22 +1117,26 @@ public class AssistantCommonsController extends WebContextSupport {
         return adgroupDTO;
     }
 
+    //end adgroupTextFindOrReplace
 
+    private List<CampaignDTO> campaignFindOrReplace(final FindOrReplaceParam forp) {
+        List<CampaignDTO> campaignDTOs = new ArrayList<>();
+        if (forp.getForType() == 0) {//选中
+            String[] campaignIds = forp.getCheckData().split(",");
+            List<String> cids = Arrays.asList(campaignIds);
+            cids.stream().forEach(s -> {
+                if (s.length() > OBJ_SIZE) {
+                    CampaignDTO campaignDTO = campaignService.findByObjectId(s);
 
+                } else {
+                    CampaignDTO campaignDTO = campaignService.findOne(Long.valueOf(s));
+                }
+            });
+        } else {//全部
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
+        return campaignDTOs;
+    }
 
 
     private void setCampaignNameByLongId(List<AdgroupDTO> list) {
