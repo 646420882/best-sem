@@ -458,7 +458,25 @@
                                                         </li>
                                                         <li>
                                                             <div class="t_list01 fl over">创意预览：</div>
-                                                            <div class="w_list01 fl over" id="sPreview"></div>
+                                                            <div class="w_list01 fl over">
+                                                                <table>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <td onmouseover="transferCreativePreview(1)">推广位</td>
+                                                                            <td onmouseover="transferCreativePreview(2)">推广链接位</td>
+                                                                            <td onmouseover="transferCreativePreview(3)">右侧推广位</td>
+                                                                            <td onmouseover="transferCreativePreview(4)">移动设备推广位</td>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <div id="sPreview"></div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </li>
                                                     </ul>
                                                 </div>

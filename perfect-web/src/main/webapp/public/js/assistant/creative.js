@@ -726,12 +726,81 @@ function initUpdateInputKeyUp() {
 function toolBarInit() {
     $("#sDiv input[type='text']").val("");
 }
+
+var creativeDisRef = null;
+
+function transferCreativePreview(type) {
+    if (creativeDisRef == null) {
+        return;
+    }
+
+    var previeBody = $("#sPreview");
+    previeBody.empty();
+    var h3 = getCreativePreviewHtml(creativeDisRef, type);
+    previeBody.append(h3);
+}
+
+function getCreativePreviewHtml(_this, type) {
+    var title = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
+    if (title == undefined) {
+        title = _this.find("td:eq(2)").html();
+    }
+    var de1 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
+    if (de1 == undefined) {
+        de1 = _this.find("td:eq(3)").html();
+    }
+    var de2 = _this.find("td:eq(4) a").attr("title") != undefined ? _this.find("td:eq(4) a").attr("title") : _this.find("td:eq(4) input").val();
+    if (de2 == undefined) {
+        de2 = _this.find("td:eq(4)").html();
+    }
+    var pc = _this.find("td:eq(5) a").attr("href") != undefined ? _this.find("td:eq(5) a").attr("href") : _this.find("td:eq(5) input").val();
+    var pcs = _this.find("td:eq(6) a").attr("title") != undefined ? _this.find("td:eq(6) a").attr("title") : _this.find("td:eq(6) input").val();
+    var mib = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
+    var mibs = _this.find("td:eq(8) span:eq(0)").text() != "" ? _this.find("td:eq(8) span:eq(0)").text() : _this.find("td:eq(8) input").val();
+    title = title.replace("{", "<span class='red-color'>").replace("}", "</span>").replace("{", "<span class='red-color'>").replace("}", "</span>");
+    de1 = de1.replace("{", "<span class='red-color'>").replace("}", "</span>");
+    de2 = de2.replace("{", "<span class='red-color'>").replace("}", "</span>");
+
+    var h3 = "";
+    switch (type) {
+        case 1:
+            h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
+                "<span class='black-color'>" + de1 + "</span></br>" +
+                "<span class='black-color'>" + de2 + "<span></br>" +
+                "<span class='green-color'>" + pcs + "<span></br>";
+            break;
+        case 2:
+            h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
+                "<span class='black-color'>" + de1 + "</span></br>" +
+                "<span class='black-color'>" + de2 + "<span>" +
+                "<span class='green-color'>" + pcs + "<span></br>";
+            break;
+        case 3:
+            h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
+                "<span class='black-color'>" + de1 + "</span></br>" +
+                "<span class='black-color'>" + de2 + "<span></br>" +
+                "<span class='green-color'>" + pcs + "<span></br>";
+            break;
+        case 4:
+            h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
+                "<span class='black-color'>" + de1 + "</span></br>" +
+                "<span class='black-color'>" + de2 + "<span></br>" +
+                "<span class='green-color'>" + pcs + "<span></br>";
+            break;
+        default:
+            break;
+    }
+
+    return h3;
+}
+
 /**
  * 加载预览效果
  * @param obj
  */
 function preview(obj) {
     var _this = $(obj);
+    creativeDisRef = _this;
     var previeBody = $("#sPreview");
     previeBody.empty();
     var title = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
@@ -756,7 +825,7 @@ function preview(obj) {
     var h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
         "<span class='black-color'>" + de1 + "</span></br>" +
         "<span class='black-color'>" + de2 + "<span></br>" +
-        "<span  class='green-color'>" + pcs + "<span></br>";
+        "<span class='green-color'>" + pcs + "<span></br>";
     previeBody.append(h3);
 }
 /**
