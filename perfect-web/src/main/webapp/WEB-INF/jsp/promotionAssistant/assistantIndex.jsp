@@ -375,9 +375,9 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th style="width: 40px;">&nbsp;操作</th>
                                                             <th><input type="checkbox" name='creativeAllCheck'
                                                                        onchange="$.foRCheckAll('creativeAllCheck')"/></th>
+                                                            <th style="width: 40px;">&nbsp;操作</th>
                                                             <th>&nbsp;创意标题</th>
                                                             <th>&nbsp;创意描述1</th>
                                                             <th>&nbsp;创意描述2</th>
@@ -794,9 +794,9 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th>&nbsp;操作</th>
                                                             <th><input type="checkbox" name='adgroupAllCheck'
                                                                        onchange="$.foRCheckAll('adgroupAllCheck')"/></th>
+                                                            <th>&nbsp;操作</th>
                                                             <th>&nbsp;推广单元名称</th>
                                                             <th>&nbsp;推广单元状态</th>
                                                             <th>&nbsp;启动/暂停</th>

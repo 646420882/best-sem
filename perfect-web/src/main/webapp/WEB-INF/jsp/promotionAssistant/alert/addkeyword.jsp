@@ -67,9 +67,9 @@
                 </li>
                 <li>
                     <select id="matchType" class="team04">
-                        <option value="3">广泛</option>
                         <option value="1">精确</option>
                         <option value="2">短语</option>
+                        <option value="3">广泛</option>
                     </select>
 
                     <div id="phraseTypeDiv" style="display: none;"><select id="phraseType" class="team04">

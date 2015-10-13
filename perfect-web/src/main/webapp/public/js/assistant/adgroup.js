@@ -150,13 +150,13 @@ function adgroupAddOperate(obj) {
                 var _createTable = $("#adGroupTable tbody");
                 var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
+                    "<td><input type='checkbox' name='adgroupCheck' value='"+json.data+"'/></td>" +
                     "<td>&nbsp;<input type='hidden'  name='oid' value='" + json.data + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>本地新增</td>" +
                     " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
                     "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</td>" +
                     "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
-                    "<td>&nbsp;</td>" +
                     "<td>" + plans.cn + "</td>" +
                     "<td><span class='pen' step='1'></span></td>" +
                     "</tr>";
@@ -225,8 +225,8 @@ function loadAdgroupData(page_index) {
                     var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
                     var _ls = getLocalStatus(parseInt(_edit));
                     var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                        "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                         "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "'/></td>" +
+                        "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                         "<td >" + json[i].adgroupName + "</td>" +
                         "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                         "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
@@ -292,11 +292,11 @@ function getMib(double) {
  */
 function aon(ts) {
     var _this = $(ts);
-    var tadd = _this.find("td:eq(0) a").html();
+    var tadd = _this.find("td:eq(1) a").html();
     if (tadd == undefined && adHtml == "删除") {
         adgroupAddOperate(atmp);
     }
-    adHtml = _this.find("td:eq(0) a").html();
+    adHtml = _this.find("td:eq(1) a").html();
     atmp = _this;
     var _edit = _this.find("td:eq(8)").html()
     if (_edit != "") {
@@ -376,7 +376,7 @@ function addAdgroup() {
     } else {
         initCampBgt();
         var i = $("#adGroupTable tbody tr").size();
-        var lastTr = $("#adGroupTable tr:eq(" + i + ")").find("td:eq(0) a").html();
+        var lastTr = $("#adGroupTable tr:eq(" + i + ")").find("td:eq(1) a").html();
         if (lastTr == "删除") {
             alert("请提交后再继续添加");
             return;
@@ -384,14 +384,13 @@ function addAdgroup() {
         var _createTable = $("#adGroupTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
-            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden'  name='oid' value='" + getRandomId() + "'/><input type='hidden' name='cid' value='" + getAdgroupId() + "'/></td>" +
             "<td>&nbsp;</td>" +
+            "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden'  name='oid' value='" + getRandomId() + "'/><input type='hidden' name='cid' value='" + getAdgroupId() + "'/></td>" +
             "<td><input name='adgroupName' style='width:140px;' maxlength='30'></td>" +
             "<td><input type='hidden' name='status' value='-1'><span>本地新增</span></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             "<td><input name='maxPrice' style='width:50px;'  onkeypress='until.regDouble(this)' maxlength='4'></td>" +
             "<td><span id='" + getRandomId() + "sp'>未设置</span><input name='negativeWords' id='" + getRandomId() + "ni' type='hidden' readonly='readonly'><input type='button' onclick='adgroupNokeyword(this)' value='设置否定关键词'/><input name='exactNegativeWords' id='" + getRandomId() + "ne' type='hidden'  readonly='readonly'></td>" +
-            "<td>&nbsp;</td>" +
             "<td>" + plans.cn + "</td>" +
             "<td>&nbsp;</td>" +
             "</tr>";
@@ -403,7 +402,7 @@ function addAdgroup() {
  */
 function adgroupDel() {
     var _this = $(atmp);
-    var oid = _this.find("td:eq(0) input").val();
+    var oid = _this.find("td:eq(1) input").val();
     if (oid != undefined) {
         var con = confirm("是否删除该单元？");
         if (con) {
@@ -423,7 +422,7 @@ function adgroupDel() {
  */
 function adgroupUpdate() {
     var _tr = $(atmp);
-    var oid = _tr.find("td:eq(0) input").val();
+    var oid = _tr.find("td:eq(1) input").val();
     var td1 = _tr.find("td:eq(2) input").val();
     if (td1 == undefined) {
         var _adAdd = $("#adUpdate");
@@ -437,7 +436,7 @@ function adgroupUpdate() {
             display: "block"
         });
         $("#adgroupUpdateForm input").empty();
-        var oid = _tr.find("td:eq(0) input").val();
+        var oid = _tr.find("td:eq(1) input").val();
         var name = _tr.find("td:eq(2)").html();
         var status = _tr.find("td:eq(3) input").val();
         var pause = _tr.find("td:eq(4)").html();
@@ -703,8 +702,8 @@ function adrgoupUpdateOk() {
                 var _span = $("#auSpan").html();
                 var _edit = formData["oid"].length > 18 ? "<span class='pen' step='1'></span>" : "<span class='pen' step='2'></span>";
                 var _tbody =
-                    "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
                     "<td><input type='checkbox' name='adgroupCheck' value='"+formData["oid"]+"'/></td>"+
+                    "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
                     " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
@@ -726,7 +725,7 @@ function adrgoupUpdateOk() {
 function adgroupdSelectChange(rs) {
     var _this = $(rs);
     var _atmp = $(atmp);
-    var _oid = _atmp.find("td:eq(0) input").val();
+    var _oid = _atmp.find("td:eq(1) input").val();
     if (_oid != null) {
         var pause = _this.val();
         var params = {
@@ -772,7 +771,7 @@ function agreBakClick() {
             var con = confirm("是否还原选中的数据？");
             if (con) {
                 var _localStatus = parseInt(_this.find("td:eq(8) span").attr("step"));
-                var _oid = _this.find("td:eq(0) input").val() != undefined ? _this.find("td:eq(0) input").val() : _this.find("td:eq(0) span").html();
+                var _oid = _this.find("td:eq(1) input").val() != undefined ? _this.find("td:eq(1) input").val() : _this.find("td:eq(1) span").html();
                 switch (_localStatus) {
                     case 1:
                         adgroupDel();
@@ -806,8 +805,8 @@ function agReBack(oid) {
                 var _edit = json.data.localStatus != null ? json.data.localStatus : -1;
                 var _ls = getLocalStatus(parseInt(_edit));
                 var _tbody =
-                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                     "<td><input type='checkbox' name='adgroupCheck' value='" + _id + "'></td>" +
+                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                     "<td >" + json.data.adgroupName + "</td>" +
                     "<td ><input type='hidden' value='" + json.data.status + "'/>" + until.getAdgroupStatus(json.data.status) + "</td>" +
                     "<td >" + until.convert(json.data.pause, "启用:暂停") + "</td>" +
@@ -860,7 +859,7 @@ function adgroupMutli() {
 }
 function adgroupUpload() {
     var _this = $(atmp);
-    var oid = _this.find("td:eq(0) input").val();
+    var oid = _this.find("td:eq(1) input").val();
     var _localStatus = _this.find("td:eq(8) span").attr("step");
     if (_localStatus != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
