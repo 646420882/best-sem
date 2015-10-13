@@ -76,7 +76,7 @@ public class AssistantCreativeController extends WebContextSupport {
                 pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
             }
         } else {
-            if (aid != "" || !aid.equals("")) {
+            if (!aid.equals("")) {
                 pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize);
             } else if (!cid.equals("") && aid.equals("")) {
                 List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
