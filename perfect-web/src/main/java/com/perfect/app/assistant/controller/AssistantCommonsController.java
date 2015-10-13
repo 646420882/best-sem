@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 
 /**
@@ -70,8 +67,8 @@ public class AssistantCommonsController extends WebContextSupport {
                 setCampaignNameByLongId(adgroupDTOs);
                 return writeMapObject(DATA, adgroupDTOs);
             case "campaign":
-                System.out.println("campaign");
-                return writeMapObject(DATA, null);
+                List<CampaignDTO> campaignDTOs=campaignFindOrReplace(forp);
+                return writeMapObject(DATA, campaignDTOs);
         }
         return writeMapObject(DATA, null);
     }
@@ -84,6 +81,7 @@ public class AssistantCommonsController extends WebContextSupport {
      */
 
     //start keywordTextFindOrReplace
+
     private List<KeywordInfoDTO> keyWordFindOrReplace(final FindOrReplaceParam forp) {
         List<KeywordInfoDTO> returnResult = new ArrayList<>();
         if (forp.getForType() == 0) {
@@ -1119,24 +1117,101 @@ public class AssistantCommonsController extends WebContextSupport {
 
     //end adgroupTextFindOrReplace
 
+
+    //start campaignTextFindOrReplace
     private List<CampaignDTO> campaignFindOrReplace(final FindOrReplaceParam forp) {
-        List<CampaignDTO> campaignDTOs = new ArrayList<>();
+        List<CampaignDTO> returnResult = new ArrayList<>();
         if (forp.getForType() == 0) {//选中
             String[] campaignIds = forp.getCheckData().split(",");
             List<String> cids = Arrays.asList(campaignIds);
             cids.stream().forEach(s -> {
                 if (s.length() > OBJ_SIZE) {
                     CampaignDTO campaignDTO = campaignService.findByObjectId(s);
-
+                    switchCaseCampaign(forp, campaignDTO, returnResult);
                 } else {
                     CampaignDTO campaignDTO = campaignService.findOne(Long.valueOf(s));
+                    switchCaseCampaign(forp, campaignDTO, returnResult);
                 }
             });
         } else {//全部
-
+            List<CampaignDTO> campaignDTOs = (List<CampaignDTO>) campaignService.findAll();
+            campaignDTOs.stream().filter(f -> f.getCampaignId() != null).forEach(s -> {//Long
+                switchCaseCampaign(forp, s, returnResult);
+            });
+            campaignDTOs.stream().filter(f -> f.getCampaignId() == null).forEach(s -> {
+                switchCaseCampaign(forp, s, returnResult);
+            });
         }
-        return campaignDTOs;
+        return returnResult;
     }
+
+    private void switchCaseCampaign(FindOrReplaceParam forp, CampaignDTO dto, List<CampaignDTO> returnResult) {
+        if (Objects.equals("campaignName", forp.getForPlace())) {
+            CampaignDTO campaignDTO = getRuleData(forp, 1, dto);
+            if (campaignDTO != null) {
+                returnResult.add(campaignDTO);
+            }
+        }
+    }
+
+    private CampaignDTO getRuleData(FindOrReplaceParam forp, Integer type, CampaignDTO dto) {
+        CampaignDTO campaignDTO = null;
+
+        if (forp.isfQcaseLowerAndUpper() || (!forp.isfQcaseLowerAndUpper() && !forp.isfQcaseAll() && !forp.isfQigonreTirm())) {
+            switch (type) {
+                case 1:
+                    if (dto.getCampaignName() != null) {
+                        if (dto.getCampaignName().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setCampaignName(dto.getCampaignName().replace(forp.getFindText(), forp.getReplaceText()));
+                                campaignService.updateCampaign(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+        if(forp.isfQcaseAll()){
+            switch (type) {
+                case 1:
+                    if (dto.getCampaignName() != null) {
+                        if (dto.getCampaignName().equals(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setCampaignName(dto.getCampaignName().replace(forp.getFindText(), forp.getReplaceText()));
+                                campaignService.updateCampaign(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+        if(forp.isfQigonreTirm()){
+            switch (type) {
+                case 1:
+                    if (dto.getCampaignName() != null) {
+                        if (dto.getCampaignName().trim().contains(forp.getFindText())) {
+                            if (forp.getReplaceText() != null) {
+                                dto.setCampaignName(dto.getCampaignName().trim().replace(forp.getFindText(), forp.getReplaceText()));
+                                campaignService.updateCampaign(dto);
+                                return dto;
+                            } else {
+                                return dto;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        return campaignDTO;
+    }
+    //end campaignTextFindOrReplace
 
 
     private void setCampaignNameByLongId(List<AdgroupDTO> list) {

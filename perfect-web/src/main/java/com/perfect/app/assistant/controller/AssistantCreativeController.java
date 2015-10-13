@@ -61,7 +61,7 @@ public class AssistantCreativeController extends WebContextSupport {
         Map<String,Object> map=new HashMap<>();
         if (!aid.equals("-1")) {
         if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
-            if (aid != "" || !aid.equals("")) {
+            if (!aid.equals("")) {
                 if (aid.length() > OBJ_SIZE) {
                     map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
                     pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);

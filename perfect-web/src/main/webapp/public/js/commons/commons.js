@@ -11,9 +11,12 @@ var $rootScope = {
 var commons = {
     foRShow: function (type, _this) {
         var exist_selected = jsonData;
-        if (!exist_selected.cid) {
-            alert("请选择一个推广计划！");
-            return;
+        var tabMenu = $("#tabMenu").find("li:eq(4)").attr("class");
+        if (!tabMenu) {
+            if (!exist_selected.cid) {
+                alert("请选择一个推广计划！");
+                return;
+            }
         }
         if ($(_this).find("ul").attr("class") == "hide") {
             $(_this).find("ul").removeClass("hide");
@@ -431,6 +434,26 @@ $.extend({
                 }
                 break;
             case "campaign":
+                $("#tbodyClick5").empty();
+                if (result.data.length == 0) {
+                    $("#tbodyClick5").append("<tr><td>没有找到类似的数据</td></tr>");
+                    return;
+                }
+                for (var i = 0; i <result.data.length; i++) {
+                    var html = campaignDataToHtml(result.data[i], i);
+                    $("#tbodyClick5").append(html);
+                    if (i == 0) {
+                        setCampaignValue(".firstCampaign", result.data[i].campaignId);
+                        if (result.data[i].localStatus != null) {
+                            $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
+                            $("#reduction_caipamgin").find("span").addClass("zs_top");
+                        } else {
+                            $("#reduction_caipamgin").find("span").removeClass("zs_top");
+                            $("#reduction_caipamgin").find("span").addClass("z_function_hover");
+                        }
+                    }
+                }
+                loadTree();
                 break;
             default:
                 $("#tbodyClick").empty();
