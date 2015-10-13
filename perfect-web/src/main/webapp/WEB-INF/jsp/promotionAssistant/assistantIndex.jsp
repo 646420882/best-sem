@@ -234,6 +234,7 @@
     <div class="zs_bottom over">
         <input type="hidden" id="hiddenkwid_1"/>
 
+
         <div class="zs_bottom1 over fl ">
             <ul>
                 <li>
@@ -368,9 +369,9 @@
                    data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
-                    <th style="width: 40px;">&nbsp;操作</th>
                     <th><input type="checkbox" name='creativeAllCheck'
                                onchange="$.foRCheckAll('creativeAllCheck')"/></th>
+                    <th style="width: 40px;">&nbsp;操作</th>
                     <th>&nbsp;<span onclick="TabModel.Show('creativetitle',this)">
                         创意标题&nbsp;<img src="../public/img/select.png"></span></th>
                     <th>&nbsp;<span onclick="TabModel.Show('creativetitle1',this)">
@@ -771,9 +772,9 @@
                    data-resizable-columns-id="demo-table">
                 <thead>
                 <tr class="list02_top">
-                    <th>&nbsp;操作</th>
                     <th><input type="checkbox" name='adgroupAllCheck'
                                onchange="$.foRCheckAll('adgroupAllCheck')"/></th>
+                    <th>&nbsp;操作</th>
                     <th>&nbsp;<span onclick="TabModel.Show('extensionname',this)">
                         推广单元名称&nbsp;<img src="../public/img/select.png"></span></th>
                     <th>&nbsp;<span onclick="TabModel.Show('extensionstate',this)">

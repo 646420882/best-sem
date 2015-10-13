@@ -299,8 +299,8 @@ function addOperate(obj) {
                 var i = $("#createTable tbody tr").size();
                 var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                    "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + json.data + "'/></td>" +
                     "<td style='width: 30px;'>&nbsp;<input type='hidden' value='" + json.data + "'/></td>" +
-                    "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "'/></td>" +
                     "<td >" + until.substring(10, data["title"]) + "</td>" +
                     " <td >" + until.substring(10, data["description1"]) + "</td>" +
                     " <td >" + until.substring(10, data["description2"]) + "</td>" +
@@ -354,8 +354,8 @@ function loadCreativeData(page_index) {
                 var ls = getLocalStatus(parseInt(_edit));
                 _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                     "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "'/></td>" +
+                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                     "<td >" + until.substring(10, json[i].title) + "</td>" +
                     " <td >" + until.substring(10, json[i].description1) + "</td>" +
                     " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -396,11 +396,11 @@ function skipCreativePage() {
  */
 function on(obj) {
     var _this = $(obj);
-    var tadd = _this.find("td:eq(0) a").html();
+    var tadd = _this.find("td:eq(1) a").html();
     if (tadd == undefined && acHtml == "删除") {
         addOperate(tmp);
     }
-    acHtml = _this.find("td:eq(0) a").html();
+    acHtml = _this.find("td:eq(1) a").html();
     tmp = _this;
     var _edit = _this.find("td:eq(10)").html();
     if (_edit != "") {
@@ -571,7 +571,7 @@ function addCreative() {
     var jcBox = $("#jcUl");
     if (sparams.cid != null && sparams.aid != null) {
         var i = $("#createTable tbody tr").size();
-        var lastTr = $("#createTable tr:eq(" + i + ")").find("td:eq(0) a").html();
+        var lastTr = $("#createTable tr:eq(" + i + ")").find("td:eq(1) a").html();
         if (lastTr == "删除") {
             alert("请提交后再继续添加");
             return;
@@ -579,8 +579,8 @@ function addCreative() {
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+            "<td>&nbsp;</td>"+
             "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value=''/><input type='hidden' name='aid' value='" + getCreativeAId() + "'/></td>" +
-            "<td>&nbsp;</td>" +
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
@@ -959,13 +959,13 @@ function loadAdgroup(rs) {
  */
 function deleteByObjectId() {
     var temp = $(tmp);
-    var oid = temp.find("td:eq(0) input").val() != undefined ? temp.find("td:eq(0) input").val() : temp.find("td:eq(0) span").html();
+    var oid = temp.find("td:eq(1) input").val() != undefined ? temp.find("td:eq(1) input").val() : temp.find("td:eq(1) span").html();
     if (oid != undefined) {
         var con = confirm("是否删除该创意？");
         if (con) {
             $.get("/assistantCreative/del", {oid: oid}, function (rs) {
                 if (rs == "1") {
-                    $(tmp).find("td:eq(11)").html("<span class='error' step='3'></span>");
+                    $(tmp).find("td:eq(12)").html("<span class='error' step='3'></span>");
                 }
             });
         }
@@ -996,7 +996,7 @@ function updateCreatvie() {
     });
     var dm = $(".doMainS").html();
     var _tr = temp;
-    var creativeId = _tr.find("td:eq(0) input").val() != undefined ? _tr.find("td:eq(0) input").val() : _tr.find("td:eq(0) span").html();
+    var creativeId = _tr.find("td:eq(1) input").val() != undefined ? _tr.find("td:eq(1) input").val() : _tr.find("td:eq(1) span").html();
     var title = _tr.find("td:eq(2) a").attr("title") != undefined ? _tr.find("td:eq(2) a").attr("title") : _tr.find("td:eq(2) span").html();
     var description1 = _tr.find("td:eq(3) a").attr("title") != undefined ? _tr.find("td:eq(3) a").attr("title") : _tr.find("td:eq(3) span").html();
     var description2 = _tr.find("td:eq(4) a").attr("title") != undefined ? _tr.find("td:eq(4) a").attr("title") : _tr.find("td:eq(4) span").html();
@@ -1187,6 +1187,7 @@ function updateOk() {
                     _edit = "<span class='pen' step='2'></span>";
                 }
                 var _tbody =
+                    "<td><input type='checkbox' name='creativeCheck' value='"+formData["oid"]+"''/></td>"+
                     "<td>&nbsp;<input type='hidden' value='" + formData["oid"] + "'/></td>" +
                     "<td >" + until.substring(10, formData["title"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description1"]) + "</td>" +
@@ -1229,7 +1230,7 @@ function reBakClick() {
             var con = confirm("是否还原选中的数据？");
             if (con) {
                 var _localStatus = parseInt(_this.find("td:eq(12) span").attr("step"));
-                var _oid = _this.find("td:eq(0) input").val() != undefined ? _this.find("td:eq(0) input").val() : _this.find("td:eq(0) span").html();
+                var _oid = _this.find("td:eq(1) input").val() != undefined ? _this.find("td:eq(1) input").val() : _this.find("td:eq(1) span").html();
                 switch (_localStatus) {
                     case 1:
                         deleteByObjectId();
@@ -1259,8 +1260,8 @@ function reBack(oid) {
             var s = until.getCreativeStatus(parseInt(json.data["status"]));
             var d = until.convertDeviceByNum(parseInt(json.data['devicePreference']));
             var _tbody =
-                "<td>&nbsp;<input type='hidden' value='" + crid + "'/></td>" +
                 "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + crid + "'/></td>" +
+                "<td>&nbsp;<input type='hidden' value='" + crid + "'/></td>" +
                 "<td >" + until.substring(10, json.data["title"]) + "</td>" +
                 " <td >" + until.substring(10, json.data["description1"]) + "</td>" +
                 " <td >" + until.substring(10, json.data["description2"]) + "</td>" +
@@ -1279,7 +1280,7 @@ function reBack(oid) {
 function delBack(oid) {
     $.get("../assistantCreative/delBack", {oid: oid}, function (rs) {
         if (rs == "1") {
-            $(tmp).find("td:eq(11)").html("");
+            $(tmp).find("td:eq(12)").html("");
         }
     });
 }
@@ -1326,8 +1327,8 @@ function creativeMulti() {
 }
 function creativeUpload() {
     var _this = $(tmp);
-    var oid = _this.find("td:eq(0) input").val();
-    var _localStatus = _this.find("td:eq(11) span").attr("step");
+    var oid = _this.find("td:eq(1) input").val();
+    var _localStatus = _this.find("td:eq(12) span").attr("step");
     if (_localStatus != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;

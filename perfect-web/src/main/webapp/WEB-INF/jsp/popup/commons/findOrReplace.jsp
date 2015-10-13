@@ -23,7 +23,7 @@
                     <div class="replaceright fl">
                         <select name="checkType" no-sub="true">
                             <option value="0">当前选中</option>
-                            <option value="1">所有</option>
+                            <option value="1">所有(计划下所有)</option>
                         </select>
                     </div>
                 </li>
