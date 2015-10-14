@@ -81,6 +81,115 @@ var commons = {
 
 }
 
+var editCommons = {
+    EditTmp: {},
+    Copy: function (type) {
+        switch (type) {
+            case "keyword":
+                this.getEditData("keyword", "copy");
+                break;
+            case "creative":
+                this.getEditData("creative", "copy");
+                break;
+            case "adgroup":
+                this.getEditData("adgroup", "copy");
+                break;
+            case "campaign":
+                this.getEditData("campaign", "copy");
+                break;
+        }
+    },
+    Cut: function (type) {
+        switch (type) {
+            case "keyword":
+                this.getEditData("keyword", "cut");
+                break;
+            case "creative":
+                this.getEditData("creative", "cut");
+                break;
+            case "adgroup":
+                this.getEditData("adgroup", "cut");
+                break;
+            case "campaign":
+                this.getEditData("campaign", "cut");
+                break;
+        }
+    },
+    getEditData: function (type, editType) {
+        var cutCheck = $("input[name='" + type + "Check']");
+        var selectedData = [];
+        cutCheck.each(function (i, o) {
+            if ($(o).prop("checked")) {
+                selectedData.push($(o).val());
+            }
+        });
+        var edtTypeStr = editType != "copy" ? "剪切" : "复制";
+        if (selectedData.length) {
+            this.EditTmp["type"] = type;
+            this.EditTmp["editType"] = editType;
+            this.EditTmp["editData"] = selectedData.toString();
+            console.log("我已经" + edtTypeStr + "了这些数据!" + type);
+            console.log(this.EditTmp);
+        } else {
+            alert("请选择要" + edtTypeStr + "的数据！");
+        }
+    },
+    Parse: function (type) {
+        switch (type) {
+            case "keyword":
+                this.ParseData("keyword");
+                break;
+            case "creative":
+                this.ParseData("creative");
+                break;
+            case "adgroup":
+                this.ParseData("adgroup");
+                break;
+            case "campaign":
+                this.ParseData("campaign");
+                break;
+        }
+    },
+    ParseData: function (type) {
+        if (this.EditTmp.editType && this.EditTmp.editData.length) {
+            if (type == "keyword" || type == "creative") {
+                if (!jsonData.aid) {
+                    alert("请选择要粘贴的单元");
+                    return;
+                }
+            }
+            if (type == "adgroup") {
+                if (!jsonData.cid) {
+                    alert("请选择要粘贴的计划");
+                    return;
+                }
+            }
+
+            if (this.EditTmp.type == type) {
+                $.ajax({
+                    url: "../assistantCommons/dataParse",
+                    data: JSON.stringify({
+                        type: this.EditTmp.type,
+                        editType: this.EditTmp.editType,
+                        editData: this.EditTmp.editData,
+                        aid: jsonData.aid,
+                        cid: jsonData.cid
+                    }),
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        console.log(result);
+                    }
+                });
+            } else {
+                alert("不同层级的数据无法粘贴，请选择相同的层级。")
+            }
+        } else {
+            alert("粘贴板没有数据！")
+        }
+    }
+}
+
 //自定义表格
 $.fn.extend({
     renderGrid: function (model, pageConfig) {

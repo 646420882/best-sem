@@ -8,6 +8,7 @@ import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.param.EditParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.AssistantKeywordService;
@@ -54,6 +55,35 @@ public class AssistantCommonsController extends WebContextSupport {
 
     private static Integer OBJ_SIZE = 18;
 
+    @RequestMapping(value = "/dataParse", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView editData(@RequestBody EditParam ep) {
+        switch (ep.getType()) {
+            case "keyword":
+                String[] kIds = ep.getEditData().split(",");
+                List<String> keywordIds = Arrays.asList(kIds);
+                keywordIds.stream().forEach(s -> {
+                    if (s.length() > OBJ_SIZE) {
+
+                    } else {
+
+                    }
+                });
+
+                break;
+            case "creative":
+                break;
+            case "adgroup":
+                break;
+            case "campaign":
+                break;
+        }
+        return null;
+    }
+
+    private void editTypeSwitch(final EditParam ep) {
+
+    }
+
     @RequestMapping(value = "/checkSome", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView findOrReplace(@RequestBody FindOrReplaceParam forp) {
         switch (forp.getType()) {
@@ -68,7 +98,7 @@ public class AssistantCommonsController extends WebContextSupport {
                 setCampaignNameByLongId(adgroupDTOs);
                 return writeMapObject(DATA, adgroupDTOs);
             case "campaign":
-                List<CampaignDTO> campaignDTOs=campaignFindOrReplace(forp);
+                List<CampaignDTO> campaignDTOs = campaignFindOrReplace(forp);
                 return writeMapObject(DATA, campaignDTOs);
         }
         return writeMapObject(DATA, null);
@@ -95,7 +125,6 @@ public class AssistantCommonsController extends WebContextSupport {
      */
 
     //start keywordTextFindOrReplace
-
     private List<KeywordInfoDTO> keyWordFindOrReplace(final FindOrReplaceParam forp) {
         List<KeywordInfoDTO> returnResult = new ArrayList<>();
         if (forp.getForType() == 0) {
@@ -1188,7 +1217,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     break;
             }
         }
-        if(forp.isfQcaseAll()){
+        if (forp.isfQcaseAll()) {
             switch (type) {
                 case 1:
                     if (dto.getCampaignName() != null) {
@@ -1205,7 +1234,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     break;
             }
         }
-        if(forp.isfQigonreTirm()){
+        if (forp.isfQigonreTirm()) {
             switch (type) {
                 case 1:
                     if (dto.getCampaignName() != null) {

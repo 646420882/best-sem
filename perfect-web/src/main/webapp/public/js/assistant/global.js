@@ -8,11 +8,11 @@ $("tbody").delegate("tr", "click", function (event) {
 function Copy() {
     listnumber.html();
 }
-//粘贴
-function Paste() {
-    console.log($(".table-bordered").append(listnumber));
-    $(".table-bordered").append(listnumber);
-};
+////粘贴
+//function Paste() {
+//    console.log($(".table-bordered").append(listnumber));
+//    $(".table-bordered").append(listnumber);
+//};
 
 /*=======================================公用函数=====================================*/
 /**
