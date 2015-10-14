@@ -6,6 +6,7 @@ package com.perfect.param;
  * @package com.perfect.param
  * @description 文字查找，替换param类，用于封装前段传入数据
  * @update 2015年09月25日. 上午10:35
+ * @update 2015年10月14日18:12:12  添加单元ID变量
  */
 public class FindOrReplaceParam {
     //要查找的层级类别
@@ -37,9 +38,11 @@ public class FindOrReplaceParam {
     boolean rQigonreTirm;
 
     //要替换的文字
-    String replaceText=null;
+    String replaceText = null;
 
     String campaignId;
+
+    String adgroupId;
 
     public String getType() {
         return type;
@@ -129,6 +132,14 @@ public class FindOrReplaceParam {
         this.campaignId = campaignId;
     }
 
+    public String getAdgroupId() {
+        return adgroupId;
+    }
+
+    public void setAdgroupId(String adgroupId) {
+        this.adgroupId = adgroupId;
+    }
+
     @Override
     public String toString() {
         return "FindOrReplaceParam{" +
@@ -143,6 +154,7 @@ public class FindOrReplaceParam {
                 ", rQigonreTirm=" + rQigonreTirm +
                 ", replaceText='" + replaceText + '\'' +
                 ", campaignId='" + campaignId + '\'' +
+                ", adgroupId='" + adgroupId + '\'' +
                 '}';
     }
 }

@@ -66,7 +66,19 @@ var commons = {
         _hiddenType.val('');
         $(".TB_overlayBG").css("display", "none");
         $("#findOrReplace").css("display", "none");
+        $("#findBatchDel").css("display", "none");
+    },
+    batchDel: function () {
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#findBatchDel").css({
+            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
     }
+
 }
 
 //自定义表格
@@ -482,6 +494,33 @@ $.extend({
                 }
                 break;
         }
+    },foBatch: function (_this) {
+        var form = $(_this).parents("form");
+        var checkType = $("select[name='checkType'] :selected");
+        var foR_params = {};
+        var forType = $("#forType").val();
+        if (checkType.val() == 0) {
+            var checked_data = [];
+            var checkChildren = $("input[name='keywordCheck']");
+            for (var i = 0; i < checkChildren.length; i++) {
+                if (checkChildren[i].checked == true) {
+                    checked_data.push(checkChildren[i].value);
+                }
+            }
+            if (!checked_data.length) {
+                alert("您没有选择要所需物料!");
+                return;
+            }
+            foR_params = {type: forType, forType: 0, checkData: checked_data};
+        } else {
+            foR_params = {type: forType, forType: 1, campaignId: jsonData.cid, adgroupId: jsonData.aid};
+        }
+        form.foRSubmit("../assistantCommons/batchDel", foR_params, function (result) {
+            if (result.data) {
+                $.foRComplete({type: foR_params.type, forType: foR_params.forType, data: result.data});
+                commons.foRClose();
+            }
+        });
     }
 });
 //表格顶部选择弹窗

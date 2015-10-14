@@ -24,5 +24,7 @@
                 src="../public/img/zs_function15.png"></span><b>粘贴</b></a></li>
         <li id="Textreplacement"><a href="#"><span class="zs_top"><img
                 src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>
+        <li onclick="commons.batchDel()"><a href="#"><span class="zs_top"><img
+                src="../public/img/zs_function_text.png"></span><b>批量删除</b></a></li>
     </ul>
 </div>

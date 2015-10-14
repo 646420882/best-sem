@@ -6,6 +6,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -120,5 +121,7 @@ public interface AssistantKeywordService {
     List<KeywordInfoDTO> getKeywordInfoByCampaignIdStr(String cid);
 
     List<KeywordInfoDTO> getKeywordInfoByCampaignIdLong(Long cid);
+
+    void batchDelete(FindOrReplaceParam param);
 
 }

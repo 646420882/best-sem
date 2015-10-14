@@ -307,6 +307,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     //54bcd1e3593f6a25cfe4e2da
     @Override
     public void deleteByCampaignId(Long campaginId) {
+
         Query q = new Query(Criteria.where(CAMPAIGN_ID).is(campaginId));
         getMongoTemplate().remove(q, CampaignEntity.class);
         getMongoTemplate().remove(q, CampaignBackUpEntity.class);

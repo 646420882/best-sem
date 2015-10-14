@@ -144,4 +144,6 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds);
 
+    void batchDelete(List<String> strings);
+
 }
