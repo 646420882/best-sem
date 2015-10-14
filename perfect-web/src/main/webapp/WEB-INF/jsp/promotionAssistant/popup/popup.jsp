@@ -445,7 +445,7 @@
     <div class="mainlist" style="width:400px;">
         <p>检查完成，请点击发布更改，将本地修改内容发布到线上</p>
 
-        <div class="progress" style="background:#01aeef;margin:10px 0">
+        <div class="progress" style="background:#61d677;height:38px;margin:10px 0">
         </div>
         <div id="tabs" >
             <ul>

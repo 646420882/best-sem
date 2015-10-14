@@ -13,12 +13,27 @@ public interface MaterialsScheduledService {
     String MATERIALS_JOB_GROUP = "SEM_MATERIALS";
 
 
-    void configureScheduler(String cronExpression, String jobDescription);
+    /**
+     * <p>配置定时任务
+     *
+     * @param jobType
+     * @param cronExpression
+     */
+    void configureScheduler(int jobType, String cronExpression);
 
+    /**
+     * 暂停任务
+     */
     void pauseJob();
 
+    /**
+     * 恢复任务
+     */
     void resumeJob();
 
+    /**
+     * 删除任务
+     */
     void deleteJob();
 
 

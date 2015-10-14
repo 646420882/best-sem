@@ -12,26 +12,35 @@ import org.springframework.web.context.ContextLoader;
 @Component
 public class ApplicationContextHelper implements ApplicationContextAware {
 
-    private static ApplicationContext context;
+    private static ApplicationContext ctx;
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        ApplicationContextHelper.context = applicationContext;
+        ApplicationContextHelper.ctx = applicationContext;
     }
 
     public static org.springframework.context.ApplicationContext getCurrentApplicationContext() {
-        if (context == null)
-            context = ContextLoader.getCurrentWebApplicationContext();
+        if (ctx == null) {
+            synchronized (ApplicationContextHelper.class) {
+                if (ctx == null)
+                    ctx = ContextLoader.getCurrentWebApplicationContext();
+            }
+        }
 
-        return context;
+        return ctx;
     }
 
 
     public static Object getBeanByName(String name) {
-        return context.getBean(name);
+        return getCurrentApplicationContext().getBean(name);
     }
 
-    public static Object getBeanByClass(Class<?> clz) {
-        return context.getBean(clz);
+    public static <T> T getBeanByClass(Class<T> clz) {
+        return getCurrentApplicationContext().getBean(clz);
+    }
+
+    public static <T> T getBean(String name, Class<T> clz) {
+        return getCurrentApplicationContext().getBean(name, clz);
     }
 }

@@ -21,6 +21,7 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.utils.paging.PagerInfo;
@@ -28,6 +29,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -1136,7 +1138,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     @Override
     public List<KeywordInfoDTO> getKeywordInfoByCampaignIdLong(Long cid) {
-        List<KeywordInfoDTO> keywordInfoDTOs=new ArrayList<>();
+        List<KeywordInfoDTO> keywordInfoDTOs = new ArrayList<>();
 
         List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
 
@@ -1176,6 +1178,23 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             keywordInfoDTOs.add(keywordInfoDTO);
         });
         return keywordInfoDTOs;
+    }
+
+    @Override
+    public void batchDelete(FindOrReplaceParam param) {
+        if (param != null) {
+            String[] list = param.getCheckData().split(",");
+            List<String> asList = Arrays.asList(list);
+            if (param.getForType() != 0) {
+                String dataId = param.getCampaignId() != null ? param.getCampaignId() : param.getAdgroupId();
+                if (param.getCampaignId() != null) {
+
+                } else {
+
+                }
+            }
+            keywordDAO.batchDelete(asList);
+        }
     }
 
 

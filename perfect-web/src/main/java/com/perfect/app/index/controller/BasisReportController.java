@@ -4,16 +4,11 @@ import com.google.gson.Gson;
 import com.perfect.core.AppContext;
 import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.account.AccountReportDTO;
-import com.perfect.service.BasisReportDownService;
-import com.perfect.service.BasisReportService;
-import com.perfect.service.BasisReportUCService;
+import com.perfect.service.*;
 import com.perfect.utils.DateUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -36,7 +31,6 @@ public class BasisReportController {
     private BasisReportDownService basisReportDownService;
     @Resource
     private BasisReportUCService basisReportUCService;
-
     @RequestMapping(value = "/reportIndex")
     public ModelAndView getbasisReportPage() {
         return new ModelAndView("foundationReport/basisReport");
@@ -212,7 +206,7 @@ public class BasisReportController {
      * @return
      */
     @RequestMapping(value = "/report/downReportCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView downReportCSV(HttpServletResponse response,
+    public void downReportCSV(HttpServletResponse response,
                                       @RequestParam(value = "startDate", required = false) String startDate,
                                       @RequestParam(value = "endDate", required = false) String endDate,
                                       @RequestParam(value = "reportType", required = false, defaultValue = "1") int reportType,
@@ -234,7 +228,7 @@ public class BasisReportController {
 
         OutputStream os = null;
         try {
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("GBK"), "ISO8859-1"));
             os = response.getOutputStream();
             basisReportDownService.downReportCSV(os, redisKey, dateType, devices, reportType, dateHead);
         } catch (IOException e) {
@@ -249,7 +243,6 @@ public class BasisReportController {
                 e.printStackTrace();
             }
         }
-        return null;
     }
 
 
@@ -260,7 +253,7 @@ public class BasisReportController {
      * @return
      */
     @RequestMapping(value = "/report/downAccoutReportCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView downAccoutReportCSV(HttpServletResponse response,
+    public void downAccoutReportCSV(HttpServletResponse response,
                                             @RequestParam(value = "date1", required = true) String date1,
                                             @RequestParam(value = "date2", required = true) String date2,
                                             @RequestParam(value = "date3", required = false) String date3,
@@ -307,7 +300,7 @@ public class BasisReportController {
         String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
         OutputStream os = null;
         try {
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("GBK"), "ISO8859-1"));
             os = response.getOutputStream();
             basisReportDownService.downAccountReportCSV(os, endDate1, endDate2, endDate3, endDate4, dateType, devices, sortVS, startVS, limitVS);
         } catch (IOException e) {
@@ -322,7 +315,6 @@ public class BasisReportController {
                 e.printStackTrace();
             }
         }
-        return null;
     }
 
 }

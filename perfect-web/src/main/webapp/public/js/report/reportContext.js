@@ -1905,7 +1905,9 @@ $(function () {
                     $("#searchWordTbody").html(basisHtml);
                     $("#downReportSearch").empty();
                     var downUrl = "date1=" + daterangepicker_start_date + "&date2=" + daterangepicker_end_date;
-                    $("#downReportSearch").append("<a href='/report/downReportCSV?" + downUrl + "'  class='become fl'>下载报告</a>")
+                    var url = "assistantKeyword/downSeachKeyWordReportCSV?levelOfDetails="+levelOfDetails+"&startDate="+(_startDate != null ? _startDate.Format("yyyy-MM-dd hh:mm:ss") : _startDate)+
+                    "&endDate=" + (_endDate != null ? _endDate.Format("yyyy-MM-dd hh:mm:ss") : _endDate) +"&attributes = "+regions+"&device="+device+"&status="+dateUnit;
+                    $("#downReportSearch").append("<a href='"+url+"'  class='become fl'>下载报告</a>")
                 }
             }
         });
@@ -1956,6 +1958,5 @@ $(function () {
     $("#SearchReport").click(function () {
         SearchClass();
     });
-
     /**********************************************************************************/
 });

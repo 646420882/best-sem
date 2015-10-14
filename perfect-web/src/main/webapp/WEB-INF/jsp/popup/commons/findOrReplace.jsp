@@ -79,3 +79,38 @@
         </div>
     </form>
 </div>
+
+<div class="box" style="display:none;*width:400px;" id="findBatchDel">
+    <form submit-type="ajax">
+        <h2 id="batchDel"><span class="fl">批量删除</span><a href="#" class="close"
+                                                               onclick="commons.foRClose()">关闭</a>
+        </h2>
+        <div class="mainlist">
+            <ul>
+                <li>
+                    <div class="replaceleft fl">
+                        <label>物料选择方式：</label>
+                    </div>
+                    <div class="replaceright fl">
+                        <select name="checkType" no-sub="true">
+                            <option value="0">当前选中</option>
+                            <option value="1">所有</option>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+            <div class="zs_sets over">
+            </div>
+        </div>
+        <div class="main_bottom">
+            <div class="w_list03">
+                <ul>
+                    <li class="current" onclick="$.foBatch(this)">确认</li>
+                    <li class="close" onclick="commons.foRClose()">取消</li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+
+

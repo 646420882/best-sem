@@ -86,8 +86,9 @@ function whenClickTreeLoadData(tabName, param) {
             getAdgroupPlan(param.cid, param.cn);
         }
     }
-    $(".assistant_left").height($(".assistant_right")[0].offsetHeight-20+"px");
-    $("#zTree").height($(".assistant_right")[0].offsetHeight-130+"px");
+    $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
+    $(".j_list02").hide();
 }
 
 /**

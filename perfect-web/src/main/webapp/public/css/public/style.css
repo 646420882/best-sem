@@ -1163,6 +1163,7 @@
     height: 530px;
     overflow: auto;
 }
+
 .ztree li {
     padding: 0;
     margin: 5px;
@@ -2148,7 +2149,8 @@ h2 .close {
 .zs_top {
     background: url(/public/img/bg.png) -10px -420px no-repeat;
 }
-.zs_top1{
+
+.zs_top1 {
     width: 15px;
     height: 15px;
     line-height: 15px;
@@ -2159,7 +2161,6 @@ h2 .close {
     z-index: 1;
 
 }
-
 
 .z_function_hover {
     width: 15px;
@@ -2223,6 +2224,7 @@ h2 .close {
 .zs_bottom1 ul li, .zs_bottom2 ul li {
     width: 100%;
     margin-top: 5px;
+    position: relative;
     overflow: hidden;
 }
 
@@ -3408,7 +3410,6 @@ h2 .close {
     min-width: 110px;
     font-weight: normal;
     *width: 200px;
-    overflow: hidden;
 
 }
 
@@ -3847,7 +3848,7 @@ h2 .close {
 }
 
 #sPreview {
-    width: 80%;
+    width: 100%;
     height: 80px;
     background: #fff;
     border: 1px solid #CCC;
@@ -3919,15 +3920,18 @@ input[type=checkbox]:focus {
 }
 
 /*#tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {*/
-    /*background: #f0f0f0;*/
+/*background: #f0f0f0;*/
 /*}*/
+#tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {
+    background: #f5f5f5;
+}
 
 #tabs .ui-state-default a, .ui-state-default a:link {
     color: #000;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
-    background: #f9f8f8;
+    background: #fff;
 }
 
 .mainlist ul li .replaceleft {
@@ -3955,6 +3959,174 @@ input[type=checkbox]:focus {
     width: 62%;
 }
 
-#downReportSearch a{
-    margin:10px 0 10px 10px;
+#downReportSearch a {
+    margin: 10px 0 10px 10px;
+}
+
+.tabmodel {
+    width: 200px;
+    position: absolute;
+    z-index: 1000;
+    padding: 10px;
+    border: 1px solid #cfcfcf;
+    background: #fff;
+    -webkit-box-shadow: #666 0px 0px 10px;
+    -moz-box-shadow: #666 0px 0px 10px;
+    box-shadow: #666 0px 0px 10px;
+    display: none;
+}
+
+.tabmodel p {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.tabmodel .btn {
+    margin-top: 5px;
+}
+
+.tabmodel select {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.tabmodel textarea {
+    width: 100%;
+    height: 50px;
+    overflow: scroll;
+}
+
+.tabmodel input[type=number] {
+    height: 30px;
+}
+
+.tabmodel ul {
+    display: block;
+    margin-bottom: 0px;
+}
+
+.tabmodel ul li {
+    margin-top: 5px;
+}
+
+.tabmodel ul li input {
+    margin: 0px 2px 2px 0;
+}
+
+.tabmodel ul li ul {
+    display: block;
+    padding-left: 15px;
+}
+
+.tabmodel .quality li img {
+    margin-right: 5px;
+}
+
+.tabmodel .quality li input, .tabmodel .quality li b {
+    margin: 0px 2px 4px 0;
+}
+
+.tabmodel .quality li b {
+    font-weight: normal;
+}
+
+.tabmodel ul li ul li {
+    margin-top: 2px;
+}
+
+#CheckCompletion.box h2 {
+    background: #ffffff;
+    color: #000000;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#CheckCompletion h2 .close {
+    color: #000000;
+}
+
+#CheckCompletion .mainlist {
+    background: #ffffff;
+}
+
+#CheckCompletion .ui-widget-header {
+    background: none;
+}
+
+#CheckCompletion .ui-tabs {
+    padding: 0px;
+}
+
+#CheckCompletion .ui-widget-header {
+    border: none;
+}
+
+#CheckCompletion .ui-tabs .ui-tabs-nav li {
+    width: 50%;
+    margin: 0px;
+}
+
+#CheckCompletion .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+    display: block;
+    width: 100%;
+}
+
+#CheckCompletion table {
+    width: 100%;
+}
+
+#CheckCompletion table tr {
+    height: 24px;
+=
+}
+
+#CheckCompletion table tr td {
+    padding: 0 10px;
+}
+
+#CheckCompletion .ui-tabs .ui-tabs-panel {
+    padding: 0px;
+}
+
+#CheckCompletion table tr:nth-child(odd) {
+    background: #fafafa;
+}
+
+#CheckCompletion table td:nth-child(even) {
+    color: #C00;
+}
+
+#CheckCompletion table tr:hover {
+    background: #ffea9d;
+}
+
+.crative_text {
+    width: 80%;
+}
+
+.assstant_editor {
+    width: 90px;
+    position: absolute;
+    z-index: 999;
+    background: #fff;
+    display: none;
+}
+
+.assstant_editor ul a {
+    color: #000;
+}
+
+.assstant_editor ul a:hover {
+    color: #ffb500;
+}
+
+.assstant_editor ul li {
+    width: 100%;
+    display: block;
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    vertical-align: middle;
+    z-index: 10;
+    padding: 0 10px;
+
 }

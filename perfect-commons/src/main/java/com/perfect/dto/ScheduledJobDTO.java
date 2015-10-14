@@ -13,11 +13,11 @@ public class ScheduledJobDTO extends BaseDTO {
 
     private String jobGroup;
 
+    private int jobType;
+
     private int jobStatus;
 
     private String cronExpression;
-
-    private String jobDescription;
 
 
     public String getJobId() {
@@ -44,6 +44,14 @@ public class ScheduledJobDTO extends BaseDTO {
         this.jobGroup = jobGroup;
     }
 
+    public int getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(int jobType) {
+        this.jobType = jobType;
+    }
+
     public int getJobStatus() {
         return jobStatus;
     }
@@ -58,13 +66,5 @@ public class ScheduledJobDTO extends BaseDTO {
 
     public void setCronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
-    }
-
-    public String getJobDescription() {
-        return jobDescription;
-    }
-
-    public void setJobDescription(String jobDescription) {
-        this.jobDescription = jobDescription;
     }
 }

@@ -54,7 +54,14 @@ var add = {
         func: function () {
             addCreative();
         }
-    }, del = {
+    },
+    Modify = {
+        text: "修改创意",
+        img: "../public/img/zs_function15.png",
+        func: function () {
+            updateCreatvie();
+        }
+    }   , del = {
         text: "删除",
         img: "../public/img/zs_function2.png",
         func: function () {
@@ -117,7 +124,7 @@ var add = {
  * @type {*[]}
  */
 var menuData = [
-    [add, del, update, cAddMutli, creBack, cUpload, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
+    [add, Modify, del, update, cAddMutli, creBack, cUpload, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
 ];
 /**
  * 用户缓存右键点击的对象

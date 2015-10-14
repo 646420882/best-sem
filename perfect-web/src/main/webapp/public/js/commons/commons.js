@@ -18,16 +18,20 @@ var commons = {
                 return;
             }
         }
-        if ($(_this).find("ul").attr("class") == "hide") {
-            $(_this).find("ul").removeClass("hide");
-            $(_this).find("ul").mouseleave(function () {
-                $(_this).find("ul").addClass("hide");
+        if ($(".assstant_editor").css("display") == "none") {
+            var TabtopFirst = $(_this).offset().top + $(_this).outerHeight() + "px";
+            var TableftNext = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
+            $(".assstant_editor").css("top", TabtopFirst);
+            $(".assstant_editor").css("left", TableftNext);
+            $(".assstant_editor").show();
+            $(".assstant_editor ").mouseleave(function () {
+                $(".assstant_editor").hide();
             });
         }
         else {
-            $(_this).find("ul").addClass("hide");
+            $(".assstant_editor").hide();
         }
-        $(".Textreplacement").click(function () {
+        $("#Textreplacement").click(function () {
             $(".TB_overlayBG").css({
                 display: "block", height: $(document).height()
             });
@@ -62,7 +66,19 @@ var commons = {
         _hiddenType.val('');
         $(".TB_overlayBG").css("display", "none");
         $("#findOrReplace").css("display", "none");
+        $("#findBatchDel").css("display", "none");
+    },
+    batchDel: function () {
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#findBatchDel").css({
+            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
     }
+
 }
 
 //自定义表格
@@ -439,7 +455,7 @@ $.extend({
                     $("#tbodyClick5").append("<tr><td>没有找到类似的数据</td></tr>");
                     return;
                 }
-                for (var i = 0; i <result.data.length; i++) {
+                for (var i = 0; i < result.data.length; i++) {
                     var html = campaignDataToHtml(result.data[i], i);
                     $("#tbodyClick5").append(html);
                     if (i == 0) {
@@ -478,8 +494,300 @@ $.extend({
                 }
                 break;
         }
+    },foBatch: function (_this) {
+        var form = $(_this).parents("form");
+        var checkType = $("select[name='checkType'] :selected");
+        var foR_params = {};
+        var forType = $("#forType").val();
+        if (checkType.val() == 0) {
+            var checked_data = [];
+            var checkChildren = $("input[name='keywordCheck']");
+            for (var i = 0; i < checkChildren.length; i++) {
+                if (checkChildren[i].checked == true) {
+                    checked_data.push(checkChildren[i].value);
+                }
+            }
+            if (!checked_data.length) {
+                alert("您没有选择要所需物料!");
+                return;
+            }
+            foR_params = {type: forType, forType: 0, checkData: checked_data};
+        } else {
+            foR_params = {type: forType, forType: 1, campaignId: jsonData.cid, adgroupId: jsonData.aid};
+        }
+        form.foRSubmit("../assistantCommons/batchDel", foR_params, function (result) {
+            if (result.data) {
+                $.foRComplete({type: foR_params.type, forType: foR_params.forType, data: result.data});
+                commons.foRClose();
+            }
+        });
     }
 });
+//表格顶部选择弹窗
+var tabselect =
+    "<select>" +
+    "<option>包含</option>" +
+    "<option>不包含</option>" +
+    "<option>等于</option>" +
+    "<option>不等于</option>" +
+    "<option>开始于</option>" +
+    "<option>截止于</option></select>" +
+    "<textarea> </textarea>" +
+    "<p>最多同时搜1000个文本</p>";
+var Computerquality =
+    "<ul class='quality'>" +
+    "<li>" + "<input type='checkbox'>" +
+    "<span>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "</span>" + "<b>1</b>" +
+    "</li>" +
+    "<li>" + "<input type='checkbox'>" +
+    "<span>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "</span>" + "<b>2</b>" +
+    "</li>" +
+    "<li>" + "<input type='checkbox'>" +
+    "<span>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "</span>" + "<b>3</b>" +
+    "</li>" +
+
+    "<li>" + "<input type='checkbox'>" +
+    "<span>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "</span>"
+    + "<b>4</b>" +
+    "</li>" +
+    "<li>" + "<input type='checkbox'>" +
+    "<span>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star3.png'>" +
+    "</span>" + "<b>5</b>" +
+    "</li>"
+    + "</ul>"
+var pause =
+    "<ul><li><input type='checkbox'>全部</li>" +
+    "<li><input type='checkbox'>启用</li>" +
+    "<li><input type='checkbox'>暂停</li>";
+var price =
+    "<input type='number' name='points' min='00' max='10' />"
+    + "到"
+    + "<input type='number' name='points' min='00' max='10' />";
+var TabModel = {
+    Show: function (type, _this) {
+        if ($(".dropdown-menus").css("display") == "none") {
+            var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
+            var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
+            $(".dropdown-menus").css("top", tabtop);
+            $(".dropdown-menus").css("left", tableft);
+            $(".dropdown-menus").show();
+            $(".dropdown-menus ").mouseleave(function () {
+                $(".dropdown-menus").hide();
+            });
+        }
+        else {
+            $(".dropdown-menus").hide();
+        }
+        $("#CheckList").empty();
+        switch (type) {
+            case "Keywordname":
+                $("#TabTitle").html("关键词名称");
+                $("#CheckList").append(tabselect);
+                break;
+            case "Keywordstate":
+                $("#TabTitle").html("关键词状态");
+                var states =
+                    "<ul><li><input type='checkbox'>有效</li>" +
+                    "<li><input type='checkbox'>暂停推广</li>" +
+                    "<li><input type='checkbox'>不宜推广</li>" +
+                    "<li><input type='checkbox'>部分无效</li>" +
+                    "<li><input type='checkbox'>审核中</li>" +
+                    "<li><input type='checkbox'>搜索量过低</li>" +
+                    "<li><input type='checkbox'>计算机搜索无效</li>" +
+                    "<li><input type='checkbox'>移动搜索无效</li>" +
+                    "<li><input type='checkbox'>搜索无效</li>" +
+                    "<li><input type='checkbox'>待激活</li>" +
+                    "<li><input type='checkbox'>有效-移动URL审核中</li>" +
+                    "<li><input type='checkbox'>本地新增</li></ul>";
+                $("#CheckList").append(states);
+                break;
+            case "Enablepause":
+                $("#TabTitle").html("启用/暂停");
+                $("#CheckList").append(pause);
+                break;
+            case "keywordprice":
+                $("#TabTitle").html("关键词出价");
+                $("#CheckList").append(price);
+                break;
+            case "keywordcomputerquality":
+                $("#TabTitle").html("关键词计算机质量度");
+                $("#CheckList").append(Computerquality);
+                break;
+            case "keywordmovingmass":
+                $("#TabTitle").html("移动质量度");
+                $("#CheckList").append(Computerquality);
+                break;
+            case "keywordmatching":
+                $("#TabTitle").html("关键词匹配模式");
+                var matching =
+                    "<ul><li><input type='checkbox'>广泛</li>" +
+                    "<li><input type='checkbox'>短语</li>" +
+                    "<li><ul><li><input type='checkbox'>核心包含</li></li>" +
+                    "<li><input type='checkbox'>同义包含</li>" +
+                    "<li><input type='checkbox'>精确包含</li></ul>" +
+                    "<li><input type='checkbox'>精确</li>" +
+                    "<li><input type='checkbox'>基本匹配模式</li>" +
+                    "<li><input type='checkbox'>分匹配出价</li>" +
+                    "</ul>";
+                $("#CheckList").append(matching);
+                break;
+            case "visiturl":
+                $("#TabTitle").html("关键词访问URL");
+                $("#CheckList").append(tabselect);
+                break;
+            case "mobilevisiturl":
+                $("#TabTitle").html("关键词移动访问URL");
+                $("#CheckList").append(tabselect);
+                break;
+            case "keywordplanname":
+                $("#TabTitle").html("推广计划名称");
+                $("#CheckList").append(tabselect);
+                break;
+            case "creativetitle":
+                $("#TabTitle").html("创意标题");
+                $("#CheckList").append(tabselect);
+                break;
+            case "creativetitle1":
+                $("#TabTitle").html("创意标题1");
+                $("#CheckList").append(tabselect);
+                break;
+            case "creativetitle2":
+                $("#TabTitle").html("创意标题2");
+                $("#CheckList").append(tabselect);
+                break;
+            case "creativedefault":
+                $("#TabTitle").html("创意默认访问URL");
+                $("#CheckList").append(tabselect);
+                break;
+            case "creativemobileurl":
+                $("#TabTitle").html("创意移动访问URL");
+                $("#CheckList").append(tabselect);
+                break;
+            case "creativeshowurl":
+                $("#TabTitle").html("创意移动显示URL");
+                $("#CheckList").append(tabselect);
+                break;
+            case "creativepause":
+                $("#TabTitle").html("启用/暂停");
+                $("#CheckList").append(pause);
+                break;
+            case "creativestate":
+                $("#TabTitle").html("创意状态");
+                var CreativeState =
+                    "<ul><li><input type='checkbox'>有效</li>" +
+                    "<li><input type='checkbox'>不宜推广</li>" +
+                    "<ul><li><input type='checkbox'>暂停推广</li>" +
+                    "<li><input type='checkbox'>审核中</li>" +
+                    "<li><input type='checkbox'>待激活</li></ul>" +
+                    "<li><input type='checkbox'>部分无效</li>" +
+                    "<li><input type='checkbox'>有效-移动URL审核中</li>" +
+                    "<li><input type='checkbox'>本地新增</li>" +
+                    "</ul>";
+                $("#CheckList").append(CreativeState);
+                break;
+            case "creativeequipment":
+                $("#TabTitle").html("创意设备偏好");
+                var CreativeEquipment =
+                    "<ul><li><input type='radio'>全部</li>" +
+                    "<li><input type='radio'>全部设备</li>" +
+                    "<li><input type='radio'>移动设备优先</li>";
+                $("#CheckList").append(CreativeEquipment);
+                break;
+            case "extensionname":
+                $("#TabTitle").html("推广单元名称");
+                $("#CheckList").append(tabselect);
+                break;
+            case "extensionstate":
+                $("#TabTitle").html("推广单元状态");
+                $("#CheckList").append(tabselect);
+                break;
+            case "extensionpause":
+                $("#TabTitle").html("启动/暂停");
+                $("#CheckList").append(pause);
+                break;
+            case "extensionprice":
+                $("#TabTitle").html("出价");
+                $("#CheckList").append(price);
+                break;
+            case "extensionplanname":
+                $("#TabTitle").html("推广计划名称");
+                $("#CheckList").append(tabselect);
+                break;
+            case "promotionplan":
+                $("#TabTitle").html("推广计划名称");
+                $("#CheckList").append(tabselect);
+                break;
+            case "promotionstate":
+                $("#TabTitle").html("推广计划状态");
+                var PromotionState =
+                    "<ul><li><input type='checkbox'>有效</li>" +
+                    "<li><input type='checkbox'>暂停推广</li>" +
+                    "<li><input type='checkbox'>处在暂停阶段</li>" +
+                    "<li><input type='checkbox'>推广计划预算不足</li>" +
+                    "<li><input type='checkbox'>账户预算部足</li>" +
+                    "<li><input type='checkbox'>本地新增</li>";
+                $("#CheckList").append(PromotionState);
+                break;
+            case "promotionpause":
+                $("#TabTitle").html("启动/暂停");
+                $("#CheckList").append(pause);
+                break;
+            case "promotionbudget":
+                $("#TabTitle").html("推广计划每日预算");
+                $("#CheckList").append(price);
+                break;
+            case "promotionshow":
+                $("#TabTitle").html("推广计划创意展现方式");
+                var PromotionShow =
+                    "<ul><li><input type='radio'>全部</li>" +
+                    "<li><input type='radio'>优选</li>" +
+                    "<li><input type='radio'>轮替</li>";
+                $("#CheckList").append(PromotionShow);
+                break;
+            case "promotiondynamic":
+                $("#TabTitle").html("动态创意状态");
+                var PromotionDynamic =
+                    "<ul><li><input type='checkbox'>全部开启</li>" +
+                    "<li><input type='checkbox'>全部关闭</li>" +
+                    "<li><input type='checkbox'>部分开启</li>";
+                $("#CheckList").append(PromotionDynamic);
+                break;
+
+        }
+    },
+    modelClose: function () {
+        $(".tabmodel").hide();
+    }
+}
 
 //foRSubmit: function () {
 //    var gridModel = [

@@ -15,16 +15,14 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
-import com.perfect.service.BaiduAccountService;
-import com.perfect.service.KeywordBackUpService;
-import com.perfect.service.SysRegionalService;
+import com.perfect.service.*;
 import com.perfect.utils.IdConvertUtils;
 import com.perfect.utils.paging.PagerInfo;
-import com.perfect.service.AssistantKeywordService;
 import com.perfect.utils.report.AssistantKwdUtil;
 import com.perfect.utils.report.BasistReportPCPlusMobUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,6 +30,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -64,9 +63,8 @@ public class AssistantKeywordController extends WebContextSupport {
     @Resource
     private SysRegionalService sysRegionalService;
 
-    private static final String DEFAULT_DELIMITER = ",";
-    private static final String DEFAULT_END = "\r\n";
-    private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+    @Resource
+    private BasisReportDownService basisReportDownService;
 
     /**
      * 批量添加或者修改关键词
@@ -427,11 +425,11 @@ public class AssistantKeywordController extends WebContextSupport {
         String yesterday = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(cal.getTime());
 
         List<AttributeType> list = null;
-        if (startDate == null || startDate.equals("") || (startDate != null && endDate == null)) {
+        if (startDate == null || startDate.equals("") || (endDate == null)) {
             startDate = yesterday;
             endDate = yesterday;
         }
-        if (attributes != null && attributes != "") {
+        if (attributes != null && !Objects.equals(attributes, "")) {
             list = new ArrayList<>();
             String[] attrs = attributes.split(",");
             Map<Integer, String> regions = sysRegionalService.getRegionalByRegionName(Arrays.asList(attrs));
@@ -678,5 +676,101 @@ public class AssistantKeywordController extends WebContextSupport {
         } catch (Exception e) {
             return writeMapObject(MSG, FAIL);
         }
+    }
+
+
+    /**
+     * 下载搜索词报告
+     *
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "assistantKeyword/downSeachKeyWordReportCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void downSeachKeyWordReportCSV(HttpServletResponse response,
+                                          Integer levelOfDetails,
+                                          String startDate,
+                                          String endDate,
+                                          String attributes,
+                                          Integer device,
+                                          Integer searchType,
+                                          @RequestParam(defaultValue = "1") Integer status) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String yesterday = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(cal.getTime());
+
+        List<AttributeType> list = null;
+        if (startDate == null || startDate.equals("") || (endDate == null)) {
+            startDate = yesterday;
+            endDate = yesterday;
+        }
+        if (attributes != null && !Objects.equals(attributes, "")) {
+            list = new ArrayList<>();
+            String[] attrs = attributes.split(",");
+            Map<Integer, String> regions = sysRegionalService.getRegionalByRegionName(Arrays.asList(attrs));
+            AttributeType attributeType = new AttributeType();
+            attributeType.setKey("provid");
+            attributeType.setValue(new ArrayList<Integer>(regions.keySet()));
+            list.add(attributeType);
+        }
+
+        List<RealTimeQueryResultType> resultList = null;
+        try {
+            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            resultList = getSearchTermsReprot(accountInfoDTO, levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        List<SearchwordReportDTO> dtoList = new ArrayList<>();
+        DecimalFormat dft = new DecimalFormat("0.00");
+        if (resultList != null) {
+            for (RealTimeQueryResultType resultType : resultList) {
+                SearchwordReportDTO searchwordReportDTO = new SearchwordReportDTO();
+                searchwordReportDTO.setKeyword(resultType.getQueryInfo(3));
+                searchwordReportDTO.setSearchWord(resultType.getQuery());
+                searchwordReportDTO.setClick(resultType.getKPI(0));
+                searchwordReportDTO.setImpression(resultType.getKPI(1));
+                double rate = Double.parseDouble(resultType.getKPI(0)) / Double.parseDouble(resultType.getKPI(1));
+                searchwordReportDTO.setClickRate(dft.format(BigDecimal.valueOf(rate * 100)) + "%");
+                searchwordReportDTO.setSearchEngine(resultType.getQueryInfo(8));
+                searchwordReportDTO.setAdgroupName(resultType.getQueryInfo(2));
+                searchwordReportDTO.setCampaignName(resultType.getQueryInfo(1));
+                searchwordReportDTO.setCreateTitle(resultType.getQueryInfo(4));
+                searchwordReportDTO.setCreateDesc1(resultType.getQueryInfo(5));
+                searchwordReportDTO.setCreateDesc2(resultType.getQueryInfo(6));
+                searchwordReportDTO.setDate(resultType.getDate());
+                searchwordReportDTO.setParseExtent(resultType.getQueryInfo(9));
+                dtoList.add(searchwordReportDTO);
+            }
+        }
+
+        if (status == 0) {
+            List<SearchwordReportDTO> returnList;
+            ForkJoinPool joinPoolTow = new ForkJoinPool();
+            String[] date = new String[]{startDate, endDate};
+            try(OutputStream os = response.getOutputStream()) {
+                Future<List<SearchwordReportDTO>> joinTaskTow = joinPoolTow.submit(new AssistantKwdUtil(dtoList, 0, dtoList.size(), date));
+                returnList = joinTaskTow.get();
+                String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
+                response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+                basisReportDownService.downSeachKeyWordReportCSV(os,returnList);
+            } catch (InterruptedException | ExecutionException | IOException e) {
+                e.printStackTrace();
+            } finally {
+                joinPoolTow.shutdown();
+            }
+        } else {
+            try(OutputStream os = response.getOutputStream()) {
+                String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
+                response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+                basisReportDownService.downSeachKeyWordReportCSV(os,dtoList);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 }

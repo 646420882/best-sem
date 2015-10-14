@@ -203,14 +203,16 @@ $(document).ready(function () {
 });
 /*******二级菜单****/
 $(document).ready(function () {
-/**推广助手自适应***/
-    $(".assistant_left").height($(".assistant_right").offsetHeight-20+"px");
-    $("#zTree").height($(".assistant_right")[0].offsetHeight-130+"px");
+    /**推广助手自适应***/
+    $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
     var $tab_li = $('.zh_menu2 li');
     $('.zh_menu2 li').click(function () {
         //alert($(".jingjia_right")[0].offsetHeight)
         $(this).addClass('current').siblings().removeClass('current');
         $(".zs_function ul li ul").addClass("hide");
+        $(".assstant_editor").hide();
+        $(".dropdown-menus").hide();
         var index = $tab_li.index(this);
         $('div.zs_box > div').eq(index).show().siblings().hide();
         $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
@@ -220,6 +222,10 @@ $(document).ready(function () {
             resizable(xx)
         }, 400);
     });
+    $('.zh_menuMonitor li').click(function () {
+        $("#zTree").height($(".assistant_right")[0].offsetHeight - 230 + "px");
+    });
+
 });
 
 /*******表格****/
@@ -344,5 +350,4 @@ $(function () {
                 );
         }
     }
-
 });

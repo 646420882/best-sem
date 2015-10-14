@@ -69,7 +69,7 @@ public class QuartzJobPersistenceManager extends QuartzJobManager {
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 
             if (trigger == null) {
-                JobDetail jobDetail = JobBuilder.newJob(QuartzJobFactory.class)
+                JobDetail jobDetail = JobBuilder.newJob(QuartzJobExecutor.class)
                         .withIdentity(scheduledJob.getJobName(), scheduledJob.getJobGroup()).build();
                 jobDetail.getJobDataMap().put("scheduledJob", scheduledJob);
 
@@ -103,8 +103,7 @@ public class QuartzJobPersistenceManager extends QuartzJobManager {
                 .jobName(o.getJobName())
                 .jobGroup(o.getJobGroup())
                 .jobStatus(o.getJobStatus())
-                .cronExpression(o.getCronExpression())
-                .jobDescription(o.getJobDescription()).build()).collect(Collectors.toList());
+                .cronExpression(o.getCronExpression()).build()).collect(Collectors.toList());
     }
 
 
@@ -116,7 +115,6 @@ public class QuartzJobPersistenceManager extends QuartzJobManager {
         scheduledJobDTO.setJobGroup(scheduledJob.getJobGroup());
         scheduledJobDTO.setJobStatus(scheduledJob.getJobStatus());
         scheduledJobDTO.setCronExpression(scheduledJob.getCronExpression());
-        scheduledJobDTO.setJobDescription(scheduledJob.getJobDescription());
 
         return scheduledJobDTO;
     }

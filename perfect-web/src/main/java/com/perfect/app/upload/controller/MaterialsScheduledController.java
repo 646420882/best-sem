@@ -1,5 +1,6 @@
 package com.perfect.app.upload.controller;
 
+import com.perfect.commons.constants.MaterialsJobEnum;
 import com.perfect.service.MaterialsScheduledService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,31 +34,19 @@ public class MaterialsScheduledController {
     }
 
 
-    @RequestMapping(value = "/upload/schedule/add", method = GET, produces = "application/json")
-    public String configureScheduler(@RequestParam(value = "date") Long dateMilli,
-                                     @RequestParam(value = "jobDescription", required = false) String jobDescription) {
+    @RequestMapping(value = "/schedule/upload", method = GET, produces = "application/json")
+    public String configureScheduler(@RequestParam(value = "date") Long dateMilli) {
         Date date = new Date(dateMilli);
 
-        materialsScheduledService.configureScheduler("*/3 * * * * ?", jobDescription);
+        materialsScheduledService.configureScheduler(MaterialsJobEnum.UPLOAD_MATERIALS.value(), "*/3 * * * * ?");
 
         return "success";
     }
 
-    @RequestMapping(value = "/upload/schedule/pause", method = GET)
-    public String pauseJob() {
-        materialsScheduledService.pauseJob();
-        return "success";
-    }
+    @RequestMapping(value = "/schedule/pause", method = GET, produces = "application/json")
+    public String pause() {
+        materialsScheduledService.configureScheduler(MaterialsJobEnum.PAUSE_MATERIALS.value(), "*/3 * * * * ?");
 
-    @RequestMapping(value = "/upload/schedule/resume", method = GET)
-    public String resumeJob() {
-        materialsScheduledService.resumeJob();
-        return "success";
-    }
-
-    @RequestMapping(value = "/upload/schedule/delete", method = GET)
-    public String deleteJob() {
-        materialsScheduledService.deleteJob();
         return "success";
     }
 }
