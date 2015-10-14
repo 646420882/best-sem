@@ -1,6 +1,6 @@
 import com.google.common.collect.Lists;
-import com.perfect.commons.constants.JobStatus;
-import com.perfect.commons.quartz.QuartzJobFactory;
+import com.perfect.commons.constants.MaterialsJobEnum;
+import com.perfect.commons.quartz.QuartzJobExecutor;
 import com.perfect.commons.quartz.ScheduledJob;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,9 +43,8 @@ public class QuartzJobTest {
                 .jobId(UUID.randomUUID().toString())
                 .jobName("test")
                 .jobGroup("SEM_MATERIALS")
-                .jobStatus(JobStatus.ACTIVE.value())
-                .cronExpression("*/3 * * * * ?")
-                .jobDescription("").build();
+                .jobStatus(MaterialsJobEnum.ACTIVE.value())
+                .cronExpression("*/3 * * * * ?").build();
 
         jobMap.put(scheduledJob.getJobGroup() + "_" + scheduledJob.getJobName(), scheduledJob);
     }
@@ -60,7 +59,7 @@ public class QuartzJobTest {
                 CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 
                 if (trigger == null) {
-                    JobDetail jobDetail = JobBuilder.newJob(QuartzJobFactory.class)
+                    JobDetail jobDetail = JobBuilder.newJob(QuartzJobExecutor.class)
                             .withIdentity(job.getJobName(), job.getJobGroup()).build();
                     jobDetail.getJobDataMap().put("scheduledJob", job);
 

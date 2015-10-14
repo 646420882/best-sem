@@ -1,6 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.commons.constants.JobStatus;
+import com.perfect.commons.constants.MaterialsJobEnum;
 import com.perfect.dao.MaterialsScheduledDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.ScheduledJobDTO;
@@ -38,7 +38,7 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
     public void pauseJob(ScheduledJobDTO scheduledJob) {
         getSysMongoTemplate().updateFirst(
                 buildQuery(scheduledJob),
-                Update.update(JOB_STATUS, JobStatus.PAUSE.value()),
+                Update.update(JOB_STATUS, MaterialsJobEnum.PAUSE.value()),
                 getEntityClass());
     }
 
@@ -46,7 +46,7 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
     public void resumeJob(ScheduledJobDTO scheduledJob) {
         getSysMongoTemplate().updateFirst(
                 buildQuery(scheduledJob),
-                Update.update(JOB_STATUS, JobStatus.ACTIVE.value()),
+                Update.update(JOB_STATUS, MaterialsJobEnum.ACTIVE.value()),
                 getEntityClass());
     }
 
@@ -54,7 +54,7 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
     public void deleteJob(ScheduledJobDTO scheduledJob) {
         getSysMongoTemplate().updateFirst(
                 buildQuery(scheduledJob),
-                Update.update(JOB_STATUS, JobStatus.DELETE.value()),
+                Update.update(JOB_STATUS, MaterialsJobEnum.DELETE.value()),
                 getEntityClass());
     }
 
@@ -72,7 +72,6 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
         scheduledJobEntity.setJobGroup(scheduledJob.getJobGroup());
         scheduledJobEntity.setJobStatus(scheduledJob.getJobStatus());
         scheduledJobEntity.setCronExpression(scheduledJob.getCronExpression());
-        scheduledJobEntity.setJobDescription(scheduledJob.getJobDescription());
 
         return scheduledJobEntity;
     }
@@ -85,7 +84,6 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
         scheduledJobDTO.setJobGroup(scheduledJob.getJobGroup());
         scheduledJobDTO.setJobStatus(scheduledJobDTO.getJobStatus());
         scheduledJobDTO.setCronExpression(scheduledJob.getCronExpression());
-        scheduledJobDTO.setJobDescription(scheduledJob.getJobDescription());
 
         return scheduledJobDTO;
     }

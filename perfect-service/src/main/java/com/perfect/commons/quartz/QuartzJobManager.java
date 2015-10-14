@@ -30,7 +30,7 @@ public abstract class QuartzJobManager {
 
             // 不存在, 创建一个
             if (trigger == null) {
-                JobDetail jobDetail = JobBuilder.newJob(QuartzJobFactory.class)
+                JobDetail jobDetail = JobBuilder.newJob(QuartzJobExecutor.class)
                         .withIdentity(job.getJobName(), job.getJobGroup()).build();
                 jobDetail.getJobDataMap().put("scheduledJob", job);
 

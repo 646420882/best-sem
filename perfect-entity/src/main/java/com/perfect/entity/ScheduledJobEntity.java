@@ -38,6 +38,12 @@ public class ScheduledJobEntity {
     private String jobGroup;
 
     /**
+     * 任务类型
+     */
+    @Field("type")
+    private int jobType;
+
+    /**
      * 0  暂停
      * 1  启用
      * -1  删除
@@ -50,12 +56,6 @@ public class ScheduledJobEntity {
      */
     @Field("cron")
     private String cronExpression;
-
-    /**
-     * 任务描述
-     */
-    @Field("descr")
-    private String jobDescription;
 
 
     public String getId() {
@@ -90,6 +90,14 @@ public class ScheduledJobEntity {
         this.jobGroup = jobGroup;
     }
 
+    public int getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(int jobType) {
+        this.jobType = jobType;
+    }
+
     public int getJobStatus() {
         return jobStatus;
     }
@@ -104,13 +112,5 @@ public class ScheduledJobEntity {
 
     public void setCronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
-    }
-
-    public String getJobDescription() {
-        return jobDescription;
-    }
-
-    public void setJobDescription(String jobDescription) {
-        this.jobDescription = jobDescription;
     }
 }

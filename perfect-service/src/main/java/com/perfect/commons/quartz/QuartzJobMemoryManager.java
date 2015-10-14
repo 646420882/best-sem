@@ -1,7 +1,7 @@
 package com.perfect.commons.quartz;
 
 import com.google.common.collect.Lists;
-import com.perfect.commons.constants.JobStatus;
+import com.perfect.commons.constants.MaterialsJobEnum;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -45,9 +45,8 @@ public class QuartzJobMemoryManager extends QuartzJobManager {
                             .jobId(job.getJobId())
                             .jobName(job.getJobName())
                             .jobGroup(job.getJobGroup())
-                            .jobStatus(JobStatus.PAUSE.value())
+                            .jobStatus(MaterialsJobEnum.PAUSE.value())
                             .cronExpression(job.getCronExpression())
-                            .jobDescription(job.getJobDescription())
                             .build()));
         } catch (SchedulerException e) {
             e.printStackTrace();
@@ -73,9 +72,8 @@ public class QuartzJobMemoryManager extends QuartzJobManager {
                             .jobId(job.getJobId())
                             .jobName(job.getJobName())
                             .jobGroup(job.getJobGroup())
-                            .jobStatus(JobStatus.ACTIVE.value())
+                            .jobStatus(MaterialsJobEnum.ACTIVE.value())
                             .cronExpression(job.getCronExpression())
-                            .jobDescription(job.getJobDescription())
                             .build()));
         } catch (SchedulerException e) {
             e.printStackTrace();
