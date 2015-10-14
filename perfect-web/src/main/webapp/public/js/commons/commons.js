@@ -18,16 +18,20 @@ var commons = {
                 return;
             }
         }
-        if ($(_this).find("ul").attr("class") == "hide") {
-            $(_this).find("ul").removeClass("hide");
-            $(_this).find("ul").mouseleave(function () {
-                $(_this).find("ul").addClass("hide");
+        if ($(".assstant_editor").css("display") == "none") {
+            var TabtopFirst = $(_this).offset().top + $(_this).outerHeight() + "px";
+            var TableftNext = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
+            $(".assstant_editor").css("top", TabtopFirst);
+            $(".assstant_editor").css("left", TableftNext);
+            $(".assstant_editor").show();
+            $(".assstant_editor ").mouseleave(function () {
+                $(".assstant_editor").hide();
             });
         }
         else {
-            $(_this).find("ul").addClass("hide");
+            $(".assstant_editor").hide();
         }
-        $(".Textreplacement").click(function () {
+        $("#Textreplacement").click(function () {
             $(".TB_overlayBG").css({
                 display: "block", height: $(document).height()
             });
@@ -557,9 +561,9 @@ var TabModel = {
             $(".dropdown-menus").css("top", tabtop);
             $(".dropdown-menus").css("left", tableft);
             $(".dropdown-menus").show();
-               $(".dropdown-menus ").mouseleave(function () {
-             $(".dropdown-menus").hide();
-             });
+            $(".dropdown-menus ").mouseleave(function () {
+                $(".dropdown-menus").hide();
+            });
         }
         else {
             $(".dropdown-menus").hide();

@@ -54,7 +54,14 @@ var add = {
         func: function () {
             addCreative();
         }
-    }, del = {
+    },
+    Modify = {
+        text: "修改创意",
+        img: "../public/img/zs_function15.png",
+        func: function () {
+            updateCreatvie();
+        }
+    }   , del = {
         text: "删除",
         img: "../public/img/zs_function2.png",
         func: function () {
@@ -117,7 +124,7 @@ var add = {
  * @type {*[]}
  */
 var menuData = [
-    [add, del, update, cAddMutli, creBack, cUpload, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
+    [add, Modify, del, update, cAddMutli, creBack, cUpload, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
 ];
 /**
  * 用户缓存右键点击的对象
@@ -573,7 +580,7 @@ function addCreative() {
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
             "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value=''/><input type='hidden' name='aid' value='" + getCreativeAId() + "'/></td>" +
-           "<td>&nbsp;</td>"+
+            "<td>&nbsp;</td>" +
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +

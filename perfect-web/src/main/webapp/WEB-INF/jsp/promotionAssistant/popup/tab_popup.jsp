@@ -8,8 +8,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="dropdown-menus tabmodel">
     <p id="TabTitle"></p>
+
     <div id="CheckList">
     </div>
     <button type="button" class="btn btn-primary btn-sm ">确认</button>
-    <button type="button" class="btn btn-default btn-sm "  onclick="TabModel.modelClose()">取消</button>
+    <button type="button" class="btn btn-default btn-sm " onclick="TabModel.modelClose()">取消</button>
+</div>
+<div class="assstant_editor">
+    <ul>
+        <li><a href="#"><span class="zs_top"><img
+                src="../public/img/zs_function14.png"></span><b>剪切</b></a></li>
+        <li onclick="Copy()"><a href="#"><span class="zs_top"><img
+                src="../public/img/zs_function13.png"></span><b>复制</b></a></li>
+        <li onclick="Paste()"><a href="#"><span class="zs_top"><img
+                src="../public/img/zs_function15.png"></span><b>粘贴</b></a></li>
+        <li id="Textreplacement"><a href="#"><span class="zs_top"><img
+                src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>
+    </ul>
 </div>

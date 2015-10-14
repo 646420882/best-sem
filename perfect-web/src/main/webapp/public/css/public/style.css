@@ -4040,7 +4040,7 @@ input[type=checkbox]:focus {
     border-bottom: 1px solid #e5e5e5;
 }
 
-#CheckCompletion .h2 .close {
+#CheckCompletion h2 .close {
     color: #000000;
 }
 
@@ -4101,4 +4101,32 @@ input[type=checkbox]:focus {
 
 .crative_text {
     width: 80%;
+}
+
+.assstant_editor {
+    width: 90px;
+    position: absolute;
+    z-index: 999;
+    background: #fff;
+    display: none;
+}
+
+.assstant_editor ul a {
+    color: #000;
+}
+
+.assstant_editor ul a:hover {
+    color: #ffb500;
+}
+
+.assstant_editor ul li {
+    width: 100%;
+    display: block;
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    vertical-align: middle;
+    z-index: 10;
+    padding: 0 10px;
+
 }

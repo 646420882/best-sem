@@ -211,6 +211,7 @@ $(document).ready(function () {
         //alert($(".jingjia_right")[0].offsetHeight)
         $(this).addClass('current').siblings().removeClass('current');
         $(".zs_function ul li ul").addClass("hide");
+        $(".assstant_editor").hide();
         $(".dropdown-menus").hide();
         var index = $tab_li.index(this);
         $('div.zs_box > div').eq(index).show().siblings().hide();
@@ -221,6 +222,10 @@ $(document).ready(function () {
             resizable(xx)
         }, 400);
     });
+    $('.zh_menuMonitor li').click(function () {
+        $("#zTree").height($(".assistant_right")[0].offsetHeight - 230 + "px");
+    });
+
 });
 
 /*******表格****/

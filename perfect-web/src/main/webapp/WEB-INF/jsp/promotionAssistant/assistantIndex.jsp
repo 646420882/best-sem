@@ -151,17 +151,7 @@
             </li>
             <li onclick="commons.foRShow('keyword',this)"><a href="javascript:;"
                     ><span class="z_function_hover"><img
-                    src="../public/img/zs_function7.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
-                <ul class="hide">
-                    <li><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function14.png"></span><b>剪切</b></a></li>
-                    <li onclick="Copy()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function13.png"></span><b>复制</b></a></li>
-                    <li onclick="Paste()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function15.png"></span><b>粘贴</b></a></li>
-                    <li class="Textreplacement"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>
-                </ul>
+                    src="../public/img/zs_function4.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
             </li>
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function6.png"></span><b>分析</b></a>
@@ -352,20 +342,8 @@
                        src="../public/img/zs_function6.png"></span><b>文字(替换/查找)</b></a>
                </li>--%>
             <li onclick="commons.foRShow('creative',this)"><a href="javascript:;" class="editer"
-                    ><span class="z_function_hover"><img
-                    src="../public/img/zs_function7.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
-                <ul class="hide">
-                    <li><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function14.png"></span><b>剪切</b></a></li>
-                    <li onclick="Copy()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function13.png"></span><b>复制</b></a></li>
-                    <li onclick="Paste()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function15.png"></span><b>粘贴</b></a></li>
-                    <li onclick="updateCreatvie()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function15.png"></span><b>修改创意</b></a></li>
-                    <li class="Textreplacement"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>
-                </ul>
+                    ><span class="zs_top"><img
+                    src="../public/img/zs_function4.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
             </li>
             <li><a href="#"><span class="zs_top"> <img
                     src="../public/img/zs_function3.png"></span><b
@@ -555,18 +533,8 @@
                     src="../public/img/zs_function3.png"></span><b>批量添加/更新</b></a>
             </li>
             <li onclick="commons.foRShow(this)"><a href="javascript:;" class="editer"
-                    ><span class="z_function_hover"><img
-                    src="../public/img/zs_function7.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
-                <ul class="hide">
-                    <li><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function14.png"></span><b>剪切</b></a></li>
-                    <li onclick="Copy()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function13.png"></span><b>复制</b></a></li>
-                    <li onclick="Paste()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function15.png"></span><b>粘贴</b></a></li>
-                    <li class="Textreplacement"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>
-                </ul>
+                    ><span class="zs_top"><img
+                    src="../public/img/zs_function4.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
             </li>
             <li><a href="#"><span class="z_function_hover"><img
                     src="../public/img/zs_function9.png"></span><b>还原</b></a>
@@ -783,18 +751,8 @@
                         src="../public/img/zs_function6.png"></span><b>文字(替换/查找)</b></a>
                 </li>--%>
             <li onclick="commons.foRShow('adgroup',this)"><a href="javascript:;" class="editer"
-                    ><span class="z_function_hover"><img
-                    src="../public/img/zs_function7.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
-                <ul class="hide">
-                    <li><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function14.png"></span><b>剪切</b></a></li>
-                    <li onclick="Copy()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function13.png"></span><b>复制</b></a></li>
-                    <li onclick="Paste()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function15.png"></span><b>粘贴</b></a></li>
-                    <li class="Textreplacement"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>
-                </ul>
+                    ><span class="zs_top"><img
+                    src="../public/img/zs_function4.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
             </li>
             <li><a href="#"><span class="z_function_hover" id="agReback"
                                   onclick="agreBakClick()"><img
@@ -922,22 +880,9 @@
                     src="../public/img/zs_function2.png"></span><b>删除</b></a>
             </li>
             <li onclick="commons.foRShow('campaign',this)"><a href="javascript:;" class="editer"
-                    ><span class="z_function_hover"><img
-                    src="../public/img/zs_function7.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
-                <ul class="hide">
-                    <li><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function14.png"></span><b>剪切</b></a></li>
-                    <li onclick="Copy()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function13.png"></span><b>复制</b></a></li>
-                    <li onclick="Paste()"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function15.png"></span><b>粘贴</b></a></li>
-                    <li class="Textreplacement"><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>
-                </ul>
+                    ><span class="zs_top"><img
+                    src="../public/img/zs_function4.png"></span><b>编辑</b><img src="../public/img/zs_input.png"></a>
             </li>
-            <li><a href="#"><span class="zs_top"><img
-                    src="../public/img/zs_function4.png"></span><b>编辑&nbsp;<input
-                    type="image" src="../public/img/zs_input.png"></b></a></li>
             <li><a href="#" id="reduction_caipamgin"><span class="zs_top"><img
                     src="../public/img/zs_function9.png"></span><b>还原</b></a>
             </li>
@@ -1126,7 +1071,7 @@
 </div>
 <div class="zhushou_concent over hides" id="jiangkong_box3">
     <div class="zs_concent_top over">
-        <ul class="zh_menu2 fl">
+        <ul class="zh_menu2 zh_menuMonitor fl">
             <li class="current" cname="table1">已监控关键词</li>
             <li cname="table2" id="jkwjj">监控文件夹</li>
         </ul>
