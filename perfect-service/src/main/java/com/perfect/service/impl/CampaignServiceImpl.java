@@ -98,7 +98,7 @@ public class CampaignServiceImpl implements CampaignService {
             newCampaignDTO.setCampaignName(dto.getCampaignName());
         }
 
-        campaignDAO.updateByMongoId(newCampaignDTO,backUpDTO);
+        campaignDAO.updateByMongoId(newCampaignDTO, backUpDTO);
 
     }
 

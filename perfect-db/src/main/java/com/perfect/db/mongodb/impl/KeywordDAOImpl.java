@@ -1,6 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
 import com.google.common.collect.Lists;
+import com.mongodb.WriteResult;
 import com.perfect.commons.constants.LogStatusConstant;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
@@ -750,6 +751,19 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         return dtos;
+    }
+
+    @Override
+    public void batchDelete(List<String> strings) {
+        strings.forEach(e ->{
+            if(e.length() < 32){
+                Update update = new Update();
+                update.set("localStatus", 3);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(Long.valueOf(e))), update, getEntityClass());
+            }else{
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID)));
+            }
+        });
     }
 
     /**

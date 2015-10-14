@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.dao.report.BasisReportDAO;
 import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.account.AccountReportDTO;
+import com.perfect.dto.keyword.SearchwordReportDTO;
 import com.perfect.service.BasisReportDownService;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.redis.JRedisUtils;
@@ -757,6 +758,32 @@ public class BasisReportDownServiceImpl implements BasisReportDownService {
                         }
                     }
                 }
+        }
+    }
+
+    @Override
+    public void downSeachKeyWordReportCSV(OutputStream os, List<SearchwordReportDTO> dtos) {
+        try {
+            os.write(Bytes.concat(commonCSVHead, (ReportDownUtil.getBetyHead())));
+            dtos.forEach(e -> {
+                try {
+                    os.write(Bytes.concat(commonCSVHead, (
+                            e.getDate() + DEFAULT_DELIMITER +
+                                    e.getCampaignName() + DEFAULT_DELIMITER +
+                                    e.getAdgroupName() + DEFAULT_DELIMITER +
+                                    e.getSearchEngine() + DEFAULT_DELIMITER +
+                                    e.getClick() + DEFAULT_DELIMITER +
+                                    e.getImpression() + DEFAULT_DELIMITER +
+                                    e.getClickRate() + DEFAULT_DELIMITER +
+                                    e.getSearchWord() + DEFAULT_DELIMITER +
+                                    e.getKeyword() + DEFAULT_DELIMITER +
+                                    e.getParseExtent() + DEFAULT_END).getBytes()));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

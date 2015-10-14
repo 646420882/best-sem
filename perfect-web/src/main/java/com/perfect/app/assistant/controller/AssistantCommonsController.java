@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.regex.Matcher;
 
@@ -72,6 +73,19 @@ public class AssistantCommonsController extends WebContextSupport {
         }
         return writeMapObject(DATA, null);
     }
+
+    @RequestMapping(value = "/batchDel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView batchDel(@RequestBody FindOrReplaceParam batchId) {
+        if(batchId != null || batchId.equals("")){
+            switch (batchId.getType()){
+                case "keyword":
+                    assistantKeywordService.batchDelete(batchId);
+                    return writeMapObject(DATA, null);
+            }
+        }
+        return null;
+    }
+
 
     /**
      * 文字替换参数对象
