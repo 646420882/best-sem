@@ -12,11 +12,19 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     List<Long> getAllCampaignId();
 
-//    List<CampaignDTO> find(Query query);
-
     List<CampaignDTO> findAllDownloadCampaign();
 
+    List<CampaignDTO> findDownloadCampaignsByBaiduAccountId(Long baiduAccountId);
+
     List<CampaignDTO> findHasLocalStatus();
+
+    /**
+     * <p>获取指定百度账号下在本地新增 修改 删除的推广计划
+     *
+     * @param baiduAccountId
+     * @return
+     */
+    List<CampaignDTO> findLocalChangedCampaigns(Long baiduAccountId);
 
     public List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids);
 
@@ -25,6 +33,13 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
     CampaignDTO findByLongId(Long cid);
 
     CampaignDTO findByObjectId(String oid);
+
+    /**
+     * <p>对给定百度账号下的所有推广计划暂停投放
+     *
+     * @param baiduAccountId
+     */
+    void pause(Long baiduAccountId);
 
     void deleteByMongoId(String id);
 
@@ -42,11 +57,11 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     void softDel(long id);
 
-     void insertAll(List<CampaignDTO> dtos);
+    void insertAll(List<CampaignDTO> dtos);
 
     void update(CampaignDTO campaignDTO);
 
-    void update(CampaignDTO dto,String objId);
+    void update(CampaignDTO dto, String objId);
 
     void deleteByCampaignId(Long campaginId);
 

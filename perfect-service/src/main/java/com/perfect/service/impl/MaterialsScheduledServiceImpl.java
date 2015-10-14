@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-import static com.perfect.commons.constants.JobStatus.ACTIVE;
+import static com.perfect.commons.constants.MaterialsJobEnum.ACTIVE;
 
 /**
  * Created on 2015-09-29.
@@ -33,7 +33,7 @@ public class MaterialsScheduledServiceImpl implements MaterialsScheduledService 
 
 
     @Override
-    public void configureScheduler(String cronExpression, String jobDescription) {
+    public void configureScheduler(int jobType, String cronExpression) {
         String userName = AppContext.getUser();
         String userId = systemUserDAO.findByUserName(userName).getId();
 
@@ -44,9 +44,9 @@ public class MaterialsScheduledServiceImpl implements MaterialsScheduledService 
                         .jobId(userId)
                         .jobName(userName)
                         .jobGroup(MATERIALS_JOB_GROUP)
+                        .jobType(jobType)
                         .jobStatus(ACTIVE.value())
-                        .cronExpression(cronExpression)
-                        .jobDescription(jobDescription).build());
+                        .cronExpression(cronExpression).build());
     }
 
     @Override
