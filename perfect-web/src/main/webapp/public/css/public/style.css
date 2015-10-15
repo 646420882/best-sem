@@ -2291,7 +2291,15 @@ h2 .close {
 .list2_box3 {
     background: #fcefc5;
 }
-
+.add{
+background: #c9e6fe;
+}
+.update{
+    background:#b8defe;
+}
+.del{
+    background:#fce59b;
+}
 .editor {
     display: inline-block;
     width: 11px;
@@ -4065,6 +4073,10 @@ input[type=checkbox]:focus {
     margin: 0px;
 }
 
+#CheckCompletion .ui-widget-content {
+    background: none;
+}
+
 #CheckCompletion .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
     display: block;
     width: 100%;
@@ -4129,4 +4141,52 @@ input[type=checkbox]:focus {
     z-index: 10;
     padding: 0 10px;
 
+}
+
+.barline {
+    float: left;
+    width: 100%;
+    background: #FFF;
+    border: 2px solid #4DBF7D;
+    height: 30px;
+    display: inline-block;
+    border-radius: 8px;
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.barline #percent {
+    position: absolute;
+    right: 0px;
+    top: -30px;
+    display: inline-block;
+    color: #4DBF7D;
+    font-size: 16px;
+}
+
+.barline #line {
+    float: left;
+    height: 30px;
+    overflow: hidden;
+    background: #4DBF7D;
+    border-radius: 8px;
+}
+
+.barline #msg {
+    position: absolute;
+    left: 80px;
+    top: 30px;
+    display: inline-block;
+    color: #4DBF7D;
+    font-size: 14px;
+}
+.sPreview{
+    width:100%;
+}
+#sPreview h3{
+    white-space: nowrap;
+   overflow: hidden;
+    text-overflow:ellipsis
 }

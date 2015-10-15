@@ -759,8 +759,8 @@ var TabModel = {
                 $("#TabTitle").html("关键词匹配模式");
                 var matching =
                     "<ul><li><input type='checkbox'>广泛</li>" +
-                    "<li><input type='checkbox'>短语</li>" +
-                    "<li><ul><li><input type='checkbox'>核心包含</li></li>" +
+                    "<li><input type='checkbox' id='Phrase'>短语" +
+                    "<ul id='PhraseList'><li><input type='checkbox'>核心包含</li></li>" +
                     "<li><input type='checkbox'>同义包含</li>" +
                     "<li><input type='checkbox'>精确包含</li></ul>" +
                     "<li><input type='checkbox'>精确</li>" +
@@ -768,6 +768,20 @@ var TabModel = {
                     "<li><input type='checkbox'>分匹配出价</li>" +
                     "</ul>";
                 $("#CheckList").append(matching);
+                $("#Phrase").change(function () {
+                    if ($(this).is(":checked")) {
+                        $(this).next().find("input").prop("checked", true);
+                    } else {
+                        $(this).next().find("input").prop("checked", false);
+                    }
+                });
+                $("#PhraseList").find("input").change(function () {
+                    if ($(this).is(":checked")) {
+                        $("#Phrase").prop("checked", true);
+                    } else {
+                        $("#Phrase").prop("checked", false);
+                    }
+                });
                 break;
             case "visiturl":
                 $("#TabTitle").html("关键词访问URL");

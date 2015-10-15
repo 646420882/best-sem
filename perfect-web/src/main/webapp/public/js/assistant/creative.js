@@ -772,27 +772,31 @@ function getCreativePreviewHtml(_this, type) {
     switch (type) {
         case 1:
             h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
-                "<span class='black-color'>" + de1 + "</span></br>" +
+                "<span class='black-color'>" + de1 + "</span>" +
                 "<span class='black-color'>" + de2 + "<span></br>" +
                 "<span class='green-color'>" + pcs + "<span></br>";
+            $("#sPreview").css("width", "560px");
             break;
         case 2:
             h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
-                "<span class='black-color'>" + de1 + "</span></br>" +
+                "<span class='black-color'>" + de1 + "</span>" +
                 "<span class='black-color'>" + de2 + "<span>" +
                 "<span class='green-color'>" + pcs + "<span></br>";
+            $("#sPreview").css("width", "610px");
             break;
         case 3:
             h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
                 "<span class='black-color'>" + de1 + "</span></br>" +
-                "<span class='black-color'>" + de2 + "<span></br>" +
-                "<span class='green-color'>" + pcs + "<span></br>";
+                /*  "<span class='black-color'>" + de2 + "<span></br>" +*/
+                "<span class='green-color'>" + pcs + "<span>";
+            $("#sPreview").css("width", "290px");
             break;
         case 4:
             h3 = "<a href='" + pc + "' target='_blank'><h3>" + title + "</h3></a>" +
                 "<span class='black-color'>" + de1 + "</span></br>" +
-                "<span class='black-color'>" + de2 + "<span></br>" +
+                /*  "<span class='black-color'>" + de2 + "<span></br>" +*/
                 "<span class='green-color'>" + pcs + "<span></br>";
+            $("#sPreview").css("width", "320px");
             break;
         default:
             break;

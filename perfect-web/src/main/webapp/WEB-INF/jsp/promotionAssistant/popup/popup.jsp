@@ -444,10 +444,18 @@
 
     <div class="mainlist" style="width:400px;">
         <p>检查完成，请点击发布更改，将本地修改内容发布到线上</p>
-
-        <div class="progress" style="background:#61d677;height:38px;margin:10px 0">
+        <!-- 进度条 -->
+        <div style="height:38px; position:relative;margin:10px 0">
+            <div class="barline" id="probar">
+                <div id="percent"></div>
+                <div id="line" w="100" style="width:0px;"></div>
+                <%--<div id="msg" style=""></div>--%>
+            </div>
         </div>
-        <div id="tabs" >
+
+        <%--  <div class="progress" style="background:#61d677;height:38px;margin:10px 0">
+          </div>--%>
+        <div id="tabs">
             <ul>
                 <li><a href="#tabs-1">可以发布的更改</a></li>
                 <li><a href="#tabs-2">不会发布的更改</a></li>

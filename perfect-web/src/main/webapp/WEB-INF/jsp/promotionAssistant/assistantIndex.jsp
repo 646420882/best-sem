@@ -147,7 +147,7 @@
                 </ul>
             </li>
             <li><a id="search_keyword" href="#"><span class="zs_top"><img
-                    src="../public/img/zs_function5.png"></span><b>搜索</b></a>
+                    src="../public/img/zs_function5.png"></span><b>快速添加关键词</b></a>
             </li>
             <li onclick="commons.foRShow('keyword',this)"><a href="javascript:;"
                     ><span class="z_function_hover"><img
@@ -460,22 +460,6 @@
                         </div>
                     </div>
                 </li>
-                <li>
-                    <div class="t_list01 fl over">创意预览：</div>
-                    <div class="crative_text fl over">
-                        <div class="w_list04 fl over">
-                            <ul class="w_list05 over">
-                                <li class="current" onmouseover="transferCreativePreview(1)">推广位 <span>|</span><span
-                                        class="list06_point"></span></li>
-                                <li onmouseover="transferCreativePreview(2)">推广链接位 <span>|</span></li>
-                                <li onmouseover="transferCreativePreview(3)">右侧推广位 <span>|</span></li>
-                                <li onmouseover="transferCreativePreview(3)">移动设备推广位</li>
-                            </ul>
-                            <div id="sPreview">
-                            </div>
-                        </div>
-                    </div>
-                </li>
             </ul>
         </div>
         <div class="zs_bottom2 over fr" style="border:none;">
@@ -507,6 +491,22 @@
                     </div>
                 </li>
             </ul>
+        </div>
+        <div class="sPreview fl over">
+            <div class="t_list01 fl over">创意预览：</div>
+            <div class="crative_text fl over">
+                <div class="w_list04 fl over">
+                    <ul class="w_list05 over">
+                        <li class="current" onmouseover="transferCreativePreview(1)">推广位 <span>|</span><span
+                                class="list06_point"></span></li>
+                        <li onmouseover="transferCreativePreview(2)">推广链接位 <span>|</span></li>
+                        <li onmouseover="transferCreativePreview(3)">右侧推广位 <span>|</span></li>
+                        <li onmouseover="transferCreativePreview(4)">移动设备推广位</li>
+                    </ul>
+                    <div id="sPreview">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1379,6 +1379,7 @@
                 jQuery('#tbodyClick2 tr').css('background', '#fcefc5');
                 jQuery('#tbodyClick_campaign tr').css('background', '#fcefc5');
                 jQuery('#tbodyClick5 tr').css('background', '#fcefc5');
+                $(".list4").find("input").prop("checked", true);
                 return false;
             }
             return true;
@@ -1395,6 +1396,8 @@
         jQuery('#tbodyClick2 tr').css('background', '')
         jQuery('#tbodyClick_campaign tr').css('background', '')
         jQuery('#tbodyClick5 tr').css('background', '');
+      /*  $(".list4").find("input").prop("checked", false);*/
+
     }
 
 </script>

@@ -213,6 +213,7 @@ $(document).ready(function () {
         $(".zs_function ul li ul").addClass("hide");
         $(".assstant_editor").hide();
         $(".dropdown-menus").hide();
+        $(".list4").find("input").prop("checked", false);
         var index = $tab_li.index(this);
         $('div.zs_box > div').eq(index).show().siblings().hide();
         $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");

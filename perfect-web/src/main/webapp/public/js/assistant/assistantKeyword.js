@@ -159,12 +159,53 @@ function keywordDataToHtml(obj, index) {
 
     var html = "";
     if (index == 0) {
-
-        html = html + "<tr class='list2_box3 firstKeyword'>";
+        var _tr = html + "<tr class='list2_box3 firstKeyword'>";
+        if (obj.object.localStatus) {
+            switch (obj.object.localStatus) {
+                case 1:
+                    _tr = html + "<tr class='list2_box3 firstKeyword add'>"
+                    break;
+                case 2:
+                    _tr = html + "<tr class='list2_box3 firstKeyword update'>"
+                    break
+                case 3:
+                    _tr = html + "<tr class='list2_box3 firstKeyword del'>"
+                    break;
+            }
+        }
+        html = _tr;
     } else if (index % 2 != 0) {
-        html = html + "<tr class='list2_box2'>";
+        var _tr = html + "<tr class='list2_box2'>";
+        if (obj.object.localStatus) {
+            switch (obj.object.localStatus) {
+                case 1:
+                    _tr = html + "<tr class='list2_box2 add'>"
+                    break;
+                case 2:
+                    _tr = html + "<tr class='list2_box2 update'>"
+                    break
+                case 3:
+                    _tr = html + "<tr class='list2_box2 del'>"
+                    break;
+            }
+        }
+        html = _tr;
     } else {
-        html = html + "<tr class='list2_box1'>";
+        var _tr = html + "<tr class='list2_box1'>";
+        if (obj.object.localStatus) {
+            switch (obj.object.localStatus) {
+                case 1:
+                    _tr = html + "<tr class='list2_box1 add'>"
+                    break;
+                case 2:
+                    _tr = html + "<tr class='list2_box1 update'>"
+                    break
+                case 3:
+                    _tr = html + "<tr class='list2_box1 del'>"
+                    break;
+            }
+        }
+        html = _tr;
     }
 
     //kwid

@@ -3,6 +3,9 @@ $("tbody").delegate("tr", "click", function (event) {
     listnumber = $(this);
     $(this).parent().find("tr").removeClass("list2_box3");
     $(this).addClass("list2_box3");
+    /*    $(this).parent().find("tr").find("input").prop("checked", false);
+     $(this).find("input").prop("checked", true);*/
+
 });
 //复制
 function Copy() {

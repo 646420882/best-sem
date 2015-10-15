@@ -54,6 +54,29 @@ function CheckCompletion() {
         $("#CheckCompletion").css("display", "none");
     });
 }
+
+function processerbar(time) {
+    document.getElementById('probar').style.display = "block";
+    $("#line").each(function (i, item) {
+        var a = parseInt($(item).attr("w"));
+        $(item).animate({
+            width: a + "%"
+        }, time);
+    });
+    var si = window.setInterval(
+        function () {
+            a = $("#line").width();
+            b = (a / 364 * 100).toFixed(0);
+            document.getElementById('percent').innerHTML = b + "%";
+            /* document.getElementById('percent').style.left=a-12+"px";*/
+            document.getElementById('msg').innerHTML = "上传中";
+            if (document.getElementById('percent').innerHTML == "100%") {
+                clearInterval(si);
+                document.getElementById('msg').innerHTML = "&nbsp;&nbsp;成功";
+            }
+        }, 70);
+};
+
 function uploadDialogOk() {
     var uploadType = "";
     var allChose = document.getElementsByName("up1");
@@ -72,6 +95,7 @@ function uploadDialogOk() {
                         loadTree();
                         closeUploadDialog();
                         CheckCompletion();
+                        processerbar(3000);
                     } else {
                         alert(res.msg);
                         reloadGrid();
@@ -100,6 +124,7 @@ function uploadDialogOk() {
                             loadTree();
                             closeUploadDialog();
                             CheckCompletion();
+                            processerbar(3000);
                         } else {
                             alert(res.msg);
                             reloadGrid();
