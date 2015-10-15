@@ -9,6 +9,22 @@ package com.perfect.service;
 public interface MaterialsUploadService {
 
     /**
+     * 新增
+     */
+    int NEW = 1;
+
+    /**
+     * 修改
+     */
+    int MODIFIED = 2;
+
+    /**
+     * 删除
+     */
+    int DELETED = 3;
+
+
+    /**
      * <p>上传新增
      * 新增的部分包括: 推广计划、推广单元、关键词、创意,
      * 上传时的顺序为: 计划->单元->关键词、创意
@@ -17,7 +33,7 @@ public interface MaterialsUploadService {
      * @param baiduUserId
      * @return
      */
-    boolean uploadAdditions(Long baiduUserId);
+    boolean add(Long baiduUserId);
 
     /**
      * <p>上传修改
@@ -27,7 +43,7 @@ public interface MaterialsUploadService {
      * @param baiduUserId
      * @return
      */
-    boolean uploadModifications(Long baiduUserId);
+    boolean update(Long baiduUserId);
 
     /**
      * <p>上传删除
@@ -37,7 +53,7 @@ public interface MaterialsUploadService {
      * @param baiduUserId
      * @return
      */
-    boolean uploadDeletions(Long baiduUserId);
+    boolean delete(Long baiduUserId);
 
 
     /**
@@ -45,5 +61,5 @@ public interface MaterialsUploadService {
      *
      * @param baiduUserId
      */
-    void pause(Long baiduUserId);
+    boolean pause(Long baiduUserId);
 }
