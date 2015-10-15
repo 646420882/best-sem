@@ -1924,7 +1924,7 @@ $(function () {
      *选中推广地域
      */
     $("#chooseRegion").click(function () {
-        $("#ctrldialogplanRegionDialog").css("top", ($(this).offset().top + $(this).outerHeight()) + "px")
+        $("#ctrldialogplanRegionDialog").css("top", "98px")
             .css("left", ($(this).offset().left + $(this).outerWidth()) + "px");
         $("#ctrldialogplanRegionDialog").show(0);
     });
