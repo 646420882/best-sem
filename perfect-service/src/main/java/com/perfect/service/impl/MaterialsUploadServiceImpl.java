@@ -24,8 +24,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -54,43 +54,88 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     @Resource
     private CreativeDAO creativeDAO;
 
-
-    /**
-     * <p>新增的物料上传操作成功之后需要将返回的凤巢id设置到本地.
-     *
-     * @param baiduUserId 百度用户id
-     * @return
-     */
-    @Override
-    public boolean uploadAdditions(Long baiduUserId) {
+    private final Function<Long, Boolean> addFunc = baiduUserId -> {
         BaiduApiService baiduApiService = getBaiduApiService(baiduUserId);
         try {
             // 是否有新增的推广计划
-            List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, 1);
+            List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, NEW);
             if (!campaignDTOList.isEmpty()) {
                 List<CampaignType> campaignTypeList = ObjectUtils.convert(campaignDTOList, CampaignType.class);
-                List<CampaignType> result = baiduApiService.addCampaign(campaignTypeList);
+                // key: 推广计划名称, value: 推广计划凤巢id
+                Map<String, Long> result = baiduApiService.addCampaign(campaignTypeList)
+                        .stream()
+                        .collect(Collectors.toMap(CampaignType::getCampaignName, CampaignType::getCampaignId));
+
+                campaignDTOList.forEach(o -> {
+                    Long campaignId = result.get(o.getCampaignName());
+                    o.setCampaignId(campaignId);
+                    campaignDAO.update(o, o.getId());
+                });
             }
 
+            /**
+             * KEY: adgroupId
+             * VALUE: campaignId
+             */
+            final Map<Long, Long> adgroupIdMap = new HashMap<>();
+
             // 是否有新增的推广单元
-            List<AdgroupDTO> adgroupDTOList = adgroupDAO.findLocalChangedAdgroups(baiduUserId, 1);
+            List<AdgroupDTO> adgroupDTOList = adgroupDAO.findLocalChangedAdgroups(baiduUserId, NEW);
             if (!adgroupDTOList.isEmpty()) {
-                List<AdgroupType> adgroupTypeList = ObjectUtils.convert(adgroupDTOList, AdgroupType.class);
-                List<AdgroupType> result = baiduApiService.addAdgroup(adgroupTypeList);
+                // group by campaignId
+                Map<Long, List<AdgroupDTO>> groupedAdgroupDTOMap = adgroupDTOList.stream()
+                        .collect(Collectors.groupingBy(AdgroupDTO::getCampaignId));
+                for (Map.Entry<Long, List<AdgroupDTO>> entry : groupedAdgroupDTOMap.entrySet()) {
+                    List<AdgroupDTO> _list = entry.getValue();
+
+                    _list.forEach(o -> adgroupIdMap.put(o.getAdgroupId(), entry.getKey()));
+
+                    List<AdgroupType> adgroupTypeList = ObjectUtils.convert(_list, AdgroupType.class);
+                    Map<String, Long> result = baiduApiService.addAdgroup(adgroupTypeList)
+                            .stream()
+                            .collect(Collectors.toMap(AdgroupType::getAdgroupName, AdgroupType::getAdgroupId));
+
+                    _list.forEach(o -> {
+                        Long adgroupId = result.get(o.getAdgroupName());
+                        o.setAdgroupId(adgroupId);
+                        adgroupDAO.update(o.getId(), o);
+                    });
+                }
             }
 
             // 是否有新增的关键词
-            List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, 1);
+            List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, NEW);
             if (!keywordDTOList.isEmpty()) {
-                List<KeywordType> keywordTypeList = ObjectUtils.convert(keywordDTOList, KeywordType.class);
-                List<KeywordType> result = baiduApiService.addKeyword(keywordTypeList);
+                // group by campaignId & adgroupId
+                Map<String, List<KeywordDTO>> groupedKeywordMap = keywordDTOList.stream()
+                        .collect(Collectors.groupingBy(keywordDTO -> adgroupIdMap.get(keywordDTO.getAdgroupId()) + "-" + keywordDTO.getAdgroupId()));
+                for (Map.Entry<String, List<KeywordDTO>> entry : groupedKeywordMap.entrySet()) {
+                    List<KeywordDTO> _list = entry.getValue();
+
+                    List<KeywordType> keywordTypeList = ObjectUtils.convert(_list, KeywordType.class);
+                    Map<String, Long> result = baiduApiService.addKeyword(keywordTypeList)
+                            .stream()
+                            .collect(Collectors.toMap(KeywordType::getKeyword, KeywordType::getKeywordId));
+
+                    _list.forEach(o -> {
+                        Long keywordId = result.get(o.getKeyword());
+                        o.setKeywordId(keywordId);
+                        keywordDAO.update(o.getId(), o);
+                    });
+                }
             }
 
             // 是否有新增的创意
-            List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, 1);
+            List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, NEW);
             if (!creativeDTOList.isEmpty()) {
-                List<CreativeType> creativeTypeList = ObjectUtils.convert(creativeDTOList, CreativeType.class);
-                List<CreativeType> result = baiduApiService.addCreative(creativeTypeList);
+                for (CreativeDTO creativeDTO : creativeDTOList) {
+                    List<CreativeType> creativeTypeList = Collections.singletonList(ObjectUtils.convert(creativeDTO, CreativeType.class));
+
+                    Long creativeId = baiduApiService.addCreative(creativeTypeList).remove(0).getCreativeId();
+                    creativeDTO.setCreativeId(creativeId);
+
+                    creativeDAO.update(creativeDTO.getId(), creativeDTO);
+                }
             }
 
             return true;
@@ -99,10 +144,9 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
         }
 
         return false;
-    }
+    };
 
-    @Override
-    public boolean uploadModifications(Long baiduUserId) {
+    private final Function<Long, Boolean> updateFunc = baiduUserId -> {
         BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
         CommonService commonService = BaiduServiceSupport
                 .getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
@@ -118,31 +162,31 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             System.out.println(JSON.toJSONString(aResult));
 
             // 是否有修改的推广计划
-            List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, 2);
+            List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, MODIFIED);
             if (!campaignDTOList.isEmpty()) {
                 List<CampaignType> campaignTypeList = ObjectUtils.convert(campaignDTOList, CampaignType.class);
-                List<CampaignType> result = baiduApiService.updateCampaign(campaignTypeList);
+                baiduApiService.updateCampaign(campaignTypeList);
             }
 
             // 是否有修改的推广单元
-            List<AdgroupDTO> adgroupDTOList = adgroupDAO.findLocalChangedAdgroups(baiduUserId, 2);
+            List<AdgroupDTO> adgroupDTOList = adgroupDAO.findLocalChangedAdgroups(baiduUserId, MODIFIED);
             if (!adgroupDTOList.isEmpty()) {
                 List<AdgroupType> adgroupTypeList = ObjectUtils.convert(adgroupDTOList, AdgroupType.class);
-                List<AdgroupType> result = baiduApiService.updateAdgroup(adgroupTypeList);
+                baiduApiService.updateAdgroup(adgroupTypeList);
             }
 
             // 是否有修改的关键词
-            List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, 2);
+            List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, MODIFIED);
             if (!keywordDTOList.isEmpty()) {
                 List<KeywordType> keywordTypeList = ObjectUtils.convert(keywordDTOList, KeywordType.class);
-                List<KeywordType> result = baiduApiService.updateKeyword(keywordTypeList);
+                baiduApiService.updateKeyword(keywordTypeList);
             }
 
             // 是否有修改的创意
-            List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, 2);
+            List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, MODIFIED);
             if (!creativeDTOList.isEmpty()) {
                 List<CreativeType> creativeTypeList = ObjectUtils.convert(creativeDTOList, CreativeType.class);
-                List<CreativeType> result = baiduApiService.updateCreative(creativeTypeList);
+                baiduApiService.updateCreative(creativeTypeList);
             }
 
             return true;
@@ -151,35 +195,34 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
         }
 
         return false;
-    }
+    };
 
-    @Override
-    public boolean uploadDeletions(Long baiduUserId) {
+    private final Function<Long, Boolean> deleteFunc = baiduUserId -> {
         BaiduApiService baiduApiService = getBaiduApiService(baiduUserId);
         try {
             // 是否有删除的推广计划
-            List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, 3);
+            List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, DELETED);
             if (!campaignDTOList.isEmpty()) {
                 List<Long> campaignIds = campaignDTOList.stream().map(CampaignDTO::getCampaignId).collect(Collectors.toList());
                 Integer result = baiduApiService.deleteCampaign(campaignIds);
             }
 
             // 是否有删除的推广单元
-            List<AdgroupDTO> adgroupDTOList = adgroupDAO.findLocalChangedAdgroups(baiduUserId, 3);
+            List<AdgroupDTO> adgroupDTOList = adgroupDAO.findLocalChangedAdgroups(baiduUserId, DELETED);
             if (!adgroupDTOList.isEmpty()) {
                 List<Long> adgroupIds = adgroupDTOList.stream().map(AdgroupDTO::getAdgroupId).collect(Collectors.toList());
                 String result = baiduApiService.deleteAdgroup(adgroupIds);
             }
 
             // 是否有删除的关键词
-            List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, 3);
+            List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, DELETED);
             if (!keywordDTOList.isEmpty()) {
                 List<Long> keywordIds = keywordDTOList.stream().map(KeywordDTO::getKeywordId).collect(Collectors.toList());
                 Integer result = baiduApiService.deleteKeyword(keywordIds);
             }
 
             // 是否有删除的创意
-            List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, 3);
+            List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, DELETED);
             if (!creativeDTOList.isEmpty()) {
                 List<Long> creativeIds = creativeDTOList.stream().map(CreativeDTO::getCreativeId).collect(Collectors.toList());
                 Integer result = baiduApiService.deleteCreative(creativeIds);
@@ -191,10 +234,9 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
         }
 
         return false;
-    }
+    };
 
-    @Override
-    public void pause(Long baiduUserId) {
+    private final Function<Long, Boolean> pauseFunc = baiduUserId -> {
         BaiduApiService baiduApiService = getBaiduApiService(baiduUserId);
         List<CampaignType> campaignTypeList = new ArrayList<>();
         // 获取当前百度账号下的所有推广计划, 并对其进行暂停投放的设置, 然后更新到凤巢
@@ -208,9 +250,40 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
 
         try {
             baiduApiService.updateCampaign(campaignTypeList);
+
+            return true;
         } catch (ApiException e) {
             e.printStackTrace();
         }
+
+        return false;
+    };
+
+
+    /**
+     * <p>新增的物料上传操作成功之后需要将返回的凤巢id设置到本地.
+     *
+     * @param baiduUserId 百度用户id
+     * @return
+     */
+    @Override
+    public boolean add(Long baiduUserId) {
+        return addFunc.apply(baiduUserId);
+    }
+
+    @Override
+    public boolean update(Long baiduUserId) {
+        return updateFunc.apply(baiduUserId);
+    }
+
+    @Override
+    public boolean delete(Long baiduUserId) {
+        return deleteFunc.apply(baiduUserId);
+    }
+
+    @Override
+    public boolean pause(Long baiduUserId) {
+        return pauseFunc.apply(baiduUserId);
     }
 
 

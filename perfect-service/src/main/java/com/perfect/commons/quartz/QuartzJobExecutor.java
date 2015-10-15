@@ -74,9 +74,9 @@ public class QuartzJobExecutor implements Job {
      */
     private void upload(List<Long> baiduUserIdList) {
         baiduUserIdList.forEach(id -> {
-            materialsUploadService.uploadAdditions(id);
-            materialsUploadService.uploadModifications(id);
-            materialsUploadService.uploadDeletions(id);
+            materialsUploadService.add(id);
+            materialsUploadService.update(id);
+            materialsUploadService.delete(id);
         });
     }
 
