@@ -367,7 +367,9 @@ function keywordDataToHtml(obj, index) {
             html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
         }
     } else {
-        html = html + "<td>&nbsp;</td>";
+        var replaceText = $("input[name='replaceText']").val();
+        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td>&nbsp;</td>";
+        html = html + ls;
     }
 
     html = html + "</tr>";

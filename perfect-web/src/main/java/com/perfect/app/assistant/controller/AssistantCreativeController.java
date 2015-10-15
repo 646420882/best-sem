@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,41 +52,41 @@ public class AssistantCreativeController extends WebContextSupport {
     @Resource
     AccountManageService accountManageService;
 
-    @RequestMapping(value = "/getList",method = RequestMethod.POST)
+    @RequestMapping(value = "/getList", method = RequestMethod.POST)
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "cid", required = false) String cid,
                                         @RequestParam(value = "aid", required = false) String aid,
-                                        @RequestParam(value = "nowPage",required = false,defaultValue = "0")int nowPage,
-                                        @RequestParam(value = "pageSize",required = false,defaultValue = "20")int pageSize){
-        PagerInfo pagerInfo=null;
-        Map<String,Object> map=new HashMap<>();
+                                        @RequestParam(value = "nowPage", required = false, defaultValue = "0") int nowPage,
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize) {
+        PagerInfo pagerInfo = null;
+        Map<String, Object> map = new HashMap<>();
         if (!aid.equals("-1")) {
-        if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
-            if (!aid.equals("")) {
-                if (aid.length() > OBJ_SIZE) {
-                    map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
-                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+            if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
+                if (!aid.equals("")) {
+                    if (aid.length() > OBJ_SIZE) {
+                        map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                    } else {
+                        map.put(MongoEntityConstants.ADGROUP_ID, aid);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                    }
+                } else if (!cid.equals("") && aid.equals("")) {
+                    List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignObj(cid);
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize);
                 } else {
-                    map.put(MongoEntityConstants.ADGROUP_ID,aid);
-                    pagerInfo = creativeService.findByPagerInfo(map,nowPage,pageSize);
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
                 }
-            } else if (!cid.equals("") && aid.equals("")) {
-                List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignObj(cid);
-                pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize);
             } else {
-                pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
-            }
-        } else {
-            if (!aid.equals("")) {
-                pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize);
-            } else if (!cid.equals("") && aid.equals("")) {
-                List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
-                pagerInfo=creativeService.findByPagerInfoForLong(adgroupIds,nowPage,pageSize);
+                if (!aid.equals("")) {
+                    pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize);
+                } else if (!cid.equals("") && aid.equals("")) {
+                    List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize);
 
-            } else {
-                pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                } else {
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                }
             }
-        }
         }
         writeJson(pagerInfo, response);
         return null;
@@ -153,8 +154,8 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "status") Integer s,
                                        @RequestParam(value = "d", required = false, defaultValue = "0") Integer d) {
         try {
-            UUID uuidRandom=UUID.randomUUID();
-           String uuid=uuidRandom.toString().replaceAll("-","");
+            UUID uuidRandom = UUID.randomUUID();
+            String uuid = uuidRandom.toString().replaceAll("-", "");
             CreativeDTO creativeEntity = new CreativeDTO();
             creativeEntity.setAccountId(AppContext.getAccountId());
             creativeEntity.setTitle(title);
@@ -213,6 +214,7 @@ public class AssistantCreativeController extends WebContextSupport {
 
     /**
      * 修改方法，如果是本地数据，则不进行备份处理，否则进行备份处理
+     *
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -226,7 +228,7 @@ public class AssistantCreativeController extends WebContextSupport {
                                @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
                                @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                @RequestParam(value = "pause") Boolean bol,
-                                @RequestParam(value = "devicePreference") Integer device){
+                               @RequestParam(value = "devicePreference") Integer device) {
         CreativeDTO creativeEntityFind = null;
         if (oid.length() > OBJ_SIZE) {
             creativeEntityFind = creativeService.findByObjId(oid);
@@ -314,6 +316,7 @@ public class AssistantCreativeController extends WebContextSupport {
 
     /**
      * 执行批量添加/修改方法所执行的方法，如果标题和创意能匹配到数据，则执行添加操作
+     *
      * @param response
      * @param aid
      * @param title
@@ -338,10 +341,10 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
                                        @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                        @RequestParam(value = "pause") String bol,
-                                        @RequestParam(value = "device")String device){
-        try{
+                                       @RequestParam(value = "device") String device) {
+        try {
             //将获取到的标题和创意1在本地数据库中查询
-            if(aid.contains("\n")){
+            if (aid.contains("\n")) {
                 String[] aidStr = aid.split("\n");
                 String[] titleStr = title.split("\n");
                 String[] de1Str = de1.split("\n");
@@ -351,39 +354,40 @@ public class AssistantCreativeController extends WebContextSupport {
                 String[] mibStr = mib.split("\n");
                 String[] mibsStr = mibs.split("\n");
                 String[] bolStr = bol.split("\n");
-                String[] devStr=device.split("\n");
-                for (int i=0;i<aidStr.length;i++){
-                    innerInsert(isReplace,aidStr[i],titleStr[i],de1Str[i],de2Str[i],pcStr[i],pcsStr[i],mibStr[i],mibsStr[i],bolStr[i],devStr[i]);
+                String[] devStr = device.split("\n");
+                for (int i = 0; i < aidStr.length; i++) {
+                    innerInsert(isReplace, aidStr[i], titleStr[i], de1Str[i], de2Str[i], pcStr[i], pcsStr[i], mibStr[i], mibsStr[i], bolStr[i], devStr[i]);
                 }
-            }else{
-                innerInsert(isReplace,aid,title,de1,de2,pc,pcs,mib,mibs,bol,device);
+            } else {
+                innerInsert(isReplace, aid, title, de1, de2, pc, pcs, mib, mibs, bol, device);
             }
-            writeHtml(SUCCESS,response);
-        }catch (Exception e){
+            writeHtml(SUCCESS, response);
+        } catch (Exception e) {
             e.printStackTrace();
-            writeHtml(EXCEPTION,response);
+            writeHtml(EXCEPTION, response);
         }
         return null;
     }
-    private  void innerInsert(Boolean isReplace,String aid,String title,String de1,String de2,String pc,String pcs,String mib,String mibs,String bol,String device){
-        Map<String,Object> params=new HashMap<>();
-        UUID uuidRandom=UUID.randomUUID();
-        String uuid=uuidRandom.toString().replaceAll("-","");
-        params.put("t",title);
-        params.put("desc1",de1);
-        if(aid.length()>OBJ_SIZE){
+
+    private void innerInsert(Boolean isReplace, String aid, String title, String de1, String de2, String pc, String pcs, String mib, String mibs, String bol, String device) {
+        Map<String, Object> params = new HashMap<>();
+        UUID uuidRandom = UUID.randomUUID();
+        String uuid = uuidRandom.toString().replaceAll("-", "");
+        params.put("t", title);
+        params.put("desc1", de1);
+        if (aid.length() > OBJ_SIZE) {
             params.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
-        }else{
-            params.put(MongoEntityConstants.ADGROUP_ID,Long.valueOf(aid));
+        } else {
+            params.put(MongoEntityConstants.ADGROUP_ID, Long.valueOf(aid));
         }
         //如果查询到结果
         CreativeDTO creativeEntity = creativeService.getAllsBySomeParams(params);
         //如果能查到匹配的数据，则执行修改操作
-        if(creativeEntity!=null){
+        if (creativeEntity != null) {
             if (isReplace) {
                 CreativeDTO creativeEntityFind = null;
                 //判断如果该条数据不为已经同步的数据，则视为本地数据，本地数据库数据修改则不需要备份操作
-                if (creativeEntity.getCreativeId()==null) {
+                if (creativeEntity.getCreativeId() == null) {
                     creativeEntityFind = creativeService.findByObjId(creativeEntity.getId());
                     creativeEntityFind.setTitle(title);
                     creativeEntityFind.setDescription1(de1);
@@ -405,9 +409,9 @@ public class AssistantCreativeController extends WebContextSupport {
                     creativeEntityFind.setTitle(title);
                     creativeEntityFind.setDescription1(de1);
                     creativeEntityFind.setDescription2(de2);
-                     creativeEntityFind.setPcDestinationUrl(pc);
+                    creativeEntityFind.setPcDestinationUrl(pc);
                     creativeEntityFind.setPcDisplayUrl(pcs);
-                     creativeEntityFind.setMobileDestinationUrl(mib);
+                    creativeEntityFind.setMobileDestinationUrl(mib);
                     creativeEntityFind.setMobileDisplayUrl(mibs);
                     creativeEntityFind.setPause(Boolean.parseBoolean(bol));
                     creativeEntityFind.setDevicePreference(Integer.parseInt(device));
@@ -415,13 +419,13 @@ public class AssistantCreativeController extends WebContextSupport {
                 }
             }
             //如果没有查到匹配的数据，则执行添加操作
-        }else{
+        } else {
             CreativeDTO creativeEntityInsert = new CreativeDTO();
             creativeEntityInsert.setAccountId(AppContext.getAccountId());
             creativeEntityInsert.setTitle(title);
             creativeEntityInsert.setDescription1(de1);
             creativeEntityInsert.setDescription2(de2);
-             creativeEntityInsert.setPcDestinationUrl(pc);
+            creativeEntityInsert.setPcDestinationUrl(pc);
             creativeEntityInsert.setPcDisplayUrl(pcs);
             creativeEntityInsert.setMobileDestinationUrl(mib);
             creativeEntityInsert.setMobileDisplayUrl(mibs);
@@ -440,18 +444,18 @@ public class AssistantCreativeController extends WebContextSupport {
     }
 
 
-    @RequestMapping(value = "uploadCreative",method = RequestMethod.POST)
+    @RequestMapping(value = "uploadCreative", method = RequestMethod.POST)
     public ModelAndView uploadCreative(HttpServletResponse response,
-                                       @RequestParam(value = "cid",required = true) Long cid,
-                                       @RequestParam(value = "aid",required = true) Long aid,
-                                       @RequestParam(value = "title",defaultValue = "") String title,
-                                       @RequestParam(value = "desc1",defaultValue = "") String desc1,
-                                       @RequestParam(value = "desc2",defaultValue = "") String desc2,
-                                       @RequestParam(value = "pcUrl",defaultValue = "") String pcUrl,
-                                       @RequestParam(value = "pcsUrl",defaultValue = "") String pcsUrl){
+                                       @RequestParam(value = "cid", required = true) Long cid,
+                                       @RequestParam(value = "aid", required = true) Long aid,
+                                       @RequestParam(value = "title", defaultValue = "") String title,
+                                       @RequestParam(value = "desc1", defaultValue = "") String desc1,
+                                       @RequestParam(value = "desc2", defaultValue = "") String desc2,
+                                       @RequestParam(value = "pcUrl", defaultValue = "") String pcUrl,
+                                       @RequestParam(value = "pcsUrl", defaultValue = "") String pcsUrl) {
 //        System.out.println("cid:"+cid+"aid"+aid+"title:"+title+"desc1"+desc1+"desc2"+desc2+"pcUrl"+pcUrl+"pcsUrl"+pcsUrl);
-        BaiduAccountInfoDTO bad=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
-        CreativeType creativeTypes=new CreativeType();
+        BaiduAccountInfoDTO bad = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        CreativeType creativeTypes = new CreativeType();
         creativeTypes.setTitle(title);
         creativeTypes.setDescription1(desc1);
         creativeTypes.setDescription2(desc2);
@@ -459,18 +463,18 @@ public class AssistantCreativeController extends WebContextSupport {
         creativeTypes.setPcDisplayUrl(pcsUrl);
         creativeTypes.setAdgroupId(aid);
         creativeTypes.setDevicePreference(0);
-        CommonService commonService= BaiduServiceSupport.getCommonService(bad.getBaiduUserName(),bad.getBaiduPassword(),bad.getToken());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         try {
-            CreativeService service= commonService.getService(CreativeService.class);
+            CreativeService service = commonService.getService(CreativeService.class);
 
-            AddCreativeRequest addCreativeRequest=new AddCreativeRequest();
+            AddCreativeRequest addCreativeRequest = new AddCreativeRequest();
             addCreativeRequest.setCreativeTypes(Arrays.asList(creativeTypes));
-            AddCreativeResponse addCreativeResponse=  service.addCreative(addCreativeRequest);
-            CreativeType creativeTypeResponse= addCreativeResponse.getCreativeType(0);
-            if (creativeTypeResponse.getCreativeId()!=0){
+            AddCreativeResponse addCreativeResponse = service.addCreative(addCreativeRequest);
+            CreativeType creativeTypeResponse = addCreativeResponse.getCreativeType(0);
+            if (creativeTypeResponse.getCreativeId() != 0) {
                 writeHtml(SUCCESS, response);
-            }else{
-                writeHtml(FAIL,response);
+            } else {
+                writeHtml(FAIL, response);
             }
         } catch (ApiException e) {
             e.printStackTrace();
@@ -478,91 +482,115 @@ public class AssistantCreativeController extends WebContextSupport {
         }
         return null;
     }
-    @RequestMapping(value = "/getDomain",method = RequestMethod.GET)
-    public ModelAndView getDomain(HttpServletResponse response){
-        BaiduAccountInfoDTO baiduAccountInfoEntity=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
-        if(baiduAccountInfoEntity!=null){
-            writeHtml(baiduAccountInfoEntity.getRegDomain(),response);
-        }else{
-            writeHtml(FAIL,response);
+
+    @RequestMapping(value = "/getDomain", method = RequestMethod.GET)
+    public ModelAndView getDomain(HttpServletResponse response) {
+        BaiduAccountInfoDTO baiduAccountInfoEntity = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        if (baiduAccountInfoEntity != null) {
+            writeHtml(baiduAccountInfoEntity.getRegDomain(), response);
+        } else {
+            writeHtml(FAIL, response);
         }
         return null;
     }
-    @RequestMapping(value = "uploadNewCreative",method = RequestMethod.GET)
-    public ModelAndView uploadNewCreative(HttpServletResponse response,@RequestParam(value = "title",defaultValue = "")String title,
-                                          @RequestParam(value = "desc")String[] desc,
-                                          @RequestParam(value = "descUrl")String[] descUrl,
-                                          @RequestParam(value = "aid")Long aid){
-        SublinkType sublinkType=new SublinkType();
+
+    @RequestMapping(value = "uploadNewCreative", method = RequestMethod.GET)
+    public ModelAndView uploadNewCreative(HttpServletResponse response, @RequestParam(value = "title", defaultValue = "") String title,
+                                          @RequestParam(value = "desc") String[] desc,
+                                          @RequestParam(value = "descUrl") String[] descUrl,
+                                          @RequestParam(value = "aid") Long aid) {
+        SublinkType sublinkType = new SublinkType();
         sublinkType.setAdgroupId(aid);
-        List<SublinkInfo> sublinkInfos=new ArrayList<>();
-        for (int i=0;i<desc.length;i++){
-            SublinkInfo sublinkInfo=new SublinkInfo();
+        List<SublinkInfo> sublinkInfos = new ArrayList<>();
+        for (int i = 0; i < desc.length; i++) {
+            SublinkInfo sublinkInfo = new SublinkInfo();
             sublinkInfo.setDescription(desc[i]);
             sublinkInfo.setDestinationUrl(descUrl[i]);
             sublinkInfos.add(sublinkInfo);
         }
         sublinkType.setSublinkInfos(sublinkInfos);
-        BaiduAccountInfoDTO bad=accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
-        CommonService commonService= BaiduServiceSupport.getCommonService(bad.getBaiduUserName(),bad.getBaiduPassword(),bad.getToken());
+        BaiduAccountInfoDTO bad = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         try {
-            NewCreativeService newCreativeService=commonService.getService(NewCreativeService.class);
-            AddSublinkRequest addSublinkRequest=new AddSublinkRequest();
+            NewCreativeService newCreativeService = commonService.getService(NewCreativeService.class);
+            AddSublinkRequest addSublinkRequest = new AddSublinkRequest();
             addSublinkRequest.addSublinkType(sublinkType);
-            AddSublinkResponse addSublinkResponse=  newCreativeService.addSublink(addSublinkRequest);
-            if(addSublinkResponse.getSublinkType(0).getSublinkId()!=0){
-                writeHtml(SUCCESS,response);
-            }else{
-                writeHtml(FAIL,response);
+            AddSublinkResponse addSublinkResponse = newCreativeService.addSublink(addSublinkRequest);
+            if (addSublinkResponse.getSublinkType(0).getSublinkId() != 0) {
+                writeHtml(SUCCESS, response);
+            } else {
+                writeHtml(FAIL, response);
             }
         } catch (ApiException e) {
             e.printStackTrace();
         }
 
-        return  null;
+        return null;
     }
+
     @RequestMapping(value = "uploadOperate")
-    public ModelAndView uploadOperate(@RequestParam(value = "crid",required = true)String crid,@RequestParam(value = "ls")Integer ls){
-        if(crid.length()>OBJ_SIZE){
-            List<CreativeDTO> creativeDTOs=creativeService.uploadAdd(new ArrayList<String>(){{add(crid);}});
-            if (creativeDTOs.size()>0){
-                creativeDTOs.stream().forEach(s->{creativeService.update(crid,s);});
-                return writeMapObject(MSG, SUCCESS);
-            }else{
+    public ModelAndView uploadOperate(@RequestParam(value = "crid", required = true) String crid, @RequestParam(value = "ls") Integer ls) {
+        if (crid.length() > OBJ_SIZE) {
+            List<CreativeDTO> creativeDTOs = creativeService.uploadAdd(new ArrayList<String>() {{
+                add(crid);
+            }});
+            if (creativeDTOs.size() > 0) {
+                int error = 0;
+                for (CreativeDTO c : creativeDTOs) {
+                    if (c.getCreativeId() != 0) {
+                        creativeService.update(crid, c);
+                    } else {
+                        error++;
+                    }
+                }
+                if (error > 0) {
+                    return writeMapObject(MSG, "部分创意上传失败，请检查上传数据的合法性，是否重复，域名是否一致等条件...");
+                } else {
+                    return writeMapObject(MSG, SUCCESS);
+                }
+
+            } else {
                 return writeMapObject(MSG, "noUp");
             }
-        }else{
-            switch (ls){
+        } else {
+            switch (ls) {
                 case 2:
-                    List<CreativeDTO> dtos=creativeService.uploadUpdate(new ArrayList<Long>(){{add(Long.valueOf(crid));}});
-                    if(dtos.size()>0){
-                        dtos.stream().forEach(s->{creativeService.updateLs(Long.valueOf(crid), s);});
-                        return writeMapObject(MSG,SUCCESS);
-                    }else{
-                        return writeMapObject(MSG,"修改失败");
+                    List<CreativeDTO> dtos = creativeService.uploadUpdate(new ArrayList<Long>() {{
+                        add(Long.valueOf(crid));
+                    }});
+                    if (dtos.size() > 0) {
+                        dtos.stream().forEach(s -> {
+                            creativeService.updateLs(Long.valueOf(crid), s);
+                        });
+                        return writeMapObject(MSG, SUCCESS);
+                    } else {
+                        return writeMapObject(MSG, "修改失败");
                     }
                 case 3:
-                    Integer result=creativeService.uploadDel(Long.valueOf(crid));
-                    if(result!=0){
+                    Integer result = creativeService.uploadDel(Long.valueOf(crid));
+                    if (result != 0) {
                         creativeService.deleteByLongId(Long.valueOf(crid));
-                        return writeMapObject(MSG,SUCCESS);
-                    }else{
-                        return  writeMapObject(MSG,"删除失败");
+                        return writeMapObject(MSG, SUCCESS);
+                    } else {
+                        return writeMapObject(MSG, "删除失败");
                     }
 
             }
         }
 
-        return writeMapObject(MSG,"上传失败");
+        return writeMapObject(MSG, "上传失败");
     }
+
     @RequestMapping(value = "uploadAddByUp")
-    public ModelAndView uploadAddByUp(@RequestParam(value = "crid")String crid){
-        List<CreativeDTO> returnKeywordDTO=creativeService.uploadAddByUp(crid);
-        if(returnKeywordDTO.size()>0){
-            returnKeywordDTO.stream().forEach(s->{creativeService.update(crid,s);});
-            return writeMapObject(MSG,SUCCESS);
+    public ModelAndView uploadAddByUp(@RequestParam(value = "crid") String crid) {
+        List<CreativeDTO> returnKeywordDTO = creativeService.uploadAddByUp(crid);
+        if (returnKeywordDTO.size() > 0) {
+            returnKeywordDTO.stream().forEach(s -> {
+                creativeService.update(crid, s);
+            });
+            return writeMapObject(MSG, SUCCESS);
         }
-        return writeMapObject(MSG,"级联上传失败");
+        return writeMapObject(MSG, "级联上传失败");
     }
 }
 

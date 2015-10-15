@@ -99,6 +99,21 @@ function whenClickTreeLoadData(tabName, param) {
  */
 $("#tabMenu li").click(function () {
     var tabName = $(this).html();
+    switch(tabName){
+        case "普通创意":
+            editCommons.EditType = "creative";
+            break;
+        case "推广单元":
+            editCommons.EditType = "adgroup";
+            break;
+        case "推广计划":
+            editCommons.EditType = "campaign";
+            break;
+        default:
+            editCommons.EditType = "keyword";
+            break;
+    }
+
     whenClickTreeLoadData(tabName, getNowChooseCidAndAid());
 });
 
