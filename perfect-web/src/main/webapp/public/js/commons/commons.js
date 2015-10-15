@@ -62,6 +62,7 @@ var commons = {
         }
     },
     foRClose: function () {
+        $("input[name='findText'],input[name='replaceText']").attr("style", "").val('');
         var _hiddenType = $("#forType");
         _hiddenType.val('');
         $(".TB_overlayBG").css("display", "none");
@@ -82,8 +83,10 @@ var commons = {
 }
 
 var editCommons = {
+    EditType: "keyword",
     EditTmp: {},
-    Copy: function (type) {
+    Copy: function () {
+        var type = this.EditType;
         switch (type) {
             case "keyword":
                 this.getEditData("keyword", "copy");
@@ -99,7 +102,8 @@ var editCommons = {
                 break;
         }
     },
-    Cut: function (type) {
+    Cut: function () {
+        var type = this.EditType;
         switch (type) {
             case "keyword":
                 this.getEditData("keyword", "cut");
@@ -128,29 +132,55 @@ var editCommons = {
             this.EditTmp["type"] = type;
             this.EditTmp["editType"] = editType;
             this.EditTmp["editData"] = selectedData.toString();
-            console.log("我已经" + edtTypeStr + "了这些数据!" + type);
-            console.log(this.EditTmp);
         } else {
             alert("请选择要" + edtTypeStr + "的数据！");
         }
     },
-    Parse: function (type) {
+    Parse: function () {
+        var type = this.EditType;
         switch (type) {
             case "keyword":
-                this.ParseData("keyword");
+                this.ParseData("keyword", function (result) {
+                    if (result.msg) {
+                        getKwdList(0);
+                    } else {
+                        alert("粘贴失败");
+                    }
+                });
                 break;
             case "creative":
-                this.ParseData("creative");
+                this.ParseData("creative", function (result) {
+                    if (result.msg) {
+                        if (jsonData.cid != null) {
+                            if (jsonData.cid != null && jsonData.aid != null) {
+                                getCreativeUnit(jsonData);
+                            } else {
+                                getCreativePlan(jsonData.cid);
+                            }
+                        }
+                    } else {
+                        alert("粘贴失败");
+                    }
+                });
                 break;
             case "adgroup":
-                this.ParseData("adgroup");
+                this.ParseData("adgroup", function (result) {
+                    if (result.msg) {
+                        if (jsonData.cid != null) {
+                            getAdgroupPlan(jsonData.cid, jsonData.cn);
+                            loadTree();
+                        }
+                    }else{
+                        alert("粘贴失败");
+                    }
+                });
                 break;
             case "campaign":
                 this.ParseData("campaign");
                 break;
         }
     },
-    ParseData: function (type) {
+    ParseData: function (type, func) {
         if (this.EditTmp.editType && this.EditTmp.editData.length) {
             if (type == "keyword" || type == "creative") {
                 if (!jsonData.aid) {
@@ -178,7 +208,9 @@ var editCommons = {
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
-                        console.log(result);
+                        if (func) {
+                            func(result);
+                        }
                     }
                 });
             } else {
@@ -603,7 +635,7 @@ $.extend({
                 }
                 break;
         }
-    },foBatch: function (_this) {
+    }, foBatch: function (_this) {
         var form = $(_this).parents("form");
         var checkType = $("select[name='checkType'] :selected");
         var foR_params = {};

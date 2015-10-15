@@ -16,11 +16,11 @@
 </div>
 <div class="assstant_editor">
     <ul>
-        <li><a href="#"><span class="zs_top"><img
+        <li onclick="editCommons.Cut()"><a href="#"><span class="zs_top"><img
                 src="../public/img/zs_function14.png"></span><b>剪切</b></a></li>
-        <li onclick="Copy()"><a href="#"><span class="zs_top"><img
+        <li onclick="editCommons.Copy()"><a href="#"><span class="zs_top"><img
                 src="../public/img/zs_function13.png"></span><b>复制</b></a></li>
-        <li onclick="Paste()"><a href="#"><span class="zs_top"><img
+        <li onclick="editCommons.Parse()"><a href="#"><span class="zs_top"><img
                 src="../public/img/zs_function15.png"></span><b>粘贴</b></a></li>
         <li id="Textreplacement"><a href="#"><span class="zs_top"><img
                 src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>

@@ -602,8 +602,19 @@ public class AssistantKeywordController extends WebContextSupport {
                 add(kid);
             }});
             if (keywordDTOs.size() > 0) {
-                keywordDTOs.stream().forEach(s -> assistantKeywordService.update(kid, s));
-                return writeMapObject(MSG, SUCCESS);
+                int error=0;
+                for(KeywordDTO s:keywordDTOs){
+                    if(s.getKeywordId()!=0){
+                        assistantKeywordService.update(kid, s);
+                    }else{
+                        error++;
+                    }
+                }
+                if(error>0){
+                    return writeMapObject(MSG, "部分关键词上传失败，不符合规范，请检查关键词是否重复，出价等条件...");
+                }else{
+                    return writeMapObject(MSG, SUCCESS);
+                }
             } else {
                 return writeMapObject(MSG, "noUp");
             }

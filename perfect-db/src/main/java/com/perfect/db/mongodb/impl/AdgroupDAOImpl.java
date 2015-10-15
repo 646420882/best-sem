@@ -35,6 +35,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 /**
  * Created by vbzer_000 on 2014-07-02.
@@ -244,7 +245,12 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     public Object insertOutId(AdgroupDTO adgroupEntity) {
         AdgroupEntity adgroupEntityInsert = new AdgroupEntity();
         BeanUtils.copyProperties(adgroupEntity, adgroupEntityInsert);
-        if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(adgroupEntity.getAdgroupName())), getEntityClass())) {
+        if (!Objects.equals("edit", adgroupEntity.getId())) {
+            if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(adgroupEntity.getAdgroupName())), getEntityClass())) {
+                getMongoTemplate().insert(adgroupEntityInsert);
+            }
+        } else {
+            adgroupEntityInsert.setId(null);
             getMongoTemplate().insert(adgroupEntityInsert);
         }
         return adgroupEntityInsert.getId();

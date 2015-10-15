@@ -69,9 +69,9 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public List<AdgroupDTO> findHasLocalStatusStr(List<CampaignDTO> campaignDTOStr) {
-        List<String> strs=new ArrayList<>();
-        for (CampaignDTO camp:campaignDTOStr){
-            if(camp.getCampaignId()==null){
+        List<String> strs = new ArrayList<>();
+        for (CampaignDTO camp : campaignDTOStr) {
+            if (camp.getCampaignId() == null) {
                 strs.add(camp.getId());
             }
         }
@@ -80,9 +80,9 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public List<AdgroupDTO> findHasLocalStatusLong(List<CampaignDTO> campaignDTOLong) {
-        List<Long> longs=new ArrayList<>();
-        for (CampaignDTO camp:campaignDTOLong){
-            if(camp.getCampaignId()!=null){
+        List<Long> longs = new ArrayList<>();
+        for (CampaignDTO camp : campaignDTOLong) {
+            if (camp.getCampaignId() != null) {
                 longs.add(camp.getCampaignId());
             }
         }
@@ -125,10 +125,10 @@ public class AdgroupServiceImpl implements AdgroupService {
     public void updateAdgroup(AdgroupDTO dto) {
         AdgroupDTO adgroupDTO;
 
-        if(dto.getAdgroupId()==null){
-            adgroupDTO=adgroupDAO.findOne(dto.getAdgroupId());
-        }else{
-            adgroupDTO=adgroupDAO.findByObjId(dto.getId());
+        if (dto.getAdgroupId() == null) {
+            adgroupDTO = adgroupDAO.findOne(dto.getAdgroupId());
+        } else {
+            adgroupDTO = adgroupDAO.findByObjId(dto.getId());
         }
 
         AdgroupBackupDTO adgroupBackupDTO = new AdgroupBackupDTO();
@@ -140,20 +140,20 @@ public class AdgroupServiceImpl implements AdgroupService {
             adgroupDTO.setLocalStatus(2);
         }
 
-        if(dto.getAdgroupName()!=null){
+        if (dto.getAdgroupName() != null) {
             adgroupDTO.setAdgroupName(dto.getAdgroupName());
         }
-        if(dto.getMaxPrice()!=null){
+        if (dto.getMaxPrice() != null) {
             adgroupDTO.setMaxPrice(dto.getMaxPrice());
         }
-        if(dto.getNegativeWords()!=null){
+        if (dto.getNegativeWords() != null) {
             adgroupDTO.setNegativeWords(dto.getNegativeWords());
         }
-        if(dto.getExactNegativeWords()!=null){
+        if (dto.getExactNegativeWords() != null) {
             adgroupDTO.setExactNegativeWords(dto.getExactNegativeWords());
         }
 
-        adgroupDAO.update(adgroupDTO,adgroupBackupDTO);
+        adgroupDAO.update(adgroupDTO, adgroupBackupDTO);
 
 
     }
@@ -170,7 +170,7 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
-        return adgroupDAO.findByPagerInfo(params,nowPage,pageSize);
+        return adgroupDAO.findByPagerInfo(params, nowPage, pageSize);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public void update(AdgroupDTO adgroupEntity, AdgroupDTO bakAdgroupEntity) {
-        adgroupDAO.update(adgroupEntity,bakAdgroupEntity);
+        adgroupDAO.update(adgroupEntity, bakAdgroupEntity);
     }
 
     @Override
@@ -242,27 +242,25 @@ public class AdgroupServiceImpl implements AdgroupService {
             }
         });
         if (adgroupTypes.size() > 0) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
-        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-        try {
-            com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
-            AddAdgroupRequest addAdgroupRequest = new AddAdgroupRequest();
-            addAdgroupRequest.setAdgroupTypes(adgroupTypes);
-            AddAdgroupResponse addAdgroupResponse=adgroupService.addAdgroup(addAdgroupRequest);
-            List<AdgroupType> returnAdgroupType=addAdgroupResponse.getAdgroupTypes();
-            returnAdgroupType.stream().forEach(s -> {
-                if (s.getAdgroupId() != null) {
+            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+            try {
+                com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
+                AddAdgroupRequest addAdgroupRequest = new AddAdgroupRequest();
+                addAdgroupRequest.setAdgroupTypes(adgroupTypes);
+                AddAdgroupResponse addAdgroupResponse = adgroupService.addAdgroup(addAdgroupRequest);
+                List<AdgroupType> returnAdgroupType = addAdgroupResponse.getAdgroupTypes();
+                returnAdgroupType.stream().filter(s -> s.getAdgroupId() != null).forEach(s -> {
                     AdgroupDTO dto = new AdgroupDTO();
                     dto.setAdgroupId(s.getAdgroupId());
                     dto.setStatus(s.getStatus());
                     dto.setPause(s.getPause());
                     returnDto.add(dto);
-                }
-            });
-            return returnDto;
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
+                });
+                return returnDto;
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
         }
         return returnDto;
     }
@@ -333,21 +331,21 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public List<AdgroupDTO> uploadAddByUp(String aid) {
-        List<AdgroupDTO> returnAdgroupDto=new ArrayList<>();
-        AdgroupDTO adgroupDTOFind=adgroupDAO.findByObjId(aid);
-        if(adgroupDTOFind!=null){//如果本地数据库存在该数据
+        List<AdgroupDTO> returnAdgroupDto = new ArrayList<>();
+        AdgroupDTO adgroupDTOFind = adgroupDAO.findByObjId(aid);
+        if (adgroupDTOFind != null) {//如果本地数据库存在该数据
 
             //计划级联上传 star
             //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
-            if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
-                List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
-                dtos.stream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+            if (adgroupDTOFind.getCampaignId() == null) {//如果计划cid已经有了，则不需要再上传了
+                List<CampaignDTO> dtos = campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
+                dtos.stream().forEach(j -> campaignService.update(j, adgroupDTOFind.getCampaignObjId()));
             }
             //计划级联上传 end
 
             //单元级联上传 star
             //如果上面判断了计划，则肯定只有单元没有上传了，这里就不需要判断了，如果有agid则根本不会进入这个方法，所以不用判断单元是否上传
-             returnAdgroupDto = uploadAdd(new ArrayList<String>() {{
+            returnAdgroupDto = uploadAdd(new ArrayList<String>() {{
                 add(aid);
             }});
             //上传完毕后执行修改单元操作
@@ -358,7 +356,7 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public void updateUpdate(Long aid, AdgroupDTO dto) {
-        adgroupDAO.pdateUpdate( aid,dto);
+        adgroupDAO.pdateUpdate(aid, dto);
     }
 
     @Override
