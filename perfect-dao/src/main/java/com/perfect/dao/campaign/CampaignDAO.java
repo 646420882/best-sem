@@ -20,15 +20,16 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     /**
      * <p>获取指定百度账号下在本地新增 修改 删除的推广计划
+     * type: 1 -> 新增, 2 -> 修改, 3 -> 删除</p>
      *
      * @param baiduAccountId
      * @return
      */
-    List<CampaignDTO> findLocalChangedCampaigns(Long baiduAccountId);
+    List<CampaignDTO> findLocalChangedCampaigns(Long baiduAccountId, int type);
 
-    public List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids);
+    List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids);
 
-    public List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids);
+    List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids);
 
     CampaignDTO findByLongId(Long cid);
 

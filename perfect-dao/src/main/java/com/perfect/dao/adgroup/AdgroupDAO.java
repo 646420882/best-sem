@@ -4,8 +4,6 @@ package com.perfect.dao.adgroup;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.campaign.CampaignDTO;
-import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -33,7 +31,14 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     List<AdgroupDTO> findHasLocalStatusLong(List<Long> longs);
 
-//    List<AdgroupDTO> findByQuery(Query query);
+    /**
+     * <p>获取指定百度账号下在本地新增 修改 删除的推广单元
+     * type: 1 -> 新增, 2 -> 修改, 3 -> 删除</p>
+     *
+     * @param baiduAccountId
+     * @return
+     */
+    List<AdgroupDTO> findLocalChangedAdgroups(Long baiduAccountId, int type);
 
     List<AdgroupDTO> findByCampaignId(Long cid);
 
@@ -74,11 +79,11 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     void insert(AdgroupDTO adgroupDTO);
 
-    List<AdgroupDTO> findByTwoParams(Long cid,Long accountId);
+    List<AdgroupDTO> findByTwoParams(Long cid, Long accountId);
 
     double findPriceRatio(Long cid);
 
-    void update(String oid,AdgroupDTO dto);
+    void update(String oid, AdgroupDTO dto);
 
     void deleteBubLinks(Long aid);
 

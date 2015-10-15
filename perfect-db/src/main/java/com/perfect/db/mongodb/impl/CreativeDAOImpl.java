@@ -1,7 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.commons.constants.LogStatusConstant;
-import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.creative.CreativeBackUpDAO;
 import com.perfect.dao.creative.CreativeDAO;
@@ -22,7 +21,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import sun.security.krb5.internal.crypto.dk.AesDkCrypto;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
@@ -102,20 +100,26 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
 
     @Override
     public List<CreativeDTO> findHasLocalStatus() {
-        List<CreativeEntity> creativeEntities=getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass());
-        return ObjectUtils.convert(creativeEntities,CreativeDTO.class);
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
     }
 
     @Override
     public List<CreativeDTO> findHasLocalStatusStr(List<String> strs) {
-        List<CreativeEntity> creativeEntities=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_ADGROUP_ID).in(strs)),getEntityClass());
-        return ObjectUtils.convert(creativeEntities,CreativeDTO.class);
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_ADGROUP_ID).in(strs)), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
     }
 
     @Override
     public List<CreativeDTO> findHasLocalStatusLong(List<Long> longs) {
-        List<CreativeEntity> creativeEntities=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)),getEntityClass());
-        return ObjectUtils.convert(creativeEntities,CreativeDTO.class);
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
+    }
+
+    @Override
+    public List<CreativeDTO> findLocalChangedCreative(Long baiduAccountId, int type) {
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where("ls").is(type).and(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
     }
 
     @Override
@@ -129,7 +133,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         }
         q.addCriteria(c);
         CreativeEntity creativeEntity = getMongoTemplate().findOne(q, getEntityClass());
-        CreativeDTO creativeDTO= ObjectUtils.convert(creativeEntity,CreativeDTO.class);
+        CreativeDTO creativeDTO = ObjectUtils.convert(creativeEntity, CreativeDTO.class);
         return creativeDTO;
     }
 
@@ -426,7 +430,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     private CreativeDTO wrapperObject(CreativeEntity entity) {
-        CreativeDTO dto=   ObjectUtils.convert(entity,CreativeDTO.class);
+        CreativeDTO dto = ObjectUtils.convert(entity, CreativeDTO.class);
         return dto;
     }
 }

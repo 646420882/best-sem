@@ -1,7 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.core.AppContext;
-import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignBackUpDAO;
 import com.perfect.dao.campaign.CampaignDAO;
@@ -9,7 +8,6 @@ import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.CampaignBackUpDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.AdgroupBackUpEntity;
@@ -39,7 +37,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -167,9 +164,9 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
-    public List<CampaignDTO> findLocalChangedCampaigns(Long baiduAccountId) {
+    public List<CampaignDTO> findLocalChangedCampaigns(Long baiduAccountId, int type) {
         List<CampaignEntity> campaignEntityList = getMongoTemplate()
-                .find(Query.query(Criteria.where("ls").in(1, 2, 3).and(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
+                .find(Query.query(Criteria.where("ls").is(type).and(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
         return ObjectUtils.convert(campaignEntityList, CampaignDTO.class);
     }
 

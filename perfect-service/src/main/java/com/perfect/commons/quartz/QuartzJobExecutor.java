@@ -67,11 +67,8 @@ public class QuartzJobExecutor implements Job {
     /**
      * <p>上传分三种情况:
      * 1. <code>新增</code>(计划 单元 关键词 创意)
-     * 上传顺序应为: 计划->单元->关键词、创意
-     * 上传成功后, 需要更新本地的物料信息
      * 2. <code>修改</code>(账户 计划 单元 关键词 创意)
-     * 3. <code>删除</code>(计划 单元 关键词 创意)
-     * </p>
+     * 3. <code>删除</code>(计划 单元 关键词 创意)</p>
      *
      * @param baiduUserIdList 百度用户ID列表
      */

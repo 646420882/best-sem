@@ -10,7 +10,6 @@ import com.perfect.utils.paging.PaginationParam;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by baizz on 2014-7-7.
@@ -58,9 +57,14 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByName(String name, Long accountId);
 
-//    void remove(Query query);
-//
-//    List<KeywordDTO> findByQuery(Query query);
+    /**
+     * <p>获取指定百度账号下在本地新增 修改 删除的关键词
+     * type: 1 -> 新增, 2 -> 修改, 3 -> 删除</p>
+     *
+     * @param baiduAccountId
+     * @return
+     */
+    List<KeywordDTO> findLocalChangedKeywords(Long baiduAccountId, int type);
 
     List<KeywordDTO> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams);
 
