@@ -5,6 +5,7 @@ import com.perfect.core.AppContext;
 
 /**
  * Created on 2015-09-29.
+ * <p>物料定时任务接口.
  *
  * @author dolphineor
  */
