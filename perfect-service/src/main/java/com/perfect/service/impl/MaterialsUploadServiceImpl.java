@@ -1,6 +1,7 @@
 package com.perfect.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
@@ -18,13 +19,13 @@ import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.MaterialsUploadService;
 import com.perfect.utils.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,9 +36,6 @@ import java.util.stream.Collectors;
  */
 @Service("materialsUploadService")
 public class MaterialsUploadServiceImpl implements MaterialsUploadService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MaterialsUploadService.class);
-
 
     @Resource
     private AccountManageDAO accountManageDAO;
@@ -53,6 +51,20 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
 
     @Resource
     private CreativeDAO creativeDAO;
+
+    private final Function<Long, Boolean> uploadFunc1 = baiduUserId -> this.addFunc.apply(baiduUserId)
+            && this.updateFunc.apply(baiduUserId) && this.deleteFunc.apply(baiduUserId);
+
+    private final Function<String, List<Long>> uploadFunc2 = sysUser ->
+            accountManageDAO.getBaiduAccountItems(sysUser)
+                    .stream()
+                    .map(BaiduAccountInfoDTO::getId)
+                    .collect(Collectors.toList())
+                    .stream()
+                    .map(id -> Maps.immutableEntry(id, uploadFunc1.apply(id)))
+                    .filter(e -> !e.getValue())
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
 
     private final Function<Long, Boolean> addFunc = baiduUserId -> {
         BaiduApiService baiduApiService = getBaiduApiService(baiduUserId);
@@ -154,12 +166,11 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         try {
             // 更新账户信息
-            AccountInfoType accountInfoType = new AccountInfoType();
-            BeanUtils.copyProperties(baiduAccount, accountInfoType);
+            AccountInfoType accountInfoType = ObjectUtils.convert(baiduAccount, AccountInfoType.class);
             accountInfoType.setUserid(baiduAccount.getId());
-            System.out.println(JSON.toJSONString(accountInfoType));
+            System.out.printf("Before: %s\n", JSON.toJSONString(accountInfoType));
             AccountInfoType aResult = baiduApiService.updateAccount(accountInfoType);
-            System.out.println(JSON.toJSONString(aResult));
+            System.out.printf("After: %s\n", JSON.toJSONString(aResult));
 
             // 是否有修改的推广计划
             List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, MODIFIED);
@@ -236,17 +247,15 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
         return false;
     };
 
-    private final Function<Long, Boolean> pauseFunc = baiduUserId -> {
+    private final Function<Long, Boolean> pauseFunc1 = baiduUserId -> {
         BaiduApiService baiduApiService = getBaiduApiService(baiduUserId);
-        List<CampaignType> campaignTypeList = new ArrayList<>();
         // 获取当前百度账号下的所有推广计划, 并对其进行暂停投放的设置, 然后更新到凤巢
         campaignDAO.pause(baiduUserId);
 
-        campaignDAO.findDownloadCampaignsByBaiduAccountId(baiduUserId).forEach(e -> {
-            CampaignType campaignType = new CampaignType();
-            BeanUtils.copyProperties(e, campaignType);
-            campaignTypeList.add(campaignType);
-        });
+        List<CampaignType> campaignTypeList = campaignDAO.findDownloadCampaignsByBaiduAccountId(baiduUserId)
+                .stream()
+                .map(o -> ObjectUtils.convert(o, CampaignType.class))
+                .collect(Collectors.toList());
 
         try {
             baiduApiService.updateCampaign(campaignTypeList);
@@ -258,6 +267,17 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
 
         return false;
     };
+
+    private final Function<String, List<Long>> pauseFunc2 = sysUser ->
+            accountManageDAO.getBaiduAccountItems(sysUser)
+                    .stream()
+                    .map(BaiduAccountInfoDTO::getId)
+                    .collect(Collectors.toList())
+                    .stream()
+                    .map(id -> Maps.immutableEntry(id, pauseFunc1.apply(id)))
+                    .filter(e -> !e.getValue())
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
 
 
     /**
@@ -282,10 +302,24 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     }
 
     @Override
-    public boolean pause(Long baiduUserId) {
-        return pauseFunc.apply(baiduUserId);
+    public boolean upload(Long baiduUserId) {
+        return uploadFunc1.apply(baiduUserId);
     }
 
+    @Override
+    public List<Long> upload(String sysUser) {
+        return uploadFunc2.apply(sysUser);
+    }
+
+    @Override
+    public boolean pause(Long baiduUserId) {
+        return pauseFunc1.apply(baiduUserId);
+    }
+
+    @Override
+    public List<Long> pause(String sysUser) {
+        return pauseFunc2.apply(sysUser);
+    }
 
     private BaiduApiService getBaiduApiService(Long baiduUserId) {
         BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
