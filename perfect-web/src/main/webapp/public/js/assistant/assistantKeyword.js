@@ -163,13 +163,13 @@ function keywordDataToHtml(obj, index) {
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
                 case 1:
-                    _tr = html + "<tr class='list2_box3 firstKeyword add'>"
+                    _tr = html + "<tr class='list2_box3 firstKeyword add'>";
                     break;
                 case 2:
-                    _tr = html + "<tr class='list2_box3 firstKeyword update'>"
+                    _tr = html + "<tr class='list2_box3 firstKeyword update'>";
                     break
                 case 3:
-                    _tr = html + "<tr class='list2_box3 firstKeyword del'>"
+                    _tr = html + "<tr class='list2_box3 firstKeyword del'>";
                     break;
             }
         }
@@ -179,13 +179,13 @@ function keywordDataToHtml(obj, index) {
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
                 case 1:
-                    _tr = html + "<tr class='list2_box2 add'>"
+                    _tr = html + "<tr class='list2_box2 add'>";
                     break;
                 case 2:
-                    _tr = html + "<tr class='list2_box2 update'>"
+                    _tr = html + "<tr class='list2_box2 update'>";
                     break
                 case 3:
-                    _tr = html + "<tr class='list2_box2 del'>"
+                    _tr = html + "<tr class='list2_box2 del'>";
                     break;
             }
         }
@@ -195,13 +195,13 @@ function keywordDataToHtml(obj, index) {
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
                 case 1:
-                    _tr = html + "<tr class='list2_box1 add'>"
+                    _tr = html + "<tr class='list2_box1 add'>";
                     break;
                 case 2:
-                    _tr = html + "<tr class='list2_box1 update'>"
+                    _tr = html + "<tr class='list2_box1 update'>";
                     break
                 case 3:
-                    _tr = html + "<tr class='list2_box1 del'>"
+                    _tr = html + "<tr class='list2_box1 del'>";
                     break;
             }
         }
@@ -263,6 +263,7 @@ function keywordDataToHtml(obj, index) {
     //计算机质量度
     var quanlityHtml = "<span>";
     var quanlityText = "";
+    var quanlityTextname = "";
     if (obj.quality > 0) {
         switch (parseInt(obj.quality)) {
             case 11:
@@ -292,29 +293,35 @@ function keywordDataToHtml(obj, index) {
 
         switch (parseInt(obj.quality)) {
             case 11:
-                quanlityText = "一星较难优化";
+                quanlityText = "1";
+                quanlityTextname = "一星较难优化";
                 break;
             case 12:
-                quanlityText = "一星难度中等";
+                quanlityText = "1";
+                quanlityTextname = "一星难度中等";
                 break;
             case 13:
-                quanlityText = "一星较易优化";
+                quanlityText = "1";
+                quanlityTextname = "一星较易优化";
                 break;
             case 21:
-                quanlityText = "二星较难优化";
+                quanlityText = "2";
+                quanlityTextname = "二星较难优化";
                 break;
             case 22:
-                quanlityText = "二星较易优化";
+                quanlityText = "2";
+                quanlityTextname = "二星较易优化";
                 break;
             case 3:
-                quanlityText = "三星";
+                quanlityText = "3";
+                quanlityTextname = "三星";
                 break;
         }
     }
     quanlityHtml += "&nbsp;&nbsp;&nbsp;" + quanlityText + "</span>";
-    html = html + "<td cname=" + obj.quality + ">" + quanlityHtml + "</td>";
+    html = html + "<td cname=" + obj.quality + ">" + "<a class='tabletooltip' href='#' title='" + quanlityTextname + "'>" + quanlityHtml + "</a></td>";
 
-
+    $(".tabletooltip").tooltip();
     //移动质量度
     var mobileQuanlityHtml = "<span>";
     if (parseInt(obj.mobileQuality) > 0) {
