@@ -426,10 +426,19 @@ public class AssistantAdgroupController extends WebContextSupport {
                 add(aid);
             }});
             if (returnAids.size() > 0) {
-                returnAids.stream().forEach(s -> {
-                    adgroupService.update(aid, s);
-                });
-                return writeMapObject(MSG, SUCCESS);
+                int error = 0;
+                for (AdgroupDTO a : returnAids) {
+                    if (a.getAdgroupId() != 0) {
+                        adgroupService.update(aid, a);
+                    } else {
+                        error++;
+                    }
+                }
+                if (error > 0) {
+                    return writeMapObject(MSG, "单元部分上传失败，请检查单元名是否合法，重复等条件...");
+                } else {
+                    return writeMapObject(MSG, SUCCESS);
+                }
             } else {
                 return writeMapObject(MSG, "noUp");
             }
@@ -459,28 +468,28 @@ public class AssistantAdgroupController extends WebContextSupport {
     }
 
     @RequestMapping(value = "/uploadAddByUp")
-    public ModelAndView uploadAddByUp(@RequestParam(value = "aid")String aid){
-        List<AdgroupDTO> adgroupDTOs=adgroupService.uploadAddByUp(aid);
-        if(adgroupDTOs.size()>0){
-            adgroupDTOs.stream().forEach(s ->adgroupService.update(aid, s));
-            return  writeMapObject(MSG,SUCCESS);
+    public ModelAndView uploadAddByUp(@RequestParam(value = "aid") String aid) {
+        List<AdgroupDTO> adgroupDTOs = adgroupService.uploadAddByUp(aid);
+        if (adgroupDTOs.size() > 0) {
+            adgroupDTOs.stream().forEach(s -> adgroupService.update(aid, s));
+            return writeMapObject(MSG, SUCCESS);
         }
-        return writeMapObject(MSG,"级联上传失败");
+        return writeMapObject(MSG, "级联上传失败");
     }
 
     @RequestMapping(value = "/getCampBgt")
-    public ModelAndView getCampBgt(@RequestParam(value = "cid")String cid){
-        Double bgt=0.0;
-        try{
-            if (cid.length()>OBJ_SIZE){
-                bgt= adgroupService.getCampBgt(cid);
-            }else{
-                bgt=adgroupService.getCampBgt(Long.parseLong(cid));
+    public ModelAndView getCampBgt(@RequestParam(value = "cid") String cid) {
+        Double bgt = 0.0;
+        try {
+            if (cid.length() > OBJ_SIZE) {
+                bgt = adgroupService.getCampBgt(cid);
+            } else {
+                bgt = adgroupService.getCampBgt(Long.parseLong(cid));
             }
-            return writeMapObject(DATA,bgt);
-        }catch (Exception e){
+            return writeMapObject(DATA, bgt);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return writeMapObject(DATA,bgt);
+        return writeMapObject(DATA, bgt);
     }
 }

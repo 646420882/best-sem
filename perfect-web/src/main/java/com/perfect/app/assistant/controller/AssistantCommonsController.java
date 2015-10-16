@@ -10,10 +10,7 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.param.EditParam;
 import com.perfect.param.FindOrReplaceParam;
-import com.perfect.service.AdgroupService;
-import com.perfect.service.AssistantKeywordService;
-import com.perfect.service.CampaignService;
-import com.perfect.service.CreativeService;
+import com.perfect.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -53,36 +50,148 @@ public class AssistantCommonsController extends WebContextSupport {
     @Resource
     private CampaignService campaignService;
 
+    @Resource
+    private KeywordService keywordService;
+
     private static Integer OBJ_SIZE = 18;
 
     @RequestMapping(value = "/dataParse", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView editData(@RequestBody EditParam ep) {
+        int error = 0;
         switch (ep.getType()) {
             case "keyword":
                 String[] kIds = ep.getEditData().split(",");
                 List<String> keywordIds = Arrays.asList(kIds);
-                keywordIds.stream().forEach(s -> {
+                for (String s : keywordIds) {
                     if (s.length() > OBJ_SIZE) {
-
+                        KeywordInfoDTO dto = assistantKeywordService.findByInfoStrId(s);
+                        error += cutOrCopyKeyword(ep, dto);
                     } else {
-
+                        KeywordInfoDTO dto = assistantKeywordService.findByInfoLongId(Long.valueOf(s));
+                        error += cutOrCopyKeyword(ep, dto);
                     }
-                });
-
+                }
                 break;
             case "creative":
+                String[] cIds = ep.getEditData().split(",");
+                List<String> creativeIds = Arrays.asList(cIds);
+                for (String s : creativeIds) {
+                    if (s.length() > OBJ_SIZE) {
+                        CreativeDTO dto = creativeService.findByObjId(s);
+                        error += cutOrCopyCreative(ep, dto);
+                    } else {
+                        CreativeDTO dto = creativeService.findOne(Long.valueOf(s));
+                        error += cutOrCopyCreative(ep, dto);
+                    }
+                }
                 break;
             case "adgroup":
+                String[] adIds = ep.getEditData().split(",");
+                List<String> adgroupIds = Arrays.asList(adIds);
+                for (String s : adgroupIds) {
+                    if (s.length() > OBJ_SIZE) {
+                        AdgroupDTO dto = adgroupService.findByObjId(s);
+                        error += cutOrCopyAdgroup(ep, dto);
+                    } else {
+                        AdgroupDTO dto = adgroupService.findOne(Long.valueOf(s));
+                        error += cutOrCopyAdgroup(ep, dto);
+                    }
+                }
                 break;
             case "campaign":
                 break;
         }
-        return null;
+        if (error == 0) {
+            return writeMapObject(MSG, SUCCESS);
+        }
+        return writeMapObject(MSG, FAIL);
     }
 
-    private void editTypeSwitch(final EditParam ep) {
+    /**
+     * @param ep  剪切或者复制的参数对象
+     * @param dto 被复制或者粘贴的对象
+     * @return
+     */
+    private Integer cutOrCopyKeyword(final EditParam ep, KeywordInfoDTO dto) {
+        int result = 0;
+        KeywordDTO keywordDTO = new KeywordDTO();
+        BeanUtils.copyProperties(dto.getObject(), keywordDTO);
+        if (Objects.equals("copy", ep.getEditType())) {//复制数据
+            if (ep.getAid().length() > OBJ_SIZE) {
+                keywordDTO.setAdgroupObjId(ep.getAid());
+            } else {
+                keywordDTO.setAdgroupId(Long.valueOf(ep.getAid()));
+            }
+            keywordDTO.setId(null);
+            keywordDTO.setKeywordId(null);
+            keywordDTO.setLocalStatus(1);
+            try {
+                keywordService.save(keywordDTO);
+                return 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 1;
+            }
 
+        } else {//剪切数据
+
+
+        }
+        return result;
     }
+
+    private Integer cutOrCopyCreative(final EditParam ep, CreativeDTO dto) {
+        int result = 0;
+        CreativeDTO creativeDTO = new CreativeDTO();
+        BeanUtils.copyProperties(dto, creativeDTO);
+        if (Objects.equals("copy", ep.getEditType())) {
+            if (ep.getAid().length() > OBJ_SIZE) {
+                creativeDTO.setAdgroupObjId(ep.getAid());
+            } else {
+                creativeDTO.setAdgroupId(Long.valueOf(ep.getAid()));
+            }
+            creativeDTO.setId(null);
+            creativeDTO.setCreativeId(null);
+            creativeDTO.setLocalStatus(1);
+            try {
+                creativeService.insertOutId(creativeDTO);
+                return 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 1;
+            }
+        } else {//剪切
+
+        }
+        return result;
+    }
+
+    private Integer cutOrCopyAdgroup(final EditParam ep, AdgroupDTO dto) {
+        Integer result = 0;
+        AdgroupDTO adgroupDTO = new AdgroupDTO();
+        BeanUtils.copyProperties(dto, adgroupDTO);
+        if (Objects.equals("copy", ep.getEditType())) {
+            if (ep.getCid().length() > OBJ_SIZE) {
+                adgroupDTO.setCampaignObjId(ep.getCid());
+            } else {
+                adgroupDTO.setCampaignId(Long.valueOf(ep.getCid()));
+            }
+            adgroupDTO.setId("edit");
+            adgroupDTO.setAdgroupId(null);
+            adgroupDTO.setLocalStatus(1);
+            try {
+                adgroupService.insertOutId(adgroupDTO);
+                return 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 1;
+            }
+        } else {//剪切
+
+        }
+        return result;
+    }
+
 
     @RequestMapping(value = "/checkSome", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView findOrReplace(@RequestBody FindOrReplaceParam forp) {
@@ -106,8 +215,8 @@ public class AssistantCommonsController extends WebContextSupport {
 
     @RequestMapping(value = "/batchDel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView batchDel(@RequestBody FindOrReplaceParam batchId) {
-        if(batchId != null || batchId.equals("")){
-            switch (batchId.getType()){
+        if (batchId != null || batchId.equals("")) {
+            switch (batchId.getType()) {
                 case "keyword":
                     assistantKeywordService.batchDelete(batchId);
                     return writeMapObject(DATA, null);

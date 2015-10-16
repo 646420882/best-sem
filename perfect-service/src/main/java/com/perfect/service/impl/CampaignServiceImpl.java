@@ -85,8 +85,8 @@ public class CampaignServiceImpl implements CampaignService {
             newCampaignDTO = campaignDAO.findByLongId(dto.getCampaignId());
         }
 
-        CampaignDTO backUpDTO=new CampaignDTO();
-        BeanUtils.copyProperties(newCampaignDTO,backUpDTO);
+        CampaignDTO backUpDTO = new CampaignDTO();
+        BeanUtils.copyProperties(newCampaignDTO, backUpDTO);
 
         if (newCampaignDTO.getCampaignId() == null) {
             newCampaignDTO.setLocalStatus(1);
@@ -94,7 +94,7 @@ public class CampaignServiceImpl implements CampaignService {
             newCampaignDTO.setLocalStatus(2);
         }
 
-        if(dto.getCampaignName()!=null){
+        if (dto.getCampaignName() != null) {
             newCampaignDTO.setCampaignName(dto.getCampaignName());
         }
 
@@ -200,14 +200,12 @@ public class CampaignServiceImpl implements CampaignService {
             addCampaignRequest.setCampaignTypes(Arrays.asList(campaignType));
             AddCampaignResponse addCampaignResponse = campaignService.addCampaign(addCampaignRequest);
             List<CampaignType> campaignTypes = addCampaignResponse.getCampaignTypes();
-            campaignTypes.stream().forEach(s -> {
-                if (s.getCampaignId() != null) {
-                    CampaignDTO campaignDTO = new CampaignDTO();
-                    campaignDTO.setCampaignId(s.getCampaignId());
-                    campaignDTO.setStatus(s.getStatus());
-                    campaignDTO.setPause(s.getPause());
-                    returnDtos.add(campaignDTO);
-                }
+            campaignTypes.stream().filter(s -> s.getCampaignId() != null).forEach(s -> {
+                CampaignDTO campaignDTO = new CampaignDTO();
+                campaignDTO.setCampaignId(s.getCampaignId());
+                campaignDTO.setStatus(s.getStatus());
+                campaignDTO.setPause(s.getPause());
+                returnDtos.add(campaignDTO);
             });
             return returnDtos;
         } catch (ApiException e) {

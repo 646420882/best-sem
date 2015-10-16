@@ -49,7 +49,7 @@ public class QuartzJobExecutor implements Job {
         ScheduledJob scheduledJob = (ScheduledJob) context.getMergedJobDataMap().get("scheduledJob");
         List<Long> baiduUserIdList = accountManageDAO.getBaiduAccountItems(scheduledJob.getJobName()).stream()
                 .map(BaiduAccountInfoDTO::getId).collect(Collectors.toList());
-        LOGGER.info("scheduledJob'name: {}, cronExpression: {}", scheduledJob.getJobName(), scheduledJob.getCronExpression());
+//        LOGGER.info("scheduledJob'name: {}, cronExpression: {}", scheduledJob.getJobName(), scheduledJob.getCronExpression());
 
         switch (scheduledJob.getJobType()) {
             case 10:
@@ -74,9 +74,9 @@ public class QuartzJobExecutor implements Job {
      */
     private void upload(List<Long> baiduUserIdList) {
         baiduUserIdList.forEach(id -> {
-            materialsUploadService.uploadAdditions(id);
-            materialsUploadService.uploadModifications(id);
-            materialsUploadService.uploadDeletions(id);
+            materialsUploadService.add(id);
+            materialsUploadService.update(id);
+            materialsUploadService.delete(id);
         });
     }
 

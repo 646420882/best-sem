@@ -458,9 +458,20 @@ public class AssistantCampaignController extends WebContextSupport {
     @RequestMapping(value = "/assistantCampaign/upload")
     public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid,@RequestParam(value = "ls")Integer ls) {
         if (cid.length() > OBJ_SIZE) {
-            List<CampaignDTO> dtos=campaignService.uploadAdd(cid);
-            dtos.stream().forEach(s->campaignService.update(s,cid));
-            return writeMapObject(MSG, SUCCESS);
+            List<CampaignDTO> campaignDTOs=campaignService.uploadAdd(cid);
+            int error=0;
+            for (CampaignDTO c:campaignDTOs){
+                if(c.getCampaignId()!=0){
+                    campaignService.update(c,cid);
+                }else{
+                    error++;
+                }
+            }
+            if(error>0){
+                return writeMapObject(MSG, "部分计划上传失败，请检查计划的合法性，是否重复，出价是是否在规定范围内等条件...");
+            }else{
+                return writeMapObject(MSG, SUCCESS);
+            }
         } else {
             switch (ls) {
                 case 2:
