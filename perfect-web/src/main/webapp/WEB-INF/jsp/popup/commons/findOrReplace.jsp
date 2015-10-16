@@ -92,7 +92,7 @@
                         <label>物料选择方式：</label>
                     </div>
                     <div class="replaceright fl">
-                        <select name="checkType" no-sub="true">
+                        <select id="checkType" no-sub="true">
                             <option value="0">当前选中</option>
                             <option value="1">所有</option>
                         </select>

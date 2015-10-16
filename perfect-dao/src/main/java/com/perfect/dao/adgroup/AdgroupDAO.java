@@ -93,4 +93,11 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     double getCampBgt(Long cid);
 
+    /**
+     * 批量删除
+     * @param asList
+     * @param keywordDatas
+     * @param creativeDatas
+     */
+    void batchDelete(List<String> asList, List<String> keywordDatas, List<String> creativeDatas);
 }

@@ -2,6 +2,7 @@ package com.perfect.dao.creative;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -76,4 +77,11 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
     void deleteByLongId(Long crid);
 
     void updateLs(Long crid, CreativeDTO dto);
+
+    /**
+     * 批量删除关键字
+     *
+     * @param param
+     */
+    void batchDelete(List<String> param);
 }

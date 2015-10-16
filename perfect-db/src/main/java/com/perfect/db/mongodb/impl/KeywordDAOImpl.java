@@ -761,12 +761,12 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     @Override
     public void batchDelete(List<String> strings) {
         strings.forEach(e -> {
-            if (e.length() < 32) {
+            if (e.length() < 24) {
                 Update update = new Update();
-                update.set("localStatus", 3);
+                update.set("ls", 3);
                 getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(Long.valueOf(e))), update, getEntityClass());
             } else {
-                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID)));
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
             }
         });
     }

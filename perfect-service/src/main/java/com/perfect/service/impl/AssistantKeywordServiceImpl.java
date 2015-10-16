@@ -1,5 +1,6 @@
 package com.perfect.service.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
@@ -1183,19 +1184,69 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     @Override
     public void batchDelete(FindOrReplaceParam param) {
         if (param != null) {
-            String[] list = param.getCheckData().split(",");
-            List<String> asList = Arrays.asList(list);
+            List<String> asList = new ArrayList<>();
+            if(param.getCheckData() != null){
+                String[] list = param.getCheckData().split(",");
+                Collections.addAll(asList, list);
+            }
+
             if (param.getForType() != 0) {
-                String dataId = param.getCampaignId() != null ? param.getCampaignId() : param.getAdgroupId();
-                if (param.getCampaignId() != null) {
-
+                String dataId = param.getAdgroupId() != null ? param.getAdgroupId() : param.getCampaignId();
+                if (param.getAdgroupId() != null) {
+                    List<KeywordDTO> keywordDTOs;
+                    if (dataId.length() < 24) {
+                        List<Long> longs = Lists.newArrayList(Long.valueOf(param.getAdgroupId()));
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs);
+                    } else {
+                        List<String> strings = Lists.newArrayList(param.getAdgroupId());
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(strings);
+                    }
+                    asList.clear();
+                    keywordDTOs.forEach(e -> {
+                        if (e.getKeywordId() != null) {
+                            asList.add(String.valueOf(e.getKeywordId()));
+                        } else {
+                            asList.add(e.getId());
+                        }
+                    });
                 } else {
+                    List<KeywordDTO> keywordDTOs;
+                    if (dataId.length() < 24) {
+                        List<String> strings = Lists.newArrayList();
+                        List<Long> longs = Lists.newArrayList();
+                        adgroupDAO.findByCampaignId(Long.valueOf(param.getCampaignId())).forEach(e -> {
+                            if(e.getAdgroupId() != null) longs.add(e.getAdgroupId());
+                            else strings.add(e.getId());
 
+                        });
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs);
+                        List<KeywordDTO> dtos = keywordDAO.findKeywordByAdgroupIdsStr(strings);
+                        if(!Objects.isNull(dtos)) keywordDTOs.addAll(dtos);
+                    } else {
+                        List<String> strings = Lists.newArrayList();
+                        List<Long> longs = Lists.newArrayList();
+                        adgroupDAO.findByCampaignOId(param.getCampaignId()).forEach(e -> {
+                            if(e.getAdgroupId() != null){
+                                longs.add(e.getAdgroupId());
+                            }else{
+                                strings.add(e.getId());
+                            }
+                        });
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs);
+                        List<KeywordDTO> dtos = keywordDAO.findKeywordByAdgroupIdsStr(strings);
+                        if(!Objects.isNull(dtos)) keywordDTOs.addAll(dtos);
+                    }
+                    asList.clear();
+                    keywordDTOs.forEach(e -> {
+                        if (e.getKeywordId() != null) {
+                            asList.add(String.valueOf(e.getKeywordId()));
+                        } else {
+                            asList.add(e.getId());
+                        }
+                    });
                 }
             }
             keywordDAO.batchDelete(asList);
         }
     }
-
-
 }

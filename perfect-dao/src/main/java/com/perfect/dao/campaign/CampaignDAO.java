@@ -70,4 +70,13 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     List<CampaignDTO> getOperateCamp();
 
+    /**
+     * 批量删除
+     *
+     * @param asList
+     * @param keywordDatas
+     * @param creativeDatas
+     */
+    void batchDelete(List<String> asList, List<String> adgroupList, List<String> keywordDatas, List<String> creativeDatas);
+
 }

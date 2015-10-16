@@ -358,6 +358,9 @@ $.fn.extend({
         if (params.campaignId) {
             formData["campaignId"] = params.campaignId;
         }
+        if (params.adgroupId) {
+            formData["adgroupId"] = params.adgroupId;
+        }
         if (!errorCount) {
             if (url) {
                 var ajaxbg = $("#background,#progressBar");
@@ -637,12 +640,13 @@ $.extend({
         }
     }, foBatch: function (_this) {
         var form = $(_this).parents("form");
-        var checkType = $("select[name='checkType'] :selected");
+        var checkType = $("#checkType option:selected");
         var foR_params = {};
         var forType = $("#forType").val();
         if (checkType.val() == 0) {
             var checked_data = [];
-            var checkChildren = $("input[name='keywordCheck']");
+            var checkChildren = getMaterials(forType);
+            console.log(checkChildren)
             for (var i = 0; i < checkChildren.length; i++) {
                 if (checkChildren[i].checked == true) {
                     checked_data.push(checkChildren[i].value);
@@ -654,16 +658,41 @@ $.extend({
             }
             foR_params = {type: forType, forType: 0, checkData: checked_data};
         } else {
+            if(jsonData.cid == null){
+                alert("至少选择一个计划")
+                return;
+            }
             foR_params = {type: forType, forType: 1, campaignId: jsonData.cid, adgroupId: jsonData.aid};
         }
         form.foRSubmit("../assistantCommons/batchDel", foR_params, function (result) {
-            if (result.data) {
-                $.foRComplete({type: foR_params.type, forType: foR_params.forType, data: result.data});
-                commons.foRClose();
+            commons.foRClose();
+            if (checkType.val() == 0) {
+                getMaterials(forType).each(function () {
+                    if (this.checked) {
+                        $(this).parent().parent().find(">td:last").html("<span class='error' step='3'></span>")
+                    }
+                });
+            } else {
+                getMaterials(forType).each(function () {
+                    $(this).parent().parent().find(">td:last").html("<span class='error' step='3'></span>")
+                });
             }
+
         });
     }
 });
+function getMaterials(ma){
+    switch(ma){
+        case "keyword":
+            return $("input[name='keywordCheck']");
+        case "creative":
+            return $("input[name='creativeCheck']");
+        case "adgroup":
+            return $("input[name='adgroupCheck']");
+        case "campaign":
+            return $("input[name='campaignCheck']");
+    }
+}
 //表格顶部选择弹窗
 var tabselect =
     "<select>" +

@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignBackUpDAO;
@@ -331,6 +332,46 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         List<CampaignDTO> campaignDTOs = ObjectUtils.convert(list, CampaignDTO.class);
         return campaignDTOs;
 
+    }
+
+    @Override
+    public void batchDelete(List<String> asList, List<String> adgroupList, List<String> keywordDatas, List<String> creativeDatas) {
+        asList.forEach(e->{
+            if(e.length() < 24){
+                Update update = new Update();
+                update.set("ls", 3);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(Long.valueOf(e))), update, getEntityClass());
+            }else{
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
+            }
+        });
+        adgroupList.forEach(e->{
+            if(e.length() < 24){
+                Update update = new Update();
+                update.set("ls", 4);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.valueOf(e))), update, AdgroupEntity.class);
+            }else{
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), AdgroupEntity.class);
+            }
+        });
+        keywordDatas.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 4);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(Long.valueOf(e))), update, KeywordEntity.class);
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), KeywordEntity.class);
+            }
+        });
+        creativeDatas.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 4);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(Long.valueOf(e))), update, CreativeEntity.class);
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), CreativeEntity.class);
+            }
+        });
     }
 
 

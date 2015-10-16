@@ -122,6 +122,10 @@ public interface AssistantKeywordService {
 
     List<KeywordInfoDTO> getKeywordInfoByCampaignIdLong(Long cid);
 
+    /**
+     * 批量删除关键字
+     * @param param
+     */
     void batchDelete(FindOrReplaceParam param);
 
 }

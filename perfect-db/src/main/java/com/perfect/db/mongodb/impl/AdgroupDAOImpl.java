@@ -1,6 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
 import com.mongodb.WriteResult;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.adgroup.AdgroupBackUpDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -461,6 +462,37 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
             return entity.getBudget();
         }
         return 0;
+    }
+
+    @Override
+    public void batchDelete(List<String> asList, List<String> keywordDatas, List<String> creativeDatas) {
+        asList.forEach(e->{
+             if(e.length() < 24){
+                Update update = new Update();
+                update.set("ls", 3);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.valueOf(e))), update, getEntityClass());
+            }else{
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
+            }
+        });
+        keywordDatas.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 4);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(Long.valueOf(e))), update, KeywordEntity.class);
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), KeywordEntity.class);
+            }
+        });
+        creativeDatas.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 4);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(Long.valueOf(e))), update, CreativeEntity.class);
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), CreativeEntity.class);
+            }
+        });
     }
 
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {

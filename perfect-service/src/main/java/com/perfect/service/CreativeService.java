@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -119,4 +120,10 @@ public interface CreativeService {
     List<CreativeDTO> getByCampaignIdStr(String cid);
 
     List<CreativeDTO> getByCampaignIdLong(Long cid);
+
+    /**
+     * 批量删除关键字
+     * @param param
+     */
+    void batchDelete(FindOrReplaceParam param);
 }

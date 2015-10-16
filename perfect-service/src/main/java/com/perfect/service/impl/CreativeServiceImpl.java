@@ -1,5 +1,6 @@
 package com.perfect.service.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
@@ -13,6 +14,8 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
@@ -23,9 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by SubDong on 2014/11/26.
@@ -398,5 +399,74 @@ public class CreativeServiceImpl implements CreativeService {
         List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
         List<CreativeDTO> creativeDTOs = creativeDAO.getAllsByAdgroupIds(adgroupIds);
         return creativeDTOs;
+    }
+
+    @Override
+    public void batchDelete(FindOrReplaceParam param) {
+        if (param != null) {
+            List<String> asList = new ArrayList<>();
+            if(param.getCheckData() != null){
+                String[] list = param.getCheckData().split(",");
+                Collections.addAll(asList, list);
+            }
+
+            if (param.getForType() != 0) {
+                String dataId = param.getAdgroupId() != null ? param.getAdgroupId() : param.getCampaignId();
+                if (param.getAdgroupId() != null) {
+                    List<CreativeDTO> keywordDTOs;
+                    if (dataId.length() < 24) {
+                        List<Long> longs = Lists.newArrayList(Long.valueOf(param.getAdgroupId()));
+                        keywordDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                    } else {
+                        List<String> strings = Lists.newArrayList(param.getAdgroupId());
+                        keywordDTOs = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                    }
+                    asList.clear();
+                    keywordDTOs.forEach(e -> {
+                        if (e.getCreativeId() != null) {
+                            asList.add(String.valueOf(e.getCreativeId()));
+                        } else {
+                            asList.add(e.getId());
+                        }
+                    });
+                } else {
+                    List<CreativeDTO> creativeDTOs;
+                    if (dataId.length() < 24) {
+                        List<String> strings = Lists.newArrayList();
+                        List<Long> longs = Lists.newArrayList();
+                        adgroupDAO.findByCampaignId(Long.valueOf(param.getCampaignId())).forEach(e -> {
+                            if(e.getAdgroupId() != null) longs.add(e.getAdgroupId());
+                            else strings.add(e.getId());
+
+                        });
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                        List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                        if(!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
+                    } else {
+                        List<String> strings = Lists.newArrayList();
+                        List<Long> longs = Lists.newArrayList();
+                        adgroupDAO.findByCampaignOId(param.getCampaignId()).forEach(e -> {
+                            if(e.getAdgroupId() != null){
+                                longs.add(e.getAdgroupId());
+                            }else{
+                                strings.add(e.getId());
+                            }
+                        });
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                        List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                        if(!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
+                    }
+                    asList.clear();
+                    creativeDTOs.forEach(e -> {
+                        if (e.getCreativeId() != null) {
+                            asList.add(String.valueOf(e.getCreativeId()));
+                        } else {
+                            asList.add(e.getId());
+                        }
+                    });
+                }
+            }
+            creativeDAO.batchDelete(asList);
+        }
     }
 }

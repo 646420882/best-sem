@@ -1,6 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.commons.constants.LogStatusConstant;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.creative.CreativeBackUpDAO;
 import com.perfect.dao.creative.CreativeDAO;
@@ -341,6 +342,19 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         up.set("s", dto.getStatus());
         getMongoTemplate().updateFirst(new Query(Criteria.where(CREATIVE_ID).is(crid)), up, CreativeEntity.class);//修改掉本地状态的ls
         getMongoTemplate().remove(new Query(Criteria.where(CREATIVE_ID).is(crid)), CreativeBackUpEntity.class);//删除备份的数据
+    }
+
+    @Override
+    public void batchDelete(List<String> param) {
+        param.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 3);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(Long.valueOf(e))), update, getEntityClass());
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
+            }
+        });
     }
 
     private Integer getTotalCount(Query q, Class<?> cls) {

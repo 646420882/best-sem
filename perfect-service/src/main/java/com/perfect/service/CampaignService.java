@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -97,4 +98,10 @@ public interface CampaignService {
     void deleteByCampaignId(Long cid);
 
 
+    /**
+     * 批量删除关键字
+     *
+     * @param param
+     */
+    void batchDelete(FindOrReplaceParam param);
 }

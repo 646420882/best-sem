@@ -220,9 +220,18 @@ public class AssistantCommonsController extends WebContextSupport {
                 case "keyword":
                     assistantKeywordService.batchDelete(batchId);
                     return writeMapObject(DATA, null);
+                case "creative":
+                    creativeService.batchDelete(batchId);
+                    return writeMapObject(DATA, null);
+                case "adgroup":
+                    adgroupService.batchDelete(batchId);
+                    return writeMapObject(DATA, null);
+                case "campaign":
+                    campaignService.batchDelete(batchId);
+                    return writeMapObject(DATA, null);
             }
         }
-        return null;
+        return writeMapObject(DATA, null);
     }
 
 
