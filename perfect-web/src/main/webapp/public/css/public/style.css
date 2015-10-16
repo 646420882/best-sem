@@ -2288,7 +2288,7 @@ h2 .close {
     color: #0061fd;
 }
 
-.list2_box3 {
+.list2_box3,.add.list2_box3{
     background: #fcefc5;
 }
 .add{

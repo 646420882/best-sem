@@ -32,7 +32,7 @@ import java.util.Map;
  */
 @Service("creativeService")
 public class CreativeServiceImpl implements CreativeService {
-
+    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
     @Autowired
     private CreativeDAO creativeDAO;
     @Resource
@@ -398,5 +398,19 @@ public class CreativeServiceImpl implements CreativeService {
         List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
         List<CreativeDTO> creativeDTOs = creativeDAO.getAllsByAdgroupIds(adgroupIds);
         return creativeDTOs;
+    }
+
+    @Override
+    public void cut(CreativeDTO dto,String aid) {
+        CreativeBackUpDTO backUpDTO=new CreativeBackUpDTO();
+        BeanUtils.copyProperties(dto,backUpDTO);
+        if(aid.length()>OBJ_SIZE){
+            dto.setAdgroupObjId(aid);
+            dto.setLocalStatus(1);
+        }else{
+            dto.setAdgroupId(Long.parseLong(aid));
+            dto.setLocalStatus(2);
+        }
+        creativeDAO.update(dto,backUpDTO);
     }
 }

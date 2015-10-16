@@ -44,6 +44,7 @@ import java.util.*;
  */
 @Service("assistantKeywordService")
 public class AssistantKeywordServiceImpl implements AssistantKeywordService {
+    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
 
     @Resource
     private AccountManageDAO accountManageDAO;
@@ -527,6 +528,13 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         }
         if (kwd.getPause() != null) {
             newKeywordDTO.setPause(kwd.getPause());
+        }
+
+        if (kwd.getAdgroupId() != null) {
+            newKeywordDTO.setAdgroupId(kwd.getAdgroupId());
+        }
+        if (kwd.getAdgroupObjId() != null) {
+            newKeywordDTO.setAdgroupObjId(kwd.getAdgroupObjId());
         }
 
         keywordDAO.update(newKeywordDTO, keywordBackUpDTO);
@@ -1195,6 +1203,20 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             }
             keywordDAO.batchDelete(asList);
         }
+    }
+
+    @Override
+    public void cut(KeywordDTO dto, String aid) {
+        KeywordBackUpDTO backUpDTO = new KeywordBackUpDTO();
+        BeanUtils.copyProperties(dto, backUpDTO);
+        if (aid.length() > OBJ_SIZE) {
+            dto.setAdgroupObjId(aid);
+            dto.setLocalStatus(1);
+        } else {
+            dto.setAdgroupId(Long.valueOf(aid));
+            dto.setLocalStatus(2);
+        }
+        keywordDAO.update(dto, backUpDTO);
     }
 
 

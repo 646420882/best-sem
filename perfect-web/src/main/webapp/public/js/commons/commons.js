@@ -115,7 +115,7 @@ var editCommons = {
                 this.getEditData("adgroup", "cut");
                 break;
             case "campaign":
-                this.getEditData("campaign", "cut");
+                alert("推广计划暂不支持剪切功能！");
                 break;
         }
     },
@@ -132,6 +132,7 @@ var editCommons = {
             this.EditTmp["type"] = type;
             this.EditTmp["editType"] = editType;
             this.EditTmp["editData"] = selectedData.toString();
+            alert("已"+edtTypeStr+"到粘贴板！");
         } else {
             alert("请选择要" + edtTypeStr + "的数据！");
         }
@@ -170,13 +171,20 @@ var editCommons = {
                             getAdgroupPlan(jsonData.cid, jsonData.cn);
                             loadTree();
                         }
-                    }else{
+                    } else {
                         alert("粘贴失败");
                     }
                 });
                 break;
             case "campaign":
-                this.ParseData("campaign");
+                this.ParseData("campaign", function (result) {
+                    if (result.msg) {
+                        getCampaignList(0);
+                        loadTree();
+                    } else {
+                        alert("粘贴失败");
+                    }
+                });
                 break;
         }
     },

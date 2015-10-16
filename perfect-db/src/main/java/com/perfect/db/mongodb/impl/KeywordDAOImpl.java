@@ -538,7 +538,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     public void update(KeywordDTO keywordDTO, KeywordDTO keywordBackUpDTO) {
         Long id = keywordDTO.getKeywordId();
         Query query = new Query();
-        query.addCriteria(Criteria.where(CREATIVE_ID).is(id));
+        query.addCriteria(Criteria.where(KEYWORD_ID).is(id));
         Update update = new Update();
         try {
             Class _class = keywordDTO.getClass();
@@ -559,8 +559,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             e.printStackTrace();
         }
         getMongoTemplate().updateFirst(query, update, getEntityClass());
-        KeywordBackUpDTO creativeBackUpDTOFind = keywordBackUpDAO.findByObjectId(keywordDTO.getId());
-        if (creativeBackUpDTOFind.getId() == null) {
+        KeywordBackUpDTO keywordBackUpDTOFind = keywordBackUpDAO.findByObjectId(keywordDTO.getId());
+        if (keywordBackUpDTOFind == null) {
             KeywordBackUpEntity backUpEntity = new KeywordBackUpEntity();
             BeanUtils.copyProperties(keywordBackUpDTO, backUpEntity);
             getMongoTemplate().insert(backUpEntity);

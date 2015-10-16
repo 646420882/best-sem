@@ -30,6 +30,7 @@ import java.util.Map;
  */
 @Service("adgroupService")
 public class AdgroupServiceImpl implements AdgroupService {
+    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
 
     @Resource
     private AdgroupDAO adgroupDAO;
@@ -372,5 +373,19 @@ public class AdgroupServiceImpl implements AdgroupService {
     @Override
     public double getCampBgt(Long cid) {
         return adgroupDAO.getCampBgt(cid);
+    }
+
+    @Override
+    public void cut(AdgroupDTO dto, String cid) {
+        AdgroupBackupDTO adgroupBackupDTO=new AdgroupBackupDTO();
+        BeanUtils.copyProperties(dto,adgroupBackupDTO);
+        if(cid.length()>OBJ_SIZE){
+            dto.setCampaignObjId(cid);
+            dto.setLocalStatus(1);
+        }else{
+            dto.setCampaignId(Long.valueOf(cid));
+            dto.setLocalStatus(2);
+        }
+        adgroupDAO.update(dto,adgroupBackupDTO);
     }
 }

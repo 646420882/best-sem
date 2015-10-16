@@ -37,6 +37,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -232,9 +233,13 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
         CampaignEntity campaignEntity = new CampaignBackUpEntity();
         BeanUtils.copyProperties(campaignDTO, campaignEntity);
-
-        if (!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(campaignDTO.getCampaignName())), getEntityClass())) {
-            getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
+        if (!Objects.equals("edit", campaignDTO.getId())) {
+            if (!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(campaignDTO.getCampaignName())), getEntityClass())) {
+                getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
+            }
+        }else{
+            campaignEntity.setId(null);
+            getMongoTemplate().insert(campaignEntity,TBL_CAMPAIGN);
         }
         return campaignEntity.getId();
     }

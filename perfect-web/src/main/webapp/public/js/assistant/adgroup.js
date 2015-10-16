@@ -57,19 +57,22 @@ var aAdd = {
         text: "复制",
         img: "../public/img/zs_function13.png",
         func: function () {
-            Copy();
+            editCommons.Copy();
         }
     }
     , menu_keyword_shear = {
         text: "剪切",
-        img: "../public/img/zs_function14.png"
+        img: "../public/img/zs_function14.png",
+        func: function () {
+            editCommons.Cut();
+        }
 
     }
     , menu_keyword_paste = {
         text: "粘贴",
         img: "../public/img/zs_function15.png",
         func: function () {
-            Paste();
+            editCommons.Parse();
         }
     }
     , menu_keyword_select = {
@@ -150,7 +153,7 @@ function adgroupAddOperate(obj) {
                 var _createTable = $("#adGroupTable tbody");
                 var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
-                    "<td><input type='checkbox' name='adgroupCheck' value='"+json.data+"'/></td>" +
+                    "<td><input type='checkbox' name='adgroupCheck' value='" + json.data + "'/></td>" +
                     "<td>&nbsp;<input type='hidden'  name='oid' value='" + json.data + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>本地新增</td>" +
@@ -702,7 +705,7 @@ function adrgoupUpdateOk() {
                 var _span = $("#auSpan").html();
                 var _edit = formData["oid"].length > 18 ? "<span class='pen' step='1'></span>" : "<span class='pen' step='2'></span>";
                 var _tbody =
-                    "<td><input type='checkbox' name='adgroupCheck' value='"+formData["oid"]+"'/></td>"+
+                    "<td><input type='checkbox' name='adgroupCheck' value='" + formData["oid"] + "'/></td>" +
                     "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
@@ -816,6 +819,7 @@ function agReBack(oid) {
                     "<td >" + _ls + "</td>" +
                     "</tr>";
                 $(atmp).html(_tbody);
+                loadTree();
             } else {
                 $(atmp).find("td:eq(8)").html(" ");
             }

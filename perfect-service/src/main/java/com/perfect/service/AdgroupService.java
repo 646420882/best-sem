@@ -117,4 +117,6 @@ public interface AdgroupService {
     double getCampBgt(String cid);
 
     double getCampBgt(Long cid);
+
+    void cut(AdgroupDTO dto,String cid);
 }

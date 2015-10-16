@@ -858,12 +858,6 @@ function reducKwd_del(id) {
     });
 }
 
-function CtrlAll() {
-    jQuery('#tbodyClick tr').css('background', '#fcefc5');
-}
-function CtrlCancel() {
-    jQuery('#tbodyClick tr').css('background', '')
-}
 
 /************************************************************关键词的右击菜单************************************************************/
 /**
@@ -925,20 +919,23 @@ var menu_keyword_add = {
         text: "复制",
         img: "../public/img/zs_function13.png",
         func: function () {
-            Copy();
+            editCommons.Copy();
         }
 
     }
     , menu_keyword_shear = {
         text: "剪切",
-        img: "../public/img/zs_function14.png"
+        img: "../public/img/zs_function14.png",
+        func:function(){
+            editCommons.Cut();
+        }
 
     }
     , menu_keyword_paste = {
         text: "粘贴",
         img: "../public/img/zs_function15.png",
         func: function () {
-            Paste()
+            editCommons.Parse();
         }
     }
     , menu_keyword_select = {

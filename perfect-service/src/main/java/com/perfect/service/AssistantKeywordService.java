@@ -124,4 +124,6 @@ public interface AssistantKeywordService {
 
     void batchDelete(FindOrReplaceParam param);
 
+    void cut(KeywordDTO dto,String aid);
+
 }

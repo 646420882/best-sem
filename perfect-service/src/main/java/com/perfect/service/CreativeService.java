@@ -119,4 +119,6 @@ public interface CreativeService {
     List<CreativeDTO> getByCampaignIdStr(String cid);
 
     List<CreativeDTO> getByCampaignIdLong(Long cid);
+
+    void cut(CreativeDTO dto,String aid);
 }
