@@ -26,11 +26,13 @@ jQuery.fn.daterangepicker = function (settings) {
 
     //defaults
     var options = jQuery.extend({
+        presetRanges: [
+
+        ],
         rangeStartTitle: '',
         rangeEndTitle: '',
         doneButtonText: '确定',
         cancelButtonText: '取消',
-        ButtonText: '返回',
         earliestDate: Date.parse('-15years'), //earliest date allowed
         latestDate: Date.parse('+15years'), //latest date allowed
         rangeSplitter: '至', //string to use between dates in single input
@@ -53,7 +55,404 @@ jQuery.fn.daterangepicker = function (settings) {
         onChange: function () {
         },
         datepickerOptions: null //object containing native UI datepicker API options
-    }, settings);
+    }
+        , settings)  ;
+
+
+
+    function buildPresetsMenu(classnameContext, onClick) {
+
+        var $self,
+            $menu;
+
+        function init() {
+            $self = $('<div></div>')
+                .addClass(classnameContext + '-presets');
+
+            $menu = $('<ul></ul>');
+            $.each(options.presetRanges, function() {
+                $('<li><a href="#">' + this.text + '</a></li>')
+                    .data('dateStart', this.dateStart)
+                    .data('dateEnd', this.dateEnd)
+                    .click(onClick)
+                    .appendTo($menu);
+            });
+
+            $self.append($menu);
+            $menu.menu()
+                .data('ui-menu').delay = 0; // disable submenu delays
+        }
+        function enforceOptions() {
+            var oldPresetsMenu = presetsMenu;
+            presetsMenu = buildPresetsMenu(classname, options, usePreset);
+            oldPresetsMenu.getElement().replaceWith(presetsMenu.getElement());
+            calendar.enforceOptions();
+            buttonPanel.enforceOptions();
+            triggerButton.enforceOptions();
+            var range = getRange();
+            if (range) {
+                triggerButton.setLabel(formatRangeForDisplay(range));
+            }
+        }
+        function buildDateRangePicker($originalElement, options) {
+            var classname = 'comiseo-daterangepicker',
+                $container, // the dropdown
+                $mask, // ui helper (z-index fix)
+                triggerButton,
+                presetsMenu,
+                calendar,
+                buttonPanel,
+                isOpen = false,
+                autoFitNeeded = false,
+                LEFT = 0,
+                RIGHT = 1,
+                TOP = 2,
+                BOTTOM = 3,
+                sides = ['left', 'right', 'top', 'bottom'],
+                hSide = RIGHT, // initialized to pick layout styles from CSS
+                vSide = null;
+
+            function init() {
+                triggerButton = buildTriggerButton($originalElement, classname, options);
+                presetsMenu = buildPresetsMenu(classname, options, usePreset);
+                calendar = buildCalendar(classname, options);
+                autoFit.numberOfMonths = options.datepickerOptions.numberOfMonths; // save initial option!
+                if (autoFit.numberOfMonths instanceof Array) { // not implemented
+                    options.autoFitCalendars = false;
+                }
+                buttonPanel = buildButtonPanel(classname, options, {
+                    onApply: function() {
+                        close();
+                        setRange();
+                    },
+                    onClear: function() {
+                        close();
+                        clearRange();
+                    },
+                    onCancel: function() {
+                        close();
+                        reset();
+                    }
+                });
+                render();
+                autoFit();
+                reset();
+                bindEvents();
+            }
+
+            function render() {
+                $container = $('<div></div>', {'class': classname + ' ' + classname + '-' + sides[hSide] + ' ui-widget ui-widget-content ui-corner-all ui-front'})
+                    .append($('<div></div>', {'class': classname + '-main ui-widget-content'})
+                        .append(presetsMenu.getElement())
+                        .append(calendar.getElement()))
+                    .append($('<div class="ui-helper-clearfix"></div>')
+                        .append(buttonPanel.getElement()))
+                    .hide();
+                $originalElement.hide().after(triggerButton.getElement());
+                $mask = $('<div></div>', {'class': 'ui-front ' + classname + '-mask'}).hide();
+                $('body').append($mask).append($container);
+            }
+
+            // auto adjusts the number of months in the date picker
+            function autoFit() {
+                if (options.autoFitCalendars) {
+                    var maxWidth = $(window).width(),
+                        initialWidth = $container.outerWidth(true),
+                        $calendar = calendar.getElement(),
+                        numberOfMonths = $calendar.datepicker('option', 'numberOfMonths'),
+                        initialNumberOfMonths = numberOfMonths;
+
+                    if (initialWidth > maxWidth) {
+                        while (numberOfMonths > 1 && $container.outerWidth(true) > maxWidth) {
+                            $calendar.datepicker('option', 'numberOfMonths', --numberOfMonths);
+                        }
+                        if (numberOfMonths !== initialNumberOfMonths) {
+                            autoFit.monthWidth = (initialWidth - $container.outerWidth(true)) / (initialNumberOfMonths - numberOfMonths);
+                        }
+                    } else {
+                        while (numberOfMonths < autoFit.numberOfMonths && (maxWidth - $container.outerWidth(true)) >= autoFit.monthWidth) {
+                            $calendar.datepicker('option', 'numberOfMonths', ++numberOfMonths);
+                        }
+                    }
+                    reposition();
+                    autoFitNeeded = false;
+                }
+            }
+
+            function destroy() {
+                $container.remove();
+                triggerButton.getElement().remove();
+                $originalElement.show();
+            }
+
+            function bindEvents() {
+                triggerButton.getElement().click(toggle);
+                triggerButton.getElement().keydown(keyPressTriggerOpenOrClose);
+                $mask.click(close);
+                $(window).resize(function() { isOpen ? autoFit() : autoFitNeeded = true; });
+            }
+
+            function formatRangeForDisplay(range) {
+                var dateFormat = options.dateFormat;
+                return $.datepicker.formatDate(dateFormat, range.start) + (+range.end !== +range.start ? options.rangeSplitter + $.datepicker.formatDate(dateFormat, range.end) : '');
+            }
+
+            // formats a date range as JSON
+            function formatRange(range) {
+                var dateFormat = options.altFormat,
+                    formattedRange = {};
+                formattedRange.start = $.datepicker.formatDate(dateFormat, range.start);
+                formattedRange.end = $.datepicker.formatDate(dateFormat, range.end);
+                return JSON.stringify(formattedRange);
+            }
+
+            // parses a date range in JSON format
+            function parseRange(text) {
+                var dateFormat = options.altFormat,
+                    range = null;
+                if (text) {
+                    try {
+                        range = JSON.parse(text, function(key, value) {
+                            return key ? $.datepicker.parseDate(dateFormat, value) : value;
+                        });
+                    } catch (e) {
+                    }
+                }
+                return range;
+            }
+
+            function reset() {
+                var range = getRange();
+                if (range) {
+                    triggerButton.setLabel(formatRangeForDisplay(range));
+                    calendar.setRange(range);
+                } else {
+                    calendar.reset();
+                }
+            }
+
+            function setRange(value) {
+                var range = value || calendar.getRange();
+                if (!range.start) {
+                    return;
+                }
+                if (!range.end) {
+                    range.end = range.start;
+                }
+                value && calendar.setRange(range);
+                triggerButton.setLabel(formatRangeForDisplay(range));
+                $originalElement.val(formatRange(range)).change();
+                if (options.onChange) {
+                    options.onChange();
+                }
+            }
+
+            function getRange() {
+                return parseRange($originalElement.val());
+            }
+
+            function clearRange() {
+                triggerButton.reset();
+                calendar.reset();
+                $originalElement.val('');
+            }
+
+            // callback - used when the user clicks a preset range
+            function usePreset() {
+                var $this = $(this),
+                    start = $this.data('dateStart')().startOf('day').toDate(),
+                    end = $this.data('dateEnd')().startOf('day').toDate();
+                calendar.setRange({ start: start, end: end });
+                if (options.applyOnMenuSelect) {
+                    close();
+                    setRange();
+                }
+                return false;
+            }
+
+            // adjusts dropdown's position taking into account the available space
+            function reposition() {
+                $container.position({
+                    my: 'left top',
+                    at: 'left bottom' + (options.verticalOffset < 0 ? options.verticalOffset : '+' + options.verticalOffset),
+                    of: triggerButton.getElement(),
+                    collision : 'flipfit flipfit',
+                    using: function(coords, feedback) {
+                        var containerCenterX = feedback.element.left + feedback.element.width / 2,
+                            triggerButtonCenterX = feedback.target.left + feedback.target.width / 2,
+                            prevHSide = hSide,
+                            last,
+                            containerCenterY = feedback.element.top + feedback.element.height / 2,
+                            triggerButtonCenterY = feedback.target.top + feedback.target.height / 2,
+                            prevVSide = vSide,
+                            vFit; // is the container fit vertically
+
+                        hSide = (containerCenterX > triggerButtonCenterX) ? RIGHT : LEFT;
+                        if (hSide !== prevHSide) {
+                            if (options.mirrorOnCollision) {
+                                last = (hSide === LEFT) ? presetsMenu : calendar;
+                                $container.children().first().append(last.getElement());
+                            }
+                            $container.removeClass(classname + '-' + sides[prevHSide]);
+                            $container.addClass(classname + '-' + sides[hSide]);
+                        }
+                        $container.css({
+                            left: coords.left,
+                            top: coords.top
+                        });
+
+                        vSide = (containerCenterY > triggerButtonCenterY) ? BOTTOM : TOP;
+                        if (vSide !== prevVSide) {
+                            if (prevVSide !== null) {
+                                triggerButton.getElement().removeClass(classname + '-' + sides[prevVSide]);
+                            }
+                            triggerButton.getElement().addClass(classname + '-' + sides[vSide]);
+                        }
+                        vFit = vSide === BOTTOM && feedback.element.top - feedback.target.top !== feedback.target.height + options.verticalOffset
+                        || vSide === TOP && feedback.target.top - feedback.element.top !== feedback.element.height + options.verticalOffset;
+                        triggerButton.getElement().toggleClass(classname + '-vfit', vFit);
+                    }
+                });
+            }
+
+            function killEvent(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            function keyPressTriggerOpenOrClose(event) {
+                switch (event.which) {
+                    case $.ui.keyCode.UP:
+                    case $.ui.keyCode.DOWN:
+                        killEvent(event);
+                        open();
+                        return;
+                    case $.ui.keyCode.ESCAPE:
+                        killEvent(event);
+                        close();
+                        return;
+                    case $.ui.keyCode.TAB:
+                        close();
+                        return;
+                }
+            }
+
+            function open() {
+                if (!isOpen) {
+                    triggerButton.getElement().addClass(classname + '-active');
+                    $mask.show();
+                    isOpen = true;
+                    autoFitNeeded && autoFit();
+                    calendar.scrollToRangeStart();
+                    $container.show();
+                    reposition();
+                }
+                if (options.onOpen) {
+                    options.onOpen();
+                }
+            }
+
+            function close() {
+                if (isOpen) {
+                    $container.hide();
+                    $mask.hide();
+                    triggerButton.getElement().removeClass(classname + '-active');
+                    isOpen = false;
+                }
+                if (options.onClose) {
+                    options.onClose();
+                }
+            }
+
+            function toggle() {
+                isOpen ? close() : open();
+            }
+
+            function getContainer(){
+                return $container;
+            }
+
+            function enforceOptions() {
+                var oldPresetsMenu = presetsMenu;
+                presetsMenu = buildPresetsMenu(classname, options, usePreset);
+                oldPresetsMenu.getElement().replaceWith(presetsMenu.getElement());
+                calendar.enforceOptions();
+                buttonPanel.enforceOptions();
+                triggerButton.enforceOptions();
+                var range = getRange();
+                if (range) {
+                    triggerButton.setLabel(formatRangeForDisplay(range));
+                }
+            }
+
+            init();
+            return {
+                toggle: toggle,
+                destroy: destroy,
+                open: open,
+                close: close,
+                setRange: setRange,
+                getRange: getRange,
+                clearRange: clearRange,
+                reset: reset,
+                enforceOptions: enforceOptions,
+                getContainer: getContainer
+            };
+
+        }
+        function reposition() {
+            $container.position({
+                my: 'left top',
+                at: 'left bottom' + (options.verticalOffset < 0 ? options.verticalOffset : '+' + options.verticalOffset),
+                of: triggerButton.getElement(),
+                collision : 'flipfit flipfit',
+                using: function(coords, feedback) {
+                    var containerCenterX = feedback.element.left + feedback.element.width / 2,
+                        triggerButtonCenterX = feedback.target.left + feedback.target.width / 2,
+                        prevHSide = hSide,
+                        last,
+                        containerCenterY = feedback.element.top + feedback.element.height / 2,
+                        triggerButtonCenterY = feedback.target.top + feedback.target.height / 2,
+                        prevVSide = vSide,
+                        vFit; // is the container fit vertically
+
+                    hSide = (containerCenterX > triggerButtonCenterX) ? RIGHT : LEFT;
+                    if (hSide !== prevHSide) {
+                        if (options.mirrorOnCollision) {
+                            last = (hSide === LEFT) ? presetsMenu : calendar;
+                            $container.children().first().append(last.getElement());
+                        }
+                        $container.removeClass(classname + '-' + sides[prevHSide]);
+                        $container.addClass(classname + '-' + sides[hSide]);
+                    }
+                    $container.css({
+                        left: coords.left,
+                        top: coords.top
+                    });
+
+                    vSide = (containerCenterY > triggerButtonCenterY) ? BOTTOM : TOP;
+                    if (vSide !== prevVSide) {
+                        if (prevVSide !== null) {
+                            triggerButton.getElement().removeClass(classname + '-' + sides[prevVSide]);
+                        }
+                        triggerButton.getElement().addClass(classname + '-' + sides[vSide]);
+                    }
+                    vFit = vSide === BOTTOM && feedback.element.top - feedback.target.top !== feedback.target.height + options.verticalOffset
+                    || vSide === TOP && feedback.target.top - feedback.element.top !== feedback.element.height + options.verticalOffset;
+                    triggerButton.getElement().toggleClass(classname + '-vfit', vFit);
+                }
+            });
+        }
+
+        init();
+        return {
+            getElement: function() { return $self; }
+
+        };
+
+    }
+    buildPresetsMenu();
+
 
     //custom datepicker options, extended by options
     var datepickerOptions = {
@@ -98,7 +497,7 @@ jQuery.fn.daterangepicker = function (settings) {
     //datepicker options from options
     options.datepickerOptions = (settings) ? jQuery.extend(datepickerOptions, settings.datepickerOptions) : datepickerOptions;
 
-    //Capture Dates from input(s)
+    //Capture Dates from input(s)0
     var inputDateA, inputDateB = Date.parse('today');
     var inputDateAtemp, inputDateBtemp;
     if (rangeInput.size() == 2) {
@@ -127,26 +526,35 @@ jQuery.fn.daterangepicker = function (settings) {
 
 
     //build picker divs
+
     var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-helper-clearfix ui-widget-content ui-corner-all"></div>');
-    var rpPickers = jQuery('<div class="ranges ui-widget-header ui-corner-all ui-helper-clearfix"><div class="range-start"><span class="title-start"></span></div><div class="range-end"><span class="title-end"></span></div></div>').appendTo(rp);
+    var rpPickers = jQuery('<div class="ranges ui-widget-header ui-corner-all ui-helper-clearfix"><div class="range-start"></div><div class="range-end"></div></div>').appendTo(rp);
+    var cancelBtn = jQuery('<button class="cancelBtn ">' + options. cancelButtonText + '</button>')
+        .click(function () {
+
+        })     .hover(
+            function () {
+                jQuery(this).addClass(' ui-cancelBtn-hover');
+            },
+            function () {
+                jQuery(this).removeClass('ui-cancelBtn-hover');
+            })
+
+        .appendTo(rp);
     var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all">' + options.doneButtonText + '</button>')
         .click(function () {
-                rp.find('.ui-datepicker-current-day').trigger('click');
+            rp.find('.ui-datepicker-current-day').trigger('click');
             hideRP();
         })
         .hover(
         function () {
-            jQuery(this).addClass('ui-state-hover');
+            jQuery(this).addClass('ui-cancelBtn-hover');
         },
         function () {
-            jQuery(this).removeClass('ui-state-hover');
-        }
+            jQuery(this).removeClass('ui-cancelBtn-hover');
+        })
+        .appendTo(rp);
 
-
-
-
-    )
-        .appendTo(rpPickers);
 
       //$(function(){
       //    alert(1);
@@ -600,7 +1008,7 @@ Date.prototype.toString = function (format) {
             case"HH":
                 return p(self.getHours());
             case"H":
-                return self.getHours();
+                    return self.getHours();
             case"mm":
                 return p(self.getMinutes());
             case"m":

@@ -38,8 +38,11 @@
 <body>
 <div id="background" class="background hides"></div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
-<div class="concent over">
-    <div class="mid mid_left over">
+
+<div class="concent help over">
+
+    <jsp:include page="../homePage/pageBlock/nav.jsp"/>
+    <div class="mid  over">
         <div class="title_box">
             <div class="on_title over">
                 <a href="#">

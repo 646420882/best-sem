@@ -1374,28 +1374,39 @@
     })
     function CtrlA() {
         $(document).keydown(function (event) {
+
             if (event.ctrlKey && event.keyCode == 65) {
-                jQuery('#tbodyClick tr').css('background', '#fcefc5');
-                jQuery('#tbodyClick2 tr').css('background', '#fcefc5');
-                jQuery('#tbodyClick_campaign tr').css('background', '#fcefc5');
-                jQuery('#tbodyClick5 tr').css('background', '#fcefc5');
-                $(".list4").find("input").prop("checked", true);
+                var checked=$("input[name='keyAllCheck'],input[name='creativeAllCheck'],input[name='adgroupAllCheck'],input[name='campaignAllCheck']");
+                if(checked.prop("checked")){
+                    $('#tbodyClick tr').css('background', '')
+                    $('#tbodyClick2 tr').css('background', '')
+                    $('#tbodyClick_campaign tr').css('background', '')
+                    $('#tbodyClick5 tr').css('background', '');
+                    $(".list4").find("input").prop("checked", false);
+                }else{
+                    $('#tbodyClick tr').css('background', '#fcefc5');
+                    $('#tbodyClick2 tr').css('background', '#fcefc5');
+                    $('#tbodyClick_campaign tr').css('background', '#fcefc5');
+                    $('#tbodyClick5 tr').css('background', '#fcefc5');
+                    $(".list4").find("input").prop("checked", true);
+                }
                 return false;
             }
             return true;
         });
     }
     function CtrlAll() {
-        jQuery('#tbodyClick tr').css('background', '#fcefc5');
-        jQuery('#tbodyClick2 tr').css('background', '#fcefc5');
-        jQuery('#tbodyClick_campaign tr').css('background', '#fcefc5');
-        jQuery('#tbodyClick5 tr').css('background', '#fcefc5');
+        $('#tbodyClick tr').css('background', '#fcefc5');
+        $('#tbodyClick2 tr').css('background', '#fcefc5');
+        $('#tbodyClick_campaign tr').css('background', '#fcefc5');
+        $('#tbodyClick5 tr').css('background', '#fcefc5');
+        $(".list4").find("input").prop("checked", true);
     }
     function CtrlCancel() {
-        jQuery('#tbodyClick tr').css('background', '')
-        jQuery('#tbodyClick2 tr').css('background', '')
-        jQuery('#tbodyClick_campaign tr').css('background', '')
-        jQuery('#tbodyClick5 tr').css('background', '');
+        $('#tbodyClick tr').css('background', '')
+        $('#tbodyClick2 tr').css('background', '')
+        $('#tbodyClick_campaign tr').css('background', '')
+        $('#tbodyClick5 tr').css('background', '');
       /*  $(".list4").find("input").prop("checked", false);*/
 
     }

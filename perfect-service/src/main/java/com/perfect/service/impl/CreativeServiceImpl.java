@@ -33,7 +33,7 @@ import java.util.*;
  */
 @Service("creativeService")
 public class CreativeServiceImpl implements CreativeService {
-
+    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
     @Autowired
     private CreativeDAO creativeDAO;
     @Resource
@@ -405,7 +405,7 @@ public class CreativeServiceImpl implements CreativeService {
     public void batchDelete(FindOrReplaceParam param) {
         if (param != null) {
             List<String> asList = new ArrayList<>();
-            if(param.getCheckData() != null){
+            if (param.getCheckData() != null) {
                 String[] list = param.getCheckData().split(",");
                 Collections.addAll(asList, list);
             }
@@ -435,26 +435,26 @@ public class CreativeServiceImpl implements CreativeService {
                         List<String> strings = Lists.newArrayList();
                         List<Long> longs = Lists.newArrayList();
                         adgroupDAO.findByCampaignId(Long.valueOf(param.getCampaignId())).forEach(e -> {
-                            if(e.getAdgroupId() != null) longs.add(e.getAdgroupId());
+                            if (e.getAdgroupId() != null) longs.add(e.getAdgroupId());
                             else strings.add(e.getId());
 
                         });
                         creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
                         List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
-                        if(!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
+                        if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
                     } else {
                         List<String> strings = Lists.newArrayList();
                         List<Long> longs = Lists.newArrayList();
                         adgroupDAO.findByCampaignOId(param.getCampaignId()).forEach(e -> {
-                            if(e.getAdgroupId() != null){
+                            if (e.getAdgroupId() != null) {
                                 longs.add(e.getAdgroupId());
-                            }else{
+                            } else {
                                 strings.add(e.getId());
                             }
                         });
                         creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
                         List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
-                        if(!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
+                        if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
                     }
                     asList.clear();
                     creativeDTOs.forEach(e -> {
@@ -468,5 +468,17 @@ public class CreativeServiceImpl implements CreativeService {
             }
             creativeDAO.batchDelete(asList);
         }
+    }
+    public void cut(CreativeDTO dto,String aid) {
+        CreativeBackUpDTO backUpDTO=new CreativeBackUpDTO();
+        BeanUtils.copyProperties(dto,backUpDTO);
+        if(aid.length()>OBJ_SIZE){
+            dto.setAdgroupObjId(aid);
+            dto.setLocalStatus(1);
+        }else{
+            dto.setAdgroupId(Long.parseLong(aid));
+            dto.setLocalStatus(2);
+        }
+        creativeDAO.update(dto,backUpDTO);
     }
 }

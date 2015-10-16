@@ -132,4 +132,6 @@ public interface AdgroupService {
      * @param param
      */
     void batchDelete(FindOrReplaceParam param);
+
+    void cut(AdgroupDTO dto,String cid);
 }

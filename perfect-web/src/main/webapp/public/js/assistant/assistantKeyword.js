@@ -163,13 +163,13 @@ function keywordDataToHtml(obj, index) {
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
                 case 1:
-                    _tr = html + "<tr class='list2_box3 firstKeyword add'>"
+                    _tr = html + "<tr class='list2_box3 firstKeyword add'>";
                     break;
                 case 2:
-                    _tr = html + "<tr class='list2_box3 firstKeyword update'>"
+                    _tr = html + "<tr class='list2_box3 firstKeyword update'>";
                     break
                 case 3:
-                    _tr = html + "<tr class='list2_box3 firstKeyword del'>"
+                    _tr = html + "<tr class='list2_box3 firstKeyword del'>";
                     break;
             }
         }
@@ -179,13 +179,13 @@ function keywordDataToHtml(obj, index) {
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
                 case 1:
-                    _tr = html + "<tr class='list2_box2 add'>"
+                    _tr = html + "<tr class='list2_box2 add'>";
                     break;
                 case 2:
-                    _tr = html + "<tr class='list2_box2 update'>"
+                    _tr = html + "<tr class='list2_box2 update'>";
                     break
                 case 3:
-                    _tr = html + "<tr class='list2_box2 del'>"
+                    _tr = html + "<tr class='list2_box2 del'>";
                     break;
             }
         }
@@ -195,13 +195,13 @@ function keywordDataToHtml(obj, index) {
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
                 case 1:
-                    _tr = html + "<tr class='list2_box1 add'>"
+                    _tr = html + "<tr class='list2_box1 add'>";
                     break;
                 case 2:
-                    _tr = html + "<tr class='list2_box1 update'>"
+                    _tr = html + "<tr class='list2_box1 update'>";
                     break
                 case 3:
-                    _tr = html + "<tr class='list2_box1 del'>"
+                    _tr = html + "<tr class='list2_box1 del'>";
                     break;
             }
         }
@@ -263,6 +263,7 @@ function keywordDataToHtml(obj, index) {
     //计算机质量度
     var quanlityHtml = "<span>";
     var quanlityText = "";
+    var quanlityTextname = "";
     if (obj.quality > 0) {
         switch (parseInt(obj.quality)) {
             case 11:
@@ -292,29 +293,35 @@ function keywordDataToHtml(obj, index) {
 
         switch (parseInt(obj.quality)) {
             case 11:
-                quanlityText = "一星较难优化";
+                quanlityText = "1";
+                quanlityTextname = "一星较难优化";
                 break;
             case 12:
-                quanlityText = "一星难度中等";
+                quanlityText = "1";
+                quanlityTextname = "一星难度中等";
                 break;
             case 13:
-                quanlityText = "一星较易优化";
+                quanlityText = "1";
+                quanlityTextname = "一星较易优化";
                 break;
             case 21:
-                quanlityText = "二星较难优化";
+                quanlityText = "2";
+                quanlityTextname = "二星较难优化";
                 break;
             case 22:
-                quanlityText = "二星较易优化";
+                quanlityText = "2";
+                quanlityTextname = "二星较易优化";
                 break;
             case 3:
-                quanlityText = "三星";
+                quanlityText = "3";
+                quanlityTextname = "三星";
                 break;
         }
     }
     quanlityHtml += "&nbsp;&nbsp;&nbsp;" + quanlityText + "</span>";
-    html = html + "<td cname=" + obj.quality + ">" + quanlityHtml + "</td>";
+    html = html + "<td cname=" + obj.quality + ">" + "<a class='tabletooltip' href='#' title='" + quanlityTextname + "'>" + quanlityHtml + "</a></td>";
 
-
+    $(".tabletooltip").tooltip();
     //移动质量度
     var mobileQuanlityHtml = "<span>";
     if (parseInt(obj.mobileQuality) > 0) {
@@ -673,7 +680,7 @@ function batchDelKeyword() {
         title: "批量删除",
         padding: "5px",
         align: 'right bottom',
-        content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550'  marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -697,8 +704,9 @@ function timeUpdiglog() {
     top.dialog({
         title: "定时上传",
         padding: "5px",
+        height:"auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='330' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='700' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -717,8 +725,9 @@ function timediglogDown() {
     top.dialog({
         title: "定时暂停",
         padding: "5px",
+        height:"auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='500' height='330' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='350' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -851,12 +860,6 @@ function reducKwd_del(id) {
     });
 }
 
-function CtrlAll() {
-    jQuery('#tbodyClick tr').css('background', '#fcefc5');
-}
-function CtrlCancel() {
-    jQuery('#tbodyClick tr').css('background', '')
-}
 
 /************************************************************关键词的右击菜单************************************************************/
 /**
@@ -887,13 +890,6 @@ var menu_keyword_add = {
         func: function () {
             batchDelKeyword();
         }
-    },
-    menu_keyword_timing = {
-        text: "定时上传",
-        img: "../public/img/zs_function21.png",
-        func: function () {
-            timeUpdiglog();
-        }
     }, menu_keyword_redu = {
         text: "还原",
         img: "../public/img/zs_function9.png",
@@ -918,20 +914,23 @@ var menu_keyword_add = {
         text: "复制",
         img: "../public/img/zs_function13.png",
         func: function () {
-            Copy();
+            editCommons.Copy();
         }
 
     }
     , menu_keyword_shear = {
         text: "剪切",
-        img: "../public/img/zs_function14.png"
+        img: "../public/img/zs_function14.png",
+        func:function(){
+            editCommons.Cut();
+        }
 
     }
     , menu_keyword_paste = {
         text: "粘贴",
         img: "../public/img/zs_function15.png",
         func: function () {
-            Paste()
+            editCommons.Parse();
         }
     }
     , menu_keyword_select = {

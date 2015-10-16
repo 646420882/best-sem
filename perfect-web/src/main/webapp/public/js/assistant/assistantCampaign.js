@@ -1200,7 +1200,7 @@ var menu_campaign_add = {
         text: "复制",
         img: "../public/img/zs_function13.png",
         func: function () {
-            Copy();
+            editCommons.Copy();
         }
 
     }
@@ -1208,7 +1208,7 @@ var menu_campaign_add = {
         text: "粘贴",
         img: "../public/img/zs_function15.png",
         func: function () {
-            Paste();
+            editCommons.Parse();
         }
     }
     , menu_keyword_select = {

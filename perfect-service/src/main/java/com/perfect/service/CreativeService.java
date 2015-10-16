@@ -126,4 +126,6 @@ public interface CreativeService {
      * @param param
      */
     void batchDelete(FindOrReplaceParam param);
+
+    void cut(CreativeDTO dto,String aid);
 }
