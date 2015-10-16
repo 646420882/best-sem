@@ -8,7 +8,7 @@
  * Built for http://www.improvely.com
  */
 
-.daterangepicker.dropdown-menu {
+ .daterangepicker.dropdown-menu {
   max-width: none;
   z-index: 3000;
 }
@@ -42,7 +42,7 @@
 }
 
 .daterangepicker.show-calendar .calendar {
-  display: block;
+    display: block;
 }
 
 .daterangepicker .calendar.single .calendar-date {
@@ -258,7 +258,7 @@
 }
 
 .daterangepicker_end_input {
-  float: left;
+  float: left; 
   padding-left: 11px
 }
 

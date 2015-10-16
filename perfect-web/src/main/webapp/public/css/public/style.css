@@ -3931,7 +3931,7 @@ input[type=checkbox]:focus {
 /*background: #f0f0f0;*/
 /*}*/
 #tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {
-    background: #f5f5f5;
+
 }
 
 #tabs .ui-state-default a, .ui-state-default a:link {

@@ -680,7 +680,7 @@ function batchDelKeyword() {
         title: "批量删除",
         padding: "5px",
         align: 'right bottom',
-        content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showBatchDelDialog' width='900' height='550'  marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -704,8 +704,9 @@ function timeUpdiglog() {
     top.dialog({
         title: "定时上传",
         padding: "5px",
+        height:"auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='330' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='700' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -724,8 +725,9 @@ function timediglogDown() {
     top.dialog({
         title: "定时暂停",
         padding: "5px",
+        height:"auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='500' height='330' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='350' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -887,13 +889,6 @@ var menu_keyword_add = {
         img: "../public/img/zs_function2.png",
         func: function () {
             batchDelKeyword();
-        }
-    },
-    menu_keyword_timing = {
-        text: "定时上传",
-        img: "../public/img/zs_function21.png",
-        func: function () {
-            timeUpdiglog();
         }
     }, menu_keyword_redu = {
         text: "还原",

@@ -7,27 +7,32 @@
  *
  * Built for http://www.improvely.com
  */
-.clear{ clear:both;}
+
 .daterangepicker.dropdown-menu {
     max-width: none;
     z-index: 3000;
 }
 
-.daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar {
+ .daterangepicker.opensleft .calendar {
     float: left;
     margin: 4px;
+     clear: both;
 }
 
-/*.daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar {*/
-.daterangepicker.opensright .calendar {
+ .daterangepicker.opensright .calendar {
     float: right;
     margin: 4px;
+
+}
+.daterangepicker.opensright .ranges{
+    float: right;
+    margin: 4px;
+    clear: both;
 }
 
 .daterangepicker .ranges {
-    margin:4px;
+    width: 160px;
     text-align: left;
-    padding:0px 20px;
 }
 
 .daterangepicker .ranges .range_inputs>div {
@@ -38,17 +43,9 @@
     padding-left: 11px;
 }
 
-.daterangepicker .ranges .range_inputs .applyBtn{
-    float:right;
-}
-.daterangepicker .ranges .range_inputs .cancelBtn{
-    float:right;margin-right:10px;
-}
-
-
 .daterangepicker .calendar {
-    display: none;
-    max-width: 290px;
+    display: block;
+    max-width: 270px;
 }
 
 .daterangepicker.show-calendar .calendar {
@@ -63,7 +60,7 @@
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     white-space: nowrap;
     text-align: center;
-    min-width: 30px;
+    min-width: 32px;
 }
 
 .daterangepicker .daterangepicker_start_input label,
@@ -77,10 +74,7 @@
     margin-bottom: 2px;
     text-shadow: #fff 1px 1px 0px;
     text-transform: uppercase;
-    padding-right:10px;
-    float:left;
-    height:34px;
-    line-height:34px;
+    width: 74px;
 }
 
 .daterangepicker .ranges input {
@@ -94,13 +88,12 @@
     color: #555;
     display: block;
     font-size: 11px;
-    height: 34px;
-    line-height: 34px;
+    height: 30px;
+    line-height: 30px;
     vertical-align: middle;
     margin: 0 0 10px 0;
     padding: 0 6px;
-    width: 84px;
-    float:left;
+    width: 74px;
 }
 
 .daterangepicker .ranges ul {
@@ -113,32 +106,31 @@
     font-size: 13px;
     background: #f5f5f5;
     border: 1px solid #f5f5f5;
-    color: #08c;
-    padding: 3px 12px;
+    color: #ef9101;
+    padding: 7px 12px;
     margin-bottom: 8px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+
     cursor: pointer;
 }
 
 .daterangepicker .ranges li.active, .daterangepicker .ranges li:hover {
-    background: #08c;
-    border: 1px solid #08c;
+    background: #ef9101;
+    border: 1px solid #ef9101;
     color: #fff;
 }
 
 .daterangepicker .calendar-date {
-    border: 1px solid #ddd;
+
     padding: 4px;
     border-radius: 4px;
     background: #fff;
 }
 
 .daterangepicker .calendar-time {
-    text-align: center;
-    margin: 8px auto 0 auto;
-    line-height: 30px;
+    text-align: left;
+    margin: 15px auto 0 auto;
+    line-height: 34px;
+    padding-left: 19px;
 }
 
 .daterangepicker {
@@ -228,16 +220,18 @@
 }
 
 .daterangepicker td.in-range {
-    background: #ebf4f8;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
+    /*background-color: #fef1dc;*/
+    /*border-color: #fef1dc;*/
+    color: #ef9101;
+    border-radius: 100%;
+
 }
 
 .daterangepicker td.active, .daterangepicker td.active:hover {
-    background-color: #357ebd;
-    border-color: #3071a9;
+    background-color: #ef9101;
+    border-color: #ef9101;
     color: #fff;
+    border-radius: 100%;
 }
 
 .daterangepicker td.week, .daterangepicker th.week {
@@ -279,6 +273,43 @@
 .daterangepicker th.month {
     width: auto;
 }
-.ui-daterangepickercontain .ui-daterangepicker{
-    padding: 0 !important;
+.btn-success{
+    color: #fff;
+    background-color: #ffbb04;
+    border-color: #ffbb04;
+}
+.btn {
+    display: inline-block;
+    padding: 6px 25px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 0px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    color: #000000;
+}
+.btn-success:hover, .btn-success:focus, .btn-success.active, .open .dropdown-toggle.btn-success {
+    color: #000000;
+    background-color: #ffbb04;
+    border-color: #ffbb04;
+}
+ .btn-success:active {
+    color: #fff;
+    background-color: #ffbb04;
+    border-color: #ffbb04;
+     box-shadow: 1px  1px 3px 3px #d39017 inset;
+}
+.btn-default{
+    background-color: #e4eafa;
+    color: #000000;
 }

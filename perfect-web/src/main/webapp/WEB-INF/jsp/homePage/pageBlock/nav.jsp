@@ -11,7 +11,7 @@
     Long accountId = AppContext.getAccountId();
 %>
 <div id="navigator" class="nav fl">
-    <div class="nav_left fl over ">
+    <div class="nav_left fl over  " >
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/nav_bg.jpg" width="100%" height="100%">
         </div>
@@ -103,8 +103,14 @@
          top_width = $(document.body).width();
          $(".top").css("width", top_width);
          });*/
+        $(".help .nav_left").hide();
+        $(".help .nav").css({"width": "8px","z-index":"111"});
+        $(".help .mid").css("padding-left", "8px");
+        $(".help .tips").css({"position": "fixed","title": "点击显示导航"});
+        $(".help .nav_input").css("display", "block");
+//        $(".help .nav_left").css({"width": "8px","padding-left": "8px","position": "fixed","z-index": "111","display":"block","title": "点击显示导航"});
         function NavClick() {
-            if ($(".nav_left").css("display") == "none") {//隐藏
+            if ($(".nav_left").css("display") == "none" ) {//隐藏
                 $(".nav_left").show();
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
@@ -114,20 +120,19 @@
                 $(".mid").css("padding-left", "180px");
             }
             else {
-                $(".nav_left").hide();
-                $(".nav").css("width", "8px");
-                $(".mid").css("padding-left", "8px");
-                $(".tips").css("position", "fixed");
-                $(".nav").css("z-index", "111");
-                $(".nav_input").css("display", "block");
-                $(".tips").attr("title", "点击显示导航");
-
+                $(".help .nav_left").hide();
+                $(".help .nav").css({"width": "8px","z-index":"111"});
+                $(".help .mid").css("padding-left", "8px");
+                $(".help .tips").css({"position": "fixed","title": "点击显示导航"});
+                $(".help .nav_input").css("display", "block");
             }
         }
+
 
         $(".tips").on("click", function () {
             NavClick()
         });
+
         $(".nav_input1").click(function () {
             $(this).parent().removeAttr('href');
             $(".nav_input1").attr('title', "点击隐藏导航");
