@@ -1,13 +1,16 @@
 package com.perfect.commons.quartz;
 
 import com.perfect.commons.context.ApplicationContextHelper;
+import com.perfect.service.MaterialsScheduledService;
 import com.perfect.service.MaterialsUploadService;
+import com.perfect.service.impl.MaterialsScheduledServiceImpl;
 import com.perfect.service.impl.MaterialsUploadServiceImpl;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created on 2015-09-29.
@@ -20,11 +23,14 @@ public class QuartzJobExecutor implements Job {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzJobExecutor.class);
 
+    private final MaterialsScheduledService materialsScheduledService;
+
     private final MaterialsUploadService materialsUploadService;
 
 
     public QuartzJobExecutor() {
         materialsUploadService = ApplicationContextHelper.getBeanByClass(MaterialsUploadServiceImpl.class);
+        materialsScheduledService = ApplicationContextHelper.getBeanByClass(MaterialsScheduledServiceImpl.class);
     }
 
 
@@ -63,6 +69,9 @@ public class QuartzJobExecutor implements Job {
                 break;
         }
 
+        if (Objects.isNull(context.getNextFireTime())) {
+            materialsScheduledService.deleteJob(scheduledJob.getJobId());
+        }
     }
 
 }

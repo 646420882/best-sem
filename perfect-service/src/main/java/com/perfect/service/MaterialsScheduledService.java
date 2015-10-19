@@ -1,8 +1,5 @@
 package com.perfect.service;
 
-import com.perfect.commons.quartz.ScheduledJob;
-import com.perfect.core.AppContext;
-
 /**
  * Created on 2015-09-29.
  * <p>物料定时任务接口.
@@ -23,26 +20,27 @@ public interface MaterialsScheduledService {
     void configureScheduler(int jobType, String cronExpression);
 
     /**
+     * <p>判断定时任务是否已经存在
+     *
+     * @param jobName
+     * @param jobGroup
+     * @param jobType
+     * @return
+     */
+    boolean isExists(String jobName, String jobGroup, int jobType);
+
+    /**
      * 暂停任务
      */
-    void pauseJob();
+    void pauseJob(String jobId);
 
     /**
      * 恢复任务
      */
-    void resumeJob();
+    void resumeJob(String jobId);
 
     /**
      * 删除任务
      */
-    void deleteJob();
-
-
-    default ScheduledJob getScheduledJob(String jobId) {
-        return new ScheduledJob.Builder()
-                .jobId(jobId)
-                .jobName(AppContext.getUser())
-                .jobGroup(MATERIALS_JOB_GROUP)
-                .build();
-    }
+    void deleteJob(String jobId);
 }
