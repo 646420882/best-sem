@@ -39,7 +39,7 @@
 <body>
 <%--<input name="reservation" readonly style="display: none">--%>
 <%--<input id="e1" name="e1" readonly style="display: none">--%>
-<input type="text" style="width: 400px;display: none" name="reservation" id="reservationtime"
+  <input type="text" style="width: 400px;display: none" name="reservation" id="reservationtime"
        class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM" class="span4"
         />
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
@@ -87,32 +87,6 @@
     timePicker: true,
     timePickerIncrement: 30,
     format: 'MM/DD/YYYY h:mm A',
-    "ranges": {
-      "今天": [
-        "2015-10-15T08:11:24.137Z",
-        "2015-10-15T08:11:24.137Z"
-      ],
-      "明天": [
-        "2015-10-14T08:11:24.137Z",
-        "2015-10-14T08:11:24.137Z"
-      ],
-      "上周": [
-        "2015-10-09T08:11:24.137Z",
-        "2015-10-15T08:11:24.137Z"
-      ],
-      "最近30天": [
-        "2015-09-16T08:11:24.137Z",
-        "2015-10-15T08:11:24.137Z"
-      ],
-      "本月": [
-        "2015-09-30T16:00:00.000Z",
-        "2015-10-31T15:59:59.999Z"
-      ],
-      "上月": [
-        "2015-08-31T16:00:00.000Z",
-        "2015-09-30T15:59:59.999Z"
-      ]
-    },
     "locale": {
       "format": "MM/DD/YYYY",
       "separator": " - ",
@@ -146,8 +120,8 @@
       ],
       "firstDay": 1
     },
-    "startDate": "10/09/2015",
-    "endDate": "10/15/2015"
+    "startDate": moment(),
+    "endDate": moment()
   }, function(start, end, label) {
     console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
   });

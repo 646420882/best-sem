@@ -265,10 +265,10 @@
     _filter:chroma(color=#FF3FFF);
     border:8px dashed transparent;
 }
-.ui-popup-follow .ui-dialog-arrow-a,
-.ui-popup-follow .ui-dialog-arrow-b{
-    display: block;
-}
+/*.ui-popup-follow .ui-dialog-arrow-a,*/
+/*.ui-popup-follow .ui-dialog-arrow-b{*/
+    /*display: block;*/
+/*}*/
 .ui-popup-top-left .ui-dialog-arrow-a,
 .ui-popup-top .ui-dialog-arrow-a,
 .ui-popup-top-right .ui-dialog-arrow-a {

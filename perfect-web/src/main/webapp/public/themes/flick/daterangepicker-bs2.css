@@ -257,7 +257,7 @@
 }
 
 .daterangepicker select.hourselect, .daterangepicker select.minuteselect, .daterangepicker select.ampmselect {
-    width: 50px;
+    width: 63px;
     margin-bottom: 0;
 }
 
@@ -274,13 +274,14 @@
     width: auto;
 }
 .btn-success{
+
     color: #fff;
     background-color: #ffbb04;
     border-color: #ffbb04;
 }
 .btn {
     display: inline-block;
-    padding: 6px 25px;
+    padding: 2px 24px;
     margin-bottom: 0;
     font-size: 14px;
     font-weight: normal;

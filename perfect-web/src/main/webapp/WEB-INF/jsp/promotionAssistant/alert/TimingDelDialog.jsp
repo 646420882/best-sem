@@ -37,48 +37,19 @@
 </head>
 
 <body>
-<%--<input name="reservation" readonly style="display: none">--%>
-<%--<input id="e1" name="e1" readonly style="display: none">--%>
 <input type="text" style="width: 400px;display: none" name="reservation" id="reservationtime"
-       class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM" class="span4"
+       class="form-control" value="08/01/2013 - 08/01/2013" class="span4"
         />
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
-<%--<script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>--%>
-
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/monment.min.js"></script>--%>
-
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.comiseo.daterangepicker.js"></script>--%>
-
-
-
-
-<%--<script type="text/javascript"--%>
-        <%--src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>--%>
-<%--<script type="text/javascript"--%>
-        <%--src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
 
 
 <script>
 
-//    $(function () {
-//        // 加载日历控件
-//        $("input[name=reservation]").daterangepicker();
-//        $("div.ui-daterangepicker").css("display","block");
-//    });
-
-//    $(function() {
-//        $("#e1").daterangepicker();
-//        $("div.comiseo-daterangepicker").css("display","block")
-//        $("button.comiseo-daterangepicker-triggerbutton").css("display","none")
-//        $("div.ui-datepicker-inline").css("display","inline-block")
-//        $("div.ui-datepicker-inline").css("width","42em")
-
-
-
-//    });
 $(function() {
-$("div.daterangepicker").css({"display":"block","top":"0px","right":"auto"})
+   $("div.daterangepicker").css({"display":"block","top":"0px","right":"auto"})
     $(".daterangepicker .ranges li:last").css({"display":"none"})
+    $(".minuteselect").css({"display":"none"})
+    $(".ui-popup-follow .ui-dialog-arrow-b").css({"display":"none"})
+
 
 });
 $('#reservationtime').daterangepicker({
@@ -86,33 +57,14 @@ $('#reservationtime').daterangepicker({
     "timePicker24Hour": true,
     timePicker: true,
     timePickerIncrement: 30,
-    format: 'MM/DD/YYYY h:mm A',
-    "ranges": {
-        "今天": [
-            "2015-10-15T08:11:24.137Z",
-            "2015-10-15T08:11:24.137Z"
-        ],
-        "明天": [
-            "2015-10-14T08:11:24.137Z",
-            "2015-10-14T08:11:24.137Z"
-        ],
-        "上周": [
-            "2015-10-09T08:11:24.137Z",
-            "2015-10-15T08:11:24.137Z"
-        ],
-        "最近30天": [
-            "2015-09-16T08:11:24.137Z",
-            "2015-10-15T08:11:24.137Z"
-        ],
-        "本月": [
-            "2015-09-30T16:00:00.000Z",
-            "2015-10-31T15:59:59.999Z"
-        ],
-        "上月": [
-            "2015-08-31T16:00:00.000Z",
-            "2015-09-30T15:59:59.999Z"
-        ]
-    },
+    format: 'MM/DD/YYYY ',
+//    ranges : {
+//        //'最近1小时': [moment().subtract('hours',1), moment()],
+//        '今日': [moment().startOf('day'), moment()],
+//        '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+//        '最近7日': [moment().subtract('days', 6), moment()],
+//        '最近30日': [moment().subtract('days', 29), moment()]
+//    },
     "locale": {
         "format": "MM/DD/YYYY",
         "separator": " - ",
@@ -146,8 +98,8 @@ $('#reservationtime').daterangepicker({
         ],
         "firstDay": 1
     },
-    "startDate": "10/09/2015",
-    "endDate": "10/15/2015"
+    "startDate": moment(),
+    "endDate":moment()
 }, function(start, end, label) {
     console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 });

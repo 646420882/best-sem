@@ -709,7 +709,7 @@ function timeUpdiglog() {
         padding: "5px",
         height:"auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='700' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -730,7 +730,7 @@ function timediglogDown() {
         padding: "5px",
         height:"auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='350' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
