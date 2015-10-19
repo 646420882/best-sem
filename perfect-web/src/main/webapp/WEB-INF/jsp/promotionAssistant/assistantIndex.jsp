@@ -169,9 +169,6 @@
             <li><a href="#" class="searchwordReport"><span class="zs_top"><img
                     src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
             </li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
-            </li>
             <li><a href="javascript:void(0)" onclick="addCensus()"><span
                     class="zs_top"><img
                     src="../public/img/zs_function4.png"></span><b>添加统计代码</b></a>
@@ -356,9 +353,6 @@
             <li><a href="javascript:void(0)" class="searchwordReport"><span
                     class="zs_top"><img
                     src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
-            </li>
-            <li><a href="#"><span class="z_function_hover"><img
-                    src="../public/img/zs_function11.png"></span><b>激活</b></a>
             </li>
         </ul>
     </div>
@@ -1107,10 +1101,10 @@
                             class="zs_top"><img
                             src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
                     </li>
-                    <li><a href="#"><span class="zs_top"><img
+    <%--                <li><a href="#"><span class="zs_top"><img
                             src="../public/img/zs_function11.png"></span><b
                             id="activate">激活</b></a>
-                    </li>
+                    </li>--%>
                     <li><a href="javascript:void(0);" onclick="showSearchWord();"><span
                             class="zs_top"><img
                             src="../public/img/zs_function5.png"></span><b>搜索</b></a>

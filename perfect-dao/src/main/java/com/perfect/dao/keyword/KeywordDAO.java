@@ -82,9 +82,9 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo);
 
-    PagerInfo findByPageInfoForLongIds(List<Long> longIds, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForLongIds(List<Long> aids, int pageSize, int pageNo);
 
-    PagerInfo findByPageInfoForStringIds(List<String> stringIds, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 

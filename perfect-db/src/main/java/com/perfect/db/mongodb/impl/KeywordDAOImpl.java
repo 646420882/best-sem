@@ -399,10 +399,10 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForLongIds(List<Long> longIds, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForLongIds(List<Long> adis, int pageSize, int pageNo) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
-        query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(longIds));
+        query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adis));
         int totalCount = getListTotalCount(query);
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         query.skip(p.getFirstStation());
@@ -418,10 +418,10 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForStringIds(List<String> stringIds, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
-        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(stringIds));
+        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(aids));
         int totalCount = getListTotalCount(query);
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         query.skip(p.getFirstStation());
