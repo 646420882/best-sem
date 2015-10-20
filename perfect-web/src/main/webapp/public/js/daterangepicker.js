@@ -18,15 +18,10 @@
 
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker  ">' +
-             '<div class="ranges">' +
-             '<div class="range_inputs">' +
-             '</div>' +
-             '<button class="applyBtn" disabled="disabled"></button>' +
-             '<button class="cancelBtn"></button>' +
-             '</div>' +
                 '<div class="calendar left"></div>' +
                 '<div class="calendar right"></div>' +
-                '<div class="calendar-time "></div>' +
+                '<div class="calendar-time"></div>'+
+           ' <div class="ranges" style="top: 267px; right: 0;  ;position: absolute"><button class="applyBtn" disabled="disabled"></button> <button class="cancelBtn"></button> </div>'+
             '</div>' +
               '</div>';
 
@@ -846,57 +841,57 @@
             var i;
             if (this.timePicker) {
 
-                html += '<select class="hourselect">';
+                html += '<select class="hourselect hourselectStart">';
                 var start = 0;
                 var end = 23;
                 var selected_hour = selected.hour();
-                if (this.timePicker12Hour) {
-                    start = 1;
-                    end = 12;
-                    if (selected_hour >= 12)
-                        selected_hour -= 12;
-                    if (selected_hour === 0)
-                        selected_hour = 12;
-                }
+                //if (this.timePicker12Hour) {
+                //    start = 1;
+                //    end = 12;
+                //    if (selected_hour >= 12)
+                //        selected_hour -= 12;
+                //    if (selected_hour === 0)
+                //        selected_hour = 12;
+                //}
 
                 for (i = start; i <= end; i++) {
                     if (i == selected_hour) {
-                        html += '<option value="' + i + '" selected="selected">' + i + '</option>';
+                        html += '<option value="' + i + '" selected="selected">' + i+":00" + '</option>';
                     } else {
-                        html += '<option value="' + i + '">' + i + '</option>';
-                    }
-                }
-
-                html += '</select> : ';
-
-                html += '<select class="minuteselect">';
-
-                for (i = 0; i < 60; i += 1) {
-                    var num = i;
-                    if (num < 10)
-                        num = '0' + num;
-                    if (i == selected.minute()) {
-                        html += '<option value="' + i + '" selected="selected">' + num + '</option>';
-                    } else {
-                        html += '<option value="' + i + '">' + num + '</option>';
+                        html += '<option value="' + i + '">' + i+":00" + '</option>';
                     }
                 }
 
                 html += '</select> ';
-                if (this.timePicker12Hour) {
-                    html += '<select class="ampmselect">';
-                    if (selected.hour() >= 12) {
-                        html += '<option value="AM">上午</option><option value="PM" selected="selected">下午</option>';
-                    } else {
-                        html += '<option value="AM" selected="selected">上午</option><option value="PM">下午</option>';
-                    }
-                    html += '</select>';
-                }
+
+                //html += '<select class="minuteselect">';
+
+                //for (i = 0; i < 60; i += 1) {
+                //    var num = i;
+                //    if (num < 10)
+                //        num = '0' + num;
+                //    if (i == selected.minute()) {
+                //        html += '<option value="' + i + '" selected="selected">' + num + '</option>';
+                //    } else {
+                //        html += '<option value="' + i + '">' + num + '</option>';
+                //    }
+                //}
+
+                //html += '</select> ';
+                //if (this.timePicker12Hour) {
+                //    html += '<select class="ampmselect">';
+                //    if (selected.hour() >= 12) {
+                //        html += '<option value="AM">上午</option><option value="PM" selected="selected">下午</option>';
+                //    } else {
+                //        html += '<option value="AM" selected="selected">上午</option><option value="PM">下午</option>';
+                //    }
+                //    html += '</select>';
+                //}
 
 
                 html += '</div>';
-                html+="-"+html;
-                html="时间段："+html
+                html="请选择时间："+html
+
 
             }
 

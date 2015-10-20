@@ -1,6 +1,7 @@
 package com.perfect.app.upload.controller;
 
 import com.perfect.commons.constants.MaterialsJobEnum;
+import com.perfect.core.AppContext;
 import com.perfect.service.MaterialsScheduledService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,8 +9,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -35,10 +34,13 @@ public class MaterialsScheduledController {
 
 
     @RequestMapping(value = "/schedule/upload", method = GET, produces = "application/json")
-    public String configureScheduler(@RequestParam(value = "date") Long dateMilli) {
-        Date date = new Date(dateMilli);
-
-        materialsScheduledService.configureScheduler(MaterialsJobEnum.UPLOAD_MATERIALS.value(), "*/3 * * * * ?");
+    public String configureScheduler(@RequestParam(value = "cron") String cronExpression) {
+        synchronized (this) {
+            if (materialsScheduledService.isExists(AppContext.getUser(), null, MaterialsJobEnum.UPLOAD_MATERIALS.value()))
+                return "failed";
+            else
+                materialsScheduledService.configureScheduler(MaterialsJobEnum.UPLOAD_MATERIALS.value(), cronExpression);
+        }
 
         return "success";
     }

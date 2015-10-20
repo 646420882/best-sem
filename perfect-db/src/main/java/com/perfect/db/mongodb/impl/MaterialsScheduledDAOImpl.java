@@ -29,6 +29,11 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
     }
 
     @Override
+    public ScheduledJobDTO findByJobId(String jobId) {
+        return convertFromEntity(getSysMongoTemplate().findOne(Query.query(Criteria.where(JOB_ID).is(jobId)), getEntityClass()));
+    }
+
+    @Override
     public void addJob(ScheduledJobDTO scheduledJob) {
         ScheduledJobEntity scheduledJobEntity = convertFromDTO(scheduledJob);
         getSysMongoTemplate().save(scheduledJobEntity, TBL_MATERIALS_SCHEDULER);
@@ -52,9 +57,13 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
 
     @Override
     public void deleteJob(ScheduledJobDTO scheduledJob) {
-        getSysMongoTemplate().updateFirst(
-                buildQuery(scheduledJob),
-                Update.update(JOB_STATUS, MaterialsJobEnum.DELETE.value()),
+        getSysMongoTemplate().remove(buildQuery(scheduledJob), getEntityClass());
+    }
+
+    @Override
+    public boolean isExists(String jobName, String jobGroup, int jobType) {
+        return getSysMongoTemplate().exists(
+                Query.query(Criteria.where(JOB_NAME).is(jobName).and(JOB_GROUP).is(jobGroup).and(JOB_TYPE).is(jobType)),
                 getEntityClass());
     }
 

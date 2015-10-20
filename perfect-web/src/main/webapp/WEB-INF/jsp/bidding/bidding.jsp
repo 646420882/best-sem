@@ -199,7 +199,7 @@
                                         <li id="showbox7"><img src="${pageContext.request.contextPath}/public/img/qidong.png">启动竞价</li>
                                         <li id="showbox3"><img src="${pageContext.request.contextPath}/public/img/zanting.png">暂停竞价</li>
                                         <li id="showbox4"><img src="${pageContext.request.contextPath}/public/img/wangzhi.png">修改访问网址</li>
-                                        <li id="showbox5"><img src="${pageContext.request.contextPath}/public/img/fenzu.png">监控</li>
+                                        <li id="showbox5"><img src="${pageContext.request.contextPath}/public/img/fenzu.png">重点词分组</li>
                                         <li id="showbox6"><img src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列</li>
                                     </ul>
                                     <div class="over wd">

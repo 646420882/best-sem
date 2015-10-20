@@ -6,12 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="dropdown-menus tabmodel">
+<div class="dropdown-menus tabmodel" id="filterSearchTemplate">
     <p id="TabTitle"></p>
-
+    <input type="hidden" name="filterField"/>
     <div id="CheckList">
+
     </div>
-    <button type="button" class="btn btn-primary btn-sm ">确认</button>
+    <span style="color: red;" id="filter_msg"></span>
+    <button type="button" class="btn btn-primary btn-sm " onclick="TabModel.filterSearchOk()" >确认</button>
     <button type="button" class="btn btn-default btn-sm " onclick="TabModel.modelClose()">取消</button>
 </div>
 <div class="assstant_editor">

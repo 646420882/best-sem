@@ -15,8 +15,17 @@ public interface MaterialsScheduledDAO extends HeyCrudRepository<ScheduledJobDTO
     String JOB_ID = "jobId";
     String JOB_NAME = "name";
     String JOB_GROUP = "group";
+    String JOB_TYPE = "type";
     String JOB_STATUS = "status";
 
+
+    /**
+     * <p>定时任务的jobId为对应系统用户的MongoDB ID, 因此具有唯一性.
+     *
+     * @param jobId
+     * @return
+     */
+    ScheduledJobDTO findByJobId(String jobId);
 
     /**
      * <p>添加任务.
@@ -45,6 +54,16 @@ public interface MaterialsScheduledDAO extends HeyCrudRepository<ScheduledJobDTO
      * @param scheduledJob
      */
     void deleteJob(ScheduledJobDTO scheduledJob);
+
+    /**
+     * <p>判断定时任务是否已经存在
+     *
+     * @param jobName
+     * @param jobGroup
+     * @param jobType
+     * @return
+     */
+    boolean isExists(String jobName, String jobGroup, int jobType);
 
     /**
      * <p>获取所有任务.

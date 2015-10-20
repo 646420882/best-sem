@@ -106,7 +106,7 @@
         $(".help .nav_left").hide();
         $(".help .nav").css({"width": "8px","z-index":"111"});
         $(".help .mid").css("padding-left", "8px");
-        $(".help .tips").css({"position": "fixed","title": "点击显示导航"});
+        $(".help .tips").attr("title","点击显示导航")
         $(".help .nav_input").css("display", "block");
 //        $(".help .nav_left").css({"width": "8px","padding-left": "8px","position": "fixed","z-index": "111","display":"block","title": "点击显示导航"});
         function NavClick() {
@@ -116,15 +116,15 @@
                 $(".nav").css("z-index", "200");
                 $(".nav").css("width", "180px");
                 $(".nav_input").css("display", "none");
-                $(".tips").attr('title', "点击隐藏导航");
+                $(" .tips").attr("title","点击隐藏导航")
                 $(".mid").css("padding-left", "180px");
             }
             else {
-                $(".help .nav_left").hide();
-                $(".help .nav").css({"width": "8px","z-index":"111"});
-                $(".help .mid").css("padding-left", "8px");
-                $(".help .tips").css({"position": "fixed","title": "点击显示导航"});
-                $(".help .nav_input").css("display", "block");
+                $(".nav_left").hide();
+                $(".nav").css({"width": "8px","z-index":"111"});
+                $(".mid").css("padding-left", "8px");
+                $(".nav_input").css("display", "block");
+                $(".tips").attr("title","点击显示导航")
             }
         }
 

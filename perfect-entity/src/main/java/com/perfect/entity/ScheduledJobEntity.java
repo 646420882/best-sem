@@ -46,7 +46,6 @@ public class ScheduledJobEntity {
     /**
      * 0  暂停
      * 1  启用
-     * -1  删除
      */
     @Field("status")
     private int jobStatus;

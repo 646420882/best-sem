@@ -221,6 +221,9 @@ function keywordDataToHtml(obj, index) {
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
+        case 40:
+            html = html + "<td>有效-移动url审核中</td>";
+            break;
         case 41:
             html = html + "<td>有效</td>";
             break;
@@ -706,7 +709,7 @@ function timeUpdiglog() {
         padding: "5px",
         height:"auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='700' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -727,7 +730,7 @@ function timediglogDown() {
         padding: "5px",
         height:"auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='350' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -964,7 +967,7 @@ function showSearchWord() {
  * @type {*[]}
  */
 var keywordMenuData = [
-    [menu_keyword_add, menu_keyword_batchAddOrUpdate, menu_keyword_del, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_upload, menu_keyword_searchWord, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select, menu_keyword_timing]
+    [menu_keyword_add, menu_keyword_batchAddOrUpdate, menu_keyword_del, menu_keyword_batchDel, menu_keyword_redu, menu_keyword_upload, menu_keyword_searchWord, menu_keyword_copy, menu_keyword_shear, menu_keyword_paste, menu_keyword_select]
 ];
 /**
  * 用户缓存右键点击的对象

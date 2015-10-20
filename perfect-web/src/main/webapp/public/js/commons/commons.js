@@ -136,7 +136,7 @@ var editCommons = {
             this.EditTmp["type"] = type;
             this.EditTmp["editType"] = editType;
             this.EditTmp["editData"] = selectedData.toString();
-            alert("已"+edtTypeStr+"到粘贴板！");
+            alert("已" + edtTypeStr + "到粘贴板！");
         } else {
             alert("请选择要" + edtTypeStr + "的数据！");
         }
@@ -669,7 +669,7 @@ $.extend({
             }
             foR_params = {type: forType, forType: 0, checkData: checked_data};
         } else {
-            if(jsonData.cid == null){
+            if (jsonData.cid == null) {
                 alert("至少选择一个计划")
                 return;
             }
@@ -692,8 +692,8 @@ $.extend({
         });
     }
 });
-function getMaterials(ma){
-    switch(ma){
+function getMaterials(ma) {
+    switch (ma) {
         case "keyword":
             return $("input[name='keywordCheck']");
         case "creative":
@@ -707,17 +707,32 @@ function getMaterials(ma){
 //表格顶部选择弹窗
 var tabselect =
     "<select>" +
-    "<option>包含</option>" +
-    "<option>不包含</option>" +
-    "<option>等于</option>" +
-    "<option>不等于</option>" +
-    "<option>开始于</option>" +
-    "<option>截止于</option></select>" +
-    "<textarea> </textarea>" +
+    "<option value='1'>包含</option>" +
+    "<option value='11'>不包含</option>" +
+    "<option value='2'>等于</option>" +
+    "<option value='22'>不等于</option>" +
+    "<option value='3'>开始于</option>" +
+    "<option value='33'>截止于</option></select>" +
+    "<textarea></textarea>" +
     "<p>最多同时搜1000个文本</p>";
+var baiduStatus =
+    "<ul>" +
+    "<li><input type='checkbox' value='41'>有效</li>" +
+    "<li><input type='checkbox' value='42'>暂停推广</li>" +
+    "<li><input type='checkbox' value='43'>不宜推广</li>" +
+    "<li><input type='checkbox' value='48'>部分无效</li>" +
+    "<li><input type='checkbox' value='46'>审核中</li>" +
+    "<li><input type='checkbox' value='47'>搜索量过低</li>" +
+    "<li><input type='checkbox' value='49'>计算机搜索无效</li>" +
+    "<li><input type='checkbox' value='50'>移动搜索无效</li>" +
+    "<li><input type='checkbox' value='44'>搜索无效</li>" +
+    "<li><input type='checkbox' value='45'>待激活</li>" +
+    "<li><input type='checkbox' value='40'>有效-移动URL审核中</li>" +
+    "<li><input type='checkbox' value='1'>本地新增</li>" +
+    "</ul>";
 var Computerquality =
     "<ul class='quality'>" +
-    "<li>" + "<input type='checkbox'>" +
+    "<li>" + "<input type='checkbox' value='2'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star3.png'>" +
@@ -726,53 +741,54 @@ var Computerquality =
     "<img src='/public/img/star3.png'>" +
     "</span>" + "<b>1</b>" +
     "</li>" +
-    "<li>" + "<input type='checkbox'>" +
+    "<li>" + "<input type='checkbox' value='4'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
-    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star3.png'>" +
     "<img src='/public/img/star3.png'>" +
     "<img src='/public/img/star3.png'>" +
     "</span>" + "<b>2</b>" +
     "</li>" +
-    "<li>" + "<input type='checkbox'>" +
+    "<li>" + "<input type='checkbox' value='6'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
-    "<img src='/public/img/star3.png'>" +
-    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star3.png'>" +
     "<img src='/public/img/star3.png'>" +
     "</span>" + "<b>3</b>" +
     "</li>" +
 
-    "<li>" + "<input type='checkbox'>" +
+    "<li>" + "<input type='checkbox' value='8'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
-    "<img src='/public/img/star3.png'>" +
-    "<img src='/public/img/star3.png'>" +
-    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star3.png'>" +
     "</span>"
     + "<b>4</b>" +
     "</li>" +
-    "<li>" + "<input type='checkbox'>" +
+    "<li>" + "<input type='checkbox' value='10'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
-    "<img src='/public/img/star3.png'>" +
-    "<img src='/public/img/star3.png'>" +
-    "<img src='/public/img/star3.png'>" +
-    "<img src='/public/img/star3.png'>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star.png'>" +
+    "<img src='/public/img/star.png'>" +
     "</span>" + "<b>5</b>" +
     "</li>"
-    + "</ul>"
+    + "</ul>";
 var pause =
-    "<ul><li><input type='checkbox'>全部</li>" +
-    "<li><input type='checkbox'>启用</li>" +
-    "<li><input type='checkbox'>暂停</li>";
+    "<ul><li><input type='checkbox' value='-1'>全部</li>" +
+    "<li><input type='checkbox' value='1'>启用</li>" +
+    "<li><input type='checkbox' value='0'>暂停</li>";
 var price =
-    "<input type='number' name='points' min='00' max='10' />"
+    "<input type='number' name='min_points' min='00' max='10' />"
     + "到"
-    + "<input type='number' name='points' min='00' max='10' />";
+    + "<input type='number' name='max_points' min='00' max='10' />";
+var errorMsg = $("#filter_msg");
 var TabModel = {
     Show: function (type, _this) {
         if ($(".dropdown-menus").css("display") == "none") {
@@ -789,6 +805,8 @@ var TabModel = {
             $(".dropdown-menus").hide();
         }
         $("#CheckList").empty();
+        $("input[name='filterField']").val(type);
+        errorMsg.html('');
         switch (type) {
             case "Keywordname":
                 $("#TabTitle").html("关键词名称");
@@ -796,20 +814,7 @@ var TabModel = {
                 break;
             case "Keywordstate":
                 $("#TabTitle").html("关键词状态");
-                var states =
-                    "<ul><li><input type='checkbox'>有效</li>" +
-                    "<li><input type='checkbox'>暂停推广</li>" +
-                    "<li><input type='checkbox'>不宜推广</li>" +
-                    "<li><input type='checkbox'>部分无效</li>" +
-                    "<li><input type='checkbox'>审核中</li>" +
-                    "<li><input type='checkbox'>搜索量过低</li>" +
-                    "<li><input type='checkbox'>计算机搜索无效</li>" +
-                    "<li><input type='checkbox'>移动搜索无效</li>" +
-                    "<li><input type='checkbox'>搜索无效</li>" +
-                    "<li><input type='checkbox'>待激活</li>" +
-                    "<li><input type='checkbox'>有效-移动URL审核中</li>" +
-                    "<li><input type='checkbox'>本地新增</li></ul>";
-                $("#CheckList").append(states);
+                $("#CheckList").append(baiduStatus);
                 break;
             case "Enablepause":
                 $("#TabTitle").html("启用/暂停");
@@ -830,12 +835,12 @@ var TabModel = {
             case "keywordmatching":
                 $("#TabTitle").html("关键词匹配模式");
                 var matching =
-                    "<ul><li><input type='checkbox'>广泛</li>" +
-                    "<li><input type='checkbox' id='Phrase'>短语" +
-                    "<ul id='PhraseList'><li><input type='checkbox'>核心包含</li></li>" +
-                    "<li><input type='checkbox'>同义包含</li>" +
-                    "<li><input type='checkbox'>精确包含</li></ul>" +
-                    "<li><input type='checkbox'>精确</li>" +
+                    "<ul><li><input type='checkbox' name='matchType' value='3'>广泛</li>" +
+                    "<li><input type='checkbox' id='Phrase' value='2'>短语" +
+                    "<ul id='PhraseList'><li><input type='checkbox' name='matchType' value='33'>核心包含</li></li>" +
+                    "<li><input type='checkbox' name='matchType' value='11'>同义包含</li>" +
+                    "<li><input type='checkbox' name='matchType' value='22'>精确包含</li></ul>" +
+                    "<li><input type='checkbox' name='matchType' value='1'>精确</li>" +
                     "<li><input type='checkbox'>基本匹配模式</li>" +
                     "<li><input type='checkbox'>分匹配出价</li>" +
                     "</ul>";
@@ -923,7 +928,11 @@ var TabModel = {
                 break;
             case "extensionstate":
                 $("#TabTitle").html("推广单元状态");
-                $("#CheckList").append(tabselect);
+                var ExtensionState = "<ul><li><input type='checkbox'>有效</li>" +
+                    "<li><input type='checkbox'>推广计划暂停推广</li>" +
+                    "<li><input type='checkbox'>本地新增</li>" +
+                    "</ul>";
+                $("#CheckList").append(ExtensionState);
                 break;
             case "extensionpause":
                 $("#TabTitle").html("启动/暂停");
@@ -981,6 +990,74 @@ var TabModel = {
     },
     modelClose: function () {
         $(".tabmodel").hide();
+    },
+    filterSearchOk: function () {
+        var filterField = $("input[name='filterField']").val();
+        switch (filterField) {
+            case "Keywordstate":
+                var state = this.getCheckData();
+                console.log(state);
+                break;
+            case "Enablepause":
+                var state = this.getCheckData();
+                console.log(state);
+                break;
+            case "keywordprice":
+                var min_pointer = $("input[name='min_points']").val();
+                var max_pointer = $("input[name='max_points']").val();
+                if (min_pointer && max_pointer && (max_pointer > min_pointer)) {
+                    console.log(min_pointer + "----" + max_pointer);
+                    errorMsg.html('');
+                } else {
+                    errorMsg.html("请输入正确的价格范围!");
+                }
+                break;
+            case "keywordcomputerquality":
+                var quality=this.getCheckData();
+                console.log(quality);
+                break;
+            case "keywordmatching":
+                var checkData=[];
+                var checkSelected=$("input[name='matchType']");
+                checkSelected.each(function(i,o){
+                    if($(o).prop("checked")){
+                        checkData.push($(o).val());
+                    }
+                });
+                console.log(checkData);
+                break;
+            default:
+                var formData = this.getNormalFilterForm();
+                console.log(formData);
+                break;
+        }
+    },
+    getNormalFilterForm: function () {
+        var selected = $("#CheckList").find("select :selected").val();
+        var filterText = $("#CheckList").find("textarea").val();
+        if (selected && filterText) {
+            errorMsg.html('');
+            return {selected: selected, filterText: filterText};
+        } else {
+            errorMsg.html("请输入要筛选的条件内容！");
+            return;
+        }
+    },
+    getCheckData: function () {
+        var checkedData = [];
+        var baiduStatusChecked = $("#CheckList").find("input[type='checkbox']");
+        baiduStatusChecked.each(function (i, o) {
+            if ($(o).prop("checked")) {
+                checkedData.push($(o).val());
+            }
+        });
+        if (checkedData.length) {
+            errorMsg.html('');
+            return checkedData.toString();
+        } else {
+            errorMsg.html("必须选择一项状态进行筛选！")
+            return;
+        }
     }
 }
 
