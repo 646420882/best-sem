@@ -26,4 +26,10 @@ public interface QuestionAnswersService {
      * @param questionAnswersDTO
      */
     void insertQuestions(QuestionAnswersDTO questionAnswersDTO);
+
+    /**
+     * 修改问答
+     * @param modifyAnswers
+     */
+    void modifyQuestions(QuestionAnswersDTO modifyAnswers);
 }

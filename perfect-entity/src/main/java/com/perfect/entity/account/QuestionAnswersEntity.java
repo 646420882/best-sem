@@ -27,11 +27,17 @@ public class QuestionAnswersEntity {
     private String answers;
 
     /**
+     * 问题分类 0、账户全景  1推广助手  2智能结构  3智能竞价  4数据报告
+     */
+    @Field("qt")
+    private String questionType;
+
+    /**
      * 字体颜色
      * （0：黑色  1：红色  2：绿色  3：蓝色）
      */
     @Field("fc")
-    private Integer fontColor;
+    private String fontColor;
 
     public String getId() {
         return id;
@@ -57,11 +63,19 @@ public class QuestionAnswersEntity {
         this.answers = answers;
     }
 
-    public Integer getFontColor() {
+    public String getFontColor() {
         return fontColor;
     }
 
-    public void setFontColor(Integer fontColor) {
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
+    public void setFontColor(String fontColor) {
         this.fontColor = fontColor;
     }
 }

@@ -31,4 +31,9 @@ public class QuestionAnswersServiceImpl implements QuestionAnswersService {
     public void insertQuestions(QuestionAnswersDTO questionAnswersDTO) {
         questionsAnswersDAO.insertQuestions(questionAnswersDTO);
     }
+
+    @Override
+    public void modifyQuestions(QuestionAnswersDTO modifyAnswers) {
+        questionsAnswersDAO.modifyQuestions(modifyAnswers);
+    }
 }

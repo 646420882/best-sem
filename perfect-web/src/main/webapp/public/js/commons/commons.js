@@ -70,6 +70,10 @@ var commons = {
         $("#findBatchDel").css("display", "none");
     },
     batchDel: function () {
+        if($("#forType").val() == "campaign"){
+            $("#pageNew").empty();
+            $("#pageNew").append("<div class='fl'><label>是否删除当前所选中的计划以及计划下的单元、创意、关键词</label></div>")
+        }
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
         });
@@ -651,10 +655,9 @@ $.extend({
         var checkType = $("#checkType option:selected");
         var foR_params = {};
         var forType = $("#forType").val();
-        if (checkType.val() == 0) {
+        if (checkType.val() == 0 || forType == "campaign") {
             var checked_data = [];
             var checkChildren = getMaterials(forType);
-            console.log(checkChildren)
             for (var i = 0; i < checkChildren.length; i++) {
                 if (checkChildren[i].checked == true) {
                     checked_data.push(checkChildren[i].value);

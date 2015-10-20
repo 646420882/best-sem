@@ -31,7 +31,6 @@
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
     <div id="bidding_box">
-        <div>
             <div style="color: red;font-size: 16px;padding: 10px 0px 20px 20px">注：被停用的系统帐号将不能进行任何操作！请谨慎操作！！</div>
             <table id="table1" class="table table-striped table-bordered table-hover datatable dataTable"
                    aria-describedby="DataTables_Table_0_info">
@@ -45,7 +44,6 @@
                 </thead>
                 <tbody id="shuju"></tbody>
             </table>
-        </div>
     </div>
 </div>
 <div class="TB_overlayBG"></div>

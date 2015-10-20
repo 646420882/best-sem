@@ -87,7 +87,7 @@
         </h2>
         <div class="mainlist">
             <ul>
-                <li>
+                <li id="pageNew">
                     <div class="replaceleft fl">
                         <label>物料选择方式：</label>
                     </div>

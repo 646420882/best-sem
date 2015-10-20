@@ -86,6 +86,16 @@ public class AdminPageController implements Controller {
     }
 
     /**
+     * 问题添加后台页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/addQuestions", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView addQuestions() {
+        return new ModelAndView("help/addQuestions");
+    }
+
+    /**
      * Ext后台界面
      *
      * @return
@@ -94,6 +104,5 @@ public class AdminPageController implements Controller {
     public ModelAndView getNewPage() {
         return new ModelAndView("homePage/pageBlock/index");
     }
-
 
 }

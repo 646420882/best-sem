@@ -10,6 +10,7 @@ import com.perfect.utils.ObjectUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,5 +38,18 @@ public class QuestionsAnswersDAOImpl implements QuestionsAnswersDAO {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
 
         mongoTemplate.insert(ObjectUtils.convert(questionAnswersDTO, QuestionAnswersEntity.class));
+    }
+
+    @Override
+    public void modifyQuestions(QuestionAnswersDTO modifyAnswers) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+        Update update = new Update();
+        update.set("ques", modifyAnswers.getQuestions());
+        update.set("ans", modifyAnswers.getAnswers());
+        update.set("qt", modifyAnswers.getQuestionType());
+        update.set("fc", modifyAnswers.getFontColor());
+
+
+        mongoTemplate.updateFirst(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(modifyAnswers.getId())),update, QuestionAnswersEntity.class);
     }
 }

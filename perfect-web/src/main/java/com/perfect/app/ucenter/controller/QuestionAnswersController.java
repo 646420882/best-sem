@@ -7,12 +7,10 @@ import com.perfect.entity.account.QuestionAnswersEntity;
 import com.perfect.service.QuestionAnswersService;
 import com.perfect.utils.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -51,16 +49,18 @@ public class QuestionAnswersController {
      *
      * @return
      */
-    @RequestMapping(value = "/addAnswers", method = {RequestMethod.GET, RequestMethod.POST})
-    public void addAnswers(@RequestParam(value = "querstions") String querstions,
-                           @RequestParam(value = "answers") String answers,
-                           @RequestParam(value = "fontColor") Integer fontColor) {
-
-        QuestionAnswersDTO dto = new QuestionAnswersDTO();
-        dto.setQuestions(querstions);
-        dto.setAnswers(answers);
-        dto.setFontColor(fontColor);
-        questionAnswersService.insertQuestions(dto);
+    @RequestMapping(value = "/addAnswers", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void addAnswers(@RequestBody QuestionAnswersDTO querstions) {
+        questionAnswersService.insertQuestions(querstions);
+    }
+    /**
+     * 修改问答
+     *
+     * @return
+     */
+    @RequestMapping(value = "/modifyAnswers", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void modifyAnswers(@RequestBody QuestionAnswersDTO querstions) {
+        questionAnswersService.modifyQuestions(querstions);
     }
 
     /**

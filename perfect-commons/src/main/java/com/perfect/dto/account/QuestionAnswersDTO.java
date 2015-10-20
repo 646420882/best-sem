@@ -18,10 +18,15 @@ public class QuestionAnswersDTO {
     private String answers;
 
     /**
+     * 问题分类 0、账户全景  1 推广助手  2 智能结构  3 智能竞价  4 数据报告
+     */
+    private String questionType;
+
+    /**
      * 字体颜色
      * （0：黑色  1：红色  2：绿色  3：蓝色）
      */
-    private Integer fontColor;
+    private String fontColor;
 
     public String getId() {
         return id;
@@ -47,11 +52,18 @@ public class QuestionAnswersDTO {
         this.answers = answers;
     }
 
-    public Integer getFontColor() {
+    public String getFontColor() {
         return fontColor;
     }
 
-    public void setFontColor(Integer fontColor) {
+    public void setFontColor(String fontColor) {
         this.fontColor = fontColor;
+    }
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
     }
 }
