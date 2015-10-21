@@ -331,7 +331,7 @@ To change this template use File | Settings | File Templates.
 <!------------编辑创意弹窗-------------->
 <div class="TB_overlayBG"></div>
 <div class="box" id="riginality_editor" style="display:none;">
-    <h2 id="riginality_editor1">编辑创意<a href="#" class="close">关闭</a></h2>
+    <h2 id="riginality_editor1">编辑创意<a href="#" class="close">×</a></h2>
 
     <div class="mainlist2 over">
         <div class="riginality_editor1 fl">
@@ -418,7 +418,7 @@ To change this template use File | Settings | File Templates.
 </div>
 <!------------新建创意-------------->
 <div class="box" id="new_riginality" style="display:none;">
-    <h2 id="new_riginality2">新建创意<a href="#" class="close">关闭</a></h2>
+    <h2 id="new_riginality2">新建创意<a href="#" class="close">×</a></h2>
 
     <div class="mainlist2 over">
         <div class="riginality_editor1 fl">
@@ -493,7 +493,7 @@ To change this template use File | Settings | File Templates.
 <div class="box" style="display:none" id="jcAdd">
     <h2 id="dAdd">
         <span class="fl">添加创意</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         选择要添加到的计划或者单元!
@@ -514,7 +514,7 @@ To change this template use File | Settings | File Templates.
 <div class="box" style="display:none" id="subLinkType">
     <h2 id="sublink">
         <span class="fl">添加创意</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         添加

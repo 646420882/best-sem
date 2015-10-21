@@ -10,7 +10,7 @@
     <form submit-type="ajax">
         <input id="forType" type="hidden"/>
         <h2 id="findOrReplaceH"><span class="fl">文字替换</span><a href="#" class="close"
-                                                               onclick="commons.foRClose()">关闭</a>
+                                                               onclick="commons.foRClose()">×</a>
         </h2>
         <div class="mainlist">
             <label id="forTitle">替换所选项目中的文字(不能替换已提交的关键字名称)</label>
@@ -82,7 +82,7 @@
 <div class="box" style="display:none;*width:400px;" id="findBatchDel">
     <form submit-type="ajax">
         <h2 id="batchDel"><span class="fl">批量删除</span><a href="#" class="close"
-                                                               onclick="commons.foRClose()">关闭</a>
+                                                               onclick="commons.foRClose()">×</a>
         </h2>
         <div class="mainlist">
             <ul>

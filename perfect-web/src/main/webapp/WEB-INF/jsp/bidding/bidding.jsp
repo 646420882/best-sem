@@ -308,7 +308,7 @@
 </div>
 <div class="TB_overlayBG"></div>
 <div class="box10" style="display:none" id="downloadData">
-    <h2 id="downloadBox"><span class="fl">账户下载</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="downloadBox"><span class="fl">账户下载</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         您希望下载账户的哪个部分？
@@ -343,7 +343,7 @@
 </div>
 <!-------设置规则-------->
 <div class="box" id="seetingRules" style="display:none">
-    <h2 id="box1"><span class="fl">设置规则</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box1"><span class="fl">设置规则</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist jiangjia_main">
         <ul>
@@ -489,7 +489,7 @@
 </div>
 <!-------修改出价------------>
 <div class="box2" style="display:none; *width:400px;">
-    <h2 id="box2"><span class="fl">修改出价</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box2"><span class="fl">修改出价</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -510,7 +510,7 @@
 </div>
 <!---------修改匹配模式----------->
 <div class="box3" style="display:none">
-    <h2 id="box3"><span class="fl">修改匹配模式</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box3"><span class="fl">修改匹配模式</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -539,7 +539,7 @@
 
 <!---------修改访问网址----------->
 <div class="box4" style="display:none;*width:400px;">
-    <h2 id="box4"><span class="fl">修改访问网址</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box4"><span class="fl">修改访问网址</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -560,7 +560,7 @@
 
 <!---------分组管理----------->
 <div class="box5" style="display:none;*width:400px;*width:410px;">
-    <h2 id="box5"><span class="fl">分组管理</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box5"><span class="fl">分组管理</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <div class="gusuan_bottom1 over fl ">
@@ -587,7 +587,7 @@
 
 <!--------------关键词当前排名----------------->
 <div class="box8" id="paiming" style="display:none;*width:410px;">
-    <h2 id="box8"><span class="fl">当前排名</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box8"><span class="fl">当前排名</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <div class="gusuan_bottom1 over fl ">
@@ -606,7 +606,7 @@
 
 <!---------自定义列----------->
 <div id="custom_col" class="box6" style="display:none; *width:280px;">
-    <h2 id="box6"><span class="fl">自定义列</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box6"><span class="fl">自定义列</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <ul id="customColList">
@@ -666,7 +666,7 @@
 
 <!---------自定义列重点词分组----------->
 <div id="custom_col2" class="box6" style="display:none; *width:280px;">
-    <h2 id="box62"><span class="fl">自定义列</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box62"><span class="fl">自定义列</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <ul id="customColList2">
@@ -722,7 +722,7 @@
 </div>
 
 <div class="box9" style="display:none; *width:200px;">
-    <h2 id="box9"><span class="fl">竞价状态</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box9"><span class="fl">竞价状态</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <select id="biddingStatus">
@@ -743,7 +743,7 @@
 </div>
 
 <div class="box7" style="display:none; *width:200px;">
-    <h2 id="box7"><span class="fl">关键词状态</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="box7"><span class="fl">关键词状态</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <select id="statusStr">

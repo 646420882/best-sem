@@ -165,7 +165,7 @@
 </div>
 <div class="TB_overlayBG"></div>
 <div class="box" id="new_riginality" style="display:none; width:452px;">
-    <h2 id="new_riginality2">同步密码<a href="#" class="close">关闭</a></h2>
+    <h2 id="new_riginality2">同步密码<a href="#" class="close">×</a></h2>
     <div class="mainlist2 over"  style="width:452px;">
         <div class="mainlist">
             <ul>

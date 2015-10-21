@@ -49,7 +49,7 @@
 <div class="box" style="display:none" id="auditDiv">
     <h2 id="auditTUO">
         <span class="fl">审核帐号</span>
-        <a href="javascript:closeAlert()" class="close">关闭</a></h2>
+        <a href="javascript:closeAlert()" class="close">×</a></h2>
     <div class="mainlist">
         是否确认审核通过，使此帐号在系统中使用！！
     </div>

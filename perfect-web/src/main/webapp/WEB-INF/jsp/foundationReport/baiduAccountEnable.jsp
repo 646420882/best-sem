@@ -51,7 +51,7 @@
 <div class="box" style="display:none" id="enableDiv">
     <h2 id="enableTUO">
         <span class="fl">提示框</span>
-        <a href="javascript:closeAlert()" class="close">关闭</a></h2>
+        <a href="javascript:closeAlert()" class="close">×</a></h2>
 
     <div class="mainlist">
         是否确认启用/禁用！！

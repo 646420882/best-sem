@@ -1824,14 +1824,14 @@ ul.ztree.zTreeDragUL {
 h2 .close {
     color: #fff;
     float: right;
-    font-size: 12px;
+    font-size: 20px;
     line-height: 46px;
 }
 
 .close {
     color: #000;
     float: right;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: normal;
     opacity: inherit;
     text-shadow: none;
@@ -4189,4 +4189,14 @@ input[type=checkbox]:focus {
     white-space: nowrap;
    overflow: hidden;
     text-overflow:ellipsis
+}
+.ui-dialog-header{
+    background:#272537!important;
+    color:#fff;
+}
+.ui-dialog-close{
+    color:#fff!important;
+}
+.ui-dialog{
+    padding:0px!important;
 }
