@@ -12,52 +12,21 @@
     <title></title>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/public/themes/flick/font-awesome.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css" type="text/css"
-          media="all" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css" type="text/css"      media="all" rel="stylesheet"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
-    <script type="text/javascript"
-            src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
-
+    <script type="text/javascript"  src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
 </head>
-
 <body>
-<%--<input name="reservation" readonly style="display: none">--%>
-<%--<input id="e1" name="e1" readonly style="display: none">--%>
+
 <input type="text" style="width: 400px;display: none" name="reservation" id="reservationtime"
-       class="span4 form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
-<%--<script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>--%>
-
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/monment.min.js"></script>--%>
-
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.comiseo.daterangepicker.js"></script>--%>
-
-
-<%--<script type="text/javascript"--%>
-<%--src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>--%>
-<%--<script type="text/javascript"--%>
-<%--src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
-
-
+       class="span4 form-control TimingPauseDialog " value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
+<input id="Timing" value="2" style="display: none">
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script>
-
-    //    $(function () {
-    //        // 加载日历控件
-    //        $("input[name=reservation]").daterangepicker();
-    //        $("div.ui-daterangepicker").css("display","block");
-    //    });
-
-    //    $(function() {
-    //        $("#e1").daterangepicker();
-    //        $("div.comiseo-daterangepicker").css("display","block")
-    //        $("button.comiseo-daterangepicker-triggerbutton").css("display","none")
-    //        $("div.ui-datepicker-inline").css("display","inline-block")
-    //        $("div.ui-datepicker-inline").css("width","42em")
-
-
-    //    });
+    function closeDialog(){
+      top.dialog.getCurrent().close().remove();
+    }
     $(function () {
         $("div.daterangepicker").css({"display": "block", "top": "0px", "right": "auto"})
         $(".daterangepicker .ranges li:last").css({"display": "none"})

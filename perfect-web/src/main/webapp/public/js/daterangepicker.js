@@ -6,8 +6,9 @@
  * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
  * @website: http://www.improvely.com/
  */
-!function ($, moment) {
 
+!function ($, moment) {
+    var Timing=$("#Timing").val();
     var DateRangePicker = function (element, options, cb) {
 
         // by default, the daterangepicker element is placed at the bottom of HTML body
@@ -21,7 +22,7 @@
             '<div class="calendar left"></div>' +
             '<div class="calendar right"></div>' +
             '<div class="calendar-time"></div>' +
-            ' <div class="ranges" style="top: 267px; right: 0;  ;position: absolute"><button class="applyBtn" disabled="disabled"></button> <button class="cancelBtn"></button> </div>' +
+            ' <div class="ranges" style="top: 267px; right: 0;  ;position: absolute"><button class="applyBtn" disabled="disabled"></button> <button onclick="closeDialog()" class="cancelBtn"></button> </div>' +
             '</div>' +
             '</div>';
 
@@ -670,12 +671,19 @@
                 this.clickApply();
         },
 
-        clickApply: function (e) {
+        clickApply:function (e) {
+
             this.updateInputText();
             //this.hide();
             this.element.trigger('apply.daterangepicker', this);
+            if(Timing==1){
+                alert("定时上传")
 
+            }else if(Timing==2){
+                alert("定时暂停")
+            }
             uploadFunc(document.getElementById('reservationtime').value);
+
         },
 
         clickCancel: function (e) {
@@ -808,23 +816,37 @@
         },
 
         renderDropdowns: function (selected, minDate, maxDate) {
+            var M=new Date();
+            var Month= M.getMonth();
+            var Year= M.getFullYear();
             var currentMonth = selected.month();
             var monthHtml = '<select class="monthselect">';
             var inMinYear = false;
             var inMaxYear = false;
-
-            for (var m = 0; m < 12; m++) {
-                if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
-                    monthHtml += "<option value='" + m + "'" +
+            var currentYear = selected.year();
+            var maxYear = (maxDate && maxDate.year()) || (currentYear +10);
+            var minYear = (minDate && minDate.year()) || (Year );
+            if(Year==currentYear){
+                for (var m = Month; m < 12; m++) {
+                    if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
+                        monthHtml += "<option value='" + m + "'" +
                         (m === currentMonth ? " selected='selected'" : "") +
                         ">" + this.locale.monthNames[m] + "</option>";
+                    }
+                }
+            }else{
+                for (var m = 0; m < 12; m++) {
+                    if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
+                        monthHtml += "<option value='" + m + "'" +
+                        (m === currentMonth ? " selected='selected'" : "") +
+                        ">" + this.locale.monthNames[m] + "</option>";
+                    }
                 }
             }
+
             monthHtml += "</select>";
 
-            var currentYear = selected.year();
-            var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-            var minYear = (minDate && minDate.year()) || (currentYear - 50);
+
             var yearHtml = '<select class="yearselect">';
 
             for (var y = minYear; y <= maxYear; y++) {
@@ -973,6 +995,8 @@
                         if (calendar[row][col].isSame(this.endDate)) {
                             cname += ' end-date ';
                         }
+                    } else if (calendar[row][col] <=moment()){
+                        cname = ' off disabled ';
                     }
 
                     var title = 'r' + row + 'c' + col;
