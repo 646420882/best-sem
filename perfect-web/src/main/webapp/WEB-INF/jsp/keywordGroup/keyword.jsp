@@ -417,7 +417,6 @@ To change this template use File | Settings | File Templates.
     </div>
 </div>
 <!------------新建创意-------------->
-<div class="TB_overlayBG"></div>
 <div class="box" id="new_riginality" style="display:none;">
     <h2 id="new_riginality2">新建创意<a href="#" class="close">关闭</a></h2>
 

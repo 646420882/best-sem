@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="TB_overlayBG"></div>
 <div class="box" style="display:none;*width:400px;" id="findOrReplace">
     <form submit-type="ajax">
         <input id="forType" type="hidden"/>

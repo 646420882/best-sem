@@ -43,7 +43,6 @@
     </div>
 </div>
 <!---------上传更新----------->
-<div class="TB_overlayBG"></div>
 <div class="box" style="display:none;*width:400px;" id="uploadMerge">
     <h2 id="uploadHead"><span class="fl">上传更新</span><a href="javascript:void(0)" onclick="closeUploadDialog()"
                                                        class="close">关闭</a></h2>
