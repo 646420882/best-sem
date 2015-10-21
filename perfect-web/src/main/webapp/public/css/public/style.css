@@ -1592,7 +1592,7 @@ ul.ztree.zTreeDragUL {
 }
 
 .price2, .times {
-    width: 26px;
+    width: 30px;
     padding: 0 5px;
 }
 
@@ -1810,7 +1810,7 @@ ul.ztree.zTreeDragUL {
     font-size: 14px;
     background-color: #282538;
     position: relative;
-    padding: 0 5%;
+    padding: 0 12px;
     margin: 0px;
     line-height: 46px;
     color: #fff;
@@ -4199,4 +4199,10 @@ input[type=checkbox]:focus {
 }
 .ui-dialog{
     padding:0px!important;
+}
+.ui-dialog-title{
+    height:46px;
+    line-height:46px;
+    padding:0 12px;
+    font-size:13px;
 }

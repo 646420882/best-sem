@@ -555,7 +555,7 @@
         <div class="w_list03">
             <ul>
                 <li>发布更改</li>
-                <li onclick="closeAlert();">×</li>
+                <li onclick="closeAlert();">取消</li>
             </ul>
         </div>
     </div>
