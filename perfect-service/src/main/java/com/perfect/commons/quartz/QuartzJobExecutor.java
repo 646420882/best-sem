@@ -9,8 +9,7 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created on 2015-09-29.
@@ -20,6 +19,12 @@ import java.util.Objects;
  */
 @DisallowConcurrentExecution
 public class QuartzJobExecutor implements Job {
+
+    private static final Map<Integer, String> materialsResultMap = new HashMap<Integer, String>() {{
+        put(1, "新增");
+        put(2, "更新");
+        put(3, "删除");
+    }};
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzJobExecutor.class);
 
@@ -51,9 +56,12 @@ public class QuartzJobExecutor implements Job {
         switch (scheduledJob.getJobType()) {
             case 10: {
                 LOGGER.info("==========开始上传 {} 的物料==========", sysUser);
-                List<Long> result = materialsUploadService.upload(sysUser);
-                if (!result.isEmpty())
-                    result.forEach(id -> LOGGER.info("ID为 {} 的百度账号物料上传失败", id));
+                Map<Integer, Set<Long>> result = materialsUploadService.upload(sysUser);
+                if (!result.isEmpty()) {
+                    result.forEach((k, v) -> {
+                        v.forEach(id -> LOGGER.info("ID为 {} 的百度账号物料 {} 上传失败", id, materialsResultMap.get(k)));
+                    });
+                }
 
                 LOGGER.info("========== {} 的物料上传结束==========", sysUser);
                 break;

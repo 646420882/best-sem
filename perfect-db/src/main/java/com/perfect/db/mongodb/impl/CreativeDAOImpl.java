@@ -118,6 +118,13 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
+    public List<CreativeDTO> findAllCreativeFromBaiduByAdgroupId(Long baiduAccountId, Long adgroupId) {
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(
+                Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(ADGROUP_ID).is(adgroupId).and("ls").is(null)), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, getDTOClass());
+    }
+
+    @Override
     public List<CreativeDTO> findLocalChangedCreative(Long baiduAccountId, int type) {
         List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where("ls").is(type).and(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
         return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
@@ -127,7 +134,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     public CreativeDTO getAllsBySomeParams(Map<String, Object> params) {
         Query q = new Query();
         Criteria c = new Criteria();
-        if (params != null && params.size() > 0) {
+        if (params != null && !params.isEmpty()) {
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 c.and(entry.getKey()).is(entry.getValue());
             }
