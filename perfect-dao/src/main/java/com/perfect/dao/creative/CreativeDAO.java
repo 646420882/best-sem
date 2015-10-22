@@ -2,7 +2,6 @@ package com.perfect.dao.creative;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.creative.CreativeDTO;
-import com.perfect.param.FindOrReplaceParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -30,6 +29,8 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
     List<CreativeDTO> findHasLocalStatusStr(List<String> strs);
 
     List<CreativeDTO> findHasLocalStatusLong(List<Long> longs);
+
+    List<CreativeDTO> findAllCreativeFromBaiduByAdgroupId(Long baiduAccountId, Long adgroupId);
 
     /**
      * <p>获取指定百度账号下在本地新增 修改 删除的创意
