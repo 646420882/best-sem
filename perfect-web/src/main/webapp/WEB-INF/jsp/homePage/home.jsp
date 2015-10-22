@@ -64,9 +64,6 @@
                 <li>
                     关键词监控
                 </li>
-                <li>
-                    助手详情
-                </li>
             </ul>
             <div class="tab_box">
                 <div class="containers">
@@ -89,37 +86,40 @@
                         </div>
                         <div class="datebox hides"></div>
                         <div class="list01_under2 over">
+                            <ul id="countAssisted">
+                            </ul>
+                        </div>
+                        <div class="list01_under2 list01_color  over">
                             <ul>
                                 <li>
-                                    <div class="blue1 fl wd1"></div>
-                                    <div class="blue2 fl wd2"><Span class="impression"></Span>
-
+                                    <div class="blue1 fr wd1"></div>
+                                    <div class="blue2 fl wd2">
                                         <p>展现次数</p>
+                                        <Span class="impression"></Span>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="green1 fl wd1"></div>
-                                    <div class="green2 fl wd2"><Span class="click"></Span>
-
+                                    <div class="green1 fr wd1"></div>
+                                    <div class="green2 fl wd2">
                                         <p>点击次数</p>
+                                        <Span class="click"></Span>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="red1 fl wd1"></div>
-                                    <div class="red2 fl wd2"><Span class="cos"></Span>
-
+                                    <div class="red1 fr wd1"></div>
+                                    <div class="red2 fl wd2">
                                         <p>消费</p>
+                                        <Span class="cos"></Span>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="yellow1 fl wd1"></div>
-                                    <div class="yellow2 fl wd2"><Span class="conversion"></Span>
-
+                                    <div class="yellow1 fr wd1"></div>
+                                    <div class="yellow2 fl wd2">
                                         <p>转化次数</p>
+                                        <Span class="conversion"></Span>
                                     </div>
                                 </li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
@@ -1145,18 +1145,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="containers hides over">
-                    <div class="list01 over">
-                        <div class="list01_top over">
-                            <Span>助手详情</Span>
-                        </div>
-                        <div class="list01_under2 over">
-                            <ul id="countAssisted">
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
 
@@ -1242,7 +1230,7 @@
                 var classArray = ["blue","green","red","yellow"];
                 var html = "";
                 data.rows.forEach(function(item, i){
-                        html = html + "<li><div class='"+ classArray[i] +"1 fl wd1'></div><div class='"+ classArray[i] +"2 fl wd2'><p><br/>"+ item.name +"<br/>共: "+ item.countNumber +" 个<br/>修改: "+ item.modifiyNumber +" 个</p></div></li>";
+                        html = html + "<li><div class='"+ classArray[i] +"1 fr wd1'></div><div class='"+ classArray[i] +"2 fl wd2'><p>"+ item.name +"</p><span> "+ item.countNumber +" </span><span style='display:none'>修改: "+ item.modifiyNumber +" </span></div></li>";
                 });
                 $("#countAssisted").append(html)
             }});

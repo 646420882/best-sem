@@ -94,7 +94,7 @@ public class AccountOverviewServiceImpl implements AccountOverviewService {
 
         Long campaign = accountAnalyzeDAO.countCampaign(0);
         Long campaignLong = accountAnalyzeDAO.countCampaign(1);
-        vo.setName("计划");
+        vo.setName("计划数");
         vo.setCountNumber(campaign);
         vo.setModifiyNumber(campaignLong);
         vos.add(vo);
@@ -102,26 +102,26 @@ public class AccountOverviewServiceImpl implements AccountOverviewService {
         Long adgroup = accountAnalyzeDAO.countAdgroup(0);
         Long adgroupLong = accountAnalyzeDAO.countAdgroup(1);
         vo = new CountAssistantVO();
-        vo.setName("单元");
+        vo.setName("单元数");
         vo.setCountNumber(adgroup);
         vo.setModifiyNumber(adgroupLong);
-        vos.add(vo);
-        Long creative = accountAnalyzeDAO.countCreative(0);
-        Long creativeLong = accountAnalyzeDAO.countCreative(1);
-        vo = new CountAssistantVO();
-        vo.setName("创意");
-        vo.setCountNumber(creative);
-        vo.setModifiyNumber(creativeLong);
         vos.add(vo);
 
         Long keyword = accountAnalyzeDAO.countKeyword(0);
         Long keywordLong = accountAnalyzeDAO.countKeyword(1);
         vo = new CountAssistantVO();
-        vo.setName("关键字");
+        vo.setName("关键词数");
         vo.setCountNumber(keyword);
         vo.setModifiyNumber(keywordLong);
         vos.add(vo);
 
+        Long creative = accountAnalyzeDAO.countCreative(0);
+        Long creativeLong = accountAnalyzeDAO.countCreative(1);
+        vo = new CountAssistantVO();
+        vo.setName("创意数");
+        vo.setCountNumber(creative);
+        vo.setModifiyNumber(creativeLong);
+        vos.add(vo);
         return vos;
     }
 

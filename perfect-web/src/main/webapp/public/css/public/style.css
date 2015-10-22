@@ -236,7 +236,7 @@
 .wd2 {
     width: 60%;
     *width: 48%;
-    padding: 0 5%;
+    padding: 20px 5%;
     height: 100px;
 }
 
@@ -263,48 +263,51 @@
 
 .list01_under2 ul li span {
     display: block;
-    font-size: 30px;
+    margin-top:10px;
+    font-size: 24px;
     color: #fff;
     font-family: "Arial";
-    padding-top: 26px;
 }
 
 .list01_under2 ul li p {
     color: #fff;
     line-height: 20px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .list01_under2 ul li .blue1 {
-    background: #34befe url(/public/img/blue1.png) center no-repeat;
+    background: url(/public/img/blue1.png) center no-repeat;
+    background-size: 48px;
 }
 
 .list01_under2 ul li .blue2 {
-    background: #30b0eb;
+
 }
 
 .list01_under2 ul li .green1 {
-    background: #48c9b0 url(/public/img/geen1.png) center no-repeat;
+    background:  url(/public/img/geen1.png) center no-repeat;
+    background-size: 48px;
 }
 
 .list01_under2 ul li .green2 {
-    background: #43bca5;
+
 }
 
 .list01_under2 ul li .red1 {
-    background: #ff6600 url(/public/img/red1.png) center no-repeat;
+    background:  url(/public/img/red1.png) center no-repeat;
+    background-size: 48px;
 }
 
 .list01_under2 ul li .red2 {
-    background: #ed5f01;
+
 }
 
 .list01_under2 ul li .yellow1 {
-    background: #ffd055 url(/public/img/yellow1.png) center no-repeat;
+    background: url(/public/img/yellow1.png) center no-repeat;
+    background-size: 48px;
 }
 
 .list01_under2 ul li .yellow2 {
-    background: #e1b749;
 }
 
 /***数据分析***/
@@ -4205,4 +4208,51 @@ input[type=checkbox]:focus {
     line-height:46px;
     padding:0 12px;
     font-size:13px;
+}
+.list01_under2 ul li:nth-last-child(4){
+background: #2fabe9;
+}
+
+.list01_under2.list01_color ul li:nth-last-child(4){
+background: #34befe;
+}
+.list01_under2 ul li:nth-last-child(3){
+    background: #51b6e4;
+}
+
+.list01_under2.list01_color ul li:nth-last-child(3){
+    background: #48c9b0;
+}
+.list01_under2 ul li:nth-last-child(2){
+    background: #8a65ce;
+}
+
+.list01_under2.list01_color ul li:nth-last-child(2){
+    background: #ff8265;
+}
+.list01_under2 ul li:nth-last-child(1){
+    background: #e8c66b;
+}
+
+.list01_under2.list01_color ul li:nth-last-child(1){
+    background: #f29681;
+}
+.list01_color{
+    margin-top:20px;
+}
+.list01_under2.list01_color ul li .blue1{
+    background: url(/public/img/blue2.png) center no-repeat;
+    background-size: 48px;
+}
+.list01_under2.list01_color ul li .green1{
+    background: url(/public/img/geen2.png) center no-repeat;
+    background-size: 48px;
+}
+.list01_under2.list01_color ul li .red1{
+    background: url(/public/img/red2.png) center no-repeat;
+    background-size: 48px;
+}
+.list01_under2.list01_color ul li .yellow1{
+    background: url(/public/img/yellow2.png) center no-repeat;
+    background-size: 48px;
 }
