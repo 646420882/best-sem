@@ -417,7 +417,8 @@ public class AssistantKeywordController extends WebContextSupport {
                                     String attributes,
                                     Integer device,
                                     Integer searchType,
-                                    @RequestParam(defaultValue = "1") Integer status) {
+                                    @RequestParam(defaultValue = "1") Integer status,
+                                    @RequestParam(defaultValue = "0") String downStatus) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         Calendar cal = Calendar.getInstance();
@@ -469,7 +470,16 @@ public class AssistantKeywordController extends WebContextSupport {
                 dtoList.add(searchwordReportDTO);
             }
         }
-
+        if (!downStatus.equals("0")){
+            try(OutputStream os = response.getOutputStream()) {
+                String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
+                response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+                basisReportDownService.downSeachKeyWordCSV(os, dtoList);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (status == 0) {
             List<SearchwordReportDTO> returnList = Lists.newArrayList();
             ForkJoinPool joinPoolTow = new ForkJoinPool();
@@ -537,14 +547,14 @@ public class AssistantKeywordController extends WebContextSupport {
         CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getBaiduUserName(), accountInfoDTO.getBaiduPassword(), accountInfoDTO.getToken());
         List<RealTimeQueryResultType> resList = new ArrayList<>();
         try {
-            //Date baseDate = df.parse("11:51:00");
+            Date baseDate = df.parse("23:59:59");
             Calendar beforeYesterDay = Calendar.getInstance();
             beforeYesterDay.add(Calendar.DAY_OF_YEAR, -2);//前天的日期
             Calendar yesterDay = Calendar.getInstance();
             yesterDay.add(Calendar.DAY_OF_YEAR, -1);//昨天的日期
 
             //若小于baseDate，则是11:51之前的,否则是11:51之后的,     请求时间在当天中午11:51前，startDate范围可取：[前天，前天-30] 请求时间在当天中午11:51后，startDate范围可取：[昨天，昨天-30]
-            /*if (df.parse(df.format(startDate)).getTime() < baseDate.getTime()) {
+            if (df.parse(df.format(startDate)).getTime() < baseDate.getTime()) {
                 //若开始日期大于了前天，就将开始日期置为前天
                 if (startDate.getTime() > beforeYesterDay.getTime().getTime()) {
                     startDate = beforeYesterDay.getTime();
@@ -563,7 +573,7 @@ public class AssistantKeywordController extends WebContextSupport {
                 if (endDate.getTime() > yesterDay.getTime().getTime()) {
                     endDate = yesterDay.getTime();
                 }
-            }*/
+            }
             ReportService reportService = commonService.getService(ReportService.class);
             //设置请求参数
             RealTimeQueryRequestType realTimeQueryRequestType = new RealTimeQueryRequestType();
@@ -575,7 +585,7 @@ public class AssistantKeywordController extends WebContextSupport {
             realTimeQueryRequestType.setAttributes(attributes);
             realTimeQueryRequestType.setDevice(device);
             realTimeQueryRequestType.setReportType(6);//报告类型
-            realTimeQueryRequestType.setNumber(20);//获取数据的条数
+            realTimeQueryRequestType.setNumber(1000);//获取数据的条数
 
             //创建请求
             GetRealTimeQueryDataRequest getRealTimeQueryDataRequest = new GetRealTimeQueryDataRequest();
@@ -589,9 +599,9 @@ public class AssistantKeywordController extends WebContextSupport {
             }
         } catch (ApiException e) {
             e.printStackTrace();
-        }/* catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
-        }*/
+        }
         return resList;
     }
 
@@ -780,8 +790,6 @@ public class AssistantKeywordController extends WebContextSupport {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 }

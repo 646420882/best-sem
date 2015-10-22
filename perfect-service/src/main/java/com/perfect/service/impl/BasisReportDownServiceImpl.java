@@ -786,4 +786,32 @@ public class BasisReportDownServiceImpl implements BasisReportDownService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void downSeachKeyWordCSV(OutputStream os, List<SearchwordReportDTO> dtos) {
+        try {
+            os.write(Bytes.concat(commonCSVHead, (ReportDownUtil.getHeadToSearch())));
+            dtos.forEach(e -> {
+                try {
+                    os.write(Bytes.concat(commonCSVHead, (
+                            e.getDate() + DEFAULT_DELIMITER +
+                                    e.getCampaignName() + DEFAULT_DELIMITER +
+                                    e.getAdgroupName() + DEFAULT_DELIMITER +
+                                    e.getCreateTitle().replace(",", "，") + DEFAULT_DELIMITER +
+                                    e.getCreateDesc1().replace(",", "，") + DEFAULT_DELIMITER +
+                                    e.getCreateDesc2().replace(",","，") + DEFAULT_DELIMITER +
+                                    e.getSearchEngine() + DEFAULT_DELIMITER +
+                                    e.getClick() + DEFAULT_DELIMITER +
+                                    e.getImpression() + DEFAULT_DELIMITER +
+                                    e.getSearchWord() + DEFAULT_DELIMITER +
+                                    e.getKeyword() + DEFAULT_DELIMITER +
+                                    e.getParseExtent() + DEFAULT_END).getBytes()));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

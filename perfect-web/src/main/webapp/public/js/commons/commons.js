@@ -677,7 +677,7 @@ $.extend({
         }
         form.foRSubmit("../assistantCommons/batchDel", foR_params, function (result) {
             commons.foRClose();
-            if (checkType.val() == 0) {
+            if (checkType.val() == 0 || checkType.val() == undefined) {
                 getMaterials(forType).each(function () {
                     if (this.checked) {
                         $(this).parent().parent().find(">td:last").html("<span class='error' step='3'></span>")

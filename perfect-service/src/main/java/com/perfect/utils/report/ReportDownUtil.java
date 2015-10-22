@@ -6,8 +6,8 @@ import java.nio.charset.StandardCharsets;
  * Created by SubDong on 2014/9/25.
  */
 public class ReportDownUtil {
-    private static final String DEFAULT_DELIMITER = ",";
     private static final String DEFAULT_END = "\r\n";
+    private static final String DEFAULT_DELIMITER = ",";
     private static final byte commonCSVHead[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
 
 
@@ -30,6 +30,10 @@ public class ReportDownUtil {
     private static final String SEARCH_WORD = "搜索词";
     private static final String KEY_WORDS = "关键词";
     private static final String MATCH_EXTENSION = "精确匹配扩展";
+
+    private static final String CONVERSION_TITLE = "创意标题";
+    private static final String CONVERSION_TITLE_ONE = "创意标题1";
+    private static final String CONVERSION_TITLE_TOW = "创意标题2";
 
     /**
      * 获取下载头
@@ -82,6 +86,14 @@ public class ReportDownUtil {
     public static byte[] getBetyHead() {
         String head = DATE_STRING + DEFAULT_DELIMITER + SPREAD_STRING + DEFAULT_DELIMITER + SPREAD_UNIT_STRING + DEFAULT_DELIMITER + SEARCH_ENGINE + DEFAULT_DELIMITER +
                 CLICK_STRING + DEFAULT_DELIMITER + IMPR_STRING + DEFAULT_DELIMITER + CLICK_RAGE_STRING + DEFAULT_DELIMITER + SEARCH_WORD + DEFAULT_DELIMITER +
+                KEY_WORDS + DEFAULT_DELIMITER + MATCH_EXTENSION + DEFAULT_END;
+        return head.getBytes(StandardCharsets.UTF_8);
+    }
+
+    public static byte[] getHeadToSearch() {
+        String head =  DATE_STRING + DEFAULT_DELIMITER + SPREAD_STRING + DEFAULT_DELIMITER + SPREAD_UNIT_STRING + DEFAULT_DELIMITER + CONVERSION_TITLE + DEFAULT_DELIMITER +
+                CONVERSION_TITLE_ONE + DEFAULT_DELIMITER + CONVERSION_TITLE_TOW + DEFAULT_DELIMITER + SEARCH_ENGINE + DEFAULT_DELIMITER +
+                CLICK_STRING + DEFAULT_DELIMITER + IMPR_STRING + DEFAULT_DELIMITER + SEARCH_WORD + DEFAULT_DELIMITER +
                 KEY_WORDS + DEFAULT_DELIMITER + MATCH_EXTENSION + DEFAULT_END;
         return head.getBytes(StandardCharsets.UTF_8);
     }

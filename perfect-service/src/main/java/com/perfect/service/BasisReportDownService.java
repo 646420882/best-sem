@@ -29,5 +29,17 @@ public interface BasisReportDownService {
      */
     void downAccountReportCSV(OutputStream os, Date startDate, Date endDate, Date startDate1, Date endDate1, int dateType, int devices, String sortVS, int startVS, int limitVS);
 
+    /**
+     * 数据报告（搜索词报告下载）
+     * @param os
+     * @param dtos
+     */
     void downSeachKeyWordReportCSV(OutputStream os, List<SearchwordReportDTO> dtos);
+
+    /**
+     * 推广助手（搜索词报告下载）
+     * @param os
+     * @param dtos
+     */
+    void downSeachKeyWordCSV(OutputStream os, List<SearchwordReportDTO> dtos);
 }
