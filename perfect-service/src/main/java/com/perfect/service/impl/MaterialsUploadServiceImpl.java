@@ -2,6 +2,7 @@ package com.perfect.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
@@ -19,13 +20,11 @@ import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.MaterialsUploadService;
 import com.perfect.utils.ObjectUtils;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -52,22 +51,42 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     @Resource
     private CreativeDAO creativeDAO;
 
-    private final Function<Long, Boolean> uploadFunc1 = baiduUserId -> this.addFunc.apply(baiduUserId)
-            && this.updateFunc.apply(baiduUserId) && this.deleteFunc.apply(baiduUserId);
+    private final Function<Long, Map<Integer, Long>> uploadFunc1 = baiduUserId -> {
+        Map<Integer, Long> result = Maps.newHashMap();
 
-    private final Function<String, List<Long>> uploadFunc2 = sysUser ->
-            accountManageDAO.getBaiduAccountItems(sysUser)
-                    .stream()
-                    .map(BaiduAccountInfoDTO::getId)
-                    .collect(Collectors.toList())
-                    .stream()
-                    .map(id -> Maps.immutableEntry(id, uploadFunc1.apply(id)))
-                    .filter(e -> !e.getValue())
-                    .map(Map.Entry::getKey)
-                    .collect(Collectors.toList());
+        if (!this.updateFunc.apply(baiduUserId)) {
+            result.put(MODIFIED, baiduUserId);
+        }
+
+        if (!this.addFunc.apply(baiduUserId)) {
+            result.put(NEW, baiduUserId);
+        }
+
+        if (!this.deleteFunc.apply(baiduUserId)) {
+            result.put(DELETED, baiduUserId);
+        }
+
+        return result;
+    };
+
+    private final Function<String, Map<Integer, Set<Long>>> uploadFunc2 = sysUser -> {
+        final Map<Integer, Set<Long>> result = Maps.newHashMap();
+        result.put(NEW, Sets.newHashSet());
+        result.put(MODIFIED, Sets.newHashSet());
+        result.put(DELETED, Sets.newHashSet());
+
+        accountManageDAO.getBaiduAccountItems(sysUser)
+                .stream()
+                .map(BaiduAccountInfoDTO::getId)
+                .collect(Collectors.toList())
+                .stream()
+                .forEach(id -> uploadFunc1.apply(id).forEach((k, v) -> result.get(k).add(v)));
+
+        return result;
+    };
 
     private final Function<Long, Boolean> addFunc = baiduUserId -> {
-        BaiduApiService baiduApiService = getBaiduApiService(baiduUserId);
+        BaiduApiService baiduApiService = this.baiduApiServiceFunction.apply(baiduUserId);
         try {
             // 是否有新增的推广计划
             List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, NEW);
@@ -122,7 +141,34 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
                 Map<String, List<KeywordDTO>> groupedKeywordMap = keywordDTOList.stream()
                         .collect(Collectors.groupingBy(keywordDTO -> adgroupIdMap.get(keywordDTO.getAdgroupId()) + "-" + keywordDTO.getAdgroupId()));
                 for (Map.Entry<String, List<KeywordDTO>> entry : groupedKeywordMap.entrySet()) {
-                    List<KeywordDTO> _list = entry.getValue();
+                    KeywordDTO firstElem = entry.getValue().get(0);
+
+                    // ==================== 去重 ====================
+                    final Map<String, KeywordDTO> sameAdgroupKeywordMap = keywordDAO
+                            .findAllKeywordFromBaiduByAdgroupId(firstElem.getAccountId(), firstElem.getAdgroupId())
+                            .stream()
+                            .collect(Collectors.toMap(k -> k.getKeyword().trim().toUpperCase(), v -> v));
+
+                    List<KeywordDTO> _list = entry.getValue()
+                            .stream()
+                            .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()))
+                            .values()
+                            .stream()
+                                    // 1. 找出新增关键词中本身重复的
+                            .map(sourceList -> sourceList
+                                    .stream()
+                                    .sorted((o1, o2) -> {
+                                        ObjectId oId1 = new ObjectId(o1.getId());
+                                        ObjectId oId2 = new ObjectId(o2.getId());
+                                        return Integer.compare(oId1.getTimestamp(), oId2.getTimestamp());
+                                    })
+                                    .findFirst()
+                                    .orElse(null))
+                            .filter(Objects::nonNull)
+                                    // 2. 找出和本单元已经存在的百度关键词重复的
+                            .filter(keywordDTO -> !sameAdgroupKeywordMap.containsKey(keywordDTO.getKeyword().trim().toUpperCase()))
+                            .collect(Collectors.toList());
+
 
                     List<KeywordType> keywordTypeList = ObjectUtils.convert(_list, KeywordType.class);
                     Map<String, Long> result = baiduApiService.addKeyword(keywordTypeList)
@@ -138,6 +184,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             }
 
             // 是否有新增的创意
+            // TODO 创意去重
             List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, NEW);
             if (!creativeDTOList.isEmpty()) {
                 for (CreativeDTO creativeDTO : creativeDTOList) {
@@ -187,6 +234,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             }
 
             // 是否有修改的关键词
+            // TODO 关键词去重
             List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, MODIFIED);
             if (!keywordDTOList.isEmpty()) {
                 List<KeywordType> keywordTypeList = ObjectUtils.convert(keywordDTOList, KeywordType.class);
@@ -194,6 +242,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             }
 
             // 是否有修改的创意
+            // TODO 创意去重
             List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, MODIFIED);
             if (!creativeDTOList.isEmpty()) {
                 List<CreativeType> creativeTypeList = ObjectUtils.convert(creativeDTOList, CreativeType.class);
@@ -209,7 +258,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     };
 
     private final Function<Long, Boolean> deleteFunc = baiduUserId -> {
-        BaiduApiService baiduApiService = getBaiduApiService(baiduUserId);
+        BaiduApiService baiduApiService = this.baiduApiServiceFunction.apply(baiduUserId);
         try {
             // 是否有删除的推广计划
             List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, DELETED);
@@ -248,7 +297,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     };
 
     private final Function<Long, Boolean> pauseFunc1 = baiduUserId -> {
-        BaiduApiService baiduApiService = getBaiduApiService(baiduUserId);
+        BaiduApiService baiduApiService = this.baiduApiServiceFunction.apply(baiduUserId);
         // 获取当前百度账号下的所有推广计划, 并对其进行暂停投放的设置, 然后更新到凤巢
         campaignDAO.pause(baiduUserId);
 
@@ -279,6 +328,22 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
                     .map(Map.Entry::getKey)
                     .collect(Collectors.toList());
 
+    private final Function<Long, BaiduApiService> baiduApiServiceFunction = baiduUserId -> {
+        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
+        CommonService commonService = BaiduServiceSupport
+                .getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
+
+        return new BaiduApiService(commonService);
+    };
+
+
+//    private BaiduApiService getBaiduApiService(Long baiduUserId) {
+//        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
+//        CommonService commonService = BaiduServiceSupport
+//                .getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
+//
+//        return new BaiduApiService(commonService);
+//    }
 
     /**
      * <p>新增的物料上传操作成功之后需要将返回的凤巢id设置到本地.
@@ -302,12 +367,12 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     }
 
     @Override
-    public boolean upload(Long baiduUserId) {
+    public Map<Integer, Long> upload(Long baiduUserId) {
         return uploadFunc1.apply(baiduUserId);
     }
 
     @Override
-    public List<Long> upload(String sysUser) {
+    public Map<Integer, Set<Long>> upload(String sysUser) {
         return uploadFunc2.apply(sysUser);
     }
 
@@ -319,13 +384,5 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     @Override
     public List<Long> pause(String sysUser) {
         return pauseFunc2.apply(sysUser);
-    }
-
-    private BaiduApiService getBaiduApiService(Long baiduUserId) {
-        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
-        CommonService commonService = BaiduServiceSupport
-                .getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
-
-        return new BaiduApiService(commonService);
     }
 }

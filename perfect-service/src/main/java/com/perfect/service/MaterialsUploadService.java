@@ -1,6 +1,12 @@
 package com.perfect.service;
 
+import com.perfect.commons.deduplication.KeywordDeduplication;
+import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.dto.keyword.KeywordDTO;
+
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created on 2015-10-14.
@@ -63,7 +69,7 @@ public interface MaterialsUploadService {
      * @param baiduUserId
      * @return
      */
-    boolean upload(Long baiduUserId);
+    Map<Integer, Long> upload(Long baiduUserId);
 
     /**
      * <p>上传指定系统用户下物料的新增、修改、删除</p>
@@ -71,7 +77,7 @@ public interface MaterialsUploadService {
      * @param sysUser
      * @return 上传失败的百度账号
      */
-    List<Long> upload(String sysUser);
+    Map<Integer, Set<Long>> upload(String sysUser);
 
     /**
      * <p>暂停指定百度账户下的物料投放</p>
@@ -87,4 +93,21 @@ public interface MaterialsUploadService {
      * @return 上传失败的百度账号
      */
     List<Long> pause(String sysUser);
+
+
+    default boolean isDuplicate(KeywordDTO source, List<KeywordDTO> targets) {
+        return targets.stream()
+                .filter(k -> Long.compare(source.getAdgroupId(), k.getAdgroupId()) == 0)
+                .anyMatch(k -> source.getKeyword().trim().equalsIgnoreCase(k.getKeyword().trim()));
+    }
+
+    default boolean isDuplicate(CreativeDTO source, List<CreativeDTO> targets) {
+        String sourceMd5 = KeywordDeduplication.MD5
+                .getMD5(source.getTitle().trim() + source.getDescription1().trim() + source.getDescription2().trim());
+
+        return targets.stream()
+                .filter(c -> Long.compare(source.getAdgroupId(), c.getAdgroupId()) == 0)
+                .anyMatch(c -> sourceMd5.equals(KeywordDeduplication.MD5
+                        .getMD5(c.getTitle().trim() + c.getDescription1().trim() + c.getDescription2().trim())));
+    }
 }
