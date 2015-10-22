@@ -6,6 +6,7 @@ import org.quartz.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -68,7 +69,7 @@ public class QuartzJobPersistenceManager extends QuartzJobManager {
 
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 
-            if (trigger == null) {
+            if (Objects.isNull(trigger)) {
                 JobDetail jobDetail = JobBuilder.newJob(QuartzJobExecutor.class)
                         .withIdentity(scheduledJob.getJobName(), scheduledJob.getJobGroup()).build();
                 jobDetail.getJobDataMap().put("scheduledJob", scheduledJob);
@@ -102,6 +103,7 @@ public class QuartzJobPersistenceManager extends QuartzJobManager {
                 .jobId(o.getJobId())
                 .jobName(o.getJobName())
                 .jobGroup(o.getJobGroup())
+                .jobType(o.getJobType())
                 .jobStatus(o.getJobStatus())
                 .cronExpression(o.getCronExpression()).build()).collect(Collectors.toList());
     }
@@ -113,6 +115,7 @@ public class QuartzJobPersistenceManager extends QuartzJobManager {
         scheduledJobDTO.setJobId(scheduledJob.getJobId());
         scheduledJobDTO.setJobName(scheduledJob.getJobName());
         scheduledJobDTO.setJobGroup(scheduledJob.getJobGroup());
+        scheduledJobDTO.setJobType(scheduledJob.getJobType());
         scheduledJobDTO.setJobStatus(scheduledJob.getJobStatus());
         scheduledJobDTO.setCronExpression(scheduledJob.getCronExpression());
 

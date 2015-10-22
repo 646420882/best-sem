@@ -69,7 +69,7 @@
 <div class="box" style="display:none; width:400px;" id="head_img">
     <h2 id="head_top">
         <span class="fl">修改头像</span>
-        <a href="#" class="close2 fr" style="color:#fff;">关闭</a></h2>
+        <a href="#" class="close2 fr" style="color:#fff;">×</a></h2>
 
     <div class="mainlist">
         <form id="userImg" name="userImg" action="${pageContext.request.contextPath}/account/uploadImg" method="post"

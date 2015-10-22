@@ -49,7 +49,7 @@
 
 </style>
 <div class="box" style="background-color: #f3f5fd; width: 900px; height: 550px;display: none;" id="addKeywordDiv">
-    <h2 id="kAdd">添加关键字<a href="javascript:void(0)" onclick="closeAddKeywordDialog()" class="close">关闭</a></h2>
+    <h2 id="kAdd">添加关键字<a href="javascript:void(0)" onclick="closeAddKeywordDialog()" class="close">×</a></h2>
 
     <div class="assembly_under over">
         <div class="keyword_left fl over" style="height:460px;">

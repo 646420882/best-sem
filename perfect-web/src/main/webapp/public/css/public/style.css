@@ -1592,7 +1592,7 @@ ul.ztree.zTreeDragUL {
 }
 
 .price2, .times {
-    width: 26px;
+    width: 30px;
     padding: 0 5px;
 }
 
@@ -1810,7 +1810,7 @@ ul.ztree.zTreeDragUL {
     font-size: 14px;
     background-color: #282538;
     position: relative;
-    padding: 0 5%;
+    padding: 0 12px;
     margin: 0px;
     line-height: 46px;
     color: #fff;
@@ -1824,14 +1824,14 @@ ul.ztree.zTreeDragUL {
 h2 .close {
     color: #fff;
     float: right;
-    font-size: 12px;
+    font-size: 20px;
     line-height: 46px;
 }
 
 .close {
     color: #000;
     float: right;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: normal;
     opacity: inherit;
     text-shadow: none;
@@ -4189,4 +4189,20 @@ input[type=checkbox]:focus {
     white-space: nowrap;
    overflow: hidden;
     text-overflow:ellipsis
+}
+.ui-dialog-header{
+    background:#272537!important;
+    color:#fff;
+}
+.ui-dialog-close{
+    color:#fff!important;
+}
+.ui-dialog{
+    padding:0px!important;
+}
+.ui-dialog-title{
+    height:46px;
+    line-height:46px;
+    padding:0 12px;
+    font-size:13px;
 }

@@ -79,6 +79,7 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
         scheduledJobEntity.setJobId(scheduledJob.getJobId());
         scheduledJobEntity.setJobName(scheduledJob.getJobName());
         scheduledJobEntity.setJobGroup(scheduledJob.getJobGroup());
+        scheduledJobEntity.setJobType(scheduledJob.getJobType());
         scheduledJobEntity.setJobStatus(scheduledJob.getJobStatus());
         scheduledJobEntity.setCronExpression(scheduledJob.getCronExpression());
 
@@ -91,6 +92,7 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
         scheduledJobDTO.setJobId(scheduledJob.getJobId());
         scheduledJobDTO.setJobName(scheduledJob.getJobName());
         scheduledJobDTO.setJobGroup(scheduledJob.getJobGroup());
+        scheduledJobDTO.setJobType(scheduledJob.getJobType());
         scheduledJobDTO.setJobStatus(scheduledJobDTO.getJobStatus());
         scheduledJobDTO.setCronExpression(scheduledJob.getCronExpression());
 

@@ -20,7 +20,7 @@
 <div class="box" style="display:none" id="addSublinkDiv">
     <h2 id="SublinkDiv">
         <span class="fl">添加蹊径子链</span>
-        <a href="javascript:void(0)" onclick="closeSubLinkDialog();" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeSubLinkDialog();" class="close">×</a></h2>
 
     <div class="mainlist">
         <div id="sublinkAddInput">

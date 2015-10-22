@@ -51,7 +51,7 @@
 <div class="box" style="display:none" id="enableDiv">
     <h2 id="enableTUO">
         <span class="fl">数据</span>
-        <a href="javascript:closeAlert()" class="close">关闭</a></h2>
+        <a href="javascript:closeAlert()" class="close">×</a></h2>
 
     <div class="mainlist">
         <table class="table table-striped table-bordered table-hover datatable dataTable"

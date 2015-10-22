@@ -9,7 +9,7 @@
 <!---------下载账户----------->
 <div class="TB_overlayBG"></div>
 <div class="box" style="display:none;*width:400px;" id="download">
-    <h2 id="CampaignChange"><span class="fl">账户下载</span><a href="#" class="close">关闭</a></h2>
+    <h2 id="CampaignChange"><span class="fl">账户下载</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         您希望下载账户的哪个部分？
@@ -43,10 +43,9 @@
     </div>
 </div>
 <!---------上传更新----------->
-<div class="TB_overlayBG"></div>
 <div class="box" style="display:none;*width:400px;" id="uploadMerge">
     <h2 id="uploadHead"><span class="fl">上传更新</span><a href="javascript:void(0)" onclick="closeUploadDialog()"
-                                                       class="close">关闭</a></h2>
+                                                       class="close">×</a></h2>
 
     <div class="mainlist">
         您希望上传账户的哪个部分？
@@ -77,7 +76,7 @@
 <!---------查找重复关键词----------->
 <div class="box3" style="display:none;*width:400px;">
     <h2 id="RepeartChange">
-        <span class="fl">查找重复关键词</span><a href="#" class="close">关闭</a></h2>
+        <span class="fl">查找重复关键词</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <span>请指定重复关键词的标准，已删除的关键词不会被当作重复关键词。</span>
@@ -116,7 +115,7 @@
 <!---------估算工具----------->
 <div class="box4" style="display:none;*width:520px;">
     <h2 id="GusuanChange">
-        <span class="fl">估算工具</span><a href="#" class="close">关闭</a></h2>
+        <span class="fl">估算工具</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <span>关键词：<em>（每行一个，最多100个）</em></span>
@@ -181,7 +180,7 @@
 <div class="box5" style="display:none; width: 230px">
     <h2 id="budgetChange">
         <span class="fl">修改账户预算</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <ul class="zs_set">
@@ -201,7 +200,7 @@
 <div class="box6" style="display:none;width: 300px">
     <h2 id="excludeIPChange">
         <span class="fl">IP排除</span>
-        <a href="#" class="close">关闭</a></h2>
+        <a href="#" class="close">×</a></h2>
 
 
     <div class="mainlist">
@@ -220,7 +219,7 @@
 </div>
 <!---------修改动态创意状态----------->
 <div class="box7" style="display:none; width: 230px">
-    <h2 id="changeCreative"><a href="#" class="close">关闭</a></h2>
+    <h2 id="changeCreative"><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <div class="w_list03">
@@ -234,7 +233,7 @@
 <div id="reachBudget1" class="box" style="display:none; width: 600px">
     <h2 id="reachBudget_head">
         <span class="fl">账户预算</span>
-        <a href="javascript:void(0)" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" class="close">×</a></h2>
 
     <div class="mainlist">
         <div class="tu_top over">
@@ -247,7 +246,7 @@
 <div class="box" style="display:none" id="jcAdd">
     <h2 id="dAdd">
         <span class="fl">添加创意</span>
-        <a href="javascript:void(0)" onclick="closeAlertCreative()" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlertCreative()" class="close">×</a></h2>
 
     <div class="mainlist">
         选择要添加到的计划或者单元!
@@ -269,7 +268,7 @@
     <h2 id="setFdKeywordDiv">
         <span class="fl">否定关键词设置</span>
         <a href="javascript:void(0)" onclick="closeSetNegtiveWord();"
-           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
+           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">×</a></h2>
 
     <div class="mainlist">
         <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，每词20汉字以内，最多200项。</p>
@@ -297,7 +296,7 @@
 <div class="box" style="display:none;width:500px;" id="jcUpdate">
     <h2 id="dUpdate">
         <span class="fl">修改创意</span>
-        <a href="javascript:void(0)" onclick="closeAlertCreative();" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlertCreative();" class="close">×</a></h2>
 
     <div class="mainlist">
         <form id="cUpdateForm">
@@ -347,7 +346,7 @@
     <h2 id="setExcludeIpDiv">
         <span class="fl">IP排除列表</span>
         <a href="javascript:void(0)" onclick="closeSetExcludeIp();"
-           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
+           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">×</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -375,7 +374,7 @@
     <h2 id="setExtensionDiv">
         <span class="fl">推广时段管理</span>
         <a href="javascript:void(0)" onclick="closeSetExtension();"
-           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">关闭</a></h2>
+           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">×</a></h2>
 
     <div class="chooseTime">
         <b class="fl">请选择时段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(按住Ctrl键并且鼠标经过可多选时间段)</b>
@@ -401,7 +400,7 @@
 <div class="box" style="display:none" id="addFolderDiv">
     <h2 id="folderTUO">
         <span class="fl">添加监控文件夹</span>
-        <a href="javascript:void(0)" onclick="closeAlert();" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
 
     <div class="mainlist">
         <label id="dialogMsg">请输入要创建的监控文件夹名称!</label>
@@ -421,7 +420,7 @@
 <div class="box" style="display:none" id="addMonitorDiv">
     <h2 id="MonitorTUO">
         <span class="fl">添加监控对象</span>
-        <a href="javascript:void(0)" onclick="closeAlert();" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
 
     <div class="mainlist">
         <ul class="zs_set" id="admon">
@@ -440,7 +439,7 @@
 <div class="box" style="display:none" id="CheckCompletion">
     <h2>
         <span class="fl">检查更改</span>
-        <a href="javascript:void(0)" onclick="closeAlert();" class="close">关闭</a></h2>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
 
     <div class="mainlist" style="width:400px;">
         <p>检查完成，请点击发布更改，将本地修改内容发布到线上</p>
@@ -556,7 +555,7 @@
         <div class="w_list03">
             <ul>
                 <li>发布更改</li>
-                <li onclick="closeAlert();">关闭</li>
+                <li onclick="closeAlert();">取消</li>
             </ul>
         </div>
     </div>

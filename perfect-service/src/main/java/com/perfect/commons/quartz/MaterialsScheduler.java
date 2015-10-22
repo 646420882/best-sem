@@ -13,13 +13,13 @@ import javax.annotation.Resource;
  * @author dolphineor
  * @since 1.1
  */
-//@Configuration
+@Configuration
 public class MaterialsScheduler {
 
-//    @Resource
+    @Resource
     private Scheduler scheduler;
 
-//    @Bean(initMethod = "start")
+    @Bean(initMethod = "start")
     public QuartzJobManager quartzJobManager() {
         return new QuartzJobPersistenceManager(scheduler);
     }

@@ -66,12 +66,11 @@
     _height: 26px;
     padding: 0 4px;
     font-size: 21px;
-    font-weight: bold;
     line-height: 1;
     color: #000;
     text-shadow: 0 1px 0 #FFF;
-    opacity: .2;
-    filter: alpha(opacity=20);
+  /*  opacity: .2;
+    filter: alpha(opacity=20);*/
     cursor: pointer;
     background: transparent;
     _background: #FFF;
