@@ -8,11 +8,15 @@ package com.perfect.param;
  * @update 2015年10月19日. 上午11:38
  */
 public class SearchFilterParam {
+    private String cid;//计划id
+    private String aid;//单元id
     private String filterType;//筛选条件是哪一个层级
 
-    private String filterFields;//筛选字段
+    private String filterField;//筛选字段
 
     private String filterValue;//筛选内容
+
+    private Integer selected;//选择的筛选模式
 
     public String getFilterType() {
         return filterType;
@@ -22,12 +26,12 @@ public class SearchFilterParam {
         this.filterType = filterType;
     }
 
-    public String getFilterFields() {
-        return filterFields;
+    public String getFilterField() {
+        return filterField;
     }
 
-    public void setFilterFields(String filterFields) {
-        this.filterFields = filterFields;
+    public void setFilterField(String filterField) {
+        this.filterField = filterField;
     }
 
     public String getFilterValue() {
@@ -36,5 +40,41 @@ public class SearchFilterParam {
 
     public void setFilterValue(String filterValue) {
         this.filterValue = filterValue;
+    }
+
+    public Integer getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Integer selected) {
+        this.selected = selected;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
+
+    public String getAid() {
+        return aid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchFilterParam{" +
+                "cid='" + cid + '\'' +
+                ", aid='" + aid + '\'' +
+                ", filterType='" + filterType + '\'' +
+                ", filterField='" + filterField + '\'' +
+                ", filterValue='" + filterValue + '\'' +
+                ", selected=" + selected +
+                '}';
     }
 }

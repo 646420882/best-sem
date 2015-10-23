@@ -17,6 +17,7 @@ import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
@@ -346,7 +347,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         int totalCount = getListTotalCount(query);
@@ -357,6 +358,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
         p.setList(dtos);
@@ -368,7 +370,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(aid));
@@ -380,6 +382,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
         p.setList(dtos);
@@ -387,7 +390,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(aid));
@@ -399,6 +402,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
@@ -406,7 +410,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForLongIds(List<Long> adis, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForLongIds(List<Long> adis, int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adis));
@@ -418,6 +422,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
@@ -425,7 +430,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(aids));
@@ -437,6 +442,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
@@ -907,4 +913,105 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         getMongoTemplate().remove(query, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
     }
 
+    private Query searchFilterQueryOperate(Query q, SearchFilterParam sp) {
+
+        if (sp != null) {
+            if (Objects.equals(sp.getFilterType(), "Keyword")) {
+
+                switch (sp.getFilterField()) {
+                    case "name":
+                        getNormalQuery(q, sp.getFilterType(), sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "state":
+                        if (sp.getFilterValue().contains(",")) {
+                            String[] status = sp.getFilterValue().split(",");
+                            Integer[] integers = new Integer[status.length];
+                            for (int i = 0; i < integers.length; i++) {
+                                integers[i] = Integer.parseInt(status[i]);
+                            }
+                            q.addCriteria(Criteria.where("s").in(integers));
+                        } else {
+                            q.addCriteria(Criteria.where("s").in(Integer.valueOf(sp.getFilterValue())));
+                        }
+                        break;
+                    case "pause":
+                        if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                            if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                                q.addCriteria(Criteria.where("p").is(false));
+                            } else {
+                                q.addCriteria(Criteria.where("p").is(true));
+                            }
+                        }
+                        break;
+                    case "price":
+                        String[] prs = sp.getFilterValue().split(",");
+                        double starPrice = Double.parseDouble(prs[0]);
+                        double endPrice = Double.parseDouble(prs[1]);
+                        q.addCriteria(Criteria.where("pr").gt(starPrice).lt(endPrice));
+                        break;
+                    case "matchType":
+                        if (sp.getFilterValue().contains(",")) {
+                            List<Integer> matchType = new ArrayList<>();
+                            List<Integer> phraseType = new ArrayList<>();
+                            String[] ids = sp.getFilterValue().split(",");
+                            for (int i = 0; i < ids.length; i++) {
+                                if (ids[i].length() == 2) {
+                                    phraseType.add(Integer.valueOf(ids[i].substring(0, 1)));
+                                } else {
+                                    matchType.add(Integer.valueOf(ids[i]));
+                                }
+                            }
+                            if (matchType.size() > 0) {
+                                q.addCriteria(Criteria.where("mt").in(matchType));
+                            }
+                            if (phraseType.size() > 0)
+                                q.addCriteria(Criteria.where("pt").in(phraseType));
+
+                        } else {
+                            if (sp.getFilterValue().length() == 1) {
+                                q.addCriteria(Criteria.where("mt").is(Integer.valueOf(sp.getFilterValue())));
+                            } else {
+                                q.addCriteria(Criteria.where("pt").is(Integer.valueOf(sp.getFilterValue().substring(0, 1))));
+                            }
+                        }
+                        break;
+                    case "pcUrl":
+                        getNormalQuery(q, "pc", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "mibUrl":
+                        getNormalQuery(q, "mobile", sp.getSelected(), sp.getFilterValue());
+                        break;
+                }
+                return q;
+            }
+        }
+        return q;
+    }
+
+    private void getNormalQuery(Query q, String field, Integer selected, String filterValue) {
+        switch (selected) {
+            case 1:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^.*?" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 11:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^(?!.*(" + filterValue + ")).*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 2:
+                q.addCriteria(Criteria.where(field).is(filterValue));
+                break;
+            case 22:
+                q.addCriteria(Criteria.where(field).ne(filterValue));
+                break;
+            case 3:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 33:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
+                break;
+        }
+    }
 }

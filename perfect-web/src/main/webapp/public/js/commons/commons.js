@@ -70,7 +70,7 @@ var commons = {
         $("#findBatchDel").css("display", "none");
     },
     batchDel: function () {
-        if($("#forType").val() == "campaign"){
+        if ($("#forType").val() == "campaign") {
             $("#pageNew").empty();
             $("#pageNew").append("<div class='fl'><label>是否删除当前所选中的计划以及计划下的单元、创意、关键词</label></div>")
         }
@@ -528,14 +528,31 @@ $.extend({
         }
     },
     foRComplete: function (result) {
-        var replaceText = $("input[name='replaceText']").val();
+
         switch (result.type) {
+            case "creative":
+                $.leveComplete("creative", result);
+                break;
+            case "adgroup":
+                $.leveComplete("adgroup", result);
+                break;
+            case "campaign":
+                $.leveComplete("campaign", result);
+                break;
+            default:
+                $.leveComplete("keyword", result);
+                break;
+        }
+    },
+    leveComplete: function (leveType, result) {
+        switch (leveType) {
             case "creative":
                 var _createTable = $("#createTable tbody");
                 if (result.data) {
                     if (result.data.length) {
                         var json = result.data;
                         _createTable.empty();
+                        var replaceText = $("input[name='replaceText']").val();
                         var _trClass = "";
                         for (var i = 0; i < json.length; i++) {
                             var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
@@ -564,7 +581,7 @@ $.extend({
                         _createTable.append("<tr><td>没有找到类似的数据</td></tr>");
                     }
                 } else {
-                    createTable.empty();
+                    _createTable.empty();
                     _createTable.append("<tr><td>没有找到类似的数据</td></tr>");
                 }
                 break;
@@ -573,6 +590,7 @@ $.extend({
                 if (result.data) {
                     if (result.data.length > 0) {
                         _adGroudTable.empty();
+                        var replaceText = $("input[name='replaceText']").val();
                         var _trClass = "";
                         var json = result.data;
                         for (var i = 0; i < json.length; i++) {
@@ -627,9 +645,8 @@ $.extend({
                 }
                 loadTree();
                 break;
-            default:
+            default :
                 $("#tbodyClick").empty();
-
                 if (result.data == null || result.data == undefined || result.data.length == 0) {
                     $("#tbodyClick").html("<tr><td>暂无数据</td></tr>");
                     return;
@@ -650,7 +667,8 @@ $.extend({
                 }
                 break;
         }
-    }, foBatch: function (_this) {
+    },
+    foBatch: function (_this) {
         var form = $(_this).parents("form");
         var checkType = $("#checkType option:selected");
         var foR_params = {};
@@ -728,7 +746,7 @@ var baiduStatus =
     "<li><input type='checkbox' value='44'>搜索无效</li>" +
     "<li><input type='checkbox' value='45'>待激活</li>" +
     "<li><input type='checkbox' value='40'>有效-移动URL审核中</li>" +
-    "<li><input type='checkbox' value='1'>本地新增</li>" +
+    "<li><input type='checkbox' value='-1'>本地新增</li>" +
     "</ul>";
 var Computerquality =
     "<ul class='quality'>" +
@@ -781,9 +799,9 @@ var Computerquality =
     "</li>"
     + "</ul>";
 var pause =
-    "<ul><li><input type='checkbox' value='-1'>全部</li>" +
-    "<li><input type='checkbox' value='1'>启用</li>" +
-    "<li><input type='checkbox' value='0'>暂停</li>";
+    "<ul><li><input type='radio' value='-1' name='filterPause'>全部</li>" +
+    "<li><input type='radio' value='1' name='filterPause'>启用</li>" +
+    "<li><input type='radio' value='0' name='filterPause'>暂停</li>";
 var price =
     "<input type='number' name='min_points' min='00' max='10' />"
     + "到"
@@ -791,6 +809,10 @@ var price =
 var errorMsg = $("#filter_msg");
 var TabModel = {
     Show: function (type, _this) {
+        if (!jsonData.cid) {
+            alert("请选择一个计划或者单元")
+            return;
+        }
         if ($(".dropdown-menus").css("display") == "none") {
             var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
             var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
@@ -808,31 +830,31 @@ var TabModel = {
         $("input[name='filterField']").val(type);
         errorMsg.html('');
         switch (type) {
-            case "Keywordname":
+            case "Keyword_name":
                 $("#TabTitle").html("关键词名称");
                 $("#CheckList").append(tabselect);
                 break;
-            case "Keywordstate":
+            case "Keyword_state":
                 $("#TabTitle").html("关键词状态");
                 $("#CheckList").append(baiduStatus);
                 break;
-            case "Enablepause":
+            case "Keyword_pause":
                 $("#TabTitle").html("启用/暂停");
                 $("#CheckList").append(pause);
                 break;
-            case "keywordprice":
+            case "Keyword_price":
                 $("#TabTitle").html("关键词出价");
                 $("#CheckList").append(price);
                 break;
-            case "keywordcomputerquality":
+            case "Keyword_cquality":
                 $("#TabTitle").html("关键词计算机质量度");
                 $("#CheckList").append(Computerquality);
                 break;
-            case "keywordmovingmass":
+            case "Keyword_mquality":
                 $("#TabTitle").html("移动质量度");
                 $("#CheckList").append(Computerquality);
                 break;
-            case "keywordmatching":
+            case "Keyword_matchType":
                 $("#TabTitle").html("关键词匹配模式");
                 var matching =
                     "<ul><li><input type='checkbox' name='matchType' value='3'>广泛</li>" +
@@ -860,15 +882,15 @@ var TabModel = {
                     }
                 });
                 break;
-            case "visiturl":
+            case "Keyword_pcUrl":
                 $("#TabTitle").html("关键词访问URL");
                 $("#CheckList").append(tabselect);
                 break;
-            case "mobilevisiturl":
+            case "Keyword_mibUrl":
                 $("#TabTitle").html("关键词移动访问URL");
                 $("#CheckList").append(tabselect);
                 break;
-            case "keywordplanname":
+            case "Keyword_campaignName":
                 $("#TabTitle").html("推广计划名称");
                 $("#CheckList").append(tabselect);
                 break;
@@ -994,50 +1016,135 @@ var TabModel = {
     filterSearchOk: function () {
         var filterField = $("input[name='filterField']").val();
         switch (filterField) {
-            case "Keywordstate":
+            case "Keyword_state":
                 var state = this.getCheckData();
-                console.log(state);
+                if (state) {
+                    var formData = {};
+                    var filterType = filterField.split("_")[0];
+                    var filterFields = filterField.split("_")[1];
+                    if (filterType && filterFields) {
+                        formData["filterType"] = filterType;
+                        formData["filterField"] = filterFields;
+                    }
+                    formData["filterValue"] = state;
+                    this.filterSearchSubmit(formData, function (result) {
+                        $.leveComplete("keyword", {data: result.data.list});
+                    });
+                }
                 break;
-            case "Enablepause":
-                var state = this.getCheckData();
-                console.log(state);
+            case "Keyword_pause":
+                var state = this.getRadioData();
+                if (state) {
+                    var formData = {};
+                    var filterType = filterField.split("_")[0];
+                    var filterFields = filterField.split("_")[1];
+                    if (filterType && filterFields) {
+                        formData["filterType"] = filterType;
+                        formData["filterField"] = filterFields;
+                    }
+                    formData["filterValue"] = state;
+                    this.filterSearchSubmit(formData, function (result) {
+                        $.leveComplete("keyword", {data: result.data.list});
+                    });
+                }
                 break;
-            case "keywordprice":
+            case "Keyword_price":
                 var min_pointer = $("input[name='min_points']").val();
                 var max_pointer = $("input[name='max_points']").val();
                 if (min_pointer && max_pointer && (max_pointer > min_pointer)) {
-                    console.log(min_pointer + "----" + max_pointer);
+                    var formData = {};
+                    var filterType = filterField.split("_")[0];
+                    var filterFields = filterField.split("_")[1];
+                    if (filterType && filterFields) {
+                        formData["filterType"] = filterType;
+                        formData["filterField"] = filterFields;
+                    }
+                    formData["filterValue"] = min_pointer + "," + max_pointer;
+                    this.filterSearchSubmit(formData, function (result) {
+                        $.leveComplete("keyword", {data: result.data.list});
+                    });
                     errorMsg.html('');
                 } else {
                     errorMsg.html("请输入正确的价格范围!");
                 }
                 break;
-            case "keywordcomputerquality":
-                var quality=this.getCheckData();
+            case "Keyword_cquality":
+                var quality = this.getCheckData();
                 console.log(quality);
                 break;
-            case "keywordmatching":
-                var checkData=[];
-                var checkSelected=$("input[name='matchType']");
-                checkSelected.each(function(i,o){
-                    if($(o).prop("checked")){
+            case "Keyword_matchType":
+                var checkData = [];
+                var checkSelected = $("input[name='matchType']");
+                checkSelected.each(function (i, o) {
+                    if ($(o).prop("checked")) {
                         checkData.push($(o).val());
                     }
                 });
-                console.log(checkData);
+                if (checkData.length) {
+                    var formData = {};
+                    var filterType = filterField.split("_")[0];
+                    var filterFields = filterField.split("_")[1];
+                    if (filterType && filterFields) {
+                        formData["filterType"] = filterType;
+                        formData["filterField"] = filterFields;
+                    }
+                    formData["filterValue"] = checkData.toString();
+                    this.filterSearchSubmit(formData, function (result) {
+                        $.leveComplete("keyword", {data: result.data.list});
+                    });
+                }
                 break;
             default:
                 var formData = this.getNormalFilterForm();
-                console.log(formData);
+                if (formData) {
+                    var filterType = filterField.split("_")[0];
+                    var filterFields = filterField.split("_")[1];
+                    if (filterType && filterFields) {
+                        formData["filterType"] = filterType;
+                        formData["filterField"] = filterFields;
+                    }
+                    formData["filterValue"] = formData.filterValue;
+                    this.filterSearchSubmit(formData, function (result) {
+                        switch (formData["filterType"]) {
+                            case "Creative":
+                                $.leveComplete("creative", {data: result.data});
+                                break;
+                            case "Adgroup":
+                                $.leveComplete("adgroup", {data: result.data});
+                                break;
+                            case "Campaign":
+                                $.leveComplete("campaign", {data: result.data});
+                                break;
+                            default:
+                                $.leveComplete("keyword", {data: result.data.list});
+                                break;
+                        }
+                    });
+                }
                 break;
         }
     },
+    filterSearchSubmit: function (form, func) {
+        form["cid"] = jsonData.cid;
+        form["aid"] = jsonData.aid ? jsonData.aid : '';
+        $.ajax({
+            url: "../assistantKeyword/filterSearch",
+            data: JSON.stringify(form),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (func) {
+                    func(result);
+                }
+            }
+        });
+    },
     getNormalFilterForm: function () {
         var selected = $("#CheckList").find("select :selected").val();
-        var filterText = $("#CheckList").find("textarea").val();
-        if (selected && filterText) {
+        var filterValue = $("#CheckList").find("textarea").val();
+        if (selected && filterValue) {
             errorMsg.html('');
-            return {selected: selected, filterText: filterText};
+            return {selected: Number(selected), filterValue: filterValue};
         } else {
             errorMsg.html("请输入要筛选的条件内容！");
             return;
@@ -1046,6 +1153,22 @@ var TabModel = {
     getCheckData: function () {
         var checkedData = [];
         var baiduStatusChecked = $("#CheckList").find("input[type='checkbox']");
+        baiduStatusChecked.each(function (i, o) {
+            if ($(o).prop("checked")) {
+                checkedData.push($(o).val());
+            }
+        });
+        if (checkedData.length) {
+            errorMsg.html('');
+            return checkedData.toString();
+        } else {
+            errorMsg.html("必须选择一项状态进行筛选！")
+            return;
+        }
+    },
+    getRadioData: function () {
+        var checkedData = [];
+        var baiduStatusChecked = $("#CheckList").find("input[type='radio']");
         baiduStatusChecked.each(function (i, o) {
             if ($(o).prop("checked")) {
                 checkedData.push($(o).val());

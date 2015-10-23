@@ -7,6 +7,7 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Set;
  * Created by john on 2014/8/19.
  */
 public interface AssistantKeywordService {
-    PagerInfo getKeyWords(String cid, String aid, Integer nowPage, Integer pageSize);
+    PagerInfo getKeyWords(String cid, String aid, Integer nowPage, Integer pageSize,SearchFilterParam sp);
 
     void deleteByKwIds(List<String> kwids);
 

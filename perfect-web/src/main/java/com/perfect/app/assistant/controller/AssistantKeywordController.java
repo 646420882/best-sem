@@ -15,6 +15,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.utils.IdConvertUtils;
 import com.perfect.utils.paging.PagerInfo;
@@ -189,7 +190,7 @@ public class AssistantKeywordController extends WebContextSupport {
                                   @RequestParam(value = "pageSize") int pageSize) {
         PagerInfo page = null;
         if (!aid.equals("-1")) {
-            page = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize);
+            page = assistantKeywordService.getKeyWords(cid, aid, nowPage, pageSize, null);
         }
         writeJson(page, response);
     }
@@ -339,6 +340,7 @@ public class AssistantKeywordController extends WebContextSupport {
     public ModelAndView showTimingPauseDialog() {
         return new ModelAndView("promotionAssistant/alert/TimingPauseDialog");
     }
+
     /**
      * 显示定时上传更新弹出窗口
      *
@@ -470,8 +472,8 @@ public class AssistantKeywordController extends WebContextSupport {
                 dtoList.add(searchwordReportDTO);
             }
         }
-        if (!downStatus.equals("0")){
-            try(OutputStream os = response.getOutputStream()) {
+        if (!downStatus.equals("0")) {
+            try (OutputStream os = response.getOutputStream()) {
                 String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
                 response.addHeader("Content-Disposition", "attachment;filename=" + filename);
                 basisReportDownService.downSeachKeyWordCSV(os, dtoList);
@@ -612,17 +614,17 @@ public class AssistantKeywordController extends WebContextSupport {
                 add(kid);
             }});
             if (keywordDTOs.size() > 0) {
-                int error=0;
-                for(KeywordDTO s:keywordDTOs){
-                    if(s.getKeywordId()!=0){
+                int error = 0;
+                for (KeywordDTO s : keywordDTOs) {
+                    if (s.getKeywordId() != 0) {
                         assistantKeywordService.update(kid, s);
-                    }else{
+                    } else {
                         error++;
                     }
                 }
-                if(error>0){
+                if (error > 0) {
                     return writeMapObject(MSG, "部分关键词上传失败，不符合规范，请检查关键词是否重复，出价等条件...");
-                }else{
+                } else {
                     return writeMapObject(MSG, SUCCESS);
                 }
             } else {
@@ -771,25 +773,35 @@ public class AssistantKeywordController extends WebContextSupport {
             List<SearchwordReportDTO> returnList;
             ForkJoinPool joinPoolTow = new ForkJoinPool();
             String[] date = new String[]{startDate, endDate};
-            try(OutputStream os = response.getOutputStream()) {
+            try (OutputStream os = response.getOutputStream()) {
                 Future<List<SearchwordReportDTO>> joinTaskTow = joinPoolTow.submit(new AssistantKwdUtil(dtoList, 0, dtoList.size(), date));
                 returnList = joinTaskTow.get();
                 String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
                 response.addHeader("Content-Disposition", "attachment;filename=" + filename);
-                basisReportDownService.downSeachKeyWordReportCSV(os,returnList);
+                basisReportDownService.downSeachKeyWordReportCSV(os, returnList);
             } catch (InterruptedException | ExecutionException | IOException e) {
                 e.printStackTrace();
             } finally {
                 joinPoolTow.shutdown();
             }
         } else {
-            try(OutputStream os = response.getOutputStream()) {
+            try (OutputStream os = response.getOutputStream()) {
                 String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
                 response.addHeader("Content-Disposition", "attachment;filename=" + filename);
-                basisReportDownService.downSeachKeyWordReportCSV(os,dtoList);
+                basisReportDownService.downSeachKeyWordReportCSV(os, dtoList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    @RequestMapping(value = "assistantKeyword/filterSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView filterSearchKeyword(@RequestBody SearchFilterParam sp) {
+        PagerInfo page = null;
+        if (!Objects.equals("-1", sp.getAid())) {
+            page = assistantKeywordService.getKeyWords(sp.getCid(), sp.getAid(), 1, 1000, sp);
+        }
+        return writeMapObject(DATA, page);
     }
 }

@@ -4,6 +4,7 @@ import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
 
@@ -78,15 +79,15 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByLongId(Long oid);
 
-    PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo);
+    PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo,SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo,SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo,SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForLongIds(List<Long> aids, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForLongIds(List<Long> aids, int pageSize, int pageNo,SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo,SearchFilterParam sp);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 

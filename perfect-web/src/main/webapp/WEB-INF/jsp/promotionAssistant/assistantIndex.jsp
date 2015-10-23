@@ -193,27 +193,27 @@
                 <tr class="list02_top">
                     <th><input type="checkbox" name='keyAllCheck'
                                onchange="$.foRCheckAll('keyAllCheck')"/></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('Keywordname',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_name',this)">
                         关键词名称&nbsp;<img src="../public/img/select.png"></span>
                     </th>
-                    <th>&nbsp;<span onclick="TabModel.Show('Keywordstate',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_state',this)">
                         关键词状态&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('Enablepause',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_pause',this)">
                         启动/暂停&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('keywordprice',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_price',this)">
                       出价&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('keywordcomputerquality',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_cquality',this)">
                       计算机质量度&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('keywordmovingmass',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_mquality',this)">
                       移动质量度&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('keywordmatching',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_matchType',this)">
                       匹配模式&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('visiturl',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_pcUrl',this)">
                       访问URL&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('mobilevisiturl',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Keyword_mibUrl',this)">
                       移动访问URL&nbsp;<img src="../public/img/select.png"></span></th>
                     <th class="username-column" data-noresize>&nbsp;<span
-                            onclick="TabModel.Show('keywordplanname',this)">
+                            onclick="TabModel.Show('Keyword_campaignName',this)">
                       推广计划名称&nbsp;<img src="../public/img/select.png"></span></th>
                     <th class="username-column" data-noresize>&nbsp;
                         <div class="set fr"></div>

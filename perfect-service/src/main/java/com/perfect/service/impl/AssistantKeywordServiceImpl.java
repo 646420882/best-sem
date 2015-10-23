@@ -23,6 +23,7 @@ import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.utils.paging.PagerInfo;
@@ -361,7 +362,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      */
 
     @Override
-    public PagerInfo getKeyWords(String cid, String aid, Integer nowPage, Integer pageSize) {
+    public PagerInfo getKeyWords(String cid, String aid, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
         String regex = "^\\d+$";
         if (nowPage == null) {
             nowPage = 0;
@@ -387,22 +388,22 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         //若cid和aid都不为空，就是查询某单元下的关键词,在aid为空的时候就查询该计划下的关键词
         if (cid != null && !"".equals(cid) && aid != null && !"".equals(aid)) {
             if (aid.matches(regex)) {
-                page = keywordDAO.findByPageInfoForLongId(Long.parseLong(aid), pageSize, nowPage);
+                page = keywordDAO.findByPageInfoForLongId(Long.parseLong(aid), pageSize, nowPage, sp);
             } else {
-                page = keywordDAO.findByPageInfoForStringId(aid, pageSize, nowPage);
+                page = keywordDAO.findByPageInfoForStringId(aid, pageSize, nowPage, sp);
             }
         } else if (cid != null && !"".equals(cid) && (aid == null || "".equals(aid))) {
             if (campaignDTO.getCampaignId() != null) {
                 List<Long> longIds = new ArrayList<>();
                 longIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignDTO.getCampaignId()));
-                page = keywordDAO.findByPageInfoForLongIds(longIds, pageSize, nowPage);
+                page = keywordDAO.findByPageInfoForLongIds(longIds, pageSize, nowPage, sp);
             } else {
                 List<String> objIds = new ArrayList<>();
                 objIds.addAll(adgroupDAO.getAdgroupIdByCampaignId(campaignDTO.getId()));
-                page = keywordDAO.findByPageInfoForStringIds(objIds, pageSize, nowPage);
+                page = keywordDAO.findByPageInfoForStringIds(objIds, pageSize, nowPage, sp);
             }
         } else {
-            page = keywordDAO.findByPageInfoForAcctounId(pageSize, nowPage);
+            page = keywordDAO.findByPageInfoForAcctounId(pageSize, nowPage, sp);
         }
 
         page.setList(setCampaignNameByKeywordEntitys((List<KeywordDTO>) page.getList(), campaignDTO));
@@ -1193,7 +1194,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public void batchDelete(FindOrReplaceParam param) {
         if (param != null) {
             List<String> asList = new ArrayList<>();
-            if(param.getCheckData() != null){
+            if (param.getCheckData() != null) {
                 String[] list = param.getCheckData().split(",");
                 Collections.addAll(asList, list);
             }
@@ -1223,26 +1224,26 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                         List<String> strings = Lists.newArrayList();
                         List<Long> longs = Lists.newArrayList();
                         adgroupDAO.findByCampaignId(Long.valueOf(param.getCampaignId())).forEach(e -> {
-                            if(e.getAdgroupId() != null) longs.add(e.getAdgroupId());
+                            if (e.getAdgroupId() != null) longs.add(e.getAdgroupId());
                             else strings.add(e.getId());
 
                         });
                         keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs);
                         List<KeywordDTO> dtos = keywordDAO.findKeywordByAdgroupIdsStr(strings);
-                        if(!Objects.isNull(dtos)) keywordDTOs.addAll(dtos);
+                        if (!Objects.isNull(dtos)) keywordDTOs.addAll(dtos);
                     } else {
                         List<String> strings = Lists.newArrayList();
                         List<Long> longs = Lists.newArrayList();
                         adgroupDAO.findByCampaignOId(param.getCampaignId()).forEach(e -> {
-                            if(e.getAdgroupId() != null){
+                            if (e.getAdgroupId() != null) {
                                 longs.add(e.getAdgroupId());
-                            }else{
+                            } else {
                                 strings.add(e.getId());
                             }
                         });
                         keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs);
                         List<KeywordDTO> dtos = keywordDAO.findKeywordByAdgroupIdsStr(strings);
-                        if(!Objects.isNull(dtos)) keywordDTOs.addAll(dtos);
+                        if (!Objects.isNull(dtos)) keywordDTOs.addAll(dtos);
                     }
                     asList.clear();
                     keywordDTOs.forEach(e -> {
