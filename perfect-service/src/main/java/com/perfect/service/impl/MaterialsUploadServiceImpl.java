@@ -242,6 +242,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             }
 
             // 是否有修改的关键词
+            // TODO 去重
             List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, MODIFIED);
             if (!keywordDTOList.isEmpty()) {
                 List<KeywordType> keywordTypeList = ObjectUtils.convert(keywordDTOList, KeywordType.class);
@@ -249,6 +250,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             }
 
             // 是否有修改的创意
+            // TODO 去重
             List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, MODIFIED);
             if (!creativeDTOList.isEmpty()) {
                 List<CreativeType> creativeTypeList = ObjectUtils.convert(creativeDTOList, CreativeType.class);
