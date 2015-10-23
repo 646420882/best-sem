@@ -184,10 +184,18 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             }
 
             // 是否有新增的创意
-            // TODO 创意去重
             List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, NEW);
             if (!creativeDTOList.isEmpty()) {
                 for (CreativeDTO creativeDTO : creativeDTOList) {
+
+                    // 去重
+                    List<CreativeDTO> sameAdgroupCreativeList = creativeDAO
+                            .findAllCreativeFromBaiduByAdgroupId(creativeDTO.getAccountId(), creativeDTO.getAdgroupId());
+
+                    boolean isExists = isDuplicate(creativeDTO, sameAdgroupCreativeList);
+                    if (isExists)
+                        continue;
+
                     List<CreativeType> creativeTypeList = Collections.singletonList(ObjectUtils.convert(creativeDTO, CreativeType.class));
 
                     Long creativeId = baiduApiService.addCreative(creativeTypeList).remove(0).getCreativeId();
@@ -215,7 +223,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             // 更新账户信息
             AccountInfoType accountInfoType = ObjectUtils.convert(baiduAccount, AccountInfoType.class);
             accountInfoType.setUserid(baiduAccount.getId());
-            System.out.printf("Before: %s\n", JSON.toJSONString(accountInfoType));
+//            System.out.printf("Before: %s\n", JSON.toJSONString(accountInfoType));
             AccountInfoType aResult = baiduApiService.updateAccount(accountInfoType);
             System.out.printf("After: %s\n", JSON.toJSONString(aResult));
 
@@ -234,7 +242,6 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             }
 
             // 是否有修改的关键词
-            // TODO 关键词去重
             List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, MODIFIED);
             if (!keywordDTOList.isEmpty()) {
                 List<KeywordType> keywordTypeList = ObjectUtils.convert(keywordDTOList, KeywordType.class);
@@ -242,7 +249,6 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             }
 
             // 是否有修改的创意
-            // TODO 创意去重
             List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, MODIFIED);
             if (!creativeDTOList.isEmpty()) {
                 List<CreativeType> creativeTypeList = ObjectUtils.convert(creativeDTOList, CreativeType.class);

@@ -2,7 +2,6 @@ package com.perfect.service;
 
 import com.perfect.commons.deduplication.KeywordDeduplication;
 import com.perfect.dto.creative.CreativeDTO;
-import com.perfect.dto.keyword.KeywordDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -94,12 +93,6 @@ public interface MaterialsUploadService {
      */
     List<Long> pause(String sysUser);
 
-
-    default boolean isDuplicate(KeywordDTO source, List<KeywordDTO> targets) {
-        return targets.stream()
-                .filter(k -> Long.compare(source.getAdgroupId(), k.getAdgroupId()) == 0)
-                .anyMatch(k -> source.getKeyword().trim().equalsIgnoreCase(k.getKeyword().trim()));
-    }
 
     default boolean isDuplicate(CreativeDTO source, List<CreativeDTO> targets) {
         String sourceMd5 = KeywordDeduplication.MD5
