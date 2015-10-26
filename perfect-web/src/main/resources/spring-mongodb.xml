@@ -29,6 +29,6 @@
     </bean>
 
     <mongo:mapping-converter id="mongoConverter">
-        <mongo:custom-converters base-package="com.perfect.core.*"/>
+        <mongo:custom-converters base-package="com.perfect.service.*"/>
     </mongo:mapping-converter>
 </beans>
