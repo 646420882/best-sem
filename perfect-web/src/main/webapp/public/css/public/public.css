@@ -239,6 +239,7 @@ table tr, table tr td {
     height: 55px;
     /* padding:0 2%;*/
     *width: 245px;
+    padding-right: 12px;
     position: relative;
 }
 
@@ -296,19 +297,23 @@ table tr, table tr td {
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
-    background: #274a66;
     padding: 0 10px;
     overflow: hidden;
 }
 
 .user_text {
     line-height: 22px;
+   letter-spacing: 1px;
+
+}
+#time{
+    font-size: 14px;
 
 }
 
 .user_name span {
     display: block;
-    padding: 0 10px 0 0px;
+    padding: 0 30px 0 0px;
     background: url(/public/img/username_select.png) no-repeat right;
     overflow: hidden;
     white-space: nowrap;
@@ -318,29 +323,62 @@ table tr, table tr td {
 .user_names {
     position: absolute;
     top: 25px;
-    background: #274a66;
-    color: #ffffff;
+    background: #FFFFFF;
+    color: #626262;
     font-weight: bold;
-    padding: 10px;
-    border-radius: 5px;
     -moz-box-shadow: 3px 3px 4px #000;
     -webkit-box-shadow: 3px 3px 4px #000;
-    box-shadow: 3px 3px 4px #000;
     /* For IE 8 */
     -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
     /* For IE 5.5 - 7 */
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
     z-index: 120;
+    box-shadow: 0px  0px 1px 2px #d2daef; 
 }
 
+.switchAccountSerach{
+    margin: 10px 10px 0 10px;
+    padding: 0 5px;
+    border-color:#dfdfdf ;
+    box-shadow: none;
+    background: url(/public/img/switchAccountSerach.png) no-repeat right ;
+}
+.switchAccount_ul_pages{
+    width: 184px;
+}
+.switchAccount_ul_pages ul{
+    margin:auto;
+    width: 184px;
+    height: 30px;
+}
+
+.switchAccount_ul_pages li{
+   display: inline;
+
+    width: 8px;
+    height: 8px;
+    background-color: #e4eafa;
+    color: #626262;
+    cursor: pointer;
+    margin: 0 5px;
+
+ }
+
+.switchAccount_ul_pages span{
+    margin: 5px;
+}
+.user_names ul{
+    margin-top: 5px;
+}
 .user_names ul li {
     cursor: pointer;
     margin-bottom: 10px;
-    padding: 0 5px;
+    padding: 0 15px;
 }
 
 .user_names ul li:hover {
-    background: #497ca5;
+    background: #d2f2ff;
+
 }
 
 .user_text h3 {

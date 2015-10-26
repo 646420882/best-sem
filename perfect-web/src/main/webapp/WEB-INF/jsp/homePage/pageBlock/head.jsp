@@ -27,8 +27,9 @@
                                     <div class="fl"><b id="time"></b><a
                                             href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
                                     </div>
+                                    <input type="image" onclick="downloadUser()" src="${pageContext.request.contextPath}/public/img/download.png"   class="glyphicon-class" style="padding-left: 3px;">
                                     <div class="user_logo2 fr">
-                                        <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
+                                        <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout" >
                                             <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
                                                    onclick="$('form[logout]').submit();"/>
                                         </form>
@@ -40,8 +41,13 @@
                                     <span></span>
                                 </div>
                                 <div id="switchAccount" class="user_names over hides">
+                                    <input type="text" placeholder="请输入关键词..." class="switchAccountSerach " >
                                     <ul id="switchAccount_ul">
                                     </ul>
+                                    <div id="switchAccount_ul_pages" class="switchAccount_ul_pages">
+                                            <li>1</li>
+                                            <li>1</li>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -96,11 +102,40 @@
     </div>
 </div>
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
+
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
 <script type="text/javascript">
     <!--
+    $(function () {
+        window.dialog = dialog;
+    });
+    function downloadUser() {
+        top.dialog({
+            title: "账户下载",
+            padding: "115px",
+            height:"auto",
+            align: 'left bottom',
+            content: "<div style='width: 400px; height: 200px;'></div>",
+            oniframeload: function () {
+            },
+            onclose: function () {
+
+            },
+            onremove: function () {
+            }
+        }).showModal(ddckObj);
+        return false;
+    }
+    var ddckObj = document.getElementByClassName('top_middle');
+    $("#downloadUser").livequery('click', function () {
+
+        downloadUser();
+    });
     function imageChange(obj) {
         var fileFormat = "jpg,jpeg,png,gif,bmp";
         var path = $(obj).val();
