@@ -21,12 +21,12 @@ public class CreativeUploadServiceImpl implements CreativeUploadService {
 
 
     @Override
-    public Map<String, List<String>> deduplicate(Long baiduUserId) {
+    public Map<String, Map<Integer, List<String>>> deduplicate(Long baiduUserId) {
         return null;
     }
 
     @Override
-    public List<String> deduplicate(Long baiduUserId, Long adgroupId) {
+    public Map<Integer, List<String>> deduplicate(Long baiduUserId, Long adgroupId) {
         return null;
     }
 }
