@@ -12,9 +12,9 @@
 <%--<div class="top_heade">--%>
     <div class="top">
         <div class="nav_bg">
-            <img src="${pageContext.request.contextPath}/public/img/top_bg.jpg" width="100%" height="100%">
+            <img src="${pageContext.request.contextPath}/public/img/top_bgimg.jpg" width="100%" height="100%">
         </div>
-        <div class="top_middle" >
+        <div class="top_middle"  id="top_middle">
             <div class="user_mid fr">
                 <div class="user_logo fl">
                     <div class="user_logo1">
@@ -115,11 +115,11 @@
         window.dialog = dialog;
     });
     function downloadUser() {
-        top.dialog({
+      var d= top.dialog({
             title: "账户下载",
             padding: "115px",
-            height:"auto",
-            align: 'left bottom',
+
+            align: 'center',
             content: "<div style='width: 400px; height: 200px;'></div>",
             oniframeload: function () {
             },
@@ -128,10 +128,10 @@
             },
             onremove: function () {
             }
-        }).showModal(ddckObj);
-        return false;
+        });
+        d.show();
     }
-    var ddckObj = document.getElementByClassName('top_middle');
+    var ddckObj = document.getElementById('top_middle');
     $("#downloadUser").livequery('click', function () {
 
         downloadUser();

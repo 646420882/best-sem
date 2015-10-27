@@ -90,7 +90,7 @@ table tr, table tr td {
     position: fixed;
     top: 0px;
     left: 0px;
-    background: url(/public/img/top_bg.jpg) center repeat;
+    background: url(/public/img/top_bgimg.jpg) center repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
