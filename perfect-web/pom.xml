@@ -38,6 +38,13 @@
             <artifactId>perfect-db</artifactId>
         </dependency>
 
+        <!-- 日志组件嵌入 -->
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-comp-logging</artifactId>
+            <version>${perfect-comp-logging-version}</version>
+        </dependency>
+
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -122,6 +129,11 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
         </dependency>
 
         <!-- Jsoup -->

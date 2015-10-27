@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 @Configuration
 public class MaterialsScheduler {
 
-    @Resource
+    @Resource(name = "stdScheduler")
     private Scheduler scheduler;
 
     @Bean(initMethod = "start")
