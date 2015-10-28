@@ -1661,6 +1661,9 @@ ul.ztree.zTreeDragUL {
 
 
 }
+.w_list03{
+    overflow: hidden;
+}
 
 .w_list03 p {
     margin: 10px 0;

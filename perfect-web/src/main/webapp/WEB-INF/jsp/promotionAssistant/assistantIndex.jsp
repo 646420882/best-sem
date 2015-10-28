@@ -609,9 +609,9 @@
             <div class="w_list01 fl over">关键词名称：</div>
             <div class="w_list04 fl over">
                 <ul class="w_list05 over">
-                    <li class="current">推广位 <span>|</span><span
+                    <li class="current"><span>推广位 </span> <span>|</span><span
                             class="list06_point"></span></li>
-                    <li>推广链接位</li>
+                    <li><span>推广链接位</span></li>
                 </ul>
                 <div class="w_list06 over">
                     <div class="list06_concent">
