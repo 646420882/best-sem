@@ -17,6 +17,7 @@ import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by vbzer_000 on 2014-07-02.
@@ -361,7 +363,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
         Query q = new Query();
         Criteria c = new Criteria();
         if (params.size() > 0 || params != null) {
@@ -374,6 +376,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         PagerInfo p = new PagerInfo(nowPage, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
+        searchFilterQueryOperate(q, sp);
         List<AdgroupEntity> adgroupEntityList = getMongoTemplate().find(q, getEntityClass());
         List<AdgroupDTO> returnList = wrapperList(adgroupEntityList);
         p.setList(returnList);
@@ -466,12 +469,12 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     @Override
     public void batchDelete(List<String> asList, List<String> keywordDatas, List<String> creativeDatas) {
-        asList.forEach(e->{
-             if(e.length() < 24){
+        asList.forEach(e -> {
+            if (e.length() < 24) {
                 Update update = new Update();
                 update.set("ls", 3);
                 getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.valueOf(e))), update, getEntityClass());
-            }else{
+            } else {
                 getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
             }
         });
@@ -627,5 +630,70 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
             BeanUtils.copyProperties(entity, dto);
         }
         return dto;
+    }
+
+    private Query searchFilterQueryOperate(Query q, SearchFilterParam sp) {
+        if (sp != null) {
+            switch (sp.getFilterField()) {
+                case "name":
+                    getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                    break;
+                case "state":
+                    if (sp.getFilterValue().contains(",")) {
+                        String[] status = sp.getFilterValue().split(",");
+                        Integer[] integers = new Integer[status.length];
+                        for (int i = 0; i < integers.length; i++) {
+                            integers[i] = Integer.parseInt(status[i]);
+                        }
+                        q.addCriteria(Criteria.where("s").in(integers));
+                    } else {
+                        q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
+                    }
+                    break;
+                case "pause":
+                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                        if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                            q.addCriteria(Criteria.where("p").is(false));
+                        } else {
+                            q.addCriteria(Criteria.where("p").is(true));
+                        }
+                    }
+                    break;
+                case "price":
+                    String[] prs = sp.getFilterValue().split(",");
+                    double starPrice = Double.parseDouble(prs[0]);
+                    double endPrice = Double.parseDouble(prs[1]);
+                    q.addCriteria(Criteria.where("max").gte(starPrice).lte(endPrice));
+                    break;
+            }
+        }
+        return q;
+    }
+
+    private void getNormalQuery(Query q, String field, Integer selected, String filterValue) {
+        switch (selected) {
+            case 1:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^.*?" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 11:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^(?!.*(" + filterValue + ")).*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 2:
+                q.addCriteria(Criteria.where(field).is(filterValue));
+                break;
+            case 22:
+                q.addCriteria(Criteria.where(field).ne(filterValue));
+                break;
+            case 3:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 33:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
+                break;
+        }
     }
 }

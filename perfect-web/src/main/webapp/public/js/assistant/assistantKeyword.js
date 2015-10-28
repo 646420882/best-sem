@@ -25,6 +25,7 @@ var pageSelectCallback = function (page_index, jq) {
     }
     pageIndex = page_index;
     if (pageType == 1) {
+        console.log("asdfsadfasdf")
         getKwdList(page_index);
     } else if (pageType == 2) {
         getCampaignList(page_index);
@@ -104,7 +105,7 @@ function getKwdList(nowPage) {
             if (data != null) {
                 $("#tbodyClick").empty();
                 records = data.totalCount;
-                pageIndex = data.pageNo;
+                pageIndex = data.nextPage;
                 $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
                 if (data.list == null || data.list == undefined || data.list.length == 0) {
                     $("#tbodyClick").html("<tr><td>暂无数据</td></tr>");
@@ -707,7 +708,7 @@ function timeUpdiglog() {
     top.dialog({
         title: "定时上传",
         padding: "5px",
-        height:"auto",
+        height: "auto",
         align: 'left bottom',
         content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
@@ -728,7 +729,7 @@ function timediglogDown() {
     top.dialog({
         title: "定时暂停",
         padding: "5px",
-        height:"auto",
+        height: "auto",
         align: 'left bottom',
         content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
@@ -924,7 +925,7 @@ var menu_keyword_add = {
     , menu_keyword_shear = {
         text: "剪切",
         img: "../public/img/zs_function14.png",
-        func:function(){
+        func: function () {
             editCommons.Cut();
         }
 

@@ -212,9 +212,8 @@
                       访问URL&nbsp;<img src="../public/img/select.png"></span></th>
                     <th>&nbsp;<span onclick="TabModel.Show('Keyword_mibUrl',this)">
                       移动访问URL&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th class="username-column" data-noresize>&nbsp;<span
-                            onclick="TabModel.Show('Keyword_campaignName',this)">
-                      推广计划名称&nbsp;<img src="../public/img/select.png"></span></th>
+                    <th class="username-column" data-noresize>&nbsp;<span>
+                      推广计划名称&nbsp;</span></th>
                     <th class="username-column" data-noresize>&nbsp;
                         <div class="set fr"></div>
                     </th>
@@ -366,25 +365,25 @@
                     <th><input type="checkbox" name='creativeAllCheck'
                                onchange="$.foRCheckAll('creativeAllCheck')"/></th>
                     <th style="width: 40px;">&nbsp;操作</th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativetitle',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_title',this)">
                         创意标题&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativetitle1',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_desc1',this)">
                         创意描述1&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativetitle2',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_desc2',this)">
                         创意描述2&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativedefault',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_pcUrl',this)">
                         默认访问URL&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativedefault',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_pcsUrl',this)">
                         默认显示URL&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativemobileurl',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_mibUrl',this)">
                         移动访问URL&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativeshowurl',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_mibsUrl',this)">
                         移动显示URL&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativepause',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_pause',this)">
                         启用/暂停&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativestate',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_state',this)">
                         创意状态&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('creativeequipment',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Creative_quipment',this)">
                         设备偏好&nbsp;<img src="../public/img/select.png"></span></th>
                     <th class="username-column" data-noresize>
                         <div class="set fr"></div>
@@ -769,17 +768,17 @@
                     <th><input type="checkbox" name='adgroupAllCheck'
                                onchange="$.foRCheckAll('adgroupAllCheck')"/></th>
                     <th>&nbsp;操作</th>
-                    <th>&nbsp;<span onclick="TabModel.Show('extensionname',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Adgroup_name',this)">
                         推广单元名称&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('extensionstate',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Adgroup_state',this)">
                         推广单元状态&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('extensionpause',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Adgroup_pause',this)">
                         启动/暂停&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('extensionprice',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Adgroup_price',this)">
                         出价&nbsp;<img src="../public/img/select.png"></span></th>
                     <th>&nbsp;否定关键词</th>
-                    <th>&nbsp;<span onclick="TabModel.Show('extensionplanname',this)">
-                        推广计划名称&nbsp;<img src="../public/img/select.png"></span></th>
+                    <th>&nbsp;<span>
+                        推广计划名称&nbsp;</span></th>
                     <th class="username-column" data-noresize>
                         <div class="set fr"></div>
                     </th>
@@ -895,17 +894,17 @@
                 <tr class="list02_top">
                     <th><input type="checkbox" name='campaignAllCheck'
                                onchange="$.foRCheckAll('campaignAllCheck')"/></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('promotionplan',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Campaign_name',this)">
                         推广计划名称&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('promotionstate',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Campaign_state',this)">
                         推广计划状态&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('promotionpause',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Campaign_pause',this)">
                         启用/暂停&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('promotionbudget',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Campaign_budget',this)">
                         每日预算&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('promotionshow',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Campaign_show',this)">
                         创意展现方式&nbsp;<img src="../public/img/select.png"></span></th>
-                    <th>&nbsp;<span onclick="TabModel.Show('promotiondynamic',this)">
+                    <th>&nbsp;<span onclick="TabModel.Show('Campaign_dynamic',this)">
                         动态创意状态&nbsp;<img src="../public/img/select.png"></span></th>
                     <th>&nbsp;推广时段</th>
                     <th>&nbsp;推广地域</th>

@@ -920,7 +920,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
                 switch (sp.getFilterField()) {
                     case "name":
-                        getNormalQuery(q, sp.getFilterType(), sp.getSelected(), sp.getFilterValue());
+                        getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
                         break;
                     case "state":
                         if (sp.getFilterValue().contains(",")) {
@@ -931,7 +931,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                             }
                             q.addCriteria(Criteria.where("s").in(integers));
                         } else {
-                            q.addCriteria(Criteria.where("s").in(Integer.valueOf(sp.getFilterValue())));
+                            q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
                         }
                         break;
                     case "pause":
@@ -965,13 +965,13 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                                 q.addCriteria(Criteria.where("mt").in(matchType));
                             }
                             if (phraseType.size() > 0)
-                                q.addCriteria(Criteria.where("pt").in(phraseType));
+                                q.addCriteria(Criteria.where("pt").in(phraseType).and("mt").is(2));
 
                         } else {
                             if (sp.getFilterValue().length() == 1) {
                                 q.addCriteria(Criteria.where("mt").is(Integer.valueOf(sp.getFilterValue())));
                             } else {
-                                q.addCriteria(Criteria.where("pt").is(Integer.valueOf(sp.getFilterValue().substring(0, 1))));
+                                q.addCriteria(Criteria.where("pt").is(Integer.valueOf(sp.getFilterValue().substring(0, 1))).and("mt").is(2));
                             }
                         }
                         break;

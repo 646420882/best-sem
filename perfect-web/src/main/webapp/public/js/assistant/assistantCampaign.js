@@ -37,7 +37,7 @@ function getCampaignList(nowPage) {
             $("#tbodyClick5").empty();
 
             records = data.totalCount;
-            pageIndex = data.pageNo;
+            pageIndex = data.nextPage;
             $("#pagination_campaignPage").pagination(records, getOptionsFromForm(pageIndex));
 
 

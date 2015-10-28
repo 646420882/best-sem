@@ -560,8 +560,8 @@ $.extend({
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                             var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                                 "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "'/></td>" +
+                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                                 "<td >" + until.substring(10, json[i].title) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description1) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -602,8 +602,8 @@ $.extend({
                             var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                                 "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "'/></td>" +
+                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                                 "<td >" + json[i].adgroupName + "</td>" +
                                 "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                                 "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
@@ -810,8 +810,10 @@ var errorMsg = $("#filter_msg");
 var TabModel = {
     Show: function (type, _this) {
         if (!jsonData.cid) {
-            alert("请选择一个计划或者单元")
-            return;
+            if(editCommons.EditType!="campaign"){
+                alert("请选择一个计划或者单元");
+                return;
+            }
         }
         if ($(".dropdown-menus").css("display") == "none") {
             var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
@@ -890,89 +892,86 @@ var TabModel = {
                 $("#TabTitle").html("关键词移动访问URL");
                 $("#CheckList").append(tabselect);
                 break;
-            case "Keyword_campaignName":
-                $("#TabTitle").html("推广计划名称");
-                $("#CheckList").append(tabselect);
-                break;
-            case "creativetitle":
+            case "Creative_title":
                 $("#TabTitle").html("创意标题");
                 $("#CheckList").append(tabselect);
                 break;
-            case "creativetitle1":
-                $("#TabTitle").html("创意标题1");
+            case "Creative_desc1":
+                $("#TabTitle").html("创意描述1");
                 $("#CheckList").append(tabselect);
                 break;
-            case "creativetitle2":
-                $("#TabTitle").html("创意标题2");
+            case "Creative_desc2":
+                $("#TabTitle").html("创意描述2");
                 $("#CheckList").append(tabselect);
                 break;
-            case "creativedefault":
+            case "Creative_pcUrl":
                 $("#TabTitle").html("创意默认访问URL");
                 $("#CheckList").append(tabselect);
                 break;
-            case "creativemobileurl":
-                $("#TabTitle").html("创意移动访问URL");
+            case "Creative_pcsUrl":
+                $("#TabTitle").html("创意默认显示URL");
                 $("#CheckList").append(tabselect);
                 break;
-            case "creativeshowurl":
+            case "Creative_mibUrl":
                 $("#TabTitle").html("创意移动显示URL");
                 $("#CheckList").append(tabselect);
                 break;
-            case "creativepause":
+            case "Creative_mibsUrl":
+                $("#TabTitle").html("创意移动显示URL");
+                $("#CheckList").append(tabselect);
+                break;
+            case "Creative_pause":
                 $("#TabTitle").html("启用/暂停");
                 $("#CheckList").append(pause);
                 break;
-            case "creativestate":
+            case "Creative_state":
                 $("#TabTitle").html("创意状态");
                 var CreativeState =
-                    "<ul><li><input type='checkbox'>有效</li>" +
-                    "<li><input type='checkbox'>不宜推广</li>" +
-                    "<ul><li><input type='checkbox'>暂停推广</li>" +
-                    "<li><input type='checkbox'>审核中</li>" +
-                    "<li><input type='checkbox'>待激活</li></ul>" +
-                    "<li><input type='checkbox'>部分无效</li>" +
-                    "<li><input type='checkbox'>有效-移动URL审核中</li>" +
-                    "<li><input type='checkbox'>本地新增</li>" +
+                    "<ul><li><input type='checkbox' value='51'>有效</li>" +
+                    "<li><input type='checkbox' value='53'>不宜推广</li>" +
+                    "<ul><li><input type='checkbox' value='52'>暂停推广</li>" +
+                    "<li><input type='checkbox' value='55'>审核中</li>" +
+                    "<li><input type='checkbox' value='54'>待激活</li></ul>" +
+                    "<li><input type='checkbox' value='56'>部分无效</li>" +
+                    "<li><input type='checkbox' value='57'>有效-移动URL审核中</li>" +
+                    "<li><input type='checkbox' value='-1'>本地新增</li>" +
                     "</ul>";
                 $("#CheckList").append(CreativeState);
                 break;
-            case "creativeequipment":
+            case "Creative_quipment":
                 $("#TabTitle").html("创意设备偏好");
                 var CreativeEquipment =
-                    "<ul><li><input type='radio'>全部</li>" +
-                    "<li><input type='radio'>全部设备</li>" +
-                    "<li><input type='radio'>移动设备优先</li>";
+                    "<ul><li><input type='radio' name='filterQuipment' value='-1'>全部</li>" +
+                    "<li><input type='radio' name='filterQuipment'  value='0'>全部设备</li>" +
+                    "<li><input type='radio' name='filterQuipment'  value='1'>移动设备优先</li>";
                 $("#CheckList").append(CreativeEquipment);
                 break;
-            case "extensionname":
+            case "Adgroup_name":
                 $("#TabTitle").html("推广单元名称");
                 $("#CheckList").append(tabselect);
                 break;
-            case "extensionstate":
+            case "Adgroup_state":
                 $("#TabTitle").html("推广单元状态");
-                var ExtensionState = "<ul><li><input type='checkbox'>有效</li>" +
-                    "<li><input type='checkbox'>推广计划暂停推广</li>" +
-                    "<li><input type='checkbox'>本地新增</li>" +
+                var ExtensionState = "<ul><li><input type='checkbox' value='31'>有效</li>" +
+                    "<li><input type='checkbox' value='32'>暂停推广</li>" +
+                    "<li><input type='checkbox' value='33'>推广计划暂停推广</li>" +
+                    "<li><input type='checkbox' value='-1'>本地新增</li>" +
                     "</ul>";
                 $("#CheckList").append(ExtensionState);
                 break;
-            case "extensionpause":
+            case "Adgroup_pause":
                 $("#TabTitle").html("启动/暂停");
                 $("#CheckList").append(pause);
                 break;
-            case "extensionprice":
+            case "Adgroup_price":
                 $("#TabTitle").html("出价");
                 $("#CheckList").append(price);
                 break;
-            case "extensionplanname":
+            case "Campaign_name":
                 $("#TabTitle").html("推广计划名称");
                 $("#CheckList").append(tabselect);
                 break;
-            case "promotionplan":
-                $("#TabTitle").html("推广计划名称");
-                $("#CheckList").append(tabselect);
-                break;
-            case "promotionstate":
+            case "Campaign_state":
                 $("#TabTitle").html("推广计划状态");
                 var PromotionState =
                     "<ul><li><input type='checkbox'>有效</li>" +
@@ -983,15 +982,15 @@ var TabModel = {
                     "<li><input type='checkbox'>本地新增</li>";
                 $("#CheckList").append(PromotionState);
                 break;
-            case "promotionpause":
+            case "Campaign_pause":
                 $("#TabTitle").html("启动/暂停");
                 $("#CheckList").append(pause);
                 break;
-            case "promotionbudget":
+            case "Campaign_budget":
                 $("#TabTitle").html("推广计划每日预算");
                 $("#CheckList").append(price);
                 break;
-            case "promotionshow":
+            case "Campaign_show":
                 $("#TabTitle").html("推广计划创意展现方式");
                 var PromotionShow =
                     "<ul><li><input type='radio'>全部</li>" +
@@ -999,7 +998,7 @@ var TabModel = {
                     "<li><input type='radio'>轮替</li>";
                 $("#CheckList").append(PromotionShow);
                 break;
-            case "promotiondynamic":
+            case "Campaign_dynamic":
                 $("#TabTitle").html("动态创意状态");
                 var PromotionDynamic =
                     "<ul><li><input type='checkbox'>全部开启</li>" +
@@ -1017,36 +1016,14 @@ var TabModel = {
         var filterField = $("input[name='filterField']").val();
         switch (filterField) {
             case "Keyword_state":
-                var state = this.getCheckData();
-                if (state) {
-                    var formData = {};
-                    var filterType = filterField.split("_")[0];
-                    var filterFields = filterField.split("_")[1];
-                    if (filterType && filterFields) {
-                        formData["filterType"] = filterType;
-                        formData["filterField"] = filterFields;
-                    }
-                    formData["filterValue"] = state;
-                    this.filterSearchSubmit(formData, function (result) {
-                        $.leveComplete("keyword", {data: result.data.list});
-                    });
-                }
+                this.inputSubmit("checkbox", filterField, null, function (result) {
+                    $.leveComplete("keyword", {data: result.data.list});
+                });
                 break;
             case "Keyword_pause":
-                var state = this.getRadioData();
-                if (state) {
-                    var formData = {};
-                    var filterType = filterField.split("_")[0];
-                    var filterFields = filterField.split("_")[1];
-                    if (filterType && filterFields) {
-                        formData["filterType"] = filterType;
-                        formData["filterField"] = filterFields;
-                    }
-                    formData["filterValue"] = state;
-                    this.filterSearchSubmit(formData, function (result) {
-                        $.leveComplete("keyword", {data: result.data.list});
-                    });
-                }
+                this.inputSubmit(null, filterField, null, function (result) {
+                    $.leveComplete("keyword", {data: result.data.list});
+                });
                 break;
             case "Keyword_price":
                 var min_pointer = $("input[name='min_points']").val();
@@ -1060,7 +1037,7 @@ var TabModel = {
                         formData["filterField"] = filterFields;
                     }
                     formData["filterValue"] = min_pointer + "," + max_pointer;
-                    this.filterSearchSubmit(formData, function (result) {
+                    this.filterSearchSubmit(formData, null, function (result) {
                         $.leveComplete("keyword", {data: result.data.list});
                     });
                     errorMsg.html('');
@@ -1089,9 +1066,60 @@ var TabModel = {
                         formData["filterField"] = filterFields;
                     }
                     formData["filterValue"] = checkData.toString();
-                    this.filterSearchSubmit(formData, function (result) {
+                    this.filterSearchSubmit(formData, null, function (result) {
                         $.leveComplete("keyword", {data: result.data.list});
                     });
+                }
+                break;
+            case "Creative_pause":
+                this.inputSubmit(null, filterField, "../assistantCreative/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("creative", {data: result.list});
+                });
+                break;
+            case "Creative_state":
+                this.inputSubmit("checkbox", filterField, "../assistantCreative/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("creative", {data: result.list});
+                });
+                break;
+            case "Creative_quipment":
+                this.inputSubmit(null, filterField, "../assistantCreative/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("creative", {data: result.list});
+                });
+                break;
+            case "Adgroup_state":
+                this.inputSubmit("checkbox", filterField, "../assistantAdgroup/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("adgroup", {data: result.list});
+                });
+                break;
+            case "Adgroup_pause":
+                this.inputSubmit(null, filterField, "../assistantAdgroup/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("adgroup", {data: result.list});
+                });
+                break;
+            case "Adgroup_price":
+                var min_pointer = $("input[name='min_points']").val();
+                var max_pointer = $("input[name='max_points']").val();
+                if (min_pointer && max_pointer && (max_pointer >= min_pointer)) {
+                    var formData = {};
+                    var filterType = filterField.split("_")[0];
+                    var filterFields = filterField.split("_")[1];
+                    if (filterType && filterFields) {
+                        formData["filterType"] = filterType;
+                        formData["filterField"] = filterFields;
+                    }
+                    formData["filterValue"] = min_pointer + "," + max_pointer;
+                    this.filterSearchSubmit(formData, "../assistantAdgroup/filterSearch", function (res) {
+                        var result = $.parseJSON(res);
+                        $.leveComplete("adgroup", {data: result.list});
+                    });
+                    errorMsg.html('');
+                } else {
+                    errorMsg.html("请输入正确的价格范围!");
                 }
                 break;
             default:
@@ -1104,31 +1132,38 @@ var TabModel = {
                         formData["filterField"] = filterFields;
                     }
                     formData["filterValue"] = formData.filterValue;
-                    this.filterSearchSubmit(formData, function (result) {
-                        switch (formData["filterType"]) {
-                            case "Creative":
-                                $.leveComplete("creative", {data: result.data});
-                                break;
-                            case "Adgroup":
-                                $.leveComplete("adgroup", {data: result.data});
-                                break;
-                            case "Campaign":
-                                $.leveComplete("campaign", {data: result.data});
-                                break;
-                            default:
+                    switch (formData["filterType"]) {
+                        case "Creative":
+                            this.filterSearchSubmit(formData, "../assistantCreative/filterSearch", function (result) {
+                                var gson = $.parseJSON(result);
+                                $.leveComplete("creative", {data: gson.list});
+                            });
+                            break;
+                        case "Adgroup":
+                            this.filterSearchSubmit(formData, "../assistantAdgroup/filterSearch", function (result) {
+                                var gson = $.parseJSON(result);
+                                $.leveComplete("adgroup", {data: gson.list});
+                            });
+                            break;
+                        case "Campaign":
+                            $.leveComplete("campaign", {data: result.data});
+                            break;
+                        default:
+                            this.filterSearchSubmit(formData, null, function (result) {
                                 $.leveComplete("keyword", {data: result.data.list});
-                                break;
-                        }
-                    });
+                            });
+                            break;
+                    }
                 }
                 break;
         }
     },
-    filterSearchSubmit: function (form, func) {
+    filterSearchSubmit: function (form, url, func) {
         form["cid"] = jsonData.cid;
         form["aid"] = jsonData.aid ? jsonData.aid : '';
+        url = url ? url : "../assistantKeyword/filterSearch";
         $.ajax({
-            url: "../assistantKeyword/filterSearch",
+            url: url,
             data: JSON.stringify(form),
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1180,6 +1215,29 @@ var TabModel = {
         } else {
             errorMsg.html("必须选择一项状态进行筛选！")
             return;
+        }
+    },
+    inputSubmit: function (inputType, filterField, url, func) {
+        var state = this.getRadioData();
+        if (inputType == "checkbox") {
+            state = this.getCheckData();
+        }
+        if (state) {
+            var formData = {};
+            var filterType = filterField.split("_")[0];
+            var filterFields = filterField.split("_")[1];
+            if (filterType && filterFields) {
+                formData["filterType"] = filterType;
+                formData["filterField"] = filterFields;
+            }
+            formData["filterValue"] = state;
+            this.filterSearchSubmit(formData, url, function (res) {
+                if (func) {
+                    func(res);
+                }
+                //var result = $.parseJSON(res);
+                //$.leveComplete("adgroup", {data: result.list});
+            });
         }
     }
 }

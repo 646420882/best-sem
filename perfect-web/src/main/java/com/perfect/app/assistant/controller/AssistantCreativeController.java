@@ -13,13 +13,16 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,26 +68,26 @@ public class AssistantCreativeController extends WebContextSupport {
                 if (!aid.equals("")) {
                     if (aid.length() > OBJ_SIZE) {
                         map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
-                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,null);
                     } else {
                         map.put(MongoEntityConstants.ADGROUP_ID, aid);
-                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,null);
                     }
                 } else if (!cid.equals("") && aid.equals("")) {
                     List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignObj(cid);
-                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize);
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize,null);
                 } else {
-                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,null);
                 }
             } else {
                 if (!aid.equals("")) {
-                    pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize);
+                    pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize,null);
                 } else if (!cid.equals("") && aid.equals("")) {
                     List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
-                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize);
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize,null);
 
                 } else {
-                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize);
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,null);
                 }
             }
         }
@@ -591,6 +594,46 @@ public class AssistantCreativeController extends WebContextSupport {
             return writeMapObject(MSG, SUCCESS);
         }
         return writeMapObject(MSG, "级联上传失败");
+    }
+
+    @RequestMapping(value = "filterSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView filterSearch(@RequestBody SearchFilterParam sp, HttpServletResponse response) {
+        Integer nowPage = 1;
+        Integer pageSize = 1000;
+        String aid = sp.getAid();
+        String cid = sp.getCid();
+        PagerInfo pagerInfo = null;
+        Map<String, Object> map = new HashMap<>();
+        if (!aid.equals("-1")) {
+            if (aid.length() > OBJ_SIZE || cid.length() > OBJ_SIZE) {
+                if (!aid.equals("")) {
+                    if (aid.length() > OBJ_SIZE) {
+                        map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,sp);
+                    } else {
+                        map.put(MongoEntityConstants.ADGROUP_ID, aid);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,sp);
+                    }
+                } else if (!cid.equals("") && aid.equals("")) {
+                    List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignObj(cid);
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize,sp);
+                } else {
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,sp);
+                }
+            } else {
+                if (!aid.equals("")) {
+                    pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize,sp);
+                } else if (!cid.equals("") && aid.equals("")) {
+                    List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize,sp);
+
+                } else {
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,sp);
+                }
+            }
+        }
+        writeJson(pagerInfo, response);
+        return null;
     }
 }
 

@@ -12,6 +12,7 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.entity.backup.CreativeBackUpEntity;
 import com.perfect.entity.creative.CreativeEntity;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +31,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Created by baizz on 2014-07-10.
@@ -257,7 +260,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
         Query q = new Query();
         Criteria c = new Criteria();
         if (params.size() > 0 || params != null) {
@@ -274,6 +277,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(q, sp);
         List<CreativeEntity> creativeEntityList = getMongoTemplate().find(q, getEntityClass());
         p.setList(creativeEntityList);
         return p;
@@ -296,7 +300,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize) {
+    public PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
         Query q = new Query(Criteria.where(ADGROUP_ID).in(l));
         Integer totalCount = getTotalCount(q, getEntityClass());
         PagerInfo p = new PagerInfo(nowPage, pageSize, totalCount);
@@ -306,13 +310,14 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(q, sp);
         List<CreativeEntity> creativeEntityList = getMongoTemplate().find(q, getEntityClass());
         p.setList(creativeEntityList);
         return p;
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize) {
+    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
         Query q = new Query(Criteria.where(ADGROUP_ID).in(l));
         Integer totalCount = getTotalCount(q, getEntityClass());
         PagerInfo p = new PagerInfo(nowPage, pageSize, totalCount);
@@ -322,6 +327,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(q, sp);
         List<CreativeEntity> creativeEntityList = getMongoTemplate().find(q, getEntityClass());
         p.setList(creativeEntityList);
         return p;
@@ -453,5 +459,89 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     private CreativeDTO wrapperObject(CreativeEntity entity) {
         CreativeDTO dto = ObjectUtils.convert(entity, CreativeDTO.class);
         return dto;
+    }
+
+    private Query searchFilterQueryOperate(Query q, SearchFilterParam sp) {
+        if (sp != null) {
+            if (Objects.equals(sp.getFilterType(), "Creative")) {
+                switch (sp.getFilterField()) {
+                    case "title":
+                        getNormalQuery(q, "t", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "desc1":
+                        getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "desc2":
+                        getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "pcUrl":
+                        getNormalQuery(q, "pc", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "pcsUrl":
+                        getNormalQuery(q, "pcd", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "mibUrl":
+                        getNormalQuery(q, "m", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "mibsUrl":
+                        getNormalQuery(q, "md", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "pause":
+                        if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                            if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                                q.addCriteria(Criteria.where("p").is(false));
+                            } else {
+                                q.addCriteria(Criteria.where("p").is(true));
+                            }
+                        }
+                        break;
+                    case "state":
+                        if (sp.getFilterValue().contains(",")) {
+                            String[] status = sp.getFilterValue().split(",");
+                            Integer[] integers = new Integer[status.length];
+                            for (int i = 0; i < integers.length; i++) {
+                                integers[i] = Integer.parseInt(status[i]);
+                            }
+                            q.addCriteria(Criteria.where("s").in(integers));
+                        } else {
+                            q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
+                        }
+                        break;
+                    case "quipment":
+                        if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                            q.addCriteria(Criteria.where("d").is(Integer.valueOf(sp.getFilterValue())));
+                        }
+                        break;
+                }
+            }
+        }
+        return q;
+    }
+
+    private void getNormalQuery(Query q, String field, Integer selected, String filterValue) {
+        switch (selected) {
+            case 1:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^.*?" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 11:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^(?!.*(" + filterValue + ")).*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 2:
+                q.addCriteria(Criteria.where(field).is(filterValue));
+                break;
+            case 22:
+                q.addCriteria(Criteria.where(field).ne(filterValue));
+                break;
+            case 3:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 33:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
+                break;
+        }
     }
 }

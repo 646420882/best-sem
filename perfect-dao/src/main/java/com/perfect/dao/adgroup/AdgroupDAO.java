@@ -4,6 +4,7 @@ package com.perfect.dao.adgroup;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -67,7 +68,7 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     void delBack(Long oid);
 
-    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize,SearchFilterParam sp);
 
     AdgroupDTO getByCampaignIdAndName(Long campaignId, String name);
 

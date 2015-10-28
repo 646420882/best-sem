@@ -4,6 +4,7 @@ import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public interface AdgroupService {
 
     void deleteByIds(List<Long> ids);
 
-    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize,SearchFilterParam sp);
 
     Object insertOutId(AdgroupDTO adgroupEntity);
 

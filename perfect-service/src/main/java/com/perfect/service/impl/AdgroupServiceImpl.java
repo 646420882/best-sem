@@ -18,6 +18,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
@@ -180,8 +181,8 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
-        return adgroupDAO.findByPagerInfo(params, nowPage, pageSize);
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize,SearchFilterParam sp) {
+        return adgroupDAO.findByPagerInfo(params, nowPage, pageSize,sp);
     }
 
     @Override

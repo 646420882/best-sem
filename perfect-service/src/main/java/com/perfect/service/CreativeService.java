@@ -3,6 +3,7 @@ package com.perfect.service;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -39,11 +40,11 @@ public interface CreativeService {
 
     void deleteByIds(List<Long> creativeIds);
 
-    PagerInfo findByPagerInfo(Map<String, Object> map, int nowPage, int pageSize);
+    PagerInfo findByPagerInfo(Map<String, Object> map, int nowPage, int pageSize,SearchFilterParam sp);
 
-    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize,SearchFilterParam sp);
 
-    PagerInfo findByPagerInfoForLong(List<Long> longs, int nowpage, int pageSize);
+    PagerInfo findByPagerInfoForLong(List<Long> longs, int nowpage, int pageSize,SearchFilterParam sp);
 
     String insertOutId(CreativeDTO creativeEntity);
 

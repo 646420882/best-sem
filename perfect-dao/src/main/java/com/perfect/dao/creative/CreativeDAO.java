@@ -2,6 +2,7 @@ package com.perfect.dao.creative;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -65,13 +66,13 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     void delBack(Long oid);
 
-    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
     PagerInfo findByPagerInfoForString(List<String> l, Integer nowPage, Integer pageSize);
 
-    PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
-    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize,SearchFilterParam sp);
 
     void update(String crid, CreativeDTO dto);
 

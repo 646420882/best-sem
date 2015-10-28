@@ -16,6 +16,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
@@ -178,19 +179,19 @@ public class CreativeServiceImpl implements CreativeService {
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Map<String, Object> map, int nowPage, int pageSize) {
-        return creativeDAO.findByPagerInfo(map, nowPage, pageSize);
+    public PagerInfo findByPagerInfo(Map<String, Object> map, int nowPage, int pageSize, SearchFilterParam sp) {
+        return creativeDAO.findByPagerInfo(map, nowPage, pageSize, sp);
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize) {
-        return creativeDAO.findByPagerInfo(l, nowPage, pageSize);
+    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize,SearchFilterParam sp) {
+        return creativeDAO.findByPagerInfo(l, nowPage, pageSize,sp);
     }
 
 
     @Override
-    public PagerInfo findByPagerInfoForLong(List<Long> longs, int nowpage, int pageSize) {
-        return creativeDAO.findByPagerInfoForLong(longs, nowpage, pageSize);
+    public PagerInfo findByPagerInfoForLong(List<Long> longs, int nowpage, int pageSize, SearchFilterParam sp) {
+        return creativeDAO.findByPagerInfoForLong(longs, nowpage, pageSize, sp);
     }
 
     @Override
@@ -469,16 +470,17 @@ public class CreativeServiceImpl implements CreativeService {
             creativeDAO.batchDelete(asList);
         }
     }
-    public void cut(CreativeDTO dto,String aid) {
-        CreativeBackUpDTO backUpDTO=new CreativeBackUpDTO();
-        BeanUtils.copyProperties(dto,backUpDTO);
-        if(aid.length()>OBJ_SIZE){
+
+    public void cut(CreativeDTO dto, String aid) {
+        CreativeBackUpDTO backUpDTO = new CreativeBackUpDTO();
+        BeanUtils.copyProperties(dto, backUpDTO);
+        if (aid.length() > OBJ_SIZE) {
             dto.setAdgroupObjId(aid);
             dto.setLocalStatus(1);
-        }else{
+        } else {
             dto.setAdgroupId(Long.parseLong(aid));
             dto.setLocalStatus(2);
         }
-        creativeDAO.update(dto,backUpDTO);
+        creativeDAO.update(dto, backUpDTO);
     }
 }
