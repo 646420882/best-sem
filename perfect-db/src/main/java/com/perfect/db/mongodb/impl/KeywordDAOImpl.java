@@ -25,6 +25,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -38,6 +41,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-07-07.
@@ -217,6 +222,18 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     public List<KeywordDTO> findHasLocalStatusLong(List<Long> longs) {
         List<KeywordEntity> keywordEntities = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)), getEntityClass());
         return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
+    }
+
+    @Override
+    public List<KeywordAggsDTO> findAllKeywordFromBaiduByAccountId(Long baiduAccountId) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("ls").is(null)),
+                project("kwid", "name", "agid")
+        ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
+
+        AggregationResults<KeywordAggsDTO> aggregationResults = getMongoTemplate().aggregate(aggregation, TBL_KEYWORD, KeywordAggsDTO.class);
+
+        return aggregationResults.getMappedResults();
     }
 
     @Override
@@ -1012,6 +1029,44 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                 q.addCriteria(Criteria.where(field).
                         regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
                 break;
+        }
+    }
+
+
+    public static class KeywordAggsDTO {
+
+        @org.springframework.data.mongodb.core.mapping.Field("kwid")
+        private Long keywordId;
+
+        @org.springframework.data.mongodb.core.mapping.Field("name")
+        private String keywordName;
+
+        @org.springframework.data.mongodb.core.mapping.Field("agid")
+        private String adgroupId;
+
+
+        public Long getKeywordId() {
+            return keywordId;
+        }
+
+        public void setKeywordId(Long keywordId) {
+            this.keywordId = keywordId;
+        }
+
+        public String getKeywordName() {
+            return keywordName;
+        }
+
+        public void setKeywordName(String keywordName) {
+            this.keywordName = keywordName;
+        }
+
+        public String getAdgroupId() {
+            return adgroupId;
+        }
+
+        public void setAdgroupId(String adgroupId) {
+            this.adgroupId = adgroupId;
         }
     }
 }

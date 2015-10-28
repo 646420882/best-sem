@@ -47,6 +47,8 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     List<KeywordDTO> findHasLocalStatusLong(List<Long> longs);
 
+    List<?> findAllKeywordFromBaiduByAccountId(Long baiduAccountId);
+
     List<KeywordDTO> findAllKeywordFromBaiduByAdgroupId(Long baiduAccountId, Long adgroupId);
 
     Long keywordCount(List<Long> adgroupIds);
@@ -79,15 +81,15 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByLongId(Long oid);
 
-    PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo,SearchFilterParam sp);
+    PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo, SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo,SearchFilterParam sp);
+    PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo, SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo,SearchFilterParam sp);
+    PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo, SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForLongIds(List<Long> aids, int pageSize, int pageNo,SearchFilterParam sp);
+    PagerInfo findByPageInfoForLongIds(List<Long> aids, int pageSize, int pageNo, SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo,SearchFilterParam sp);
+    PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo, SearchFilterParam sp);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 
