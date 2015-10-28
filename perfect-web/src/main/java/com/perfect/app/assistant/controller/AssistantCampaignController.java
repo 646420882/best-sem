@@ -17,11 +17,13 @@ import com.perfect.dto.baidu.OfflineTimeDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.RegionalCodeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,7 +65,6 @@ public class AssistantCampaignController extends WebContextSupport {
     private SysRegionalService sysRegionalService;
 
 
-
     /**
      * 得到当前账户的所有推广计划
      *
@@ -74,9 +75,9 @@ public class AssistantCampaignController extends WebContextSupport {
         if (nowPage == null) {
             nowPage = 0;
         }
-        long acctountId=AppContext.getAccountId();
+        long acctountId = AppContext.getAccountId();
 
-        PagerInfo page = campaignService.findByPageInfo(acctountId, pageSize, nowPage);
+        PagerInfo page = campaignService.findByPageInfo(acctountId, pageSize, nowPage, null);
         writeJson(page, response);
     }
 
@@ -270,7 +271,7 @@ public class AssistantCampaignController extends WebContextSupport {
             if (budget >= 50) {
                 newCampaign.setBudget(budget);
             }
-        }else {
+        } else {
             newCampaign.setBudget(null);
         }
         newCampaign.setPriceRatio(priceRatio == null ? newCampaign.getPriceRatio() : priceRatio);
@@ -306,54 +307,54 @@ public class AssistantCampaignController extends WebContextSupport {
      */
     @RequestMapping(value = "assistantCampaign/add")
     public ModelAndView addCampaign(String campaignName, Double budget, Double priceRatio, Boolean pause, Integer showProb, String schedule, Integer[] regionTarget,
-                            String negativeWords, String exactNegativeWords, String excludeIp,
-                            String adgroupName, Double maxPrice, Boolean adgroupPause
+                                    String negativeWords, String exactNegativeWords, String excludeIp,
+                                    String adgroupName, Double maxPrice, Boolean adgroupPause
     ) {
         try {
-        //推广计划
-        CampaignDTO campaignDTO = new CampaignDTO();
-        campaignDTO.setCampaignName(campaignName);
-        campaignDTO.setBudget(budget);
-        campaignDTO.setPriceRatio(priceRatio);
-        campaignDTO.setPause(pause);
-        campaignDTO.setShowProb(showProb);
+            //推广计划
+            CampaignDTO campaignDTO = new CampaignDTO();
+            campaignDTO.setCampaignName(campaignName);
+            campaignDTO.setBudget(budget);
+            campaignDTO.setPriceRatio(priceRatio);
+            campaignDTO.setPause(pause);
+            campaignDTO.setShowProb(showProb);
 
-        if (schedule != null) {
-            Gson gson = new Gson();
-            List<SchedulerDTO> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
-            }.getType());
-            campaignDTO.setSchedule(scheduleTypes == null ? new ArrayList<SchedulerDTO>() : scheduleTypes);
-        }
+            if (schedule != null) {
+                Gson gson = new Gson();
+                List<SchedulerDTO> scheduleTypes = gson.fromJson(schedule, new TypeToken<List<ScheduleType>>() {
+                }.getType());
+                campaignDTO.setSchedule(scheduleTypes == null ? new ArrayList<SchedulerDTO>() : scheduleTypes);
+            }
 
-        campaignDTO.setRegionTarget(regionTarget == null ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
-        campaignDTO.setNegativeWords(negativeWords == null || "".equals(negativeWords) ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
-        campaignDTO.setExactNegativeWords(exactNegativeWords == null || "".equals(exactNegativeWords) ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
-        campaignDTO.setExcludeIp(excludeIp == null || "".equals(excludeIp) ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
-        campaignDTO.setBudgetOfflineTime(new ArrayList<OfflineTimeDTO>());
-        campaignDTO.setAccountId(AppContext.getAccountId());
-        campaignDTO.setStatus(-1);
-        campaignDTO.setLocalStatus(1);
+            campaignDTO.setRegionTarget(regionTarget == null ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
+            campaignDTO.setNegativeWords(negativeWords == null || "".equals(negativeWords) ? new ArrayList<String>() : Arrays.asList(negativeWords.split("\n")));
+            campaignDTO.setExactNegativeWords(exactNegativeWords == null || "".equals(exactNegativeWords) ? new ArrayList<String>() : Arrays.asList(exactNegativeWords.split("\n")));
+            campaignDTO.setExcludeIp(excludeIp == null || "".equals(excludeIp) ? new ArrayList<String>() : Arrays.asList(excludeIp.split("\n")));
+            campaignDTO.setBudgetOfflineTime(new ArrayList<OfflineTimeDTO>());
+            campaignDTO.setAccountId(AppContext.getAccountId());
+            campaignDTO.setStatus(-1);
+            campaignDTO.setLocalStatus(1);
 
-        //开始添加
-        String id = campaignService.insertReturnId(campaignDTO);
-        if(id!=null){
-            AdgroupDTO adgroupDTO = new AdgroupDTO();
-            adgroupDTO.setCampaignObjId(id);
-            adgroupDTO.setAdgroupName(adgroupName);
-            adgroupDTO.setMaxPrice(maxPrice);
-            adgroupDTO.setPause(adgroupPause);
-            adgroupDTO.setStatus(-1);
-            adgroupDTO.setLocalStatus(1);
-            adgroupDTO.setAccountId(AppContext.getAccountId());
-            adgroupService.save(adgroupDTO);
-        }
+            //开始添加
+            String id = campaignService.insertReturnId(campaignDTO);
+            if (id != null) {
+                AdgroupDTO adgroupDTO = new AdgroupDTO();
+                adgroupDTO.setCampaignObjId(id);
+                adgroupDTO.setAdgroupName(adgroupName);
+                adgroupDTO.setMaxPrice(maxPrice);
+                adgroupDTO.setPause(adgroupPause);
+                adgroupDTO.setStatus(-1);
+                adgroupDTO.setLocalStatus(1);
+                adgroupDTO.setAccountId(AppContext.getAccountId());
+                adgroupService.save(adgroupDTO);
+            }
 
-            return writeMapObject(MSG,SUCCESS);
-        }catch (Exception e){
+            return writeMapObject(MSG, SUCCESS);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return writeMapObject(MSG,"添加失败");
+        return writeMapObject(MSG, "添加失败");
     }
 
     /**
@@ -445,7 +446,7 @@ public class AssistantCampaignController extends WebContextSupport {
         adgroupEntity.setAccountId(AppContext.getAccountId());
 
         String adgroupObjectId = (String) adgroupService.insertOutId(adgroupEntity);
-        if(adgroupObjectId!=null){
+        if (adgroupObjectId != null) {
             for (KeywordDTO kwd : list) {
                 kwd.setAdgroupObjId(adgroupObjectId);
                 kwd.setAccountId(AppContext.getAccountId());
@@ -456,31 +457,31 @@ public class AssistantCampaignController extends WebContextSupport {
     }
 
     @RequestMapping(value = "/assistantCampaign/upload")
-    public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid,@RequestParam(value = "ls")Integer ls) {
+    public ModelAndView uploadCampaign(@RequestParam(value = "cid", required = true) String cid, @RequestParam(value = "ls") Integer ls) {
         if (cid.length() > OBJ_SIZE) {
-            List<CampaignDTO> campaignDTOs=campaignService.uploadAdd(cid);
-            int error=0;
-            for (CampaignDTO c:campaignDTOs){
-                if(c.getCampaignId()!=0){
-                    campaignService.update(c,cid);
-                }else{
+            List<CampaignDTO> campaignDTOs = campaignService.uploadAdd(cid);
+            int error = 0;
+            for (CampaignDTO c : campaignDTOs) {
+                if (c.getCampaignId() != 0) {
+                    campaignService.update(c, cid);
+                } else {
                     error++;
                 }
             }
-            if(error>0){
+            if (error > 0) {
                 return writeMapObject(MSG, "部分计划上传失败，请检查计划的合法性，是否重复，出价是是否在规定范围内等条件...");
-            }else{
+            } else {
                 return writeMapObject(MSG, SUCCESS);
             }
         } else {
             switch (ls) {
                 case 2:
                     //修改后获取到修改成功的一些cid
-                   List<Long> returnCapaignIds= campaignService.uploadUpdate(new ArrayList<Long>(){{
+                    List<Long> returnCapaignIds = campaignService.uploadUpdate(new ArrayList<Long>() {{
                         add(Long.valueOf(cid));
                     }});
                     //获取到修改成功后的cid去本地查询该cid 的mongoid
-                    List<String> afterUpdateObjId=campaignService.getCampaignStrIdByCampaignLongId(returnCapaignIds);
+                    List<String> afterUpdateObjId = campaignService.getCampaignStrIdByCampaignLongId(returnCapaignIds);
                     //获取到mongoId后去campaign_bak表查询，查询到备份的数据然后将备份的数据删除掉,最后将上传更新的那个方法的ls改为null
                     campaignBackUpService.deleteByOId(afterUpdateObjId);
                     return writeMapObject(MSG, SUCCESS);
@@ -498,6 +499,13 @@ public class AssistantCampaignController extends WebContextSupport {
                     return writeMapObject(MSG, "暂无操作模式");
             }
         }
+    }
+
+    @RequestMapping(value = "/assistantCampaign/filterSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void filterSearch(@RequestBody SearchFilterParam sp, HttpServletResponse response) {
+        long acctountId = AppContext.getAccountId();
+        PagerInfo page = campaignService.findByPageInfo(acctountId, 0, 1000, sp);
+        writeJson(page, response);
     }
 
 }

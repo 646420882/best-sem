@@ -17,6 +17,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.CampaignService;
 import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.ObjectUtils;
@@ -126,8 +127,8 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo) {
-        return campaignDAO.findByPageInfo(accountId, pageSize, pageNo);
+    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo,SearchFilterParam sp) {
+        return campaignDAO.findByPageInfo(accountId, pageSize, pageNo,sp);
     }
 
     @Override

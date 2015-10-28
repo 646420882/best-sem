@@ -625,25 +625,29 @@ $.extend({
                 break;
             case "campaign":
                 $("#tbodyClick5").empty();
-                if (result.data.length == 0) {
-                    $("#tbodyClick5").append("<tr><td>没有找到类似的数据</td></tr>");
-                    return;
-                }
-                for (var i = 0; i < result.data.length; i++) {
-                    var html = campaignDataToHtml(result.data[i], i);
-                    $("#tbodyClick5").append(html);
-                    if (i == 0) {
-                        setCampaignValue(".firstCampaign", result.data[i].campaignId);
-                        if (result.data[i].localStatus != null) {
-                            $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
-                            $("#reduction_caipamgin").find("span").addClass("zs_top");
-                        } else {
-                            $("#reduction_caipamgin").find("span").removeClass("zs_top");
-                            $("#reduction_caipamgin").find("span").addClass("z_function_hover");
+                if (result.data) {
+                    if (result.data.length == 0) {
+                        $("#tbodyClick5").append("<tr><td>没有找到类似的数据</td></tr>");
+                        return;
+                    }
+                    for (var i = 0; i < result.data.length; i++) {
+                        var html = campaignDataToHtml(result.data[i], i);
+                        $("#tbodyClick5").append(html);
+                        if (i == 0) {
+                            setCampaignValue(".firstCampaign", result.data[i].campaignId);
+                            if (result.data[i].localStatus != null) {
+                                $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
+                                $("#reduction_caipamgin").find("span").addClass("zs_top");
+                            } else {
+                                $("#reduction_caipamgin").find("span").removeClass("zs_top");
+                                $("#reduction_caipamgin").find("span").addClass("z_function_hover");
+                            }
                         }
                     }
+                    loadTree();
+                } else {
+                    $("#tbodyClick5").append("<tr><td>没有找到类似的数据</td></tr>");
                 }
-                loadTree();
                 break;
             default :
                 $("#tbodyClick").empty();
@@ -810,7 +814,7 @@ var errorMsg = $("#filter_msg");
 var TabModel = {
     Show: function (type, _this) {
         if (!jsonData.cid) {
-            if(editCommons.EditType!="campaign"){
+            if (editCommons.EditType != "campaign") {
                 alert("请选择一个计划或者单元");
                 return;
             }
@@ -974,12 +978,12 @@ var TabModel = {
             case "Campaign_state":
                 $("#TabTitle").html("推广计划状态");
                 var PromotionState =
-                    "<ul><li><input type='checkbox'>有效</li>" +
-                    "<li><input type='checkbox'>暂停推广</li>" +
-                    "<li><input type='checkbox'>处在暂停阶段</li>" +
-                    "<li><input type='checkbox'>推广计划预算不足</li>" +
-                    "<li><input type='checkbox'>账户预算部足</li>" +
-                    "<li><input type='checkbox'>本地新增</li>";
+                    "<ul><li><input type='checkbox' value='21'>有效</li>" +
+                    "<li><input type='checkbox' value='23'>暂停推广</li>" +
+                    "<li><input type='checkbox' value='22'>处在暂停阶段</li>" +
+                    "<li><input type='checkbox' value='24'>推广计划预算不足</li>" +
+                    "<li><input type='checkbox' value='24'>账户预算部足</li>" +
+                    "<li><input type='checkbox' value='-1'>本地新增</li>";
                 $("#CheckList").append(PromotionState);
                 break;
             case "Campaign_pause":
@@ -993,17 +997,17 @@ var TabModel = {
             case "Campaign_show":
                 $("#TabTitle").html("推广计划创意展现方式");
                 var PromotionShow =
-                    "<ul><li><input type='radio'>全部</li>" +
-                    "<li><input type='radio'>优选</li>" +
-                    "<li><input type='radio'>轮替</li>";
+                    "<ul><li><input type='radio' name='showPro' value='-1'>全部</li>" +
+                    "<li><input type='radio' name='showPro' value='1'>优选</li>" +
+                    "<li><input type='radio' name='showPro' value='2'>轮显</li>";
                 $("#CheckList").append(PromotionShow);
                 break;
             case "Campaign_dynamic":
                 $("#TabTitle").html("动态创意状态");
                 var PromotionDynamic =
-                    "<ul><li><input type='checkbox'>全部开启</li>" +
-                    "<li><input type='checkbox'>全部关闭</li>" +
-                    "<li><input type='checkbox'>部分开启</li>";
+                    "<ul><li><input type='radio' name='dynamic' value='-1'>全部</li>" +
+                    "<ul><li><input type='radio' name='dynamic' value='1'>开启</li>" +
+                    "<li><input type='radio' name='dynamic' value='0'>关闭</li>";
                 $("#CheckList").append(PromotionDynamic);
                 break;
 
@@ -1102,25 +1106,41 @@ var TabModel = {
                 });
                 break;
             case "Adgroup_price":
-                var min_pointer = $("input[name='min_points']").val();
-                var max_pointer = $("input[name='max_points']").val();
-                if (min_pointer && max_pointer && (max_pointer >= min_pointer)) {
-                    var formData = {};
-                    var filterType = filterField.split("_")[0];
-                    var filterFields = filterField.split("_")[1];
-                    if (filterType && filterFields) {
-                        formData["filterType"] = filterType;
-                        formData["filterField"] = filterFields;
-                    }
-                    formData["filterValue"] = min_pointer + "," + max_pointer;
-                    this.filterSearchSubmit(formData, "../assistantAdgroup/filterSearch", function (res) {
-                        var result = $.parseJSON(res);
-                        $.leveComplete("adgroup", {data: result.list});
-                    });
-                    errorMsg.html('');
-                } else {
-                    errorMsg.html("请输入正确的价格范围!");
-                }
+                this.moneyAbuoutSubmit(filterField, "../assistantAdgroup/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("adgroup", {data: result.list});
+                });
+                break;
+            case "Campaign_state":
+                this.inputSubmit("checkbox", filterField, "../assistantCampaign/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("campaign", {data: result.list});
+                });
+                break;
+            case "Campaign_pause":
+                this.inputSubmit(null, filterField, "../assistantCampaign/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("campaign", {data: result.list});
+                });
+                break;
+            case "Campaign_budget":
+                this.moneyAbuoutSubmit(filterField, "../assistantCampaign/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("campaign", {data: result.list});
+                });
+                break;
+            case "Campaign_show":
+                this.inputSubmit(null, filterField, "../assistantCampaign/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("campaign", {data: result.list});
+                });
+                break;
+            case "Campaign_dynamic":
+                this.inputSubmit(null, filterField, "../assistantCampaign/filterSearch", function (res) {
+                    var result = $.parseJSON(res);
+                    $.leveComplete("campaign", {data: result.list});
+                });
+                break;
                 break;
             default:
                 var formData = this.getNormalFilterForm();
@@ -1146,7 +1166,10 @@ var TabModel = {
                             });
                             break;
                         case "Campaign":
-                            $.leveComplete("campaign", {data: result.data});
+                            this.filterSearchSubmit(formData, "../assistantCampaign/filterSearch", function (res) {
+                                var result = $.parseJSON(res);
+                                $.leveComplete("campaign", {data: result.list});
+                            });
                             break;
                         default:
                             this.filterSearchSubmit(formData, null, function (result) {
@@ -1235,9 +1258,29 @@ var TabModel = {
                 if (func) {
                     func(res);
                 }
-                //var result = $.parseJSON(res);
-                //$.leveComplete("adgroup", {data: result.list});
             });
+        }
+    },
+    moneyAbuoutSubmit: function (filterField, url, func) {
+        var min_pointer = $("input[name='min_points']").val();
+        var max_pointer = $("input[name='max_points']").val();
+        if (min_pointer && max_pointer && (max_pointer >= min_pointer)) {
+            var formData = {};
+            var filterType = filterField.split("_")[0];
+            var filterFields = filterField.split("_")[1];
+            if (filterType && filterFields) {
+                formData["filterType"] = filterType;
+                formData["filterField"] = filterFields;
+            }
+            formData["filterValue"] = min_pointer + "," + max_pointer;
+            this.filterSearchSubmit(formData, url, function (res) {
+                if (func) {
+                    func(res)
+                }
+            });
+            errorMsg.html('');
+        } else {
+            errorMsg.html("请输入正确的价格范围!");
         }
     }
 }

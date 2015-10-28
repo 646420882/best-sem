@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public interface CampaignService {
 
     void deleteByIds(List<Long> campaignIds);
 
-    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo);
+    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo,SearchFilterParam sp);
 
     CampaignDTO findByObjectId(String oid);
 

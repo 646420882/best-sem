@@ -4,6 +4,7 @@ package com.perfect.dao.campaign;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     void updateByMongoId(CampaignDTO newCampaign, CampaignDTO campaignEntity);
 
-    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo);
+    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo,SearchFilterParam sp);
 
     CampaignDTO findCampaignByName(String name);
 

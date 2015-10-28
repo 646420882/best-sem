@@ -18,6 +18,7 @@ import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -238,9 +240,9 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
             if (!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(campaignDTO.getCampaignName())), getEntityClass())) {
                 getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
             }
-        }else{
+        } else {
             campaignEntity.setId(null);
-            getMongoTemplate().insert(campaignEntity,TBL_CAMPAIGN);
+            getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
         }
         return campaignEntity.getId();
     }
@@ -341,21 +343,21 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     @Override
     public void batchDelete(List<String> asList, List<String> adgroupList, List<String> keywordDatas, List<String> creativeDatas) {
-        asList.forEach(e->{
-            if(e.length() < 24){
+        asList.forEach(e -> {
+            if (e.length() < 24) {
                 Update update = new Update();
                 update.set("ls", 3);
                 getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(Long.valueOf(e))), update, getEntityClass());
-            }else{
+            } else {
                 getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
             }
         });
-        adgroupList.forEach(e->{
-            if(e.length() < 24){
+        adgroupList.forEach(e -> {
+            if (e.length() < 24) {
                 Update update = new Update();
                 update.set("ls", 4);
                 getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.valueOf(e))), update, AdgroupEntity.class);
-            }else{
+            } else {
                 getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), AdgroupEntity.class);
             }
         });
@@ -430,18 +432,19 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
-    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo, SearchFilterParam sp) {
         Query q = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId));
+        searchFilterQueryOperate(q, sp);
         int totalCount = getListTotalCount(q);
 
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
-        q.with(new Sort("name"));
         if (totalCount < 1) {
             p.setList(new ArrayList());
             return p;
         }
+
         List list = getMongoTemplate().find(q, getEntityClass());
         p.setList(list);
         return p;
@@ -625,6 +628,85 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 //        List<String> adgroupIds=new ArrayList<>();
 //        adgroupEntities.parallelStream().forEach(s->adgroupIds.add(s.getId()));
 
+    }
+
+    private Query searchFilterQueryOperate(Query q, SearchFilterParam sp) {
+        if (sp != null) {
+            switch (sp.getFilterField()) {
+                case "name":
+                    getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                    break;
+                case "state":
+                    if (sp.getFilterValue().contains(",")) {
+                        String[] status = sp.getFilterValue().split(",");
+                        Integer[] integers = new Integer[status.length];
+                        for (int i = 0; i < integers.length; i++) {
+                            integers[i] = Integer.parseInt(status[i]);
+                        }
+                        q.addCriteria(Criteria.where("s").in(integers));
+                    } else {
+                        q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
+                    }
+                    break;
+                case "pause":
+                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                        if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                            q.addCriteria(Criteria.where("p").is(false));
+                        } else {
+                            q.addCriteria(Criteria.where("p").is(true));
+                        }
+                    }
+                    break;
+                case "budget":
+                    String[] prs = sp.getFilterValue().split(",");
+                    double starPrice = Double.parseDouble(prs[0]);
+                    double endPrice = Double.parseDouble(prs[1]);
+                    q.addCriteria(Criteria.where("bd").gte(starPrice).lte(endPrice));
+                    break;
+                case "show":
+                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                        q.addCriteria(Criteria.where("sp").is(Integer.valueOf(sp.getFilterValue())));
+                    }
+                    break;
+                case "dynamic":
+                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                        if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                            q.addCriteria(Criteria.where("idc").is(false));
+                        } else {
+                            q.addCriteria(Criteria.where("idc").is(true));
+                        }
+                    }
+                    break;
+            }
+        }
+        return q;
+    }
+
+    private void getNormalQuery(Query q, String field, Integer selected, String filterValue) {
+        switch (selected) {
+            case 1:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^.*?" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 11:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^(?!.*(" + filterValue + ")).*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 2:
+                q.addCriteria(Criteria.where(field).is(filterValue));
+                break;
+            case 22:
+                q.addCriteria(Criteria.where(field).ne(filterValue));
+                break;
+            case 3:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 33:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
+                break;
+        }
     }
 
 }
