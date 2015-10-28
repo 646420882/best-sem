@@ -81,7 +81,6 @@ function initDomain() {
 function getKwdList(nowPage) {
     initDomain();
     pageType = 1;
-
     $("#tbodyClick").empty();
     $("#tbodyClick").html("加载中...");
 
@@ -261,9 +260,7 @@ function keywordDataToHtml(obj, index) {
 
     html = html + "<td>" + until.convert(obj.object.pause, "启用:暂停") + "</td>";
 
-    html = html + until.convert(obj.object.price == null, "<td><0.10></td>:<td>" + obj.object.price + "</td>");
-
-
+    html = html + until.convert(obj.object.price == null, "<td><0.10></td>:<td class='InputTd'>" + "<span>" + obj.object.price + "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>");
     //计算机质量度
     var quanlityHtml = "<span>";
     var quanlityText = "";
@@ -387,9 +384,23 @@ function keywordDataToHtml(obj, index) {
 
     return html;
 }
+/*input点击效果*/
+function InputPrice(obj) {
+    var htmlEm = $(obj).prev();
+    var htmlValue = htmlEm.html();
+    console.log(htmlValue);
+    htmlEm.replaceWith("<input type='text' id='text' style='float:left;width:50px;height:20px;line-height:20px; margin-top:5px;' value='" + htmlValue + "' maxlength='5' />");
+    $("#text").focus();
+}
+$("body").on("focusout", "#text", function () {
+    var PriceVal = $("#text").val();
+    $(this).replaceWith("<span>" + PriceVal + "</span>");
+    if ($(this).val() == "") {
+        $(this).replaceWith("<span> 0.1</span>");
+    }
+});
 
 /*加载列表数据end*/
-
 
 function setKwdValue(obj, kwid) {
     $("#hiddenkwid_1").val(kwid);
@@ -400,7 +411,8 @@ function setKwdValue(obj, kwid) {
     } else if (price == "&nbsp;") {
         $(".price_1").val("");
     } else {
-        $(".price_1").val($(obj).find("td:eq(4)").html());
+        $(".price_1").val($(obj).find("td:eq(4)").children().first(0).html())
+
     }
 
 
@@ -945,7 +957,6 @@ var menu_keyword_add = {
         }
 
     }
-
 function showSearchWord() {
     $("#adgroup_select").empty();
     $("#phraseTypeDiv").hide();
@@ -1125,4 +1136,38 @@ function addCensus() {
             }
         });
     }
+}
+function AddKeywords() {
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height()
+    });
+    $("#AddKeywords").css({
+        left: ($("body").width() - $("#AddKeywords").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#AddKeywords").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"});
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $("#AddKeywords").css("display", "none");
+    });
+
+}
+function AddKeywordsSave() {
+    $("#AddKeywords").css("display", "none");
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height()
+    });
+
+    $("#SaveSet").css({
+        left: ($("body").width() - $("#SaveSet").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#SaveSet").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $("#SaveSet").css("display", "none");
+    });
+}
+
+function countChar(textareaName, spanName) {
+    document.getElementById(spanName).innerHTML = document.getElementById(textareaName).value.length;
 }

@@ -7,10 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!---------下载账户----------->
-<div class="TB_overlayBG"></div>
+
 <div class="box" style="display:none;*width:400px;" id="download">
     <h2 id="CampaignChange"><span class="fl">账户下载</span><a href="#" class="close">×</a></h2>
-
     <div class="mainlist">
         您希望下载账户的哪个部分？
         <ul class="zs_set">
@@ -201,14 +200,12 @@
     <h2 id="excludeIPChange">
         <span class="fl">IP排除</span>
         <a href="#" class="close">×</a></h2>
-
-
     <div class="mainlist">
         <ul class="zs_set">
             <li><textarea id="excludeIP_ta" style="width: 250px; overflow:auto; resize: none"></textarea></li>
         </ul>
     </div>
-    <div class="main_bottom" style="margin-left: 12%">
+    <div class="main_bottom">
         <div class="w_list03">
             <ul>
                 <li id="excludeIP_ok" class="current">确认</li>
@@ -219,7 +216,9 @@
 </div>
 <!---------修改动态创意状态----------->
 <div class="box7" style="display:none; width: 230px">
-    <h2 id="changeCreative"><a href="#" class="close">×</a></h2>
+    <h2 id="changeCreative">
+        <span class="fl">是否开启</span>
+        <a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <div class="w_list03">
@@ -268,7 +267,7 @@
     <h2 id="setFdKeywordDiv">
         <span class="fl">否定关键词设置</span>
         <a href="javascript:void(0)" onclick="closeSetNegtiveWord();"
-           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">×</a></h2>
+           style="color: #ccc;float: right;font-size: 16px; line-height: 46px;">×</a></h2>
 
     <div class="mainlist">
         <p>以下设置仅对"广泛","短语"匹配的关键词生效，每行一词，每词20汉字以内，最多200项。</p>
@@ -303,7 +302,7 @@
             <ul class="chuangyi">
                 <li><label style="display: none;">---:<span>4/50</span></label><input name="oid" type="hidden"/></li>
                 <li><label>创意标题:<span>49/50</span></label><input name="title" class="chuangyi_input" maxlength="50"/>
-                    <input type="button" class="chuangyi_fu" value="插入{}符" onclick="addTb()"/></li>
+                    <input type="button" class="chuangyi_fu " value="插入{}符" onclick="addTb()"/></li>
                 <li><label>创意描述1:<span>49/80</span></label><input name="description1" class="chuangyi_input"
                                                                   maxlength="80"/><input type="button"
                                                                                          class="chuangyi_fu"
@@ -344,9 +343,9 @@
 <%--推广计划设置IP排除窗口--%>
 <div class="box" style="display:none;" id="setExcludeIp">
     <h2 id="setExcludeIpDiv">
-        <span class="fl">IP排除列表</span>
+        <span class="fl">IP排除</span>
         <a href="javascript:void(0)" onclick="closeSetExcludeIp();"
-           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">×</a></h2>
+           style="color: #ccc;float: right;font-size: 24px; line-height: 46px;">×</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -374,7 +373,7 @@
     <h2 id="setExtensionDiv">
         <span class="fl">推广时段管理</span>
         <a href="javascript:void(0)" onclick="closeSetExtension();"
-           style="color: #fff;float: right;font-size: 12px; line-height: 46px;">×</a></h2>
+           style="color: #ccc;float: right;font-size:24px; line-height: 46px;">×</a></h2>
 
     <div class="chooseTime">
         <b class="fl">请选择时段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(按住Ctrl键并且鼠标经过可多选时间段)</b>

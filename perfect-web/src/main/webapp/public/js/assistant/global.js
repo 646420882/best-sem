@@ -3,6 +3,7 @@ $("tbody").delegate("tr", "click", function (event) {
     listnumber = $(this);
     $(this).parent().find("tr").removeClass("list2_box3");
     $(this).addClass("list2_box3");
+
     /*    $(this).parent().find("tr").find("input").prop("checked", false);
      $(this).find("input").prop("checked", true);*/
 
@@ -99,7 +100,7 @@ function whenClickTreeLoadData(tabName, param) {
  */
 $("#tabMenu li").click(function () {
     var tabName = $(this).html();
-    switch(tabName){
+    switch (tabName) {
         case "普通创意":
             editCommons.EditType = "creative";
             break;

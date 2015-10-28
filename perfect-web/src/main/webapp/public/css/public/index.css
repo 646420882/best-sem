@@ -37,7 +37,7 @@
 .ui-widget-content {
   border: none;
     background: none;
-    color: #ffbb04;
+
 }
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border: 1px solid #ffffff;
@@ -46,7 +46,7 @@
     background: none;
 }
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
- background: #ffbb04;
+ background: #c3def9;
     border-radius: 100%;
     color: white;
 }

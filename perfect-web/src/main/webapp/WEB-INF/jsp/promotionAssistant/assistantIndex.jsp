@@ -12,15 +12,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/table/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/accountCss/assistantStyle.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
-
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css"
@@ -61,9 +61,6 @@
             box-sizing: border-box;
         }
 
-        .mainlist ul li input {
-            height: 30px;
-        }
 
     </style>
     <script>
@@ -95,23 +92,22 @@
 <div class="zhushou over">
 <div class="zhushou_menu">
     <ul class="zs_nav">
-        <li class="showbox"><a id="downloadAccountData"><span><img
-                src="../public/img/dowland.png"></span><span>下载账户</span></a></li>
-        <li onclick="uploadDialog()"><a><span><img
-                src="../public/img/update.png"></span><span>上传更新</span></a></li>
-        <li class="current"><a href="javascript:void(0)"
-                               onclick="alert('该功能还在开发中!');"><span><img
-                src="../public/img/Advanced_search.png"></span><span>高级搜索</span></a>
+        <li class="showbox"><a id="downloadAccountData"><span class="glyphicon glyphicon-save"></span><span>下载账户</span></a>
         </li>
-        <li class="nav_menu"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span><img
-                src="../public/img/Repeat_keyword.png"></span><span>重复关键词</span></a>
+        <li onclick="uploadDialog()"><a><span class="glyphicon glyphicon-open"></span><span>上传更新</span></a></li>
+        <li class="current"><a href="javascript:void(0)"
+                               onclick="alert('该功能还在开发中!');"><span
+                class="glyphicon glyphicon-search"></span><span>高级搜索</span></a>
+        </li>
+        <li class="nav_menu"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span
+                class="glyphicon glyphicon-transfer"></span><span>重复关键词</span></a>
             <%--<ul>--%>
             <%--<li class="showbox3 current">重复关键词</li>--%>
             <%--<li>设置</li>--%>
             <%--</ul>--%>
         </li>
-        <li class="showbox4"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"> <span><img
-                src="../public/img/Estimate.png"></span><span>估算工具</span></a></li>
+        <li class="showbox4"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"> <span
+                class="glyphicon glyphicon-cog"></span><span>估算工具</span></a></li>
     </ul>
 </div>
 <div class="zhushou_concent over" id="jiangkong_box2">
@@ -131,7 +127,7 @@
 <div class="containers">
     <div class="zs_function">
         <ul class="fl">
-            <li><a id="addKeyword" href="#"><span class="zs_top"><img
+            <li><a onclick="AddKeywords()" href="#"><span class="zs_top"><img
                     src="../public/img/zs_function1.png"></span><b>添加</b></a>
             </li>
             <li><a href="javascript:deleteKwd()"><span class="zs_top"><img
@@ -185,7 +181,7 @@
         </ul>
     </div>
     <div class="list4" id="kkeyword" style="height:400px;">
-        <div class="container">
+        <div class="containers">
             <table border="0" cellspacing="0" width="100%"
                    class="table1 table-bordered"
                    data-resizable-columns-id="demo-table">
@@ -237,7 +233,7 @@
                     <div class="t_list01 fl over">关键词名称：</div>
                     <div class="t_list02 fl over"><input type="text"
                                                          disabled="disabled"
-                                                         class="zs_input1 keyword_1">
+                                                         class="zs_input1 keyword_1 form-control">
                     </div>
                 </li>
                 <li>
@@ -245,7 +241,7 @@
                     <div class="t_list02 fl over"><input type="text"
                                                          onblur="whenBlurEditKeyword(2,this.value)"
                                                          onkeydown="missBlur(event,this)"
-                                                         class="zs_input1 price_1"
+                                                         class="zs_input1 price_1 form-control"
                                                          maxlength="5"
                                                          onkeypress='until.regDouble(this)'>
                     </div>
@@ -255,7 +251,7 @@
                     <div class="t_list02 fl over"><input type="text"
                                                          onblur="whenBlurEditKeyword(3,this.value)"
                                                          onkeydown="missBlur(event,this)"
-                                                         class="zs_input1 pcurl_1"
+                                                         class="zs_input1 pcurl_1 form-control"
                                                          maxlength="1024"><span
                             class="pcurlSize_1">0/1024</span></div>
                 </li>
@@ -264,7 +260,7 @@
                     <div class="t_list02 fl over"><input type="text"
                                                          onblur="whenBlurEditKeyword(4,this.value)"
                                                          onkeydown="missBlur(event,this)"
-                                                         class="zs_input1 mourl_1"
+                                                         class="zs_input1 mourl_1 form-control"
                                                          maxlength="1024"><span
                             class="mourlSize_1">0/1024</span></div>
                 </li>
@@ -356,7 +352,7 @@
         </ul>
     </div>
     <div class="list4" style="height:400px;" id="tcreative">
-        <div class="container">
+        <div class="containers">
             <table border="0" cellspacing="0" width="100%" id="createTable"
                    class="table2 table-bordered"
                    data-resizable-columns-id="demo-table">
@@ -404,20 +400,20 @@
                 <li>
                     <div class="t_list01 fl over">创意标题：</div>
                     <div class="t_list03 fl over">
-                        <input type="text" class="zs_input1" id="sTitle"><span>49/50</span>
+                        <input type="text" class="zs_input1 form-control" id="sTitle"><span>49/50</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意描述1：</div>
                     <div class="t_list03 fl over"><input type="text"
-                                                         class="zs_input1"
+                                                         class="zs_input1 form-control"
                                                          id="sDes1"><span>79/80</span>
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">创意描述2：</div>
                     <div class="t_list03 fl over"><input type="text"
-                                                         class="zs_input1"
+                                                         class="zs_input1 form-control"
                                                          id="sDes2"><span>79/80</span>
                     </div>
                 </li>
@@ -425,14 +421,14 @@
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">默认访问URL：</div>
                         <div class="t_list05 fl over"><input type="text"
-                                                             class="zs_input3"
+                                                             class="zs_input3 form-control"
                                                              id="sPc"/><span>0/1024</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">默认显示URL：</div>
                         <div class="t_list05 fl over"><input type="text"
-                                                             class="zs_input3"
+                                                             class="zs_input3 form-control"
                                                              id="sPcs"/><span>35/36</span>
                         </div>
                     </div>
@@ -441,14 +437,14 @@
                     <div class="t_list04 fl over">
                         <div class="t_list01 fl over">移动访问URL：</div>
                         <div class="t_list05 fl over"><input type="text"
-                                                             class="zs_input3"
+                                                             class="zs_input3 form-control"
                                                              id="sMib"><span>49/1017</span>
                         </div>
                     </div>
                     <div class="t_list04 fr over">
                         <div class="t_list01 fl over">移动显示URL：</div>
                         <div class="t_list05 fl over"><input type="text"
-                                                             class="zs_input3"
+                                                             class="zs_input3 form-control"
                                                              id="sMibs"><span>35/36</span>
                         </div>
                     </div>
@@ -535,7 +531,7 @@
             </li>
         </ul>
     </div>
-    <div class="container gridcss ">
+    <div class="containers gridcss ">
         <table id="subTable">
         </table>
         <div id="subPager"></div>
@@ -548,60 +544,60 @@
                 <li>
                     <div class="cy_bottom1 fl over">
                         <span>子链一 名称</span>
-                        <input type="text" class="zs_input3"
+                        <input type="text" class="zs_input3 form-control"
                                name="linkName1">
                     </div>
                     <div class="cy_bottom1 fl over">
                         <span>URL：</span><input type="text"
-                                                class="zs_input3"
+                                                class="zs_input3 form-control"
                                                 name="linkUrl1">
                     </div>
                 </li>
                 <li>
                     <div class="cy_bottom1 fl over">
                         <span>子链二 名称</span>
-                        <input type="text" class="zs_input3"
+                        <input type="text" class="zs_input3 form-control"
                                name="linkName2">
                     </div>
                     <div class="cy_bottom1 fl over">
                         <span>URL：</span><input type="text"
-                                                class="zs_input3"
+                                                class="zs_input3 form-control"
                                                 name="linkUrl1">
                     </div>
                 </li>
                 <li>
                     <div class="cy_bottom1 fl over">
                         <span>子链三 名称</span>
-                        <input type="text" class="zs_input3"
+                        <input type="text" class="zs_input3 form-control"
                                name="linkName3">
                     </div>
                     <div class="cy_bottom1 fl over">
                         <span>URL：</span><input type="text"
-                                                class="zs_input3"
+                                                class="zs_input3 form-control"
                                                 name="linkUrl1">
                     </div>
                 </li>
                 <li>
                     <div class="cy_bottom1 fl over">
                         <span>子链四 名称</span>
-                        <input type="text" class="zs_input3"
+                        <input type="text" class="zs_input3 form-control"
                                name="linkName4">
                     </div>
                     <div class="cy_bottom1 fl over">
                         <span>URL：</span><input type="text"
-                                                class="zs_input3"
+                                                class="zs_input3 form-control"
                                                 name="linkUrl1">
                     </div>
                 </li>
                 <li id="liLink5">
                     <div class="cy_bottom1 fl over">
                         <span>子链五名称</span>
-                        <input type="text" class="zs_input3"
+                        <input type="text" class="zs_input3 form-control"
                                name="linkName5">
                     </div>
                     <div class="cy_bottom1 fl over">
                         <span>URL：</span><input type="text"
-                                                class="zs_input3"
+                                                class="zs_input3 form-control"
                                                 name="linkUrl1">
                     </div>
                 </li>
@@ -672,7 +668,7 @@
             </li>
         </ul>
     </div>
-    <div class="container">
+    <div class="containers">
         <table border="0" cellspacing="0" width="100%"
                class="table3 table-bordered"
                data-resizable-columns-id="demo-table">
@@ -698,7 +694,7 @@
     </div>
 </div>
 <div class="list4" style="height:358px;display:none;" id="stb3">
-    <div class="container">
+    <div class="containers">
         <table border="0" cellspacing="0" width="100%"
                class="table3 table-bordered"
                data-resizable-columns-id="demo-table">
@@ -759,7 +755,7 @@
         </ul>
     </div>
     <div class="list4" style="height:400px;" id="aadgroup">
-        <div class="container">
+        <div class="containers">
             <table border="0" cellspacing="0" width="100%" id="adGroupTable"
                    class="table4 table-bordered"
                    data-resizable-columns-id="demo-table">
@@ -829,14 +825,14 @@
                 <li>
                     <div class="t_list01 fl over">名称：</div>
                     <div class="t_list02 fl over"><input type="text"
-                                                         class="zs_input1"
+                                                         class="zs_input1 form-control"
                                                          disabled="disabled">
                     </div>
                 </li>
                 <li>
                     <div class="t_list01 fl over">出价：</div>
                     <div class="t_list02 fl over"><input type="text"
-                                                         class="zs_input1"
+                                                         class="zs_input1 form-control"
                                                          disabled="disabled">
                     </div>
                 </li>
@@ -886,7 +882,7 @@
         </ul>
     </div>
     <div class="list4" id="ccampaign" style="height: 400px;">
-        <div class="container">
+        <div class="containers">
             <table border="0" cellspacing="0" width="100%"
                    class="table5 table-bordered"
                    data-resizable-columns-id="demo-table">
@@ -938,7 +934,7 @@
                     <div class="t_list06 fl over"><input type="text"
                                                          onblur="whenBlurEditCampaign(1,this.value);"
                                                          onkeydown="missBlur(event,this);"
-                                                         class="zs_input3 campaignName_5"
+                                                         class="zs_input3 campaignName_5 form-control"
                                                          maxlength="30"></div>
                 </li>
                 <li>
@@ -946,7 +942,7 @@
                     <div class="t_list06 fl over"><input type="text"
                                                          onblur="whenBlurEditCampaign(2,this.value);"
                                                          onkeydown="missBlur(event,this);"
-                                                         class="zs_input3 budget_5"
+                                                         class="zs_input3 budget_5 form-control"
                                                          maxlength="5">
                     </div>
                 </li>
@@ -961,7 +957,7 @@
                     <div class="t_list06 fl over"><input type="text"
                                                          onblur="whenBlurEditCampaign(3,this.value);"
                                                          onkeydown="missBlur(event,this);"
-                                                         class="zs_input3 priceRatio_5"
+                                                         class="zs_input3 priceRatio_5 form-control"
                                                          maxlength="3"
                                                          onkeypress='until.regDouble(this)'>
                     </div>
@@ -1100,10 +1096,10 @@
                             class="zs_top"><img
                             src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
                     </li>
-    <%--                <li><a href="#"><span class="zs_top"><img
-                            src="../public/img/zs_function11.png"></span><b
-                            id="activate">激活</b></a>
-                    </li>--%>
+                    <%--                <li><a href="#"><span class="zs_top"><img
+                                            src="../public/img/zs_function11.png"></span><b
+                                            id="activate">激活</b></a>
+                                    </li>--%>
                     <li><a href="javascript:void(0);" onclick="showSearchWord();"><span
                             class="zs_top"><img
                             src="../public/img/zs_function5.png"></span><b>搜索</b></a>
@@ -1117,7 +1113,7 @@
                 </ul>
             </div>
             <div class="list4">
-                <div class="container">
+                <div class="containers">
                     <table border="0" cellspacing="0" width="100%"
                            class="table1 table-bordered"
                            data-resizable-columns-id="demo-table">
@@ -1212,7 +1208,7 @@
                 </ul>
             </div>
             <div class="list4" style="height:400px;">
-                <div class="container">
+                <div class="containers">
                     <table border="0" cellspacing="0" width="100%"
                            class="table2 table-bordered"
                            data-resizable-columns-id="demo-table">
@@ -1239,7 +1235,7 @@
                                 监控关键词数量：
                             </div>
                             <div class="t_list02 fl over"><input type="text"
-                                                                 class="zs_input1"
+                                                                 class="zs_input1 form-control"
                                                                  id="count" readonly>
                             </div>
                         </li>
@@ -1248,7 +1244,7 @@
                                 监控文件夹名称：
                             </div>
                             <div class="t_list02 fl over"><input type="text"
-                                                                 class="zs_input1"
+                                                                 class="zs_input1 form-control"
                                                                  id="folder" readonly>
                             </div>
                         </li>
@@ -1301,14 +1297,17 @@
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
 <jsp:include page="alert/sublinkAdd.jsp"/>
 <jsp:include page="../popup/commons/findOrReplace.jsp"/>
+<%--添加关键词弹出窗口--%>
+<jsp:include page="../promotionAssistant/popup/addkeyword.jsp"/>
 <!-- javascript -->
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/store.js/1.3.14/store.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>
+<%--<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/table/jquery.resizableColumns.min.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/plugs/jQuery-smartMenu/jquery-smartMenu.js"></script>
@@ -1343,17 +1342,14 @@
         src="${pageContext.request.contextPath}/public/js/assistant/assistantsublink.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/commons/commons.js"></script>
 <script type="text/javascript">
-    $(function () {
-        window.dialog = dialog;
-    });
-    $(function () {
-        setTimeout("resizable('table1')", 300);
-    });
-    var resizable = function (cla) {
-        $("." + cla).resizableColumns({
-            store: store
-        });
-    };
+    /*   $(function () {
+     setTimeout("resizable('table1')", 300);
+     });
+     var resizable = function (cla) {
+     $("." + cla).resizableColumns({
+     store: store
+     });
+     };*/
     //loading
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();
@@ -1369,14 +1365,14 @@
         $(document).keydown(function (event) {
 
             if (event.ctrlKey && event.keyCode == 65) {
-                var checked=$("input[name='keyAllCheck'],input[name='creativeAllCheck'],input[name='adgroupAllCheck'],input[name='campaignAllCheck']");
-                if(checked.prop("checked")){
+                var checked = $("input[name='keyAllCheck'],input[name='creativeAllCheck'],input[name='adgroupAllCheck'],input[name='campaignAllCheck']");
+                if (checked.prop("checked")) {
                     $('#tbodyClick tr').css('background', '')
                     $('#tbodyClick2 tr').css('background', '')
                     $('#tbodyClick_campaign tr').css('background', '')
                     $('#tbodyClick5 tr').css('background', '');
                     $(".list4").find("input").prop("checked", false);
-                }else{
+                } else {
                     $('#tbodyClick tr').css('background', '#fcefc5');
                     $('#tbodyClick2 tr').css('background', '#fcefc5');
                     $('#tbodyClick_campaign tr').css('background', '#fcefc5');
@@ -1400,7 +1396,7 @@
         $('#tbodyClick2 tr').css('background', '')
         $('#tbodyClick_campaign tr').css('background', '')
         $('#tbodyClick5 tr').css('background', '');
-      /*  $(".list4").find("input").prop("checked", false);*/
+        /*  $(".list4").find("input").prop("checked", false);*/
 
     }
 

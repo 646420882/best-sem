@@ -158,6 +158,7 @@ function adgroupAddOperate(obj) {
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>本地新增</td>" +
                     " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
+                    " <td class='InputTd'>" + "<span>" + getAdgroupPauseByBoolean(formData["pause"]) + "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>" +
                     "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</td>" +
                     "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
                     "<td>" + plans.cn + "</td>" +
@@ -233,7 +234,9 @@ function loadAdgroupData(page_index) {
                         "<td >" + json[i].adgroupName + "</td>" +
                         "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                         "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                        "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
+                        /*" <td>" + parseFloat(_maxPrice).toFixed(2) + "</td>" +*/
+                        " <td class='InputTd'>" + "<span>" +parseFloat(_maxPrice).toFixed(2)+ "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>" +
+                        /* "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +*/
                         "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
                         "<td >" + json[i].campaignName + "</td>" +
                         "<td >" + _ls + "</td>" +

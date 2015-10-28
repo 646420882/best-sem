@@ -163,7 +163,7 @@
 }
 
 .list01_top ul .current {
-    background: #f5b802;
+    background: #01aef0;
     color: #fff;
 }
 
@@ -327,10 +327,10 @@
     padding: 0 10px 0 20px;
     font-size: 12px;
     font-family: "微软雅黑";
-    background: #ffbb04 url(/public/img/new_down.png) 7px 8px no-repeat;
+    background: #01aef0 url(/public/img/new_down.png) 7px 8px no-repeat;
     text-align: center;
     line-height: 26px;
-    color: #000000;
+    color: #fff;
 }
 
 .download select {
@@ -344,7 +344,7 @@
 }
 
 .download a:hover {
-    background: #fdd66d url(/public/img/new_down.png) 7px 8px no-repeat;
+    background: #03a4e2 url(/public/img/new_down.png) 7px 8px no-repeat;
 }
 
 .list2 table, .list3 table {
@@ -640,7 +640,7 @@
     height: 31px;
     line-height: 31px;
     margin-top: 29px;
-    color: #000;
+    color: #fff;
     text-align: center;
     background: url(/public/img/bg.png) -10px -180px no-repeat;
 }
@@ -1060,7 +1060,7 @@
     line-height: 31px;
     text-align: center;
     background: url(/public/img/bg.png) -10px -282px no-repeat;
-    color: #000000;
+    color: #fff;
 }
 
 .become2:hover {
@@ -1642,17 +1642,24 @@ ul.ztree.zTreeDragUL {
     margin-bottom: 10px;
     line-height: 24px;
     font-size: 12px;
-    background: #e4eafa;
+    background: #e0e0e0;
+    color:#626262;
     cursor: pointer;
+    border-radius: 4px;
     overflow: hidden;
 }
 
 .w_list03 ul li:hover {
-    background: #ffbc04;
+    background: #01aef0;
+    color:#fff;
 }
 
 .w_list03 ul .current {
-    background: #ffbc04;
+    background: #01aef0;
+    color:#fff;
+    border-radius: 4px;
+
+
 }
 
 .w_list03 p {
@@ -1661,7 +1668,6 @@ ul.ztree.zTreeDragUL {
 }
 
 .list4 {
-
     width: 100%;
     overflow: auto;
 }
@@ -1675,6 +1681,7 @@ ul.ztree.zTreeDragUL {
 
 .list4 table thead {
     height: 30px;
+    background: #272537;
     overflow: hidden;
 }
 
@@ -1811,13 +1818,14 @@ ul.ztree.zTreeDragUL {
     *width: 90%;
     height: 46px;
     font-size: 14px;
-    background-color: #282538;
+    background-color: #fff;
     position: relative;
     padding: 0 12px;
     margin: 0px;
     line-height: 46px;
-    color: #fff;
+    color: #000000;
     cursor: Move;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 #downloadData, .box5 {
@@ -1825,14 +1833,14 @@ ul.ztree.zTreeDragUL {
 }
 
 h2 .close {
-    color: #fff;
+    color: #cccccc;
     float: right;
     font-size: 20px;
     line-height: 46px;
 }
 
 .close {
-    color: #000;
+    color: #cccccc;
     float: right;
     font-size: 20px;
     font-weight: normal;
@@ -1841,7 +1849,7 @@ h2 .close {
 }
 
 .close:hover {
-    color: #fff;
+    color: #000000;
 }
 
 .mainlist {
@@ -1942,6 +1950,7 @@ h2 .close {
     padding: 20px 0;
     text-align: center;
     width: 100%;
+    overflow:hidden;
 
 }
 
@@ -1981,14 +1990,18 @@ h2 .close {
     display: block;
     float: left;
     height: 68px;
-    border-right: 1px solid #cfcfcf;
+    border-right: 1px solid #e6e6e6;
     cursor: pointer;
     position: relative;
     z-index: 9;
 }
 
 .zhushou_menu ul .current {
-    background: url(/public/img/zhuahsou_top_hover.png) repeat-x;
+    background: #01aef0;
+
+}
+.zhushou_menu ul .current a{
+    color:#fff;
 }
 
 .zhushou_menu ul li span {
@@ -2044,7 +2057,7 @@ h2 .close {
 .zs_concent_top {
     height: 22px;
     line-height: 22px;
-    border-bottom: 1px solid #dadadd;
+    border-bottom: 1px solid #21a2e7;
 }
 
 .zs_concent_top ul li {
@@ -2062,17 +2075,17 @@ h2 .close {
 
 .zs_concent_top ul .current {
     background: url(/public/img/bg.png) -10px -378px no-repeat;
+    color:#fff;
 }
 
 .zs_line {
     height: 1px;
-    background: #ffba04;
-    border-top: 1px solid #ffc102;
-    border-bottom: 1px solid #da9309;
+    background: #1d99dc;
+    border-top: 1px solid #5cb6e6;
+    border-bottom: 1px solid #2ca5e6;
 }
 
 .zs_box {
-    border: 1px solid #dadadd;
     background: #fafafa;
 }
 
@@ -2216,6 +2229,7 @@ h2 .close {
 }
 
 .zs_bottom1 span {
+    float:left;
     color: #b4b4b4;
 }
 
@@ -2234,6 +2248,7 @@ h2 .close {
 .zs_input1 {
     width: 87%;
     height: 22px;
+    float:left;
     border: 1px solid #cfcfcf;
 }
 
@@ -2292,13 +2307,13 @@ h2 .close {
 }
 
 .list2_box3,.add.list2_box3{
-    background: #fcefc5;
+    background: #c9e0f2;
 }
 .add{
-background: #c9e6fe;
+background: #c3def9;
 }
 .update{
-    background:#b8defe;
+    background:#cce4fb;
 }
 .del{
     background:#fce59b;
@@ -2384,10 +2399,11 @@ background: #c9e6fe;
 }
 
 .cy_menu ul .current {
-    background: #ffc002;
+    background: #01aef0;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+    color:#fff;
 }
 
 .cy_bottom1 {
@@ -2395,6 +2411,7 @@ background: #c9e6fe;
 }
 
 .t_list05 .zs_input3 {
+    float:left;
     width: 80%;
 }
 
@@ -2432,8 +2449,7 @@ background: #c9e6fe;
     height: 34px;
     line-height: 34px;
     padding: 0 12px;
-    background: url(/public/img/zhuahsou_top_hover.png) repeat-x;
-    border-bottom: 1px solid #da9309;
+    background:#01aef0;
 }
 
 .zh_top span {
@@ -2442,7 +2458,7 @@ background: #c9e6fe;
 }
 
 .zh_top span b {
-    color: #000;
+    color: #fff;
 }
 
 .zh_top span a {
@@ -3421,6 +3437,7 @@ background: #c9e6fe;
     min-width: 110px;
     font-weight: normal;
     *width: 200px;
+    text-align: center;
 
 }
 
@@ -3866,7 +3883,7 @@ background: #c9e6fe;
 }
 
 .zhushou {
-    padding-left: 210px;
+    padding-left: 191px;
 }
 
 /*input[type=checkbox],
@@ -3917,7 +3934,7 @@ input[type=checkbox]:focus {
 
 /* CSS Document */
 .list2_box2.list2_box3 {
-    background: #fcefc5;
+    background: #c9e0f2;
 }
 
 .list2_box2.table_ctrl, .list2_box1.table_ctrl {
@@ -3930,11 +3947,11 @@ input[type=checkbox]:focus {
     border-bottom: 1px solid #dadadd
 }
 
-/*#tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {*/
-/*background: #f0f0f0;*/
-/*}*/
 #tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {
-
+background: #d2e9ff;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+padding-bottom: 0px;
 }
 
 #tabs .ui-state-default a, .ui-state-default a:link {
@@ -4194,11 +4211,11 @@ input[type=checkbox]:focus {
     text-overflow:ellipsis
 }
 .ui-dialog-header{
-    background:#272537!important;
-    color:#fff;
+    background:#fff!important;
+    color:#000;
 }
 .ui-dialog-close{
-    color:#fff!important;
+    color:#ccc!important;
 }
 .ui-dialog{
     padding:0px!important;
@@ -4255,4 +4272,117 @@ background: #34befe;
 .list01_under2.list01_color ul li .yellow1{
     background: url(/public/img/yellow2.png) center no-repeat;
     background-size: 48px;
+}
+.InputTd{
+    padding:0 10px;
+}
+.InputTd span{
+    float:left;
+    padding:0 2%;
+}
+#InputImg{
+    display:none;
+}
+.list2_box3 #InputImg{
+    display:block;
+}
+.zhushou_menu ul li .glyphicon{
+    font-size: 18px;
+    background: #01aef0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    margin:0 0 5px 10px;
+}
+.zhushou_menu ul .current .glyphicon{
+    background: #ffffff;
+    color:#01aef0;
+}
+.w_list05 {
+    margin-bottom:0px;
+}
+/******关键词弹窗*******/
+.add_title{
+    overflow:hidden;
+}
+.add_title li{
+    display:block;
+    float:left;
+    margin:0 20px 0 0;
+}
+.mainlist input[type=checkbox]{
+    float:left;
+    margin:2px 2px 0 0 ;
+}
+.add_textarea{
+    margin-top:10px;
+    overflow:hidden;
+}
+.add_textarea textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #eeeeee;
+}
+.add_bottom .w_list03{
+   padding:0 20px;
+    overflow: hidden;
+
+}
+.add_bottom .w_list03 select{
+    margin-right:10px;
+    height:30px;
+    border-radius: 2px;
+
+}
+.w_list03 ul {
+    width:auto;
+    float:right;
+}
+.btn-primary {
+  background: #01aef0;
+    border:none;
+}
+.btn-primary:hover{
+    background: #029ed1;
+}
+.saveset .plan_input{
+    width:130px;
+}
+.saveset .planbox1{
+    width:90px;
+}
+.saveset .planbox2{
+    color:#aaaaaa;
+}
+.zs_function ul {
+    margin-bottom:0px;
+}
+.w_list03 .jiangjia_list{
+    float:left;
+    margin-left:10px;
+}
+.ui-jqgrid-htable thead{
+    background: #272537;
+    color:#fff;
+}
+.ui-jqgrid .ui-jqgrid-htable th div{
+    color:#fff;
+    font-weight:normal;
+    font-family: "微软雅黑";
+}
+.ui-widget-content .list2_box2{
+    background: #ecf3f9;
+}
+.ui-widget-content .list2_box2:hover{
+    background:#c9e0f2;
+}
+.ui-widget-content .ui-state-hover{
+    background:#c9e0f2;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+    background:#c3def9;
 }
