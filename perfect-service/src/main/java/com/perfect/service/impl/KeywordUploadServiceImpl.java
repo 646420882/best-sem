@@ -2,6 +2,7 @@ package com.perfect.service.impl;
 
 import com.google.common.collect.Maps;
 import com.perfect.dao.keyword.KeywordDAO;
+import com.perfect.db.mongodb.impl.KeywordDAOImpl;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.KeywordUploadService;
 import org.bson.types.ObjectId;
@@ -30,8 +31,15 @@ public class KeywordUploadServiceImpl implements KeywordUploadService {
     private final Function<Long, Map<String, Map<Integer, List<String>>>> accountDeduplicateFunction = baiduUserId -> {
         Map<String, Map<Integer, List<String>>> result = Maps.newHashMap();
 
+        // TODO 全账户去重
+        // 1. 查询出当前账户所有存在于凤巢的关键词.
+        @SuppressWarnings("unchecked")
+        List<KeywordDAOImpl.KeywordAggsDTO> baiduKeywordList = (List<KeywordDAOImpl.KeywordAggsDTO>) keywordDAO.findAllKeywordFromBaiduByAccountId(baiduUserId);
+
+        // 2. 检测所有新增的关键词是否和1中的关键词有重复.
         List<KeywordDTO> newKeywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, NEW);
 
+        // 3. 检测所有修改后的关键词是否和1中的关键词有重复.
         List<KeywordDTO> modifiedKeywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, MODIFIED);
 
 
@@ -50,8 +58,7 @@ public class KeywordUploadServiceImpl implements KeywordUploadService {
                 .map(i -> {
                     if (i == 1) {
                         // NEW
-                        return Maps.immutableEntry(i, keywordDAO
-                                .findLocalChangedKeywords(baiduUserId, i)
+                        return Maps.immutableEntry(i, keywordDAO.findLocalChangedKeywords(baiduUserId, i)
                                 .stream()
                                 .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()))
                                 .values()
@@ -73,8 +80,7 @@ public class KeywordUploadServiceImpl implements KeywordUploadService {
                                 .collect(Collectors.toList()));
                     } else {
                         // MODIFIED
-                        return Maps.immutableEntry(i, keywordDAO
-                                .findLocalChangedKeywords(baiduUserId, i)
+                        return Maps.immutableEntry(i, keywordDAO.findLocalChangedKeywords(baiduUserId, i)
                                 .stream()
                                 .filter(keywordDTO -> sameAdgroupKeywordMap.containsKey(keywordDTO.getKeyword().trim().toUpperCase()))
                                 .map(KeywordDTO::getKeyword)
