@@ -769,22 +769,42 @@ function createChooseTimeUIByCampaignData(data) {
 
 
 /*显示设置推广地域窗口*/
+rDrag.init(document.getElementById('SetAera'));
 $(".regionTarget_5").click(function () {
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height()
+    });
+    $("#ctrldialogplanRegionDialog").css({
+        left: ($("body").width() - $("#ctrldialogplanRegionDialog").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#ctrldialogplanRegionDialog").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $("#ctrldialogplanRegionDialog").css("display", "none");
+    });
     var cid = $("#hiddenCampaignId").val();
-    top.dialog({
-        title: "设置推广地域",
-        padding: "5px",
-        content: "<iframe src='/assistantCampaign/showSetPlace?cid=" + cid + "' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-        oniframeload: function () {
-        },
-        onclose: function () {
-        },
-        onremove: function () {
-        }
-    }).showModal();
+    /*    top.dialog({
+     title: "设置推广地域",
+     padding: "5px",
+     content: "<iframe src='/assistantCampaign/showSetPlace?cid=" + cid + "' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+     oniframeload: function () {
+     },
+     onclose: function () {
+     },
+     onremove: function () {
+     }
+     }).showModal();*/
 
 });
-
+var AreaClick = $("#ctrlradioboxpartRegion,#ctrlradioboxallRegion,#useAcctRegion,#usePlanRegion");
+AreaClick.click(function () {
+    $("#ctrldialogplanRegionDialog").css({
+        left: ($("body").width() - $("#ctrldialogplanRegionDialog").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#ctrldialogplanRegionDialog").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+});
 
 /**
  * 弹出添加推广计划的窗口

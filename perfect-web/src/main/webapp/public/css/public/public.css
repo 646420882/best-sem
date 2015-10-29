@@ -339,7 +339,7 @@ table tr, table tr td {
 .switchAccountSerach{
     margin: 10px 10px 0 10px;
     padding: 0 5px;
-    border-color:#dfdfdf ;
+    border:1px solid #ccc ;
     box-shadow: none;
     background: url(/public/img/switchAccountSerach.png) no-repeat right ;
 }

@@ -4308,18 +4308,30 @@ background: #34befe;
     margin-bottom:0px;
 }
 /******关键词弹窗*******/
-.add_title{
-    overflow:hidden;
+.add_title {
+    height:30px;
+    line-height:30px;
+    overflow: hidden;
 }
 .add_title li{
     display:block;
     float:left;
     margin:0 20px 0 0;
 }
+.add_title  input[type=checkbox]{
+    margin-top:8px;
+}
 .mainlist input[type=checkbox]{
     float:left;
     margin:2px 2px 0 0 ;
 }
+.mainlist input[type=text],.mainlist select{
+    height:30px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+
+}
+
 .add_textarea{
     margin-top:10px;
     overflow:hidden;
@@ -4388,4 +4400,11 @@ background: #34befe;
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
     background:#c3def9;
+}
+.checkbox-inlines{
+    margin-right:10px;
+}
+.aeralist input[type=checkbox]{
+    margin:8px 3px 0 0 ;
+
 }

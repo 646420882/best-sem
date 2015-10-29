@@ -219,9 +219,9 @@ $(document).ready(function () {
         $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
         $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
         var xx = $(this).attr("cname");
-        setTimeout(function () {
+     /*   setTimeout(function () {
             resizable(xx)
-        }, 400);
+        }, 400);*/
     });
     $('.zh_menuMonitor li').click(function () {
         $("#zTree").height($(".assistant_right")[0].offsetHeight - 230 + "px");

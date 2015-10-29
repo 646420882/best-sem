@@ -44,19 +44,19 @@
                         </div>
                 </li>
                 <li>
-                    <label class="checkbox-inline fl"><input type="checkbox" checked="checked" name="fQcaseLowerAndUpper"
+                    <label class="checkbox-inlines fl"><input type="checkbox" checked="checked" name="fQcaseLowerAndUpper"
                             />匹配大小写</label>
-                    <label class="checkbox-inline fl"><input type="checkbox" name="fQcaseAll" >匹配整个字词</label>
-                    <label class="checkbox-inline fl"><input type="checkbox" name="fQigonreTirm" >忽略文字两端空格</label>
+                    <label class="checkbox-inlines fl"><input type="checkbox" name="fQcaseAll" >匹配整个字词</label>
+                    <label class="checkbox-inlines fl"><input type="checkbox" name="fQigonreTirm" >忽略文字两端空格</label>
                 </li>
                 <li>
                     <div class="replaceleft fl">
                         <label>替换为：</label>
                     </div>
                     <div class="replaceright fl">
-                        <input name="replaceText" type="text"/>
-                        <label class="checkbox-inline"><input type="checkbox" name="rQigonreTirm" />复制相匹配的项目。然后替换所复制项目中的文字</label>
-                        <label class="checkbox-inline"><input type="checkbox" name="rQigonreTirm" />忽略文字两端空格</label>
+                        <input name="replaceText" type="text"/><br><br>
+                        <label class="checkbox-inlines"><input type="checkbox" name="rQigonreTirm" />复制相匹配的项目。然后替换所复制项目中的文字</label>
+                        <label class="checkbox-inlines"><input type="checkbox" name="rQigonreTirm" />忽略文字两端空格</label>
                     </div>
                 </li>
             </ul>
