@@ -424,11 +424,8 @@ public class CreativeServiceImpl implements CreativeService {
                     }
                     asList.clear();
                     keywordDTOs.forEach(e -> {
-                        if (e.getCreativeId() != null) {
-                            asList.add(String.valueOf(e.getCreativeId()));
-                        } else {
-                            asList.add(e.getId());
-                        }
+                        if (e.getCreativeId() != null) asList.add(String.valueOf(e.getCreativeId()));
+                        else asList.add(e.getId());
                     });
                 } else {
                     List<CreativeDTO> creativeDTOs;
@@ -447,11 +444,8 @@ public class CreativeServiceImpl implements CreativeService {
                         List<String> strings = Lists.newArrayList();
                         List<Long> longs = Lists.newArrayList();
                         adgroupDAO.findByCampaignOId(param.getCampaignId()).forEach(e -> {
-                            if (e.getAdgroupId() != null) {
-                                longs.add(e.getAdgroupId());
-                            } else {
-                                strings.add(e.getId());
-                            }
+                            if (e.getAdgroupId() != null) longs.add(e.getAdgroupId());
+                            else strings.add(e.getId());
                         });
                         creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
                         List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
@@ -459,11 +453,8 @@ public class CreativeServiceImpl implements CreativeService {
                     }
                     asList.clear();
                     creativeDTOs.forEach(e -> {
-                        if (e.getCreativeId() != null) {
-                            asList.add(String.valueOf(e.getCreativeId()));
-                        } else {
-                            asList.add(e.getId());
-                        }
+                        if (e.getCreativeId() != null) asList.add(String.valueOf(e.getCreativeId()));
+                        else asList.add(e.getId());
                     });
                 }
             }

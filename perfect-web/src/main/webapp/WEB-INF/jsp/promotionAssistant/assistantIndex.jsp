@@ -1297,10 +1297,12 @@
 <jsp:include page="../promotionAssistant/alert/addCampaign.jsp"/>
 <jsp:include page="alert/sublinkAdd.jsp"/>
 <jsp:include page="../popup/commons/findOrReplace.jsp"/>
-<%--添加关键词弹出窗口--%>
-<jsp:include page="../promotionAssistant/popup/addkeyword.jsp"/>
+
 <%--地域设置--%>
 <jsp:include page="alert/setRegionTarget.jsp" />
+<%--添加关键词弹出窗口--%>
+<jsp:include page="../promotionAssistant/popup/addkeywordNews.jsp"/>
+<!-- javascript -->
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

@@ -226,6 +226,8 @@ function addKeywordInitCampSelect() {
             }
             $("#campaign_select").empty();
             $("#campaign_select").append(campaigns);
+            $("#adgroup_select").empty();
+            $("#adgroup_select").append("<option value=''>请选择推广计划</option>");
         }
     });
 }

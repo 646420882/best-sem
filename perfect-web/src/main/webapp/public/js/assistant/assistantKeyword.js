@@ -25,7 +25,6 @@ var pageSelectCallback = function (page_index, jq) {
     }
     pageIndex = page_index;
     if (pageType == 1) {
-        console.log("asdfsadfasdf")
         getKwdList(page_index);
     } else if (pageType == 2) {
         getCampaignList(page_index);
@@ -1000,6 +999,7 @@ var keywordMenuExt = {
 };
 
 function validateNoAllowKeyword(value) {
+    console.log(value)
     if (value != "") {
         $.get("/assistantKeyword/getNoKeywords", {aid: value}, function (res) {
             var adNeg = "";
@@ -1149,9 +1149,38 @@ function AddKeywords() {
         $(".TB_overlayBG").css("display", "none");
         $("#AddKeywords").css("display", "none");
     });
-
+    addKeywordInitCampSelect()
 }
 function AddKeywordsSave() {
+
+    var campaignId = $("#campaign_select option:selected").val();
+    if (campaignId == null || campaignId.length == 0) {
+        alert("请选择推广计划!");
+        return;
+    }
+    var adgroupId = $("#adgroup_select option:selected").val();
+    if (adgroupId == null || adgroupId.length == 0) {
+        alert("请选择推广单元!");
+        return;
+    }
+    var device = $("#device_select option:selected").val();
+    if (device == null || device.length == 0) {
+        alert("请选择推广设备!");
+        return;
+    }
+
+    var kwds = $("#status").val().trims().split("\n");
+    console.log(kwds)
+    if(kwds[kwds.length-1] == ""){
+        kwds.splice(kwd.length-1, 1);
+    }
+    console.log(kwds)
+    if(kwds.length > 5000){
+        alert("关键词个数大于5000");
+        return
+    }
+
+
     $("#AddKeywords").css("display", "none");
     $(".TB_overlayBG").css({
         display: "block", height: $(document).height()
@@ -1166,6 +1195,27 @@ function AddKeywordsSave() {
         $(".TB_overlayBG").css("display", "none");
         $("#SaveSet").css("display", "none");
     });
+}
+function countAddKwd(){
+    var kwd = $("#status").val().split("\n");
+    kwd.forEach(function(e,i){
+        if(kwd.length != i+1 && e.replace(/\s/g,"") == ""){
+            kwd.splice(i, 1);
+        }
+    });
+
+    $("#status").val(kwd.toString().replace(/\,/g,"\n"));
+    if(kwd[kwd.length-1] == ""){
+        kwd.splice(kwd.length-1, 1);
+    }
+    if(kwd.length > 5000){
+        $("#counter").attr("style","color:red")
+    }else{
+        if($("#counter").attr("style") == "color:red"){
+            $("#counter").attr("style","font-weight:normal")
+        }
+    }
+    document.getElementById("counter").innerHTML = kwd.length;
 }
 
 function countChar(textareaName, spanName) {
