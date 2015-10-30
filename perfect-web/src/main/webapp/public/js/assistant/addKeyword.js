@@ -14,6 +14,13 @@ $(function () {
             $("#phraseTypeDiv").hide();
         }
     });
+    $("#matchTypeNew").change(function () {
+        if (this.value == "2") {
+            $("#phraseTypeDivNew").show();
+        } else {
+            $("#phraseTypeDivNew").hide();
+        }
+    });
     var $tab_li = $('.assembly_checkbox li');
     $('.assembly_checkbox li').click(function () {
         wordType = $(this).attr("id");
@@ -31,7 +38,7 @@ $(function () {
 
     $("#campaign_select").change(function () {
         var campaignId = $("#campaign_select option:selected").val();
-        if(campaignId!=""){
+        if (campaignId != "") {
             if (campaignId.length < 24) {
                 $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
                     {
@@ -72,7 +79,50 @@ $(function () {
                     });
             }
         }
-
+    });
+    $("#campaign_selectNew").change(function () {
+        var campaignId = $("#campaign_selectNew option:selected").val();
+        if (campaignId != "") {
+            if (campaignId.length < 24) {
+                $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
+                    function (data) {
+                        var adgroups = "", datas = data.rows;
+                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            var _adgroupId = "";
+                            if (datas[i].adgroupId != null) {
+                                _adgroupId = datas[i].adgroupId;
+                            } else {
+                                _adgroupId = datas[i].id;
+                            }
+                            adgroups += "<option maxPrice="+ datas[i].maxPrice +" value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
+                        }
+                        $("#adgroup_selectNew").empty();
+                        $("#adgroup_selectNew").append(adgroups);
+                    });
+            } else {
+                $.getJSON("/adgroup/getAdgroupByCampaignObjId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
+                    function (data) {
+                        var adgroups = "", datas = data.rows;
+                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            adgroups += "<option  maxPrice="+ datas[i].maxPrice +" value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
+                        }
+                        $("#adgroup_selectNew").empty();
+                        $("#adgroup_selectNew").append(adgroups);
+                    });
+            }
+        }
     });
 
 
@@ -228,9 +278,80 @@ function addKeywordInitCampSelect() {
             $("#campaign_select").append(campaigns);
             $("#adgroup_select").empty();
             $("#adgroup_select").append("<option value=''>请选择推广计划</option>");
+            $("#campaign_selectNew").empty();
+            $("#campaign_selectNew").append(campaigns);
+            $("#adgroup_selectNew").empty();
+            $("#adgroup_selectNew").append("<option value=''>请选择推广计划</option>");
         }
     });
 }
+
+var saveKeywordNew = function () {
+    var camBgt = $("#acBgt").html();
+    var price = $("#priceNew").val();
+    if (price != "") {
+        if (!/^-?\d+\.?\d*$/.test(price)) {
+            alert("输入正确的关键词出价！");
+            return;
+        } else {
+            if (parseFloat(price) > 999.9 || parseFloat(price) > parseFloat(camBgt)) {
+                alert("关键词出价为：(0,999.9]<=出价&&<计划预算" + camBgt + "元");
+                return;
+            }
+        }
+    } else {
+        price = $("#adgroup_selectNew option:selected").attr("maxprice");
+    }
+    var matchType = $("#matchTypeNew :selected").val();
+    var phraseType = $("#phraseTypeNew :selected").val();
+    var adgroupId = $("#adgroup_selectNew option:selected").val();
+    //获取所有选中的关键词
+    var jsonObj = [];
+
+    var kwd = $("#statusNew").val().split("\n");
+    kwd.forEach(function(item,i){
+        if (item != undefined) {
+            var entity1 = {};
+            entity1["accountId"] = $("#bdAccountId").html();
+            if (adgroupId.length < 24) {
+                entity1["adgroupId"] = adgroupId;
+            } else {
+                entity1["adgroupObjId"] = adgroupId;
+            }
+            entity1["keyword"] = item;
+            entity1["price"] = (price==undefined || price == ""?"0.1":price);
+            entity1["matchType"] = matchType;
+            entity1["pause"] = false;
+            entity1["status"] = -1;
+            if (matchType == "2") {
+                entity1["phraseType"] = phraseType;
+            } else {
+                entity1["phraseType"] = 1;
+            }
+            entity1["localStatus"] = 1;
+            jsonObj.push(entity1);
+        }
+    });
+    $.ajax({
+        url: "/keyword/add",
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify(jsonObj),
+        async: false,
+        contentType: "application/json; charset=UTF-8",
+        success: function (data, textStatus, jqXHR) {
+            if (data.stat == true) {
+                alert("添加成功");
+                $(".TB_overlayBG").css("display", "none");
+                $("#SaveSet").css("display", "none");
+                closeAddKeywordDialog();
+                reloadGrid();
+            }
+        }
+    });
+
+}
+
 var saveKeyword = function () {
 
     var campaignId = $("#campaign_select option:selected").val();
@@ -341,7 +462,7 @@ var saveKeyword = function () {
                 alert("关键词\"" + keyword_selected + "\"存在于单元广泛，短语否定词中,该词不能被添加!");
                 return;
             } else {
-                if (adExNeg.indexOf(keyword_selected)>-1) {
+                if (adExNeg.indexOf(keyword_selected) > -1) {
                     alert("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
                     return;
                 }
@@ -350,7 +471,7 @@ var saveKeyword = function () {
                 alert("关键词\"" + keyword_selected + "\"存在于计划广泛，短语否定词中,该词不能被添加!");
                 return;
             } else {
-                if (caExNeg.indexOf(keyword_selected)>-1) {
+                if (caExNeg.indexOf(keyword_selected) > -1) {
                     alert("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
                     return;
                 }

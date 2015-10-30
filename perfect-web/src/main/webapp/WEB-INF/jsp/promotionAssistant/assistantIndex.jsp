@@ -75,7 +75,6 @@
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
-<jsp:include page="../promotionAssistant/alert/addkeyword.jsp"/>
 <div class="concent over">
 <jsp:include page="../homePage/pageBlock/nav.jsp"/>
 <div class="mid fr over">
@@ -1302,6 +1301,7 @@
 <jsp:include page="alert/setRegionTarget.jsp" />
 <%--添加关键词弹出窗口--%>
 <jsp:include page="../promotionAssistant/popup/addkeywordNews.jsp"/>
+<jsp:include page="../promotionAssistant/alert/addkeyword.jsp"/>
 <!-- javascript -->
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>

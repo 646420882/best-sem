@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--添加监控文件夹弹出窗口--%>
 <div class="box" style="display:none" id="AddKeywords">
-    <h2 id="AddKeywordsTitle">
+    <h2 id="AddKeywordsTitleNew">
         <span class="fl">添加关键词</span>
         <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
 
@@ -19,7 +19,7 @@
             </li>
             <li>
                 <span>推广设备：</span>
-                <select id="device_select" class="selectpicker">
+                <select id="device_selectNew" class="selectpicker">
                     <option value="0">全部设备</option>
                     <option value="1">计算机</option>
                     <option value="2">移动设备</option>
@@ -30,14 +30,14 @@
             </li>
         </ul>
         <div class="add_textarea">
-            <textarea id="status" rows="12" cols="40" oninput="countAddKwd()"></textarea>
-            <span class="fr"><label id="counter" style="font-weight:normal"> 0</label>/ 5000</span>
+            <textarea id="statusNew" rows="12" cols="40" oninput="countAddKwd()"></textarea>
+            <span class="fr"><label id="counterNew" style="font-weight:normal"> 0</label>/ 5000</span>
         </div>
     </div>
     <div class="main_bottom add_bottom" style="background-color: #f8f8f8">
         <div class="w_list03">
-            <select id="campaign_select" class="selectpicker fl"></select>
-            <select id="adgroup_select" class="selectpicker fl" onchange="validateNoAllowKeyword(this.value)"></select>
+            <select id="campaign_selectNew" class="selectpicker fl"></select>
+            <select id="adgroup_selectNew" class="selectpicker fl" onchange="validateNoAllowKeyword(this.value)"></select>
             <button type="button" class="btn btn-primary fr" onclick="AddKeywordsSave()">保存</button>
         </div>
     </div>
@@ -53,7 +53,7 @@
             <li>
                 <div class="planbox1 fl">统一出价：</div>
                 <div class="planbox2 fl">
-                    <input id="price" type="text" class="plan_input"
+                    <input id="priceNew" type="text" class="plan_input"
                            onkeyup='until.regDouble(this)' maxlength="7"> 为空则采用单元出价
                 </div>
             </li>
@@ -70,14 +70,14 @@
                         <option>短语-同义包含</option>
                         <option>精确</option>
                     </select>--%>
-                    <select id="matchType" class="selectpicker plan_input">
+                    <select id="matchTypeNew" class="selectpicker plan_input">
                         <option value="1">精确</option>
                         <option value="2">短语</option>
                         <option value="3">广泛</option>
                     </select>
 
-                    <div id="phraseTypeDiv" style="display: none;">
-                        <select id="phraseType" class="selectpicker plan_input">
+                    <div id="phraseTypeDivNew" style="display: none;">
+                        <select id="phraseTypeNew" class="selectpicker plan_input">
                             <option value="1">同义包含</option>
                             <option value="2">精确包含</option>
                             <option value="3">核心包含</option>
@@ -86,12 +86,12 @@
                 </div>
             </li>
         </ul>
-
+        <span id="bdAccountIdNew" style="display: none"></span>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current" >确定</li>
+                <li class="current" onclick="saveKeywordNew()">确定</li>
                 <li class="close" onclick="closeAlert();">取消</li>
             </ul>
         </div>
