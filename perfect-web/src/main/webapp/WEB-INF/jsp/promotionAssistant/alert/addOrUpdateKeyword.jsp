@@ -10,12 +10,16 @@
 <html>
 <head>
     <title></title>
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/zTreeStyle/zTreeStyle.css">
     <style type="text/css">
-
+    h1,h2,h3 {
+        margin: 0px;
+    }
         .list4 table {
             border: 1px solid #eaf0f3;
             overflow: auto;
@@ -51,12 +55,14 @@
         .list2 table .list2_top td, th {
             color: #333;
         }
+
+
     </style>
 </head>
 <body>
 <div id="background" class="background hides"></div>
 <div id="progressBar" class="progressBar hides">数据处理中，请稍等...</div>
-<div style="background-color: #f3f5fd; width: 900px; height: 900px">
+<div style="background-color: #f8f8f8; width:900px;height:900px;">
     <div class="addplan_top over">
         <ul id="tabUl">
             <li class="current">1、输入内容</li>
@@ -107,7 +113,7 @@
                                             id="doMain"></span></p>
                                     <%-- <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>--%>
                                 </div>
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px; background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" id="downloadAccount">下一步</li>
@@ -151,43 +157,103 @@
                 <div class="assembly_right3 over">
                     <div class="newkeword_end">
                         <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <p><span style="font-weight: bold; line-height:30px;padding:10px;">新增的关键字：<span
-                                    id="criSize">0</span></span></p>
-                            <table border="0" cellspacing="0" width="100%" id="createTable"
-                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
-                                <thead>
-                                <tr class="list02_top">
-                                    <th>&nbsp;计划名称</th>
-                                    <th>&nbsp;单元名称</th>
-                                    <th>&nbsp;关键字名称</th>
-                                    <th>&nbsp;匹配模式</th>
-                                    <th>&nbsp;出价</th>
-                                    <th>&nbsp;访问url</th>
-                                    <th>&nbsp;移动访问url</th>
-                                    <th>&nbsp;启用/暂停</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbodyClick2">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
-                        <div class="w_list03">
-                            <ul>
-                                <li class="current lastStep">上一步</li>
-                                <li id="finish">完成</li>
-                                <%--<li class="close">取消</li>--%>
-                            </ul>
-                        </div>
-                    </div>
 
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                              <span class="mycollapse">[ - ] </span><span style="font-weight: bold; line-height:30px;padding:10px;">新增的关键字：<span
+                                                    id="criSize">0</span></span>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="panel-body">
+                                            <p><input type="radio" checked="checked">添加这些关键词</p>
+                                            <p><input type="radio">不添加这些关键词</p>
+                                            <table border="0" cellspacing="0" width="100%" id="createTable"
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                <thead>
+                                                <tr class="list02_top">
+                                                    <th>&nbsp;计划名称</th>
+                                                    <th>&nbsp;单元名称</th>
+                                                    <th>&nbsp;关键字名称</th>
+                                                    <th>&nbsp;匹配模式</th>
+                                                    <th>&nbsp;出价</th>
+                                                    <th>&nbsp;访问url</th>
+                                                    <th>&nbsp;移动访问url</th>
+                                                    <th>&nbsp;启用/暂停</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tbodyClick2">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <span class="mycollapse">[ + ] </span> <span style="font-weight: bold; line-height:30px;padding:10px;">忽略的关键词(本地已存在的关键词)：3<span
+                                                    >0</span></span>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="panel-body">
+                                            <p><input type="radio" checked="checked">更新这些关键词</p>
+                                            <p><input type="radio">不更新这些关键词</p>
+                                            <table border="0" cellspacing="0" width="100%"
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                <thead>
+                                                <tr class="list02_top">
+                                                    <th>&nbsp;计划名称</th>
+                                                    <th>&nbsp;单元名称</th>
+                                                    <th>&nbsp;关键字名称</th>
+                                                    <th>&nbsp;匹配模式</th>
+                                                    <th>&nbsp;出价</th>
+                                                    <th>&nbsp;访问url</th>
+                                                    <th>&nbsp;移动访问url</th>
+                                                    <th>&nbsp;启用/暂停</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody >
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="progress_box">
+                <span>完成数据验证</span>
+                <div class="progress" style="width:300px;">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                        60%
+                    </div>
+                </div>
+            </div>
+
+            <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                <div class="w_list03">
+                    <ul>
+                        <li class="current lastStep">上一步</li>
+                        <li id="finish">完成</li>
+                        <%--<li class="close">取消</li>--%>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
@@ -230,6 +296,12 @@
             $("#checkAll2").prop("checked", $subbox2.length == $("input[name='subbox2']:checked").length ? true : false);
         });
 
+        $('#accordion').on('show.bs.collapse', function () {
+          $(this).find(".mycollapse").html("<span>[ + ]</span>")
+        })
+        $('#accordion').on('hide.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[-]</span>")
+        })
 
     });
 </script>
@@ -887,6 +959,7 @@
             $("#pError").css("color", "black");
         }
     }
+
 </script>
 
 </body>

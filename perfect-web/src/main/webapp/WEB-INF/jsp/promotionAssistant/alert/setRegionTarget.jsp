@@ -19,9 +19,9 @@
     <h2 id="SetAera" >
         <span class="fl">设置推广地域</span>
         <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
+    <input type="hidden" value="${cid}" id="campaignId">
 <div class="mainlist aeralist  " id="ctrldialogplanRegionDialogbody" style="overflow: visible">
 <div class="manage_dialog">
-    <input type="hidden" value="${cid}" id="campaignId">
 
 <div class="manage_region" id="planRegionSwitch"><span id="useAcctRegion">使用账户推广地域</span> &nbsp;|&nbsp; <span
         class="current_region" id="usePlanRegion">使用计划推广地域</span></div>

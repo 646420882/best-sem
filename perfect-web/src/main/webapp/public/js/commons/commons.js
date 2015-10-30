@@ -811,6 +811,7 @@ var price =
     + "到"
     + "<input type='number' name='max_points' min='00' max='10' />";
 var errorMsg = $("#filter_msg");
+
 var TabModel = {
     Show: function (type, _this) {
         if (!jsonData.cid) {

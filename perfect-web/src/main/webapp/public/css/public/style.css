@@ -3226,8 +3226,8 @@ background: #c3def9;
 .addplan_top ul li {
     display: block;
     float: left;
-    height: 36px;
-    line-height: 36px;
+    height: 34px;
+    line-height: 34px;
     width: 50%;
     text-align: center;
     background: #e0e0e0;
@@ -3237,14 +3237,14 @@ background: #c3def9;
 .addplan_top ul li span {
     display: block;
     float: left;
-    width: 20px;
-    margin-left: -4px;
-    height: 36px;
+    width: 28px;
+    /*margin-left: -1px;*/
+    height: 34px;
     background: url(/public/img/configure_right3.png) right no-repeat;
 }
 
 .addplan_top ul .current {
-    background: #272537;
+    background: #01aef0;
     color: #fff;
 }
 
@@ -3291,14 +3291,14 @@ background: #c3def9;
 }
 
 .newkeyword_left {
-    width: 30%;
+    width: 25%;
     padding: 10px;
     background: #fff;
     border: 1px solid #ccc;
 }
 
 .newkeyword_right {
-    width: 60%;
+    width: 70%;
     line-height: 24px;
 }
 
@@ -4404,7 +4404,45 @@ background: #34befe;
 .checkbox-inlines{
     margin-right:10px;
 }
-.aeralist input[type=checkbox]{
+.mainlist.aeralist input[type=checkbox]{
     margin:8px 3px 0 0 ;
-
+}
+.newkeyeord_top h3{
+    font-size:12px;
+    font-weight: bold;
+}
+.newkeword_end .table2 th{
+    min-width:10px;
+}
+.newkeword_end  .table2 td{
+    height:30px;
+}
+.newkeword_end .panel-body{
+    border:none;
+}
+.newkeword_end .panel-group .panel{
+    border-radius:0px;;
+}
+.newkeword_end .panel-default{
+    border:none;
+}
+.newkeword_end .panel-default>.panel-heading{
+    background-color:#fafafa;
+}
+.newkeword_end .panel-title {
+    font-size:12px;
+}
+.progress_box{
+    padding:0 15px;
+}
+.progress_box span{
+    float:left;
+}
+.progress_box .progress{
+    width:300px;
+    float:left;
+    margin-left:10px;
+}
+.progress_box .progress-bar{
+    background-color:#61d677;
 }
