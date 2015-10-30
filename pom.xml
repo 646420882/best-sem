@@ -79,7 +79,7 @@
         <slf4j-log4j12-version>1.7.12</slf4j-log4j12-version>
         <hikaricp-version>2.4.1</hikaricp-version>
         <perfect-comp-logging-version>0.0.1-SNAPSHOT</perfect-comp-logging-version>
-        <nexus-local-url>http://211.99.254.181:8081/nexus</nexus-local-url>
+        <nexus-local-url>http://repo.best-ad.cn/nexus</nexus-local-url>
     </properties>
 
     <repositories>
@@ -178,7 +178,7 @@
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
-                <version>2.2.1</version>
+                <version>2.2.2</version>
             </dependency>
 
             <dependency>

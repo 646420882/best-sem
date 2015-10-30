@@ -3,6 +3,7 @@ package com.perfect.dao.keyword;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
+import com.perfect.dto.keyword.KeywordAggsDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
@@ -47,7 +48,7 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     List<KeywordDTO> findHasLocalStatusLong(List<Long> longs);
 
-    List<?> findAllKeywordFromBaiduByAccountId(Long baiduAccountId);
+    List<KeywordAggsDTO> findAllKeywordFromBaiduByAccountId(Long baiduAccountId);
 
     List<KeywordDTO> findAllKeywordFromBaiduByAdgroupId(Long baiduAccountId, Long adgroupId);
 

@@ -8,12 +8,15 @@ import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     List<Long> getAllCampaignId();
 
     List<CampaignDTO> findAllDownloadCampaign();
+
+    Map<Long, String> findAllDownloadCampaignByBaiduAccountId(Long baiduAccountId);
 
     List<CampaignDTO> findDownloadCampaignsByBaiduAccountId(Long baiduAccountId);
 
@@ -47,7 +50,7 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     void updateByMongoId(CampaignDTO newCampaign, CampaignDTO campaignEntity);
 
-    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo,SearchFilterParam sp);
+    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo, SearchFilterParam sp);
 
     CampaignDTO findCampaignByName(String name);
 

@@ -38,7 +38,7 @@ public interface KeywordUploadService {
      * @param baiduUserId
      * @return
      */
-    Map<String, Map<Integer, List<String>>> deduplicate(Long baiduUserId);
+    Map<String, Map<Integer, List<String>>> deduplicate(final Long baiduUserId);
 
     /**
      * <p>同一单元去重.
@@ -47,5 +47,5 @@ public interface KeywordUploadService {
      * @param adgroupId
      * @return
      */
-    Map<Integer, List<String>> deduplicate(Long baiduUserId, Long adgroupId);
+    Map<Integer, List<String>> deduplicate(final Long baiduUserId, final Long adgroupId);
 }

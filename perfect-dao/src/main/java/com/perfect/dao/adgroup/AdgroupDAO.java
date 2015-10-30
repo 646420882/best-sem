@@ -32,6 +32,8 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     List<AdgroupDTO> findHasLocalStatusLong(List<Long> longs);
 
+    List<AdgroupDTO> findDownloadAdgroup(Long baiduAccountId, List<Long> adgroupIds);
+
     /**
      * <p>获取指定百度账号下在本地新增 修改 删除的推广单元
      * type: 1 -> 新增, 2 -> 修改, 3 -> 删除</p>
@@ -68,7 +70,7 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     void delBack(Long oid);
 
-    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize,SearchFilterParam sp);
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
     AdgroupDTO getByCampaignIdAndName(Long campaignId, String name);
 
@@ -96,6 +98,7 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
 
     /**
      * 批量删除
+     *
      * @param asList
      * @param keywordDatas
      * @param creativeDatas

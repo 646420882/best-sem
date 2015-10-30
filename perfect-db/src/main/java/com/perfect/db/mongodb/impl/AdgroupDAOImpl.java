@@ -37,7 +37,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.*;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -164,6 +164,14 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     @Override
     public List<AdgroupDTO> findHasLocalStatusLong(List<Long> longs) {
         List<AdgroupEntity> adgroupEntities = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).in(longs)), getEntityClass());
+        return ObjectUtils.convert(adgroupEntities, AdgroupDTO.class);
+    }
+
+    @Override
+    public List<AdgroupDTO> findDownloadAdgroup(Long baiduAccountId, List<Long> adgroupIds) {
+        List<AdgroupEntity> adgroupEntities = getMongoTemplate()
+                .find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(ADGROUP_ID).in(adgroupIds)), getEntityClass());
+
         return ObjectUtils.convert(adgroupEntities, AdgroupDTO.class);
     }
 
