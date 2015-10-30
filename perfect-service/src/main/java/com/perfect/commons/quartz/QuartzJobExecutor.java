@@ -34,8 +34,8 @@ public class QuartzJobExecutor implements Job {
 
 
     public QuartzJobExecutor() {
-        materialsUploadService = ApplicationContextHelper.getBeanByClass(MaterialsUploadServiceImpl.class);
-        materialsScheduledService = ApplicationContextHelper.getBeanByClass(MaterialsScheduledServiceImpl.class);
+        materialsUploadService = ApplicationContextHelper.getBean("materialsUploadService", MaterialsUploadServiceImpl.class);
+        materialsScheduledService = ApplicationContextHelper.getBean("materialsScheduledService", MaterialsScheduledServiceImpl.class);
     }
 
 

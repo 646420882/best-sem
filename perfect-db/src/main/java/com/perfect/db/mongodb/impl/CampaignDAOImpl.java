@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.google.common.collect.Maps;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -23,7 +24,6 @@ import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -148,6 +149,15 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
         List<CampaignDTO> campaignDTOs = ObjectUtils.convert(results.getMappedResults(), CampaignDTO.class);
         return campaignDTOs;
+    }
+
+    @Override
+    public Map<Long, String> findAllDownloadCampaignByBaiduAccountId(Long baiduAccountId) {
+        return getMongoTemplate()
+                .find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(CAMPAIGN_ID).ne(null)), getEntityClass())
+                .stream()
+                .map(e -> Maps.immutableEntry(e.getCampaignId(), e.getCampaignName()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     @Override

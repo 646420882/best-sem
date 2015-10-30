@@ -12,6 +12,7 @@ import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
+import com.perfect.dto.keyword.KeywordAggsDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.KeywordBackUpEntity;
@@ -1029,44 +1030,6 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                 q.addCriteria(Criteria.where(field).
                         regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
                 break;
-        }
-    }
-
-
-    public static class KeywordAggsDTO {
-
-        @org.springframework.data.mongodb.core.mapping.Field("kwid")
-        private Long keywordId;
-
-        @org.springframework.data.mongodb.core.mapping.Field("name")
-        private String keywordName;
-
-        @org.springframework.data.mongodb.core.mapping.Field("agid")
-        private String adgroupId;
-
-
-        public Long getKeywordId() {
-            return keywordId;
-        }
-
-        public void setKeywordId(Long keywordId) {
-            this.keywordId = keywordId;
-        }
-
-        public String getKeywordName() {
-            return keywordName;
-        }
-
-        public void setKeywordName(String keywordName) {
-            this.keywordName = keywordName;
-        }
-
-        public String getAdgroupId() {
-            return adgroupId;
-        }
-
-        public void setAdgroupId(String adgroupId) {
-            this.adgroupId = adgroupId;
         }
     }
 }
