@@ -226,6 +226,12 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
+    public List<KeywordDTO> findAllByBaiduAccountId(Long baiduAccountId) {
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
+    }
+
+    @Override
     public List<KeywordAggsDTO> findAllKeywordFromBaiduByAccountId(Long baiduAccountId) {
         Aggregation aggregation = newAggregation(
                 match(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("ls").is(null)),

@@ -48,4 +48,13 @@ public interface KeywordUploadService {
      * @return
      */
     Map<Integer, List<String>> deduplicate(final Long baiduUserId, final Long adgroupId);
+
+    /**
+     * <p>对于本地批量添加的关键词去重.
+     *
+     * @param baiduUserId 百度账户ID
+     * @param newKeywords 批量添加的关键词名称
+     * @return 重复关键词的MongoDB ID
+     */
+    List<String> deduplicate(final Long baiduUserId, final List<String> newKeywords);
 }

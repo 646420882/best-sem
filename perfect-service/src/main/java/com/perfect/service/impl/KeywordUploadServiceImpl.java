@@ -157,6 +157,27 @@ public class KeywordUploadServiceImpl implements KeywordUploadService {
         return adgroupDeduplicateFunction.apply(baiduUserId, adgroupId);
     }
 
+    @Override
+    public List<String> deduplicate(Long baiduUserId, List<String> newKeywords) {
+        return ((BiFunction<Long, List<String>, List<String>>) (bId, stringList) -> {
+            final List<KeywordDTO> list = keywordDAO.findAllByBaiduAccountId(bId);
+
+            final Map<String, List<KeywordDTO>> allKeywordGroupedMap = list.stream()
+                    .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()));
+
+            final List<String> deduplicateKeywordIds = Lists.newArrayList();
+
+            stringList.stream()
+                    .map(kn -> kn.trim().toUpperCase())
+                    .filter(allKeywordGroupedMap::containsKey)
+                    .forEach(k -> {
+                        allKeywordGroupedMap.get(k).forEach(keywordDTO -> deduplicateKeywordIds.add(keywordDTO.getId()));
+                    });
+
+            return deduplicateKeywordIds;
+        }).apply(baiduUserId, newKeywords);
+    }
+
 
     /**
      * <p>新增关键词的去重任务类.
