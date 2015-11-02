@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.creative.CreativeDAO;
-import com.perfect.service.CreativeUploadService;
+import com.perfect.service.CreativeDeduplicateService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,7 +14,7 @@ import java.util.Map;
  * @author dolphineor
  */
 @Service
-public class CreativeUploadServiceImpl implements CreativeUploadService {
+public class CreativeDeduplicateServiceImpl implements CreativeDeduplicateService {
 
     @Resource
     private CreativeDAO creativeDAO;

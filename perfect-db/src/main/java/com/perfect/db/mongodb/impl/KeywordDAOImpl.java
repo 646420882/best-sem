@@ -258,6 +258,12 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
+    public List<KeywordDTO> findByAdgroupId(Long baiduAccountId, Long adgroupId) {
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(ADGROUP_ID).is(adgroupId)), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
+    }
+
+    @Override
     public void insertAndQuery(List<KeywordDTO> keywordDTOList) {
         MongoTemplate mongoTemplate = getMongoTemplate();
         keywordDTOList.forEach(e -> {

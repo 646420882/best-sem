@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @author dolphineor
  */
-public interface CreativeUploadService {
+public interface CreativeDeduplicateService {
 
     /**
      * 新增

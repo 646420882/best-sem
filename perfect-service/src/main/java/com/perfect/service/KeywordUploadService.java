@@ -1,5 +1,7 @@
 package com.perfect.service;
 
+import com.perfect.dto.keyword.KeywordDTO;
+
 import java.util.List;
 import java.util.Map;
 
@@ -57,4 +59,14 @@ public interface KeywordUploadService {
      * @return 重复关键词的MongoDB ID
      */
     List<String> deduplicate(final Long baiduUserId, final List<String> newKeywords);
+
+    /**
+     * <p>同一单元关键词去重, 对于重复的关键词对其设定相应的状态.
+     *
+     * @param baiduUserId
+     * @param adgroupId
+     * @param list
+     * @return
+     */
+    List<KeywordDTO> deduplicate(final Long baiduUserId, final Long adgroupId, final List<KeywordDTO> list);
 }

@@ -56,6 +56,8 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     Long keywordCount(List<Long> adgroupIds);
 
+    List<KeywordDTO> findByAdgroupId(Long baiduAccountId, Long adgroupId);
+
     /**
      * 安全添加
      *

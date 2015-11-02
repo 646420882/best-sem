@@ -158,7 +158,7 @@ public class KeywordUploadServiceImpl implements KeywordUploadService {
     }
 
     @Override
-    public List<String> deduplicate(Long baiduUserId, List<String> newKeywords) {
+    public List<String> deduplicate(final Long baiduUserId, final List<String> newKeywords) {
         return ((BiFunction<Long, List<String>, List<String>>) (bId, stringList) -> {
             final List<KeywordDTO> list = keywordDAO.findAllByBaiduAccountId(bId);
 
@@ -176,6 +176,24 @@ public class KeywordUploadServiceImpl implements KeywordUploadService {
 
             return deduplicateKeywordIds;
         }).apply(baiduUserId, newKeywords);
+    }
+
+    @Override
+    public List<KeywordDTO> deduplicate(final Long baiduUserId, final Long adgroupId, final List<KeywordDTO> list) {
+        return ((Function<List<KeywordDTO>, List<KeywordDTO>>) keywordList -> {
+            final Map<String, List<KeywordDTO>> sameAdgroupKeywordMap = ((BiFunction<Long, Long, List<KeywordDTO>>) keywordDAO::findByAdgroupId).apply(baiduUserId, adgroupId)
+                    .stream()
+                    .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()));
+
+            return keywordList.stream()
+                    .map(k -> {
+                        if (sameAdgroupKeywordMap.containsKey(k.getKeyword().trim().toUpperCase()))
+                            k.setLocalStatus(0);
+
+                        return k;
+                    })
+                    .collect(Collectors.toList());
+        }).apply(list);
     }
 
 
