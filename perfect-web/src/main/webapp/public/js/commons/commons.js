@@ -1016,6 +1016,8 @@ var TabModel = {
     },
     modelClose: function () {
         $(".tabmodel").hide();
+
+
     },
     filterSearchOk: function () {
         var filterField = $("input[name='filterField']").val();

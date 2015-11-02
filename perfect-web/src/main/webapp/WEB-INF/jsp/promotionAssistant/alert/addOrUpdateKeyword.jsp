@@ -77,7 +77,7 @@
                 <div class="newkeyeord_title over">
                     <ul class="over">
                         <li><input type="radio" checked="checked" name="Target" class="current">选择推广计划、推广单元</li>
-                        <%-- <li><input type="radio"  name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>--%>
+                        <li><input type="radio" name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over">
@@ -128,19 +128,34 @@
                             <div class="newkeyword_right fr over" style="width:100%;">
                                 <h3> 输入关键词 </h3>
 
-                                <p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
+                                <p>请输入关键词信息（每行一个），并用tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
 
                                 <div class="newkeyword_right_mid">
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
 
                                     <p>例如：鲜花，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
-                                    <textarea></textarea>
+                                    <textarea id="specialText"  onkeyup="getColumn(this)"></textarea>
 
-                                    <p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)
+
+                                    <p id="sError">
+                                        不超过：<span id="nowColumn">0</span>
+                                        <
+                                        <span id="sMaxColumns">5000</span>
+                                    </p>
+
+                                    <p>或者从相同格式的csv文件上传：<input type="file" id="suFile">&nbsp;(<20万行)
                                     </p>
 
                                     <p><input type="checkbox">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
 
+                                </div>
+                                <div class="main_bottom" style="margin:0px;  background:none;">
+                                    <div class="w_list03">
+                                        <ul>
+                                            <li class="current" onclick="specialUpload()">下一步</li>
+                                            <li class="close" onclick="closeDialog()">取消</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -534,8 +549,6 @@
                 if (parseInt(getChar(kwd)) > 30 || parseInt(getChar(kwd)) < 1) {
                     alert("第" + (j + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
                     return;
-                }else{
-
                 }
                 // /^-?\d+\.?\d*$/
                 if (!/^-?\d+\.?\d*$/.test(pr)) {
@@ -557,12 +570,12 @@
                                 alert("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                                 return;
                             }
-//                            else {
-//                                if (pc.substr(pc.indexOf(dm)) != dm) {
-//                                    alert("第" + (j + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-//                                    return false;
-//                                }
-//                            }
+                            else {
+                                if (pc.substr(pc.indexOf(dm)) != dm) {
+                                    alert("第" + (j + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                    return false;
+                                }
+                            }
                         }
                     }
                 } else {
@@ -579,12 +592,12 @@
                                 alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                                 return;
                             }
-//                            else {
-//                                if (mib.substr(mib.indexOf(dm)) != dm) {
-//                                    alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
-//                                    return false;
-//                                }
-//                            }
+                            else {
+                                if (mib.substr(mib.indexOf(dm)) != dm) {
+                                    alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                    return false;
+                                }
+                            }
                         }
                     }
                 } else {
@@ -719,7 +732,7 @@
                     });
         }
     }
-    function closeDialog(){
+    function closeDialog() {
         top.dialog.getCurrent().close().remove();
     }
 
@@ -808,7 +821,6 @@
                     } else if (list[i].object.phraseType == 3) {
                         matchType = matchType + "-核心包含";
                     }
-                    ;
                     break;
                 case 3:
                     matchType = "广泛";
@@ -938,12 +950,23 @@
      */
     function getColumn(rs) {
         var _this = $(rs);
+        var id = _this.attr("id");
+        var column_id = "checkedNodes";
+        if (id == "specialText") {
+            column_id = "nowColumn";
+        }else{
+            column_id="checkedNodes";
+        }
         if (_this.val() != "") {
             var column = _this.val().trim().split("\n");
-            $("#checkedNodes").html(column.length);
-            focuspError();
+            $("#"+column_id).html(column.length);
+            if (id == "specialText") {
+                specialError();
+            } else {
+                focuspError();
+            }
         } else {
-            $("#checkedNodes").html(0);
+            $("#"+column_id).html(0);
         }
     }
     /**
@@ -959,7 +982,129 @@
             $("#pError").css("color", "black");
         }
     }
+    function specialError(){
+        var plans = parseInt($("#nowColumn").html());
+        if(plans>5){
+            $("#sError").css("color", "red");
+        }else{
+            $("#sError").css("color", "black");
+        }
+    }
 
+
+    function specialUpload() {
+        var suText = $("#specialText").val();
+        if (suText) {
+            getSpecialText(suText);
+        } else {
+            var suFile = $("#suFile");
+            var fileName = suFile.val();
+            if (fileName) {
+                console.log("我上传的是文件！");
+            } else {
+                alert("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
+            }
+        }
+
+    }
+    //    test test 鲜花 精确 1.2 http://www.perfect-cn.cn http://www.perfect-cn.cn 启用
+    //    test,test,鲜花,精确,1.2,http://www.perfect-cn.cn,http://www.perfect-cn.cn,启用
+    function getSpecialText(text) {
+        var textArea = text.split("\n");
+        validateKeyword(textArea);
+    }
+    function validateKeyword(textArea) {
+        var dm = "." + $("#doMain").html();
+        for (var i = 0; i < textArea.length; i++) {
+            var splitType = "\t";
+            if (textArea[i].indexOf(",") > 0) {
+                splitType = ",";
+            }
+            var t = textArea[i].split(splitType);
+            var campaignName = t[0] ? t[0] : "";
+            var adgroupName = t[1] ? t[1] : "";
+            var kwd = t[2] ? t[2] : "";
+            var matchType = t[3] ? t[3] : "";
+            var price = t[4] ? t[4] : "";
+            var pc = t[5] ? t[5] : "";
+            var mib = t[6] ? t[6] : "";
+            if (!campaignName) {
+                alert("第" + (i + 1) + "行请输入计划名称!");
+                return;
+            }
+            if (!adgroupName) {
+                alert("第" + (i + 1) + "行请输入单元名称!");
+                return;
+            }
+            if (parseInt(getChar(kwd)) > 30 || parseInt(getChar(kwd)) < 1) {
+                alert("第" + (i + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
+                return;
+            }
+            if (!matchType) {
+                alert("请输入匹配模式！")
+                return;
+            }
+            if (!/^-?\d+\.?\d*$/.test(price)) {
+                alert("第" + (i + 1) + "行的\"出价\"小数输入不正确!");
+                return;
+            } else {
+                if (parseFloat(price).toFixed(3) >= 999.9) {
+                    alert("第" + (i + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
+                    return;
+                }
+            }
+
+            if (pc != "") {
+                if (pc != "空") {
+                    if (parseInt(getChar(pc)) > 1024) {
+                        alert("访问Url不能超过1024个字符");
+                        return;
+                    } else {
+                        if ((pc.indexOf(dm) == -1)) {
+                            alert("第" + (i + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            return;
+                        }
+                        else {
+                            if (pc.substr(pc.indexOf(dm)) != dm) {
+                                alert("第" + (i + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                return false;
+                            }
+                        }
+                    }
+                }
+            } else {
+                alert("第" + (i + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
+                return;
+            }
+
+            if (mib != "") {
+                if (mib != "空") {
+                    if (parseInt(getChar(mib)) > 1024) {
+                        alert("访问Url不能超过1024个字符");
+                        return;
+                    } else {
+                        if ((mib.indexOf(dm) == -1)) {
+                            alert("第" + (i + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            return;
+                        }
+                        else {
+                            if (mib.substr(mib.indexOf(dm)) != dm) {
+                                alert("第" + (i + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                return false;
+                            }
+                        }
+                    }
+                }
+            } else {
+                alert("第" + (i + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
+                return;
+            }
+        }
+
+        //vaildate End
+
+
+    }
 </script>
 
 </body>
