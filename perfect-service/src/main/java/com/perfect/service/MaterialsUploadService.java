@@ -18,7 +18,7 @@ public interface MaterialsUploadService {
     /**
      * 重复
      */
-    int DUPLICATED = 0;
+    int DUPLICATED = -1;
 
     /**
      * 新增

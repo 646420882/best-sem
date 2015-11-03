@@ -6,7 +6,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.KeywordService;
-import com.perfect.service.KeywordUploadService;
+import com.perfect.service.KeywordDeduplicateService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,7 +25,7 @@ public class KeywordServiceImpl implements KeywordService {
     @Resource
     private KeywordDAO keywordDAO;
     @Resource
-    private KeywordUploadService keywordUploadService;
+    private KeywordDeduplicateService keywordDeduplicateService;
     @Resource
     private AccountManageService accountManageService;
 
@@ -52,7 +52,7 @@ public class KeywordServiceImpl implements KeywordService {
     @Override
     public List<String> insertAll(List<KeywordDTO> keywordDTOList) {
 
-        List<KeywordDTO> dtos = keywordUploadService.deduplicate(AppContext.getAccountId(), keywordDTOList.get(0).getAdgroupId(), keywordDTOList);
+        List<KeywordDTO> dtos = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), keywordDTOList.get(0).getAdgroupId(), keywordDTOList);
 
         Iterable<KeywordDTO> keywordDTOs = keywordDAO.save(dtos);
         List<String> strings = new ArrayList<>();
