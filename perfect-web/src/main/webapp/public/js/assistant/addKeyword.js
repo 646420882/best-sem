@@ -340,16 +340,33 @@ var saveKeywordNew = function () {
         async: false,
         contentType: "application/json; charset=UTF-8",
         success: function (data, textStatus, jqXHR) {
-            if (data.stat == true) {
-                alert("添加成功");
-                $(".TB_overlayBG").css("display", "none");
+            if (data.rows != undefined || data.rows !="") {
+                var string = "";
+                data.rows.forEach(function(item,i){
+                    string +=item + ","+ (i/5==0?"\n":"");
+                })
+                saveSeccuss();
+                $("#context").empty();
+                $("#context").append(string);
                 $("#SaveSet").css("display", "none");
-                closeAddKeywordDialog();
                 reloadGrid();
             }
         }
     });
 
+}
+
+var saveSeccuss = function(){
+    $("#SaveSeccuss").css({
+        left: ($("body").width() - $("#SaveSeccuss").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#SaveSeccuss").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+    $(".addcolse").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $("#SaveSet").css("display", "none");
+        $("#SaveSeccuss").css("display", "none");
+    });
 }
 
 var saveKeyword = function () {

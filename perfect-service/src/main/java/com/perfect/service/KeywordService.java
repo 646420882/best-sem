@@ -19,7 +19,7 @@ public interface KeywordService {
 
     KeywordDTO findOne(Long id);
 
-    void insertAll(List<KeywordDTO> keywordDTOList);
+    List<String> insertAll(List<KeywordDTO> keywordDTOList);
 
     KeywordDTO save(KeywordDTO keywordDTO);
 

@@ -69,8 +69,8 @@ public class KeywordController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView add(@RequestBody List<KeywordDTO> list) {
-        keywordService.insertAll(list);
-        return new ModelAndView(getJsonView(null));
+        List<String> stringList = keywordService.insertAll(list);
+        return new ModelAndView(getJsonView(JSONUtils.getJsonMapData(stringList)));
     }
 
     @RequestMapping(value = "/{keywordId}/update", method = RequestMethod.POST, produces = "application/json")

@@ -56,6 +56,7 @@ public interface MongoEntityConstants {
     String MONITOR_ID = "mtId";
     String MONITOR_ACLID = "aclid";
     String NAME = "name";
+    String LOCALSTATUS = "ls";
 
 
     String DATE_FIELD = "dat";  //时间查询字段

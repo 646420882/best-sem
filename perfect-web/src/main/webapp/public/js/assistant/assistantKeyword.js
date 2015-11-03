@@ -111,6 +111,7 @@ function getKwdList(nowPage) {
                 }
 
                 for (var i = 0; i < data.list.length; i++) {
+                    console.log(data.list)
                     var html = keywordDataToHtml(data.list[i], i);
                     $("#tbodyClick").append(html);
                     if (i == 0) {
@@ -161,6 +162,7 @@ function keywordDataToHtml(obj, index) {
         var _tr = html + "<tr class='list2_box3 firstKeyword'>";
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
+                case -1:
                 case 1:
                     _tr = html + "<tr class='list2_box3 firstKeyword add'>";
                     break;
@@ -177,6 +179,7 @@ function keywordDataToHtml(obj, index) {
         var _tr = html + "<tr class='list2_box2'>";
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
+                case -1:
                 case 1:
                     _tr = html + "<tr class='list2_box2 add'>";
                     break;
@@ -193,6 +196,7 @@ function keywordDataToHtml(obj, index) {
         var _tr = html + "<tr class='list2_box1'>";
         if (obj.object.localStatus) {
             switch (obj.object.localStatus) {
+                case -1:
                 case 1:
                     _tr = html + "<tr class='list2_box1 add'>";
                     break;
@@ -216,7 +220,12 @@ function keywordDataToHtml(obj, index) {
     }
 
     html = html + tmpHtml;
-    html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
+
+    if(obj.object.localStatus != -1){
+        html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
+    }else{
+        html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/zs_table_input.png' /></td>";
+    }
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -373,6 +382,7 @@ function keywordDataToHtml(obj, index) {
         } else {
             html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
         }
+
     } else {
         var replaceText = $("input[name='replaceText']").val();
         var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td>&nbsp;</td>";
@@ -1057,6 +1067,10 @@ function validateNoAllowKeyword(value) {
                 $("#caExNeg").html(res.data.ca.exneg);
             }
         });
+        $.get("/keyword/getKeywordIdByAdgroupId/" + value, function (data) {
+            $("#countkwd").val(data.rows == undefined ? 0 : data.rows == "" ? 0 : data.rows.length);
+            $("#countNumber").html(5000 - (data.rows == undefined ? 0 : data.rows == "" ? 0 : data.rows.length));
+        })
     } else {
         $("span[id$=Neg]").empty();
         $("#phraseTypeDiv").hide();
@@ -1142,7 +1156,8 @@ function AddKeywords() {
     $("#AddKeywords").css({
         left: ($("body").width() - $("#AddKeywords").width()) / 2 - 20 + "px",
         top: ($(window).height() - $("#AddKeywords").height()) / 2 + $(window).scrollTop() + "px",
-        display: "block"});
+        display: "block"
+    });
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
         $("#AddKeywords").css("display", "none");
@@ -1166,17 +1181,19 @@ function AddKeywordsSave() {
         alert("请选择推广设备!");
         return;
     }
-    if($("#statusNew").val() == null || $("#statusNew").val() == ""){
+    if ($("#statusNew").val() == null || $("#statusNew").val() == "") {
         alert("关键词不能为空！")
         return
     }
 
     var kwds = $("#statusNew").val().trims().split("\n");
-    if(kwds[kwds.length-1] == ""){
-        kwds.splice(kwds.length-1, 1);
+    if (kwds[kwds.length - 1] == "") {
+        kwds.splice(kwds.length - 1, 1);
     }
-    if(kwds.length > 5000){
-        alert("关键词个数大于5000");
+    var countkwd = $("#countkwd").val();
+    countkwd = (countkwd == undefined ? 0 : countkwd == "" ? 0 : countkwd);
+    if (kwds.length > 5000 - countkwd) {
+        alert("关键词个数大于" + (5000 - countkwd));
         return
     }
 
@@ -1196,23 +1213,26 @@ function AddKeywordsSave() {
         $("#SaveSet").css("display", "none");
     });
 }
-function countAddKwd(){
+function countAddKwd() {
     var kwd = $("#statusNew").val().split("\n");
-    kwd.forEach(function(e,i){
-        if(kwd.length != i+1 && e.replace(/\s/g,"") == ""){
+    kwd.forEach(function (e, i) {
+        kwd[i] = e = e.trim();
+        if (kwd.length != i + 1 && e.replace(/\s/g, "") == "") {
             kwd.splice(i, 1);
         }
     });
 
-    $("#statusNew").val(kwd.toString().replace(/\,/g,"\n"));
-    if(kwd[kwd.length-1] == ""){
-        kwd.splice(kwd.length-1, 1);
+    $("#statusNew").val(kwd.toString().replace(/\,/g, "\n"));
+    if (kwd[kwd.length - 1] == "") {
+        kwd.splice(kwd.length - 1, 1);
     }
-    if(kwd.length > 5000){
-        $("#counterNew").attr("style","color:red")
-    }else{
-        if($("#counterNew").attr("style") == "color:red"){
-            $("#counterNew").attr("style","font-weight:normal")
+    var countkwd = $("#countkwd").val();
+    countkwd = (countkwd == undefined ? 0 : countkwd == "" ? 0 : countkwd);
+    if (kwd.length > 5000 - countkwd) {
+        $("#counterNew").attr("style", "color:red");
+    } else {
+        if ($("#counterNew").attr("style") == "color:red") {
+            $("#counterNew").attr("style", "font-weight:normal");
         }
     }
     document.getElementById("counterNew").innerHTML = kwd.length;

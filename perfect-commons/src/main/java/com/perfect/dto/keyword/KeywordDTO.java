@@ -121,20 +121,23 @@ public class KeywordDTO extends AccountIdDTO implements Comparable<KeywordDTO> {
     public void delete() {
     }
 
+    @Override
     public String toString() {
-        String outputString = "";
-        return super.toString() + "[" +
-                "keywordId" + ":" + getKeywordId() + "," +
-                "adgroupId" + ":" + getAdgroupId() + "," +
-                "keyword" + ":" + getKeyword() + "," +
-                "price" + ":" + getPrice() + "," +
-                "pcDestinationUrl" + ":" + getPcDestinationUrl() + "," +
-                "mobileDestinationUrl" + ":" + getMobileDestinationUrl() + "," +
-                "matchType" + ":" + getMatchType() + "," +
-                "pause" + ":" + getPause() + "," +
-                "status" + ":" + getStatus() + "," +
-                "phraseType" + ":" + getPhraseType() + "]"
-                + outputString;
+        return "KeywordDTO{" +
+                "keywordId=" + keywordId +
+                ", adgroupId=" + adgroupId +
+                ", adgroupObjId='" + adgroupObjId + '\'' +
+                ", keyword='" + keyword + '\'' +
+                ", price=" + price +
+                ", pcDestinationUrl='" + pcDestinationUrl + '\'' +
+                ", mobileDestinationUrl='" + mobileDestinationUrl + '\'' +
+                ", matchType=" + matchType +
+                ", pause=" + pause +
+                ", status=" + status +
+                ", phraseType=" + phraseType +
+                ", localStatus=" + localStatus +
+                ", orderBy=" + orderBy +
+                '}';
     }
 
     @Override

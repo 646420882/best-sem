@@ -31,8 +31,9 @@
         </ul>
         <div class="add_textarea">
             <textarea id="statusNew" rows="12" cols="40" oninput="countAddKwd()"></textarea>
-            <span class="fr"><label id="counterNew" style="font-weight:normal"> 0</label>/ 5000</span>
+            <span class="fr"><label id="counterNew" style="font-weight:normal"> 0</label>/ <label id="countNumber">5000</label></span>
         </div>
+        <input type="hidden" id="countkwd" value="">
     </div>
     <div class="main_bottom add_bottom" style="background-color: #f8f8f8">
         <div class="w_list03">
@@ -93,6 +94,23 @@
             <ul>
                 <li class="current" onclick="saveKeywordNew()">确定</li>
                 <li class="close" onclick="closeAlert();">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<%--  添加成功 --%>
+<div class="box" style="display:none" id="SaveSeccuss">
+    <h2>
+        <span class="fl">添加成功</span>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close addcolse">×</a></h2>
+    <div>以下关键词未被保存,因本地库中存在：</div>
+    <div id="context" class="mainlist saveset">
+
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li class="current addcolse">确定</li>
             </ul>
         </div>
     </div>

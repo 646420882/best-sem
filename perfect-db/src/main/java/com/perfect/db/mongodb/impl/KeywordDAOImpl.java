@@ -496,13 +496,18 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     public Iterable<KeywordDTO> save(Iterable<KeywordDTO> keywordDTOs) {
         List<KeywordDTO> dtoList = Lists.newArrayList(keywordDTOs);
         List<KeywordEntity> entityList = ObjectUtils.convert(dtoList, getEntityClass());
+        List<KeywordDTO> dtos = Lists.newArrayList();
         entityList.stream().forEach(s -> {
-            if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword())), getEntityClass())) {
+            if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword()).and(LOCALSTATUS).is(1)), getEntityClass())) {
                 getMongoTemplate().insert(s);
+            }else{
+                KeywordDTO keywordDTO = new KeywordBackUpDTO();
+                keywordDTO.setKeyword(s.getKeyword());
+                dtos.add(keywordDTO);
             }
         });
-        dtoList = ObjectUtils.convert(entityList, getDTOClass());
-        return dtoList;
+        //dtoList = ObjectUtils.convert(entityList, getDTOClass());
+        return dtos;
     }
 
 //    public void update(KeywordDTO keywordDTO) {
