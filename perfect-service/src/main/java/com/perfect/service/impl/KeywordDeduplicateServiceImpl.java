@@ -188,7 +188,7 @@ public class KeywordDeduplicateServiceImpl implements KeywordDeduplicateService 
             return keywordList.stream()
                     .map(k -> {
                         if (sameAdgroupKeywordMap.containsKey(k.getKeyword().trim().toUpperCase()))
-                            k.setLocalStatus(0);
+                            k.setLocalStatus(DUPLICATED);
 
                         return k;
                     })

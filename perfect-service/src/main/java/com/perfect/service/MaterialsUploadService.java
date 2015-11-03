@@ -16,6 +16,11 @@ import java.util.Set;
 public interface MaterialsUploadService {
 
     /**
+     * 重复
+     */
+    int DUPLICATED = 0;
+
+    /**
      * 新增
      */
     int NEW = 1;
@@ -96,11 +101,11 @@ public interface MaterialsUploadService {
 
     default boolean isDuplicate(CreativeDTO source, List<CreativeDTO> targets) {
         String sourceMd5 = KeywordDeduplication.MD5
-                .getMD5(source.getTitle().trim() + source.getDescription1().trim() + source.getDescription2().trim());
+                .getMD5(source.getTitle() + source.getDescription1() + source.getDescription2());
 
         return targets.stream()
                 .filter(c -> Long.compare(source.getAdgroupId(), c.getAdgroupId()) == 0)
                 .anyMatch(c -> sourceMd5.equals(KeywordDeduplication.MD5
-                        .getMD5(c.getTitle().trim() + c.getDescription1().trim() + c.getDescription2().trim())));
+                        .getMD5(c.getTitle() + c.getDescription1() + c.getDescription2())));
     }
 }

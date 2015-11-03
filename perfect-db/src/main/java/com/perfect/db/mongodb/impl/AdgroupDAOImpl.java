@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.google.common.collect.Maps;
 import com.mongodb.WriteResult;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by vbzer_000 on 2014-07-02.
@@ -59,12 +61,19 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     private AdgroupBackUpDAO adgroupBackUpDAO;
 
     public List<Long> getAllAdgroupId() {
-        Query query = new BasicQuery("{}", "{" + ADGROUP_ID + " : 1}");
+        Query query = new BasicQuery("{}", "{" + ADGROUP_ID + ": 1}");
         List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
-        List<Long> adgroupIds = new ArrayList<>(list.size());
-        for (AdgroupEntity type : list)
-            adgroupIds.add(type.getAdgroupId());
-        return adgroupIds;
+        return list.stream().map(AdgroupEntity::getAdgroupId).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Long, Long> getAllAdgroupIdByBaiduAccountId(Long baiduAccoutId) {
+        Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + ": 1, " + ADGROUP_ID + ": 1}");
+        query.addCriteria(Criteria.where(ACCOUNT_ID).is(baiduAccoutId));
+        final Map<Long, Long> result = Maps.newHashMap();
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
+        list.forEach(e -> result.put(e.getAdgroupId(), e.getCampaignId()));
+        return result;
     }
 
     public List<Long> getAdgroupIdByCampaignId(Long campaignId) {

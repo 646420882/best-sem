@@ -1,5 +1,7 @@
 package com.perfect.service;
 
+import com.perfect.dto.creative.CreativeDTO;
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +11,11 @@ import java.util.Map;
  * @author dolphineor
  */
 public interface CreativeDeduplicateService {
+
+    /**
+     * 重复
+     */
+    int DUPLICATED = 0;
 
     /**
      * 新增
@@ -35,17 +42,27 @@ public interface CreativeDeduplicateService {
      *   Value: List中的值为: "推广计划名称:推广单元名称"</p>
      * }
      *
-     * @param baiduUserId
+     * @param baiduUserId 百度账户ID
      * @return
      */
-    Map<String, Map<Integer, List<String>>> deduplicate(Long baiduUserId);
+    Map<String, Map<Integer, List<String>>> deduplicate(final Long baiduUserId);
 
     /**
      * <p>同一单元去重.
      *
-     * @param baiduUserId
-     * @param adgroupId
+     * @param baiduUserId 百度账户ID
+     * @param adgroupId   推广单元ID
      * @return
      */
-    Map<Integer, List<String>> deduplicate(Long baiduUserId, Long adgroupId);
+    Map<Integer, List<String>> deduplicate(final Long baiduUserId, final Long adgroupId);
+
+    /**
+     * <p>添加创意时, 对同一单元创意去重, 对于重复的创意对其设定相应的状态.
+     *
+     * @param baiduUserId 百度账户ID
+     * @param adgroupId   推广单元ID
+     * @param list        待处理创意
+     * @return List带重复标识的创意
+     */
+    List<CreativeDTO> deduplicate(final Long baiduUserId, final Long adgroupId, final List<CreativeDTO> list);
 }

@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: baizz
-  Date: 2014-9-1
+  Date: 2015-10-15
   Time: 10:01
   To change this template use File | Settings | File Templates.
 --%>
@@ -12,23 +12,23 @@
     <title></title>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/public/themes/flick/font-awesome.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css" type="text/css"      media="all" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css" type="text/css" media="all" rel="stylesheet"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
-    <script type="text/javascript"  src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
 </head>
 <body>
 
-<input type="text" style="width: 400px;display: none" name="reservation" id="reservationtime"
-       class="span4 form-control TimingPauseDialog " value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
+<input type="text" style="width: 400px;display: none" id="reservationtime" name="reservation"
+       class="span4 form-control TimingPauseDialog " value="08/01/2013 - 08/01/2013"/>
 <input id="Timing" value="2" style="display: none">
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script>
-    function closeDialog(){
-      top.dialog.getCurrent().close().remove();
+    function closeDialog() {
+        top.dialog.getCurrent().close().remove();
     }
     $(function () {
-        $("div.daterangepicker").css({"display": "block", "top": "0px", "right": "auto"})
+        $("div.daterangepicker").css({"display": "block", "top": "0px", "right": "auto"});
         $(".daterangepicker .ranges li:last").css({"display": "none"})
 
     });
@@ -37,7 +37,8 @@
         "timePicker24Hour": true,
         timePicker: true,
         timePickerIncrement: 30,
-        format: 'MM/DD/YYYY h:mm A',
+//        format: 'MM/DD/YYYY h:mm A',
+        format: 'DD/MM/YYYY',
         "locale": {
             "format": "MM/DD/YYYY",
             "separator": " - ",
@@ -77,9 +78,49 @@
         console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
     });
 
+    var pauseFunc = function (period) {
+        var startArr = (period.split("-")[0]).split("/");
+        var endArr = (period.split("-")[1]).split("/");
+
+
+        var hour = $("#timePickerSlect").find("option:selected").val();
+
+        var day;
+        if (startArr[0].trim() == endArr[0].trim()) {
+            day = startArr[0].trim();
+        } else {
+            day = startArr[0].trim() + "-" + endArr[0].trim();
+        }
+
+        var month;
+        if (startArr[1].trim() == endArr[1].trim()) {
+            month = startArr[1].trim();
+        } else {
+            month = startArr[1].trim() + "-" + endArr[1].trim();
+        }
+
+        var year;
+        if (startArr[2].trim() == endArr[2].trim()) {
+            year = startArr[2].trim();
+        } else {
+            year = startArr[2].trim() + "-" + endArr[2].trim();
+        }
+
+        var cronExpression = "0 0 " + hour + " " + day + " " + month + " ? " + year;
+
+        $.ajax({
+            url: '/material/schedule/pause',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "cron": cronExpression
+            },
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+            }
+        });
+    }
+
 </script>
-
 </body>
-
-
 </html>

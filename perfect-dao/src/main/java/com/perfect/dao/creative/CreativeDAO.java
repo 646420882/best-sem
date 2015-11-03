@@ -17,6 +17,8 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     List<CreativeDTO> findByAgroupId(Long adgroupId);
 
+    List<CreativeDTO> findByAdgroupId(Long baiduAccountId, Long adgroupId);
+
     List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
     List<CreativeDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
@@ -72,7 +74,7 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
-    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize,SearchFilterParam sp);
+    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
     void update(String crid, CreativeDTO dto);
 

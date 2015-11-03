@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: baizz
-  Date: 2014-9-1
+  Date: 2015-10-15
   Time: 10:01
   To change this template use File | Settings | File Templates.
 --%>
@@ -12,20 +12,18 @@
     <title></title>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/public/themes/flick/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="all"
-          href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
-    <script type="text/javascript"
-            src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
 </head>
 <body>
-<input type="text" style="width: 400px;display: none" name="reservation" id="reservationtime"
+<input type="text" style="width: 400px;display: none" id="reservationtime" name="reservation"
        class="span4 form-control TimingDelDialog" value="08/01/2013 - 08/01/2013"/>
 <input id="Timing" value="1" style="display: none">
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="application/javascript">
-    function closeDialog(){
+    function closeDialog() {
         top.dialog.getCurrent().close().remove();
     }
     $(function () {
@@ -82,7 +80,7 @@
             "firstDay": 1
         },
         "startDate": moment(),
-          "endDate": moment()
+        "endDate": moment()
     }, function (start, end, label) {
         console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
     });

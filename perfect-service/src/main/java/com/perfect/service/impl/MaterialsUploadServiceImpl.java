@@ -51,6 +51,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     @Resource
     private CreativeDAO creativeDAO;
 
+
     private final Function<Long, Map<Integer, Long>> uploadFunc1 = baiduUserId -> {
         Map<Integer, Long> result = Maps.newHashMap();
 
@@ -231,30 +232,99 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
             List<CampaignDTO> campaignDTOList = campaignDAO.findLocalChangedCampaigns(baiduUserId, MODIFIED);
             if (!campaignDTOList.isEmpty()) {
                 List<CampaignType> campaignTypeList = ObjectUtils.convert(campaignDTOList, CampaignType.class);
-                baiduApiService.updateCampaign(campaignTypeList);
+                // key: 推广计划名称, value: 推广计划凤巢id
+                Map<String, Long> result = baiduApiService.updateCampaign(campaignTypeList)
+                        .stream()
+                        .collect(Collectors.toMap(CampaignType::getCampaignName, CampaignType::getCampaignId));
+
+                campaignDTOList.forEach(o -> {
+                    Long campaignId = result.get(o.getCampaignName());
+                    o.setCampaignId(campaignId);
+                    campaignDAO.update(o, o.getId());
+                });
             }
 
             // 是否有修改的推广单元
             List<AdgroupDTO> adgroupDTOList = adgroupDAO.findLocalChangedAdgroups(baiduUserId, MODIFIED);
             if (!adgroupDTOList.isEmpty()) {
-                List<AdgroupType> adgroupTypeList = ObjectUtils.convert(adgroupDTOList, AdgroupType.class);
-                baiduApiService.updateAdgroup(adgroupTypeList);
+                // group by campaignId
+                Map<Long, List<AdgroupDTO>> groupedAdgroupDTOMap = adgroupDTOList.stream()
+                        .collect(Collectors.groupingBy(AdgroupDTO::getCampaignId));
+                for (Map.Entry<Long, List<AdgroupDTO>> entry : groupedAdgroupDTOMap.entrySet()) {
+                    List<AdgroupDTO> _list = entry.getValue();
+
+                    List<AdgroupType> adgroupTypeList = ObjectUtils.convert(_list, AdgroupType.class);
+                    Map<String, Long> result = baiduApiService.updateAdgroup(adgroupTypeList)
+                            .stream()
+                            .collect(Collectors.toMap(AdgroupType::getAdgroupName, AdgroupType::getAdgroupId));
+
+                    _list.forEach(o -> {
+                        Long adgroupId = result.get(o.getAdgroupName());
+                        o.setAdgroupId(adgroupId);
+                        adgroupDAO.update(o.getId(), o);
+                    });
+                }
             }
 
+            /**
+             * KEY: adgroupId
+             * VALUE: campaignId
+             */
+            Map<Long, Long> adgroupIdMap = adgroupDAO.getAllAdgroupIdByBaiduAccountId(baiduUserId);
+
             // 是否有修改的关键词
-            // TODO 去重
             List<KeywordDTO> keywordDTOList = keywordDAO.findLocalChangedKeywords(baiduUserId, MODIFIED);
             if (!keywordDTOList.isEmpty()) {
-                List<KeywordType> keywordTypeList = ObjectUtils.convert(keywordDTOList, KeywordType.class);
-                baiduApiService.updateKeyword(keywordTypeList);
+                // group by campaignId & adgroupId
+                Map<String, List<KeywordDTO>> groupedKeywordMap = keywordDTOList.stream()
+                        .collect(Collectors.groupingBy(keywordDTO -> adgroupIdMap.get(keywordDTO.getAdgroupId()) + "-" + keywordDTO.getAdgroupId()));
+                for (Map.Entry<String, List<KeywordDTO>> entry : groupedKeywordMap.entrySet()) {
+                    KeywordDTO firstElem = entry.getValue().get(0);
+
+                    // ==================== 去重 ====================
+                    final Map<String, KeywordDTO> sameAdgroupKeywordMap = keywordDAO
+                            .findAllKeywordFromBaiduByAdgroupId(firstElem.getAccountId(), firstElem.getAdgroupId())
+                            .stream()
+                            .collect(Collectors.toMap(k -> k.getKeyword().trim().toUpperCase(), v -> v));
+
+                    List<KeywordDTO> _list = entry.getValue()
+                            .stream()
+                                    // 找出和本单元已经存在的百度关键词重复的
+                            .filter(keywordDTO -> !sameAdgroupKeywordMap.containsKey(keywordDTO.getKeyword().trim().toUpperCase()))
+                            .collect(Collectors.toList());
+
+                    List<KeywordType> keywordTypeList = ObjectUtils.convert(_list, KeywordType.class);
+                    Map<String, Long> result = baiduApiService.updateKeyword(keywordTypeList)
+                            .stream()
+                            .collect(Collectors.toMap(KeywordType::getKeyword, KeywordType::getKeywordId));
+
+                    _list.forEach(o -> {
+                        Long keywordId = result.get(o.getKeyword());
+                        o.setKeywordId(keywordId);
+                        keywordDAO.update(o.getId(), o);
+                    });
+                }
             }
 
             // 是否有修改的创意
-            // TODO 去重
             List<CreativeDTO> creativeDTOList = creativeDAO.findLocalChangedCreative(baiduUserId, MODIFIED);
             if (!creativeDTOList.isEmpty()) {
-                List<CreativeType> creativeTypeList = ObjectUtils.convert(creativeDTOList, CreativeType.class);
-                baiduApiService.updateCreative(creativeTypeList);
+                for (CreativeDTO creativeDTO : creativeDTOList) {
+                    // 去重
+                    List<CreativeDTO> sameAdgroupCreativeList = creativeDAO
+                            .findAllCreativeFromBaiduByAdgroupId(creativeDTO.getAccountId(), creativeDTO.getAdgroupId());
+
+                    boolean isExists = isDuplicate(creativeDTO, sameAdgroupCreativeList);
+                    if (isExists)
+                        continue;
+
+                    List<CreativeType> creativeTypeList = Collections.singletonList(ObjectUtils.convert(creativeDTO, CreativeType.class));
+
+                    Long creativeId = baiduApiService.updateCreative(creativeTypeList).remove(0).getCreativeId();
+                    creativeDTO.setCreativeId(creativeId);
+
+                    creativeDAO.update(creativeDTO.getId(), creativeDTO);
+                }
             }
 
             return true;
