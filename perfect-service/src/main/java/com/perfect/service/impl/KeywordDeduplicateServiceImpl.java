@@ -8,7 +8,7 @@ import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.keyword.KeywordAggsDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.service.KeywordUploadService;
+import com.perfect.service.KeywordDeduplicateService;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
  * @author dolphineor
  */
 @Service
-public class KeywordUploadServiceImpl implements KeywordUploadService {
+public class KeywordDeduplicateServiceImpl implements KeywordDeduplicateService {
 
     @Resource
     private CampaignDAO campaignDAO;

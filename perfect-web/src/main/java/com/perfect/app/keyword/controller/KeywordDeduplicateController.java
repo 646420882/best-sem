@@ -1,6 +1,6 @@
 package com.perfect.app.keyword.controller;
 
-import com.perfect.service.KeywordUploadService;
+import com.perfect.service.KeywordDeduplicateService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +26,11 @@ import java.util.Map;
 public class KeywordDeduplicateController {
 
     @Resource
-    private KeywordUploadService keywordUploadService;
+    private KeywordDeduplicateService keywordDeduplicateService;
 
     @RequestMapping(value = "/deduplicate/account/{id}", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView accountDeduplicate(@PathVariable(value = "id") Long accountId) {
-        Map<String, Map<Integer, List<String>>> duplicateKeywordMap = keywordUploadService.deduplicate(accountId);
+        Map<String, Map<Integer, List<String>>> duplicateKeywordMap = keywordDeduplicateService.deduplicate(accountId);
 
         AbstractView jsonView = new MappingJackson2JsonView();
         jsonView.setAttributesMap(duplicateKeywordMap);

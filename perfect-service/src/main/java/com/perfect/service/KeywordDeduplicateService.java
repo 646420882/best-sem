@@ -10,7 +10,12 @@ import java.util.Map;
  *
  * @author dolphineor
  */
-public interface KeywordUploadService {
+public interface KeywordDeduplicateService {
+
+    /**
+     * 重复
+     */
+    int DUPLICATED = 0;
 
     /**
      * 新增
@@ -29,7 +34,7 @@ public interface KeywordUploadService {
 
 
     /**
-     * <p>全账户去重.
+     * <p><code>上传</code>时全账户去重.
      * Map ->
      * Key: 重复的关键词
      * Value: {
@@ -37,22 +42,25 @@ public interface KeywordUploadService {
      *   Value: List中的值为: "推广计划名称:推广单元名称"</p>
      * }
      *
-     * @param baiduUserId
+     * @param baiduUserId 百度账户ID
      * @return
      */
     Map<String, Map<Integer, List<String>>> deduplicate(final Long baiduUserId);
 
     /**
-     * <p>同一单元去重.
+     * <p><code>上传</code>时同一单元去重.
+     * Map ->
+     * Key: NEW MODIFIED
+     * Value: List中的值为: "推广计划名称:推广单元名称"</p>
      *
-     * @param baiduUserId
-     * @param adgroupId
+     * @param baiduUserId 百度账户ID
+     * @param adgroupId   推广单元ID
      * @return
      */
     Map<Integer, List<String>> deduplicate(final Long baiduUserId, final Long adgroupId);
 
     /**
-     * <p>对于本地批量添加的关键词去重.
+     * <p>本地<code>批量添加</code>关键词时, 全账户去重.
      *
      * @param baiduUserId 百度账户ID
      * @param newKeywords 批量添加的关键词名称
@@ -61,12 +69,12 @@ public interface KeywordUploadService {
     List<String> deduplicate(final Long baiduUserId, final List<String> newKeywords);
 
     /**
-     * <p>同一单元关键词去重, 对于重复的关键词对其设定相应的状态.
+     * <p>添加关键词时, 对同一单元关键词去重, 对于重复的关键词对其设定相应的状态.
      *
-     * @param baiduUserId
-     * @param adgroupId
-     * @param list
-     * @return
+     * @param baiduUserId 百度账户ID
+     * @param adgroupId   推广单元ID
+     * @param list        待处理关键词
+     * @return List带重复标识的关键词
      */
     List<KeywordDTO> deduplicate(final Long baiduUserId, final Long adgroupId, final List<KeywordDTO> list);
 }
