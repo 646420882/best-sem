@@ -198,32 +198,32 @@
                                                                        onchange="$.foRCheckAll('keyAllCheck')"/></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_name',this)">
-                        关键词名称&nbsp;<img src="../public/img/select.png"></span>
+                        关键词名称&nbsp;</span>
                                                             </th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_state',this)">
-                        关键词状态&nbsp;<img src="../public/img/select.png"></span></th>
+                        关键词状态&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_pause',this)">
-                        启动/暂停&nbsp;<img src="../public/img/select.png"></span></th>
+                        启动/暂停&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_price',this)">
-                      出价&nbsp;<img src="../public/img/select.png"></span></th>
+                      出价&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_cquality',this)">
-                      计算机质量度&nbsp;<img src="../public/img/select.png"></span></th>
+                      计算机质量度&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_mquality',this)">
-                      移动质量度&nbsp;<img src="../public/img/select.png"></span></th>
+                      移动质量度&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_matchType',this)">
-                      匹配模式&nbsp;<img src="../public/img/select.png"></span></th>
+                      匹配模式&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_pcUrl',this)">
-                      访问URL&nbsp;<img src="../public/img/select.png"></span></th>
+                      访问URL&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_mibUrl',this)">
-                      移动访问URL&nbsp;<img src="../public/img/select.png"></span></th>
+                      移动访问URL&nbsp;</span></th>
                                                             <th class="username-column" data-noresize>&nbsp;<span>
                       推广计划名称&nbsp;</span></th>
                                                             <th class="username-column" data-noresize>&nbsp;
@@ -382,34 +382,34 @@
                                                             <th style="width: 40px;">&nbsp;操作</th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_title',this)">
-                        创意标题&nbsp;<img src="../public/img/select.png"></span></th>
+                        创意标题&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_desc1',this)">
-                        创意描述1&nbsp;<img src="../public/img/select.png"></span></th>
+                        创意描述1&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_desc2',this)">
-                        创意描述2&nbsp;<img src="../public/img/select.png"></span></th>
+                        创意描述2&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_pcUrl',this)">
-                        默认访问URL&nbsp;<img src="../public/img/select.png"></span></th>
+                        默认访问URL&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_pcsUrl',this)">
-                        默认显示URL&nbsp;<img src="../public/img/select.png"></span></th>
+                        默认显示URL&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_mibUrl',this)">
-                        移动访问URL&nbsp;<img src="../public/img/select.png"></span></th>
+                        移动访问URL&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_mibsUrl',this)">
-                        移动显示URL&nbsp;<img src="../public/img/select.png"></span></th>
+                        移动显示URL&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_pause',this)">
-                        启用/暂停&nbsp;<img src="../public/img/select.png"></span></th>
+                        启用/暂停&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_state',this)">
-                        创意状态&nbsp;<img src="../public/img/select.png"></span></th>
+                        创意状态&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_quipment',this)">
-                        设备偏好&nbsp;<img src="../public/img/select.png"></span></th>
+                        设备偏好&nbsp;</span></th>
                                                             <th class="username-column" data-noresize>
                                                                 <div class="set fr"></div>
                                                             </th>
@@ -807,16 +807,16 @@
                                                             <th>&nbsp;操作</th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Adgroup_name',this)">
-                        推广单元名称&nbsp;<img src="../public/img/select.png"></span></th>
+                        推广单元名称&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Adgroup_state',this)">
-                        推广单元状态&nbsp;<img src="../public/img/select.png"></span></th>
+                        推广单元状态&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Adgroup_pause',this)">
-                        启动/暂停&nbsp;<img src="../public/img/select.png"></span></th>
+                        启动/暂停&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Adgroup_price',this)">
-                        出价&nbsp;<img src="../public/img/select.png"></span></th>
+                        出价&nbsp;</span></th>
                                                             <th>&nbsp;否定关键词</th>
                                                             <th>&nbsp;<span>
                         推广计划名称&nbsp;</span></th>
@@ -940,22 +940,22 @@
                                                             </th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Campaign_name',this)">
-                        推广计划名称&nbsp;<img src="../public/img/select.png"></span></th>
+                        推广计划名称&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Campaign_state',this)">
-                        推广计划状态&nbsp;<img src="../public/img/select.png"></span></th>
+                        推广计划状态&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Campaign_pause',this)">
-                        启用/暂停&nbsp;<img src="../public/img/select.png"></span></th>
+                        启用/暂停&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Campaign_budget',this)">
-                        每日预算&nbsp;<img src="../public/img/select.png"></span></th>
+                        每日预算&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Campaign_show',this)">
-                        创意展现方式&nbsp;<img src="../public/img/select.png"></span></th>
+                        创意展现方式&nbsp;</span></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Campaign_dynamic',this)">
-                        动态创意状态&nbsp;<img src="../public/img/select.png"></span></th>
+                        动态创意状态&nbsp;</span></th>
                                                             <th>&nbsp;推广时段</th>
                                                             <th>&nbsp;推广地域</th>
                                                             <th>&nbsp;否定关键词</th>

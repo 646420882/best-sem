@@ -3998,7 +3998,6 @@ padding-bottom: 0px;
     width: 200px;
     position: absolute;
     z-index: 1000;
-    padding: 10px;
     border: 1px solid #cfcfcf;
     background: #fff;
     -webkit-box-shadow: #666 0px 0px 10px;
@@ -4010,6 +4009,10 @@ padding-bottom: 0px;
 .tabmodel p {
     font-weight: bold;
     margin-bottom: 10px;
+}
+.tabmodel_title{
+    padding:10px;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .tabmodel .btn {
@@ -4064,13 +4067,18 @@ padding-bottom: 0px;
 .tabmodel ul li ul li {
     margin-top: 2px;
 }
-
+.tabmodel_content{
+    padding:5px 10px 10px 10px;
+}
 #CheckCompletion.box h2 {
     background: #ffffff;
     color: #000000;
     border-bottom: 1px solid #e5e5e5;
 }
-
+.list_bottom{
+    border-top:1px dashed #cccccc;
+    padding-top:5px;
+}
 #CheckCompletion h2 .close {
     color: #000000;
 }
@@ -4318,12 +4326,12 @@ background: #34befe;
     float:left;
     margin:0 20px 0 0;
 }
-.add_title  input[type=checkbox]{
-    margin-top:8px;
-}
 .mainlist input[type=checkbox]{
     float:left;
     margin:2px 2px 0 0 ;
+}
+.mainlist .add_title input[type=checkbox]{
+    margin-top:8px;
 }
 .mainlist input[type=text],.mainlist select{
     height:30px;
@@ -4445,4 +4453,9 @@ background: #34befe;
 }
 .progress_box .progress-bar{
     background-color:#61d677;
+}
+.tabmodel .glyphicon{
+    font-weight:normal;
+    color:#dcdcdc;
+
 }

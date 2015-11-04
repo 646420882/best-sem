@@ -7,14 +7,15 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="dropdown-menus tabmodel" id="filterSearchTemplate">
-    <p id="TabTitle"></p>
+    <div class="tabmodel_title"><span id="TabTitle"></span><span class="fr glyphicon glyphicon-remove" onclick="TabModel.modelClose()"></span></div>
     <input type="hidden" name="filterField"/>
-    <div id="CheckList">
-
+    <div class="tabmodel_content">
+        <div id="CheckList">
+        </div>
+        <span style="color: red;" id="filter_msg"></span>
+        <button type="button" class="btn btn-primary btn-sm " onclick="TabModel.filterSearchOk()" >确认</button>
+        <button type="button" class="btn btn-default btn-sm " onclick="TabModel.modelClose()">取消</button>
     </div>
-    <span style="color: red;" id="filter_msg"></span>
-    <button type="button" class="btn btn-primary btn-sm " onclick="TabModel.filterSearchOk()" >确认</button>
-    <button type="button" class="btn btn-default btn-sm " onclick="TabModel.modelClose()">取消</button>
 </div>
 <div class="assstant_editor">
     <ul>

@@ -750,7 +750,7 @@ var baiduStatus =
     "<li><input type='checkbox' value='44'>搜索无效</li>" +
     "<li><input type='checkbox' value='45'>待激活</li>" +
     "<li><input type='checkbox' value='40'>有效-移动URL审核中</li>" +
-    "<li><input type='checkbox' value='-1'>本地新增</li>" +
+    "<li class='list_bottom'><input type='checkbox' value='-1'>本地新增</li>" +
     "</ul>";
 var Computerquality =
     "<ul class='quality'>" +
@@ -804,7 +804,7 @@ var Computerquality =
     + "</ul>";
 var pause =
     "<ul><li><input type='radio' value='-1' name='filterPause'>全部</li>" +
-    "<li><input type='radio' value='1' name='filterPause'>启用</li>" +
+    "<li class='list_bottom'><input type='radio' value='1' name='filterPause'>启用</li>" +
     "<li><input type='radio' value='0' name='filterPause'>暂停</li>";
 var price =
     "<input type='number' name='min_points' min='00' max='10' />"
@@ -820,19 +820,14 @@ var TabModel = {
                 return;
             }
         }
-        if ($(".dropdown-menus").css("display") == "none") {
-            var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
-            var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
-            $(".dropdown-menus").css("top", tabtop);
-            $(".dropdown-menus").css("left", tableft);
-            $(".dropdown-menus").show();
-            $(".dropdown-menus ").mouseleave(function () {
-                $(".dropdown-menus").hide();
-            });
-        }
-        else {
-            $(".dropdown-menus").hide();
-        }
+        $(_this).append("<span class='remove'><img src='../public/img/select.png'></span>");
+         var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
+        var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
+        $("#filterSearchTemplate").css("top", tabtop);
+        $("#filterSearchTemplate").css("left", tableft);
+        $('#filterSearchTemplate').show(function(){
+            document.body.addEventListener('click', boxCloser, false);
+        });
         $("#CheckList").empty();
         $("input[name='filterField']").val(type);
         errorMsg.html('');
@@ -869,8 +864,8 @@ var TabModel = {
                     "<ul id='PhraseList'><li><input type='checkbox' name='matchType' value='33'>核心包含</li></li>" +
                     "<li><input type='checkbox' name='matchType' value='11'>同义包含</li>" +
                     "<li><input type='checkbox' name='matchType' value='22'>精确包含</li></ul>" +
-                    "<li><input type='checkbox' name='matchType' value='1'>精确</li>" +
-                    "<li><input type='checkbox'>基本匹配模式</li>" +
+                    "<li ><input type='checkbox' name='matchType' value='1'>精确</li>" +
+                    "<li class='list_bottom'><input type='checkbox'>基本匹配模式</li>" +
                     "<li><input type='checkbox'>分匹配出价</li>" +
                     "</ul>";
                 $("#CheckList").append(matching);
@@ -939,7 +934,7 @@ var TabModel = {
                     "<li><input type='checkbox' value='54'>待激活</li></ul>" +
                     "<li><input type='checkbox' value='56'>部分无效</li>" +
                     "<li><input type='checkbox' value='57'>有效-移动URL审核中</li>" +
-                    "<li><input type='checkbox' value='-1'>本地新增</li>" +
+                    "<li class='list_bottom'><input type='checkbox' value='-1'>本地新增</li>" +
                     "</ul>";
                 $("#CheckList").append(CreativeState);
                 break;
@@ -947,7 +942,7 @@ var TabModel = {
                 $("#TabTitle").html("创意设备偏好");
                 var CreativeEquipment =
                     "<ul><li><input type='radio' name='filterQuipment' value='-1'>全部</li>" +
-                    "<li><input type='radio' name='filterQuipment'  value='0'>全部设备</li>" +
+                    "<li class='list_bottom'><input type='radio' name='filterQuipment'  value='0'>全部设备</li>" +
                     "<li><input type='radio' name='filterQuipment'  value='1'>移动设备优先</li>";
                 $("#CheckList").append(CreativeEquipment);
                 break;
@@ -960,7 +955,7 @@ var TabModel = {
                 var ExtensionState = "<ul><li><input type='checkbox' value='31'>有效</li>" +
                     "<li><input type='checkbox' value='32'>暂停推广</li>" +
                     "<li><input type='checkbox' value='33'>推广计划暂停推广</li>" +
-                    "<li><input type='checkbox' value='-1'>本地新增</li>" +
+                    "<li class='list_bottom'><input type='checkbox' value='-1'>本地新增</li>" +
                     "</ul>";
                 $("#CheckList").append(ExtensionState);
                 break;
@@ -984,7 +979,7 @@ var TabModel = {
                     "<li><input type='checkbox' value='22'>处在暂停阶段</li>" +
                     "<li><input type='checkbox' value='24'>推广计划预算不足</li>" +
                     "<li><input type='checkbox' value='24'>账户预算部足</li>" +
-                    "<li><input type='checkbox' value='-1'>本地新增</li>";
+                    "<li class='list_bottom'><input type='checkbox' value='-1'>本地新增</li>";
                 $("#CheckList").append(PromotionState);
                 break;
             case "Campaign_pause":
@@ -999,7 +994,7 @@ var TabModel = {
                 $("#TabTitle").html("推广计划创意展现方式");
                 var PromotionShow =
                     "<ul><li><input type='radio' name='showPro' value='-1'>全部</li>" +
-                    "<li><input type='radio' name='showPro' value='1'>优选</li>" +
+                    "<li class='list_bottom'><input type='radio' name='showPro' value='1'>优选</li>" +
                     "<li><input type='radio' name='showPro' value='2'>轮显</li>";
                 $("#CheckList").append(PromotionShow);
                 break;
@@ -1015,9 +1010,8 @@ var TabModel = {
         }
     },
     modelClose: function () {
-        $(".tabmodel").hide();
-
-
+        $("#filterSearchTemplate").hide();
+        $(".remove").remove();
     },
     filterSearchOk: function () {
         var filterField = $("input[name='filterField']").val();
@@ -1285,6 +1279,13 @@ var TabModel = {
         } else {
             errorMsg.html("请输入正确的价格范围!");
         }
+    }
+}
+function boxCloser(e){
+    if(e.target.id != 'filterSearchTemplate'){
+        document.body.removeEventListener('click', boxCloser, false);
+        $('#filterSearchTemplate').hide();
+        $(".remove").remove();
     }
 }
 

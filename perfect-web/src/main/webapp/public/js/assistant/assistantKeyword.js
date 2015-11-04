@@ -111,7 +111,6 @@ function getKwdList(nowPage) {
                 }
 
                 for (var i = 0; i < data.list.length; i++) {
-                    console.log(data.list)
                     var html = keywordDataToHtml(data.list[i], i);
                     $("#tbodyClick").append(html);
                     if (i == 0) {
