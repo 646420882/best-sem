@@ -131,4 +131,5 @@ public interface AssistantKeywordService {
 
     void cut(KeywordDTO dto,String aid);
 
+    List<KeywordInfoDTO> vaildateKeywordByIds(List<String> keywordIds);
 }

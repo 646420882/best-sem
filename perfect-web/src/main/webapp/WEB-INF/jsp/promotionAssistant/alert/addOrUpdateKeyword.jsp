@@ -17,9 +17,10 @@
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/zTreeStyle/zTreeStyle.css">
     <style type="text/css">
-    h1,h2,h3 {
-        margin: 0px;
-    }
+        h1, h2, h3 {
+            margin: 0px;
+        }
+
         .list4 table {
             border: 1px solid #eaf0f3;
             overflow: auto;
@@ -105,7 +106,7 @@
 
                                     <p id="pError"><span><span id="checkedNodes">0</span>x<span
                                             id="column">0</span>=<span
-                                            id="totalStr"></span>/<span id="maxLength">5000</span></span>
+                                            id="totalStr"></span>/<span id="maxLength">10000</span></span>
                                     </p>
 
                                     <p><input type="checkbox" id="isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容&nbsp;<span
@@ -134,7 +135,7 @@
                                     <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
 
                                     <p>例如：鲜花，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
-                                    <textarea id="specialText"  onkeyup="getColumn(this)"></textarea>
+                                    <textarea id="specialText" onkeyup="getColumn(this)"></textarea>
 
 
                                     <p id="sError">
@@ -146,7 +147,7 @@
                                     <p>或者从相同格式的csv文件上传：<input type="file" id="suFile">&nbsp;(<20万行)
                                     </p>
 
-                                    <p><input type="checkbox">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
+                                    <p><input type="checkbox" id="csvReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
 
                                 </div>
                                 <div class="main_bottom" style="margin:0px;  background:none;">
@@ -177,16 +178,21 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="headingOne">
                                         <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                              <span class="mycollapse">[ - ] </span><span style="font-weight: bold; line-height:30px;padding:10px;">新增的关键字：<span
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <span class="mycollapse">[ - ] </span><span
+                                                    style="font-weight: bold; line-height:30px;padding:10px;">新增的关键字：<span
                                                     id="criSize">0</span></span>
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
+                                         aria-labelledby="headingOne">
                                         <div class="panel-body">
-                                            <p><input type="radio" checked="checked">添加这些关键词</p>
-                                            <p><input type="radio">不添加这些关键词</p>
+                                            <p><input type="radio" name="insertRadio" value="1" checked="checked">添加这些关键词
+                                            </p>
+
+                                            <p><input type="radio" name="insertRadio" value="0">不添加这些关键词</p>
                                             <table border="0" cellspacing="0" width="100%" id="createTable"
                                                    class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                                 <thead>
@@ -210,16 +216,22 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="headingTwo">
                                         <h4 class="panel-title">
-                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                <span class="mycollapse">[ + ] </span> <span style="font-weight: bold; line-height:30px;padding:10px;">忽略的关键词(本地已存在的关键词)：3<span
-                                                    >0</span></span>
+                                            <a class="collapsed" role="button" data-toggle="collapse"
+                                               data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+                                               aria-controls="collapseTwo">
+                                                <span class="mycollapse">[ + ] </span> <span
+                                                    style="font-weight: bold; line-height:30px;padding:10px;">忽略的关键词(本地已存在的关键词)：<span
+                                                    id="existCount">0</span></span>
+                                                <span>错误输入的关键词：</span><span id="sepakError"></span>
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel"
+                                         aria-labelledby="headingTwo">
                                         <div class="panel-body">
-                                            <p><input type="radio" checked="checked">更新这些关键词</p>
-                                            <p><input type="radio">不更新这些关键词</p>
+                                            <%--<p><input type="radio" name="hasRadio" checked="checked">更新这些关键词</p>--%>
+
+                                            <%--<p><input type="radio" name="hasRadio">不更新这些关键词</p>--%>
                                             <table border="0" cellspacing="0" width="100%"
                                                    class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                                 <thead>
@@ -234,7 +246,7 @@
                                                     <th>&nbsp;启用/暂停</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody >
+                                                <tbody id="existKeyword">
                                                 </tbody>
                                             </table>
                                         </div>
@@ -248,8 +260,10 @@
             </div>
             <div class="progress_box">
                 <span>完成数据验证</span>
+
                 <div class="progress" style="width:300px;">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                         aria-valuemax="100" style="width: 60%;">
                         60%
                     </div>
                 </div>
@@ -258,7 +272,7 @@
             <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
                 <div class="w_list03">
                     <ul>
-                        <li class="current lastStep">上一步</li>
+                        <li class="current lastStep" onclick="csvPrev()">上一步</li>
                         <li id="finish">完成</li>
                         <%--<li class="close">取消</li>--%>
                     </ul>
@@ -274,11 +288,13 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
+    var selected_index = 0;
     $(function () {
         var $tab_li = $('.newkeyeord_title ul li input');
         $('.newkeyeord_title ul li input').click(function () {
             $(this).addClass('current').siblings().removeClass('current');
             var index = $tab_li.index(this);
+            selected_index = index;
             $('div.newkeyword_content > div').eq(index).show().siblings().hide();
         });
         $(".newkeyword_add").click(function () {
@@ -312,7 +328,7 @@
         });
 
         $('#accordion').on('show.bs.collapse', function () {
-          $(this).find(".mycollapse").html("<span>[ + ]</span>")
+            $(this).find(".mycollapse").html("<span>[ + ]</span>")
         })
         $('#accordion').on('hide.bs.collapse', function () {
             $(this).find(".mycollapse").html("<span>[-]</span>")
@@ -711,6 +727,7 @@
             pauses = pauses.slice(0, -1);
             $.post("../assistantKeyword/batchAddOrUpdate",
                     {
+                        index: selected_index,
                         isReplace: isReplace,
                         cids: cids,
                         aids: aids,
@@ -894,9 +911,17 @@
      *完成按钮的事件
      */
     $("#finish").click(function () {
-
-        var isReplace = $("#isReplace")[0].checked;
-        overStep(isReplace);
+        var dis = $(this).attr("disable");
+        if (dis == "disable") {
+            return;
+        }
+        if (selected_index == 0) {
+            var isReplace = $("#isReplace")[0].checked;
+            overStep(isReplace);
+        } else {
+            var isReplace = $("#csvReplace")[0].checked;
+            overStep(isReplace);
+        }
 
 //    if (isReplace == true) {
 //        var isOk = window.confirm("该次操作会将已选定单元下的所有关键词替换，确定要继续?");
@@ -954,19 +979,19 @@
         var column_id = "checkedNodes";
         if (id == "specialText") {
             column_id = "nowColumn";
-        }else{
-            column_id="checkedNodes";
+        } else {
+            column_id = "checkedNodes";
         }
         if (_this.val() != "") {
             var column = _this.val().trim().split("\n");
-            $("#"+column_id).html(column.length);
+            $("#" + column_id).html(column.length);
             if (id == "specialText") {
                 specialError();
             } else {
                 focuspError();
             }
         } else {
-            $("#"+column_id).html(0);
+            $("#" + column_id).html(0);
         }
     }
     /**
@@ -982,11 +1007,11 @@
             $("#pError").css("color", "black");
         }
     }
-    function specialError(){
+    function specialError() {
         var plans = parseInt($("#nowColumn").html());
-        if(plans>5){
+        if (plans > 10000) {
             $("#sError").css("color", "red");
-        }else{
+        } else {
             $("#sError").css("color", "black");
         }
     }
@@ -1001,6 +1026,7 @@
             var fileName = suFile.val();
             if (fileName) {
                 console.log("我上传的是文件！");
+//                uploadFile();
             } else {
                 alert("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
             }
@@ -1028,6 +1054,7 @@
             var price = t[4] ? t[4] : "";
             var pc = t[5] ? t[5] : "";
             var mib = t[6] ? t[6] : "";
+            // vaildateKeyword info start
             if (!campaignName) {
                 alert("第" + (i + 1) + "行请输入计划名称!");
                 return;
@@ -1100,11 +1127,217 @@
                 return;
             }
         }
+        // vaildateKeyword info end
 
-        //vaildate End
+        //vaildateKeyword count start
 
+
+        if ($("#sError").attr("style") == "color: red;") {
+            alert("网页中最多只支持上传10000行关键词，如果需要更多上传，请选择csv导入!");
+            return;
+        }
+
+
+//        鲜花6,精确,1,http://www.perfect-cn.cn,http://www.perfect-cn.cn,启用
+
+        //添加到预览关键字添加页面
+        $("#tabUl li:eq(1)").addClass("current");
+        $("#inputDwdInfo").hide();
+        $("#validateDiv").show();
+        $("#criSize").html(textArea.length);
+        var _createTable = $("#createTable tbody");
+        _createTable.empty();
+        var _trClass = "";
+        for (var j = 0; j < textArea.length; j++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+            var campaginName = textArea[j].split("\t")[0] ? textArea[j].split("\t")[0] : "";
+            var adgroupName = textArea[j].split("\t")[1] ? textArea[j].split("\t")[1] : "";
+            var keywordName = textArea[j].split("\t")[2] ? textArea[j].split("\t")[2] : "";
+            var matchType = textArea[j].split("\t")[3] ? textArea[j].split("\t")[3] : "";
+            var price = textArea[j].split("\t")[4] ? textArea[j].split("\t")[4] : "";
+            var pcUrl = textArea[j].split("\t")[5] ? textArea[j].split("\t")[5] : "";
+            var pcsUrl = textArea[j].split("\t")[6] ? textArea[j].split("\t")[6] : "";
+            var c7 = textArea[j].split("\t")[7] ? textArea[j].split("\t")[7] : "";
+            var pause = c7 == "启用" ? "启用" : "暂停";
+            var _tbody = "<tr class='" + _trClass + "'>" +
+                    "<td>" + campaginName + "<input type='hidden' value=" + campaginName + "></td>" +
+                    "<td>" + campaginName + "<input type='hidden' value=" + adgroupName + "></td>" +
+                    "<td>" + keywordName + "</td>" +
+                    "<td>" + matchType + "</td>" +
+                    "<td>" + price + "</td>" +
+                    "<td>" + pcUrl + "</td>" +
+                    "<td>" + pcsUrl + "</td>" +
+                    "<td>" + pause + "</td>" +
+                    "</tr>";
+            _createTable.append(_tbody);
+        }
+        vaildateKeyword();
+    }
+    function vaildateKeyword() {
+        var isReplace = $("#csvReplace")[0].checked;
+        var _table = $("#createTable tbody");
+        var trs = _table.find("tr");
+        var cids = "";
+        var aids = "";
+        var kwds = "";
+        var mts = "";
+        var pts = "";
+        var prices = "";
+        var pcs = "";
+        var mibs = "";
+        var pauses = "";
+        $(trs).each(function (i, o) {
+            var _tr = $(o);
+            cids = cids + _tr.find("td:eq(0) input").val() + "\n";
+            aids = aids + _tr.find("td:eq(1) input").val() + "\n";
+            kwds = kwds + _tr.find("td:eq(2)").html() + "\n";
+            var starMatchType = _tr.find("td:eq(3)").html();
+            var phraseType = "1";
+            var matchType = "";
+            if (starMatchType.indexOf("短语-") > -1) {
+                matchType = 2;//如果输入短语-xx，必定匹配模式是2
+                switch (starMatchType.split("-")[1]) {
+                    case "同义":
+                        phraseType = 1;
+                        break;
+                    case "精确":
+                        phraseType = 2;
+                        break;
+                    case "核心":
+                        phraseType = 3;
+                        break;
+                    default :
+                        phraseType = 1;
+                        break;
+                }
+            } else {
+                matchType = until.getMatchTypeNumByName(starMatchType);
+            }
+            mts = mts + matchType + "\n";
+            pts = pts + phraseType + "\n";
+            var money = _tr.find("td:eq(4)").html();
+            if (/^-?\d+\.?\d*$/.test(money)) {
+                prices = prices + money + "\n";
+            } else {
+                prices = prices + "0.0" + "\n";
+            }
+            pcs = pcs + _tr.find("td:eq(5)").html() + "\n";
+            mibs = mibs + _tr.find("td:eq(6)").html() + "\n";
+            var pause = _tr.find("td:eq(7)").html();
+            var pause_ToF = pause != "启用" ? false : true;
+            pauses = pauses + pause_ToF + "\n";
+        });
+        cids = cids.slice(0, -1);
+        aids = aids.slice(0, -1);
+        kwds = kwds.slice(0, -1);
+        mts = mts.slice(0, -1);
+        pts = pts.slice(0, -1);
+        prices = prices.slice(0, -1);
+        pcs = pcs.slice(0, -1);
+        mibs = mibs.slice(0, -1);
+        pauses = pauses.slice(0, -1);
+        var data = {
+            index: selected_index,
+            isReplace: isReplace,
+            cids: cids,
+            aids: aids,
+            kwds: kwds,
+            mts: mts,
+            pts: pts,
+            prices: prices,
+            pcs: pcs,
+            mibs: mibs,
+            pauses: pauses
+        }
+
+        $.post("../assistantKeyword/vaildateKeyword", data, function (res) {
+            var tbody = $("#existKeyword");
+            var safeTbody = $("#createTable tbody");
+            safeTbody.empty()
+            var result = $.parseJSON(res);
+            if (result.endGetCount) {
+                $("#sepakError").html(result.endGetCount);
+            }
+            if (result.safeKeywordList.length) {
+                var json = result.safeKeywordList;
+                $("#criSize").html(result.safeKeywordList.length);
+                var _trClass = "";
+                for (var i = 0; i < json.length; i++) {
+                    _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                    var phraseType = json[i].object.phraseType;
+                    var _tbody = "<tr class='" + _trClass + "'>" +
+                            "<td>" + json[i].campaignName + "<input type='hidden' value='" + json[i].campaignName + "'/></td>" +
+                            "<td>" + json[i].adgroupName + "<input type='hidden' value='" + json[i].adgroupName + "'></td>" +
+                            "<td>" + json[i].object.keyword + "</td>" +
+                            "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)).replace("匹配","") + "</td>" +
+                            "<td>" + json[i].object.price + "</td>" +
+                            "<td>" + json[i].object.pcDestinationUrl + "</td>" +
+                            "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
+                            "<td>" + until.convert(json[i].object.pause, "启用:暂停") + "</td>" +
+                            "</tr>";
+                    safeTbody.append(_tbody);
+                }
+            }
+
+            if (result.dbExistKeywordList) {
+                if (result.dbExistKeywordList.length) {
+                    var json = result.dbExistKeywordList;
+                    $("#existCount").html(result.dbExistKeywordList.length);
+                    var _trClass = "";
+                    for (var i = 0; i < json.length; i++) {
+                        _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+                        var phraseType = json[i].object.phraseType;
+                        var _tbody = "<tr class='" + _trClass + "'>" +
+                                "<td>" + json[i].campaignName + "</td>" +
+                                "<td>" + json[i].adgroupName + "</td>" +
+                                "<td>" + json[i].object.keyword + "</td>" +
+                                "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)) + "</td>" +
+                                "<td>" + json[i].object.price + "</td>" +
+                                "<td>" + json[i].object.pcDestinationUrl + "</td>" +
+                                "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
+                                "<td>" + until.convert(json[i].object.pause, "启用:暂停") + "</td>" +
+                                "</tr>";
+                        tbody.append(_tbody);
+                    }
+                }
+            }
+        });
 
     }
+    function csvPrev() {
+        $("#existCount").html(0);
+        $("#existKeyword").empty();
+        $("#sepakError").html(0);
+    }
+
+    function uploadFile(){
+        $("#suFile").uploadify({
+            'buttonText': '请选择',
+            'height': 30,
+            'swf': '/public/plugs/uploadify/uploadify.swf',
+            'uploader': '/assistantKeyword/importByFile?jsessionid=<%=request.getSession().getId()%>',
+            'width': 120,
+            'auto': false,
+            'fileObjName': 'file',
+            'onUploadSuccess': function (file, data, response) {
+                if (data == "1") {
+                    console.log("asdfasdf")
+                }
+            }
+        });
+    }
+
+
+
+    $(function () {
+        $("input[name='insertRadio']").change(function () {
+            if ($(this).val() == 0) {
+                $("#finish").attr("disable", "disable");
+            } else {
+                $("#finish").attr("disable", "");
+            }
+        });
+    })
 </script>
 
 </body>

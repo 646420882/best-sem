@@ -105,13 +105,27 @@ var until = {
         }).bind("paste",function(){  //CTR+V事件处理
             $(this).val($(this).val().replace(/[^0-9.]/g,''));
         }).css("ime-mode", "disabled"); //CSS设置输入法不可用
-    }, getMatchTypeName: function (num) {
+    }, getMatchTypeName: function (num,phraseType) {
         switch (num) {
             case "1":
                 return "精确匹配";
                 break;
             case "2":
-                return "短语匹配";
+                if (phraseType) {
+                    switch (phraseType) {
+                        case 1:
+                            return "短语-同义";
+                            break;
+                        case 2:
+                            return "短语-精确";
+                            break;
+                        case 3:
+                            return "短语-核心";
+                            break;
+                    }
+                } else {
+                    return"短语匹配";
+                }
                 break;
             case "3":
                 return "广泛匹配";

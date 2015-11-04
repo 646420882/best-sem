@@ -34,7 +34,7 @@ public interface CampaignService {
 
     void deleteByIds(List<Long> campaignIds);
 
-    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo,SearchFilterParam sp);
+    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo, SearchFilterParam sp);
 
     CampaignDTO findByObjectId(String oid);
 

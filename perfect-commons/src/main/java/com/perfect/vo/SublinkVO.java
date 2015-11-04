@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by XiaoWei on 2015/2/28.
  */
-public class SublinkVo {
+public class SublinkVO {
     private String id;
     private Long sublinkId;
     private String sublinkInfoVos;
@@ -92,7 +92,7 @@ public class SublinkVo {
 
     @Override
     public String toString() {
-        return "SublinkVo{" +
+        return "SublinkVO{" +
                 "accountId=" + accountId +
                 ", id='" + id + '\'' +
                 ", sublinkId=" + sublinkId +

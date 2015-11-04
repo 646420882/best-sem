@@ -515,6 +515,18 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         });
     }
 
+    @Override
+    public AdgroupDTO findByAdgroupName(String adgroupName) {
+        AdgroupEntity adgroupEntity = getMongoTemplate().findOne(new Query(Criteria.where(MongoEntityConstants.NAME).is(adgroupName).and(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
+
+        if (adgroupEntity != null) {
+            AdgroupDTO adgroupDTO = new AdgroupDTO();
+            BeanUtils.copyProperties(adgroupEntity, adgroupDTO);
+            return adgroupDTO;
+        }
+        return null;
+    }
+
     public void insertAll(List<AdgroupDTO> adgroupDTOs) {
         List<AdgroupEntity> insertList = ObjectUtils.convert(adgroupDTOs, getEntityClass());
         getMongoTemplate().insertAll(insertList);

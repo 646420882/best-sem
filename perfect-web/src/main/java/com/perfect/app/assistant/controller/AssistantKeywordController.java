@@ -14,20 +14,26 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
+import com.perfect.service.AdgroupService;
 import com.perfect.utils.IdConvertUtils;
+import com.perfect.utils.csv.UploadHelper;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.report.AssistantKwdUtil;
 import com.perfect.utils.report.BasistReportPCPlusMobUtil;
+import com.perfect.vo.ValidateKeywordVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,6 +47,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 /**
  * Created by john on 2014/8/14.
@@ -67,12 +74,19 @@ public class AssistantKeywordController extends WebContextSupport {
     @Resource
     private BasisReportDownService basisReportDownService;
 
+    @Resource
+    private KeywordDeduplicateService keywordDeduplicateService;
+
+    @Resource
+    private AdgroupService adgroupService;
+
     /**
      * 批量添加或者修改关键词
      */
     @RequestMapping(value = "assistantKeyword/batchAddOrUpdate", method = RequestMethod.POST)
     public void batchAddkeyword(
             @RequestParam(value = "isReplace") Boolean isReplace,
+            @RequestParam(value = "cids") String cids,
             @RequestParam(value = "aids") String aids,
             @RequestParam(value = "kwds") String kwds,
             @RequestParam(value = "mts") String mts,
@@ -81,10 +95,11 @@ public class AssistantKeywordController extends WebContextSupport {
             @RequestParam(value = "pcs") String pcs,
             @RequestParam(value = "mibs") String mibs,
             @RequestParam(value = "pauses") String pauses,
+            @RequestParam(value = "index") Integer index,
             HttpServletResponse response) {
         try {
             if (aids.contains("\n")) {
-//                String[] cidStr = cids.split(",");
+                String[] cidStr = cids.split("\n");
                 String[] aidStr = aids.split("\n");
                 String[] kwdStr = kwds.split("\n");
                 String[] mtStr = mts.split("\n");
@@ -94,10 +109,10 @@ public class AssistantKeywordController extends WebContextSupport {
                 String[] ptsStr = pts.split("\n");
                 String[] pauseStr = pauses.split("\n");
                 for (int i = 0; i < aidStr.length; i++) {
-                    innerUpdate(isReplace, kwdStr[i], aidStr[i], mtStr[i], ptsStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i]);
+                    innerUpdate(cidStr[i], isReplace, kwdStr[i], aidStr[i], mtStr[i], ptsStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i], index);
                 }
             } else {
-                innerUpdate(isReplace, kwds, aids, mts, pts, prices, pcs, mibs, pauses);
+                innerUpdate(cids, isReplace, kwds, aids, mts, pts, prices, pcs, mibs, pauses, index);
             }
             writeHtml(SUCCESS, response);
         } catch (Exception e) {
@@ -107,7 +122,7 @@ public class AssistantKeywordController extends WebContextSupport {
 
     }
 
-    private void innerUpdate(Boolean isReplace, String name, String aid, String mt, String pt, String price, String pc, String mib, String pause) {
+    private void innerUpdate(String cid, Boolean isReplace, String name, String aid, String mt, String pt, String price, String pc, String mib, String pause, Integer index) {
         if (pc.equals("空")) {
             pc = null;
         }
@@ -116,10 +131,21 @@ public class AssistantKeywordController extends WebContextSupport {
         }
         Map<String, Object> map = new HashMap<>();
         map.put("name", name);
-        if (aid.length() > 18) {
-            map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+        if (index == 1) {
+            AdgroupDTO adgroupDTO = adgroupService.autoBAG(cid, aid);
+            if (adgroupDTO.getAdgroupId() != null) {
+                map.put(MongoEntityConstants.ADGROUP_ID,adgroupDTO.getAdgroupId());
+                aid=adgroupDTO.getAdgroupId().toString();
+            } else {
+                map.put(MongoEntityConstants.OBJ_ADGROUP_ID, adgroupDTO.getId());
+                aid=adgroupDTO.getId();
+            }
         } else {
-            map.put(MongoEntityConstants.ADGROUP_ID, Long.valueOf(aid));
+            if (aid.length() > 18) {
+                map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+            } else {
+                map.put(MongoEntityConstants.ADGROUP_ID, Long.valueOf(aid));
+            }
         }
         //如果查询到有关键词名为此的，需要替换
         KeywordDTO dto = assistantKeywordService.findByParams(map);
@@ -174,6 +200,92 @@ public class AssistantKeywordController extends WebContextSupport {
             }
             assistantKeywordService.insert(insertDTO);
         }
+    }
+
+    @RequestMapping(value = "assistantKeyword/vaildateKeyword")
+    private void vaildateKeyword(@RequestParam(value = "isReplace") Boolean isReplace,
+                                 @RequestParam(value = "cids") String cids,
+                                 @RequestParam(value = "aids") String aids,
+                                 @RequestParam(value = "kwds") String kwds,
+                                 @RequestParam(value = "mts") String mts,
+                                 @RequestParam(value = "pts") String pts,
+                                 @RequestParam(value = "prices") String prices,
+                                 @RequestParam(value = "pcs") String pcs,
+                                 @RequestParam(value = "mibs") String mibs,
+                                 @RequestParam(value = "pauses") String pauses,
+                                 @RequestParam(value = "index") Integer index,
+                                 HttpServletResponse response) {
+        try {
+            if (aids.contains("\n")) {
+                String[] cidStr = cids.split("\n");
+                String[] aidStr = aids.split("\n");
+                String[] kwdStr = kwds.split("\n");
+                String[] mtStr = mts.split("\n");
+                String[] pricesStr = prices.split("\n");
+                String[] pcsStr = pcs.split("\n");
+                String[] mibStr = mibs.split("\n");
+                String[] ptsStr = pts.split("\n");
+                String[] pauseStr = pauses.split("\n");
+
+                List<KeywordInfoDTO> baseKeywordDto = new ArrayList<>();
+                for (int i = 0; i < aidStr.length; i++) {
+                    KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+                    keywordInfoDTO.setCampaignName(cidStr[i]);
+                    keywordInfoDTO.setAdgroupName(aidStr[i]);
+                    keywordInfoDTO.setKeyword(kwdStr[i]);
+                    KeywordDTO keywordDTO = new KeywordDTO();
+                    keywordDTO.setKeyword(kwdStr[i]);
+                    keywordDTO.setMatchType(Integer.valueOf(mtStr[i]));
+                    keywordDTO.setPrice(BigDecimal.valueOf(Double.valueOf(pricesStr[i])));
+                    keywordDTO.setPhraseType(Integer.valueOf(ptsStr[i]));
+                    keywordDTO.setPcDestinationUrl(pcsStr[i]);
+                    keywordDTO.setMobileDestinationUrl(mibStr[i]);
+                    keywordDTO.setPause(Objects.equals(pauseStr[i], "true") ? true : false);
+                    keywordInfoDTO.setObject(keywordDTO);
+                    baseKeywordDto.add(keywordInfoDTO);
+//                    innerUpdate(cidStr[i], isReplace, kwdStr[i], aidStr[i], mtStr[i], ptsStr[i], pricesStr[i], pcsStr[i], mibStr[i], pauseStr[i], index);
+                }
+
+
+                ValidateKeywordVO vk = new ValidateKeywordVO();
+                List<KeywordInfoDTO> dbExistKeywordDto = null;
+                Map<String, List<KeywordInfoDTO>> mapx = baseKeywordDto
+                        .stream()
+                        .collect(Collectors.groupingBy(KeywordInfoDTO::getKeyword));
+
+                List<KeywordInfoDTO> selfList = new ArrayList<>();
+                for (Map.Entry<String, List<KeywordInfoDTO>> k : mapx.entrySet()) {
+                    List<KeywordInfoDTO> keywordDTOs = k.getValue();
+                    selfList.add(keywordDTOs.get(0));
+                }
+                vk.setEndGetCount(baseKeywordDto.size() - selfList.size());
+                vk.setSafeKeywordList(selfList);
+                if (selfList.size() > 0) {
+                    List<String> keywords = new ArrayList<>();
+                    selfList.stream().forEach(k -> {
+                        keywords.add(k.getKeyword());
+                    });
+                    List<String> existKwd = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), keywords);
+                    if (existKwd.size() > 0) {
+                        dbExistKeywordDto = assistantKeywordService.vaildateKeywordByIds(existKwd);
+                    }
+                    vk.setDbExistKeywordList(dbExistKeywordDto);
+
+                    writeJson(vk, response);
+                }
+            } else {
+
+                List<String> existKwd = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), new ArrayList<String>() {{
+                    add(kwds);
+                }});
+                List<KeywordInfoDTO> keywordDTOs = assistantKeywordService.vaildateKeywordByIds(existKwd);
+                writeJson(keywordDTOs, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeHtml(EXCEPTION, response);
+        }
+
     }
 
 
@@ -803,5 +915,17 @@ public class AssistantKeywordController extends WebContextSupport {
             page = assistantKeywordService.getKeyWords(sp.getCid(), sp.getAid(), 1, 1000, sp);
         }
         return writeMapObject(DATA, page);
+    }
+
+
+    @RequestMapping(value = "assistantKeyword/importByFile", method = RequestMethod.POST)
+    public void uploadFile(HttpServletResponse response, HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, String jsessionid) throws IOException {
+        UploadHelper upload = new UploadHelper();
+        String ext = upload.getExt(file.getOriginalFilename());
+        if (ext.equals("xls") || ext.equals("xlsx")) {
+//            excelSupport(upload, file, response);
+        } else if (ext.equals("csv")) {
+//            csvSupport(upload, file, response);
+        }
     }
 }

@@ -160,4 +160,10 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     void batchDelete(List<String> strings);
 
+    /**
+     * @param keywordIds mongodb id  集合
+     * @return
+     */
+    List<KeywordDTO> vaildateKeywordByIds(List<String> keywordIds);
+
 }

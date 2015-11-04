@@ -3,7 +3,7 @@ package com.perfect.vo;
 /**
  * Created by XiaoWei on 2015/2/28.
  */
-public class SublinkInfoVo {
+public class SublinkInfoVO {
     private String description;
     private String destinationUrl;
 
@@ -25,7 +25,7 @@ public class SublinkInfoVo {
 
     @Override
     public String toString() {
-        return "SublinkInfoVo{" +
+        return "SublinkInfoVO{" +
                 "description='" + description + '\'' +
                 ", destinationUrl='" + destinationUrl + '\'' +
                 '}';

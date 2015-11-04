@@ -5,6 +5,7 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -181,8 +182,8 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize,SearchFilterParam sp) {
-        return adgroupDAO.findByPagerInfo(params, nowPage, pageSize,sp);
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
+        return adgroupDAO.findByPagerInfo(params, nowPage, pageSize, sp);
     }
 
     @Override
@@ -479,17 +480,58 @@ public class AdgroupServiceImpl implements AdgroupService {
             adgroupDAO.batchDelete(asList, keywordDatas, creativeDatas);
         }
     }
+
     public void cut(AdgroupDTO dto, String cid) {
-        AdgroupBackupDTO adgroupBackupDTO=new AdgroupBackupDTO();
-        BeanUtils.copyProperties(dto,adgroupBackupDTO);
-        if(cid.length()>OBJ_SIZE){
+        AdgroupBackupDTO adgroupBackupDTO = new AdgroupBackupDTO();
+        BeanUtils.copyProperties(dto, adgroupBackupDTO);
+        if (cid.length() > OBJ_SIZE) {
             dto.setCampaignObjId(cid);
             dto.setLocalStatus(1);
-        }else{
+        } else {
             dto.setCampaignId(Long.valueOf(cid));
             dto.setLocalStatus(2);
         }
-        adgroupDAO.update(dto,adgroupBackupDTO);
+        adgroupDAO.update(dto, adgroupBackupDTO);
+    }
+
+    @Override
+    public AdgroupDTO autoBAG(String cname, String aname) {
+        AdgroupDTO adgroupDTO = null;
+        CampaignDTO campaignDTO = campaignDAO.findCampaignByName(cname);
+        if (campaignDTO != null) {
+            Map<String, Object> mapParams = new HashMap<>();
+            if (campaignDTO.getCampaignId() != null) {
+                mapParams.put(MongoEntityConstants.CAMPAIGN_ID, campaignDTO.getCampaignId());
+            } else {
+                mapParams.put(MongoEntityConstants.OBJ_CAMPAIGN_ID, campaignDTO.getId());
+            }
+            mapParams.put("name", aname);
+            adgroupDTO = adgroupDAO.fndEntity(mapParams);
+            return adgroupDTO;
+        } else {
+            CampaignDTO newCampaign = new CampaignDTO();
+            newCampaign.setCampaignName(cname);
+            newCampaign.setPause(true);
+            newCampaign.setShowProb(1);
+            newCampaign.setLocalStatus(1);
+            newCampaign.setStatus(-1);
+            newCampaign.setAccountId(AppContext.getAccountId());
+            String id = campaignDAO.insertReturnId(newCampaign);
+            AdgroupDTO adgroupDTOFind = adgroupDAO.findByAdgroupName(aname);
+            if (adgroupDTOFind != null) {
+                return adgroupDTOFind;
+            } else {
+                AdgroupDTO newAdgroup = new AdgroupDTO();
+                newAdgroup.setLocalStatus(1);
+                newAdgroup.setCampaignObjId(id);
+                newAdgroup.setAdgroupName(aname);
+                newAdgroup.setPause(false);
+                newAdgroup.setAccountId(AppContext.getAccountId());
+                Object adgroupStrId = adgroupDAO.insertOutId(newAdgroup);
+                newAdgroup.setId(adgroupStrId.toString());
+                return newAdgroup;
+            }
+        }
     }
 }
 

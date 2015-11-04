@@ -47,7 +47,7 @@ public interface AdgroupService {
 
     void deleteByIds(List<Long> ids);
 
-    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize,SearchFilterParam sp);
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
     Object insertOutId(AdgroupDTO adgroupEntity);
 
@@ -134,5 +134,7 @@ public interface AdgroupService {
      */
     void batchDelete(FindOrReplaceParam param);
 
-    void cut(AdgroupDTO dto,String cid);
+    void cut(AdgroupDTO dto, String cid);
+
+    AdgroupDTO autoBAG(String cname, String aname);
 }

@@ -550,14 +550,28 @@ function getStarStr(number) {
 }
 
 //匹配模式
-function getMatching(number) {
+function getMatching(number, phraseType) {
     var str = "";
     switch (number) {
         case 1:
             str = "精确";
             break;
         case 2:
-            str = "高级短语";
+            if (phraseType) {
+                switch (phraseType) {
+                    case 1:
+                        str="短语-同义";
+                        break;
+                    case 2:
+                        str="短语-精确";
+                        break;
+                    case 3:
+                        str="短语-核心";
+                        break;
+                }
+            } else {
+                str = "短语";
+            }
             break;
         case 3:
             str = "广泛";

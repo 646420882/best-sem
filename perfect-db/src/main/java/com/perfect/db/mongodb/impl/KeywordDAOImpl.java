@@ -819,6 +819,19 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         });
     }
 
+    @Override
+    public List<KeywordDTO> vaildateKeywordByIds(List<String> keywordIds) {
+        List<KeywordDTO> returnList = null;
+        Query q = new Query();
+        q.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        q.addCriteria(Criteria.where(MongoEntityConstants.SYSTEM_ID).in(keywordIds));
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(q, getEntityClass());
+        if (keywordEntities.size() > 0)
+            returnList = convert(keywordEntities);
+
+        return returnList;
+    }
+
     /**
      * 根据mongodbID修改
      *

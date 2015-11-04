@@ -106,4 +106,7 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
      * @param creativeDatas
      */
     void batchDelete(List<String> asList, List<String> keywordDatas, List<String> creativeDatas);
+
+
+    AdgroupDTO findByAdgroupName(String adgroupName);
 }
