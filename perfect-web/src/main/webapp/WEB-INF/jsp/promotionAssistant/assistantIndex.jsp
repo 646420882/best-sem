@@ -194,7 +194,7 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th><input type="checkbox" name='keyAllCheck'
+                                                            <th style="min-width:40px;"><input type="checkbox" name='keyAllCheck'
                                                                        onchange="$.foRCheckAll('keyAllCheck')"/></th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_name',this)">

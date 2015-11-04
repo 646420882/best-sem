@@ -220,11 +220,11 @@ function keywordDataToHtml(obj, index) {
 
     html = html + tmpHtml;
 
-    if(obj.object.localStatus != -1){
+ /*   if(obj.object.localStatus != -1){*/
         html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
-    }else{
-        html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/zs_table_input.png' /></td>";
-    }
+   /* }else{
+        html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/repeat.png' /></td>";
+    }*/
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -378,7 +378,10 @@ function keywordDataToHtml(obj, index) {
     if (obj.object.localStatus != null) {
         if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
             html = html + "<td><span class='error' step='" + obj.object.localStatus + "'></span></td>";
-        } else {
+        } else if(obj.object.localStatus == -1) {
+            html = html + "<td><span  class='repeat' step='" + obj.object.localStatus + "'></span></td>";
+        }else{
+
             html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
         }
 
