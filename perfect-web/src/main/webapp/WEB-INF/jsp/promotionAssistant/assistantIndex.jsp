@@ -1256,7 +1256,7 @@
                                                     <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img
                                                             src="../public/img/zs_function18.png"></span><b>下载同步</b></a>
                                                     </li>
-                                                    <li><a href="#"><span class="zs_top"><img
+                                                    <li id="upSync"><a href="javascript:void(0)"><span class="zs_top"><img
                                                             src="../public/img/zs_function19.png"></span><b>上传更新</b></a>
                                                     </li>
                                                 </ul>

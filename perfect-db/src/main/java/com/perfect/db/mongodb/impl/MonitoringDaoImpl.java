@@ -43,7 +43,15 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public boolean updataForlderId(Long folderId, String folderName) {
-        WriteResult writeResult = getMongoTemplate().updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), Update.update("fdna", folderName), TBL_MONITORING_FOLDERS);
+        FolderEntity folderEntity = getMongoTemplate().findOne(new Query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), FolderEntity.class, TBL_MONITORING_FOLDERS);
+        Update update = new Update();
+        update.set("fdna", folderName);
+        if(folderEntity != null && folderEntity.getLocalStatus() == 0){
+            update.set("ls", 5);
+        }else{
+            update.set("ls", 2);
+        }
+        WriteResult writeResult = getMongoTemplate().updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), update, TBL_MONITORING_FOLDERS);
         boolean b = writeResult.isUpdateOfExisting();
         return b;
     }
@@ -58,19 +66,32 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public int deleteFoder(Long folderId) {
-        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_FOLDERS);
-
-        int i = remove.getN();
-        return i;
+        FolderEntity folderEntity = getMongoTemplate().findOne(new Query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), FolderEntity.class, TBL_MONITORING_FOLDERS);
+        WriteResult remove;
+        if(folderEntity != null && folderEntity.getLocalStatus() == 0){
+            Update update = new Update();
+            update.set("ls",4);
+            remove = getMongoTemplate().updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), update, TBL_MONITORING_FOLDERS);
+        }else{
+            remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_FOLDERS);
+        }
+        return remove.getN();
     }
 
     @Override
     public int deleteMonitor(Long folderId) {
-        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_TARGETS);
+        FolderEntity folderEntity = getMongoTemplate().findOne(new Query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), FolderEntity.class, TBL_MONITORING_TARGETS);
+        WriteResult remove;
+        if(folderEntity != null && folderEntity.getLocalStatus() == 0){
+            Update update = new Update();
+            update.set("ls",4);
+            remove = getMongoTemplate().updateFirst(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), update, TBL_MONITORING_TARGETS);
+        }else{
+            remove = getMongoTemplate().remove(Query.query(Criteria.where(FOLDER_ID).is(folderId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_TARGETS);
+        }
 
-        int i = remove.getN();
 
-        return i;
+        return remove.getN();
     }
 
     @Override
@@ -93,9 +114,17 @@ public class MonitoringDaoImpl extends AbstractSysBaseDAOImpl<FolderDTO, Long> i
 
     @Override
     public int deleteMonitorId(Long MonitorId) {
-        WriteResult remove = getMongoTemplate().remove(Query.query(Criteria.where(MONITOR_ID).is(MonitorId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_TARGETS);
-        int i = remove.getN();
-        return i;
+        FolderMonitorEntity folderMonitorEntity = getMongoTemplate().findOne(new Query(Criteria.where(MONITOR_ID).is(MonitorId).and(ACCOUNT_ID).is(AppContext.getAccountId())), FolderMonitorEntity.class, TBL_MONITORING_TARGETS);
+        WriteResult remove;
+        if(folderMonitorEntity != null && folderMonitorEntity.getLocalstatus() == 0){
+            Update update = new Update();
+            update.set("ls",4);
+            remove = getMongoTemplate().updateFirst(Query.query(Criteria.where(MONITOR_ID).is(MonitorId).and(ACCOUNT_ID).is(AppContext.getAccountId())), update, TBL_MONITORING_TARGETS);
+        }else{
+            remove = getMongoTemplate().remove(Query.query(Criteria.where(MONITOR_ID).is(MonitorId).and(ACCOUNT_ID).is(AppContext.getAccountId())), TBL_MONITORING_TARGETS);
+        }
+
+        return remove.getN();
     }
 
     @Override

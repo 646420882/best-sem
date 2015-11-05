@@ -19,6 +19,9 @@ public class FolderMonitorDTO {
 
     private Long accountId;
 
+    //是否删除
+    private Integer localstatus;
+
     public Long getMonitorId() {
         return monitorId;
     }
@@ -75,9 +78,17 @@ public class FolderMonitorDTO {
         this.accountId = accountId;
     }
 
+    public Integer getLocalstatus() {
+        return localstatus;
+    }
+
+    public void setLocalstatus(Integer localstatus) {
+        this.localstatus = localstatus;
+    }
+
     @Override
     public String toString() {
-        return "FolderMonitorEntity{" +
+        return "FolderMonitorDTO{" +
                 "monitorId=" + monitorId +
                 ", folderId=" + folderId +
                 ", aclid=" + aclid +
@@ -85,6 +96,7 @@ public class FolderMonitorDTO {
                 ", campaignId=" + campaignId +
                 ", type=" + type +
                 ", accountId=" + accountId +
+                ", localstatus=" + localstatus +
                 '}';
     }
 }

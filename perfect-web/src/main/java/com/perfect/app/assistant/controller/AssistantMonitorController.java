@@ -56,11 +56,13 @@ public class AssistantMonitorController extends WebContextSupport{
         ObjectNode jsonNodes = null;
         if (folder.size() > 0) {
             for (FolderDTO entity : folder) {
-                jsonNodes = mapper.createObjectNode();
-                jsonNodes.put("id", entity.getFolderId());
-                jsonNodes.put("pid", 0);
-                jsonNodes.put("name", entity.getFolderName());
-                arrayNode.add(jsonNodes);
+                if(entity.getLocalStatus() != 4){
+                    jsonNodes = mapper.createObjectNode();
+                    jsonNodes.put("id", entity.getFolderId());
+                    jsonNodes.put("pid", 0);
+                    jsonNodes.put("name", entity.getFolderName());
+                    arrayNode.add(jsonNodes);
+                }
             }
         }
         Map<String, Object> listMap = new HashMap<>();
@@ -227,6 +229,27 @@ public class AssistantMonitorController extends WebContextSupport{
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
             response.getWriter().write(String.valueOf(folder));
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 监控上传更新
+     *
+     * @param response
+     */
+    @RequestMapping(value = "/monitoring/upMonitor", method = {RequestMethod.GET, RequestMethod.POST})
+    public void addMonitor(HttpServletResponse response) {
+        int i = monitoringService.upMonitor();
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.getWriter().write(String.valueOf(i));
             response.getWriter().flush();
         } catch (IOException e) {
             e.printStackTrace();

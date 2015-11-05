@@ -28,6 +28,10 @@ public class FolderMonitorEntity {
     @Field("acid")
     private Long accountId;
 
+    //是否删除
+    @Field("ls")
+    private Integer localstatus;
+
     public Long getMonitorId() {
         return monitorId;
     }
@@ -84,6 +88,14 @@ public class FolderMonitorEntity {
         this.accountId = accountId;
     }
 
+    public Integer getLocalstatus() {
+        return localstatus;
+    }
+
+    public void setLocalstatus(Integer localstatus) {
+        this.localstatus = localstatus;
+    }
+
     @Override
     public String toString() {
         return "FolderMonitorEntity{" +
@@ -94,6 +106,7 @@ public class FolderMonitorEntity {
                 ", campaignId=" + campaignId +
                 ", type=" + type +
                 ", accountId=" + accountId +
+                ", localstatus=" + localstatus +
                 '}';
     }
 }

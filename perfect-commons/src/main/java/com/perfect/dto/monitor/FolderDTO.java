@@ -15,6 +15,9 @@ public class FolderDTO extends BaseDTO {
 
     private int countNumber;
 
+    //修改状态 0/百度数据  1/本地添加  2/本地修改  3/本地删除 4/远程删除 5/远程修改
+    private Integer localStatus;
+
     public Long getFolderId() {
         return folderId;
     }
@@ -47,13 +50,22 @@ public class FolderDTO extends BaseDTO {
         this.accountId = accountId;
     }
 
+    public Integer getLocalStatus() {
+        return localStatus;
+    }
+
+    public void setLocalStatus(Integer localStatus) {
+        this.localStatus = localStatus;
+    }
+
     @Override
     public String toString() {
-        return "FolderEntity{" +
+        return "FolderDTO{" +
                 "folderId=" + folderId +
                 ", folderName='" + folderName + '\'' +
                 ", accountId=" + accountId +
                 ", countNumber=" + countNumber +
+                ", localStatus=" + localStatus +
                 '}';
     }
 }

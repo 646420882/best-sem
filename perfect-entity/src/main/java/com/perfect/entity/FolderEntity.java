@@ -17,6 +17,10 @@ public class FolderEntity {
     @Field("acid")
     private Long accountId;
 
+    //是否删除
+    @Field("ls")
+    private Integer localStatus;
+
     public Long getFolderId() {
         return folderId;
     }
@@ -41,12 +45,21 @@ public class FolderEntity {
         this.accountId = accountId;
     }
 
+    public Integer getLocalStatus() {
+        return localStatus;
+    }
+
+    public void setLocalStatus(Integer localStatus) {
+        this.localStatus = localStatus;
+    }
+
     @Override
     public String toString() {
         return "FolderEntity{" +
                 "folderId=" + folderId +
                 ", folderName='" + folderName + '\'' +
                 ", accountId=" + accountId +
+                ", localStatus=" + localStatus +
                 '}';
     }
 }

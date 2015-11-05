@@ -46,6 +46,7 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
             folderDTO.setFolderId(folder.getFolderId());
             folderDTO.setFolderName(folder.getFolderName());
             folderDTO.setAccountId(AppContext.getAccountId());
+            folderDTO.setLocalStatus(0);
             folderDTOs.add(folderDTO);
         }
         //监控对象数据
@@ -59,6 +60,7 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
                 folderMonitorDTO.setAclid(monitor.getId());
                 folderMonitorDTO.setType(monitor.getType());
                 folderMonitorDTO.setAccountId(AppContext.getAccountId());
+                folderMonitorDTO.setLocalstatus(0);
                 monitorDTOs.add(folderMonitorDTO);
             }
         }

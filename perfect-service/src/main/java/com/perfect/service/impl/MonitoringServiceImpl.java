@@ -1,10 +1,12 @@
 package com.perfect.service.impl;
 
+import com.google.common.collect.Maps;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.api.baidu.PromotionMonitoring;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.Folder;
+import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.autosdk.sms.v3.QualityType;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
@@ -19,9 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 /**
  * Created by SubDong on 2014/9/10.
@@ -56,35 +58,38 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     @Override
     public int addFolder(String folderName) {
+        PromotionMonitoring monitoring = getUserInfo();
         List<FolderDTO> list = monitoringDao.getForlder();
         if (list.size() < 20) {
-            PromotionMonitoring monitoring = getUserInfo();
             Folder folder = new Folder();
             List<Folder> strings = new ArrayList<>();
             folder.setFolderName(folderName);
             strings.add(folder);
 
-            int Judge = 0;
-            List<Folder> folderList = new ArrayList<>();
+            //int Judge = 0;
+            //List<Folder> folderList = new ArrayList<>();
 
-            try {
-                folderList = monitoring.addFolder(strings);
-                Judge = 1;
-            } catch (Exception e) {
-                Judge = 0;
-            }
-            if (Judge == 1) {
-                for (Folder folder1 : folderList) {
-                    FolderDTO folderEntity = new FolderDTO();
-                    folderEntity.setAccountId(AppContext.getAccountId());
-                    folderEntity.setFolderName(folder1.getFolderName());
-                    folderEntity.setFolderId(folder1.getFolderId());
-                    monitoringDao.addFolder(folderEntity);
-                }
-                return 1;
-            } else {
-                return 0;
-            }
+//            try {
+//                folderList = monitoring.addFolder(strings);
+//                Judge = 1;
+//            } catch (Exception e) {
+//                Judge = 0;
+//            }
+//            if (Judge == 1) {
+            //for (Folder folder1 : folderList) {
+            //sid 当前时间的的毫秒数 加上一个一位的随机数   是字符串意义上的加法
+            String sid = String.valueOf(new Date().getTime()) + String.valueOf((int) (Math.random() * 10));
+            FolderDTO folderEntity = new FolderDTO();
+            folderEntity.setAccountId(AppContext.getAccountId());
+            folderEntity.setFolderName(folderName);
+            folderEntity.setFolderId(Long.valueOf(sid));
+            folderEntity.setLocalStatus(1);
+            monitoringDao.addFolder(folderEntity);
+            //}
+            return 1;
+//            } else {
+//                return 0;
+//            }
         } else {
             return -1;
         }
@@ -242,6 +247,7 @@ public class MonitoringServiceImpl implements MonitoringService {
             monitorEntity.setAclid(acliId);
             monitorEntity.setAccountId(AppContext.getAccountId());
             monitorEntity.setType(11);
+            monitorEntity.setLocalstatus(1);
 
             try {
                 monitoringDao.addMonitor(monitorEntity);
@@ -253,6 +259,52 @@ public class MonitoringServiceImpl implements MonitoringService {
             i = -1;
         }
         return i;
+    }
+
+    @Override
+    public int upMonitor() {
+        PromotionMonitoring monitoring = getUserInfo();
+        List<FolderDTO> list = monitoringDao.getForlder();
+        List<FolderMonitorDTO> entityList = monitoringDao.getMonitor();
+        List<Long> folders = new ArrayList<>();
+        List<Long> monitors = new ArrayList<>();
+        List<Folder> folderList = new ArrayList<>();
+        list.forEach(e -> {
+            if (e.getLocalStatus() == 0 || e.getLocalStatus() == 4 || e.getLocalStatus() == 5)
+                folders.add(e.getFolderId());
+            if (e.getLocalStatus() == 0 || e.getLocalStatus() == 5 || e.getLocalStatus() == 1 || e.getLocalStatus() == 2) {
+                Folder folder = new Folder();
+                folder.setFolderName(e.getFolderName());
+                folderList.add(folder);
+            }
+        });
+
+        monitoring.deleteFolderAPI(folders);
+
+        List<Folder> returnFolderList = monitoring.addFolder(folderList);
+        if (returnFolderList != null) {
+            final Map<String, Long> longMap = returnFolderList.stream().filter(Objects::nonNull).collect(Collectors.toMap(Folder::getFolderName, Folder::getFolderId));
+            Map<Long, Long> map = list.stream().map(o -> Maps.immutableEntry(o.getFolderId(), longMap.get(o.getFolderName()))).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            List<Monitor> monitorList = new ArrayList<>();
+            entityList.forEach(e -> {
+                if (e.getLocalstatus() == 0 || e.getLocalstatus() == 4 || e.getLocalstatus() == 5)
+                    monitors.add(e.getMonitorId());
+                if (e.getLocalstatus() == 0 || e.getLocalstatus() == 1 || e.getLocalstatus() == 2 || e.getLocalstatus() == 4) {
+                    Monitor monitor = new Monitor();
+                    monitor.setFolderId(map.get(e.getFolderId()));
+                    monitor.setAdgroupId(e.getAdgroupId());
+                    monitor.setCampaignId(e.getCampaignId());
+                    monitor.setId(e.getAclid());
+                    monitorList.add(monitor);
+                }
+            });
+            monitoring.deleteMonitorWordAPI(monitors);
+            List<Monitor> monitorList1 = monitoring.addMonitorWordAPI(monitorList);
+            if (monitorList1 == null && returnFolderList == null) return -1;
+            else return 0;
+        }else{
+            return 0;
+        }
     }
 
 

@@ -190,6 +190,38 @@ $(function () {
             }
         });
     });
+    var downSyncFuc = function () {
+        $.ajax({
+            url: "/monitoring/synchronous",
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                getFolder();
+                getMonitor();
+                getTreeM();
+            }
+        });
+    }
+    //数据上传
+    $("#upSync").click(function () {
+        if (confirm("是否确定将本地监控文件夹数据上传到蜂巢")) {
+            $.ajax({
+                url: "/monitoring/upMonitor",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data == 0) {
+                        alert("上传完成！请继续操作");
+                        downSyncFuc();
+                    } else {
+                        alert("上传过程中出现了意想不到的结果，请重新同步")
+                    }
+                }
+            });
+        }
+    })
     /***************************************************/
     $("#jkwjj").click(function () {
         getFolder();
@@ -200,7 +232,7 @@ $(function () {
         var cid = $(this).attr("cid");
         var folderName = $(this).attr("folderName");
         var count = $(this).attr("count");
-        $("#count").val(count);
+        $("#count").val((count == "undefined" ? 0 : count));
         $("#folder").val(folderName);
         $("#count").attr("fol", cid);
     });
@@ -263,6 +295,9 @@ $(function () {
                     if (data == 1) {
                         $("#dialogMsg").empty();
                         $("#dialogMsg").append("添加成功");
+                        getFolder();
+                        getTreeM();
+                        closeAlert();
                     } else if (data == 0) {
                         $("#dialogMsg").empty();
                         $("#dialogMsg").append("添加失败");
@@ -402,10 +437,12 @@ var getFolder = function () {
         success: function (data) {
             var monitor_html = "";
             $.each(data.rows, function (i, items) {
-                if (i % 2 != 0) {
-                    monitor_html = "<tr class='list2_box1 folder' cname='trName' cid='" + items.folderId + "' folderName='" + items.folderName + "' count='" + items.countNumber + "'><td >&nbsp;<input cname='folderName' class='list2_input' readonly value=" + items.folderName + "></td><td>&nbsp;" + items.countNumber + "</td><td>&nbsp;</td>"
-                } else {
-                    monitor_html = "<tr class='list2_box2 folder' cname='trName' cid='" + items.folderId + "' folderName='" + items.folderName + "' count='" + items.countNumber + "'><td >&nbsp;<input cname='folderName' class='list2_input' readonly value=" + items.folderName + "></td><td>&nbsp;" + items.countNumber + "</td><td>&nbsp;</td>"
+                if (items.localStatus != 4) {
+                    if (i % 2 != 0) {
+                        monitor_html = "<tr class='list2_box1 folder' cname='trName' cid='" + items.folderId + "' folderName='" + items.folderName + "' count='" + items.countNumber + "'><td >&nbsp;<input cname='folderName' class='list2_input' readonly value=" + items.folderName + "></td><td>&nbsp;" + (items.countNumber == undefined ? 0 : items.countNumber) + "</td><td>&nbsp;</td>"
+                    } else {
+                        monitor_html = "<tr class='list2_box2 folder' cname='trName' cid='" + items.folderId + "' folderName='" + items.folderName + "' count='" + items.countNumber + "'><td >&nbsp;<input cname='folderName' class='list2_input' readonly value=" + items.folderName + "></td><td>&nbsp;" + (items.countNumber == undefined ? 0 : items.countNumber) + "</td><td>&nbsp;</td>"
+                    }
                 }
                 $("#MonitorTbody").append(monitor_html);
             });
@@ -455,36 +492,37 @@ var getMonitor = function () {
                 var matchType = getMatching(item.object.matchType);
                 var urlPc = ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl.substring(0, 25));
                 var urlMobile = ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl.substring(0, 25));
-                if (i % 2 == 0) {
-                    html_Monitor = "<tr class='list2_box1' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = " + item.monitorId + " pause = " + item.object.pause + ">"
-                        + "<td>&nbsp;" + item.object.keyword + "</td>"
-                        + "<td>&nbsp;" + item.campaignName + "</td>"
-                        + "<td>&nbsp;" + item.adgroupName + "</td>"
-                        + "<td>&nbsp;" + status + "</td>"
-                        + "<td>&nbsp;" + ((item.object.pause == false) ? '启用' : '暂停') + "</td>"
-                        + "<td>&nbsp;" + item.object.price + "</td>"
-                        + "<td>&nbsp;" + quanlityHtml + quanlityText + "</td>"
-                        + "<td>&nbsp;" + mobileQuanlityHtml + "</td>"
-                        + "<td>&nbsp;" + matchType + "</td>"
-                        + "<td>&nbsp;<a href=" + urlPc + " title=" + urlPc + " target='_blank'>" + urlPc + "</a></td>"
-                        + "<td>&nbsp;<a href=" + urlMobile + " title=" + urlMobile + " target='_blank'>" + urlMobile + "</a></td>"
-                        + "<td>&nbsp;" + item.folderName + "</td></tr>";
-                } else {
-                    html_Monitor = "<tr class='list2_box2' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = " + item.monitorId + " pause = " + item.object.pause + ">"
-                        + "<td>&nbsp;" + item.object.keyword + "</td>"
-                        + "<td>&nbsp;" + item.campaignName + "</td>"
-                        + "<td>&nbsp;" + item.adgroupName + "</td>"
-                        + "<td>&nbsp;" + status + "</td>"
-                        + "<td>&nbsp;" + ((item.object.pause == false) ? '启用' : '暂停') + "</td>"
-                        + "<td>&nbsp;" + item.object.price + "</td>"
-                        + "<td>&nbsp;" + quanlityHtml + quanlityText + "</td>"
-                        + "<td>&nbsp;" + mobileQuanlityHtml + "</td>"
-                        + "<td>&nbsp;" + matchType + "</td>"
-                        + "<td>&nbsp;<a href=" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + " title=" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + " target='_blank'>" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + "</a></td>"
-                        + "<td>&nbsp;<a href=" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + " title=" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + " target='_blank'>" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + "</a></td>"
-                        + "<td>&nbsp;" + item.folderName + "</td></tr>";
+                if (item.localstatus != 4) {
+                    if (i % 2 == 0) {
+                        html_Monitor = "<tr class='list2_box1' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = " + item.monitorId + " pause = " + item.object.pause + ">"
+                            + "<td>&nbsp;" + item.object.keyword + "</td>"
+                            + "<td>&nbsp;" + item.campaignName + "</td>"
+                            + "<td>&nbsp;" + item.adgroupName + "</td>"
+                            + "<td>&nbsp;" + status + "</td>"
+                            + "<td>&nbsp;" + ((item.object.pause == false) ? '启用' : '暂停') + "</td>"
+                            + "<td>&nbsp;" + item.object.price + "</td>"
+                            + "<td>&nbsp;" + quanlityHtml + quanlityText + "</td>"
+                            + "<td>&nbsp;" + mobileQuanlityHtml + "</td>"
+                            + "<td>&nbsp;" + matchType + "</td>"
+                            + "<td>&nbsp;<a href=" + urlPc + " title=" + urlPc + " target='_blank'>" + urlPc + "</a></td>"
+                            + "<td>&nbsp;<a href=" + urlMobile + " title=" + urlMobile + " target='_blank'>" + urlMobile + "</a></td>"
+                            + "<td>&nbsp;" + item.folderName + "</td></tr>";
+                    } else {
+                        html_Monitor = "<tr class='list2_box2' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = " + item.monitorId + " pause = " + item.object.pause + ">"
+                            + "<td>&nbsp;" + item.object.keyword + "</td>"
+                            + "<td>&nbsp;" + item.campaignName + "</td>"
+                            + "<td>&nbsp;" + item.adgroupName + "</td>"
+                            + "<td>&nbsp;" + status + "</td>"
+                            + "<td>&nbsp;" + ((item.object.pause == false) ? '启用' : '暂停') + "</td>"
+                            + "<td>&nbsp;" + item.object.price + "</td>"
+                            + "<td>&nbsp;" + quanlityHtml + quanlityText + "</td>"
+                            + "<td>&nbsp;" + mobileQuanlityHtml + "</td>"
+                            + "<td>&nbsp;" + matchType + "</td>"
+                            + "<td>&nbsp;<a href=" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + " title=" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + " target='_blank'>" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + "</a></td>"
+                            + "<td>&nbsp;<a href=" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + " title=" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + " target='_blank'>" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + "</a></td>"
+                            + "<td>&nbsp;" + item.folderName + "</td></tr>";
+                    }
                 }
-
                 $("#monitorFolder").append(html_Monitor);
             });
         }
