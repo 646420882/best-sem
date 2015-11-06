@@ -13,6 +13,7 @@ import java.math.BigDecimal;
  * Created by yousheng on 2014/7/30.
  *
  * @author yousheng
+ * @description 智能竞价规则实体类
  */
 @Document(collection = MongoEntityConstants.TBL_BIDDINGRULE)
 public class BiddingRuleEntity extends AccountIdEntity {
@@ -24,37 +25,37 @@ public class BiddingRuleEntity extends AccountIdEntity {
 
     @Indexed(unique = true)
     @Field(MongoEntityConstants.KEYWORD_ID)
-    private long keywordId;
+    private long keywordId;                             // 关键词ID
 
     @Field(MongoEntityConstants.NAME)
-    private String keyword;
+    private String keyword;                             // 关键词名称
 
     @Field("stgy")
-    private StrategyEntity strategyEntity;
+    private StrategyEntity strategyEntity;              // 出价策略
 
     @Field("mt")
-    private Integer matchType;
+    private Integer matchType;                          // 匹配类型
 
     @Field("pt")
-    private Integer phraseType;
+    private Integer phraseType;                         // 短语类型
 
     @Field("cp")
-    private BigDecimal currentPrice;
+    private BigDecimal currentPrice;                    // 当前出价
 
     @Field("priority")
-    private int priority;
+    private int priority;                               // 优先级
 
     @Field("ebl")
-    private boolean enabled;
+    private boolean enabled;                            // 出价规则是否可用
 
     @Field("r")
-    private boolean running;
+    private boolean running;                            // 是否处于运行状态
 
     @Field("nxt")
-    private long next;
+    private long next;                                  // 下一次运行时间
 
     @Field("ct")
-    private int currentTimes = -1;
+    private int currentTimes = -1;                      // 当前运行时间
 
     public Integer getMatchType() {
         return matchType;

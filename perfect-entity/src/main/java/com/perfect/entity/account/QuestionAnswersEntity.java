@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Created by subdong on 15-9-25.
+ *
+ * @description Q&A 实体类
  */
 @Document(collection = MongoEntityConstants.TBL_ANSWERS)
 public class QuestionAnswersEntity {

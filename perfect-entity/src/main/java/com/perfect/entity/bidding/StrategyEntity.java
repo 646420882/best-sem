@@ -8,6 +8,7 @@ import java.math.BigDecimal;
  * Created by yousheng on 2014/8/14.
  *
  * @author yousheng
+ * @description 出价策略实体类
  */
 public class StrategyEntity {
 
@@ -16,15 +17,14 @@ public class StrategyEntity {
     @Field("bdtype")
     private int strategy;
 
-    //竞价规则 PC or 移动
     @Field("type")
-    private int device;
+    private int device;                                         //竞价规则 PC or 移动
 
     @Field("max")
-    private BigDecimal maxPrice;
+    private BigDecimal maxPrice;                                // 最大出价
 
     @Field("min")
-    private BigDecimal minPrice;
+    private BigDecimal minPrice;                                // 最小出价
 
     // 竞价策略
     @Field("m")
@@ -34,34 +34,34 @@ public class StrategyEntity {
     // 2 = medium 30
     // 3 = fast 15
     @Field("intval")
-    private int interval;
+    private int interval;                                       // 竞价速度
 
     // 1 = left 1
     // 2 = left 2-3
     // 3 = right 1-3
     // 4 = right + postion
     @Field("pstra")
-    private int expPosition;
+    private int expPosition;                                    // 排名位置标识
 
     // 1 = keep current postion
     // 2 = rollback
     @Field("failed")
-    private int failedStrategy;
+    private int failedStrategy;                                 // 失败策略
 
     @Field("t")
-    private Integer[] times;
+    private Integer[] times;                                    // 竞价时间段
 
     @Field("pos")
-    private int position;
+    private int position;                                       // 排名
 
     @Field("rt")
-    private Integer[] regionTarget;
+    private Integer[] regionTarget;                             // 竞价的目标区域
 
     @Field("op")
     private BigDecimal outPrice;
 
     @Field("bt")
-    private int runByTimes;
+    private int runByTimes;                                     // 运行次数
 
     @Field("a")
     private int auto;
