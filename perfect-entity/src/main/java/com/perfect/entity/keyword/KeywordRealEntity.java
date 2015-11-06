@@ -9,10 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 public class KeywordRealEntity implements Comparable<KeywordRealEntity> {
     @Id
-    private Long keywordId;
+    private Long keywordId;         //关键词ID
 
     @Field(value = "name")
-    private String keywordName;
+    private String keywordName;     //关键词名称
 
     @Field(value = "impr")
     private Integer impression;     //展现次数
@@ -33,7 +33,7 @@ public class KeywordRealEntity implements Comparable<KeywordRealEntity> {
     @Field(value = "conv")
     private Double conversion;      //转化
 
-    private String orderBy;
+    private String orderBy;         //排序
 
     public Long getKeywordId() {
         return keywordId;

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 
 /**
  * Created by baizz on 2014-08-06.
+ * 关键词报告
  */
 public class KeywordReportEntity extends AccountIdEntity implements Comparable<KeywordReportEntity> {
 
@@ -16,22 +17,22 @@ public class KeywordReportEntity extends AccountIdEntity implements Comparable<K
     private String id;
 
     @Field(MongoEntityConstants.KEYWORD_ID)
-    private Long keywordId;
+    private Long keywordId;         //关键词id
 
     @Field(value = "kwna")
-    private String keywordName;
+    private String keywordName;     //关键词名称
 
     @Field(MongoEntityConstants.ADGROUP_ID)
-    private Long adgroupId;
+    private Long adgroupId;      //单元ID
 
     @Field(value = "agna")
-    private String adgroupName;
+    private String adgroupName;  //单元名称
 
     @Field(MongoEntityConstants.CAMPAIGN_ID)
-    private Long campaignId;
+    private Long campaignId;        //计划ID
 
     @Field(value = "cpna")
-    private String campaignName;
+    private String campaignName;   //计划名称
 
     @Field(value = "pcis")
     private Integer pcImpression;     //PC展现次数
@@ -58,28 +59,28 @@ public class KeywordReportEntity extends AccountIdEntity implements Comparable<K
     private Double pcPosition;       //PC平均排名
 
     @Field(value = "mis")
-    private Integer mobileImpression;
+    private Integer mobileImpression;  //mobile展现次数
 
     @Field(value = "mcli")
-    private Integer mobileClick;
+    private Integer mobileClick;        //mobile点击次数
 
     @Field(value = "mctr")
-    private Double mobileCtr;
+    private Double mobileCtr;       //mobile点击率=点击次数/展现次数
 
     @Field(value = "mcost")
-    private BigDecimal mobileCost;
+    private BigDecimal mobileCost;       //mobile消费
 
     @Field(value = "mcpc")
-    private BigDecimal mobileCpc;
+    private BigDecimal mobileCpc;       //mobile平均点击价格=消费/点击次数
 
     @Field(value = "mcpm")
-    private BigDecimal mobileCpm;
+    private BigDecimal mobileCpm;       //mobile千次展现消费
 
     @Field(value = "mcs")
-    private Double mobileConversion;
+    private Double mobileConversion;       //mobile转化
 
     @Field(value = "mpt")
-    private Double mobilePosition;
+    private Double mobilePosition;       //mobile平均排名
     private Integer quality = 0;
     private Integer matchType;
 

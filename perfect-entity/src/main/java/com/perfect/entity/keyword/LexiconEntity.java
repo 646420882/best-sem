@@ -12,6 +12,7 @@ import java.io.Serializable;
 /**
  * Created by baizz on 2014-08-18.
  * 2014-11-24 refactor
+ * 系统关键词
  */
 @Document(collection = MongoEntityConstants.SYS_KEYWORD)
 @CompoundIndexes({
@@ -26,16 +27,16 @@ public class LexiconEntity implements Serializable {
     private String trade;   //行业
 
     @Field("cg")
-    private String category;
+    private String category;    //类别（类似于计划级别）
 
     @Field("gr")
-    private String group;
+    private String group;       //分组（类似与单元级别）
 
     @Field("kw")
-    private String keyword;
+    private String keyword;     //关键词
 
     @Field("url")
-    private String url;
+    private String url;         //url
 
     public String getId() {
         return id;

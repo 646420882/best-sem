@@ -5,6 +5,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * Created by vbzer_000 on 2014/9/16.
+ * 创意推荐实体
  */
 @Document(indexName = "data", type = "creative")
 public class CreativeSourceEntity {
@@ -12,21 +13,21 @@ public class CreativeSourceEntity {
     @Id
     private String id;
 
-    private String body;
+    private String body;    //内容信息
 
-    private String title;
+    private String title;       //标题信息
 
-    private String host;
+    private String host;        //host信息
 
-    private String keyword;
+    private String keyword;    //关键词
 
-    private String category;
+    private String category;    //类别
 
-    private String keywordAnalyzed;
+    private String keywordAnalyzed;     //关键词分析(分词)
 
-    private String html;
+    private String html;        //html信息
 
-    private Integer region;
+    private Integer region;     //地域
 
     public String getKeyword() {
         return keyword;

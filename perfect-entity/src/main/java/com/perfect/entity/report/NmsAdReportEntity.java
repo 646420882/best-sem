@@ -10,6 +10,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.CAMPAIGN_ID;
 
 /**
  * Created by dolphineor on 2015-7-20.
+ * 网盟创意报告
  */
 public class NmsAdReportEntity extends AccountIdEntity {
 
@@ -17,10 +18,10 @@ public class NmsAdReportEntity extends AccountIdEntity {
     private String id;
 
     @Field(value = CAMPAIGN_ID)
-    private Long campaignId;
+    private Long campaignId;        //计划id
 
     @Field(value = "cpna")
-    private String campaignName;
+    private String campaignName; //计划名称
 
     @Field(value = "groupid")
     private Long groupId; // 推广组ID

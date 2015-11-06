@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 
 /**
  * Created by baizz on 2014-08-13.
+ * <p>计划报告</p>
  */
 public class CampaignReportEntity extends AccountIdEntity {
 
@@ -16,10 +17,10 @@ public class CampaignReportEntity extends AccountIdEntity {
     private String id;
 
     @Field(MongoEntityConstants.CAMPAIGN_ID)
-    private Long campaignId;
+    private Long campaignId;        //计划ID
 
     @Field(value = "cpna")
-    private String campaignName;
+    private String campaignName;        //计划名称
 
     @Field(value = "pcis")
     private Integer pcImpression;     //PC展现次数
@@ -43,25 +44,25 @@ public class CampaignReportEntity extends AccountIdEntity {
     private Double pcConversion;      //PC转化
 
     @Field(value = "mis")
-    private Integer mobileImpression;
+    private Integer mobileImpression;       //mobile展现次数
 
     @Field(value = "mcli")
-    private Integer mobileClick;
+    private Integer mobileClick;       //mobile点击次数
 
     @Field(value = "mctr")
-    private Double mobileCtr;
+    private Double mobileCtr;       //mobilePC点击率=点击次数/展现次数
 
     @Field(value = "mcost")
-    private BigDecimal mobileCost;
+    private BigDecimal mobileCost;       //mobile消费
 
     @Field(value = "mcpc")
-    private BigDecimal mobileCpc;
+    private BigDecimal mobileCpc;       //mobile平均点击价格=消费/点击次数
 
     @Field(value = "mcpm")
-    private BigDecimal mobileCpm;
+    private BigDecimal mobileCpm;       //mobile千次展现消费
 
     @Field(value = "mcs")
-    private Double mobileConversion;
+    private Double mobileConversion;       //mobile转化
 
     public String getId() {
         return id;

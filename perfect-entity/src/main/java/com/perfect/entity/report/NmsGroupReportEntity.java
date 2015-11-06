@@ -10,22 +10,23 @@ import static com.perfect.commons.constants.MongoEntityConstants.CAMPAIGN_ID;
 
 /**
  * Created by subdong on 15-7-20.
+ * 网盟单元报告
  */
 public class NmsGroupReportEntity extends AccountIdEntity {
     @Id
     private String id;
 
     @Field(value = CAMPAIGN_ID)
-    private Long campaignId;
+    private Long campaignId;        //计划id
 
     @Field(value = "cpna")
-    private String campaignName;
+    private String campaignName;    //计划名称
 
     @Field(value = "groupid")
-    private Long groupId;
+    private Long groupId;       //单元id
 
     @Field(value = "groupn")
-    private String groupName;
+    private String groupName;  //单元名称
 
     @Field(value = "impr")
     private Integer impression;     // 展现次数

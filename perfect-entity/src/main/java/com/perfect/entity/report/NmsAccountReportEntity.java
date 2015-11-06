@@ -12,6 +12,7 @@ import static com.perfect.commons.constants.MongoEntityConstants.TBL_NMS_ACCOUNT
 
 /**
  * Created by subdong on 15-7-20.
+ * 网盟账户报告
  */
 @Document(collection = TBL_NMS_ACCOUNT_REPORT)
 public class NmsAccountReportEntity extends AccountIdEntity {
@@ -20,10 +21,10 @@ public class NmsAccountReportEntity extends AccountIdEntity {
     private String id;
 
     @Field(value = "acna")
-    private String accountName;     //账户
+    private String accountName;     //账户名称
 
     @Field(value = "date")
-    private Date date;
+    private Date date;      //时间
 
     @Field(value = "impr")
     private Integer impression;     // 展现次数
