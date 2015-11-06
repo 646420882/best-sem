@@ -4459,3 +4459,9 @@ background: #34befe;
     color:#dcdcdc;
 
 }
+.repeat{
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url(/public/img/repeat.png) no-repeat;
+}

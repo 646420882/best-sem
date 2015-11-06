@@ -103,9 +103,9 @@
     <h2>
         <span class="fl">添加成功</span>
         <a href="javascript:void(0)" onclick="closeAlert();" class="close addcolse">×</a></h2>
-    <div>以下关键词未被保存,因本地库中存在：</div>
-    <div id="context" class="mainlist saveset">
-
+    <div class="mainlist saveset">
+        <div>以下关键词未被保存,因本地库中存在：</div>
+        <div  id="context"></div>
     </div>
     <div class="main_bottom">
         <div class="w_list03">

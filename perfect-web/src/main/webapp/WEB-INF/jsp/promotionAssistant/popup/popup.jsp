@@ -186,7 +186,7 @@
             <li><input id="budget_text" type="text" style="width: 350px"/></li>
         </ul>
     </div>
-    <div class="main_bottom" style="margin-left: 20%">
+    <div class="main_bottom">
         <div class="w_list03">
             <ul>
                 <li id="modifyAccountBudget_ok" class="current">确认</li>
