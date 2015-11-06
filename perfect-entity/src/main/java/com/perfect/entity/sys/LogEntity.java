@@ -10,17 +10,17 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class LogEntity extends AccountIdEntity {
 
     @Id
-    private String id;
+    private String id;//mongoid
 
     @Field(MongoEntityConstants.BAIDU_ID)
-    private Long bid;
+    private Long bid;//该id表示百度id，如果下面的type为keyword，该值为关键词百度id，如果type为creative，该值为创意的百度id
 
     @Field(MongoEntityConstants.OBJ_ID)
-    private String oid;
+    private String oid;//该id表示百度id，如果下面的type为keyword，该值为关键词本地mongoid，如果type为creative，该值为创意的mongoid
 
-    private String type;
+    private String type;//日志类型
 
-    private int opt;
+    private int opt;//操作类型，增加，删除，修改
 
     public Long getBid() {
         return bid;

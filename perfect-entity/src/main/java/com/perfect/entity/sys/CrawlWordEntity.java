@@ -11,18 +11,18 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class CrawlWordEntity {
 
     @Id
-    private String id;
+    private String id;//mongodbid
 
-    private String site;
+    private String site;//爬取站点
 
     @Field("c")
-    private String category;
+    private String category; //种类
 
     @Field("w")
-    private String keyword;
+    private String keyword;//关键词
 
     @Field("s")
-    private Integer status = 0;
+    private Integer status = 0; //爬取状态
 
     public String getId() {
         return id;

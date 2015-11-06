@@ -918,14 +918,18 @@ public class AssistantKeywordController extends WebContextSupport {
     }
 
 
-    @RequestMapping(value = "assistantKeyword/importByFile", method = RequestMethod.POST)
-    public void uploadFile(HttpServletResponse response, HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, String jsessionid) throws IOException {
+    @RequestMapping(value = "assistantKeyword/importByFile",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public void uploadFile( HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        String fileName = file.getOriginalFilename();
         UploadHelper upload = new UploadHelper();
-        String ext = upload.getExt(file.getOriginalFilename());
+        String ext = upload.getExt(fileName);
         if (ext.equals("xls") || ext.equals("xlsx")) {
+            System.out.println("excel");
 //            excelSupport(upload, file, response);
         } else if (ext.equals("csv")) {
 //            csvSupport(upload, file, response);
+            System.out.println("csv");
         }
     }
 }

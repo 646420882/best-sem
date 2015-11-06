@@ -12,8 +12,8 @@ public class ScheduleEntity {
     //------------------------
     // MEMBER VARIABLES
     //------------------------
-    private Long startHour;
-    private Long endHour;
+    private Long startHour;//任务开始时间
+    private Long endHour;//任务结束时间
 
     public boolean setWeekDay(Long aWeekDay) {
         boolean wasSet = false;

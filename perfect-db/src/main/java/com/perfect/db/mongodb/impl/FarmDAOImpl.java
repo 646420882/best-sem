@@ -51,13 +51,13 @@ public class FarmDAOImpl extends AbstractSysBaseDAOImpl<UrlDTO, String> implemen
         return urlDTO;
     }
 
-    @Override
-    public void returnOne(UrlDTO urlDTO) {
-        UrlEntity urlEntity = new UrlEntity();
-        BeanUtils.copyProperties(urlDTO, urlEntity);
-        urlEntity.setIdle(true);
-        getSysMongoTemplate().save(urlEntity);
-    }
+//    @Override
+//    public void returnOne(UrlDTO urlDTO) {
+//        UrlEntity urlEntity = new UrlEntity();
+//        BeanUtils.copyProperties(urlDTO, urlEntity);
+//        urlEntity.setIdle(true);
+//        getSysMongoTemplate().save(urlEntity);
+//    }
 
     /*
      * 查询最后执行时间在5分钟之前的账号

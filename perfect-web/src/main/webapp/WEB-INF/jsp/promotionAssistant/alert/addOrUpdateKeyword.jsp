@@ -144,7 +144,7 @@
                                         <span id="sMaxColumns">5000</span>
                                     </p>
 
-                                    <p>或者从相同格式的csv文件上传：<input type="file" id="suFile">&nbsp;(<20万行)
+                                    <p>或者从相同格式的csv文件上传：<input type="file" name="fileName" id="suFile">&nbsp;(<20万行)
                                     </p>
 
                                     <p><input type="checkbox" id="csvReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
@@ -287,6 +287,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/ajaxFileUpload.js"></script>
 <script type="text/javascript">
     var selected_index = 0;
     $(function () {
@@ -1026,7 +1028,7 @@
             var fileName = suFile.val();
             if (fileName) {
                 console.log("我上传的是文件！");
-//                uploadFile();
+                uploadFile();
             } else {
                 alert("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
             }
@@ -1269,7 +1271,7 @@
                             "<td>" + json[i].campaignName + "<input type='hidden' value='" + json[i].campaignName + "'/></td>" +
                             "<td>" + json[i].adgroupName + "<input type='hidden' value='" + json[i].adgroupName + "'></td>" +
                             "<td>" + json[i].object.keyword + "</td>" +
-                            "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)).replace("匹配","") + "</td>" +
+                            "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)).replace("匹配", "") + "</td>" +
                             "<td>" + json[i].object.price + "</td>" +
                             "<td>" + json[i].object.pcDestinationUrl + "</td>" +
                             "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
@@ -1310,23 +1312,15 @@
         $("#sepakError").html(0);
     }
 
-    function uploadFile(){
-        $("#suFile").uploadify({
-            'buttonText': '请选择',
-            'height': 30,
-            'swf': '/public/plugs/uploadify/uploadify.swf',
-            'uploader': '/assistantKeyword/importByFile?jsessionid=<%=request.getSession().getId()%>',
-            'width': 120,
-            'auto': false,
-            'fileObjName': 'file',
-            'onUploadSuccess': function (file, data, response) {
-                if (data == "1") {
-                    console.log("asdfasdf")
-                }
+    function uploadFile() {
+        $.ajaxFileUpload({
+            url: '/assistantKeyword/importByFile',
+            dataType: 'json',
+            fileElementId: document.getElementById("suFile"),
+            success: function (data, status) {
             }
         });
     }
-
 
 
     $(function () {

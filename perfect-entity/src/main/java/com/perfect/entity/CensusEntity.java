@@ -10,6 +10,7 @@ import java.util.Date;
 /**
  * Created by XiaoWei on 2014/11/11.
  */
+@Deprecated //慧眼相关代码，已经被遗弃
 @Document(collection = MongoEntityConstants.SYS_CENSUS)
 public class CensusEntity {
     @Id

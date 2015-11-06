@@ -7,10 +7,10 @@ package com.perfect.entity;
  * @author yousheng
  */
 public class RankEntity {
-    private String keyword;
-    private String host;
-    private String desc;
-    private String title;
+    private String keyword;//关键词名称
+    private String host;//主机
+    private String desc;//描述
+    private String title;//标题
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;

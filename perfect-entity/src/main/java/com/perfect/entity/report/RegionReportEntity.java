@@ -16,22 +16,22 @@ public class RegionReportEntity extends AccountIdEntity {
     private String id;
 
     @Field(MongoEntityConstants.REGION_ID)
-    private Long regionId;
+    private Long regionId;//地域id
 
     @Field(value = "rgna")
-    private String regionName;
+    private String regionName; //地域名称
 
     @Field(MongoEntityConstants.ADGROUP_ID)
-    private Long adgroupId;
+    private Long adgroupId; //单元id
 
     @Field(value = "agna")
-    private String adgroupName;
+    private String adgroupName; //单元名
 
     @Field(MongoEntityConstants.CAMPAIGN_ID)
-    private Long campaignId;
+    private Long campaignId; //计划id
 
     @Field(value = "cpna")
-    private String campaignName;
+    private String campaignName;//计划名称
 
     @Field(value = "pcis")
     private Integer pcImpression;     //PC展现次数
@@ -58,28 +58,28 @@ public class RegionReportEntity extends AccountIdEntity {
     private Double pcPosition;       //PC平均排名
 
     @Field(value = "mis")
-    private Integer mobileImpression;
+    private Integer mobileImpression; //移动展现
 
     @Field(value = "mcli")
-    private Integer mobileClick;
+    private Integer mobileClick;//移动点击量
 
     @Field(value = "mctr")
-    private Double mobileCtr;
+    private Double mobileCtr;//移动平均点击量
 
     @Field(value = "mcost")
-    private BigDecimal mobileCost;
+    private BigDecimal mobileCost;//移动消费
 
     @Field(value = "mcpc")
-    private BigDecimal mobileCpc;
+    private BigDecimal mobileCpc;//移动平均点击价格
 
     @Field(value = "mcpm")
-    private BigDecimal mobileCpm;
+    private BigDecimal mobileCpm;//移动千次展现消费
 
     @Field(value = "mcs")
-    private Double mobileConversion;
+    private Double mobileConversion;//移动转化
 
     @Field(value = "mpt")
-    private Double mobilePosition;
+    private Double mobilePosition;//移动排名
 
     public String getId() {
         return id;
