@@ -811,9 +811,22 @@ var price =
     + "到"
     + "<input type='number' name='max_points' min='00' max='10' />";
 var errorMsg = $("#filter_msg");
+document.onclick = function () {
+    $("#filterSearchTemplate").hide();
+    $(".remove").remove();
+}
 
+$("#filterSearchTemplate").click(function (e) {
+    var ev = e || window.event;
+    if (ev.stopPropagation) {
+        ev.stopPropagation();
+    }
+    else if (window.event) {
+        window.event.cancelBubble = true;//兼容IE
+    }
+});
 var TabModel = {
-    Show: function (type, _this) {
+    Show: function (type, _this, e) {
         if (!jsonData.cid) {
             if (editCommons.EditType != "campaign") {
                 alert("请选择一个计划或者单元");
@@ -821,13 +834,24 @@ var TabModel = {
             }
         }
         $(_this).append("<span class='remove'><img src='../public/img/select.png'></span>");
-         var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
-        var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
-        $("#filterSearchTemplate").css("top", tabtop);
-        $("#filterSearchTemplate").css("left", tableft);
-        $('#filterSearchTemplate').show(function(){
-            document.body.addEventListener('click', boxCloser, false);
-        });
+        if ($(".dropdown-menus").css("display") == "none") {
+            var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
+            var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
+            $(".dropdown-menus").css("top", tabtop);
+            $(".dropdown-menus").css("left", tableft);
+            $(".dropdown-menus").show();
+            var ev = e || window.event;
+            if (ev.stopPropagation) {
+                ev.stopPropagation();
+            }
+            else if (window.event) {
+                window.event.cancelBubble = true;//兼容IE
+            }
+        }
+        else {
+            $(".dropdown-menus").hide();
+        }
+
         $("#CheckList").empty();
         $("input[name='filterField']").val(type);
         errorMsg.html('');
@@ -1281,14 +1305,6 @@ var TabModel = {
         }
     }
 }
-function boxCloser(e){
-    if(e.target.id != 'filterSearchTemplate'){
-        document.body.removeEventListener('click', boxCloser, false);
-        $('#filterSearchTemplate').hide();
-        $(".remove").remove();
-    }
-}
-
 //foRSubmit: function () {
 //    var gridModel = [
 //        {label: '按钮1', name: '', cls: 'testBtn', type: 'button'},

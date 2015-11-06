@@ -103,7 +103,6 @@ table tr, table tr td {
 .top_middle {
     width: 100%;
     height: 94px;
-    background: url(/public/img/top_left.png) left no-repeat;
     position: relative;
 
 }
