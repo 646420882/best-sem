@@ -7,17 +7,19 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Created by XiaoWei on 2014/9/19.
+ *
+ * @description 自定义推广单元存储实体类
  */
 @Document(collection = MongoEntityConstants.TBL_CUSTOMGROUP)
 public class CustomGroupEntity {
     @Id
-    private String id;
+    private String id;                          // MongoDB ID
 
     @Field("gname")
-    private String groupName;
+    private String groupName;                   // 推广单元名称
 
     @Field(MongoEntityConstants.ACCOUNT_ID)
-    private Long accountId;
+    private Long accountId;                     // 百度账户ID
 
     public String getId() {
         return id;

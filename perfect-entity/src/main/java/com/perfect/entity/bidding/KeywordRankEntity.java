@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  * Created by vbzer_000 on 2014/8/29.
+ *
+ * @description 关键词出价排名实体
  */
 @Document(collection = "kw_rank")
 public class KeywordRankEntity extends AccountIdEntity {
@@ -18,19 +20,19 @@ public class KeywordRankEntity extends AccountIdEntity {
     private String id;
 
     @Field(MongoEntityConstants.KEYWORD_ID)
-    private String kwid;
+    private String kwid;                                    // 关键词ID
 
     @Field("name")
-    private String name;
+    private String name;                                    // 关键词名称
 
     @Field("d")
-    private int device;
+    private int device;                                     // 设备
 
     @Field
-    private long time;
+    private long time;                                      // 排名时间
 
     @Field("tr")
-    private Map<Integer, Integer> targetRank;
+    private Map<Integer, Integer> targetRank;               // 等级信息
 
     public long getTime() {
         return time;
