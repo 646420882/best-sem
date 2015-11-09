@@ -769,7 +769,7 @@
     </div>
 </div>
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display: none" id="biddingAlertPrompt">
+<div class="box7" style=" width: 230px;display:none" id="biddingAlertPrompt">
     <h2>
         <span class="fl" id="biddingAlertPrompt_title"></span>
         <a href="#" class="close">×</a></h2>
