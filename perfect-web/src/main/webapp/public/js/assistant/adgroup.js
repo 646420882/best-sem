@@ -420,7 +420,8 @@ function adgroupDel() {
             });
         }
     } else {
-        alert("请选择单元！");
+        //alert("请选择单元！");
+        assistantAlertPrompt.show("请选择单元！");
     }
 }
 /**

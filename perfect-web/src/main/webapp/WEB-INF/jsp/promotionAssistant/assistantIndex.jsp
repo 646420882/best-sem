@@ -97,17 +97,17 @@
                                         <li onclick="uploadDialog()"><a><span
                                                 class="glyphicon glyphicon-open"></span><span>上传更新</span></a></li>
                                         <li class="current"><a href="javascript:void(0)"
-                                                               onclick="alert('该功能还在开发中!');"><span
+                                                               onclick="assistantAlertPrompt.show('该功能还在开发中！');"><span
                                                 class="glyphicon glyphicon-search"></span><span>高级搜索</span></a>
                                         </li>
-                                        <li class="nav_menu"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"><span
+                                        <li class="nav_menu"><a href="javascript:void(0)" onclick="assistantAlertPrompt.show('该功能还在开发中！');"><span
                                                 class="glyphicon glyphicon-transfer"></span><span>重复关键词</span></a>
                                             <%--<ul>--%>
                                             <%--<li class="showbox3 current">重复关键词</li>--%>
                                             <%--<li>设置</li>--%>
                                             <%--</ul>--%>
                                         </li>
-                                        <li class="showbox4"><a href="javascript:void(0)" onclick="alert('该功能还在开发中!');"> <span
+                                        <li class="showbox4"><a href="javascript:void(0)" onclick="assistantAlertPrompt.show('该功能还在开发中！');"> <span
                                                 class="glyphicon glyphicon-cog"></span><span>估算工具</span></a></li>
                                     </ul>
                                 </div>

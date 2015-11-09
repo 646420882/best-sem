@@ -175,29 +175,34 @@ function addOperate(obj) {
     var _thisStr = getChar(_title.val());
     var dm = "." + $(".doMainS").html();
     if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
-        alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+        //alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
         return false;
     }
     var _desc1 = _this.find("input:eq(3)");
     var _thisStrDesc1 = getChar(_desc1.val());
     if (parseInt(_thisStrDesc1) > 80 || parseInt(_thisStrDesc1) <= 8) {
-        alert("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        //alert("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
         return false;
     }
     var _desc2 = _this.find("input:eq(4)");
     var _thisStrDesc2 = getChar(_desc2.val());
     if (parseInt(_thisStrDesc2) > 80 || parseInt(_thisStrDesc2) <= 8) {
-        alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        //alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
         return false;
     }
     var _pc = _this.find("input:eq(5)");
     var _thisStrpc = getChar(_pc.val());
     if (parseInt(_thisStrpc) > 1024 || parseInt(_thisStrpc) <= 1) {
-        alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+        //alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
         return false;
     } else {
         if (_pc.val().indexOf(dm) == -1) {
-            alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            //alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            assistantAlertPrompt.show("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         }
         //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
@@ -212,11 +217,13 @@ function addOperate(obj) {
     var _pcs = _this.find("input:eq(6)");
     var _thisStrpcs = getChar(_pcs.val());
     if (parseInt(_thisStrpcs) > 36 || parseInt(_thisStrpcs) <= 1) {
-        alert("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
+        //alert("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
         return false;
     } else {
         if (_pcs.val().indexOf(dm) == -1) {
-            alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            //alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            assistantAlertPrompt.show("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         }
         //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
@@ -231,17 +238,20 @@ function addOperate(obj) {
     var _mib = _this.find("input:eq(7)");
     if (_mib.val() != "空" || _mib.val() != "") {
         if (_mib.val().indexOf(dm) == -1) {
-            alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            //alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            assistantAlertPrompt.show("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         } else {    //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
             var _thisStrMib = getChar(_mib.val());
             if (parseInt(_thisStrMib) > 1017 || parseInt(_thisStrMib) <= 1) {
-                alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+                //alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+                assistantAlertPrompt.show("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
                 return false;
             }
             else {
                 if (_mib.val().indexOf(dm) == -1) {
-                    alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    //alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    assistantAlertPrompt.show("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
             }
@@ -256,16 +266,19 @@ function addOperate(obj) {
     var _mibs = _this.find("input:eq(8)");
     if (_mibs.val() != "" || _mibs.val() != "空") {
         if (_mibs.val().indexOf(dm) == -1) {
-            alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            //alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            assistantAlertPrompt.show("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         } else {
             var _thisStrMibs = getChar(_mibs.val());
             if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
-                alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
+                //alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
+                assistantAlertPrompt.show("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                 return false;
             } else {
                 if (_mibs.val().indexOf(dm) == -1) {
-                    alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    //alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    assistantAlertPrompt.show("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
             }
@@ -576,7 +589,8 @@ function addCreative() {
         var i = $("#createTable tbody tr").size();
         var lastTr = $("#createTable tr:eq(" + i + ")").find("td:eq(1) a").html();
         if (lastTr == "删除") {
-            alert("请提交后再继续添加");
+            //alert("请提交后再继续添加");
+            assistantAlertPrompt.show("请提交后再继续添加");
             return;
         }
         var _createTable = $("#createTable tbody");
@@ -876,9 +890,11 @@ function planUnit() {
     var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
     var aid = $("#sUnit :selected").val() == undefined ? sparams.aid : $("#sUnit :selected").val();
     if (cid == "-1") {
-        alert("请选择计划");
+        //alert("请选择计划");
+        assistantAlertPrompt.show("请选择计划");
     } else if (aid == "-1") {
-        alert("请选择单元");
+        //alert("请选择单元");
+        assistantAlertPrompt.show("请选择单元");
     } else {
         initDomain();
         sparams.cid = cid;
@@ -977,7 +993,8 @@ function deleteByObjectId() {
             });
         }
     } else {
-        alert("请选择要删除的创意！");
+        //alert("请选择要删除的创意！");
+        assistantAlertPrompt.show("请选择要删除的创意！");
     }
 }
 /**
@@ -988,7 +1005,8 @@ function updateCreatvie() {
     var temp = $(tmp);
     var name = temp.find("td:eq(1)").html();
     if (name == undefined) {
-        alert("请选择要编辑的创意！");
+        //alert("请选择要编辑的创意！");
+        assistantAlertPrompt.show("请选择要编辑的创意！");
         return;
     }
     var _update = $("#jcUpdate");
@@ -1078,26 +1096,31 @@ function updateOk() {
     var _thisStr = getChar(_title.val());
     var dm = "." + $(".doMainS").html();
     if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
-        alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+        //alert("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
         return false;
     }
     var _thisStrDesc1 = getChar(_desc1.val());
     if (parseInt(_thisStrDesc1) > 80 || parseInt(_thisStrDesc1) <= 8) {
-        alert("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        //alert("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
         return false;
     }
     var _thisStrDesc2 = getChar(_desc2.val());
     if (parseInt(_thisStrDesc2) > 80 || parseInt(_thisStrDesc2) <= 8) {
-        alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        //alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
         return false;
     }
     var _thisStrpc = getChar(_pc.val());
     if (parseInt(_thisStrpc) > 1024 || parseInt(_thisStrpc) <= 1) {
-        alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+        //alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
         return false;
     } else {
         if (_pc.val().indexOf(dm) == -1) {
-            alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            //alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            assistantAlertPrompt.show("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
             return false;
         }
         //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
@@ -1111,11 +1134,13 @@ function updateOk() {
     }
     var _thisStrpcs = getChar(_pcs.val());
     if (parseInt(_thisStrpcs) > 36 || parseInt(_thisStrpcs) <= 1) {
-        alert("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
+        //alert("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
+        assistantAlertPrompt.show("默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
         return false;
     } else {
         if (_pcs.val().indexOf(dm) == -1) {
-            alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            //alert("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            assistantAlertPrompt.show("默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         }
         //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
@@ -1128,17 +1153,20 @@ function updateOk() {
     }
     if (_mib.val() != "空" || _mib.val() != "") {
         if (_mib.val().indexOf(dm) == -1) {
-            alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            //alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+            assistantAlertPrompt.show("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         } else {
             var _thisStrMib = getChar(_mib.val());
             if (parseInt(_thisStrMib) > 1017 || parseInt(_thisStrMib) <= 1) {
-                alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+                //alert("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+                assistantAlertPrompt.show("移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
                 return false;
             }
             else {
                 if (_mib.val().indexOf(dm) == -1) {
-                    alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    //alert("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    assistantAlertPrompt.show("移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
             }
@@ -1154,17 +1182,20 @@ function updateOk() {
     }
     if (_mibs.val() != "" || _mibs.val() != "空") {
         if (_mibs.val().indexOf(dm) == -1) {
-            alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            //alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+            assistantAlertPrompt.show("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         } else {
             var _thisStrMibs = getChar(_mibs.val());
             if (parseInt(_thisStrMibs) > 36 || parseInt(_thisStrMibs) <= 1) {
-                alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
+                //alert("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
+                assistantAlertPrompt.show("移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                 return false;
             }
             else {
                 if (_mibs.val().indexOf(dm) == -1) {
-                    alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    //alert("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    assistantAlertPrompt.show("移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
             }
@@ -1208,7 +1239,8 @@ function updateOk() {
                     " <td >" + until.convertDeviceByNum(parseInt(formData["devicePreference"])) + "</td>" +
                     " <td >" + _edit + "</td>";
                 $(tmp).html(_tbody);
-                alert("修改完成");
+                //alert("修改完成");
+                assistantAlertPrompt.show("修改完成");
                 closeAlertCreative();
 
             }
@@ -1250,6 +1282,7 @@ function reBakClick() {
                         break;
                     case 4:
                         alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
+                        assistantAlertPrompt.show("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
                         break;
                     default :
                         break;
@@ -1361,7 +1394,8 @@ function creativeUpload() {
             }
         }
     } else {
-        alert("已经是最新数据了！");
+        //alert("已经是最新数据了！");
+        assistantAlertPrompt.show("已经是最新数据了！");
         return;
     }
 }
@@ -1382,7 +1416,8 @@ function cUploadOpreate(crid, ls) {
             if (conf) {
                 $.get("/assistantCreative/uploadAddByUp", {crid: crid}, function (res) {
                     if (res.msg == "1") {
-                        alert("上传成功");
+                        //alert("上传成功");
+                        assistantAlertPrompt.show("上传成功");
                         if (sparams.cid != null) {
                             if (sparams.cid != null && sparams.aid != null) {
                                 getCreativeUnit(sparams);
@@ -1395,7 +1430,8 @@ function cUploadOpreate(crid, ls) {
                 });
             }
         } else {
-            alert(res.msg);
+            //alert(res.msg);
+            assistantAlertPrompt.show(res.msg);
         }
     });
 }

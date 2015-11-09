@@ -633,11 +633,13 @@ function deleteKwd() {
 
     if (ids != "") {
         if (ids.split(",").length == 0) {
-            alert("请选择行再操作!");
+            //alert("请选择行再操作!");
+            assistantAlertPrompt.show("请选择行再操作!");
             return;
         }
     } else {
-        alert("请选择要删除的关键词!");
+        /*alert("请选择要删除的关键词!");*/
+        assistantAlertPrompt.show("请选择要删除的关键词!");
         return;
     }
 

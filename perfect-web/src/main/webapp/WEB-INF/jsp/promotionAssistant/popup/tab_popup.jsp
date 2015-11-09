@@ -31,3 +31,32 @@
                 src="../public/img/zs_function_text.png"></span><b>批量删除</b></a></li>
     </ul>
 </div>
+
+<%--推广助手中alert优化--%>
+<%--提示类--%>
+<div class="box7" style=" width: 230px" id="assistantAlertPrompt">
+    <h2>
+        <span class="fl" id="assistantAlertPrompt_title"></span>
+        <a href="#" class="close">×</a></h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current close">确认</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<%--confirm类型--%>
+<div class="box7" style=" width: 230px" id="assistantAlertOptimize">
+    <h2 id="changeCreative">
+        <span class="fl" id="assistantAlertOptimize_title"></span>
+        <a href="#" class="close">×</a></h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set" id="assistantAlertOptimize_footer">
+                <li id="confirm_assistantAlertOptimize" class="current close">确认</li>
+                <li class="close" id="cancel_assistantAlertOptimize">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>

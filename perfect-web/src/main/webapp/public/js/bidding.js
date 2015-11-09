@@ -57,7 +57,8 @@ $(function () {
     $("#showbox").click(function () {
         var keywordIds = getAllCheckedcb();
         if (keywordIds.length == 0) {
-            alert("请选择至少一个关键词!");
+            //alert("请选择至少一个关键词!");
+            biddingAlertPrompt.show("请选择至少一个关键词!");
             return false;
         }
 
@@ -85,7 +86,8 @@ $(function () {
     $("#showbox2").click(function () {
         var keywordIds = getAllCheckedcb();
         if (keywordIds.length == 0) {
-            alert("请选择至少一个关键词!");
+            //alert("请选择至少一个关键词!");
+            biddingAlertPrompt.show("请选择至少一个关键词!");
             return false;
         }
 
@@ -108,7 +110,8 @@ $(function () {
     $("#showbox4").click(function () {
         var keywordIds = getAllCheckedcb();
         if (keywordIds.length == 0) {
-            alert("请选择至少一个关键词!");
+            //alert("请选择至少一个关键词!");
+            biddingAlertPrompt.show("请选择至少一个关键词!");
             return false;
         }
 
@@ -162,7 +165,8 @@ $(function () {
     $("#showbox3").click(function () {
         var keywordIds = getAllCheckedcb();
         if (keywordIds.length == 0) {
-            alert("请选择至少一个关键词!");
+            //alert("请选择至少一个关键词!");
+            biddingAlertPrompt.show("请选择至少一个关键词!");
             return false;
         }
 
@@ -186,16 +190,19 @@ $(function () {
                 type: "POST",
                 success: function (datas) {
                     if (datas.code == 0) {
-                        alert("所选关键词竞价已暂停!");
+                        //alert("所选关键词竞价已暂停!");
+                        biddingAlertPrompt.show("所选关键词竞价已暂停!");
                         return true;
                     } else {
-                        alert("暂停失败! " + datas.msg);
+                        //alert("暂停失败! " + datas.msg);
+                        biddingAlertPrompt.show("暂停失败! " + datas.msg);
                         return false;
                     }
                 }
             });
         } else {
-            alert("所选关键词没有设置竞价规则!");
+            //alert("所选关键词没有设置竞价规则!");
+            biddingAlertPrompt.show("所选关键词没有设置竞价规则！");
         }
     });
 
@@ -203,7 +210,8 @@ $(function () {
     $("#showbox7").click(function () {
         var keywordIds = getAllCheckedcb();
         if (keywordIds.length == 0) {
-            alert("请选择至少一个关键词!");
+            //alert("请选择至少一个关键词!");
+            biddingAlertPrompt.show("请选择至少一个关键词！");
             return false;
         }
 
@@ -227,16 +235,19 @@ $(function () {
                 type: "POST",
                 success: function (datas) {
                     if (datas.code == 0) {
-                        alert("所选关键词竞价已启动!");
+                        //alert("所选关键词竞价已启动!");
+                        biddingAlertPrompt.show("所选关键词竞价已启动！");
                         return true;
                     } else {
-                        alert("启动失败! " + datas.msg);
+                        //alert("启动失败! " + datas.msg);
+                        biddingAlertPrompt.show("启动失败! " + datas.msg);
                         return false;
                     }
                 }
             });
         } else {
-            alert("所选关键词没有设置竞价规则!");
+            //alert("所选关键词没有设置竞价规则!");
+            biddingAlertPrompt.show("所选关键词没有设置竞价规则!");
         }
     });
     $(".close").click(function () {
@@ -256,7 +267,8 @@ $(function () {
                 display: "block"
             });
         } else {
-            alert("请至少选择一个关键词！");
+            //alert("请至少选择一个关键词！");
+            biddingAlertPrompt.show("请至少选择一个关键词!");
         }
 
     });
@@ -359,7 +371,8 @@ $(function () {
     $('#rankBtn').click(function () {
         var keywordIds = getAllCheckedcb();
         if (keywordIds.length == 0) {
-            alert("请选择至少一个关键词!");
+            //alert("请选择至少一个关键词!");
+            biddingAlertPrompt.show("请选择至少一个关键词!");
             return false;
         }
 //        var ids = [];
@@ -372,7 +385,8 @@ $(function () {
             data: {'ids': keywordIds.toString()},
             type: "POST",
             success: function (data) {
-                alert("排名检查完毕,请点击查看当前排名.");
+                //alert("排名检查完毕,请点击查看当前排名.");
+                biddingAlertPrompt.show("排名检查完毕,请点击查看当前排名.");
             }
         })
     });
@@ -423,13 +437,15 @@ $(function () {
                 if (i == 1) {
                     if (item.value == null || item.value.trim().length == 0 || parseFloat(item.value.trim()) < 0) {
                         if (parseFloat(keywordPrice) > 0) {
-                            alert("价格区间不对!请重新输入！");
+                            //alert("价格区间不对!请重新输入！");
+                            biddingAlertPrompt.show("价格区间不对!请重新输入！");
                             return false;
                         }
                         keywordPrice += 0;
                     } else {
                         if (parseFloat(keywordPrice) > parseFloat(item.value.trim())) {
-                            alert("价格区间不对!请重新输入！");
+                            //alert("价格区间不对!请重新输入！");
+                            biddingAlertPrompt.show("价格区间不对!请重新输入！");
                             return false;
                         }
                         keywordPrice += ("," + item.value.trim());
@@ -555,7 +571,8 @@ function sendReq(run) {
     req.min = $('#min').val();
 
     if (req.max < 0.01 || req.min < 0.01) {
-        alert('竞价格式错误!');
+        //alert('竞价格式错误!');
+        biddingAlertPrompt.show("竞价格式错误！");
         return;
     }
 
@@ -643,6 +660,7 @@ function sendReq(run) {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             alert('创建规则成功');
+            biddingAlertPrompt.show("创建规则成功！");
             $('.close').click();
         }
     })
@@ -679,7 +697,8 @@ function sendReq(run) {
 
 function validate(start, end) {
     if (start == end) {
-        alert('开始与结束时间不能相同!');
+        //alert('开始与结束时间不能相同!');
+        biddingAlertPrompt.show("开始与结束时间不能相同！");
         return false;
     }
     return true;

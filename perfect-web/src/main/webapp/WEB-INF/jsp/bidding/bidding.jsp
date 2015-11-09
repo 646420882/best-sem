@@ -768,6 +768,20 @@
         </div>
     </div>
 </div>
+<%--alert提示类--%>
+<div class="box7" style=" width: 230px;display: none" id="biddingAlertPrompt">
+    <h2>
+        <span class="fl" id="biddingAlertPrompt_title"></span>
+        <a href="#" class="close">×</a></h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current close">确认</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
@@ -775,10 +789,28 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
+<script>
+
+</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var biddingAlertPrompt = {
+        show:function(content){
+
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#biddingAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#biddingAlertPrompt_title").html(content);
+        }
+    }
     String.prototype.trims = function () {
         return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     };
@@ -1000,14 +1032,16 @@
                 grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
             } else if (imSearchData.campaignId != undefined && imSearchData.adgroupId != undefined) {
                 if (imSearchData.adgroupId == -1) {
-                    alert("请选择一个单元!");
+//                    alert("请选择一个单元!");
+                    biddingAlertPrompt.show("请选择一个单元!");
                 } else {
                     dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId + "&adgroupId=" + imSearchData.adgroupId;
                     grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
                 }
             } else if (imSearchData.campaignId != undefined) {
                 if (imSearchData.campaignId == -1) {
-                    alert("请选择一个计划!");
+//                    alert("请选择一个计划!");
+                    biddingAlertPrompt.show("请选择一个计划!");
                 } else {
                     dataUrl2 = "/importBid/loadData?campaignId=" + imSearchData.campaignId;
                     grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
@@ -1016,7 +1050,8 @@
 
 
         } else {
-            alert("请选择筛选条件！");
+//            alert("请选择筛选条件！");
+            biddingAlertPrompt.show("请选择筛选条件!");
         }
     }
     var log, className = "dark";
@@ -1247,9 +1282,11 @@
                     if (data.stat) {
                         $(".TB_overlayBG").css("display", "none");
                         $(".box2").css("display", "none");
-                        alert("修改成功!");
+//                        alert("修改成功!");
+                        biddingAlertPrompt.show("修改成功!");
                     } else {
-                        alert("修改失败!");
+                        biddingAlertPrompt.show("修改失败!");
+//                        alert("修改失败!");
                     }
                 }
             });
@@ -1273,9 +1310,11 @@
                     if (data.stat) {
                         $(".TB_overlayBG").css("display", "none");
                         $(".box4").css("display", "none");
-                        alert("修改成功!");
+                        biddingAlertPrompt.show("修改成功!");
+//                        alert("修改成功!");
                     } else {
-                        alert("修改失败!");
+                        biddingAlertPrompt.show("修改失败!");
+//                        alert("修改失败!");
                     }
                 }
             });
@@ -1445,9 +1484,11 @@
                                 success: function (data) {
                                     if (data.stat) {
                                         $("#table1").setCell(rowId, "biddingStatus", "已启动");
-                                        alert("启动成功!");
+                                        biddingAlertPrompt.show("启动成功!");
+//                                        alert("启动成功!");
                                     } else {
-                                        alert("启动失败!");
+                                        biddingAlertPrompt.show("启动失败!");
+//                                        alert("启动失败!");
                                     }
                                 }
                             });
@@ -1466,9 +1507,11 @@
                                 success: function (data) {
                                     if (data.stat) {
                                         $("#table1").setCell(rowId, "biddingStatus", "已暂停");
-                                        alert("暂停成功!");
+                                        biddingAlertPrompt.show("暂停成功!");
+//                                        alert("暂停成功!");
                                     } else {
-                                        alert("暂停失败!");
+//                                        alert("暂停失败!");
+                                        biddingAlertPrompt.show("暂停失败!");
                                     }
                                 }
                             });
@@ -1743,9 +1786,11 @@
             success: function (data, textStatus, jqXHR) {
                 $("#rankTable tbody tr").empty();
                 if (data.rows == undefined) {
-                    alert("暂无当前排名信息!");
+//                    alert("暂无当前排名信息!");
+                    biddingAlertPrompt.show("暂无当前排名信息!");
                 } else if (data.rows.length == 0) {
-                    alert("暂无当前排名信息!");
+//                    alert("暂无当前排名信息!");
+                    biddingAlertPrompt.show("暂无当前排名信息!");
                 } else {
                     var result = data.rows;
                     var _class = "";
@@ -1806,7 +1851,8 @@
             success: function (datas) {
                 var data = datas.rows;
                 if (data == null) {
-                    alert("暂无排名信息,请刷新排名!");
+//                    alert("暂无排名信息,请刷新排名!");
+                    biddingAlertPrompt.show("暂无排名信息,请刷新排名!");
                     return false;
                 }
                 var msg = "当前排名获取时间: " + data.time + "\n";
@@ -1820,6 +1866,7 @@
                     }
                 }
                 alert(msg);
+                biddingAlertPrompt.show(msg);
             }
         })
     });
@@ -1853,6 +1900,8 @@
     //    });
     //
     //})
+
+
 
 </script>
 </body>
