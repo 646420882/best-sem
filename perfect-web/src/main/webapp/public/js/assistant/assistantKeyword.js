@@ -400,14 +400,14 @@ function InputPrice(obj) {
     var htmlEm = $(obj).prev();
     var htmlValue = htmlEm.html();
     htmlEm.replaceWith("<input type='text' id='text' style='float:left;width:50px;height:20px;line-height:20px; margin-top:5px;' value='" + htmlValue + "' maxlength='5' />");
-    $("#text").focus();
+    $("#text").focus().val(htmlValue);
 }
 $("body").on("focusout", "#text", function () {
     var PriceVal = $("#text").val();
-    $(this).replaceWith("<span>" + PriceVal + "</span>");
     if ($(this).val() == "") {
         $(this).replaceWith("<span> 0.1</span>");
     }
+    $(this).replaceWith("<span>" + PriceVal + "</span>");
 });
 
 /*加载列表数据end*/
@@ -905,7 +905,8 @@ var menu_keyword_add = {
         text: "添加关键词",
         img: "../public/img/zs_function1.png",
         func: function () {
-            showSearchWord();
+           /* showSearchWord();*/
+            AddKeywords();
         }
     }, menu_keyword_del = {
         text: "删除",
