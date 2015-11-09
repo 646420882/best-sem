@@ -525,5 +525,4 @@ var _pct = _pct || [];
         })
     })();
 
-    console.log(md.g);
 })();

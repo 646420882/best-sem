@@ -735,12 +735,12 @@ $("#timediglogUp").livequery('click', function () {
 });
 
 function timeUpdiglog() {
-    top.dialog({
+   var d = top.dialog({
         title: "定时上传",
         padding: "5px",
         height: "auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -748,19 +748,17 @@ function timeUpdiglog() {
         },
         onremove: function () {
         }
-    }).showModal(dackObj);
-    return false;
+    });
+    d.show();
 }
 $("#timediglogDown").livequery('click', function () {
 
     timediglogDown();
 });
 function timediglogDown() {
-    top.dialog({
+   var d =  top.dialog({
         title: "定时暂停",
         padding: "5px",
-        height: "auto",
-        align: 'left bottom',
         content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -769,8 +767,8 @@ function timediglogDown() {
         },
         onremove: function () {
         }
-    }).showModal(dackObj);
-    return false;
+    });
+    d.show();
 }
 
 $(".searchwordReport").livequery('click', function () {
@@ -778,7 +776,7 @@ $(".searchwordReport").livequery('click', function () {
 });
 
 function searchword() {
-    top.dialog({
+top.dialog({
         title: "搜索词报告",
         padding: "5px",
         align: 'right bottom',

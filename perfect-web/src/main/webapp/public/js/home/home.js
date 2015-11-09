@@ -55,35 +55,35 @@ $(function () {
         clickdddd = $(this);
     });
     //加载日历控件
-    $("input[name=reservation]").daterangepicker();
-    $(".btnDone").on('click', function () {
-        var _startDate = $('.range-start').datepicker('getDate');
-        var _endDate = $('.range-end').datepicker('getDate');
-        if (_startDate != null && _endDate != null) {
-            if (_startDate > _endDate) {
-                return false;
-            }
-            statDate = 0;
-            daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
-            daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
-            if (genre == "keywordQualityCustom") {
-                //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-                loadKeywordQualityData();
-            } else if (genre == "importKeywordDefault") {
-                getImportKeywordDefault(null, 0);
-            } else if (genre == "accountOverview") {
-                lisClick();
-            } else if (genre == "importPerformanceDefault") {
-                category = "data";
-                loadPerformance(0);
-            } else if (genre == "importPerformanceCurveDefault") {
-                category = "data";
-                loadPerformanceCurve(0);
-            }
-
-            showDate();
-        }
-    });
+    //$("input[name=reservation]").daterangepicker();
+    //$(".btnDone").on('click', function () {
+    //    var _startDate = $('.range-start').datepicker('getDate');
+    //    var _endDate = $('.range-end').datepicker('getDate');
+    //    if (_startDate != null && _endDate != null) {
+    //        if (_startDate > _endDate) {
+    //            return false;
+    //        }
+    //        statDate = 0;
+    //        daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
+    //        daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
+    //        if (genre == "keywordQualityCustom") {
+    //            //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+    //            loadKeywordQualityData();
+    //        } else if (genre == "importKeywordDefault") {
+    //            getImportKeywordDefault(null, 0);
+    //        } else if (genre == "accountOverview") {
+    //            lisClick();
+    //        } else if (genre == "importPerformanceDefault") {
+    //            category = "data";
+    //            loadPerformance(0);
+    //        } else if (genre == "importPerformanceCurveDefault") {
+    //            category = "data";
+    //            loadPerformanceCurve(0);
+    //        }
+    //
+    //        showDate();
+    //    }
+    //});
 
     document.getElementById("background").style.display = "none";
     document.getElementById("progressBar1").style.display = "none";

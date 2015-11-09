@@ -20,8 +20,7 @@
         .displayNone{
             display: none;
         }
-
-    </style>
+         </style>
 </head>
 <body>
 <%--<div id="background" class="background"></div>

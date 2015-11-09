@@ -347,20 +347,18 @@ table tr, table tr td {
 }
 .switchAccount_ul_pages ul{
     margin:auto;
-    width: 184px;
+
     height: 30px;
 }
 
 .switchAccount_ul_pages li{
    display: inline;
-
     width: 8px;
     height: 8px;
     background-color: #e4eafa;
     color: #626262;
     cursor: pointer;
     margin: 0 5px;
-
  }
 
 .switchAccount_ul_pages span{
@@ -369,7 +367,7 @@ table tr, table tr td {
 .user_names ul{
     margin-top: 5px;
 }
-.user_names ul li {
+.user_names .countname ul li {
     cursor: pointer;
     margin-bottom: 10px;
     padding: 0 15px;

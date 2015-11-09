@@ -7,24 +7,28 @@
  * @website: http://www.improvely.com/
  */
 
+//var _startDate;
+//var _endDate;
+var DateRangePicker;
+var daterangepicker_start_date_t;
+var  daterangepicker_end_date_t;
 !function ($, moment) {
     var Timing = $("#Timing").val();
     var DateRangePicker = function (element, options, cb) {
-
         // by default, the daterangepicker element is placed at the bottom of HTML body
         this.parentEl = 'body';
 
         //element that triggered the date range picker
         this.element = $(element);
-
         //create the picker HTML object
-        var DRPTemplate = '<div class="daterangepicker  ">' +
-            '<div class="calendar left"></div>' +
-            '<div class="calendar right"></div>' +
+        var DRPTemplate = '<div id="daterangepicker" class="daterangepicker  ">' +
+             ' <div class="ranges">' +
+            '<div class="calendar right" style="clear: both"></div>' +
+            '<div class="calendar left" ></div>' +
             '<div class="calendar-time"></div>' +
-            ' <div class="ranges" style="top: 267px; right: 0;  ;position: absolute"><button class="applyBtn" disabled="disabled"></button> <button onclick="closeDialog()" class="cancelBtn"></button> </div>' +
-            '</div>' +
-            '</div>';
+            ' <button class="btnDone applyBtn calendar-btn" disabled="disabled" ></button> <button  class="cancelBtn calendar-btn_closedialog"></button>' +
+                '</div>'+
+        '</div>';
 
         //custom options
         if (typeof options !== 'object' || options === null)
@@ -78,12 +82,21 @@
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
         }
+        //$('#fzk').click(function () {
+        //    console.log($('.daterangepicker').css("display") == "none");
+        //    if ($('.daterangepicker').css("display") == "none") {//隐藏
+        //        $(this).next('.daterangepicker').show();
+        //
+        //    }
+        //    else {
+        //        //this.hideCalendars();
+        //        //this.container.removeClass('show-calendar');
+        //    }
+        //});
 
     };
-
     DateRangePicker.prototype = {
         constructor: DateRangePicker,
-
         setOptions: function (options, callback) {
 
             this.startDate = moment().startOf('day');
@@ -117,7 +130,7 @@
                 fromLabel: 'From',
                 toLabel: 'To',
                 weekLabel: 'W',
-                customRangeLabel: 'Custom Range',
+                customRangeLabel: 'Range',
                 daysOfWeek: moment()._lang._weekdaysMin.slice(),
                 monthNames: moment()._lang._monthsShort.slice(),
                 firstDay: 0
@@ -298,7 +311,7 @@
                 for (range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                //list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
                 this.container.find('.ranges ul').remove();
                 this.container.find('.ranges').prepend(list);
@@ -493,6 +506,7 @@
             $(document).on('click.daterangepicker', '[data-toggle=dropdown]', $.proxy(this.outsideClick, this));
 
             this.element.trigger('show.daterangepicker', this);
+
         },
 
         outsideClick: function (e) {
@@ -519,6 +533,8 @@
 
             $(document).off('click.daterangepicker', this.outsideClick);
             this.element.trigger('hide.daterangepicker', this);
+
+
         },
 
         enterRange: function (e) {
@@ -576,6 +592,8 @@
                 //this.hide();
                 this.element.trigger('apply.daterangepicker', this);
             }
+            daterangepicker_start_date_t = this.startDate._d;
+            daterangepicker_end_date_t =this.endDate._d;
         },
 
         clickPrev: function (e) {
@@ -664,26 +682,69 @@
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
             this.updateCalendars();
-
             endDate.endOf('day');
 
-            if (this.singleDatePicker)
-                this.clickApply();
+            if (this.singleDatePicker){
+                this.clickApply(startDate,endDate);
+            }
+            daterangepicker_start_date_t = this.startDate._d;
+            daterangepicker_end_date_t =this.endDate._d;
+
         },
 
         clickApply: function (e) {
-            this.updateInputText();
-            //this.hide();
+            //var _startDate = daterangepicker_start_date_t;
+            //var _endDate = daterangepicker_end_date_t;
+            //_startDate= this.startDate._d;
+            //_endDate =this.endDate._d;
+
+            //if (_startDate != null && _endDate != null) {
+            //    daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
+            //    daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
+            //    if ($("#checkboxhidden").val() == 1) {
+            //        $("#date3").val(daterangepicker_start_date);
+            //    }
+            //    //计算两个时间相隔天数
+            //    var sDate = new Date(daterangepicker_start_date);
+            //    var eDate = new Date(daterangepicker_end_date);
+            //    var a = new Date(daterangepicker_start_date.replace(/-/g, '/'));
+            //    var b = new Date(daterangepicker_end_date.replace(/-/g, '/'));
+            //    var fen = ((b.getTime() - a.getTime()) / 1000) / 60;
+            //    if (fen < 0) {
+            //        daterangepicker_start_date = null;
+            //        daterangepicker_end_date = null;
+            //        alert("请选择正确的时间范围");
+            //        dateclicks.prev().val();
+            //        return;
+            //    }
+            //    distance = parseInt(fen / (24 * 60)) + 1;   //相隔distance天
+            //    if ($("#checkboxhidden").val() == 1) {
+            //        $("#dataComputing").empty();
+            //        $("#dataComputing").append("起 " + distance + " 天");
+            //    }
+            //    dateclicks.prev().val(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
+            //    var types = $("#reportTypes").val();
+            //    if (types == "4" || types == "5" || types == "6" || types == "7") {
+            //        $("#reportTypes").val(4)
+            //    }
+            //    dataid = 0;
+            //    dataname = "0";
+            //    $("#downAccountReport").empty();
+            //    $("#downReport").empty();
+            //    $("#downReportSearch").empty();
+            //}
+
+            this.hide();
             this.element.trigger('apply.daterangepicker', this);
-            if (Timing == 1) {
-                // 定时上传
-                uploadFunc(document.getElementById('reservationtime').value);
-            } else if (Timing == 2) {
-                // 定时暂停
-                pauseFunc(document.getElementById('reservationtime').value);
+            if(Timing==1){
+                alert("定时上传")
+            }else if(Timing==2){
+                alert("定时暂停")
             }
+            //uploadFunc(document.getElementById('reservationtime').value);
 
         },
+
 
         clickCancel: function (e) {
             this.startDate = this.oldStartDate;
@@ -691,7 +752,7 @@
             this.chosenLabel = this.oldChosenLabel;
             this.updateView();
             this.updateCalendars();
-            //this.hide();
+            this.hide();
             this.element.trigger('cancel.daterangepicker', this);
         },
 
@@ -739,6 +800,7 @@
             }
 
             this.updateCalendars();
+
         },
 
         updateCalendars: function () {
@@ -748,7 +810,6 @@
             this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
             this.container.find('.calendar-time').html(this.rendertimer(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
             //this.container.find('.calendar-time.end-time').html(this.rendertimer(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
-
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
             var i = 0;
@@ -823,10 +884,10 @@
             var inMinYear = false;
             var inMaxYear = false;
             var currentYear = selected.year();
-            var maxYear = (maxDate && maxDate.year()) || (currentYear + 10);
-            var minYear = (minDate && minDate.year()) || (Year );
-            if (Year == currentYear) {
-                for (var m = Month; m < 12; m++) {
+            var maxYear = (maxDate && maxDate.year()) || (Year );
+            var minYear = (minDate && minDate.year()) || (Year - 10 );
+            if(Year==currentYear){
+                for (var m= 0; m <=Month; m++) {
                     if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
                         monthHtml += "<option value='" + m + "'" +
                             (m === currentMonth ? " selected='selected'" : "") +
@@ -994,7 +1055,8 @@
                         if (calendar[row][col].isSame(this.endDate)) {
                             cname += ' end-date ';
                         }
-                    } else if (calendar[row][col] <= moment()) {
+                    } else if (calendar[row][col] >= moment()) {
+
                         cname = ' off disabled ';
                     }
 
@@ -1021,6 +1083,7 @@
 
         }
 
+
     };
 
     $.fn.daterangepicker = function (options, cb) {
@@ -1032,5 +1095,8 @@
         });
         return this;
     };
+
+
+
 
 }(window.jQuery, window.moment);

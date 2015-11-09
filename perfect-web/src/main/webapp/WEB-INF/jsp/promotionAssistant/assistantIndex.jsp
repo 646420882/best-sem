@@ -53,14 +53,17 @@
             box-sizing: border-box;
         }
 
-        *:before, *:after {
-            box-sizing: border-box;
-        }
+
 
         *:before, *:after {
             box-sizing: border-box;
         }
-
+        .mainlist ul li input {
+            height: 30px;
+        }
+        .ui-dialog-body{
+            background-color: white;
+        }
 
     </style>
     <script>

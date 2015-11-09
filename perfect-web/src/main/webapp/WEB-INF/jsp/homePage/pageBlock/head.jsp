@@ -10,7 +10,9 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
 %>
 <%--<div class="top_heade">--%>
+
 <div class="head_top">
+
     <div class="nav_bg">
         <img src="${pageContext.request.contextPath}/public/img/top_bgimg.jpg" width="100%" height="100%">
     </div>
@@ -33,26 +35,30 @@
 
                             <div class="user_logo2 fr">
                                 <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
-                                    <input type="image" src="${pageContext.request.contextPath}/public/img/Sign_out.png"
+                                    <input type="image" value="退出"
+                                           style="border: none;color: #FFFFFF;border:none;background: none;line-height: normal;"
                                            onclick="$('form[logout]').submit();"/>
                                 </form>
                             </div>
                         </div>
-
                         <div class="user_select">
                             <div class="user_name">
                                 <span></span>
                             </div>
                             <div id="switchAccount" class="user_names over hides">
                                 <input type="text" placeholder="请输入关键词..." class="switchAccountSerach ">
-                                <ul id="switchAccount_ul">
-                                </ul>
+                                <div class="countname">
+                                    <ul id="switchAccount_ul" class="switchAccount_ul">
+                                    </ul>
+                                </div>
                                 <div id="switchAccount_ul_pages" class="switchAccount_ul_pages">
-                                    <li>1</li>
-                                    <li>1</li>
+                                    <div class="page_ul">
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
@@ -65,7 +71,9 @@
                 </ul>
             </div>
         </div>
+
         <div class="top_mid fl over"<%-- id="argDialogDiv"--%>>
+
             <div class="logo">
                 <a href="http://best-ad.cn/" target="_blank"><img
                         src="${pageContext.request.contextPath}/public/img/logo.png"></a>
@@ -113,6 +121,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/main.css">
+<%--<style> .ui-dialog-body {--%>
+    <%--background-color: #f8f8f8;--%>
+<%--}</style>--%>
 <script type="text/javascript">
     <!--
     $(function () {
@@ -121,10 +133,12 @@
     function downloadUser() {
         var d = top.dialog({
             title: "账户下载",
-            padding: "115px",
-
-            align: 'center',
-            content: "<div style='width: 400px; height: 200px;'></div>",
+            yesClose:"取消",
+            align: "center",
+//            url:'homePage/pageBlock/showcountDownload',
+            content: "<iframe src='/homePage/showCountDownload' width='500' height='300' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+//            content: "<iframe src='/assistantKeyword/showTimingPauseDialo+g' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+//            content: "<div style='width: 550px; height: 470px;'><span>选择账户</span>  <div class='j_list01 over'><ul id='treeDemo' class='ztree'></ul></div></div>",
             oniframeload: function () {
             },
             onclose: function () {
@@ -136,8 +150,7 @@
         d.show();
     }
     var ddckObj = document.getElementById('top_middle');
-    $("#downloadUser").livequery('click', function () {
-
+    $("#downloadUser").click( function () {
         downloadUser();
     });
     function imageChange(obj) {
@@ -226,6 +239,38 @@
             $(".TB_overlayBG").css("display", "none");
             $("#head_img").css("display", "none");
         });
+    });
+
+    /***account 账户弹框分页*****/
+    $(document).ready(function () {
+        $.getJSON("/account/getAllBaiduAccount",
+                {},
+                function (data) {
+                    var a = data.rows.length;
+                    var b = 6;
+                    var c = Math.ceil(a / b);
+                    if (a == 1) {
+                        $("#switchAccount_ul_pages").hide()
+                    } else {
+                        for (var i = 1; i <= c; i++) {
+                            if (i == 1) {
+                                $("<div class='page_li page_li_hover '>" + i + "</div>").appendTo($('.page_ul'));
+                            } else {
+                                $("<div class='page_li '>" + i + "</div>").appendTo($('.page_ul'));
+                            }
+                        }
+                    }
+                    var g = $('.switchAccount_ul li');
+                    g.hide();
+                    g.slice(0, b).show();
+                    $('.page_li ').click(function () {
+                        g.hide();
+                        $('.page_li').removeClass("page_li_hover");
+                        $(this).addClass("page_li_hover");
+                        var e = $(this).text() * b;
+                        g.slice(e - b, e).show();
+                    })
+                })
     });
 </script>
 

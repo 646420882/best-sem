@@ -22,11 +22,14 @@
 <input type="text" style="width: 400px;display: none" id="reservationtime" name="reservation"
        class="span4 form-control TimingPauseDialog " value="08/01/2013 - 08/01/2013"/>
 <input id="Timing" value="2" style="display: none">
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script>
     function closeDialog() {
         top.dialog.getCurrent().close().remove();
     }
+    $(".calendar-btn_closedialog").on('click', function (){
+        top.dialog.getCurrent().close().remove();
+    });
     $(function () {
         $("div.daterangepicker").css({"display": "block", "top": "0px", "right": "auto"});
         $(".daterangepicker .ranges li:last").css({"display": "none"})
@@ -43,7 +46,7 @@
             "format": "MM/DD/YYYY",
             "separator": " - ",
             "applyLabel": "确定",
-            "cancelLabel": "返回",
+            "cancelLabel": "关闭",
             "fromLabel": "From",
             "toLabel": "To",
             "customRangeLabel": "Custom",
