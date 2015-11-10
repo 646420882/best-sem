@@ -4404,6 +4404,7 @@ background: #34befe;
 }
 .ui-widget-content .ui-state-hover{
     background:#c9e0f2;
+    border:none;
 }
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
@@ -4505,4 +4506,7 @@ background: #34befe;
     border-color:#1fb8f1;
     box-shadow: none;
     box-shadow:0 3px 3px #2d9dd5 inset;
+}
+.ui-dialog .ui-dialog-content{
+    overflow: hidden !important;
 }

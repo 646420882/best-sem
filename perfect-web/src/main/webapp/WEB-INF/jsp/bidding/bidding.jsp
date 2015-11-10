@@ -306,7 +306,7 @@
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>
-<div class="TB_overlayBG"></div>
+<%--<div class="TB_overlayBG"></div>--%>
 <div class="box10" style="display:none" id="downloadData">
     <h2 id="downloadBox"><span class="fl">账户下载</span><a href="#" class="close">×</a></h2>
 

@@ -1016,7 +1016,8 @@ var keywordMenuExt = {
         $.smartMenu.remove();
     }
 };
-
+rDrag.init(document.getElementById('AddKeywordsTitleNew'));
+rDrag.init(document.getElementById('AddKeywordsplanTitle'));
 function validateNoAllowKeyword(value) {
     if (value != "") {
         $.get("/assistantKeyword/getNoKeywords", {aid: value}, function (res) {

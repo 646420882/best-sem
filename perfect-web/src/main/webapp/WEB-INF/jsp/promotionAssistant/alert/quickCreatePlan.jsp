@@ -80,7 +80,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+            <div class="main_bottom" style="margin:0px; background:none;">
                 <div class="w_list03">
                     <ul>
                         <li class="current nextStep" id="downloadAccount">下一步</li>
@@ -98,8 +98,8 @@
                         </div>
                         <div class="keyworld_text over">
 
-                            <div class="keyworld_text2 fl">
-                                <textarea style="width: 98%;height:98%;font-size:12px;" id="addedkwd"></textarea>
+                            <div class="keyworld_text2 fl" style="height:440px;">
+                                <textarea style="width: 98%;height:100%;font-size:12px;" id="addedkwd"></textarea>
                             </div>
                         </div>
                         <%-- <div class="k_l_under over">
@@ -118,7 +118,7 @@
                         <div class="assembly_right_under over">
                             <div class="containers over">
                                 <div class="assembly_search over">
-                                    <span class="fl">搜索相关词 <input id="searchKeyword" type="text"/></span><a class="fl"
+                                    <span class="fl">搜索相关词 <input id="searchKeyword" type="text" style="width:300px; margin-right:5px;"/></span><a class="fl"
                                                                                                             href="javascript: clickSearch();">搜索</a>
                                 </div>
 
@@ -148,7 +148,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                    <div class="main_bottom" style="margin:0px;  background:none;">
                         <div class="w_list03">
                             <ul>
                                 <li class="current lastStep">上一步</li>

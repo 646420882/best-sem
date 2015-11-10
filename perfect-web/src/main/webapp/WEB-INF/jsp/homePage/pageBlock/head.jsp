@@ -35,9 +35,8 @@
 
                             <div class="user_logo2 fr">
                                 <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
-                                    <input type="image" value="退出"
-                                           style="border: none;color: #FFFFFF;border:none;background: none;line-height: normal;"
-                                           onclick="$('form[logout]').submit();"/>
+                                    <button style="border: none;color: #FFFFFF;border:none;background: none;line-height: normal;"
+                                           onclick="$('form[logout]').submit();">退出</button>
                                 </form>
                             </div>
                         </div>

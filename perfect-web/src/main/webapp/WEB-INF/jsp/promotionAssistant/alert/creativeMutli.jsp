@@ -104,7 +104,7 @@
                                     </p>
                                 </div>
 
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px; background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" onclick="nextStep();">下一步</li>
@@ -133,7 +133,7 @@
                                 </div>
 
 
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px; background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current delKwdByinputNext">下一步</li>
@@ -178,7 +178,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                    <div class="main_bottom" style="margin:0px;  background:none;">
                         <div class="w_list03">
                             <ul>
                                 <li class="current delKwdLastStep" onclick="preStep();">上一步</li>
