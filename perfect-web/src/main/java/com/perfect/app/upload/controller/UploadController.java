@@ -221,7 +221,7 @@ public class UploadController extends WebContextSupport {
         boolean bol = upload.defaultUpload(file.getBytes(), file.getOriginalFilename());
         if (bol) {
             String fileName = file.getOriginalFilename();
-            CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getDefaultTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK);
+            CsvReadUtil csvReadUtil = new CsvReadUtil(new UploadHelper().getDefaultTempPath() + "/" + fileName, CsvReadUtil.ENCODING_GBK,null);
             List<KeywordDTO> keywordEntityList = csvReadUtil.getList();
 //            keywordDAO.insertAndQuery(keywordEntityList);
         } else {

@@ -15,7 +15,7 @@ import java.util.List;
 public class ValidateKeywordVO {
     private List<KeywordInfoDTO> safeKeywordList;
     private List<KeywordInfoDTO> dbExistKeywordList;
-    private Integer endGetCount = 0;
+    private Integer endGetCount = 0;//错误的关键词数量，错误原因为：重复
 
     public List<KeywordInfoDTO> getSafeKeywordList() {
         return safeKeywordList;

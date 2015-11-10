@@ -962,14 +962,14 @@
 
 
     //loading
-    var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide();
-    $(document).ajaxStart(function () {
-        ajaxbg.show();
-    });
-    $(document).ajaxStop(function () {
-        ajaxbg.fadeOut(1000);
-    });
+    //    var ajaxbg = $("#background,#progressBar");
+    //    ajaxbg.hide();
+    //    $(document).ajaxStart(function () {
+    //        ajaxbg.show();
+    //    });
+    //    $(document).ajaxStop(function () {
+    //        ajaxbg.fadeOut(1000);
+    //    });
 
     /**
      获取文本框中数据的行数*
@@ -1027,7 +1027,6 @@
             var suFile = $("#suFile");
             var fileName = suFile.val();
             if (fileName) {
-                console.log("我上传的是文件！");
                 uploadFile();
             } else {
                 alert("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
@@ -1253,7 +1252,7 @@
         }
 
         $.post("../assistantKeyword/vaildateKeyword", data, function (res) {
-            var tbody = $("#existKeyword");
+            var errorbody = $("#existKeyword");
             var safeTbody = $("#createTable tbody");
             safeTbody.empty()
             var result = $.parseJSON(res);
@@ -1263,48 +1262,54 @@
             if (result.safeKeywordList.length) {
                 var json = result.safeKeywordList;
                 $("#criSize").html(result.safeKeywordList.length);
-                var _trClass = "";
-                for (var i = 0; i < json.length; i++) {
-                    _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                    var phraseType = json[i].object.phraseType;
-                    var _tbody = "<tr class='" + _trClass + "'>" +
-                            "<td>" + json[i].campaignName + "<input type='hidden' value='" + json[i].campaignName + "'/></td>" +
-                            "<td>" + json[i].adgroupName + "<input type='hidden' value='" + json[i].adgroupName + "'></td>" +
-                            "<td>" + json[i].object.keyword + "</td>" +
-                            "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)).replace("匹配", "") + "</td>" +
-                            "<td>" + json[i].object.price + "</td>" +
-                            "<td>" + json[i].object.pcDestinationUrl + "</td>" +
-                            "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
-                            "<td>" + until.convert(json[i].object.pause, "启用:暂停") + "</td>" +
-                            "</tr>";
-                    safeTbody.append(_tbody);
-                }
+                renderSelfTableData(json, safeTbody);
             }
 
             if (result.dbExistKeywordList) {
                 if (result.dbExistKeywordList.length) {
                     var json = result.dbExistKeywordList;
                     $("#existCount").html(result.dbExistKeywordList.length);
-                    var _trClass = "";
-                    for (var i = 0; i < json.length; i++) {
-                        _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                        var phraseType = json[i].object.phraseType;
-                        var _tbody = "<tr class='" + _trClass + "'>" +
-                                "<td>" + json[i].campaignName + "</td>" +
-                                "<td>" + json[i].adgroupName + "</td>" +
-                                "<td>" + json[i].object.keyword + "</td>" +
-                                "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)) + "</td>" +
-                                "<td>" + json[i].object.price + "</td>" +
-                                "<td>" + json[i].object.pcDestinationUrl + "</td>" +
-                                "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
-                                "<td>" + until.convert(json[i].object.pause, "启用:暂停") + "</td>" +
-                                "</tr>";
-                        tbody.append(_tbody);
-                    }
+                    renderErrorTableData(json, errorbody);
                 }
             }
         });
 
+    }
+    function renderSelfTableData(json, safeTbody) {
+        var _trClass = "";
+        for (var i = 0; i < json.length; i++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+            var phraseType = json[i].object.phraseType;
+            var _tbody = "<tr class='" + _trClass + "'>" +
+                    "<td>" + json[i].campaignName + "<input type='hidden' value='" + json[i].campaignName + "'/></td>" +
+                    "<td>" + json[i].adgroupName + "<input type='hidden' value='" + json[i].adgroupName + "'></td>" +
+                    "<td>" + json[i].object.keyword + "</td>" +
+                    "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)).replace("匹配", "") + "</td>" +
+                    "<td>" + json[i].object.price + "</td>" +
+                    "<td>" + json[i].object.pcDestinationUrl + "</td>" +
+                    "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
+                    "<td>" + until.convert(json[i].object.pause, "启用:暂停") + "</td>" +
+                    "</tr>";
+            safeTbody.append(_tbody);
+        }
+    }
+    function renderErrorTableData(json, errorbody) {
+        var _trClass = "";
+        for (var i = 0; i < json.length; i++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+            var phraseType = json[i].object.phraseType;
+            var _tbody = "<tr class='" + _trClass + "'>" +
+                    "<td>" + json[i].campaignName + "</td>" +
+                    "<td>" + json[i].adgroupName + "</td>" +
+                    "<td>" + json[i].object.keyword + "</td>" +
+                    "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)) + "</td>" +
+                    "<td>" + json[i].object.price + "</td>" +
+                    "<td>" + json[i].object.pcDestinationUrl + "</td>" +
+                    "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
+                    "<td>" + until.convert(json[i].object.pause, "启用:暂停") + "</td>" +
+                    "</tr>";
+            errorbody.append(_tbody);
+        }
     }
     function csvPrev() {
         $("#existCount").html(0);
@@ -1313,13 +1318,59 @@
     }
 
     function uploadFile() {
-        $.ajaxFileUpload({
-            url: '/assistantKeyword/importByFile',
-            dataType: 'json',
-            fileElementId: document.getElementById("suFile"),
-            success: function (data, status) {
+        console.log("123123")
+
+        var fileObj = document.getElementById("suFile").files[0]; // 获取文件对象
+        var FileController = "/assistantKeyword/importByFile";                    // 接收上传文件的后台地址
+        console.log(document.getElementById("suFile").value);
+        // FormData 对象
+        var form = new FormData();
+        form.append("author", "hooyes");                        // 可以增加表单数据
+        form.append("file", fileObj);
+
+        // XMLHttpRequest 对象
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", FileController, true);
+        xhr.onload = function () {
+            var result = $.parseJSON(xhr.responseText);
+            if (result.msg != "Ok") {
+                alert(result.msg);
+            } else {
+                var errorbody = $("#existKeyword");
+                var safeTbody = $("#createTable tbody");
+                if (result.vk.safeKeywordList.length) {
+                    var json = result.vk.safeKeywordList;
+                    $("#criSize").html(result.vk.safeKeywordList.length);
+                    renderSelfTableData(json, safeTbody);
+                }
+
+                if (result.vk.dbExistKeywordList) {
+                    if (result.vk.dbExistKeywordList.length) {
+                        var json = result.vk.dbExistKeywordList;
+                        $("#existCount").html(result.vk.dbExistKeywordList.length);
+                        renderErrorTableData(json, errorbody);
+                    }
+                }
+
+                $("#inputDwdInfo").hide();
+                $("#validateDiv").show();
             }
-        });
+        };
+        xhr.send(form);
+
+//        $.ajaxFileUpload({
+//            url: '/assistantKeyword/asdf',
+//            dataType: 'json',
+//            type:'post',
+//            fileElementId: "suFile",
+//            dataType:'json',
+//            success: function (data, status) {
+//                console.log(data);
+//            },
+//            error: function (data, status) {
+//                console.log(data);
+//            }
+//        });
     }
 
 
