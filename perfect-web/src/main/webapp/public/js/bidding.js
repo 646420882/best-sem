@@ -659,9 +659,10 @@ function sendReq(run) {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            alert('创建规则成功');
             biddingAlertPrompt.show("创建规则成功！");
-            $('.close').click();
+            $("#seetingRules").css({"display":"none"});
+            //alert('创建规则成功');
+            //$('.close').click();
         }
     })
 }

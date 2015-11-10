@@ -789,9 +789,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
-<script>
-
-</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>

@@ -34,7 +34,7 @@
 
 <%--推广助手中alert优化--%>
 <%--提示类--%>
-<div class="box7" style=" width: 230px;display: none;" id="assistantAlertPrompt">
+<div class="box7" style=" width: 230px;display: none;z-index: 1001" id="assistantAlertPrompt">
     <h2>
         <span class="fl" id="assistantAlertPrompt_title"></span>
         <a href="#" class="close">×</a></h2>
