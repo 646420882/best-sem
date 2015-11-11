@@ -14,16 +14,23 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <%--<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">--%>
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <%--<link href="${pageContext.request.contextPath}/public/themes/flick/font-awesome.min.css" rel="stylesheet">--%>
+    <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
+        /*日历*/
+        .list2 table .list2_top td, th {
+            color: #000000;
+        }
         .example {
             background: #FFF;
             width: 650px;
@@ -165,9 +172,9 @@
                             <ul>
                                 <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="请选择查询时间,默认昨天"
                                                                readonly>
-                                    <input name="reservation" type="image" cname="dateClick"
+                                    <input name="reservation" id="fzk" type="image" cname="dateClick"
                                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                                           src="${pageContext.request.contextPath}/public/img/date.png">
+                                           src="${pageContext.request.contextPath}/public/img/date.png" value="">
                                     <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
                                     比较范围
                                     <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly
@@ -302,9 +309,9 @@
                         <div class="shuju_detali over">
                             <ul>
                                 <li>选择时间范围：
-                                    <input type="text" class="time_input" placeholder="请选择查询时间,默认昨天" readonly>
+                                    <input type="text"  class="time_input" placeholder="请选择查询时间,默认昨天" readonly>
                                     <input name="reservation" type="image" cname="dateClick"
-                                           onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                                           <%--onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"--%>
                                            src="${pageContext.request.contextPath}/public/img/date.png" readonly>
                                 </li>
                                 <li id="reportType">选择报告类型：
@@ -494,44 +501,55 @@
                                 <img style="margin-left: 50%; display: none" id="pathImages1"
                                      src='${pageContext.request.contextPath}/public/img/loading.gif'/>
                             </div>
-                            </div>
-                            <div id="pagination3" class="pagination over"></div>
-                            <br/>
-
-                            <div class="tubiao2 over">
-                                <div id="containerLegend1"></div>
-                                <div id="container1" style="width:100%;height:400px;display: none"></div>
-                            </div>
-
                         </div>
+                        <div id="pagination3" class="pagination over"></div>
+                        <br/>
+
+                        <div class="tubiao2 over">
+                            <div id="containerLegend1"></div>
+                            <div id="container1" style="width:100%;height:400px;display: none"></div>
+                        </div>
+
                     </div>
-                    <input type="hidden" id="putinInfo" value="0">
                 </div>
-
-
-                <%----------------------------------------------------------------------------————---------------------------------------------%>
-
+                <input type="hidden" id="putinInfo" value="0">
             </div>
+
+
+            <%----------------------------------------------------------------------------————---------------------------------------------%>
+
         </div>
-        <%--设置推广地域--%>
-        <jsp:include page="../promotionAssistant/alert/Region.jsp"/>
-        <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
+    <%--设置推广地域--%>
+    <jsp:include page="../promotionAssistant/alert/Region.jsp"/>
+    <jsp:include page="../homePage/pageBlock/footer.jsp"/>
+</div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+  <%--jquery-daterangepicke--%>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
+<%--<script type="text/javascript"  src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
+<%--end--%>
+<%--bootstrap-daterangepicker--%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+
+
+<%--end--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.cxcalendar.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportProgress.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportContext.js"></script>
 <script type="text/javascript">
+
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
     });
@@ -553,6 +571,27 @@
         $("#tacittime1").val(time);
         $("#tacittime2").val(time);
     })
+
+
+//bootstrap-daterangepicker-setting
+//    $("input[name=reservation]").daterangepicker({
+//       $('#fzk').click(function(){
+//
+//       })
+
+//    $('#fzk').click(function(){
+//        console.log($('.daterangepicker').css('display'));
+//        console.log($('.daterangepicker').css('display')=='block');
+//
+//        if($('.daterangepicker').css('display')=='block'){
+//            $('.daterangepicker').css("display", "none");
+//        }
+//        console.log($('.daterangepicker').css('display'));
+//    })
+//    console.log($("#daterangepicker").css('display'));
+
+
+    //end
 </script>
 </body>
 

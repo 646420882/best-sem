@@ -11,7 +11,7 @@
     Long accountId = AppContext.getAccountId();
 %>
 <div id="navigator" class="nav fl">
-    <div class="nav_left fl over  " >
+    <div class="nav_left fl over  ">
         <div class="nav_bg">
             <img src="${pageContext.request.contextPath}/public/img/nav_bg.jpg" width="100%" height="100%">
         </div>
@@ -49,12 +49,13 @@
                     </li>
 
                 </ul>
-               <div style="text-align: center;position: absolute;bottom: 111px;left: 30%">
-                   <img src="${pageContext.request.contextPath}/public/img/best_img/Question.png" alt=""/>
-                <a href="${pageContext.request.contextPath}/qa/getPage"><span class="list_5" style="display: block;float: right;padding: 2px 0 0 4px;color: #000000">帮助中心</span>   </a>
-               </div>
+                <div style="text-align: center;position: absolute;bottom: 111px;left: 30%">
+                    <img src="${pageContext.request.contextPath}/public/img/best_img/Question.png" alt=""/>
+                    <a href="${pageContext.request.contextPath}/qa/getPage"><span class="list_5"
+                                                                                  style="display: block;float: right;padding: 2px 0 0 4px;color: #000000">帮助中心</span>
+                    </a>
+                </div>
             </div>
-
 
 
         </div>
@@ -66,6 +67,7 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript">
     var baiduAccountId = <%=accountId%>;
+
     var loadBaiduAccount = function () {
         $.getJSON("/account/getAllBaiduAccount",
                 {},
@@ -78,9 +80,9 @@
                             var _item = item.baiduRemarkName;
                             if (_item == undefined) _item = item.baiduUserName.substring(0, (i > 0 ? index - 3 : index)) + (item.baiduUserName.length > index ? "..." : "");
                             if (baiduAccountId == item.id) {
-                                $('.user_name span').html(  _item);
+                                $('.user_name span').html(_item);
                             }
-                            lis += "<li title='" + item.baiduUserName + "' value='" + item.id + "'>" + _item + "</li>";
+                            lis += "<li  title='" + item.baiduUserName + "' value='" + item.id + "'>" + _item + "</li>";
                         });
                         $("#switchAccount_ul").empty();
                         $("#switchAccount_ul").append(lis);
@@ -104,27 +106,27 @@
          $(".top").css("width", top_width);
          });*/
         $(".help .nav_left").hide();
-        $(".help .nav").css({"width": "8px","z-index":"111"});
+        $(".help .nav").css({"width": "8px", "z-index": "111"});
         $(".help .mid").css("padding-left", "8px");
-        $(".help .tips").attr("title","点击显示导航")
+        $(".help .tips").attr("title", "点击显示导航")
         $(".help .nav_input").css("display", "block");
 //        $(".help .nav_left").css({"width": "8px","padding-left": "8px","position": "fixed","z-index": "111","display":"block","title": "点击显示导航"});
         function NavClick() {
-            if ($(".nav_left").css("display") == "none" ) {//隐藏
+            if ($(".nav_left").css("display") == "none") {//隐藏
                 $(".nav_left").show();
                 $(".tips").css("position", "relative");
                 $(".nav").css("z-index", "200");
                 $(".nav").css("width", "180px");
                 $(".nav_input").css("display", "none");
-                $(" .tips").attr("title","点击隐藏导航")
+                $(" .tips").attr("title", "点击隐藏导航")
                 $(".mid").css("padding-left", "180px");
             }
             else {
                 $(".nav_left").hide();
-                $(".nav").css({"width": "8px","z-index":"111"});
+                $(".nav").css({"width": "8px", "z-index": "111"});
                 $(".mid").css("padding-left", "8px");
                 $(".nav_input").css("display", "block");
-                $(".tips").attr("title","点击显示导航")
+                $(".tips").attr("title", "点击显示导航")
             }
         }
 
@@ -144,9 +146,14 @@
         $('.user_name').click(function () {
             if ($("#switchAccount").css("display") == "none") {//隐藏
                 $(this).next('#switchAccount').show();
-                $("#switchAccount ").mouseleave(function () {
-                    $("#switchAccount").css("display", "none");
-                });
+
+//                $("#switchAccount").mouseleave(function () {
+//                    $("#switchAccount").css("display", "none");
+//                    setTimeout(function () {
+//                        $("#switchAccount").css("display", "none");
+//                    }, 5000);
+//                });
+
                 $('#switchAccount li').click(function () {
                     $('.user_name span').html($(this).text());
                     var _accountId = $(this).val();

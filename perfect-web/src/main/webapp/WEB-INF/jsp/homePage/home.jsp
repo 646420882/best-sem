@@ -14,18 +14,26 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <%--<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">--%>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
+
     <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <%--<link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>--%>
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/perfectNew.js"></script>
     <style>
+        /*日历*/
+        .list2 table .list2_top td, th {
+            color: #000000;
+        }
+        /*日历*/
         .page2 .ajc {
             background: #ffb900;
             border: 1px solid #fab30b;
@@ -1157,9 +1165,11 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
+<%--<script type="text/javascript"--%>
+        <%--src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/map.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
@@ -1219,7 +1229,7 @@
     var _posX = 0, _posY = 0;
     var clickdddd = null;
 
-    $(function () {
+    $(document).ready(function () {
         /////count
         $.ajax({
             url: "/account/countAssistant",
@@ -1260,10 +1270,65 @@
             clickdddd = $(this);
         });
         //加载日历控件
-        $("input[name=reservation]").daterangepicker();
+        $('input[name="reservation"]').daterangepicker({
+                    "showDropdowns": true,
+                    "timePicker24Hour": true,
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    format: 'DD/MM/YYYY',
+                    ranges: {
+                        //'最近1小时': [moment().subtract('hours',1), moment()],
+                        '今天': [moment().startOf('day'), moment()],
+                        '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                        '过去7天': [moment().subtract('days', 6), moment()],
+                        '过去14天': [moment().subtract('days', 13), moment()],
+                        '过去30天': [moment().subtract('days', 29), moment()],
+                        '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    },
+                    "locale": {
+                        "format": "DD/MM/YYYY",
+                        "separator": " - ",
+                        "applyLabel": "确定",
+                        "cancelLabel": "关闭",
+                        "fromLabel": "From",
+                        "toLabel": "To",
+                        "customRangeLabel": "Custom",
+                        "daysOfWeek": [
+                            "日",
+                            "一",
+                            "二",
+                            "三",
+                            "四",
+                            "五",
+                            "六"
+                        ],
+                        "monthNames": [
+                            "一月",
+                            "二月",
+                            "三月",
+                            "四月",
+                            "五月",
+                            "六月",
+                            "七月",
+                            "八月",
+                            "九月",
+                            "十月",
+                            "十一月",
+                            "十二月"
+                        ],
+                        "firstDay": 1
+                    },
+                    "startDate": moment(),
+                    "endDate": moment()
+                },
+                function (start, end, label,e) {
+                });
+//        $("input[name=reservation]").daterangepicker();
         $(".btnDone").on('click', function () {
-            var _startDate = $('.range-start').datepicker('getDate');
-            var _endDate = $('.range-end').datepicker('getDate');
+            var _startDate = daterangepicker_start_date_t;
+            var _endDate = daterangepicker_end_date_t;
+//                 console.log(daterangepicker_end_date);
+
             if (_startDate != null && _endDate != null) {
                 if (_startDate > _endDate) {
                     return false;
@@ -1285,10 +1350,10 @@
                     category = "data";
                     loadPerformanceCurve(0);
                 }
-
                 showDate();
             }
         });
+
 
         document.getElementById("background").style.display = "none";
         document.getElementById("progressBar1").style.display = "none";
@@ -2173,8 +2238,6 @@
 
     //初始化账户概览页面数据
     lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
-
-
     var showDate = function () {
         $(".datebox").show();
         clickdddd.parent().parent().parent().parent().next().text("当前时间范围：" + daterangepicker_start_date + " 至 " + daterangepicker_end_date);

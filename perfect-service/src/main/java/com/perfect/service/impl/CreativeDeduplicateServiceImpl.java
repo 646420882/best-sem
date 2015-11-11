@@ -55,4 +55,24 @@ public class CreativeDeduplicateServiceImpl implements CreativeDeduplicateServic
                     .collect(Collectors.toList());
         }).apply(list);
     }
+
+    @Override
+    public List<CreativeDTO> deduplicate(Long baiduUserId, String adgroupId, List<CreativeDTO> list) {
+        return ((Function<List<CreativeDTO>, List<CreativeDTO>>) creativeList -> {
+            final Map<String, List<CreativeDTO>> sameAdgroupCreativeMap = ((BiFunction<Long, String, List<CreativeDTO>>) creativeDAO::findByAdgroupId).apply(baiduUserId, adgroupId)
+                    .stream()
+                    .collect(Collectors.groupingBy(creative -> {
+                        return KeywordDeduplication.MD5.getMD5(creative.getTitle() + creative.getDescription1() + creative.getDescription2());
+                    }));
+
+            return creativeList.stream()
+                    .map(creative -> {
+                        if (sameAdgroupCreativeMap.containsKey(creative.getTitle() + creative.getDescription1() + creative.getDescription2()))
+                            creative.setLocalStatus(DUPLICATED);
+
+                        return creative;
+                    })
+                    .collect(Collectors.toList());
+        }).apply(list);
+    }
 }

@@ -1278,19 +1278,21 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordInfoDTO> vaildateKeywordByIds(List<String> keywordIds) {
         List<KeywordDTO> list = keywordDAO.vaildateKeywordByIds(keywordIds);
         List<KeywordInfoDTO> returnList = new ArrayList<>();
+        if (list != null) {
+            list.stream().filter(s -> s != null).forEach(s -> {
+                KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+                AdgroupDTO ad = s.getAdgroupId() == null ? adgroupDAO.findByObjId(s.getAdgroupObjId()) : adgroupDAO.findOne(s.getAdgroupId());
+                CampaignDTO cam = ad.getCampaignId() == null ? campaignDAO.findByObjectId(ad.getCampaignObjId()) : campaignDAO.findOne(ad.getCampaignId());
+                keywordInfoDTO.setObject(s);//设置keyword对象
 
-        list.stream().filter(s -> s != null).forEach(s -> {
-            KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
-            AdgroupDTO ad = s.getAdgroupId() == null ? adgroupDAO.findByObjId(s.getAdgroupObjId()) : adgroupDAO.findOne(s.getAdgroupId());
-            CampaignDTO cam = ad.getCampaignId() == null ? campaignDAO.findByObjectId(ad.getCampaignObjId()) : campaignDAO.findOne(ad.getCampaignId());
-            keywordInfoDTO.setObject(s);//设置keyword对象
-
-            keywordInfoDTO.setCampaignName(cam.getCampaignName());
-            keywordInfoDTO.setCampaignId(cam.getCampaignId());
-            keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
-            returnList.add(keywordInfoDTO);
-        });
-        return returnList;
+                keywordInfoDTO.setCampaignName(cam.getCampaignName());
+                keywordInfoDTO.setCampaignId(cam.getCampaignId());
+                keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
+                returnList.add(keywordInfoDTO);
+            });
+            return returnList;
+        }
+        return null;
     }
 
 

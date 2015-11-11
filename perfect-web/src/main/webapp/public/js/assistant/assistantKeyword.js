@@ -400,14 +400,14 @@ function InputPrice(obj) {
     var htmlEm = $(obj).prev();
     var htmlValue = htmlEm.html();
     htmlEm.replaceWith("<input type='text' id='text' style='float:left;width:50px;height:20px;line-height:20px; margin-top:5px;' value='" + htmlValue + "' maxlength='5' />");
-    $("#text").focus();
+    $("#text").focus().val(htmlValue);
 }
 $("body").on("focusout", "#text", function () {
     var PriceVal = $("#text").val();
-    $(this).replaceWith("<span>" + PriceVal + "</span>");
     if ($(this).val() == "") {
         $(this).replaceWith("<span> 0.1</span>");
     }
+    $(this).replaceWith("<span>" + PriceVal + "</span>");
 });
 
 /*加载列表数据end*/
@@ -534,29 +534,34 @@ function whenBlurEditKeyword(num, value) {
             // /^-?\d+\.?\d*$/
             if (value != "") {
                 if (!/^-?\d+\.?\d*$/.test(value)) {
-                    alert("请输入正确的关键字出价！");
+                    //alert("请输入正确的关键字出价！");
+                    assistantAlertPrompt.show("请输入正确的关键字出价!");
                     return;
                 } else {
                     if (parseFloat(value).toFixed(3) > 999.9) {
-                        alert("关键词出价为：(0,999.9]<关键字出价&&<=计划预算!,如果设为0，则使用单元出价");
+                        //alert("关键词出价为：(0,999.9]<关键字出价&&<=计划预算!,如果设为0，则使用单元出价");
+                        assistantAlertPrompt.show("关键词出价为：(0,999.9]<关键字出价&&<=计划预算!,如果设为0，则使用单元出价");
                         return;
                     } else {
                         jsonData["price"] = value;
                     }
                 }
             } else {
-                alert("请输入关键字出价!");
+                //alert("请输入关键字出价!");
+                assistantAlertPrompt.show("请输入关键字出价!");
                 return;
             }
             break;
         case 3:
             if (value != "") {
                 if (getChar(value) > 1024) {
-                    alert("访问Url字符不能超过1024个字符");
+                    //alert("访问Url字符不能超过1024个字符");
+                    assistantAlertPrompt.show("访问Url字符不能超过1024个字符");
                     return;
                 } else {
                     if (value.indexOf(dm) == -1) {
-                        alert("\"访问Url\"必须包含" + dm + "的域名！");
+                        //alert("\"访问Url\"必须包含" + dm + "的域名！");
+                        assistantAlertPrompt.show("\"访问Url\"必须包含" + dm + "的域名！");
                         return;
                     } else {
                         //if (value.substr(value.indexOf(dm)) != dm) {
@@ -574,11 +579,13 @@ function whenBlurEditKeyword(num, value) {
         case 4:
             if (value != "") {
                 if (getChar(value) > 1024) {
-                    alert("移动访问Url字符不能超过1024个字符");
+                    //alert("移动访问Url字符不能超过1024个字符");
+                    assistantAlertPrompt.show("移动访问Url字符不能超过1024个字符");
                     return;
                 } else {
                     if (value.indexOf(dm) == -1) {
-                        alert("\"移动访问Url\"必须包含" + dm + "的域名！");
+                        //alert("\"移动访问Url\"必须包含" + dm + "的域名！");
+                        assistantAlertPrompt.show("\"移动访问Url\"必须包含" + dm + "的域名！");
                         return;
                     } else {
                         //if (value.substr(value.indexOf(dm)) != dm) {
@@ -642,7 +649,6 @@ function deleteKwd() {
         assistantAlertPrompt.show("请选择要删除的关键词!");
         return;
     }
-
     var isDel = window.confirm("您确定要删除关键词吗?");
     if (isDel == false) {
         return;
@@ -729,12 +735,12 @@ $("#timediglogUp").livequery('click', function () {
 });
 
 function timeUpdiglog() {
-    top.dialog({
+   var d = top.dialog({
         title: "定时上传",
         padding: "5px",
         height: "auto",
         align: 'left bottom',
-        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='300' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+        content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
@@ -742,19 +748,17 @@ function timeUpdiglog() {
         },
         onremove: function () {
         }
-    }).showModal(dackObj);
-    return false;
+    });
+    d.show();
 }
 $("#timediglogDown").livequery('click', function () {
 
     timediglogDown();
 });
 function timediglogDown() {
-    top.dialog({
+   var d =  top.dialog({
         title: "定时暂停",
         padding: "5px",
-        height: "auto",
-        align: 'left bottom',
         content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -763,8 +767,8 @@ function timediglogDown() {
         },
         onremove: function () {
         }
-    }).showModal(dackObj);
-    return false;
+    });
+    d.show();
 }
 
 $(".searchwordReport").livequery('click', function () {
@@ -772,7 +776,7 @@ $(".searchwordReport").livequery('click', function () {
 });
 
 function searchword() {
-    top.dialog({
+top.dialog({
         title: "搜索词报告",
         padding: "5px",
         align: 'right bottom',
@@ -821,7 +825,8 @@ function reductionKeyword() {
                 reducKwd_del(id);
                 break;
             case 4:
-                alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
+                //alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
+                assistantAlertPrompt.show("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
                 break;
         }
     }
@@ -898,7 +903,8 @@ var menu_keyword_add = {
         text: "添加关键词",
         img: "../public/img/zs_function1.png",
         func: function () {
-            showSearchWord();
+           /* showSearchWord();*/
+            AddKeywords();
         }
     }, menu_keyword_del = {
         text: "删除",
@@ -1010,7 +1016,8 @@ var keywordMenuExt = {
         $.smartMenu.remove();
     }
 };
-
+rDrag.init(document.getElementById('AddKeywordsTitleNew'));
+rDrag.init(document.getElementById('AddKeywordsplanTitle'));
 function validateNoAllowKeyword(value) {
     if (value != "") {
         $.get("/assistantKeyword/getNoKeywords", {aid: value}, function (res) {
@@ -1111,13 +1118,15 @@ function kUpload() {
                 break;
         }
     } else {
-        alert("已经是最新数据了！");
+        //alert("已经是最新数据了！");
+        assistantAlertPrompt.show("已经是最新数据了！");
     }
 }
 function kUploadOperate(kid, ls) {
     $.get("/assistantKeyword/uploadOperate", {kid: kid, ls: ls}, function (res) {
         if (res.msg == "1") {
-            alert("上传成功!");
+            //alert("上传成功!");
+            assistantAlertPrompt.show("上传成功！");
             if (jsonData.cid != null) {
                 getKwdList(0);
             }
@@ -1126,18 +1135,21 @@ function kUploadOperate(kid, ls) {
             if (conf) {
                 $.get("/assistantKeyword/uploadAddByUp", {kid: kid}, function (res) {
                     if (res.msg == "1") {
-                        alert("上传成功!");
+                        assistantAlertPrompt.show("上传成功！");
+                        //alert("上传成功!");
                         if (jsonData.cid != null) {
                             getKwdList(0);
                             loadTree();
                         }
                     } else {
-                        alert(res.msg);
+                        //alert(res.msg);
+                        assistantAlertPrompt.show(res.msg);
                     }
                 });
             }
         } else {
-            alert(res.msg);
+            //alert(res.msg);
+            assistantAlertPrompt.show(res.msg);
         }
     });
 }
@@ -1146,9 +1158,11 @@ function addCensus() {
         $.get("/assistantKeyword/addCensus", function (res) {
             if (res.msg == "1") {
                 getKwdList(0);
-                alert("添加成功");
+                //alert("添加成功");
+                assistantAlertPrompt.show("添加成功");
             } else {
-                alert("添加失败")
+                //alert("添加失败")
+                assistantAlertPrompt.show("添加失败");
             }
         });
     }
@@ -1172,21 +1186,25 @@ function AddKeywordsSave() {
 
     var campaignId = $("#campaign_selectNew option:selected").val();
     if (campaignId == null || campaignId.length == 0) {
-        alert("请选择推广计划!");
+        //alert("请选择推广计划!");
+        assistantAlertPrompt.show("请选择推广计划!");
         return;
     }
     var adgroupId = $("#adgroup_selectNew option:selected").val();
     if (adgroupId == null || adgroupId.length == 0) {
-        alert("请选择推广单元!");
+        //alert("请选择推广单元!");
+        assistantAlertPrompt.show("请选择推广单元!");
         return;
     }
     var device = $("#device_selectNew option:selected").val();
     if (device == null || device.length == 0) {
-        alert("请选择推广设备!");
+        assistantAlertPrompt.show("请选择推广设备!");
+        //alert("请选择推广设备!");
         return;
     }
     if ($("#statusNew").val() == null || $("#statusNew").val() == "") {
-        alert("关键词不能为空！")
+        //alert("关键词不能为空！")
+        assistantAlertPrompt.show("关键词不能为空!");
         return
     }
 
@@ -1197,7 +1215,8 @@ function AddKeywordsSave() {
     var countkwd = $("#countkwd").val();
     countkwd = (countkwd == undefined ? 0 : countkwd == "" ? 0 : countkwd);
     if (kwds.length > 5000 - countkwd) {
-        alert("关键词个数大于" + (5000 - countkwd));
+        //alert("关键词个数大于" + (5000 - countkwd));
+        assistantAlertPrompt.show("关键词个数大于" + (5000 - countkwd));
         return
     }
 

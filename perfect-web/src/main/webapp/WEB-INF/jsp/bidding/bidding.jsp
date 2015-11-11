@@ -306,7 +306,7 @@
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>
-<div class="TB_overlayBG"></div>
+<%--<div class="TB_overlayBG"></div>--%>
 <div class="box10" style="display:none" id="downloadData">
     <h2 id="downloadBox"><span class="fl">账户下载</span><a href="#" class="close">×</a></h2>
 
@@ -769,7 +769,7 @@
     </div>
 </div>
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display: none" id="biddingAlertPrompt">
+<div class="box7" style=" width: 230px;display:none" id="biddingAlertPrompt">
     <h2>
         <span class="fl" id="biddingAlertPrompt_title"></span>
         <a href="#" class="close">×</a></h2>
@@ -789,9 +789,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/html.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/assistant/updateAccountData.js"></script>
-<script>
-
-</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/importKeyword/importKeywordBidding.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>

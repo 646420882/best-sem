@@ -53,14 +53,14 @@
             box-sizing: border-box;
         }
 
-        *:before, *:after {
-            box-sizing: border-box;
-        }
+
 
         *:before, *:after {
             box-sizing: border-box;
         }
-
+        .ui-dialog-body{
+            background-color: white;
+        }
 
     </style>
     <script>

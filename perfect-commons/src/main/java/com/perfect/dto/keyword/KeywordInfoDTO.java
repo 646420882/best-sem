@@ -127,4 +127,21 @@ public class KeywordInfoDTO extends BaseDTO implements Serializable {
         this.keywordId = keywordId;
     }
 
+    @Override
+    public String toString() {
+        return "KeywordInfoDTO{" +
+                "campaignName='" + campaignName + '\'' +
+                ", campaignId=" + campaignId +
+                ", adgroupName='" + adgroupName + '\'' +
+                ", object=" + object +
+                ", quality=" + quality +
+                ", mobileQuality=" + mobileQuality +
+                ", monitorId=" + monitorId +
+                ", folderId=" + folderId +
+                ", folderName='" + folderName + '\'' +
+                ", folderCount=" + folderCount +
+                ", keyword='" + keyword + '\'' +
+                ", keywordId='" + keywordId + '\'' +
+                '}';
+    }
 }

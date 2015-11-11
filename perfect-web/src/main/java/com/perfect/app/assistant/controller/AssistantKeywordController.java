@@ -8,7 +8,6 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
-import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
@@ -19,11 +18,12 @@ import com.perfect.dto.keyword.SearchwordReportDTO;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
+import com.perfect.utils.CsvReadUtil;
 import com.perfect.utils.IdConvertUtils;
 import com.perfect.utils.csv.UploadHelper;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.report.AssistantKwdUtil;
-import com.perfect.utils.report.BasistReportPCPlusMobUtil;
+import com.perfect.vo.CsvImportResponseVO;
 import com.perfect.vo.ValidateKeywordVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
@@ -35,9 +35,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -134,11 +134,11 @@ public class AssistantKeywordController extends WebContextSupport {
         if (index == 1) {
             AdgroupDTO adgroupDTO = adgroupService.autoBAG(cid, aid);
             if (adgroupDTO.getAdgroupId() != null) {
-                map.put(MongoEntityConstants.ADGROUP_ID,adgroupDTO.getAdgroupId());
-                aid=adgroupDTO.getAdgroupId().toString();
+                map.put(MongoEntityConstants.ADGROUP_ID, adgroupDTO.getAdgroupId());
+                aid = adgroupDTO.getAdgroupId().toString();
             } else {
                 map.put(MongoEntityConstants.OBJ_ADGROUP_ID, adgroupDTO.getId());
-                aid=adgroupDTO.getId();
+                aid = adgroupDTO.getId();
             }
         } else {
             if (aid.length() > 18) {
@@ -278,8 +278,30 @@ public class AssistantKeywordController extends WebContextSupport {
                 List<String> existKwd = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), new ArrayList<String>() {{
                     add(kwds);
                 }});
+                ValidateKeywordVO vk = new ValidateKeywordVO();
                 List<KeywordInfoDTO> keywordDTOs = assistantKeywordService.vaildateKeywordByIds(existKwd);
-                writeJson(keywordDTOs, response);
+                if (keywordDTOs != null) {
+                    vk.setDbExistKeywordList(keywordDTOs);
+                } else {
+                    List<KeywordInfoDTO> keywordInfoDTO = new ArrayList<>();
+                    KeywordInfoDTO k = new KeywordInfoDTO();
+                    k.setKeyword(kwds);
+                    k.setCampaignName(cids);
+                    k.setAdgroupName(aids);
+                    KeywordDTO kwdDto = new KeywordDTO();
+                    kwdDto.setKeyword(kwds);
+                    kwdDto.setPrice(BigDecimal.valueOf(Double.valueOf(prices)));
+                    kwdDto.setMatchType(Integer.valueOf(mts));
+                    kwdDto.setPhraseType(Integer.valueOf(pts));
+                    kwdDto.setPause(Boolean.valueOf(pauses));
+                    kwdDto.setPcDestinationUrl(pcs);
+                    kwdDto.setMobileDestinationUrl(mibs);
+                    k.setObject(kwdDto);
+                    keywordInfoDTO.add(k);
+                    vk.setSafeKeywordList(keywordInfoDTO);
+                }
+
+                writeJson(vk, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -462,6 +484,7 @@ public class AssistantKeywordController extends WebContextSupport {
     public ModelAndView showTimingDelDialog() {
         return new ModelAndView("promotionAssistant/alert/TimingDelDialog");
     }
+
 
     /**
      * 还原新增的关键词
@@ -918,18 +941,70 @@ public class AssistantKeywordController extends WebContextSupport {
     }
 
 
-    @RequestMapping(value = "assistantKeyword/importByFile",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-    public void uploadFile( HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+    @RequestMapping(value = "assistantKeyword/importByFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void uploadFile(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         String path = request.getSession().getServletContext().getRealPath("upload");
+        CsvImportResponseVO cr = new CsvImportResponseVO();
         String fileName = file.getOriginalFilename();
         UploadHelper upload = new UploadHelper();
         String ext = upload.getExt(fileName);
-        if (ext.equals("xls") || ext.equals("xlsx")) {
-            System.out.println("excel");
-//            excelSupport(upload, file, response);
-        } else if (ext.equals("csv")) {
-//            csvSupport(upload, file, response);
-            System.out.println("csv");
+        String fileNameUpdateAgo = new Date().getTime() + "." + ext;
+        if (ext.equals("csv")) {
+            File targetFile = new File(path, fileNameUpdateAgo);
+            if (!targetFile.exists()) {
+                targetFile.mkdirs();
+            }
+            try {
+                file.transferTo(targetFile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", accountInfoDTO);
+            List<KeywordInfoDTO> getList = csvReadUtil.getImportKeywordList();
+//            getList.stream().forEach(s -> {
+//                System.out.println(s);
+//            });
+            targetFile.delete();
+
+            ValidateKeywordVO vk = new ValidateKeywordVO();
+            List<KeywordInfoDTO> dbExistKeywordDto = null;
+            Map<String, List<KeywordInfoDTO>> mapx = getList
+                    .stream()
+                    .collect(Collectors.groupingBy(KeywordInfoDTO::getKeyword));
+
+            List<KeywordInfoDTO> selfList = new ArrayList<>();
+            for (Map.Entry<String, List<KeywordInfoDTO>> k : mapx.entrySet()) {
+                List<KeywordInfoDTO> keywordDTOs = k.getValue();
+                selfList.add(keywordDTOs.get(0));
+            }
+            vk.setEndGetCount(getList.size() - selfList.size());
+            vk.setSafeKeywordList(selfList);
+            if (selfList.size() > 0) {
+                List<String> keywords = new ArrayList<>();
+                selfList.stream().forEach(k -> {
+                    keywords.add(k.getKeyword());
+                });
+                List<String> existKwd = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), keywords);
+                if (existKwd.size() > 0) {
+                    dbExistKeywordDto = assistantKeywordService.vaildateKeywordByIds(existKwd);
+                }
+                vk.setDbExistKeywordList(dbExistKeywordDto);
+                cr.setMsg("Ok");
+            } else {
+                cr.setMsg("没有检测到csv文件有正确的数据");
+            }
+            cr.setVk(vk);
+            writeJson(cr, response);
+
+        } else if (ext.equals("xls") || ext.equals("xlsx")) {
+            cr.setMsg("目前只支持csv格式的文件！");
+            writeJson(cr, response);
+        } else {
+            cr.setMsg("请选择正确的文件格式！");
+            writeJson(cr, response);
+            return;
         }
+
     }
 }

@@ -374,8 +374,6 @@ public class AssistantCreativeController extends WebContextSupport {
 
     private void innerInsert(Boolean isReplace, String aid, String title, String de1, String de2, String pc, String pcs, String mib, String mibs, String bol, String device) {
         Map<String, Object> params = new HashMap<>();
-        UUID uuidRandom = UUID.randomUUID();
-        String uuid = uuidRandom.toString().replaceAll("-", "");
         params.put("t", title);
         params.put("desc1", de1);
         if (aid.length() > OBJ_SIZE) {

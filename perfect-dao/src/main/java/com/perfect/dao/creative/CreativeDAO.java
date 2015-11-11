@@ -19,6 +19,8 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     List<CreativeDTO> findByAdgroupId(Long baiduAccountId, Long adgroupId);
 
+    List<CreativeDTO> findByAdgroupId(Long baiduAccountId, String adgroupId);
+
     List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
     List<CreativeDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);

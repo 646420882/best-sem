@@ -104,7 +104,7 @@
 
                                 </div>
 
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px;  background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current delKwdByinputNext">下一步</li>
@@ -126,7 +126,7 @@
                         <ul id="validateDelKwdUl">
                         </ul>
                     </div>
-                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                    <div class="main_bottom" style="margin:0px;  background:none;">
                         <div class="w_list03">
                             <ul>
                                 <li class="current delKwdLastStep">上一步</li>

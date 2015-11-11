@@ -13,25 +13,18 @@
     z-index: 3000;
 }
 
- .daterangepicker.opensleft .calendar {
-    float: left;
-    margin: 4px;
-     clear: both;
-}
-
  .daterangepicker.opensright .calendar {
-    float: right;
+    float: left;
     margin: 4px;
 
 }
 .daterangepicker.opensright .ranges{
-    float: right;
+
     margin: 4px;
     clear: both;
 }
 
 .daterangepicker .ranges {
-    width: 160px;
     text-align: left;
 }
 
@@ -102,21 +95,22 @@
     padding: 0;
 }
 
-.daterangepicker .ranges li {
-    font-size: 13px;
-    background: #f5f5f5;
-    border: 1px solid #f5f5f5;
-    color: #ef9101;
-    padding: 7px 12px;
-    margin-bottom: 8px;
 
+.daterangepicker .ranges li {
+    float: left;
+    font-size: 13px;
+    /* background: #f5f5f5; */
+    border-right: 2px solid #f5f5f5;
+    /* color: #ef9101; */
+    padding: 7px 12px;
+    /* margin-bottom: 8px; */
     cursor: pointer;
 }
 
+
 .daterangepicker .ranges li.active, .daterangepicker .ranges li:hover {
-    background: #ef9101;
-    border: 1px solid #ef9101;
-    color: #fff;
+   font-weight: 700;
+    color: #000000;
 }
 
 .daterangepicker .calendar-date {
@@ -127,10 +121,11 @@
 }
 
 .daterangepicker .calendar-time {
-    text-align: left;
-    margin: 15px auto 0 auto;
+    clear: both;
     line-height: 34px;
     padding-left: 19px;
+    width: 200px;
+    float: left;
 }
 
 .daterangepicker {
@@ -143,6 +138,7 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    z-index: 119;
 }
 
 .daterangepicker.opensleft:before {
@@ -313,4 +309,35 @@
 .btn-default{
     background-color: #e4eafa;
     color: #000000;
+}
+.daterangepicker{
+    display: none;
+}
+select {
+    -webkit-appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+
+
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    color: black;
+    background-color: white;
+    cursor: default;
+}
+.list2 table .list2_top td, th {
+     color: #000000;
+}
+.calendar-btn{
+    float: right;
+    margin: 4px 18px 0 4px;
+    padding-left: 20px;
+}
+.calendar-btn_closedialog{
+    margin-right: 5px;
+    float: right;
+    margin: 4px 5px 0 4px;
+    padding-left: 20px;
+
+
 }

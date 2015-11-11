@@ -66,7 +66,7 @@
                 <div class="newkeyeord_title over">
                     <ul class="over">
                         <li><input type="radio" checked="checked" name="Target" onclick="stepOne();">选择推广计划、推广单元</li>
-                        <%--<li><input type="radio" name="Target" onclick="stepTwo();">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>--%>
+                        <li><input type="radio" name="Target" onclick="stepTwo();">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over chooseKwdInfoDiv">
@@ -104,7 +104,7 @@
                                     </p>
                                 </div>
 
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px; background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" onclick="nextStep();">下一步</li>
@@ -133,7 +133,7 @@
                                 </div>
 
 
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px; background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current delKwdByinputNext">下一步</li>
@@ -178,7 +178,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                    <div class="main_bottom" style="margin:0px;  background:none;">
                         <div class="w_list03">
                             <ul>
                                 <li class="current delKwdLastStep" onclick="preStep();">上一步</li>

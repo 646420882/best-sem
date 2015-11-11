@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--添加监控文件夹弹出窗口--%>
 <div class="box" style="display:none" id="AddKeywords">
-    <h2 id="AddKeywordsTitleNew">
+    <h2 id="AddKeywordsTitleNew" class="boxtitle">
         <span class="fl">添加关键词</span>
         <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
 
@@ -44,8 +44,8 @@
     </div>
 </div>
 <%--  保存设置 --%>
-<div class="box" style="display:none" id="SaveSet">
-    <h2>
+<div class="box" style="display:none;z-index: 1001" id="SaveSet">
+    <h2  id="AddKeywordsplanTitle">
         <span class="fl">保存设置</span>
         <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
 
