@@ -67,7 +67,7 @@ public class CreativeEntity extends AccountIdEntity {
     private Integer localStatus;                            //本地状态1为新增,2为修改,3为删除,4为级联删除标识
 
     @Field("k")
-    private String key;
+    private String key;                                     //关键词百度ID(提供慧眼使用)
 
     public String getAdgroupObjId() {
         return adgroupObjId;

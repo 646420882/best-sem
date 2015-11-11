@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Created by SubDong on 2014/11/26.
+ * 账户表现实体
  */
 public class KeywordRealEntity implements Comparable<KeywordRealEntity> {
     @Id

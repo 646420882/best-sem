@@ -8,6 +8,7 @@ import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.service.MonitorSynchronizedService;
 import com.perfect.service.MonitoringService;
+import com.perfect.utils.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -123,18 +124,7 @@ public class AssistantMonitorController extends WebContextSupport{
                                  @RequestParam(value = "forlderId", required = false) Long forlderId,
                                  @RequestParam(value = "forlderName", required = false) String forlderName) {
         boolean writeResult = monitoringService.updateFolderName(forlderId, forlderName);
-
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Pragma", "No-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.getWriter().write(String.valueOf(writeResult));
-            response.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        setJson(response,writeResult);
     }
 
     /**
@@ -146,18 +136,7 @@ public class AssistantMonitorController extends WebContextSupport{
     public void updateFolderName(HttpServletResponse response,
                                  @RequestParam(value = "forlderName", required = false) String forlderName) {
         int folder = monitoringService.addFolder(forlderName);
-
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Pragma", "No-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.getWriter().write(String.valueOf(folder));
-            response.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        setJson(response,folder);
     }
 
     /**
@@ -170,18 +149,7 @@ public class AssistantMonitorController extends WebContextSupport{
                              @RequestParam(value = "forlderId", required = false) Long forlderId) {
 
         boolean folder = monitoringService.deleteFolder(forlderId);
-
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Pragma", "No-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.getWriter().write(String.valueOf(folder));
-            response.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        setJson(response,folder);
     }
 
     /**
@@ -194,18 +162,7 @@ public class AssistantMonitorController extends WebContextSupport{
                               @RequestParam(value = "monitorId", required = false) Long monitorId) {
 
         boolean folder = monitoringService.deleteMonitorId(monitorId);
-
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Pragma", "No-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.getWriter().write(String.valueOf(folder));
-            response.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        setJson(response,folder);
     }
 
 
@@ -222,18 +179,7 @@ public class AssistantMonitorController extends WebContextSupport{
                            @RequestParam(value = "acliId", required = false) Long acliId) {
 
         int folder = monitoringService.addMonitorId(folderID, campaignId, adgroupId, acliId);
-
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Pragma", "No-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.getWriter().write(String.valueOf(folder));
-            response.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        setJson(response,folder);
     }
 
     /**
@@ -244,17 +190,20 @@ public class AssistantMonitorController extends WebContextSupport{
     @RequestMapping(value = "/monitoring/upMonitor", method = {RequestMethod.GET, RequestMethod.POST})
     public void addMonitor(HttpServletResponse response) {
         int i = monitoringService.upMonitor();
+        setJson(response,i);
+    }
+
+    private void setJson(HttpServletResponse response,Object data){
         try {
             response.setContentType("text/html;charset=UTF-8");
             response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
-            response.getWriter().write(String.valueOf(i));
+            response.getWriter().write(JSONUtils.getJsonObject(data).toString());
             response.getWriter().flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 }

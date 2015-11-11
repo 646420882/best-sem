@@ -300,7 +300,7 @@ public class MonitoringServiceImpl implements MonitoringService {
             });
             monitoring.deleteMonitorWordAPI(monitors);
             List<Monitor> monitorList1 = monitoring.addMonitorWordAPI(monitorList);
-            if (monitorList1 == null && returnFolderList == null) return -1;
+            if (monitorList1 == null) return -1;
             else return 0;
         }else{
             return 0;
