@@ -69,6 +69,12 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         return ObjectUtils.convert(creativeEntityList, CreativeDTO.class);
     }
 
+    @Override
+    public List<CreativeDTO> findByAdgroupId(Long baiduAccountId, String adgroupId) {
+        List<CreativeEntity> creativeEntityList = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(OBJ_ADGROUP_ID).is(adgroupId)), getEntityClass());
+        return ObjectUtils.convert(creativeEntityList, CreativeDTO.class);
+    }
+
     public List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
         Query query = new Query();
         Criteria criteria = Criteria.where(ADGROUP_ID).is(adgroupId);

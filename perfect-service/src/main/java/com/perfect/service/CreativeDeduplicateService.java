@@ -65,4 +65,14 @@ public interface CreativeDeduplicateService {
      * @return List带重复标识的创意
      */
     List<CreativeDTO> deduplicate(final Long baiduUserId, final Long adgroupId, final List<CreativeDTO> list);
+
+    /**
+     * <p>添加创意时, 对同一单元创意去重, 对于重复的创意对其设定相应的状态.
+     *
+     * @param baiduUserId 百度账户ID
+     * @param adgroupId   本地推广单元ID
+     * @param list        待处理创意
+     * @return List带重复标识的创意
+     */
+    List<CreativeDTO> deduplicate(final Long baiduUserId, final String adgroupId, final List<CreativeDTO> list);
 }
