@@ -6,10 +6,8 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.commons.constants.WebSiteConstants;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
-import com.perfect.dto.StructureReportDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
@@ -25,7 +23,6 @@ import com.perfect.utils.IdConvertUtils;
 import com.perfect.utils.csv.UploadHelper;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.report.AssistantKwdUtil;
-import com.perfect.utils.report.BasistReportPCPlusMobUtil;
 import com.perfect.vo.CsvImportResponseVO;
 import com.perfect.vo.ValidateKeywordVO;
 import org.springframework.beans.BeanUtils;
@@ -41,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -282,8 +278,30 @@ public class AssistantKeywordController extends WebContextSupport {
                 List<String> existKwd = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), new ArrayList<String>() {{
                     add(kwds);
                 }});
+                ValidateKeywordVO vk = new ValidateKeywordVO();
                 List<KeywordInfoDTO> keywordDTOs = assistantKeywordService.vaildateKeywordByIds(existKwd);
-                writeJson(keywordDTOs, response);
+                if (keywordDTOs != null) {
+                    vk.setDbExistKeywordList(keywordDTOs);
+                } else {
+                    List<KeywordInfoDTO> keywordInfoDTO = new ArrayList<>();
+                    KeywordInfoDTO k = new KeywordInfoDTO();
+                    k.setKeyword(kwds);
+                    k.setCampaignName(cids);
+                    k.setAdgroupName(aids);
+                    KeywordDTO kwdDto = new KeywordDTO();
+                    kwdDto.setKeyword(kwds);
+                    kwdDto.setPrice(BigDecimal.valueOf(Double.valueOf(prices)));
+                    kwdDto.setMatchType(Integer.valueOf(mts));
+                    kwdDto.setPhraseType(Integer.valueOf(pts));
+                    kwdDto.setPause(Boolean.valueOf(pauses));
+                    kwdDto.setPcDestinationUrl(pcs);
+                    kwdDto.setMobileDestinationUrl(mibs);
+                    k.setObject(kwdDto);
+                    keywordInfoDTO.add(k);
+                    vk.setSafeKeywordList(keywordInfoDTO);
+                }
+
+                writeJson(vk, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -466,8 +484,6 @@ public class AssistantKeywordController extends WebContextSupport {
     public ModelAndView showTimingDelDialog() {
         return new ModelAndView("promotionAssistant/alert/TimingDelDialog");
     }
-
-
 
 
     /**
@@ -945,7 +961,7 @@ public class AssistantKeywordController extends WebContextSupport {
             }
             BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
             CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", accountInfoDTO);
-            List<KeywordInfoDTO> getList = csvReadUtil.getImportList();
+            List<KeywordInfoDTO> getList = csvReadUtil.getImportKeywordList();
 //            getList.stream().forEach(s -> {
 //                System.out.println(s);
 //            });

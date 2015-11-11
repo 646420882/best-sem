@@ -7,6 +7,9 @@ import com.perfect.dto.account.AccountIdDTO;
  */
 public class CreativeDTO extends AccountIdDTO {
 
+    private String campaignName;
+    private String adgroupName;
+
     private Long creativeId;
 
     private Long adgroupId;
@@ -158,10 +161,28 @@ public class CreativeDTO extends AccountIdDTO {
         this.key = key;
     }
 
+    public String getCampaignName() {
+        return campaignName;
+    }
+
+    public void setCampaignName(String campaignName) {
+        this.campaignName = campaignName;
+    }
+
+    public String getAdgroupName() {
+        return adgroupName;
+    }
+
+    public void setAdgroupName(String adgroupName) {
+        this.adgroupName = adgroupName;
+    }
+
     @Override
     public String toString() {
         return "CreativeDTO{" +
-                "creativeId=" + creativeId +
+                "campaignName='" + campaignName + '\'' +
+                ", adgroupName='" + adgroupName + '\'' +
+                ", creativeId=" + creativeId +
                 ", adgroupId=" + adgroupId +
                 ", adgroupObjId='" + adgroupObjId + '\'' +
                 ", title='" + title + '\'' +
