@@ -199,7 +199,8 @@ $(function () {
                 if (fen < 0) {
                     daterangepicker_start_date = null;
                     daterangepicker_end_date = null;
-                    alert("请选择正确的时间范围");
+                    //alert("请选择正确的时间范围");
+                    AlertPrompt.show("请选择正确的时间范围");
                     dateclicks.prev().val();
                     return;
                 }

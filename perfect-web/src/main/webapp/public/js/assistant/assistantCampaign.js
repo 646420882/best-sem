@@ -250,7 +250,7 @@ function whenBlurEditCampaign(num, value) {
             if (value != "") {
                 if (parseInt(getChar(value)) > 30) {
                     //alert("推广计划名不能超过30个字符，汉字占两个字符");
-                    assistantAlertPrompt.show("推广计划名不能超过30个字符，汉字占两个字符！");
+                    AlertPrompt.show("推广计划名不能超过30个字符，汉字占两个字符！");
                     return;
                 } else {
                     jsonData["campaignName"] = value;
@@ -263,26 +263,26 @@ function whenBlurEditCampaign(num, value) {
             if (value != "<不限定>") {
                 if (!/^-?\d+\.?\d*$/.test(value)) {
                     //alert("输入正确的每日预算");
-                    assistantAlertPrompt.show("输入正确的每日预算！");
+                    AlertPrompt.show("输入正确的每日预算！");
                     return;
                 } else {
                     if (parseFloat(value).toFixed(3) < 50.0) {
                         //alert("每日预算必须大于50RMB");
-                        assistantAlertPrompt.show("每日预算必须大于50RMB");
+                        AlertPrompt.show("每日预算必须大于50RMB");
                         return;
                     } else {
                         var bgt = $("#acBgt").html();
                         if (bgt != "") {
                             if (parseInt(value) > parseInt(bgt)) {
                                 //alert("您的每日预算为" + bgt + "，该计划的每日预算不能超过" + bgt + "元");
-                                assistantAlertPrompt.show("您的每日预算为" + bgt + "，该计划的每日预算不能超过" + bgt + "元");
+                                AlertPrompt.show("您的每日预算为" + bgt + "，该计划的每日预算不能超过" + bgt + "元");
                                 return;
                             } else {
                                 jsonData["budget"] = value;
                             }
                         } else {
                             //alert("您的账户预算加载失败，请加载成功后再进行修改");
-                            assistantAlertPrompt.show("您的账户预算加载失败，请加载成功后再进行修改");
+                            AlertPrompt.show("您的账户预算加载失败，请加载成功后再进行修改");
                             return;
                         }
                     }
@@ -296,7 +296,7 @@ function whenBlurEditCampaign(num, value) {
             if (value != "") {
                 if (!/^-?\d+\.?\d*$/.test(value)) {
                     //alert("输入正确的移动出价比例后再修改！");
-                    assistantAlertPrompt.show("输入正确的移动出价比例后再修改");
+                    AlertPrompt.show("输入正确的移动出价比例后再修改");
                     return;
                 } else {
                     jsonData["priceRatio"] = value;
@@ -342,7 +342,7 @@ function deleteCampaign() {
     });
     if (cids == "") {
         //alert("请选择行再操作!");
-        assistantAlertPrompt.show("请选择行再操作!");
+        AlertPrompt.show("请选择行再操作!");
         return;
     }
 
@@ -393,14 +393,14 @@ function validateKeyword(keywords) {
     var kwds = keywords.split("\n");
     if (kwds.length > 200) {
         //alert("设置的否定关键词最大不能超过200个!");
-        assistantAlertPrompt.show("设置的否定关键词最大不能超过200个!");
+        AlertPrompt.show("设置的否定关键词最大不能超过200个!");
         return false;
     }
     for (var i = 0; i < kwds.length; i++) {
         var len = kwds[i].replace(/[^\x00-\xff]/g, 'xx').length;
         if (len > 40) {//否定关键词最大为40字节
             //alert("关键词字节数最大不能超过40个字节。\n" + kwds[i]);
-            assistantAlertPrompt.show("关键词字节数最大不能超过40个字节。\n" + kwds[i]);
+            AlertPrompt.show("关键词字节数最大不能超过40个字节。\n" + kwds[i]);
             return false;
         }
     }
@@ -555,7 +555,7 @@ $(".excludeIpOk").click(function () {
 
     if (ipArray.length > 20) {
         //alert("IP排除数量最大为20个");
-        assistantAlertPrompt.show("IP排除数量最大为20个");
+        AlertPrompt.show("IP排除数量最大为20个");
         return;
     }
 
@@ -567,7 +567,7 @@ $(".excludeIpOk").click(function () {
 
     if (errorIp.length != 0 && ipArray[0] != "") {
         alert("IP地址格式输入不正确!" + errorIp);
-        assistantAlertPrompt.show("IP地址格式输入不正确!" + errorIp);
+        AlertPrompt.show("IP地址格式输入不正确!" + errorIp);
         return;
     }
 
@@ -853,13 +853,13 @@ $("#createCampaignOk").click(function () {
     var adgroupPause = $("#inputAdgroupPause").val();
 
     if (campaignName == "" || campaignName == "<请输入推广计划名称>") {
-        assistantAlertPrompt.show("请输入推广计划名称！");
+        AlertPrompt.show("请输入推广计划名称！");
         //alert("请输入推广计划名称");
         return;
     } else {
         if (parseInt(getChar(campaignName)) > 30) {
             //alert("推广计划名不能超过30个字符，汉字占两个字符");
-            assistantAlertPrompt.show("推广计划名不能超过30个字符，汉字占两个字符");
+            AlertPrompt.show("推广计划名不能超过30个字符，汉字占两个字符");
             return;
         }
     }
@@ -867,17 +867,17 @@ $("#createCampaignOk").click(function () {
     if (budget != "<请输入每日预算，不填默认为不限定>") {
         if (/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(budget) == false) {
             //alert("每日预算只能是数值");
-            assistantAlertPrompt.show("每日预算只能是数值");
+            AlertPrompt.show("每日预算只能是数值");
             return;
         } else {
             if (parseFloat(budget).toFixed(3) <= 49) {
                 //alert("每日预算必须大于50RMB");
-                assistantAlertPrompt.show("每日预算必须大于50RMB");
+                AlertPrompt.show("每日预算必须大于50RMB");
                 return;
             } else {
                 if (parseInt(budget) > parseInt(bgt)) {
                     //alert("每日预算不能大于账户预算值");
-                    assistantAlertPrompt.show("每日预算不能大于账户预算值");
+                    AlertPrompt.show("每日预算不能大于账户预算值");
                     return;
                 }
             }
@@ -888,12 +888,12 @@ $("#createCampaignOk").click(function () {
     if (priceRatio != "") {
         if (!/^-?\d+\.?\d*$/.test(priceRatio)) {
             //alert("移动出价比例只能是数值");
-            assistantAlertPrompt.show("移动出价比例只能是数值");
+            AlertPrompt.show("移动出价比例只能是数值");
             return;
         } else {
             if (parseFloat(priceRatio).toFixed(2) < 0.1 || parseFloat(priceRatio).toFixed(2) > 10.0) {
                 //alert("0.1<移动出价比例<10.0");
-                assistantAlertPrompt.show("0.1<移动出价比例<10.0");
+                AlertPrompt.show("0.1<移动出价比例<10.0");
                 return;
             }
         }
@@ -903,24 +903,24 @@ $("#createCampaignOk").click(function () {
     }
     if (adgroupName == "" || adgroupName == "<请输入推广单元名称>") {
         //alert("请输入推广单元名称");
-        assistantAlertPrompt.show("请输入推广单元名称");
+        AlertPrompt.show("请输入推广单元名称");
         return;
     } else {
         if (parseInt(getChar(adgroupName)) > 30) {
             //alert("推广单元名不能超过30个字符，汉字占两个字符");
-            assistantAlertPrompt.show("推广单元名不能超过30个字符，汉字占两个字符");
+            AlertPrompt.show("推广单元名不能超过30个字符，汉字占两个字符");
             return;
         }
     }
     if (maxPrice != "") {
         if (!/^-?\d+\.?\d*$/.test(maxPrice)) {
             //alert("推广单元的最高出价只能是数字!");
-            assistantAlertPrompt.show("推广单元的最高出价只能是数字！");
+            AlertPrompt.show("推广单元的最高出价只能是数字！");
             return;
         }
     } else {
         //alert("请输入推广单元最高出价！");
-        assistantAlertPrompt.show("请输入推广单元最高出价！");
+        AlertPrompt.show("请输入推广单元最高出价！");
         return;
     }
 
@@ -944,7 +944,7 @@ $("#createCampaignOk").click(function () {
         success: function (data) {
             if (data.msg == "1") {
                 //alert("添加成功");
-                assistantAlertPrompt.show("添加成功！");
+                AlertPrompt.show("添加成功！");
                 loadTree();
                 getCampaignList(0)
                 jsonSchdule_add = null;
@@ -955,7 +955,7 @@ $("#createCampaignOk").click(function () {
                 $(".TB_overlayBG,#plan").hide(0);
             } else {
                 //alert(data.msg);
-                assistantAlertPrompt.show(data.msg);
+                AlertPrompt.show(data.msg);
             }
         }
     });
@@ -1105,7 +1105,7 @@ function uploadCampagin() {
         }
     } else {
         //alert("已经是最新数据了！");
-        assistantAlertPrompt.show("已经是最新数据了！");
+        AlertPrompt.show("已经是最新数据了！");
         return;
     }
     switch (parseInt(step)) {
@@ -1130,11 +1130,11 @@ function uploadOperate(id, ls) {
     $.get("/assistantCampaign/upload", {cid: id, ls: ls}, function (result) {
         if (result.msg == "1") {
             //alert("上传成功!");
-            assistantAlertPrompt.show("上传成功！");
+            AlertPrompt.show("上传成功！");
             getCampaignList(0);
             setTimeout("loadTree()", 1500);
         } else {
-            assistantAlertPrompt.show(result.msg);
+            AlertPrompt.show(result.msg);
             //alert(result.msg);
         }
     });

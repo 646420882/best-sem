@@ -535,12 +535,12 @@ function whenBlurEditKeyword(num, value) {
             if (value != "") {
                 if (!/^-?\d+\.?\d*$/.test(value)) {
                     //alert("请输入正确的关键字出价！");
-                    assistantAlertPrompt.show("请输入正确的关键字出价!");
+                    AlertPrompt.show("请输入正确的关键字出价!");
                     return;
                 } else {
                     if (parseFloat(value).toFixed(3) > 999.9) {
                         //alert("关键词出价为：(0,999.9]<关键字出价&&<=计划预算!,如果设为0，则使用单元出价");
-                        assistantAlertPrompt.show("关键词出价为：(0,999.9]<关键字出价&&<=计划预算!,如果设为0，则使用单元出价");
+                        AlertPrompt.show("关键词出价为：(0,999.9]<关键字出价&&<=计划预算!,如果设为0，则使用单元出价");
                         return;
                     } else {
                         jsonData["price"] = value;
@@ -548,7 +548,7 @@ function whenBlurEditKeyword(num, value) {
                 }
             } else {
                 //alert("请输入关键字出价!");
-                assistantAlertPrompt.show("请输入关键字出价!");
+                AlertPrompt.show("请输入关键字出价!");
                 return;
             }
             break;
@@ -556,12 +556,12 @@ function whenBlurEditKeyword(num, value) {
             if (value != "") {
                 if (getChar(value) > 1024) {
                     //alert("访问Url字符不能超过1024个字符");
-                    assistantAlertPrompt.show("访问Url字符不能超过1024个字符");
+                    AlertPrompt.show("访问Url字符不能超过1024个字符");
                     return;
                 } else {
                     if (value.indexOf(dm) == -1) {
                         //alert("\"访问Url\"必须包含" + dm + "的域名！");
-                        assistantAlertPrompt.show("\"访问Url\"必须包含" + dm + "的域名！");
+                        AlertPrompt.show("\"访问Url\"必须包含" + dm + "的域名！");
                         return;
                     } else {
                         //if (value.substr(value.indexOf(dm)) != dm) {
@@ -580,12 +580,12 @@ function whenBlurEditKeyword(num, value) {
             if (value != "") {
                 if (getChar(value) > 1024) {
                     //alert("移动访问Url字符不能超过1024个字符");
-                    assistantAlertPrompt.show("移动访问Url字符不能超过1024个字符");
+                    AlertPrompt.show("移动访问Url字符不能超过1024个字符");
                     return;
                 } else {
                     if (value.indexOf(dm) == -1) {
                         //alert("\"移动访问Url\"必须包含" + dm + "的域名！");
-                        assistantAlertPrompt.show("\"移动访问Url\"必须包含" + dm + "的域名！");
+                        AlertPrompt.show("\"移动访问Url\"必须包含" + dm + "的域名！");
                         return;
                     } else {
                         //if (value.substr(value.indexOf(dm)) != dm) {
@@ -641,12 +641,12 @@ function deleteKwd() {
     if (ids != "") {
         if (ids.split(",").length == 0) {
             //alert("请选择行再操作!");
-            assistantAlertPrompt.show("请选择行再操作!");
+            AlertPrompt.show("请选择行再操作!");
             return;
         }
     } else {
         /*alert("请选择要删除的关键词!");*/
-        assistantAlertPrompt.show("请选择要删除的关键词!");
+        AlertPrompt.show("请选择要删除的关键词!");
         return;
     }
     var isDel = window.confirm("您确定要删除关键词吗?");
@@ -826,7 +826,7 @@ function reductionKeyword() {
                 break;
             case 4:
                 //alert("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
-                assistantAlertPrompt.show("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
+                AlertPrompt.show("属于单元级联删除，如果要恢复该数据，则必须恢复单元即可！");
                 break;
         }
     }
@@ -1119,14 +1119,14 @@ function kUpload() {
         }
     } else {
         //alert("已经是最新数据了！");
-        assistantAlertPrompt.show("已经是最新数据了！");
+        AlertPrompt.show("已经是最新数据了！");
     }
 }
 function kUploadOperate(kid, ls) {
     $.get("/assistantKeyword/uploadOperate", {kid: kid, ls: ls}, function (res) {
         if (res.msg == "1") {
             //alert("上传成功!");
-            assistantAlertPrompt.show("上传成功！");
+            AlertPrompt.show("上传成功！");
             if (jsonData.cid != null) {
                 getKwdList(0);
             }
@@ -1135,7 +1135,7 @@ function kUploadOperate(kid, ls) {
             if (conf) {
                 $.get("/assistantKeyword/uploadAddByUp", {kid: kid}, function (res) {
                     if (res.msg == "1") {
-                        assistantAlertPrompt.show("上传成功！");
+                        AlertPrompt.show("上传成功！");
                         //alert("上传成功!");
                         if (jsonData.cid != null) {
                             getKwdList(0);
@@ -1143,13 +1143,13 @@ function kUploadOperate(kid, ls) {
                         }
                     } else {
                         //alert(res.msg);
-                        assistantAlertPrompt.show(res.msg);
+                        AlertPrompt.show(res.msg);
                     }
                 });
             }
         } else {
             //alert(res.msg);
-            assistantAlertPrompt.show(res.msg);
+            AlertPrompt.show(res.msg);
         }
     });
 }
@@ -1159,10 +1159,10 @@ function addCensus() {
             if (res.msg == "1") {
                 getKwdList(0);
                 //alert("添加成功");
-                assistantAlertPrompt.show("添加成功");
+                AlertPrompt.show("添加成功");
             } else {
                 //alert("添加失败")
-                assistantAlertPrompt.show("添加失败");
+                AlertPrompt.show("添加失败");
             }
         });
     }
@@ -1187,24 +1187,24 @@ function AddKeywordsSave() {
     var campaignId = $("#campaign_selectNew option:selected").val();
     if (campaignId == null || campaignId.length == 0) {
         //alert("请选择推广计划!");
-        assistantAlertPrompt.show("请选择推广计划!");
+        AlertPrompt.show("请选择推广计划!");
         return;
     }
     var adgroupId = $("#adgroup_selectNew option:selected").val();
     if (adgroupId == null || adgroupId.length == 0) {
         //alert("请选择推广单元!");
-        assistantAlertPrompt.show("请选择推广单元!");
+        AlertPrompt.show("请选择推广单元!");
         return;
     }
     var device = $("#device_selectNew option:selected").val();
     if (device == null || device.length == 0) {
-        assistantAlertPrompt.show("请选择推广设备!");
+        AlertPrompt.show("请选择推广设备!");
         //alert("请选择推广设备!");
         return;
     }
     if ($("#statusNew").val() == null || $("#statusNew").val() == "") {
         //alert("关键词不能为空！")
-        assistantAlertPrompt.show("关键词不能为空!");
+        AlertPrompt.show("关键词不能为空!");
         return
     }
 
@@ -1216,7 +1216,7 @@ function AddKeywordsSave() {
     countkwd = (countkwd == undefined ? 0 : countkwd == "" ? 0 : countkwd);
     if (kwds.length > 5000 - countkwd) {
         //alert("关键词个数大于" + (5000 - countkwd));
-        assistantAlertPrompt.show("关键词个数大于" + (5000 - countkwd));
+        AlertPrompt.show("关键词个数大于" + (5000 - countkwd));
         return
     }
 

@@ -163,6 +163,19 @@
         </div>
     </div>
 </div>
+        <%--alert提示类--%>
+        <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="newKeyWordAlertPrompt">
+            <h2>
+                <span class="fl" id="newKeyWordAlertPrompt_title"></span>
+                <a href="#" class="close">×</a></h2>
+            <div class="mainlist">
+                <div class="w_list03">
+                    <ul class="zs_set">
+                        <li class="current" onclick="newKeyWordAlertPrompt.hide()">确认</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
@@ -214,6 +227,27 @@
     });
 </script>
 <script type="text/javascript">
+    var newKeyWordAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#newKeyWordAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#newKeyWordAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#newKeyWordAlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
     var setting = {
         check: {
             enable: true
@@ -302,7 +336,8 @@
         var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
                 nodes = zTree.getSelectedNodes();
         if (nodes.length == 0) {
-            alert("请至少选择一个节点");
+//            alert("请至少选择一个节点");
+            newKeyWordAlertPrompt.show("请至少选择一个节点");
             return;
         }
         zTree.hideNodes(nodes);

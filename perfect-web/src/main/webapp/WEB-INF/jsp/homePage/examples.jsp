@@ -20,7 +20,7 @@
     <title></title>
     <script type="text/javascript">
         $(document).ready(function(){
-            alert(1);
+//            alert(1);
             var $tab_li = $('.tab_menu li');
             $tab_li.hover(function(){
                 $(this).addClass('selected').siblings().removeClass('selected');

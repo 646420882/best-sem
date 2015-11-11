@@ -200,12 +200,46 @@
         </div>
     </div>
 </div>
-
+<%--alert提示类--%>
+<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="searchWordReportAlertPrompt">
+    <h2>
+        <span class="fl" id="searchWordReportAlertPrompt_title"></span>
+        <a href="#" class="close">×</a></h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current" onclick="searchWordReportAlertPrompt.hide()">确认</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <%--设置推广地域--%>
 <jsp:include page="./Region.jsp"/>
 </body>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var searchWordReportAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#searchWordReportAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#searchWordReportAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#searchWordReportAlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
     // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
@@ -490,7 +524,8 @@
      */
     $("#saveAccount").click(function () {
         if ($.trim($("#kwdTextArea").val()) == "") {
-            alert("请先添加关键词!");
+//            alert("请先添加关键词!");
+            searchWordReportAlertPrompt.show("请先添加关键词!");
             return;
         }
 
@@ -513,15 +548,18 @@
      */
     $("#choosePlaceDiv_save").click(function () {
         if ($("#select_campaign").val() == "pleaseChoose") {
-            alert("请选择计划!")
+//            alert("请选择计划!")
+            searchWordReportAlertPrompt.show("请选择计划!")
             return;
         }
         if ($("#select_adgroup").val() == "pleaseChoose") {
-            alert("请选择单元!");
+//            alert("请选择单元!");
+            searchWordReportAlertPrompt.show("请选择单元!");
             return;
         }
         if ($("#select_matchType").val() == "pleaseChoose") {
-            alert("请选择匹配模式!");
+//            alert("请选择匹配模式!");
+            searchWordReportAlertPrompt.show("请选择匹配模式!");
             return;
         }
 
@@ -550,7 +588,8 @@
      */
     $("#setToAccount").click(function () {
         if ($.trim($("#neigTextArea").val()) == "") {
-            alert("请先选择关键词作为否定词！");
+//            alert("请先选择关键词作为否定词！");
+            searchWordReportAlertPrompt.show("请先选择关键词作为否定词！");
             return;
         }
         $("#neigTextArea").hide(0);
@@ -578,11 +617,13 @@
     $("#setNeigWordDiv_ok").click(function () {
 
         if ($("#select_campaign2").val() == "pleaseChoose") {
-            alert("请选择计划!")
+//            alert("请选择计划!")
+            searchWordReportAlertPrompt.show("请选择计划!")
             return;
         }
         if ($("#select_adgroup2").val() == "pleaseChoose") {
-            alert("请选择单元!");
+//            alert("请选择单元!");
+            searchWordReportAlertPrompt.show("请选择单元!");
             return;
         }
 

@@ -154,7 +154,8 @@
                     $("#tijiao").addClass("displayNone");
                     getTime = setInterval("getPullLog()", heartbeat);
                 }else{
-                    alert("请耐心等待,上一次的拉取操作尚未完成，请勿重复操作。")
+//                    alert("请耐心等待,上一次的拉取操作尚未完成，请勿重复操作。")
+                    baiduAccountAlertPrompt.show("请耐心等待,上一次的拉取操作尚未完成，请勿重复操作。")
                 }
             }
         });

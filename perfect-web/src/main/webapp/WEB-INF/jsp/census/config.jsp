@@ -26,14 +26,17 @@
                 var _urlDesc=$("#urlDesc").val();
                 var _trSize=$("table tbody tr").length;
                 if(_trSize>=4){
-                    alert("目前只支持4个统计地址");
+//                    alert("目前只支持4个统计地址");
+                    AlertPrompt.show("目前只支持4个统计地址");
                     return;
                 }
                 if(_val==""){
-                    alert("请输入要统计的Url地址..");
+//                    alert("请输入要统计的Url地址..");
+                   AlertPrompt.show("请输入要统计的Url地址");
                     return;
                 }if(!IsURL(_val)){
-                    alert("请输入正确的Url地址");
+//                    alert("请输入正确的Url地址");
+                    AlertPrompt.show("请输入正确的Url地址");
                     return;
                 }
 
@@ -43,7 +46,8 @@
                         if(res.result=="1"){
                             loadGrid();
                         }if(res.result=="0"){
-                            alert("已经添加该Url地址了");
+//                            alert("已经添加该Url地址了");
+                            AlertPrompt.show("已经添加该Url地址了");
                         }
                     });
                 }
@@ -75,7 +79,8 @@
                     if(res.result=="1"){
                         $(str).parents("tr").remove();
                     }else{
-                        alert("删除失败");
+//                        alert("删除失败");
+                        AlertPrompt.show("删除失败");
                     }
                 });
             }
@@ -164,6 +169,44 @@
             <div class="col-md-6">关键词，创意，转化事件设置</div>
         </div>
     </div>
+    <%--alert提示类--%>
+    <%--<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="configAlertPrompt">
+        <h2>
+            <span class="fl" id="configAlertPrompt_title"></span>
+            <a href="#" class="close">×</a></h2>
+        <div class="mainlist">
+            <div class="w_list03">
+                <ul class="zs_set">
+                    <li class="current" onclick="AlertPrompt.hide()">确认</li>
+                </ul>
+            </div>
+        </div>
+    </div>--%>
 </div>
 </body>
+<script>
+    /*智能竞价中的alert提示*/
+    /*var ConfigAlertPrompt = {
+        show:function(content){
+
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });*//*蒙版显示*//*
+            $("#configAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });*//*显示提示DIV*//*
+            $("#configAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });*//*蒙版显示*//*
+            $("#configAlertPrompt").css({
+                display: "none"
+            });*//*显示提示DIV*//*
+        }
+    }*/
+</script>
 </html>

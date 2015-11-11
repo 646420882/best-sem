@@ -110,7 +110,7 @@ function checkGroupOk() {
             }, function (result) {
                 if (result == 1) {
                     //alert("分组成功");
-                    biddingAlertPrompt.show("分组成功!");
+                    AlertPrompt.show("分组成功!");
                     imclose();
                 }
             });
@@ -134,7 +134,7 @@ function checkGroupOk() {
                         }, function (result) {
                             if (result == 1) {
                                 //alert("分组成功");
-                                biddingAlertPrompt.show("分组成功!");
+                                AlertPrompt.show("分组成功!");
                                 initImzTree(true);
                                 imclose();
                             }
@@ -142,13 +142,13 @@ function checkGroupOk() {
 
                     } else if (json.success == 0) {
                         //alert("已经存在名为：\"" + cgroupName + "\"的分组名了！");
-                        biddingAlertPrompt.show("已经存在名为：\"" + cgroupName + "\"的分组名了！");
+                        AlertPrompt.show("已经存在名为：\"" + cgroupName + "\"的分组名了！");
                     }
                 });
             }
         }else{
             //alert("请输入分组名！");
-            biddingAlertPrompt.show("请输入分组名！");
+            AlertPrompt.show("请输入分组名！");
         }
     }
 }
@@ -189,7 +189,7 @@ function initImUpdatePrice(){
         var keywordIds = getAllCheckedcbIm();
         if (keywordIds.length == 0) {
             //alert("请选择至少一个关键词!");
-            biddingAlertPrompt.show("请选择至少一个关键词!");
+            AlertPrompt.show("请选择至少一个关键词!");
             return false;
         } else {
             $("input[name='newPrice']").empty();
@@ -211,7 +211,7 @@ function initImUpdateURL(){
         var keywordIds = getAllCheckedcbIm();
         if (keywordIds.length == 0) {
             //alert("请选择至少一个关键词!");
-            biddingAlertPrompt.show("请选择至少一个关键词!");
+            AlertPrompt.show("请选择至少一个关键词!");
             return false;
         } else {
             $("input[name='urlAddress']").empty();
@@ -233,7 +233,7 @@ function initImStopBidStatus(){
         var keywordIds = getAllCheckedcbIm();
         if (keywordIds.length == 0) {
             //alert("请选择至少一个关键词!");
-            biddingAlertPrompt.show("请选择至少一个关键词!");
+            AlertPrompt.show("请选择至少一个关键词!");
             return false;
         }
         else {
@@ -248,18 +248,18 @@ function initImStopBidStatus(){
                     success: function (datas) {
                         if (datas.code == 0) {
                             //alert("所选关键词竞价已暂停!");
-                            biddingAlertPrompt.show("所选关键词竞价已暂停!");
+                            AlertPrompt.show("所选关键词竞价已暂停!");
                             return true;
                         } else {
                             //alert("暂停失败! " + datas.msg);
-                            biddingAlertPrompt.show("暂停失败! " + datas.msg);
+                            AlertPrompt.show("暂停失败! " + datas.msg);
                             return false;
                         }
                     }
                 });
             } else {
                 //alert("所选关键词没有设置竞价规则!");
-                biddingAlertPrompt.show("所选关键词没有设置竞价规则!");
+                AlertPrompt.show("所选关键词没有设置竞价规则!");
             }
         }
     });
@@ -270,7 +270,7 @@ function initImGuiZe(){
         var keywordIds = getAllCheckedcbIm();
         if (keywordIds.length == 0) {
             //alert("请选择至少一个关键词!");
-            biddingAlertPrompt.show("请选择至少一个关键词!");
+            AlertPrompt.show("请选择至少一个关键词!");
             return false;
         }
 
@@ -306,7 +306,7 @@ function imiUpdateCustomGroup(){
             });
         } else {
             //alert("请至少选择一个关键词！");
-            biddingAlertPrompt.show("请选择至少一个关键词!");
+            AlertPrompt.show("请选择至少一个关键词!");
         }
 
     });
@@ -316,7 +316,7 @@ function imiDeleteDocument() {
         var _checked = $("#table2 tbody input[type='checkbox']:checked");
         if (_checked.length <= 0) {
             //alert("请至少选择一个关键词！");
-            biddingAlertPrompt.show("请选择至少一个关键词!");
+            AlertPrompt.show("请选择至少一个关键词!");
             return false;
         } else {
             var id = "";
@@ -329,13 +329,13 @@ function imiDeleteDocument() {
                 $.get("/importBid/deleteBySelection", {cgid: selection, kwdId: id}, function (res) {
                     if (res.status = "1") {
                         //alert("删除成功");
-                        biddingAlertPrompt.show("删除成功!");
+                        AlertPrompt.show("删除成功!");
                         _checked.each(function (i, o) {
                             $(o).parents("tr").remove();
                         });
                     } else {
                         //alert("异常");
-                        biddingAlertPrompt.show("异常!");
+                        AlertPrompt.show("异常!");
                     }
                 });
             }
@@ -396,7 +396,7 @@ function ImDeleteCustomGroup(){
                     initImzTree(true);
                     $("#showTxt").css("display", "block");
                     //alert("删除成功!");
-                    biddingAlertPrompt.show("删除成功!");
+                    AlertPrompt.show("删除成功!");
                     ImSelectInit();
                 }
             });

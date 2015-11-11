@@ -21,9 +21,42 @@
 <input type="text" style="width: 400px;display: none" id="reservationtime" name="reservation"
        class="span4 form-control TimingDelDialog" value="08/01/2013 - 08/01/2013"/>
 
-
+<%--alert提示类--%>
+<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="timingDelDialogAlertPrompt">
+    <h2>
+        <span class="fl" id="timingDelDialogAlertPrompt_title"></span>
+        <a href="#" class="close">×</a></h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current" onclick="timingDelDialogAlertPrompt.hide()">确认</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
 <script type="application/javascript">
+    var timingDelDialogAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#timingDelDialogAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#timingDelDialogAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#timingDelDialogAlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
     function closeDialog() {
         top.dialog.getCurrent().close().remove();
     }
@@ -87,7 +120,8 @@
         "endDate": moment()
     }, function (start, end, label) {
         console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
-        alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+//        alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        timingDelDialogAlertPrompt.show("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
     });
 
     var uploadFunc = function (period) {

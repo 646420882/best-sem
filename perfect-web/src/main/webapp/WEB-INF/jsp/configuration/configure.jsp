@@ -116,7 +116,8 @@
                                             })
                                         }else{
                                             $(this).val($(this).attr("remarkName"));
-                                            alert("备注名不能为空！！")
+//                                            alert("备注名不能为空！！")
+                                            AlertPrompt.show("备注名不能为空!")
                                         }
 
                                     }
@@ -137,10 +138,12 @@
                                             },
                                             success: function (datas) {
                                                 if (datas.status != null && datas.status == true) {
-                                                    alert("删除成功!请重新登陆你的帐号");
+//                                                    alert("删除成功!请重新登陆你的帐号");
+                                                    AlertPrompt.show("删除成功!请重新登陆你的帐号!")
                                                     window.location.reload(true);
                                                 } else {
-                                                    alert("删除失败!")
+//                                                    alert("删除失败!")
+                                                    AlertPrompt.show("删除失败!")
                                                 }
                                             }
                                         });
@@ -200,8 +203,43 @@
             </div>
         </div>
     </div>
+    <%--alert提示类--%>
+    <%--<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="configureAlertPrompt">
+        <h2>
+            <span class="fl" id="configureAlertPrompt_title"></span>
+            <a href="#" class="close">×</a></h2>
+        <div class="mainlist">
+            <div class="w_list03">
+                <ul class="zs_set">
+                    <li class="current" onclick="configureAlertPrompt.hide()">确认</li>
+                </ul>
+            </div>
+        </div>
+    </div>--%>
 </div>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+   /* var configureAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });*//*蒙版显示*//*
+            $("#configureAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });*//*显示提示DIV*//*
+            $("#configureAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });*//*蒙版显示*//*
+            $("#configureAlertPrompt").css({
+                display: "none"
+            });*//*显示提示DIV*//*
+        }
+    }*/
     window.onload = function () {
         rDrag.init(document.getElementById('new_riginality2'));
     };

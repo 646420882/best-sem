@@ -53,7 +53,7 @@
                     finalTotaUv = finalTotaUv + totalUv;
                     var entity = "<tr><td style='color: red;'>" + (i + 1) + "</td>" +
                             "<td><a href='" + url + "'>" + url + "</a></td>" +
-                            "<td><a href='javascript:void(0)' onclick='alert(\"该功能还在开发中!\");'><span class='glyphicon glyphicon-signal'></span></a></td>" +
+                            "<td><a href='javascript:void(0)' onclick='AlertPrompt.show(\"该功能还在开发中!\");'><span class='glyphicon glyphicon-signal'></span></a></td>" +
                             "<td>" + totalPv + "</td>" +
                             "<td>" + totalUv + "</a></td>" +
                             "<td>" + getRamdom(totalPv, 0) + "</a></td>" +

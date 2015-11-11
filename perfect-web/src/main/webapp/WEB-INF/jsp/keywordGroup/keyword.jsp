@@ -833,7 +833,8 @@ To change this template use File | Settings | File Templates.
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.status != null && data.status == true) {
-                    alert("保存成功!");
+//                    alert("保存成功!");
+                    AlertPrompt.show("保存成功!");
                 }
             }
         });
@@ -841,7 +842,8 @@ To change this template use File | Settings | File Templates.
     var save2Keyword = function () {
         var value1 = $("#category option:selected").val();
         if (value1 == null || value1.trims().length == 0) {
-            alert("请选择一个类别!");
+//            alert("请选择一个类别!");
+            AlertPrompt.show("请选择一个类别!");
             return;
         }
         var trade = $("#trade option:selected").val();
@@ -856,7 +858,8 @@ To change this template use File | Settings | File Templates.
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.status != null && data.status == true) {
-                    alert("保存成功!");
+//                    alert("保存成功!");
+                    AlertPrompt.show("保存成功!");
                 }
             }
         });

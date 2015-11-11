@@ -179,13 +179,15 @@ $(function () {
             success: function (data) {
                 verify = data;
                 if (verify == 1) {
-                    alert("同步已完成！请继续操作");
+                    //alert("同步已完成！请继续操作");
+                    AlertPrompt.show("同步已完成！请继续操作");
                     getFolder();
                     getMonitor();
                     getTreeM();
                     verify = -1;
                 } else {
-                    alert("同步过程中出现了意想不到的结果，请重新同步")
+                    //alert("同步过程中出现了意想不到的结果，请重新同步")
+                    AlertPrompt.show("同步过程中出现了意想不到的结果，请重新同步")
                 }
             }
         });
@@ -213,10 +215,12 @@ $(function () {
                 async: false,
                 success: function (data) {
                     if (data == 0) {
-                        alert("上传完成！请继续操作");
+                        //alert("上传完成！请继续操作");
+                        AlertPrompt.show("上传完成！请继续操作");
                         downSyncFuc();
                     } else {
-                        alert("上传过程中出现了意想不到的结果，请重新同步")
+                        //alert("上传过程中出现了意想不到的结果，请重新同步")
+                        AlertPrompt.show("上传过程中出现了意想不到的结果，请重新同步")
                     }
                 }
             });
@@ -331,9 +335,11 @@ $(function () {
                         getFolder();
                         getMonitor();
                         getTreeM();
-                        alert("删除成功");
+                        //alert("删除成功");
+                        AlertPrompt.show("删除成功");
                     } else {
-                        alert("删除失败");
+                        //alert("删除失败");
+                        AlertPrompt.show("删除失败");
                     }
                 }
             });

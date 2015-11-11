@@ -86,7 +86,8 @@
                     if(data.struts == 1){
                         showData();
                         closeAlert();
-                        alert("审核成功！");
+//                        alert("审核成功！");
+                        baiduAccountAlertPrompt.show("审核成功！")
                     }
                 }
             });

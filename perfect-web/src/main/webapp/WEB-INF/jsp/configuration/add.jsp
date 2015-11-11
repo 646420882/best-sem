@@ -14,27 +14,27 @@
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
     <script type="text/javascript">
         /*add中alert优化*/
-        var addAlertPrompt = {
+        /*var addAlertPrompt = {
             show:function(content){
                 $(".TB_overlayBG").css({
                     display: "block", height: $(document).height()
-                });/*蒙版显示*/
+                });*//*蒙版显示*//*
                 $("#addAlertPrompt").css({
                     left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
                     top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
                     display: "block"
-                });/*显示提示DIV*/
+                });*//*显示提示DIV*//*
                 $("#addAlertPrompt_title").html(content);
             },
             hide:function(){
                 $(".TB_overlayBG").css({
                     display: "none"
-                });/*蒙版显示*/
+                });*//*蒙版显示*//*
                 $("#addAlertPrompt").css({
                     display: "none"
-                });/*显示提示DIV*/
+                });*//*显示提示DIV*//*
             }
-        }
+        }*/
         var judeit =0;
        $(function () {
             var $ = function (ID) {
@@ -116,22 +116,22 @@
                                     judeit =1;
                                 }else{
 //                                    alert("请确认你的信息是否填写正确后重新提交！");
-                                    addAlertPrompt.show("请确认你的信息是否填写正确后重新提交!")
+                                    AlertPrompt.show("请确认你的信息是否填写正确后重新提交!")
                                 }
                             }
                         });
                     }else{
                         if (pwd == null || pwd==undefined || pwd == "") {
 //                            alert("密码不能为空！");
-                            addAlertPrompt.show("密码不能为空!")
+                            AlertPrompt.show("密码不能为空!")
                             return false;
                         } else if (token == null || token==undefined || token == "") {
 //                            alert("token不能为空!");
-                            addAlertPrompt.show("token不能为空!")
+                            AlertPrompt.show("token不能为空!")
                             return false;
                         } else if (userName == null || userName==undefined || userName == "") {
 //                            alert("用户名不能为空!");
-                            addAlertPrompt.show("用户名不能为空!")
+                            AlertPrompt.show("用户名不能为空!")
                             return false;
                         }
                     }
@@ -217,7 +217,7 @@
     </div>
 </div>
 <%--提示类--%>
-<div class="box7" style=" width: 230px;display: none;" id="addAlertPrompt">
+<%--<div class="box7" style=" width: 230px;display: none;" id="addAlertPrompt">
     <h2>
         <span class="fl" id="addAlertPrompt_title"></span>
         <a href="#" class="close">×</a></h2>
@@ -228,7 +228,7 @@
             </ul>
         </div>
     </div>
-</div>
+</div>--%>
 <script type="application/javascript">
     $(function () {
         $('#submit').click(function () {
@@ -242,11 +242,11 @@
             } else*/
             if (t == null) {
 //                alert("token不能为空!");
-                addAlertPrompt.show("token不能为空!")
+                AlertPrompt.show("token不能为空!")
                 return false;
             } else if (n == null) {
 //                alert("用户名不能为空!");
-                addAlertPrompt.show("用户名不能为空!")
+                AlertPrompt.show("用户名不能为空!")
                 return false;
             }
         })

@@ -684,7 +684,8 @@ var changeDynamicCreativeStatus = function () {
 var modifyAccountBudget = function () {
     var _budget = $("#budget_text").val();
     if (parseFloat(_budget) < 50) {
-        alert("日预算不得低于50元!");
+        //alert("日预算不得低于50元!");
+        AlertPrompt.show("日预算不得低于50元!");
         return false;
     }
     $("#accountBudget").text(_budget);

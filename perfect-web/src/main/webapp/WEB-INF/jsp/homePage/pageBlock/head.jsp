@@ -113,7 +113,19 @@
     </div>
 </div>
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
-
+<%--alert提示类--%>
+<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="AlertPrompt">
+    <h2>
+        <span class="fl" id="AlertPrompt_title"></span>
+        <a href="#" class="close">×</a></h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current" onclick="AlertPrompt.hide()">确认</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
@@ -125,6 +137,7 @@
     <%--background-color: #f8f8f8;--%>
 <%--}</style>--%>
 <script type="text/javascript">
+
     <!--
     $(function () {
         window.dialog = dialog;
@@ -161,9 +174,11 @@
         if (fileFormat.indexOf(fileExtLowerCase) >= 0) {
             ShowImage(obj, index, 72, 72);
         } else {
-            alert('请选择图片,格式（*.jpg|*.jpeg|*.png|*.gif|*.bmp）');
+//            alert('请选择图片,格式（*.jpg|*.jpeg|*.png|*.gif|*.bmp）');
+            AlertPrompt.show('请选择图片,格式（*.jpg|*.jpeg|*.png|*.gif|*.bmp）');
             $(obj).val('');
-            alert($("#imgHeadPhoto" + index).get(0).src);
+//            alert($("#imgHeadPhoto" + index).get(0).src);
+            AlertPrompt.show($("#imgHeadPhoto" + index).get(0).src);
             $("#imgHeadPhoto" + index).get(0).src = '';
         }
     }
@@ -184,11 +199,13 @@
         if (data == "true") {
             $(".TB_overlayBG").css("display", "none");
             $("#head_img").css("display", "none");
-            alert("上传成功!");
+//            alert("上传成功!");
+            AlertPrompt.show("上传成功!");
             window.location.reload(true);
         }
         else
-            alert("上传失败!");
+//            alert("上传失败!");
+        AlertPrompt.show("上传失败!");
     };
 </script>
 <script type="text/javascript">
@@ -220,6 +237,28 @@
         time.innerHTML = "晚上,好！"
     }
     //弹窗
+    /*智能竞价中的alert提示*/
+    var AlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#AlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#AlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#AlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
     $(function () {
         rDrag.init(document.getElementById('head_top'));
     });

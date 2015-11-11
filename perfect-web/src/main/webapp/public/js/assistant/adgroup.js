@@ -421,7 +421,7 @@ function adgroupDel() {
         }
     } else {
         //alert("请选择单元！");
-        assistantAlertPrompt.show("请选择单元！");
+        AlertPrompt.show("请选择单元！");
     }
 }
 /**

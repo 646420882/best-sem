@@ -26,7 +26,8 @@
                 'fileObjName': 'file',
                 'onUploadSuccess': function (file, data, response) {
                     if (data == "1") {
-                        alert(file.name + "上传成功");
+//                        alert(file.name + "上传成功");
+                        uploadMainAlertPrompt.show(file.name + "上传成功");
 
                     }
                 }
@@ -58,6 +59,28 @@
                 });
             }
         }
+        /*智能竞价中的alert提示*/
+        var uploadMainAlertPrompt = {
+            show:function(content){
+                $(".TB_overlayBG").css({
+                    display: "block", height: $(document).height()
+                });/*蒙版显示*/
+                $("#uploadMainAlertPrompt").css({
+                    left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                    top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                    display: "block"
+                });/*显示提示DIV*/
+                $("#uploadMainAlertPrompt_title").html(content);
+            },
+            hide:function(){
+                $(".TB_overlayBG").css({
+                    display: "none"
+                });/*蒙版显示*/
+                $("#uploadMainAlertPrompt").css({
+                    display: "none"
+                });/*显示提示DIV*/
+            }
+        }
     </script>
 </head>
 <body>
@@ -75,6 +98,19 @@
         </tr>
         <tr>
     </table>
+</div>
+<%--alert提示类--%>
+<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="uploadMainAlertPrompt">
+    <h2>
+        <span class="fl" id="uploadMainAlertPrompt_title"></span>
+        <a href="#" class="close">×</a></h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current" onclick="uploadMainAlertPrompt.hide()">确认</li>
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
 </html>

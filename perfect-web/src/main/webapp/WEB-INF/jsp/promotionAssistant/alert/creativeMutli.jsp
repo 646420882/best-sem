@@ -192,6 +192,19 @@
             </div>
         </div>
     </div>
+    <%--alert提示类--%>
+    <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="creativeMutliAlertPrompt">
+        <h2>
+            <span class="fl" id="creativeMutliAlertPrompt_title"></span>
+            <a href="#" class="close">×</a></h2>
+        <div class="mainlist">
+            <div class="w_list03">
+                <ul class="zs_set">
+                    <li class="current" onclick="creativeMutliAlertPrompt.hide()">确认</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
@@ -199,6 +212,28 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var creativeMutliAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#creativeMutliAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#creativeMutliAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#creativeMutliAlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
 var settingCreativeMutli = {
     check: {
         enable: true
@@ -399,60 +434,72 @@ function nextStep() {
             var c5 = txtSize[j].split(",")[5] != undefined ? txtSize[j].split(",")[5] : "";
             var c6 = txtSize[j].split(",")[6] != undefined ? txtSize[j].split(",")[6] : "";
             if (parseInt(getChar(c0)) > 50 || parseInt(getChar(c0)) <= 8) {
-                alert("第" + (j + 1) + "行的\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+//                alert("第" + (j + 1) + "行的\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
+                creativeMutliAlertPrompt.show("第" + (j + 1) + "行的\"标题\"长度应大于8个字符小于50个字符，汉子占两个字符!");
                 return false;
             }
             if (parseInt(getChar(c1)) > 80 || parseInt(getChar(c1)) <= 8) {
-                alert("第" + (j + 1) + "行的\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+//                alert("第" + (j + 1) + "行的\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+                creativeMutliAlertPrompt.show("第" + (j + 1) + "行的\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
                 return false;
             }
             if (parseInt(getChar(c2)) > 80 || parseInt(getChar(c2)) <= 8) {
-                alert("第" + (j + 1) + "行的\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+//                alert("第" + (j + 1) + "行的\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+                creativeMutliAlertPrompt.show("第" + (j + 1) + "行的\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
                 return false;
             }
             if (parseInt(getChar(c3)) > 1024 || parseInt(getChar(c3)) <= 1) {
-                alert("第" + (j + 1) + "行的默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+//                alert("第" + (j + 1) + "行的默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
+                creativeMutliAlertPrompt.show("第" + (j + 1) + "行的默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
                 return false;
             } else {
                 if (c3.indexOf(dm) == -1) {
-                    alert("第" + (j + 1) + "行的默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+//                    alert("第" + (j + 1) + "行的默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    creativeMutliAlertPrompt.show("第" + (j + 1) + "行的默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
                 //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
                 else {
                     if (c3.substr(c3.indexOf(dm)) != dm) {
-                        alert("第"+(j+1)+"行的默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+//                        alert("第"+(j+1)+"行的默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                        creativeMutliAlertPrompt.show("第"+(j+1)+"行的默认\"访问\"Url地址必须以\"" + dm + "\"结尾！");
                         return false;
                     }
                 }
             }
             if (parseInt(getChar(c4)) > 36 || parseInt(getChar(c4)) <= 1) {
-                alert("第" + (j + 1) + "行的默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
+//                alert("第" + (j + 1) + "行的默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
+                creativeMutliAlertPrompt.show("第" + (j + 1) + "行的默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
                 return false;
             } else {
                 if (c4.indexOf(dm) == -1) {
-                    alert("第" + (j + 1) + "行的默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+//                    alert("第" + (j + 1) + "行的默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    creativeMutliAlertPrompt.show("第" + (j + 1) + "行的默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
                 //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
                 else {
                     if (c4.substr(c4.indexOf(dm)) != dm) {
-                        alert("第"+(j+1)+"行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+//                        alert("第"+(j+1)+"行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                        creativeMutliAlertPrompt.show("第"+(j+1)+"行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
                         return false;
                     }
                 }
             }
             if (parseInt(getChar(c5)) > 1017 || parseInt(getChar(c5)) <= 1) {
-                alert("第" + (j + 1) + "行的移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+//                alert("第" + (j + 1) + "行的移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
+                creativeMutliAlertPrompt.show("第" + (j + 1) + "行的移动\"访问\"Url地址长度应大于2个字符小于1017个字符");
                 return false;
             } else {
                 if (c5.indexOf(dm) == -1) {
-                    alert("第" + (j + 1) + "行的移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+//                    alert("第" + (j + 1) + "行的移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    creativeMutliAlertPrompt.show("第" + (j + 1) + "行的移动\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
                 else {//下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
                     if (c5.substr(c5.indexOf(dm)) != dm) {
-                        alert("第"+(j+1)+"行的移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+//                        alert("第"+(j+1)+"行的移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                        creativeMutliAlertPrompt.show("第"+(j+1)+"行的移动\"访问\"Url地址必须以\"" + dm + "\"结尾！");
                         return false;
                     }
                 }
@@ -460,17 +507,20 @@ function nextStep() {
 
 
             if (parseInt(getChar(c6)) > 36 || parseInt(getChar(c6)) <= 1) {
-                alert("第" + (j + 1) + "行的移动\"显示\"Url地址长度应大于2个字符小于36个字符");
+//                alert("第" + (j + 1) + "行的移动\"显示\"Url地址长度应大于2个字符小于36个字符");
+                creativeMutliAlertPrompt.show("第" + (j + 1) + "行的移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                 return false;
             } else {
                 if (c6.indexOf(dm) == -1) {
-                    alert("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+//                    alert("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                    creativeMutliAlertPrompt.show("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                     return false;
                 }
                 //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
                 else {
                     if (c6.substr(c6.indexOf(dm)) != dm) {
-                        alert("第"+(j+1)+"行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+//                        alert("第"+(j+1)+"行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                        creativeMutliAlertPrompt.show("第"+(j+1)+"行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
                         return false;
                     }
                 }
@@ -513,7 +563,8 @@ function nextStep() {
         }
 
     }else{
-        alert("请选择单元或者输入创意信息!");
+//        alert("请选择单元或者输入创意信息!");
+        creativeMutliAlertPrompt.show("请选择单元或者输入创意信息!");
     }
 }
 /**
@@ -633,7 +684,8 @@ function overStep() {
             device: device
         }, function (rs) {
             if (rs == "1") {
-                alert("操作成功!");
+//                alert("操作成功!");
+                creativeMutliAlertPrompt.show("操作成功!");
             }
             top.dialog.getCurrent().close().remove();
         });

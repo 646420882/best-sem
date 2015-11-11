@@ -34,6 +34,7 @@
 
 <%--推广助手中alert优化--%>
 <%--提示类--%>
+<%--
 <div class="box7" style=" width: 230px;display: none;z-index: 1001" id="assistantAlertPrompt">
     <h2>
         <span class="fl" id="assistantAlertPrompt_title"></span>
@@ -46,7 +47,7 @@
         </div>
     </div>
 </div>
-<%--confirm类型--%>
+&lt;%&ndash;confirm类型&ndash;%&gt;
 <div class="box7" style=" width: 230px;display: none" id="assistantConfirmOptimize">
     <h2 id="changeCreative">
         <span class="fl" id="assistantConfirmOptimize_title"></span>
@@ -59,4 +60,4 @@
             </ul>
         </div>
     </div>
-</div>
+</div>--%>

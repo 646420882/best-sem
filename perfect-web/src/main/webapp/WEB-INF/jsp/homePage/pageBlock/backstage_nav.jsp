@@ -28,8 +28,43 @@
         <a href="${pageContext.request.contextPath}/logout" class="fr" style="color:#b4bcbf;">退出</a>
     </div>
 </div>
+<%--alert提示类--%>
+<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="baiduAccountAlertPrompt">
+    <h2>
+        <span class="fl" id="baiduAccountAlertPrompt_title"></span>
+        <a href="#" class="close">×</a></h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current" onclick="baiduAccountAlertPrompt.hide()">确认</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var baiduAccountAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#baiduAccountAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#baiduAccountAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#baiduAccountAlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
     $(function () {
         $(".backstage_menu>ul>li>a").each(function () {
             if ($($(this))[0].href == String(window.location)) {

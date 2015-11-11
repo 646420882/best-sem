@@ -140,6 +140,19 @@
             </div>
         </div>
     </div>
+    <%--alert提示类--%>
+    <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="batchDelKeyWordAlertPrompt">
+        <h2>
+            <span class="fl" id="batchDelKeyWordAlertPrompt_title"></span>
+            <a href="#" class="close">×</a></h2>
+        <div class="mainlist">
+            <div class="w_list03">
+                <ul class="zs_set">
+                    <li class="current" onclick="batchDelKeyWordAlertPrompt.hide()">确认</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
@@ -147,6 +160,28 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var batchDelKeyWordAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#batchDelKeyWordAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#batchDelKeyWordAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#batchDelKeyWordAlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
     $(function () {
         var $tab_li = $('.newkeyeord_title ul li input');
         $('.newkeyeord_title ul li input').click(function () {
@@ -322,7 +357,8 @@
         var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
                 nodes = zTree.getSelectedNodes();
         if (nodes.length == 0) {
-            alert("请至少选择一个节点");
+//            alert("请至少选择一个节点");
+            batchDelKeyWordAlertPrompt.show("请至少选择一个节点");
             return;
         }
         zTree.hideNodes(nodes);
@@ -382,11 +418,13 @@ function nextStepAjax(nowPage, pageSize) {
     var inputKwdInfo = $("#deleteKwdTextChoose").val();
 
     if (selectNote == "") {
-        alert("请先选择推广计划和推广单元!");
+//        alert("请先选择推广计划和推广单元!");
+        batchDelKeyWordAlertPrompt.show("请先选择推广计划和推广单元!");
         return;
     }
     if ($("#deleteKwdTextChoose").val() == "") {
-        alert("请输入关键词的删除信息");
+//        alert("请输入关键词的删除信息");
+        batchDelKeyWordAlertPrompt.show("请输入关键词的删除信息");
         return;
     }
 
@@ -483,7 +521,8 @@ function createDeleteKwdHtml(listType, list) {
 $(".delKwdByinputNext").click(function () {
     var deleteInfos = $("#deleteKwdText2").val();
     if (deleteInfos == "") {
-        alert("请输入要删除的关键词信息");
+//        alert("请输入要删除的关键词信息");
+        batchDelKeyWordAlertPrompt.show("请输入要删除的关键词信息");
         return;
     }
 
@@ -499,7 +538,8 @@ $(".delKwdByinputNext").click(function () {
     }
 
     if (errorFormart != "") {
-        alert("以下输入格式错误!\n" + errorFormart);
+//        alert("以下输入格式错误!\n" + errorFormart);
+        batchDelKeyWordAlertPrompt.show("以下输入格式错误!\n" + errorFormart);
         return;
     }
 

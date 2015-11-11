@@ -97,7 +97,8 @@ function uploadDialogOk() {
                         CheckCompletion();
                         processerbar(3000);
                     } else {
-                        alert(res.msg);
+                        //alert(res.msg);
+                        AlertPrompt.show(res.msg);
                         reloadGrid();
                         loadTree();
                         closeUploadDialog();
@@ -112,7 +113,8 @@ function uploadDialogOk() {
                 }
             });
             if (campaignIds.length == 0) {
-                alert("请选择要上传的计划！");
+                AlertPrompt.show("请选择要上传的计划！");
+                //alert("请选择要上传的计划！");
                 return;
             } else {
                 campaignIds = campaignIds.slice(0, -1);
@@ -126,7 +128,8 @@ function uploadDialogOk() {
                             CheckCompletion();
                             processerbar(3000);
                         } else {
-                            alert(res.msg);
+                            //alert(res.msg);
+                            AlertPrompt.show(res.msg);
                             reloadGrid();
                             loadTree();
                             closeUploadDialog();
@@ -136,7 +139,8 @@ function uploadDialogOk() {
             }
         }
     } else {
-        alert("请选择上传类型！");
+        //alert("请选择上传类型！");
+        AlertPrompt.show("请选择上传类型！");
     }
 }
 function reloadGrid() {

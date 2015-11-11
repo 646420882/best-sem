@@ -89,7 +89,7 @@
             // 获取文件后缀名
             var pos = excelFile.replace(/.+\./, "");
             if (pos != "xlsx") {
-                alert("请选择正确的  xlsx 文件！！");
+                baiduAccountAlertPrompt.show("请选择正确的  xlsx 文件！！");
                 return;
             }
             $("#fileForm").submit();
@@ -124,17 +124,20 @@
         if (data == "true") {
             document.getElementById("background").style.display = "none";
             document.getElementById("progressBar").style.display = "none";
-            alert("更新成功!");
+//            alert("更新成功!");
+            baiduAccountAlertPrompt.show("更新成功!");
         } else {
             document.getElementById("background").style.display = "none";
             document.getElementById("progressBar").style.display = "none";
-            alert("更新失败!");
+//            alert("更新失败!");
+            baiduAccountAlertPrompt.show("更新失败!");
         }
     };
 
     var deleteLexicon = function () {
         if ($('#trade option:selected').val().length == 0) {
-            alert("请选择行业!");
+//            alert("请选择行业!");
+            baiduAccountAlertPrompt.show("请选择行业!");
             return false;
         }
 
@@ -148,7 +151,8 @@
             },
             success: function (data, statusText, jqXHR) {
                 if (data.status) {
-                    alert("删除成功!");
+//                    alert("删除成功!");
+                    baiduAccountAlertPrompt.show("删除成功!");
                 }
             }
         });
@@ -206,7 +210,8 @@
 
             reader.readAsBinaryString(file);
         } else {
-            alert("Please choose a file.");
+//            alert("Please choose a file.");
+            baiduAccountAlertPrompt.show("Please choose a file.");
         }
     };
 </script>

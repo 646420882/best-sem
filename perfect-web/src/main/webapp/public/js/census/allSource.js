@@ -43,7 +43,8 @@ $("input[cname=dateClick]").click(function () {
  * @param day
  */
 var getDateParam = function (day) {
-    alert(day)
+    //alert(day)
+    AlertPrompt.show(day)
     var createDate = new Date();
     switch (day){
         case -1:

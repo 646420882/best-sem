@@ -15,7 +15,7 @@ var commons = {
         if (!tabMenu) {
             if (!exist_selected.cid) {
                 //alert("请选择一个推广计划！");
-                assistantAlertPrompt.show("请选择一个推广计划！");
+                AlertPrompt.show("请选择一个推广计划！");
                 return;
             }
         }
@@ -121,7 +121,7 @@ var editCommons = {
                 break;
             case "campaign":
                 //alert("推广计划暂不支持剪切功能！");
-                assistantAlertPrompt.show("推广计划暂不支持剪切功能！");
+                AlertPrompt.show("推广计划暂不支持剪切功能！");
                 break;
         }
     },
@@ -139,10 +139,10 @@ var editCommons = {
             this.EditTmp["editType"] = editType;
             this.EditTmp["editData"] = selectedData.toString();
             //alert("已" + edtTypeStr + "到粘贴板！");
-            assistantAlertPrompt.show("已" + edtTypeStr + "到粘贴板！");
+            AlertPrompt.show("已" + edtTypeStr + "到粘贴板！");
         } else {
             /*alert("请选择要" + edtTypeStr + "的数据！");*/
-            assistantAlertPrompt.show("请选择要" + edtTypeStr + "的数据！");
+            AlertPrompt.show("请选择要" + edtTypeStr + "的数据！");
         }
     },
     Parse: function () {
@@ -154,7 +154,7 @@ var editCommons = {
                         getKwdList(0);
                     } else {
                         //alert("粘贴失败");
-                        assistantAlertPrompt.show("粘贴失败");
+                        AlertPrompt.show("粘贴失败");
                     }
                 });
                 break;
@@ -170,7 +170,7 @@ var editCommons = {
                         }
                     } else {
                         //alert("粘贴失败");
-                        assistantAlertPrompt.show("粘贴失败");
+                        AlertPrompt.show("粘贴失败");
                     }
                 });
                 break;
@@ -183,7 +183,7 @@ var editCommons = {
                         }
                     } else {
                         //alert("粘贴失败");
-                        assistantAlertPrompt.show("粘贴失败");
+                        AlertPrompt.show("粘贴失败");
                     }
                 });
                 break;
@@ -194,7 +194,7 @@ var editCommons = {
                         loadTree();
                     } else {
                         //alert("粘贴失败");
-                        assistantAlertPrompt.show("粘贴失败");
+                        AlertPrompt.show("粘贴失败");
                     }
                 });
                 break;
@@ -205,14 +205,14 @@ var editCommons = {
             if (type == "keyword" || type == "creative") {
                 if (!jsonData.aid) {
                     //alert("请选择要粘贴的单元");
-                    assistantAlertPrompt.show("请选择要粘贴的单元");
+                    AlertPrompt.show("请选择要粘贴的单元");
                     return;
                 }
             }
             if (type == "adgroup") {
                 if (!jsonData.cid) {
                     //alert("请选择要粘贴的计划");
-                    assistantAlertPrompt.show("请选择要粘贴的计划");
+                    AlertPrompt.show("请选择要粘贴的计划");
                     return;
                 }
             }
@@ -237,11 +237,11 @@ var editCommons = {
                 });
             } else {
                 //alert("不同层级的数据无法粘贴，请选择相同的层级。")
-                assistantAlertPrompt.show("不同层级的数据无法粘贴，请选择相同的层级。");
+                AlertPrompt.show("不同层级的数据无法粘贴，请选择相同的层级。");
             }
         } else {
             //alert("粘贴板没有数据！")
-            assistantAlertPrompt.show("粘贴板没有数据！");
+            AlertPrompt.show("粘贴板没有数据！");
         }
     }
 }
@@ -410,7 +410,7 @@ $.fn.extend({
             }
         } else {
             //alert("表单有错误，请正确操作！");
-            assistantAlertPrompt.show("表单有错误，请正确操作！");
+            AlertPrompt.show("表单有错误，请正确操作！");
         }
     }
 });
@@ -500,7 +500,7 @@ $.extend({
             }
             if (!checked_data.length) {
                 //alert("您没有选择要所需物料!");
-                assistantAlertPrompt.show("您没有选择要所需物料!");
+                AlertPrompt.show("您没有选择要所需物料!");
                 return;
             }
             foR_params = {type: forType, forType: 0, checkData: checked_data};
@@ -701,14 +701,14 @@ $.extend({
             }
             if (!checked_data.length) {
                 //alert("您没有选择要所需物料!");
-                assistantAlertPrompt.show("您没有选择要所需物料!");
+                AlertPrompt.show("您没有选择要所需物料!");
                 return;
             }
             foR_params = {type: forType, forType: 0, checkData: checked_data};
         } else {
             if (jsonData.cid == null) {
                 //alert("至少选择一个计划")
-                assistantAlertPrompt.show("至少选择一个计划");
+                AlertPrompt.show("至少选择一个计划");
                 return;
             }
             foR_params = {type: forType, forType: 1, campaignId: jsonData.cid, adgroupId: jsonData.aid};
@@ -846,7 +846,7 @@ var TabModel = {
         if (!jsonData.cid) {
             if (editCommons.EditType != "campaign") {
                 //alert("请选择一个计划或者单元");
-                assistantAlertPrompt.show("请选择一个计划或者单元");
+                AlertPrompt.show("请选择一个计划或者单元");
                 return;
             }
         }
@@ -1352,38 +1352,38 @@ var TabModel = {
 //    $("#testTable").renderGrid(gridModel, gridConfig);
 //}
 /*推广助手中alert优化*/
-var assistantAlertPrompt = {
+/*var AlertPrompt = {
     show:function(content){
 
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
-        });/*蒙版显示*/
-        $("#assistantAlertPrompt").css({
+        });*//*蒙版显示*//*
+        $("#AlertPrompt").css({
             left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
             top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
-        });/*显示提示DIV*/
-        $("#assistantAlertPrompt_title").html(content);
+        });*//*显示提示DIV*//*
+        $("#AlertPrompt_title").html(content);
     }
-}
-var assistantConfirmPrompt = {
+}*/
+/*var assistantConfirmPrompt = {
     show:function(content){
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height()
-        });/*蒙版显示*/
+        });*//*蒙版显示*//*
         $("#assistantConfirmOptimize").css({
             left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
             top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
-        });/*显示提示DIV*/
+        });*//*显示提示DIV*//*
         $("#assistantConfirmOptimize_title").html(content);
     },
     hide:function(){
         $(".TB_overlayBG").css({
             display: "none"
-        });/*蒙版显示*/
+        });*//*蒙版显示*//*
         $("#assistantConfirmOptimize").css({
             display: "none"
-        });/*显示提示DIV*/
+        });*//*显示提示DIV*//*
     }
-}
+}*/

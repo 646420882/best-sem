@@ -130,7 +130,8 @@
             success: function (data, textStatus, jqXHR) {
                 if(data.status == "success"){
                     window.location.reload(true);
-                    alert("success!");
+//                    alert("success!");
+                    baiduAccountAlertPrompt.show("success!")
                 }
             }
         });
@@ -155,13 +156,16 @@
             success: function (data, textStatus, jqXHR) {
                 if (data.status == "fail") {
                     refreshImg();
-                    alert("failed!");
+//                    alert("failed!");
+                    baiduAccountAlertPrompt.show("failed!")
                 } else if (data.status == "success") {
                     if (parseInt(data.number) == 0) {
-                        alert("全部模拟登录完成!");
+//                        alert("全部模拟登录完成!");
+                        baiduAccountAlertPrompt.show("全部模拟登录完成!")
                     } else {
                         window.location.reload(true);
-                        alert("success!\n 剩余: " + $("#number").val() + "次");
+//                        alert("success!\n 剩余: " + $("#number").val() + "次");
+                        baiduAccountAlertPrompt.show("success!\n 剩余: " + $("#number").val() + "次")
                     }
                 }
             }
