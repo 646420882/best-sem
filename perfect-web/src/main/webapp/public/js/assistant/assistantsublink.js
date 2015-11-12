@@ -302,15 +302,18 @@ function addSubLinkOk() {
         names="";
         links="";
         if (parseInt(getChar(linkName1)) > 16 || linkName1 == "") {
-            alert("蹊径子链一名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+            //alert("蹊径子链一名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+            AlertPrompt.show("蹊径子链一名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
             return;
         }
         if (parseInt(getChar(linkUrl1)) > 1024 || linkUrl1 == "") {
-            alert("蹊径子链一Url不能为空，并且不能大于1024个字节");
+            //alert("蹊径子链一Url不能为空，并且不能大于1024个字节");
+            AlertPrompt.show("蹊径子链一Url不能为空，并且不能大于1024个字节");
             return;
         } else {
             if (!math.test(linkUrl1)) {
-                alert("蹊径子链一Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                //alert("蹊径子链一Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                AlertPrompt.show("蹊径子链一Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
                 return;
             }
         }
@@ -320,15 +323,18 @@ function addSubLinkOk() {
         var linkName2 = $("input[name='linkName2']").val();
         var linkUrl2 = $("input[name='linkURL2']").val();
         if (parseInt(getChar(linkName2)) > 16 || linkName2 == "") {
-            alert("蹊径子链二名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+            //alert("蹊径子链二名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+            AlertPrompt.show("蹊径子链二名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
             return;
         }
         if (parseInt(getChar(linkUrl2)) > 1024 || linkUrl2 == "") {
-            alert("蹊径子链二Url不能为空，并且不能大于1024个字节");
+            //alert("蹊径子链二Url不能为空，并且不能大于1024个字节");
+            AlertPrompt.show("蹊径子链二Url不能为空，并且不能大于1024个字节");
             return;
         } else {
             if (!math.test(linkUrl2)) {
-                alert("蹊径子链二Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                //alert("蹊径子链二Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                AlertPrompt.show("蹊径子链二Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
                 return;
             }
         }
@@ -338,15 +344,18 @@ function addSubLinkOk() {
         var linkName3 = $("input[name='linkName3']").val();
         var linkUrl3 = $("input[name='linkURL3']").val();
         if (parseInt(getChar(linkName3)) > 16 || linkName3 == "") {
-            alert("蹊径子链三名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+            //alert("蹊径子链三名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+            AlertPrompt.show("蹊径子链三名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
             return;
         }
         if (parseInt(getChar(linkUrl3)) > 1024 || linkUrl3 == "") {
-            alert("蹊径子链三Url不能为空，并且不能大于1024个字节");
+            //alert("蹊径子链三Url不能为空，并且不能大于1024个字节");
+            AlertPrompt.show("蹊径子链三Url不能为空，并且不能大于1024个字节");
             return;
         } else {
             if (!math.test(linkUrl3)) {
-                alert("蹊径子链三Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                //alert("蹊径子链三Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                AlertPrompt.show("蹊径子链三Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
                 return;
             }
         }
@@ -357,17 +366,20 @@ function addSubLinkOk() {
         var linkUrl4 = $("input[name='linkURL4']").val();
         if (linkName4 != "" && linkUrl4 != "") {
             if (parseInt(getChar(linkName4)) > 16) {
-                alert("蹊径子链四名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+                //alert("蹊径子链四名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+                AlertPrompt.show("蹊径子链四名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
                 return;
             } else {
                 names += linkName4 + "\n";
             }
             if (parseInt(getChar(linkUrl4)) > 1024) {
-                alert("蹊径子链四Url不能为空，并且不能大于1024个字节");
+                //alert("蹊径子链四Url不能为空，并且不能大于1024个字节");
+                AlertPrompt.show("蹊径子链四Url不能为空，并且不能大于1024个字节");
                 return;
             } else {
                 if (!math.test(linkUrl4)) {
-                    alert("蹊径子链四Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                    //alert("蹊径子链四Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                    AlertPrompt.show("蹊径子链四Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
                     return;
                 } else {
                     links += linkUrl4 + "\n";
@@ -378,17 +390,20 @@ function addSubLinkOk() {
         var linkUrl5 = $("input[name='linkURL5']").val();
         if (linkName5 != "" && linkUrl5 != "") {
             if (parseInt(getChar(linkName5)) > 16) {
-                alert("蹊径子链五名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+                //alert("蹊径子链五名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
+                AlertPrompt.show("蹊径子链五名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
                 return;
             } else {
                 names += linkName5 + "\n";
             }
             if (parseInt(getChar(linkUrl5)) > 1024) {
-                alert("蹊径子链五Url不能为空，并且不能大于1024个字节");
+                //alert("蹊径子链五Url不能为空，并且不能大于1024个字节");
+                AlertPrompt.show("蹊径子链五Url不能为空，并且不能大于1024个字节");
                 return;
             } else {
                 if (!math.test(linkUrl5)) {
-                    alert("蹊径子链五Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                    //alert("蹊径子链五Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
+                    AlertPrompt.show("蹊径子链五Url必须以http://或者https://开头，并且要包含\"" + domain + "\"的域名");
                     return;
                 } else {
                     links += linkUrl5 + "\n";
@@ -396,17 +411,20 @@ function addSubLinkOk() {
             }
         }
         if (subCamp == "-1") {
-            alert("请选择计划");
+            //alert("请选择计划");
+            AlertPrompt.show("请选择计划");
             return;
         }
         if (subAdgroup == "-1") {
-            alert("请选择单元");
+            //alert("请选择单元");
+            AlertPrompt.show("请选择单元");
             return;
         }
         if (array.length >= 3) {
             var maxByte = getChar(linkName1 + linkName2 + linkName3 + linkName4 + linkName5);
             if (maxByte > 56) {
-                alert("蹊径子链的名称总字节数不能超过56个字节，一个汉字占两个字节");
+                //alert("蹊径子链的名称总字节数不能超过56个字节，一个汉字占两个字节");
+                AlertPrompt.show("蹊径子链的名称总字节数不能超过56个字节，一个汉字占两个字节");
             } else {
                 if (confirm("你确定要添加该蹊径子链吗？") == true) {
                     names = names.slice(0, -1);

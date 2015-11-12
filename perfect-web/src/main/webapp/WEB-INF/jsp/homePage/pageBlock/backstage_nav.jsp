@@ -46,7 +46,7 @@
     /*智能竞价中的alert提示*/
     var baiduAccountAlertPrompt = {
         show:function(content){
-            $(".TB_overlayBG").css({
+            $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });/*蒙版显示*/
             $("#baiduAccountAlertPrompt").css({
@@ -57,7 +57,7 @@
             $("#baiduAccountAlertPrompt_title").html(content);
         },
         hide:function(){
-            $(".TB_overlayBG").css({
+            $(".TB_overlayBG_alert").css({
                 display: "none"
             });/*蒙版显示*/
             $("#baiduAccountAlertPrompt").css({

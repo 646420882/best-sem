@@ -233,8 +233,8 @@
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var creativeMutliAlertPrompt = {
-        show: function (content) {
-            $(".TB_overlayBG").css({
+        show:function(content){
+            $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });
             /*蒙版显示*/
@@ -246,8 +246,8 @@
             /*显示提示DIV*/
             $("#creativeMutliAlertPrompt_title").html(content);
         },
-        hide: function () {
-            $(".TB_overlayBG").css({
+        hide:function(){
+            $(".TB_overlayBG_alert").css({
                 display: "none"
             });
             /*蒙版显示*/

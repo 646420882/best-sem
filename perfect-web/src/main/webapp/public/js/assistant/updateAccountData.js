@@ -51,7 +51,7 @@ var updateAllCampaign = function () {
             //alert("更新成功!");
             AlertPrompt.show("更新成功!");
             ajaxbg.hide();
-            //$(".TB_overlayBG").css("display", "none");
+            $(".TB_overlayBG").css("display", "none");
             $("#download").css("display", "none");
             $("#downloadData").css("display", "none");
 

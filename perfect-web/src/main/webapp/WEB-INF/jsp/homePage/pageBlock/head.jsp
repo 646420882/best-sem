@@ -83,6 +83,20 @@
 <%--</div>--%>
 <%--用户头像修改--%>
 <div class="TB_overlayBG"></div>
+<div class="TB_overlayBG_alert"></div>
+<style>
+    .TB_overlayBG_alert{
+        background-color: #666;
+        position: fixed;
+        z-index: 998;
+        left: 0;
+        top: 0;
+        display: none;
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+    }
+</style>
 <div class="box" style="display:none; width:400px;" id="head_img">
     <h2 id="head_top">
         <span class="fl">修改头像</span>
@@ -240,7 +254,7 @@
     /*智能竞价中的alert提示*/
     var AlertPrompt = {
         show:function(content){
-            $(".TB_overlayBG").css({
+            $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });/*蒙版显示*/
             $("#AlertPrompt").css({
@@ -251,7 +265,7 @@
             $("#AlertPrompt_title").html(content);
         },
         hide:function(){
-            $(".TB_overlayBG").css({
+            $(".TB_overlayBG_alert").css({
                 display: "none"
             });/*蒙版显示*/
             $("#AlertPrompt").css({

@@ -372,9 +372,11 @@ $(function () {
                         getFolder();
                         getMonitor();
                         getTreeM();
-                        alert("删除成功");
+                        //alert("删除成功");
+                        AlertPrompt.show("删除成功");
                     } else {
-                        alert("删除失败");
+                        //alert("删除失败");
+                        AlertPrompt.show("删除失败");
                     }
                 }
             });
@@ -386,7 +388,8 @@ $(function () {
     $("body").on("click", "#addMonitorQR", function () {
         var aliId = $("#tbodyClick").find(".list2_box3").find("input").val();
         if (aliId.length >= 24) {
-            alert("请上传更新，关键词变化后再进行添加监控！");
+            //alert("请上传更新，关键词变化后再进行添加监控！");
+            AlertPrompt.show("请上传更新，关键词变化后再进行添加监控！");
             return;
         }
         var folderId = $("#monitorSelect").val();
@@ -405,14 +408,18 @@ $(function () {
             },
             success: function (data) {
                 if (data == 1) {
-                    alert("添加成功");
+                    //alert("添加成功");
+                    AlertPrompt.show("添加成功");
                     closeAlert();
                 } else if (data == 0) {
-                    alert("添加失败");
+                    //alert("添加失败");
+                    AlertPrompt.show("添加失败");
                 } else if (data == -1) {
-                    alert("监控对象最多添加2000个！");
+                    //alert("监控对象最多添加2000个！");
+                    AlertPrompt.show("监控对象最多添加2000个！");
                 } else if (data == -2) {
-                    alert("该文件夹下已有此监控对象！");
+                    //alert("该文件夹下已有此监控对象！");
+                    AlertPrompt.show("该文件夹下已有此监控对象！");
                 }
             }
         });
