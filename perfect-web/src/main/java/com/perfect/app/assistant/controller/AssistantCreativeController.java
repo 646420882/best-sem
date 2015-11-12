@@ -6,6 +6,7 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.autosdk.sms.v3.CreativeService;
 import com.perfect.commons.constants.MongoEntityConstants;
+import com.perfect.commons.deduplication.KeywordDeduplication;
 import com.perfect.core.AppContext;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.CreativeBackUpDTO;
@@ -19,6 +20,7 @@ import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
 import com.perfect.utils.paging.PagerInfo;
+import com.perfect.vo.ValidateCreativeVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by XiaoWei on 2014/8/21.
@@ -68,26 +71,26 @@ public class AssistantCreativeController extends WebContextSupport {
                 if (!aid.equals("")) {
                     if (aid.length() > OBJ_SIZE) {
                         map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
-                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,null);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize, null);
                     } else {
                         map.put(MongoEntityConstants.ADGROUP_ID, aid);
-                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,null);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize, null);
                     }
                 } else if (!cid.equals("") && aid.equals("")) {
                     List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignObj(cid);
-                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize,null);
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize, null);
                 } else {
-                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,null);
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize, null);
                 }
             } else {
                 if (!aid.equals("")) {
-                    pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize,null);
+                    pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize, null);
                 } else if (!cid.equals("") && aid.equals("")) {
                     List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
-                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize,null);
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize, null);
 
                 } else {
-                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,null);
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize, null);
                 }
             }
         }
@@ -186,8 +189,6 @@ public class AssistantCreativeController extends WebContextSupport {
             e.printStackTrace();
             writeHtml(EXCEPTION, response);
         }
-
-
         return null;
     }
 
@@ -334,7 +335,8 @@ public class AssistantCreativeController extends WebContextSupport {
      */
     @RequestMapping(value = "insertOrUpdate", method = RequestMethod.POST)
     public ModelAndView insertOrUpdate(HttpServletResponse response,
-                                       @RequestParam(value = "aid", required = true) String aid,
+                                       @RequestParam(value = "cid", required = false) String cid,
+                                       @RequestParam(value = "aid", required = false) String aid,
                                        @RequestParam(value = "isReplace") Boolean isReplace,
                                        @RequestParam(value = "title", required = false) String title,
                                        @RequestParam(value = "description1", required = false) String de1,
@@ -344,10 +346,12 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "mobileDestinationUrl", required = false) String mib,
                                        @RequestParam(value = "mobileDisplayUrl", required = false) String mibs,
                                        @RequestParam(value = "pause") String bol,
+                                       @RequestParam(value = "selected") Integer selected,
                                        @RequestParam(value = "device") String device) {
         try {
             //将获取到的标题和创意1在本地数据库中查询
             if (aid.contains("\n")) {
+                String[] cidStr = cid.split("\n");
                 String[] aidStr = aid.split("\n");
                 String[] titleStr = title.split("\n");
                 String[] de1Str = de1.split("\n");
@@ -359,10 +363,10 @@ public class AssistantCreativeController extends WebContextSupport {
                 String[] bolStr = bol.split("\n");
                 String[] devStr = device.split("\n");
                 for (int i = 0; i < aidStr.length; i++) {
-                    innerInsert(isReplace, aidStr[i], titleStr[i], de1Str[i], de2Str[i], pcStr[i], pcsStr[i], mibStr[i], mibsStr[i], bolStr[i], devStr[i]);
+                    innerInsert(selected, isReplace, cidStr[i], aidStr[i], titleStr[i], de1Str[i], de2Str[i], pcStr[i], pcsStr[i], mibStr[i], mibsStr[i], bolStr[i], devStr[i]);
                 }
             } else {
-                innerInsert(isReplace, aid, title, de1, de2, pc, pcs, mib, mibs, bol, device);
+                innerInsert(selected, isReplace, cid, aid, title, de1, de2, pc, pcs, mib, mibs, bol, device);
             }
             writeHtml(SUCCESS, response);
         } catch (Exception e) {
@@ -372,14 +376,18 @@ public class AssistantCreativeController extends WebContextSupport {
         return null;
     }
 
-    private void innerInsert(Boolean isReplace, String aid, String title, String de1, String de2, String pc, String pcs, String mib, String mibs, String bol, String device) {
+    private void innerInsert(Integer selected, Boolean isReplace, String cid, String aid, String title, String de1, String de2, String pc, String pcs, String mib, String mibs, String bol, String device) {
         Map<String, Object> params = new HashMap<>();
         params.put("t", title);
         params.put("desc1", de1);
-        if (aid.length() > OBJ_SIZE) {
-            params.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+        if (selected == 0) {
+            if (aid.length() > OBJ_SIZE) {
+                params.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
+            } else {
+                params.put(MongoEntityConstants.ADGROUP_ID, Long.valueOf(aid));
+            }
         } else {
-            params.put(MongoEntityConstants.ADGROUP_ID, Long.valueOf(aid));
+            System.out.println("哼哼哈兮");
         }
         //如果查询到结果
         CreativeDTO creativeEntity = creativeService.getAllsBySomeParams(params);
@@ -444,6 +452,72 @@ public class AssistantCreativeController extends WebContextSupport {
         }
     }
 
+    @RequestMapping(value = "/validateCreative")
+    public ModelAndView validateCreative(HttpServletRequest request, HttpServletResponse response,
+                                         @RequestParam(value = "cid", required = true) String cid,
+                                         @RequestParam(value = "aid", required = true) String aid,
+                                         @RequestParam(value = "title", required = false) String title,
+                                         @RequestParam(value = "desc1", required = false) String de1,
+                                         @RequestParam(value = "desc2", required = false) String de2,
+                                         @RequestParam(value = "pc", required = false) String pc,
+                                         @RequestParam(value = "pcs", required = false) String pcs,
+                                         @RequestParam(value = "mib", required = false) String mib,
+                                         @RequestParam(value = "mibs", required = false) String mibs,
+                                         @RequestParam(value = "pause") String bol,
+                                         @RequestParam(value = "device", required = false, defaultValue = "0") String device,
+                                         @RequestParam(value = "selected", required = false) String selected) {
+        if (aid.contains("\n")) {
+            String[] cidStr = cid.split("\n");
+            String[] aidStr = aid.split("\n");
+            String[] titleStr = title.split("\n");
+            String[] de1Str = de1.split("\n");
+            String[] de2Str = de2.split("\n");
+            String[] pcStr = pc.split("\n");
+            String[] pcsStr = pcs.split("\n");
+            String[] mibStr = mib.split("\n");
+            String[] mibsStr = mibs.split("\n");
+            String[] bolStr = bol.split("\n");
+            String[] devStr = device.split("\n");
+            List<CreativeDTO> baseDTOs = new ArrayList<>();
+            for (int i = 0; i < cidStr.length; i++) {
+                CreativeDTO creativeDTO = new CreativeDTO();
+                creativeDTO.setCampaignName(cidStr[i]);
+                creativeDTO.setAdgroupName(aidStr[i]);
+                creativeDTO.setTitle(titleStr[i]);
+                creativeDTO.setDescription1(de1Str[i]);
+                creativeDTO.setDescription2(de2Str[i]);
+                creativeDTO.setPcDestinationUrl(pcStr[i]);
+                creativeDTO.setPcDisplayUrl(pcsStr[i]);
+                creativeDTO.setMobileDestinationUrl(mibStr[i]);
+                creativeDTO.setMobileDisplayUrl(mibsStr[i]);
+                creativeDTO.setPause(Boolean.valueOf(bolStr[i]));
+                creativeDTO.setDevicePreference(Integer.valueOf(devStr[i]));
+                baseDTOs.add(creativeDTO);
+            }
+            ValidateCreativeVO vc = new ValidateCreativeVO();
+            List<CreativeDTO> selfList = new ArrayList<>();
+            Map<String, List<CreativeDTO>> selfDTO = baseDTOs
+                    .stream()
+                    .collect(Collectors.groupingBy(creativeDTO -> {
+                        return creativeDTO.getTitle() + creativeDTO.getDescription1() + creativeDTO.getDescription2();
+                    }));
+            for (Map.Entry<String, List<CreativeDTO>> s : selfDTO.entrySet()) {
+                List<CreativeDTO> tmpList = s.getValue();
+                selfList.add(tmpList.get(0));
+            }
+            vc.setEndGetCount(baseDTOs.size() - selfList.size());
+            if(selfList.size()>0){
+                vc.setSafeCreativeDTOList(selfList);
+            }
+            System.out.println(selfDTO.size());
+
+        } else {
+
+
+        }
+
+        return null;
+    }
 
     @RequestMapping(value = "uploadCreative", method = RequestMethod.POST)
     public ModelAndView uploadCreative(HttpServletResponse response,
@@ -607,26 +681,26 @@ public class AssistantCreativeController extends WebContextSupport {
                 if (!aid.equals("")) {
                     if (aid.length() > OBJ_SIZE) {
                         map.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
-                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,sp);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize, sp);
                     } else {
                         map.put(MongoEntityConstants.ADGROUP_ID, aid);
-                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,sp);
+                        pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize, sp);
                     }
                 } else if (!cid.equals("") && aid.equals("")) {
                     List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignObj(cid);
-                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize,sp);
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize, sp);
                 } else {
-                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,sp);
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize, sp);
                 }
             } else {
                 if (!aid.equals("")) {
-                    pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize,sp);
+                    pagerInfo = creativeService.findByPagerInfo(Long.parseLong(aid), nowPage, pageSize, sp);
                 } else if (!cid.equals("") && aid.equals("")) {
                     List<Long> adgroupIds = adgroupService.getAdgroupIdByCampaignId(Long.parseLong(cid));
-                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize,sp);
+                    pagerInfo = creativeService.findByPagerInfoForLong(adgroupIds, nowPage, pageSize, sp);
 
                 } else {
-                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize,sp);
+                    pagerInfo = creativeService.findByPagerInfo(map, nowPage, pageSize, sp);
                 }
             }
         }

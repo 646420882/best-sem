@@ -132,9 +132,9 @@
                                 <p>请输入关键词信息（每行一个），并用tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
 
                                 <div class="newkeyword_right_mid">
-                                    <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
+                                    <p>格式：计划，单元，创意标题，描述1，描述2，启用/暂停</p>
 
-                                    <p>例如：鲜花，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
+                                    <p>例如：t，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
                                     <textarea id="specialText" onkeyup="getColumn(this)"></textarea>
 
 
