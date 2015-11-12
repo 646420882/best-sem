@@ -592,12 +592,35 @@
             if (fileName) {
                 uploadFileCreative();
             } else {
-                alert("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
+                alert("请输入要添加的创意或者要上传的csv文件！");
             }
         }
     }
     function uploadFileCreative() {
-        console.log("我是上传文件的")
+        var fileObj = document.getElementById("suFile").files[0]; // 获取文件对象
+        var FileController = "/assistantCreative/importByFile";
+        var form = new FormData();
+        form.append("author", "hooyes");                        // 可以增加表单数据
+        form.append("file", fileObj);
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", FileController, true);
+        xhr.onload = function () {
+            var result = $.parseJSON(xhr.responseText);
+            if (result.msg != "Ok") {
+//                alert(result.msg);
+                creativeMutliAlertPrompt.show(result.msg);
+            }else{
+                if (result.vc.safeCreativeDTOList) {
+                    if (result.vc.safeCreativeDTOList.length) {
+                        var _createTable = $("#tbodyClick2");
+                        $("#criSize").html(result.vc.safeCreativeDTOList.length);
+                        renderSelfTableData(result.vc.safeCreativeDTOList, _createTable);
+                    }
+                }
+                initNextStep()
+            }
+        }
+        xhr.send(form);
     }
     /**
      下一步*
@@ -743,15 +766,45 @@
             pause: pauseStr,
             device: deviceStr
         }, function (res) {
+            var result = $.parseJSON(res);
+            if (result.safeCreativeDTOList) {
+                if (result.safeCreativeDTOList.length) {
+                    var _createTable = $("#tbodyClick2");
+                    $("#criSize").html(result.safeCreativeDTOList.length);
+                    renderSelfTableData(result.safeCreativeDTOList, _createTable);
+                }
+            }
+            initNextStep();
+        });
 
-        })
-        console.log("页面检测通过");
 
-
-//        initNextStep();//显示下个页面
+//显示下个页面
 
 //test,test,创意标题1,创意描述1,创意描述2,http://.perfect-cn.cn,http://.perfect-cn.cn,http://.perfect-cn.cn,http://.perfect-cn.cn,暂停,全部设备
 
+    }
+
+    function renderSelfTableData(json, safeTbody) {
+        var _trClass = "";
+        for (var i = 0; i < json.length; i++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+            var pause=json[i].pause ? "启用" : "暂停";
+            var device= json[i].devicePreference ? "移动设备" : "全部设备";
+            var _tbody = "<tr class='" + _trClass + "'>" +
+            "<td>" + json[i].campaignName + "<input type='hidden' value='" + json[i].campaignName + "'/></td>" +
+            "<td>" + json[i].adgroupName + "<input type='hidden' value='" + json[i].adgroupName + "'></td>" +
+            "<td>" + json[i].title + "</td>" +
+            "<td>" + json[i].description1 + "</td>" +
+            "<td>" + json[i].description2 + "</td>" +
+            "<td>" + json[i].pcDestinationUrl + "</td>" +
+            "<td>" + json[i].pcDisplayUrl + "</td>" +
+            "<td>" + json[i].mobileDestinationUrl + "</td>" +
+            "<td>" + json[i].mobileDisplayUrl + "</td>" +
+            "<td>" + pause + "</td>" +
+            "<td>" +device + "</td>" +
+            "</tr>";
+            safeTbody.append(_tbody);
+        }
     }
     /**
      上一步*
@@ -824,20 +877,24 @@
         $("#creativeMulti").removeClass("hides");
         $("#creativeMultishowValidateDiv").addClass("hides");
         $("#step").find("li:eq(1)").removeClass("current");
+        $("#createTable tbody").empty();
+        $("#criSize").html(0);
     }
     /**
      完成方法,循环添加批量的数据*
      */
     function overStep() {
         var isReplace = $("#isReplace")[0].checked;
+        var csvReplace=$("#csvReplace")[0].checked;
         var str = "你确定要添加这些创意吗？"
-        if (isReplace) {
+        if (isReplace||csvReplace) {
             str = "你确定要添加并替换这些创意吗？"
         }
         var con = confirm(str);
         if (con) {
             var _table = $("#createTable tbody");
             var trs = _table.find("tr");
+            var cid="";
             var aid = "";
             var title = "";
             var desc1 = "";
@@ -850,7 +907,7 @@
             var device = "";
             $(trs).each(function (i, o) {
                 var _tr = $(o);
-//            var cid = _tr.find("td:eq(0) input").val();
+                cid = cid + _tr.find("td:eq(0) input").val() + "\n";
                 aid = aid + _tr.find("td:eq(1) input").val() + "\n";
                 title = title + _tr.find("td:eq(2)").html() + "\n";
                 desc1 = desc1 + _tr.find("td:eq(3)").html() + "\n";
@@ -865,6 +922,7 @@
                 pause = pause + pause_ToF + "\n";
                 device = device + until.convertDevice(de) + "\n";
             });
+            cid = cid.slice(0, -1)
             aid = aid.slice(0, -1);
             title = title.slice(0, -1);
             desc1 = desc1.slice(0, -1);
@@ -878,6 +936,7 @@
             $.post("../assistantCreative/insertOrUpdate", {
                 isReplace: isReplace,
                 selected: selected_index,
+                cid:cid,
                 aid: aid,
                 title: title,
                 description1: desc1,

@@ -179,7 +179,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
                 keywordDTOs.add(kinf);
                 i++;
             } else {
-                continue;
+                break;
             }
         }
         close();
@@ -292,6 +292,9 @@ public class CsvReadUtil implements Iterator<List<String>> {
                 } else {
                     crea.setDevicePreference(getCreativeDevice(next().get(10)));
                 }
+                creativeDTOs.add(crea);
+            }else{
+                break;
             }
             i++;
         }

@@ -19,7 +19,10 @@ import com.perfect.service.*;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
+import com.perfect.utils.CsvReadUtil;
+import com.perfect.utils.csv.UploadHelper;
 import com.perfect.utils.paging.PagerInfo;
+import com.perfect.vo.CsvImportResponseVO;
 import com.perfect.vo.ValidateCreativeVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
@@ -28,11 +31,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -57,6 +63,8 @@ public class AssistantCreativeController extends WebContextSupport {
     CreativeBackUpService creativeBackUpService;
     @Resource
     AccountManageService accountManageService;
+    @Resource
+    private BaiduAccountService baiduAccountService;
 
     @RequestMapping(value = "/getList", method = RequestMethod.POST)
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
@@ -380,6 +388,7 @@ public class AssistantCreativeController extends WebContextSupport {
         Map<String, Object> params = new HashMap<>();
         params.put("t", title);
         params.put("desc1", de1);
+        params.put("desc2", de2);
         if (selected == 0) {
             if (aid.length() > OBJ_SIZE) {
                 params.put(MongoEntityConstants.OBJ_ADGROUP_ID, aid);
@@ -387,7 +396,14 @@ public class AssistantCreativeController extends WebContextSupport {
                 params.put(MongoEntityConstants.ADGROUP_ID, Long.valueOf(aid));
             }
         } else {
-            System.out.println("哼哼哈兮");
+            AdgroupDTO adgroupDTO = adgroupService.autoBAG(cid, aid);
+            if (adgroupDTO.getAdgroupId() != null) {
+                params.put(MongoEntityConstants.ADGROUP_ID, adgroupDTO.getAdgroupId());
+                aid = adgroupDTO.getAdgroupId().toString();
+            } else {
+                params.put(MongoEntityConstants.OBJ_ADGROUP_ID, adgroupDTO.getId());
+                aid = adgroupDTO.getId();
+            }
         }
         //如果查询到结果
         CreativeDTO creativeEntity = creativeService.getAllsBySomeParams(params);
@@ -495,7 +511,8 @@ public class AssistantCreativeController extends WebContextSupport {
                 baseDTOs.add(creativeDTO);
             }
             ValidateCreativeVO vc = new ValidateCreativeVO();
-            List<CreativeDTO> selfList = new ArrayList<>();
+            List<CreativeDTO> selfListCreative = new ArrayList<>();
+            List<CreativeDTO> dbExistCreative = null;
             Map<String, List<CreativeDTO>> selfDTO = baseDTOs
                     .stream()
                     .collect(Collectors.groupingBy(creativeDTO -> {
@@ -503,17 +520,38 @@ public class AssistantCreativeController extends WebContextSupport {
                     }));
             for (Map.Entry<String, List<CreativeDTO>> s : selfDTO.entrySet()) {
                 List<CreativeDTO> tmpList = s.getValue();
-                selfList.add(tmpList.get(0));
+                selfListCreative.add(tmpList.get(0));
             }
-            vc.setEndGetCount(baseDTOs.size() - selfList.size());
-            if(selfList.size()>0){
-                vc.setSafeCreativeDTOList(selfList);
-            }
-            System.out.println(selfDTO.size());
+            vc.setEndGetCount(baseDTOs.size() - selfListCreative.size());
 
+            if (selfListCreative.size() > 0) {
+                vc.setSafeCreativeDTOList(selfListCreative);
+                dbExistCreative = creativeService.findExistCreative(selfListCreative);
+            }
+            vc.setDbExistCreativeDTOList(dbExistCreative);
+            writeJson(vc, response);
+            return null;
         } else {
+            ValidateCreativeVO vc = new ValidateCreativeVO();
+            List<CreativeDTO> safeList = new ArrayList<>();
+            CreativeDTO creativeDTO = new CreativeDTO();
+            creativeDTO.setCampaignName(cid);
+            creativeDTO.setAdgroupName(aid);
+            creativeDTO.setTitle(title);
+            creativeDTO.setDescription1(de1);
+            creativeDTO.setDescription2(de2);
+            creativeDTO.setPcDestinationUrl(pc);
+            creativeDTO.setPcDisplayUrl(pcs);
+            creativeDTO.setMobileDestinationUrl(mib);
+            creativeDTO.setMobileDisplayUrl(mibs);
+            creativeDTO.setPause(Boolean.valueOf(bol));
+            creativeDTO.setDevicePreference(Integer.valueOf(device));
+            safeList.add(creativeDTO);
+            vc.setSafeCreativeDTOList(safeList);
 
-
+            List<CreativeDTO> dbExistList = creativeService.findExistCreative(safeList);
+            vc.setDbExistCreativeDTOList(dbExistList);
+            writeJson(vc, response);
         }
 
         return null;
@@ -706,6 +744,64 @@ public class AssistantCreativeController extends WebContextSupport {
         }
         writeJson(pagerInfo, response);
         return null;
+    }
+
+    @RequestMapping(value = "importByFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void uploadFile(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        CsvImportResponseVO cr = new CsvImportResponseVO();
+        String fileName = file.getOriginalFilename();
+        UploadHelper upload = new UploadHelper();
+        String ext = upload.getExt(fileName);
+        String fileNameUpdateAgo = new Date().getTime() + "." + ext;
+        if (ext.equals("csv")) {
+            File targetFile = new File(path, fileNameUpdateAgo);
+            if (!targetFile.exists()) {
+                targetFile.mkdirs();
+            }
+            try {
+                file.transferTo(targetFile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", accountInfoDTO);
+            List<CreativeDTO> getList = csvReadUtil.getImportCreativeList();
+            targetFile.delete();
+
+            ValidateCreativeVO vc = new ValidateCreativeVO();
+            List<CreativeDTO> selfListCreative = new ArrayList<>();
+            List<CreativeDTO> dbExistCreative = null;
+            Map<String, List<CreativeDTO>> selfDTO = getList
+                    .stream()
+                    .collect(Collectors.groupingBy(creativeDTO -> {
+                        return creativeDTO.getTitle() + creativeDTO.getDescription1() + creativeDTO.getDescription2();
+                    }));
+            for (Map.Entry<String, List<CreativeDTO>> s : selfDTO.entrySet()) {
+                List<CreativeDTO> tmpList = s.getValue();
+                selfListCreative.add(tmpList.get(0));
+            }
+            vc.setEndGetCount(getList.size() - selfListCreative.size());
+
+            if (selfListCreative.size() > 0) {
+                vc.setSafeCreativeDTOList(selfListCreative);
+                dbExistCreative = creativeService.findExistCreative(selfListCreative);
+                vc.setDbExistCreativeDTOList(dbExistCreative);
+                cr.setMsg("Ok");
+            }else{
+                cr.setMsg("没有检测到csv文件有正确的数据");
+            }
+            cr.setVc(vc);
+            writeJson(cr, response);
+
+        } else if (ext.equals("xls") || ext.equals("xlsx")) {
+            cr.setMsg("目前只支持csv格式的文件！");
+            writeJson(cr, response);
+        } else {
+            cr.setMsg("请选择正确的文件格式！");
+            writeJson(cr, response);
+            return;
+        }
     }
 }
 

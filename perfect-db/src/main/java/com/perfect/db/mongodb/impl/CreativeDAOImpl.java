@@ -382,6 +382,23 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         });
     }
 
+    @Override
+    public CreativeDTO existDTO(Map<String, Object> params) {
+        Query q = new Query();
+        Criteria c = new Criteria();
+        if (params.size() > 0 || params != null) {
+            for (Map.Entry<String, Object> cri : params.entrySet()) {
+                c.and(cri.getKey()).is(cri.getValue());
+            }
+            q.addCriteria(c);
+        }
+        CreativeEntity creativeEntity = getMongoTemplate().findOne(q, getEntityClass());
+        if (creativeEntity != null)
+            return wrapperObject(creativeEntity);
+
+        return null;
+    }
+
     private Integer getTotalCount(Query q, Class<?> cls) {
         return (int) getMongoTemplate().count(q, cls);
     }

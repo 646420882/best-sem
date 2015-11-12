@@ -90,4 +90,6 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
      * @param param
      */
     void batchDelete(List<String> param);
+
+    CreativeDTO existDTO(Map<String,Object> params);
 }

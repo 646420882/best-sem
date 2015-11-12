@@ -11,6 +11,7 @@ public class CsvImportResponseVO {
     String msg;
     Object data;
     ValidateKeywordVO vk;
+    ValidateCreativeVO vc;
 
     public String getMsg() {
         return msg;
@@ -36,12 +37,21 @@ public class CsvImportResponseVO {
         this.vk = vk;
     }
 
+    public ValidateCreativeVO getVc() {
+        return vc;
+    }
+
+    public void setVc(ValidateCreativeVO vc) {
+        this.vc = vc;
+    }
+
     @Override
     public String toString() {
         return "CsvImportResponseVO{" +
                 "msg='" + msg + '\'' +
                 ", data=" + data +
                 ", vk=" + vk +
+                ", vc=" + vc +
                 '}';
     }
 }

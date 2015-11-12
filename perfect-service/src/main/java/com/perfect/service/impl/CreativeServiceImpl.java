@@ -5,6 +5,7 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -184,8 +185,8 @@ public class CreativeServiceImpl implements CreativeService {
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize,SearchFilterParam sp) {
-        return creativeDAO.findByPagerInfo(l, nowPage, pageSize,sp);
+    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
+        return creativeDAO.findByPagerInfo(l, nowPage, pageSize, sp);
     }
 
 
@@ -473,5 +474,31 @@ public class CreativeServiceImpl implements CreativeService {
             dto.setLocalStatus(2);
         }
         creativeDAO.update(dto, backUpDTO);
+    }
+
+    @Override
+    public List<CreativeDTO> findExistCreative(List<CreativeDTO> safeList) {
+        List<CreativeDTO> dbExistCreative = new ArrayList<>();
+        if (safeList.size() > 0) {
+            safeList.stream().forEach(c -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put("t", c.getTitle());
+                params.put("desc1", c.getDescription1());
+                params.put("desc2", c.getDescription2());
+                AdgroupDTO adgroupDTO = adgroupDAO.findByAdgroupName(c.getAdgroupName());
+                if (adgroupDTO != null) {
+                    if (adgroupDTO.getAdgroupId() != null) {
+                        params.put(MongoEntityConstants.ADGROUP_ID, adgroupDTO.getAdgroupId());
+                    }
+                    CreativeDTO existDto = creativeDAO.existDTO(params);
+                    if (existDto != null) {
+                        dbExistCreative.add(existDto);
+                    }
+                }
+            });
+            return dbExistCreative;
+        } else {
+            return null;
+        }
     }
 }

@@ -1080,7 +1080,7 @@
                 uploadFile();
             } else {
 //                alert("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
-                addOrUpdateKeyWordAlertPrompt.show("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
+                addOrUpdateKeyWordAlertPrompt.show("请输入要添加的关键词或者要上传的csv文件！");
             }
         }
 
@@ -1384,11 +1384,9 @@
     }
 
     function uploadFile() {
-        console.log("123123")
 
         var fileObj = document.getElementById("suFile").files[0]; // 获取文件对象
         var FileController = "/assistantKeyword/importByFile";                    // 接收上传文件的后台地址
-        console.log(document.getElementById("suFile").value);
         // FormData 对象
         var form = new FormData();
         form.append("author", "hooyes");                        // 可以增加表单数据
@@ -1424,20 +1422,6 @@
             }
         };
         xhr.send(form);
-
-//        $.ajaxFileUpload({
-//            url: '/assistantKeyword/asdf',
-//            dataType: 'json',
-//            type:'post',
-//            fileElementId: "suFile",
-//            dataType:'json',
-//            success: function (data, status) {
-//                console.log(data);
-//            },
-//            error: function (data, status) {
-//                console.log(data);
-//            }
-//        });
     }
 
 

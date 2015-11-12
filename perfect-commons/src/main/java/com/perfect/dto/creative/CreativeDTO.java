@@ -177,6 +177,7 @@ public class CreativeDTO extends AccountIdDTO {
         this.adgroupName = adgroupName;
     }
 
+
     @Override
     public String toString() {
         return "CreativeDTO{" +

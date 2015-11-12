@@ -129,4 +129,6 @@ public interface CreativeService {
     void batchDelete(FindOrReplaceParam param);
 
     void cut(CreativeDTO dto,String aid);
+
+    List<CreativeDTO> findExistCreative(List<CreativeDTO> safeList);
 }
