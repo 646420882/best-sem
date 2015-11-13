@@ -179,7 +179,7 @@
         }).showModal(dockObj);
            return false;
     }
-    var ddckObj = document.getElementById('top_middle');
+    var dockObj = document.getElementById('argDialogDiv');
     $("#downloadUser").click(function () {
         downloadUser();
     });
