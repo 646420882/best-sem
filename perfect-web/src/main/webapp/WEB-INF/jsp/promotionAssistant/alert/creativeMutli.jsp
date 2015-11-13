@@ -9,6 +9,7 @@
 <html>
 <head>
     <title></title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
@@ -27,7 +28,7 @@
         }
 
         .assembly_under {
-            height: 440px;
+            height: 600px;
 
         }
 
@@ -171,54 +172,90 @@
                     <div class="newkeword_end">
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
-                        <div style="width:99%;height: 200px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <p><span style="font-weight: bold; line-height:30px;padding:10px;">新增的创意：<span id="criSize">0</span></span>
-                            </p>
-                            <table border="0" cellspacing="0" width="100%" id="createTable"
-                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
-                                <thead>
-                                <tr class="list02_top">
-                                    <th>&nbsp;推广计划</th>
-                                    <th>&nbsp;推广单元</th>
-                                    <th>&nbsp;创意标题</th>
-                                    <th>&nbsp;创意描述1</th>
-                                    <th>&nbsp;创意描述2</th>
-                                    <th>&nbsp;默认访问URL</th>
-                                    <th>&nbsp;默认显示URL</th>
-                                    <th>&nbsp;移动访问URL</th>
-                                    <th>&nbsp;移动显示URL</th>
-                                    <th>&nbsp;启用/暂停</th>
-                                    <th>&nbsp;设备偏好</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbodyClick2">
-                                </tbody>
-                            </table>
-                        </div>
-                        <div style="width:99%;height: 200px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <p><span style="font-weight: bold; line-height:30px;padding:10px;">已存在的创意：<span
-                                    id="dbExistCount">0</span></span><span>重复的创意：<span id="existCount">0</span></span>
-                            </p>
-                            <table border="0" cellspacing="0" width="100%" id="errorTable"
-                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
-                                <thead>
-                                <tr class="list02_top">
-                                    <th>&nbsp;推广计划</th>
-                                    <th>&nbsp;推广单元</th>
-                                    <th>&nbsp;创意标题</th>
-                                    <th>&nbsp;创意描述1</th>
-                                    <th>&nbsp;创意描述2</th>
-                                    <th>&nbsp;默认访问URL</th>
-                                    <th>&nbsp;默认显示URL</th>
-                                    <th>&nbsp;移动访问URL</th>
-                                    <th>&nbsp;移动显示URL</th>
-                                    <th>&nbsp;启用/暂停</th>
-                                    <th>&nbsp;设备偏好</th>
-                                </tr>
-                                </thead>
-                                <tbody id="existBody">
-                                </tbody>
-                            </table>
+                        <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
+                            <div class="panel-group" id="creativeMutliAccordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="creativeMutliheadingOne">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse"
+                                               data-parent="#creativeMutliAccordion"
+                                               href="#creativeMutliCollapseOne" aria-expanded="true" aria-controls="creativeMutliCollapseOne">
+                                                <span class="mycollapse">[ - ] </span>
+                                                <span style="font-weight: bold; line-height:30px;padding:10px;">新增的创意：<span
+                                                        id="criSize">0</span></span>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="creativeMutliCollapseOne" class="panel-collapse collapse in" role="tabpanel"
+                                             aria-labelledby="creativeMutliheadingOne">
+                                            <div class="panel-body">
+                                                <table border="0" cellspacing="0" width="100%" id="createTable"
+                                                       class="table2 table-bordered"
+                                                       data-resizable-columns-id="demo-table">
+                                                    <thead>
+                                                    <tr class="list02_top">
+                                                        <th>&nbsp;推广计划</th>
+                                                        <th>&nbsp;推广单元</th>
+                                                        <th>&nbsp;创意标题</th>
+                                                        <th>&nbsp;创意描述1</th>
+                                                        <th>&nbsp;创意描述2</th>
+                                                        <th>&nbsp;默认访问URL</th>
+                                                        <th>&nbsp;默认显示URL</th>
+                                                        <th>&nbsp;移动访问URL</th>
+                                                        <th>&nbsp;移动显示URL</th>
+                                                        <th>&nbsp;启用/暂停</th>
+                                                        <th>&nbsp;设备偏好</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="tbodyClick2">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-group" id="creativeMutliAccordion_2" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="creativeMutliheadingOne_2">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse"
+                                               data-parent="#creativeMutliAccordion_2"
+                                               href="#creativeMutliCollapseOne_2" aria-expanded="true" aria-controls="creativeMutliCollapseOne_2">
+                                                <span class="mycollapse">[ - ] </span>
+                                                <span style="font-weight: bold; line-height:30px;padding:10px;">已存在的创意：<span
+                                                    id="dbExistCount">0</span></span><span>重复的创意：<span id="existCount">0</span></span>
+                                            </a>
+                                        </h4>
+                                        </div>
+                                    <div id="creativeMutliCollapseOne_2" class="panel-collapse collapse in" role="tabpanel"
+                                         aria-labelledby="creativeMutliheadingOne">
+                                        <div class="panel-body">
+                                            <table border="0" cellspacing="0" width="100%" id="errorTable"
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                <thead>
+                                                <tr class="list02_top">
+                                                    <th>&nbsp;推广计划</th>
+                                                    <th>&nbsp;推广单元</th>
+                                                    <th>&nbsp;创意标题</th>
+                                                    <th>&nbsp;创意描述1</th>
+                                                    <th>&nbsp;创意描述2</th>
+                                                    <th>&nbsp;默认访问URL</th>
+                                                    <th>&nbsp;默认显示URL</th>
+                                                    <th>&nbsp;移动访问URL</th>
+                                                    <th>&nbsp;移动显示URL</th>
+                                                    <th>&nbsp;启用/暂停</th>
+                                                    <th>&nbsp;设备偏好</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="existBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+
                         </div>
                     </div>
                     <div class="main_bottom" style="margin:0px;  background:none;">
@@ -251,6 +288,7 @@
     </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
@@ -310,6 +348,18 @@
             selected_index = index;
             $('div.newkeyword_content > div').eq(index).show().siblings().hide();
         });
+        $('#creativeMutliAccordion').on('show.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[ + ]</span>")
+        })
+        $('#creativeMutliAccordion').on('hide.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[-]</span>")
+        })
+        $('#creativeMutliAccordion_2').on('show.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[ + ]</span>")
+        })
+        $('#creativeMutliAccordion_2').on('hide.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[-]</span>")
+        })
     });
     function initMutliTree() {
         $("#creativeMultiTree").html("正在加载数据...");
@@ -641,11 +691,11 @@
                         $("#criSize").html(result.vc.safeCreativeDTOList.length);
                         renderSelfTableData(result.vc.safeCreativeDTOList, _createTable);
                     }
-                    if(result.vc.endGetCount){
+                    if (result.vc.endGetCount) {
                         $("#existCount").html(result.vc.endGetCount);
                     }
-                    if(result.vc.dbExistCreativeDTOList){
-                        if(result.vc.dbExistCreativeDTOList.length){
+                    if (result.vc.dbExistCreativeDTOList) {
+                        if (result.vc.dbExistCreativeDTOList.length) {
                             var _createTable = $("#existBody");
                             $("#dbExistCount").html(result.vc.dbExistCreativeDTOList.length);
                             renderSelfTableData(result.vc.dbExistCreativeDTOList, _createTable);
@@ -810,14 +860,14 @@
                     renderSelfTableData(result.safeCreativeDTOList, _createTable);
                 }
             }
-            if(result.endGetCount){
+            if (result.endGetCount) {
                 $("#existCount").html(result.endGetCount);
             }
-            if(result.dbExistCreativeDTOList){
-                if(result.dbExistCreativeDTOList.length){
+            if (result.dbExistCreativeDTOList) {
+                if (result.dbExistCreativeDTOList.length) {
                     var _createTable = $("#existBody");
                     $("#dbExistCount").html(result.dbExistCreativeDTOList.length);
-                    renderSelfTableData(result.dbExistCreativeDTOList, _createTable,"dbExist");
+                    renderSelfTableData(result.dbExistCreativeDTOList, _createTable, "dbExist");
                 }
             }
             initNextStep();
