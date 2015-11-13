@@ -112,6 +112,4 @@
 <button onclick="closeDialog()" class="count_button_cancel">取消</button>
 <button onclick="closeDialog()" class="count_button_sure">确定</button>
 </body>
-
-
 </html>

@@ -737,28 +737,25 @@ $("#timediglogUp").livequery('click', function () {
 function timeUpdiglog() {
    var d = top.dialog({
         title: "定时上传",
-        padding: "5px",
-        height: "auto",
-        align: 'left bottom',
+        lock: true,
         content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
-
+            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
         },
         onremove: function () {
         }
-    });
-    d.show();
+
+    }).showModal(dockObj);
+    return false;
 }
 $("#timediglogDown").livequery('click', function () {
-
     timediglogDown();
 });
 function timediglogDown() {
    var d =  top.dialog({
         title: "定时暂停",
-        padding: "5px",
         content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -767,8 +764,8 @@ function timediglogDown() {
         },
         onremove: function () {
         }
-    });
-    d.show();
+    }).showModal(dockObj);
+    return false;
 }
 
 $(".searchwordReport").livequery('click', function () {
