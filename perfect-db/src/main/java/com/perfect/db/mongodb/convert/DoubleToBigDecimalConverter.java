@@ -1,4 +1,4 @@
-package com.perfect.commons.convert;
+package com.perfect.db.mongodb.convert;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,7 @@ public class DoubleToBigDecimalConverter implements Converter<Double, BigDecimal
 
     @Override
     public BigDecimal convert(Double aDouble) {
+        System.out.println("Double============BigDecimal");
         return new BigDecimal(aDouble);
     }
 }

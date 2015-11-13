@@ -32,6 +32,6 @@
     </bean>
 
     <mongo:mapping-converter id="mongoConverter">
-        <mongo:custom-converters base-package="com.perfect.commons.convert.*"/>
+        <mongo:custom-converters base-package="com.perfect.db.mongodb.convert.*"/>
     </mongo:mapping-converter>
 </beans>

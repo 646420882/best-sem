@@ -152,9 +152,9 @@
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
-                                                    <li><a href="#"><span class="z_function_hover"><img
-                                                            src="../public/img/zs_function6.png"></span><b>分析</b></a>
-                                                    </li>
+                                                    <%--<li><a href="#"><span class="z_function_hover"><img--%>
+                                                            <%--src="../public/img/zs_function6.png"></span><b>分析</b></a>--%>
+                                                    <%--</li>--%>
                                                     <li><a href="#"><span class="z_function_hover"><img
                                                             src="../public/img/zs_function7.png"></span><b>估算</b></a>
                                                     </li>
@@ -166,7 +166,7 @@
                                                             src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
                                                     </li>
                                                     <li><a href="#" class="searchwordReport"><span class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
                                                     <li><a href="javascript:void(0)" onclick="addCensus()"><span
                                                             class="zs_top"><img
@@ -226,6 +226,8 @@
                       移动访问URL&nbsp;</span></th>
                                                             <th class="username-column" data-noresize>&nbsp;<span>
                       推广计划名称&nbsp;</span></th>
+                                                            <th class="username-column" data-noresize>&nbsp;<span>
+                      推广单元名称&nbsp;</span></th>
                                                             <th class="username-column" data-noresize>&nbsp;
                                                                 <div class="set fr"></div>
                                                             </th>
@@ -365,7 +367,7 @@
                                                             onclick="reBakClick();">还原</b></a></li>
                                                     <li><a href="javascript:void(0)" class="searchwordReport"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -790,7 +792,7 @@
                                                             onclick="agreBakClick()">还原</b></a></li>
                                                     <li><a href="javascript:void(0)" class="searchwordReport"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -924,7 +926,7 @@
                                                             src="../public/img/zs_function9.png"></span><b>还原</b></a>
                                                     </li>
                                                     <li><a href="#" class="searchwordReport"><span class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -1148,7 +1150,7 @@
                                                     </li>
                                                     <li><a href="javascript:void(0);" onclick="searchword();"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
                                                     <%--                <li><a href="#"><span class="zs_top"><img
                                                                             src="../public/img/zs_function11.png"></span><b
@@ -1156,7 +1158,7 @@
                                                                     </li>--%>
                                                     <li><a href="javascript:void(0);" onclick="showSearchWord();"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function5.png"></span><b>搜索</b></a>
+                                                            src="../public/img/zs_function5.png"></span><b>快速添加关键词</b></a>
                                                     </li>
                                                     <li><a href="#"><span class="zs_top"><img
                                                             src="../public/img/zs_function6.png"></span><b>分析</b></a>
@@ -1251,7 +1253,7 @@
                                                             id="removeFolder">删除</b></a></li>
                                                     <li><a href="javascript:void(0);" onclick="searchword();"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>搜索词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
                                                     <li id="downSync"><a href="javascript:void(0)"><span class="zs_top"><img
                                                             src="../public/img/zs_function18.png"></span><b>下载同步</b></a>

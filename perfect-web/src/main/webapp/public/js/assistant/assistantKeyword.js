@@ -94,6 +94,10 @@ function getKwdList(nowPage) {
     param["nowPage"] = nowPage;
     param["pageSize"] = items_per_page;
 
+    console.log(param);
+    if(param.aid){
+        console.log("点的单元");
+    }
     $.ajax({
         url: "/assistantKeyword/list",
         type: "post",
@@ -374,6 +378,7 @@ function keywordDataToHtml(obj, index) {
     html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
     html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
     html = html + "<td>" + obj.campaignName + "</td>";
+    html = html + "<td>" + obj.adgroupName + "</td>";
 
     if (obj.object.localStatus != null) {
         if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
@@ -934,7 +939,7 @@ var menu_keyword_add = {
             kUpload();
         }
     }, menu_keyword_searchWord = {
-        text: "搜索词",
+        text: "快速添加关键词",
         img: "../public/img/zs_function10.png",
         func: function () {
             searchword();
