@@ -276,8 +276,8 @@
     <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="creativeMutliAlertPrompt">
         <h2>
             <span class="fl" id="creativeMutliAlertPrompt_title"></span>
-            <a href="#" class="close">×</a></h2>
-
+            <%--<a href="#" class="close">×</a></h2>--%>
+        <a href="#" onclick="creativeMutliAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>
         <div class="mainlist">
             <div class="w_list03">
                 <ul class="zs_set">
