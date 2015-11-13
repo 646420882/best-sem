@@ -12,11 +12,9 @@ import java.math.BigDecimal;
  * @description
  * @update 2015年10月23日. 下午5:53
  */
-@Component
 public class BigDecimalToDoubleConverter implements Converter<BigDecimal, Double> {
     @Override
     public Double convert(BigDecimal bigDecimal) {
-        System.out.println("BigDecimal============Double");
         return bigDecimal.doubleValue();
     }
 }

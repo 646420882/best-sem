@@ -94,9 +94,12 @@ function getKwdList(nowPage) {
     param["nowPage"] = nowPage;
     param["pageSize"] = items_per_page;
 
-    console.log(param);
-    if(param.aid){
-        console.log("点的单元");
+    if (param.aid) {
+        $("#kkeyword").find("th:eq(10)").hide();
+        $("#kkeyword").find("th:eq(11)").hide();
+    } else {
+        $("#kkeyword").find("th:eq(10)").show();
+        $("#kkeyword").find("th:eq(11)").show();
     }
     $.ajax({
         url: "/assistantKeyword/list",
@@ -224,11 +227,11 @@ function keywordDataToHtml(obj, index) {
 
     html = html + tmpHtml;
 
- /*   if(obj.object.localStatus != -1){*/
-        html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
-   /* }else{
-        html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/repeat.png' /></td>";
-    }*/
+    /*   if(obj.object.localStatus != -1){*/
+    html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
+    /* }else{
+     html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/repeat.png' /></td>";
+     }*/
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -377,15 +380,21 @@ function keywordDataToHtml(obj, index) {
 
     html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
     html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
-    html = html + "<td>" + obj.campaignName + "</td>";
-    html = html + "<td>" + obj.adgroupName + "</td>";
+    if (getNowChooseCidAndAid().aid) {
+        $("#kkeyword").find("th:eq(10)").hide();
+        $("#kkeyword").find("th:eq(11)").hide();
+    } else {
+        html = html + "<td>" + obj.campaignName + "</td>";
+        html = html + "<td>" + obj.adgroupName + "</td>";
+    }
+
 
     if (obj.object.localStatus != null) {
         if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
             html = html + "<td><span class='error' step='" + obj.object.localStatus + "'></span></td>";
-        } else if(obj.object.localStatus == -1) {
+        } else if (obj.object.localStatus == -1) {
             html = html + "<td><span  class='repeat' step='" + obj.object.localStatus + "'></span></td>";
-        }else{
+        } else {
 
             html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
         }
@@ -740,7 +749,7 @@ $("#timediglogUp").livequery('click', function () {
 });
 
 function timeUpdiglog() {
-   var d = top.dialog({
+    var d = top.dialog({
         title: "定时上传",
         lock: true,
         content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
@@ -759,7 +768,7 @@ $("#timediglogDown").livequery('click', function () {
     timediglogDown();
 });
 function timediglogDown() {
-   var d =  top.dialog({
+    var d = top.dialog({
         title: "定时暂停",
         content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
@@ -778,7 +787,7 @@ $(".searchwordReport").livequery('click', function () {
 });
 
 function searchword() {
-top.dialog({
+    top.dialog({
         title: "搜索词报告",
         padding: "5px",
         align: 'right bottom',
@@ -905,7 +914,7 @@ var menu_keyword_add = {
         text: "添加关键词",
         img: "../public/img/zs_function1.png",
         func: function () {
-           /* showSearchWord();*/
+            /* showSearchWord();*/
             AddKeywords();
         }
     }, menu_keyword_del = {
