@@ -171,7 +171,7 @@
                     <div class="newkeword_end">
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
-                        <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
+                        <div style="width:99%;height: 200px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
                             <p><span style="font-weight: bold; line-height:30px;padding:10px;">新增的创意：<span id="criSize">0</span></span>
                             </p>
                             <table border="0" cellspacing="0" width="100%" id="createTable"
@@ -192,6 +192,31 @@
                                 </tr>
                                 </thead>
                                 <tbody id="tbodyClick2">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="width:99%;height: 200px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
+                            <p><span style="font-weight: bold; line-height:30px;padding:10px;">已存在的创意：<span
+                                    id="dbExistCount">0</span></span><span>重复的创意：<span id="existCount">0</span></span>
+                            </p>
+                            <table border="0" cellspacing="0" width="100%" id="errorTable"
+                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                <thead>
+                                <tr class="list02_top">
+                                    <th>&nbsp;推广计划</th>
+                                    <th>&nbsp;推广单元</th>
+                                    <th>&nbsp;创意标题</th>
+                                    <th>&nbsp;创意描述1</th>
+                                    <th>&nbsp;创意描述2</th>
+                                    <th>&nbsp;默认访问URL</th>
+                                    <th>&nbsp;默认显示URL</th>
+                                    <th>&nbsp;移动访问URL</th>
+                                    <th>&nbsp;移动显示URL</th>
+                                    <th>&nbsp;启用/暂停</th>
+                                    <th>&nbsp;设备偏好</th>
+                                </tr>
+                                </thead>
+                                <tbody id="existBody">
                                 </tbody>
                             </table>
                         </div>
@@ -233,7 +258,7 @@
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var creativeMutliAlertPrompt = {
-        show:function(content){
+        show: function (content) {
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });
@@ -246,7 +271,7 @@
             /*显示提示DIV*/
             $("#creativeMutliAlertPrompt_title").html(content);
         },
-        hide:function(){
+        hide: function () {
             $(".TB_overlayBG_alert").css({
                 display: "none"
             });
@@ -609,14 +634,25 @@
             if (result.msg != "Ok") {
 //                alert(result.msg);
                 creativeMutliAlertPrompt.show(result.msg);
-            }else{
+            } else {
                 if (result.vc.safeCreativeDTOList) {
                     if (result.vc.safeCreativeDTOList.length) {
                         var _createTable = $("#tbodyClick2");
                         $("#criSize").html(result.vc.safeCreativeDTOList.length);
                         renderSelfTableData(result.vc.safeCreativeDTOList, _createTable);
                     }
+                    if(result.vc.endGetCount){
+                        $("#existCount").html(result.vc.endGetCount);
+                    }
+                    if(result.vc.dbExistCreativeDTOList){
+                        if(result.vc.dbExistCreativeDTOList.length){
+                            var _createTable = $("#existBody");
+                            $("#dbExistCount").html(result.vc.dbExistCreativeDTOList.length);
+                            renderSelfTableData(result.vc.dbExistCreativeDTOList, _createTable);
+                        }
+                    }
                 }
+
                 initNextStep()
             }
         }
@@ -774,6 +810,16 @@
                     renderSelfTableData(result.safeCreativeDTOList, _createTable);
                 }
             }
+            if(result.endGetCount){
+                $("#existCount").html(result.endGetCount);
+            }
+            if(result.dbExistCreativeDTOList){
+                if(result.dbExistCreativeDTOList.length){
+                    var _createTable = $("#existBody");
+                    $("#dbExistCount").html(result.dbExistCreativeDTOList.length);
+                    renderSelfTableData(result.dbExistCreativeDTOList, _createTable,"dbExist");
+                }
+            }
             initNextStep();
         });
 
@@ -788,21 +834,21 @@
         var _trClass = "";
         for (var i = 0; i < json.length; i++) {
             _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-            var pause=json[i].pause ? "启用" : "暂停";
-            var device= json[i].devicePreference ? "移动设备" : "全部设备";
+            var pause = json[i].pause ? "启用" : "暂停";
+            var device = json[i].devicePreference ? "移动设备" : "全部设备";
             var _tbody = "<tr class='" + _trClass + "'>" +
-            "<td>" + json[i].campaignName + "<input type='hidden' value='" + json[i].campaignName + "'/></td>" +
-            "<td>" + json[i].adgroupName + "<input type='hidden' value='" + json[i].adgroupName + "'></td>" +
-            "<td>" + json[i].title + "</td>" +
-            "<td>" + json[i].description1 + "</td>" +
-            "<td>" + json[i].description2 + "</td>" +
-            "<td>" + json[i].pcDestinationUrl + "</td>" +
-            "<td>" + json[i].pcDisplayUrl + "</td>" +
-            "<td>" + json[i].mobileDestinationUrl + "</td>" +
-            "<td>" + json[i].mobileDisplayUrl + "</td>" +
-            "<td>" + pause + "</td>" +
-            "<td>" +device + "</td>" +
-            "</tr>";
+                    "<td>" + json[i].campaignName + "<input type='hidden' value='" + json[i].campaignName + "'/></td>" +
+                    "<td>" + json[i].adgroupName + "<input type='hidden' value='" + json[i].adgroupName + "'></td>" +
+                    "<td>" + json[i].title + "</td>" +
+                    "<td>" + json[i].description1 + "</td>" +
+                    "<td>" + json[i].description2 + "</td>" +
+                    "<td>" + json[i].pcDestinationUrl + "</td>" +
+                    "<td>" + json[i].pcDisplayUrl + "</td>" +
+                    "<td>" + json[i].mobileDestinationUrl + "</td>" +
+                    "<td>" + json[i].mobileDisplayUrl + "</td>" +
+                    "<td>" + pause + "</td>" +
+                    "<td>" + device + "</td>" +
+                    "</tr>";
             safeTbody.append(_tbody);
         }
     }
@@ -856,7 +902,7 @@
     }
     function specialError() {
         var plans = parseInt($("#nowColumn").html());
-        if (plans > 5) {
+        if (plans > 5000) {
             $("#sError").css("color", "red");
         } else {
             $("#sError").css("color", "black");
@@ -878,23 +924,26 @@
         $("#creativeMultishowValidateDiv").addClass("hides");
         $("#step").find("li:eq(1)").removeClass("current");
         $("#createTable tbody").empty();
+        $("#existBody tbody").empty();
         $("#criSize").html(0);
+        $("#existCount").html(0);
+        $("#dbExistCount").html(0);
     }
     /**
      完成方法,循环添加批量的数据*
      */
     function overStep() {
         var isReplace = $("#isReplace")[0].checked;
-        var csvReplace=$("#csvReplace")[0].checked;
+        var csvReplace = $("#csvReplace")[0].checked;
         var str = "你确定要添加这些创意吗？"
-        if (isReplace||csvReplace) {
+        if (isReplace || csvReplace) {
             str = "你确定要添加并替换这些创意吗？"
         }
         var con = confirm(str);
         if (con) {
             var _table = $("#createTable tbody");
             var trs = _table.find("tr");
-            var cid="";
+            var cid = "";
             var aid = "";
             var title = "";
             var desc1 = "";
@@ -936,7 +985,7 @@
             $.post("../assistantCreative/insertOrUpdate", {
                 isReplace: isReplace,
                 selected: selected_index,
-                cid:cid,
+                cid: cid,
                 aid: aid,
                 title: title,
                 description1: desc1,

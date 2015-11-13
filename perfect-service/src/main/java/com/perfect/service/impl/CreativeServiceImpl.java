@@ -492,6 +492,8 @@ public class CreativeServiceImpl implements CreativeService {
                     }
                     CreativeDTO existDto = creativeDAO.existDTO(params);
                     if (existDto != null) {
+                        existDto.setCampaignName(c.getCampaignName());
+                        existDto.setAdgroupName(c.getAdgroupName());
                         dbExistCreative.add(existDto);
                     }
                 }
