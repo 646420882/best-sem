@@ -130,7 +130,7 @@
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
 <%--alert提示类--%>
 <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="AlertPrompt">
-    <h2>
+    <h2 id="AlertPrompTitle">
         <span class="fl" id="AlertPrompt_title"></span>
         <a href="#" onclick="AlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>
     <div class="mainlist">
@@ -279,6 +279,7 @@
     }
     $(function () {
         rDrag.init(document.getElementById('head_top'));
+        rDrag.init(document.getElementById('AlertPrompTitle'));
     });
     $(function () {
         $("#head_click").click(function () {
