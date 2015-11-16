@@ -89,7 +89,7 @@
     .TB_overlayBG_alert{
         background-color: #666;
         position: fixed;
-        z-index: 998;
+        z-index: 1001;
         left: 0;
         top: 0;
         display: none;
