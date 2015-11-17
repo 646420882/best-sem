@@ -85,19 +85,6 @@
 <%--用户头像修改--%>
 <div class="TB_overlayBG"></div>
 <div class="TB_overlayBG_alert"></div>
-<style>
-    .TB_overlayBG_alert{
-        background-color: #666;
-        position: fixed;
-        z-index: 1001;
-        left: 0;
-        top: 0;
-        display: none;
-        width: 100%;
-        height: 100%;
-        opacity: 0.5;
-    }
-</style>
 <div class="box" style="display:none; width:400px;" id="head_img">
     <h2 id="head_top">
         <span class="fl">修改头像</span>
@@ -129,10 +116,11 @@
 </div>
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="AlertPrompt">
+<div class="box7" style=" width: 230px;display:none;z-index: 1005" id="AlertPrompt">
     <h2 id="AlertPrompTitle">
-        <span class="fl" id="AlertPrompt_title"></span>
-        <a href="#" onclick="AlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>
+        <span class="fl alert_span_title" id="AlertPrompt_title"></span>
+       <%-- <a href="#" onclick="AlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a>--%>
+    </h2>
     <div class="mainlist">
         <div class="w_list03">
             <ul class="zs_set">

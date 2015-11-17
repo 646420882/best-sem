@@ -167,6 +167,7 @@
 </div>
 </div>
 <div class="TB_overlayBG"></div>
+<div class="TB_overlayBG_alert"></div>
 <div class="box" id="new_riginality" style="display:none; width:452px;">
     <h2 id="new_riginality2">同步密码<a href="#" class="close">×</a></h2>
     <div class="mainlist2 over"  style="width:452px;">
@@ -203,43 +204,8 @@
             </div>
         </div>
     </div>
-    <%--alert提示类--%>
-    <%--<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="configureAlertPrompt">
-        <h2>
-            <span class="fl" id="configureAlertPrompt_title"></span>
-            <a href="#" class="close">×</a></h2>
-        <div class="mainlist">
-            <div class="w_list03">
-                <ul class="zs_set">
-                    <li class="current" onclick="configureAlertPrompt.hide()">确认</li>
-                </ul>
-            </div>
-        </div>
-    </div>--%>
 </div>
 <script type="text/javascript">
-    /*智能竞价中的alert提示*/
-   /* var configureAlertPrompt = {
-        show:function(content){
-            $(".TB_overlayBG").css({
-                display: "block", height: $(document).height()
-            });*//*蒙版显示*//*
-            $("#configureAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-                display: "block"
-            });*//*显示提示DIV*//*
-            $("#configureAlertPrompt_title").html(content);
-        },
-        hide:function(){
-            $(".TB_overlayBG").css({
-                display: "none"
-            });*//*蒙版显示*//*
-            $("#configureAlertPrompt").css({
-                display: "none"
-            });*//*显示提示DIV*//*
-        }
-    }*/
     window.onload = function () {
         rDrag.init(document.getElementById('new_riginality2'));
     };

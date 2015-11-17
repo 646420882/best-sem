@@ -330,6 +330,7 @@ To change this template use File | Settings | File Templates.
 </div>
 <!------------编辑创意弹窗-------------->
 <div class="TB_overlayBG"></div>
+<div class="TB_overlayBG_alert"></div>
 <div class="box" id="riginality_editor" style="display:none;">
     <h2 id="riginality_editor1">编辑创意<a href="#" class="close">×</a></h2>
 

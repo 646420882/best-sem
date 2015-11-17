@@ -1351,39 +1351,3 @@ var TabModel = {
 //    }
 //    $("#testTable").renderGrid(gridModel, gridConfig);
 //}
-/*推广助手中alert优化*/
-/*var AlertPrompt = {
-    show:function(content){
-
-        $(".TB_overlayBG").css({
-            display: "block", height: $(document).height()
-        });*//*蒙版显示*//*
-        $("#AlertPrompt").css({
-            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-            display: "block"
-        });*//*显示提示DIV*//*
-        $("#AlertPrompt_title").html(content);
-    }
-}*/
-/*var assistantConfirmPrompt = {
-    show:function(content){
-        $(".TB_overlayBG").css({
-            display: "block", height: $(document).height()
-        });*//*蒙版显示*//*
-        $("#assistantConfirmOptimize").css({
-            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-            display: "block"
-        });*//*显示提示DIV*//*
-        $("#assistantConfirmOptimize_title").html(content);
-    },
-    hide:function(){
-        $(".TB_overlayBG").css({
-            display: "none"
-        });*//*蒙版显示*//*
-        $("#assistantConfirmOptimize").css({
-            display: "none"
-        });*//*显示提示DIV*//*
-    }
-}*/

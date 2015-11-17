@@ -768,19 +768,6 @@
         </div>
     </div>
 </div>
-<%--alert提示类--%>
-<%--<div class="box7" style=" width: 230px;display:none;z-index: 1001" id="AlertPrompt">
-    <h2>
-        <span class="fl" id="AlertPrompt_title"></span>
-        <a href="#" class="close">×</a></h2>
-    <div class="mainlist">
-        <div class="w_list03">
-            <ul class="zs_set">
-                <li class="current close">确认</li>
-            </ul>
-        </div>
-    </div>
-</div>--%>
 
 <%--<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>--%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/index.css">

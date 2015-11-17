@@ -13,28 +13,7 @@
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
     <script type="text/javascript">
-        /*add中alert优化*/
-        /*var addAlertPrompt = {
-            show:function(content){
-                $(".TB_overlayBG").css({
-                    display: "block", height: $(document).height()
-                });*//*蒙版显示*//*
-                $("#addAlertPrompt").css({
-                    left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                    top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-                    display: "block"
-                });*//*显示提示DIV*//*
-                $("#addAlertPrompt_title").html(content);
-            },
-            hide:function(){
-                $(".TB_overlayBG").css({
-                    display: "none"
-                });*//*蒙版显示*//*
-                $("#addAlertPrompt").css({
-                    display: "none"
-                });*//*显示提示DIV*//*
-            }
-        }*/
+
         var judeit =0;
        $(function () {
             var $ = function (ID) {
@@ -216,19 +195,6 @@
         <jsp:include page="../homePage/pageBlock/footer.jsp"/>
     </div>
 </div>
-<%--提示类--%>
-<%--<div class="box7" style=" width: 230px;display: none;" id="addAlertPrompt">
-    <h2>
-        <span class="fl" id="addAlertPrompt_title"></span>
-        <a href="#" class="close">×</a></h2>
-    <div class="mainlist">
-        <div class="w_list03">
-            <ul class="zs_set">
-                <li class="current" onclick="addAlertPrompt.hide()">确认</li>
-            </ul>
-        </div>
-    </div>
-</div>--%>
 <script type="application/javascript">
     $(function () {
         $('#submit').click(function () {

@@ -45,6 +45,7 @@
     </div>
 </div>
 <div class="TB_overlayBG"></div>
+<div class="TB_overlayBG_alert"></div>
 <%--添加监控对象弹出窗口--%>
 <div class="box" style="display:none" id="auditDiv">
     <h2 id="auditTUO">

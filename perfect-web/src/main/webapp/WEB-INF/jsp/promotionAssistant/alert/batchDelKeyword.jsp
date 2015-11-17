@@ -141,11 +141,12 @@
         </div>
     </div>
     <%--alert提示类--%>
-    <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="batchDelKeyWordAlertPrompt">
+    <div class="box7" style=" width: 230px;display:none;z-index: 1005" id="batchDelKeyWordAlertPrompt">
         <h2>
-            <span class="fl" id="batchDelKeyWordAlertPrompt_title"></span>
+            <span class="fl alert_span_title" id="batchDelKeyWordAlertPrompt_title"></span>
             <%--<a href="#" class="close">×</a></h2>--%>
-        <a href="#" onclick="batchDelKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>
+        <%--<a href="#" onclick="batchDelKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+        </h2>
         <div class="mainlist">
             <div class="w_list03">
                 <ul class="zs_set">

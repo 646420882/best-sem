@@ -32,32 +32,3 @@
     </ul>
 </div>
 
-<%--推广助手中alert优化--%>
-<%--提示类--%>
-<%--
-<div class="box7" style=" width: 230px;display: none;z-index: 1001" id="assistantAlertPrompt">
-    <h2>
-        <span class="fl" id="assistantAlertPrompt_title"></span>
-        <a href="#" class="close">×</a></h2>
-    <div class="mainlist">
-        <div class="w_list03">
-            <ul class="zs_set">
-                <li class="current close">确认</li>
-            </ul>
-        </div>
-    </div>
-</div>
-&lt;%&ndash;confirm类型&ndash;%&gt;
-<div class="box7" style=" width: 230px;display: none" id="assistantConfirmOptimize">
-    <h2 id="changeCreative">
-        <span class="fl" id="assistantConfirmOptimize_title"></span>
-        <a href="#" class="close">×</a></h2>
-    <div class="mainlist">
-        <div class="w_list03">
-            <ul class="zs_set" id="assistantAlertOptimize_footer">
-                <li class="current">确认</li>
-                <li class="close">取消</li>
-            </ul>
-        </div>
-    </div>
-</div>--%>
