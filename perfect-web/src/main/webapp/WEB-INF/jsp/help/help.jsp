@@ -25,7 +25,15 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/index.css">
     <%--<link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>--%>
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/perfectNew.js"></script>
+    <script>
+        var _pct = _pct || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//t.best-ad.cn/t.js?tid=76c005e89e020c6e8813a5adaba384d7";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <style>
         .page2 .ajc {
             background: #ffb900;
@@ -73,16 +81,16 @@
                 <div class="containers help_content" id="qa0">
 
                 </div>
-                <div class="containers help_content  hides over"  id="qa1">
+                <div class="containers help_content  hides over" id="qa1">
 
                 </div>
-                <div class="containers help_content hides over"  id="qa2">
+                <div class="containers help_content hides over" id="qa2">
 
                 </div>
-                <div class="containers help_content hides over"  id="qa3">
+                <div class="containers help_content hides over" id="qa3">
 
                 </div>
-                <div class="containers help_content hides over"  id="qa4">
+                <div class="containers help_content hides over" id="qa4">
                     <li class="question_help">Q：如何找到高质量、效果好的关键词进行推广？</li>
                     <li>A：需要在数据报告模块中定期获取数据，对其监控并分析，建立衡量的标准，为后期优化提供数据支持。</li>
                     <li class="question_help">Q：平均点击价格（CPC）过高如何进行优化？</li>
@@ -128,12 +136,12 @@
                 dataType: "json",
                 success: function (data) {
                     console.log(data);
-                    $("#qa"+a).empty();
+                    $("#qa" + a).empty();
                     var html_account = "";
                     $.each(data.rows, function (i, item) {
                         if (item.questionType == a) {
-                            html_account = "<li class='question_help' style='color: "+ item.fontColor +"'>Q:" + item.questions + "</li><li>A:" + item.answers + "</li>"
-                            $("#qa"+a).append(html_account);
+                            html_account = "<li class='question_help' style='color: " + item.fontColor + "'>Q:" + item.questions + "</li><li>A:" + item.answers + "</li>"
+                            $("#qa" + a).append(html_account);
                         }
                     });
                 }

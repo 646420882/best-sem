@@ -16,7 +16,8 @@
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
     <%--<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">--%>
-    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
@@ -31,6 +32,7 @@
         .list2 table .list2_top td, th {
             color: #000000;
         }
+
         .example {
             background: #FFF;
             width: 650px;
@@ -162,6 +164,7 @@
                                 <tbody id="basisAccount"></tbody>
                             </table>
                             <br/>
+
                             <div class="page2 fl" id="pageJC"></div>
                         </div>
                     </div>
@@ -309,18 +312,16 @@
                         <div class="shuju_detali over">
                             <ul>
                                 <li>选择时间范围：
-                                    <input type="text"  class="time_input" placeholder="请选择查询时间,默认昨天" readonly>
+                                    <input type="text" class="time_input" placeholder="请选择查询时间,默认昨天" readonly>
                                     <input name="reservation" type="image" cname="dateClick"
-                                           <%--onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"--%>
                                            src="${pageContext.request.contextPath}/public/img/date.png" readonly>
                                 </li>
                                 <li id="reportType">选择报告类型：
-                                    <a href="javascript:" onclick="OtherSearch();" class="current"
+                                    <a href="javascript:" onclick="OtherSearch()" class="current"
                                        cname="1">结构报告</a><span>|</span>
-                                    <a href="javascript:" onclick="OtherSearch();" cname="2">关键词报告</a><span>|</span>
-                                    <a href="javascript:" onclick="OtherSearch();" cname="3">创意报告</a><span>|</span>
-                                    <%--<a href="javascript:">附加创意报告</a><span>|</span>--%>
-                                    <a href="javascript:" onclick="OtherSearch();" cname="4">分地域报告</a><span>|</span>
+                                    <a href="javascript:" onclick="OtherSearch()" cname="2">关键词报告</a><span>|</span>
+                                    <a href="javascript:" onclick="OtherSearch()" cname="3">创意报告</a><span>|</span>
+                                    <a href="javascript:" onclick="OtherSearch()" cname="4">分地域报告</a><span>|</span>
                                     <a href="javascript:" id="SearchReport">搜索词报告</a>
                                 </li>
                                 <li id="device" class="searchhide">选择推广设备：
@@ -488,6 +489,7 @@
 
                                             <p></p></b></td>
                                         <td>&nbsp;<span>精确匹配扩展(地域词)触发</span><b><p></p>
+
                                             <p></p></b></td>
                                     </tr>
                                     </thead>
@@ -528,14 +530,15 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-  <%--jquery-daterangepicke--%>
+<%--jquery-daterangepicke--%>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
 <%--<script type="text/javascript"  src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
 <%--end--%>
 <%--bootstrap-daterangepicker--%>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
 
 
 <%--end--%>
@@ -561,34 +564,34 @@
         $(".number_concent").css("padding-bottom", "20px");
     }
 
-    $(function(){
+    $(function () {
         var mydate = new Date();
         var str = "" + mydate.getFullYear() + "-";
-        str += (mydate.getMonth()+1) + "-";
+        str += (mydate.getMonth() + 1) + "-";
         str += (mydate.getDate());
-        var time=str+" "+" 至 "+" "+str
+        var time = str + " " + " 至 " + " " + str
         $("#tacittime").val(time);
         $("#tacittime1").val(time);
         $("#tacittime2").val(time);
     })
 
 
-//bootstrap-daterangepicker-setting
-//    $("input[name=reservation]").daterangepicker({
-//       $('#fzk').click(function(){
-//
-//       })
+    //bootstrap-daterangepicker-setting
+    //    $("input[name=reservation]").daterangepicker({
+    //       $('#fzk').click(function(){
+    //
+    //       })
 
-//    $('#fzk').click(function(){
-//        console.log($('.daterangepicker').css('display'));
-//        console.log($('.daterangepicker').css('display')=='block');
-//
-//        if($('.daterangepicker').css('display')=='block'){
-//            $('.daterangepicker').css("display", "none");
-//        }
-//        console.log($('.daterangepicker').css('display'));
-//    })
-//    console.log($("#daterangepicker").css('display'));
+    //    $('#fzk').click(function(){
+    //        console.log($('.daterangepicker').css('display'));
+    //        console.log($('.daterangepicker').css('display')=='block');
+    //
+    //        if($('.daterangepicker').css('display')=='block'){
+    //            $('.daterangepicker').css("display", "none");
+    //        }
+    //        console.log($('.daterangepicker').css('display'));
+    //    })
+    //    console.log($("#daterangepicker").css('display'));
 
 
     //end

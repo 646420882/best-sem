@@ -16,7 +16,8 @@
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <%--<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">--%>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
 
@@ -27,12 +28,21 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <%--<link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>--%>
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/perfectNew.js"></script>
+    <script>
+        var _pct = _pct || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//t.best-ad.cn/t.js?tid=76c005e89e020c6e8813a5adaba384d7";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <style>
         /*日历*/
         .list2 table .list2_top td, th {
             color: #000000;
         }
+
         /*日历*/
         .page2 .ajc {
             background: #ffb900;
@@ -192,7 +202,7 @@
                                 </li>
                             </ul>
                             <div class="download fr over">
-                                <a href="/account/downAccountCSV" >下载全部 </a>
+                                <a href="/account/downAccountCSV">下载全部 </a>
                             </div>
                         </div>
                         <div class="datebox hides"></div>
@@ -1007,7 +1017,7 @@
                                 </li>
                             </ul>
                             <div class="download fr over">
-                                <a href="javascript:void(0)"  onclick="importDownload(this);">下载全部 </a>
+                                <a href="javascript:void(0)" onclick="importDownload(this);">下载全部 </a>
                             </div>
                         </div>
                         <div class="datebox hides" style="margin-bottom:0px;"></div>
@@ -1167,8 +1177,9 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
 <%--<script type="text/javascript"--%>
-        <%--src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+<%--src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/map.js"></script>
@@ -1237,13 +1248,14 @@
             dataType: "json",
             success: function (data) {
                 $("#countAssisted").empty();
-                var classArray = ["blue","green","red","yellow"];
+                var classArray = ["blue", "green", "red", "yellow"];
                 var html = "";
-                data.rows.forEach(function(item, i){
-                        html = html + "<li><div class='"+ classArray[i] +"1 fr wd1'></div><div class='"+ classArray[i] +"2 fl wd2'><p>"+ item.name +"</p><span> "+ item.countNumber +" </span><span style='display:none'>修改: "+ item.modifiyNumber +" </span></div></li>";
+                data.rows.forEach(function (item, i) {
+                    html = html + "<li><div class='" + classArray[i] + "1 fr wd1'></div><div class='" + classArray[i] + "2 fl wd2'><p>" + item.name + "</p><span> " + item.countNumber + " </span><span style='display:none'>修改: " + item.modifiyNumber + " </span></div></li>";
                 });
                 $("#countAssisted").append(html)
-            }});
+            }
+        });
 
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
@@ -1312,7 +1324,7 @@
                     "startDate": moment(),
                     "endDate": moment()
                 },
-                function (start, end, label,e) {
+                function (start, end, label, e) {
                 });
 //        $("input[name=reservation]").daterangepicker();
         $(".btnDone").on('click', function () {
@@ -1561,12 +1573,12 @@
         $("#containerLegend").empty();
         /*初始化曲线图所用需求*/
         $("#containerLegend").append("<div class='tu_top over'><ul><li>展示曲线</li>"
-        + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-        + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-        + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-        + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-        + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-        + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+                + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
+                + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
+                + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
+                + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
+                + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
+                + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
         getDateParam(date);
         //展现
