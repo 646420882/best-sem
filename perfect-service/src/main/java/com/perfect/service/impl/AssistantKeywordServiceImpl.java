@@ -150,6 +150,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
         keywordInfoDTO.setCampaignName(cam.getCampaignName());
         keywordInfoDTO.setCampaignId(cam.getCampaignId());
+        keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
 
         return keywordInfoDTO;
     }
@@ -169,6 +170,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
         keywordInfoDTO.setCampaignName(cam.getCampaignName());
         keywordInfoDTO.setCampaignId(cam.getCampaignId());
+        keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
 
 
         //设置关键词质量度
@@ -418,6 +420,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         Map<String, CampaignDTO> map = new HashMap<>();
         CampaignDTO cam = null;
+        AdgroupDTO ad = null;
         for (KeywordDTO kwd : list) {
             if (kwd.getKeywordId() != null) {
                 keywordIds.add(kwd.getKeywordId());
@@ -425,7 +428,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
             if (camp == null) {
                 if (!(new ArrayList<>(map.keySet()).contains(kwd.getAdgroupObjId()) || new ArrayList<>(map.keySet()).contains(kwd.getAdgroupId() + ""))) {
-                    AdgroupDTO ad = kwd.getAdgroupId() == null ? adgroupDAO.findByObjId(kwd.getAdgroupObjId()) : adgroupDAO.findOne(kwd.getAdgroupId());
+                    ad = kwd.getAdgroupId() == null ? adgroupDAO.findByObjId(kwd.getAdgroupObjId()) : adgroupDAO.findOne(kwd.getAdgroupId());
                     cam = ad.getCampaignId() == null ? campaignDAO.findByObjectId(ad.getCampaignObjId()) : campaignDAO.findOne(ad.getCampaignId());
                     map.put(kwd.getAdgroupId() == null ? kwd.getAdgroupObjId() : kwd.getAdgroupId() + "", cam);
                 }
@@ -434,13 +437,20 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 KeywordInfoDTO dto = new KeywordInfoDTO();
                 dto.setFolderCount(0l);
                 dto.setCampaignName(cam.getCampaignName());
+                dto.setAdgroupName(ad.getAdgroupName());
                 dto.setObject(kwd);
                 dto.setCampaignId(cam.getCampaignId());
                 dtoList.add(dto);
             } else {
+                if (kwd.getAdgroupId() != null) {
+                    ad = adgroupDAO.findOne(kwd.getAdgroupId());
+                } else {
+                    ad = adgroupDAO.findByObjId(kwd.getAdgroupObjId());
+                }
                 KeywordInfoDTO dto = new KeywordInfoDTO();
                 dto.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));
                 dto.setCampaignName(camp.getCampaignName());
+                dto.setAdgroupName(ad.getAdgroupName());
                 dto.setObject(kwd);
                 dto.setCampaignId(camp.getCampaignId());
                 dtoList.add(dto);

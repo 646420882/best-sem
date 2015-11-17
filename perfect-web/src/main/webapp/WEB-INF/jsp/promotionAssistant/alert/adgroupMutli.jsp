@@ -9,6 +9,7 @@
 <html>
 <head>
     <title></title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
@@ -104,7 +105,7 @@
                                     <%--</p>--%>
                                 </div>
 
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px;background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" onclick="nextStep();">下一步</li>
@@ -117,31 +118,31 @@
 
 
                         <%--<div class="containers2 over inputKwdInfoDiv">--%>
-                            <%--<div class="newkeyword_right fr over" style="width: 100%;">--%>
-                                <%--<h3> 删除关键词 </h3>--%>
+                        <%--<div class="newkeyword_right fr over" style="width: 100%;">--%>
+                        <%--<h3> 删除关键词 </h3>--%>
 
-                                <%--<p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>--%>
+                        <%--<p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>--%>
 
-                                <%--<div class="newkeyword_right_mid">--%>
-                                    <%--<p>格式：推广计划名称（必填），推广单元名称（必填），关键词名称（必填）</p>--%>
+                        <%--<div class="newkeyword_right_mid">--%>
+                        <%--<p>格式：推广计划名称（必填），推广单元名称（必填），关键词名称（必填）</p>--%>
 
-                                    <%--<p>例如：北京推广，礼品，鲜花</p>--%>
-                                    <%--<textarea id="deleteKwdText2"></textarea>--%>
+                        <%--<p>例如：北京推广，礼品，鲜花</p>--%>
+                        <%--<textarea id="deleteKwdText2"></textarea>--%>
 
-                                    <%--<p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)--%>
-                                    <%--</p>--%>
+                        <%--<p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)--%>
+                        <%--</p>--%>
 
-                                <%--</div>--%>
+                        <%--</div>--%>
 
-                                <%--<div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">--%>
-                                    <%--<div class="w_list03">--%>
-                                        <%--<ul>--%>
-                                            <%--<li class="current delKwdByinputNext">下一步</li>--%>
-                                            <%--<li class="close">取消</li>--%>
-                                        <%--</ul>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                        <%--<div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">--%>
+                        <%--<div class="w_list03">--%>
+                        <%--<ul>--%>
+                        <%--<li class="current delKwdByinputNext">下一步</li>--%>
+                        <%--<li class="close">取消</li>--%>
+                        <%--</ul>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
 
                     </div>
@@ -154,22 +155,38 @@
                     <div class="newkeword_end">
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
-                        <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <p><span style="font-weight: bold; line-height:30px;">新增的单元：<span
-                                    id="criSize">0</span></span></p>
-                            <table border="0" cellspacing="0" width="100%" id="createTable"
-                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
-                                <thead>
-                                <tr class="list02_top">
-                                    <th>&nbsp;推广计划</th>
-                                    <th>&nbsp;推广单元</th>
-                                    <th>&nbsp;启用</th>
-                                    <th>&nbsp;出价</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbodyClick2">
-                                </tbody>
-                            </table>
+                        <div style="width:99%;height: 340px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
+                            <div class="panel-group" id="adgroupMutliaccordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#adgroupMutliaccordion"
+                                               href="#adgroupMutlicollapseOne" aria-expanded="true" aria-controls="adgroupMutlicollapseOne">
+                                                <span class="mycollapse">[ - ] </span>
+                                            <span style="font-weight: bold; line-height:30px;">新增的单元：<span
+                                                    id="criSize">0</span></span></a>
+                                        </h4>
+                                    </div>
+                                    <div id="adgroupMutlicollapseOne" class="panel-collapse collapse in" role="tabpanel"
+                                         aria-labelledby="headingOne">
+                                        <div class="panel-body">
+                                            <table border="0" cellspacing="0" width="100%" id="createTable"
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                <thead>
+                                                <tr class="list02_top">
+                                                    <th>&nbsp;推广计划</th>
+                                                    <th>&nbsp;推广单元</th>
+                                                    <th>&nbsp;启用</th>
+                                                    <th>&nbsp;出价</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tbodyClick2">
+                                                </tbody>
+                                            </table>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="main_bottom" style="margin:0px;  background:none;">
@@ -190,7 +207,8 @@
     <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="adgroupMutliAlertPrompt">
         <h2>
             <span class="fl" id="adgroupMutliAlertPrompt_title"></span>
-            <a href="#" class="close">×</a></h2>
+            <%--<a href="#" class="close">×</a></h2>--%>
+        <a href="#" onclick="adgroupMutliAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>
         <div class="mainlist">
             <div class="w_list03">
                 <ul class="zs_set">
@@ -201,30 +219,35 @@
     </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var adgroupMutliAlertPrompt = {
-        show:function(content){
+        show: function (content) {
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
-            });/*蒙版显示*/
+            });
+            /*蒙版显示*/
             $("#adgroupMutliAlertPrompt").css({
                 left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
                 top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
-            });/*显示提示DIV*/
+            });
+            /*显示提示DIV*/
             $("#adgroupMutliAlertPrompt_title").html(content);
         },
-        hide:function(){
+        hide: function () {
             $(".TB_overlayBG_alert").css({
                 display: "none"
-            });/*蒙版显示*/
+            });
+            /*蒙版显示*/
             $("#adgroupMutliAlertPrompt").css({
                 display: "none"
-            });/*显示提示DIV*/
+            });
+            /*显示提示DIV*/
         }
     }
     var settingCreativeMutli = {
@@ -246,6 +269,12 @@
     var columnSize = 0;
     $(function () {
         initMutliTree();
+        $('#adgroupMutliaccordion').on('show.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[ + ]</span>")
+        })
+        $('#adgroupMutliaccordion').on('hide.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[-]</span>")
+        })
 
     });
     function initMutliTree() {

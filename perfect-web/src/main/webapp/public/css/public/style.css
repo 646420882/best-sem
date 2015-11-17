@@ -117,7 +117,7 @@
     margin: 5px 0 0 4px;
     background: url(/public/img/bg.png) -10px -10px no-repeat;
     border: none;
-    padding: 0px;
+    padding: 0px !important;
     overflow: hidden;
 
 }
@@ -880,6 +880,7 @@
 }
 
 .k_l_top {
+    width:100%;
     margin: 20px 2% 10px 2%;
 }
 
@@ -3281,7 +3282,9 @@ background: #c3def9;
 }
 
 .newkeyeord_title ul {
+    display:block;
     margin: 10px 0;
+    width:100%;
 }
 
 .newkeyeord_title ul li {
@@ -3436,10 +3439,11 @@ background: #c3def9;
 
 .list02_top th {
     height: 30px;
+    *line-height: 20px !important;
     border-right: 1px solid #fff;
     min-width: 110px;
     font-weight: normal;
-    *width: 200px;
+/*    *width: 200px;*/
     text-align: center;
 
 }

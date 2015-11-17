@@ -84,7 +84,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li onclick="addSubLinkOk();">确认</li>
+                <li onclick="addSubLinkOk();" class="current">确认</li>
                 <li onclick="closeSubLinkDialog();">取消</li>
             </ul>
         </div>

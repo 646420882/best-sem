@@ -347,7 +347,7 @@ var saveKeywordNew = function () {
                 data.rows.forEach(function(item,i){
                     string +=item + ","+ (i/5==0?"\n":"");
                 })
-                saveSeccuss();
+                saveSeccuss(data);
                 $("#context").empty();
                 $("#context").append(string);
                 $("#SaveSet").css("display", "none");
@@ -358,17 +358,25 @@ var saveKeywordNew = function () {
 
 }
 
-var saveSeccuss = function(){
-    $("#SaveSeccuss").css({
-        left: ($("body").width() - $("#SaveSeccuss").width()) / 2 - 20 + "px",
-        top: ($(window).height() - $("#SaveSeccuss").height()) / 2 + $(window).scrollTop() + "px",
-        display: "block"
-    });
-    $(".addcolse").click(function () {
+var saveSeccuss = function(data){
+    if(data.rows.length){
+        $("#SaveSeccuss").css({
+            left: ($("body").width() - $("#SaveSeccuss").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#SaveSeccuss").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
+        $(".addcolse").click(function () {
+            $(".TB_overlayBG").css("display", "none");
+            $("#SaveSet").css("display", "none");
+            $("#SaveSeccuss").css("display", "none");
+        });
+    }else{
         $(".TB_overlayBG").css("display", "none");
         $("#SaveSet").css("display", "none");
         $("#SaveSeccuss").css("display", "none");
-    });
+        alert("添加成功");
+    }
+
 }
 
 var saveKeyword = function () {

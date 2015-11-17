@@ -17,7 +17,6 @@
 
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-        <constructor-arg ref="mongoConverter"/>
         <property name="writeConcern">
             <util:constant static-field="com.mongodb.WriteConcern.FSYNC_SAFE"/>
         </property>
@@ -28,10 +27,6 @@
 
     <bean id="mongoSysTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-        <constructor-arg ref="mongoConverter"/>
     </bean>
 
-    <mongo:mapping-converter id="mongoConverter">
-        <mongo:custom-converters base-package="com.perfect.commons.convert.*"/>
-    </mongo:mapping-converter>
 </beans>

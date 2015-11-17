@@ -1288,15 +1288,6 @@
                     timePicker: true,
                     timePickerIncrement: 30,
                     format: 'DD/MM/YYYY',
-                    ranges: {
-                        //'最近1小时': [moment().subtract('hours',1), moment()],
-                        '今天': [moment().startOf('day'), moment()],
-                        '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
-                        '过去7天': [moment().subtract('days', 6), moment()],
-                        '过去14天': [moment().subtract('days', 13), moment()],
-                        '过去30天': [moment().subtract('days', 29), moment()],
-                        '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                    },
                     "locale": {
                         "format": "DD/MM/YYYY",
                         "separator": " - ",

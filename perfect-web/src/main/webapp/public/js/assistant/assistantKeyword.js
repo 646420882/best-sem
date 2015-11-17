@@ -94,6 +94,13 @@ function getKwdList(nowPage) {
     param["nowPage"] = nowPage;
     param["pageSize"] = items_per_page;
 
+    if (param.aid) {
+        $("#kkeyword").find("th:eq(10)").hide();
+        $("#kkeyword").find("th:eq(11)").hide();
+    } else {
+        $("#kkeyword").find("th:eq(10)").show();
+        $("#kkeyword").find("th:eq(11)").show();
+    }
     $.ajax({
         url: "/assistantKeyword/list",
         type: "post",
@@ -220,11 +227,11 @@ function keywordDataToHtml(obj, index) {
 
     html = html + tmpHtml;
 
- /*   if(obj.object.localStatus != -1){*/
-        html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
-   /* }else{
-        html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/repeat.png' /></td>";
-    }*/
+    /*   if(obj.object.localStatus != -1){*/
+    html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
+    /* }else{
+     html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/repeat.png' /></td>";
+     }*/
     html = html + "<td>" + obj.object.keyword + "</td>";
 
     switch (obj.object.status) {
@@ -370,17 +377,30 @@ function keywordDataToHtml(obj, index) {
     }
     html = html + "<td>" + matchType + "</td>";
 
+<<<<<<< HEAD
 
     html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
     html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
-    html = html + "<td>" + obj.campaignName + "</td>";
+    if (getNowChooseCidAndAid().aid) {
+        $("#kkeyword").find("th:eq(10)").hide();
+        $("#kkeyword").find("th:eq(11)").hide();
+    } else {
+        html = html + "<td>" + obj.campaignName + "</td>";
+        html = html + "<td>" + obj.adgroupName + "</td>";
+    }
 
+
+=======
+    html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.pcDestinationUrl + "'  title='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
+    html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.mobileDestinationUrl + "' title='" +obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
+    html = html + "<td>" + obj.campaignName + "</td>";
+>>>>>>> assistant
     if (obj.object.localStatus != null) {
         if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
             html = html + "<td><span class='error' step='" + obj.object.localStatus + "'></span></td>";
-        } else if(obj.object.localStatus == -1) {
+        } else if (obj.object.localStatus == -1) {
             html = html + "<td><span  class='repeat' step='" + obj.object.localStatus + "'></span></td>";
-        }else{
+        } else {
 
             html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
         }
@@ -735,30 +755,27 @@ $("#timediglogUp").livequery('click', function () {
 });
 
 function timeUpdiglog() {
-   var d = top.dialog({
+    var d = top.dialog({
         title: "定时上传",
-        padding: "5px",
-        height: "auto",
-        align: 'left bottom',
+        lock: true,
         content: "<iframe src='/assistantKeyword/showTimingDelDialog' width='550' height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
         onclose: function () {
-
+            whenClickTreeLoadData(getCurrentTabName(), getNowChooseCidAndAid());
         },
         onremove: function () {
         }
-    });
-    d.show();
+
+    }).showModal(dockObj);
+    return false;
 }
 $("#timediglogDown").livequery('click', function () {
-
     timediglogDown();
 });
 function timediglogDown() {
-   var d =  top.dialog({
+    var d = top.dialog({
         title: "定时暂停",
-        padding: "5px",
         content: "<iframe src='/assistantKeyword/showTimingPauseDialog' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
         oniframeload: function () {
         },
@@ -767,8 +784,8 @@ function timediglogDown() {
         },
         onremove: function () {
         }
-    });
-    d.show();
+    }).showModal(dockObj);
+    return false;
 }
 
 $(".searchwordReport").livequery('click', function () {
@@ -776,7 +793,7 @@ $(".searchwordReport").livequery('click', function () {
 });
 
 function searchword() {
-top.dialog({
+    top.dialog({
         title: "搜索词报告",
         padding: "5px",
         align: 'right bottom',
@@ -903,7 +920,7 @@ var menu_keyword_add = {
         text: "添加关键词",
         img: "../public/img/zs_function1.png",
         func: function () {
-           /* showSearchWord();*/
+            /* showSearchWord();*/
             AddKeywords();
         }
     }, menu_keyword_del = {
@@ -937,7 +954,7 @@ var menu_keyword_add = {
             kUpload();
         }
     }, menu_keyword_searchWord = {
-        text: "搜索词",
+        text: "快速添加关键词",
         img: "../public/img/zs_function10.png",
         func: function () {
             searchword();

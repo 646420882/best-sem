@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: SubDong
@@ -37,6 +38,7 @@
                                 <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
                                     <button style="border: none;color: #FFFFFF;border:none;background: none;line-height: normal;"
                                            onclick="$('form[logout]').submit();">退出</button>
+
                                 </form>
                             </div>
                         </div>
@@ -45,21 +47,20 @@
                                 <span></span>
                             </div>
                             <div id="switchAccount" class="user_names over hides">
-                                <input type="text" placeholder="请输入关键词..." class="switchAccountSerach ">
+                                <input type="text" placeholder="请输入关键词..." id="searchCount" class="switchAccountSerach ">
+
                                 <div class="countname">
                                     <ul id="switchAccount_ul" class="switchAccount_ul">
+
                                     </ul>
                                 </div>
                                 <div id="switchAccount_ul_pages" class="switchAccount_ul_pages">
                                     <div class="page_ul">
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
             <div class="user_detali fl over" style="min-width:300px;">
@@ -71,7 +72,7 @@
             </div>
         </div>
 
-        <div class="top_mid fl over"<%-- id="argDialogDiv"--%>>
+        <div class="top_mid fl over" <%--id="argDialogDiv"--%>>
 
             <div class="logo">
                 <a href="http://best-ad.cn/" target="_blank"><img
@@ -88,7 +89,7 @@
     .TB_overlayBG_alert{
         background-color: #666;
         position: fixed;
-        z-index: 998;
+        z-index: 1001;
         left: 0;
         top: 0;
         display: none;
@@ -129,9 +130,9 @@
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
 <%--alert提示类--%>
 <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="AlertPrompt">
-    <h2>
+    <h2 id="AlertPrompTitle">
         <span class="fl" id="AlertPrompt_title"></span>
-        <a href="#" class="close">×</a></h2>
+        <a href="#" onclick="AlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>
     <div class="mainlist">
         <div class="w_list03">
             <ul class="zs_set">
@@ -141,14 +142,17 @@
     </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/jquery-ui.css"/>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/main.css">
+
 <%--<style> .ui-dialog-body {--%>
-    <%--background-color: #f8f8f8;--%>
+<%--background-color: #f8f8f8;--%>
 <%--}</style>--%>
 <script type="text/javascript">
 
@@ -159,8 +163,8 @@
     function downloadUser() {
         var d = top.dialog({
             title: "账户下载",
-            yesClose:"取消",
-            align: "center",
+            yesClose: "取消",
+
 //            url:'homePage/pageBlock/showcountDownload',
             content: "<iframe src='/homePage/showCountDownload' width='500' height='300' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
 //            content: "<iframe src='/assistantKeyword/showTimingPauseDialo+g' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
@@ -172,11 +176,11 @@
             },
             onremove: function () {
             }
-        });
-        d.show();
+        }).showModal(dockObj);
+           return false;
     }
-    var ddckObj = document.getElementById('top_middle');
-    $("#downloadUser").click( function () {
+    var dockObj = document.getElementById('argDialogDiv');
+    $("#downloadUser").click(function () {
         downloadUser();
     });
     function imageChange(obj) {
@@ -275,6 +279,7 @@
     }
     $(function () {
         rDrag.init(document.getElementById('head_top'));
+        rDrag.init(document.getElementById('AlertPrompTitle'));
     });
     $(function () {
         $("#head_click").click(function () {
@@ -298,6 +303,12 @@
         $.getJSON("/account/getAllBaiduAccount",
                 {},
                 function (data) {
+//                    var tags = [];
+//                    $.each(results, function (i, item) {
+//                        var _item = item.baiduRemarkName;
+//                        console.log(_item)
+//                        tags.push(_item);
+//                    });
                     var a = data.rows.length;
                     var b = 6;
                     var c = Math.ceil(a / b);
@@ -312,6 +323,7 @@
                             }
                         }
                     }
+
                     var g = $('.switchAccount_ul li');
                     g.hide();
                     g.slice(0, b).show();
@@ -322,8 +334,71 @@
                         var e = $(this).text() * b;
                         g.slice(e - b, e).show();
                     })
+
+                    //搜索
+                    var results = data.rows;
+                    var tags = [];
+                    if (results != null && results.length > 0) {
+                        var index = results[0].baiduUserName.length;
+                        $.each(results, function (i, item) {
+                            var _item = item.baiduRemarkName;
+                            if (_item == undefined) _item = item.baiduUserName.substring(0, (i > 0 ? index - 3 : index)) + (item.baiduUserName.length > index ? "..." : "");
+                            tags.push({label:_item, id:item.id});
+
+                        });
+                    }
+
+                    $( "#searchCount" ).autocomplete({
+                        source:tags,
+
+                            select: function(event, ui) {
+                                // 这里的this指向当前输入框的DOM元素
+                                // event参数是事件对象
+                                // ui对象只有一个item属性，对应数据源中被选中的对象
+//
+//                                $(this).value = ui.item.label;
+                                $("#searchCount").val(ui.item.label);
+                                $("#searchCount").attr('card', ui.item.id);
+                                $('.user_name span').html(ui.item.label);
+                                var _accountId = ui.item.id;
+                                $('#switchAccount').hide();
+                                $.ajax({
+                                    url: '/account/switchAccount',
+                                    type: 'POST',
+                                    async: false,
+                                    dataType: 'json',
+                                    data: {
+                                        "accountId": _accountId
+                                    },
+                                    success: function (data, textStatus, jqXHR) {
+                                        if (data.status != null && data.status == true) {
+                                            //location.replace(location.href);
+                                            window.location.reload(true);
+                                        }
+                                    }
+                                })
+
+                                // 必须阻止默认行为，因为autocomplete默认会把ui.item.value设为输入框的value值
+                                event.preventDefault();
+
+                          }
+
+                    });
+                    $('#searchCount').bind('input propertychange', function() {
+                        setTimeout(function(){
+                        if ($("#searchCount").val() == "") {
+                            $("#searchCount").siblings().show()
+                            $("#switchAccount").height($(".countname").height()+ 44);
+//                            $("#switchAccount").height($(window).height());
+                        } else {
+                            $("#searchCount").siblings().hide()
+                            $("#switchAccount").height($(".ui-autocomplete").height()+ 44);
+                        }}, 1000);
+                    });
+
                 })
     });
+
 </script>
 
 

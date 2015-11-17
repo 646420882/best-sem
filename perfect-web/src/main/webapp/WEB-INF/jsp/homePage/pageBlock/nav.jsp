@@ -67,7 +67,6 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript">
     var baiduAccountId = <%=accountId%>;
-
     var loadBaiduAccount = function () {
         $.getJSON("/account/getAllBaiduAccount",
                 {},
@@ -86,6 +85,7 @@
                         });
                         $("#switchAccount_ul").empty();
                         $("#switchAccount_ul").append(lis);
+
                     }
                 });
     };
@@ -140,6 +140,23 @@
             $(".nav_input1").attr('title', "点击隐藏导航");
             NavClick()
         });
+         function  ChangeAccountajax(_accountId){
+            $.ajax({
+                url: '/account/switchAccount',
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                data: {
+                    "accountId": _accountId
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.status != null && data.status == true) {
+                        //location.replace(location.href);
+                        window.location.reload(true);
+                    }
+                }
+            })
+        }
         if (parseInt(baiduAccountId) != -1) {
             loadBaiduAccount();
         }
@@ -153,26 +170,20 @@
 //                        $("#switchAccount").css("display", "none");
 //                    }, 5000);
 //                });
-
                 $('#switchAccount li').click(function () {
                     $('.user_name span').html($(this).text());
                     var _accountId = $(this).val();
                     $('#switchAccount').hide();
-                    $.ajax({
-                        url: '/account/switchAccount',
-                        type: 'POST',
-                        async: false,
-                        dataType: 'json',
-                        data: {
-                            "accountId": _accountId
-                        },
-                        success: function (data, textStatus, jqXHR) {
-                            if (data.status != null && data.status == true) {
-                                //location.replace(location.href);
-                                window.location.reload(true);
-                            }
-                        }
-                    })
+                    ChangeAccountajax(_accountId);
+
+                });
+                $('#searchCount').keydown(function(e){
+                    if(e.keyCode==13){
+                        $('.user_name span').html( $(this).val());
+                        var _accountId =$('#searchCount').attr("card");
+                        $('#switchAccount').hide();
+                        ChangeAccountajax(_accountId);
+                    }
                 });
             }
             else {

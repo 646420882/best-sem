@@ -535,7 +535,7 @@
 <%--<script type="text/javascript"  src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
 <%--end--%>
 <%--bootstrap-daterangepicker--%>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>

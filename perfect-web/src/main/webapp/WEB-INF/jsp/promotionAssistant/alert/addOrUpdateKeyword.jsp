@@ -10,8 +10,7 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
@@ -213,11 +212,14 @@
                                         </div>
                                     </div>
                                 </div>
+
+                            </div >
+                            <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="headingTwo">
                                         <h4 class="panel-title">
                                             <a class="collapsed" role="button" data-toggle="collapse"
-                                               data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+                                               data-parent="#accordion_2" href="#collapseTwo" aria-expanded="false"
                                                aria-controls="collapseTwo">
                                                 <span class="mycollapse">[ + ] </span> <span
                                                     style="font-weight: bold; line-height:30px;padding:10px;">忽略的关键词(本地已存在的关键词)：<span
@@ -253,7 +255,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -284,7 +285,8 @@
     <div class="box7" style=" width: 230px;display:none;z-index: 1001" id="addOrUpdateKeyWordAlertPrompt">
         <h2>
             <span class="fl" id="addOrUpdateKeyWordAlertPrompt_title"></span>
-            <a href="#" class="close">×</a></h2>
+            <%--<a href="#" class="close">×</a></h2>--%>
+        <a href="#" onclick="addOrUpdateKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>
         <div class="mainlist">
             <div class="w_list03">
                 <ul class="zs_set">
@@ -368,6 +370,12 @@
             $(this).find(".mycollapse").html("<span>[ + ]</span>")
         })
         $('#accordion').on('hide.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[-]</span>")
+        })
+        $('#accordion_2').on('show.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[ + ]</span>")
+        })
+        $('#accordion_2').on('hide.bs.collapse', function () {
             $(this).find(".mycollapse").html("<span>[-]</span>")
         })
 
