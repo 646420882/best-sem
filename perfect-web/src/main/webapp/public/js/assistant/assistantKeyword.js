@@ -377,10 +377,8 @@ function keywordDataToHtml(obj, index) {
     }
     html = html + "<td>" + matchType + "</td>";
 
-<<<<<<< HEAD
-
-    html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' href='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
-    html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' href='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
+    html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.pcDestinationUrl + "'  title='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
+    html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.mobileDestinationUrl + "' title='" +obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
     if (getNowChooseCidAndAid().aid) {
         $("#kkeyword").find("th:eq(10)").hide();
         $("#kkeyword").find("th:eq(11)").hide();
@@ -389,12 +387,6 @@ function keywordDataToHtml(obj, index) {
         html = html + "<td>" + obj.adgroupName + "</td>";
     }
 
-
-=======
-    html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.pcDestinationUrl + "'  title='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
-    html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.mobileDestinationUrl + "' title='" +obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
-    html = html + "<td>" + obj.campaignName + "</td>";
->>>>>>> assistant
     if (obj.object.localStatus != null) {
         if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
             html = html + "<td><span class='error' step='" + obj.object.localStatus + "'></span></td>";
