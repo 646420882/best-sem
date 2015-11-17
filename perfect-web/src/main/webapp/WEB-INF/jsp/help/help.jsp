@@ -25,7 +25,6 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/index.css">
     <%--<link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>--%>
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/perfectNew.js"></script>
     <style>
         .page2 .ajc {
             background: #ffb900;

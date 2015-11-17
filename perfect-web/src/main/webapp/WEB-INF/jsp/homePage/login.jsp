@@ -15,7 +15,6 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/perfectNew.js"></script>
 </head>
 <body>
 <div class="login over">

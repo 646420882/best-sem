@@ -14,7 +14,7 @@
 
     <div class="mainlist">
         <ul class="add_title">
-            <li>
+            <%--<li>
                 <span>推广地域：</span><a href="#">使用账户推广地域</a>
             </li>
             <li>
@@ -24,9 +24,9 @@
                     <option value="1">计算机</option>
                     <option value="2">移动设备</option>
                 </select>
-            </li>
+            </li>--%>
             <li>
-                <input type="checkbox" checked="checked">与账户已有词去重
+                <%--<input type="checkbox" checked="checked">--%>输入的关键词已与账户本地库有已有词去重
             </li>
         </ul>
         <div class="add_textarea">
