@@ -31,21 +31,23 @@
         </ul>
         <div class="add_textarea">
             <textarea id="statusNew" rows="12" cols="40" oninput="countAddKwd()"></textarea>
-            <span class="fr"><label id="counterNew" style="font-weight:normal"> 0</label>/ <label id="countNumber">5000</label></span>
+            <span class="fr"><label id="counterNew" style="font-weight:normal"> 0</label>/ <label
+                    id="countNumber">5000</label></span>
         </div>
         <input type="hidden" id="countkwd" value="">
     </div>
     <div class="main_bottom add_bottom" style="background-color: #f8f8f8">
         <div class="w_list03">
             <select id="campaign_selectNew" class="selectpicker fl"></select>
-            <select id="adgroup_selectNew" class="selectpicker fl" onchange="validateNoAllowKeyword(this.value)"></select>
+            <select id="adgroup_selectNew" class="selectpicker fl"
+                    onchange="validateNoAllowKeyword(this.value)"></select>
             <button type="button" class="btn btn-primary fr" onclick="AddKeywordsSave()">保存</button>
         </div>
     </div>
 </div>
 <%--  保存设置 --%>
 <div class="box" style="display:none;z-index: 1001" id="SaveSet">
-    <h2  id="AddKeywordsplanTitle">
+    <h2 id="AddKeywordsplanTitle">
         <span class="fl">保存设置</span>
         <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
 
@@ -103,9 +105,10 @@
     <h2>
         <span class="fl">添加成功</span>
         <a href="javascript:void(0)" onclick="closeAlert();" class="close addcolse">×</a></h2>
+
     <div class="mainlist saveset">
         <div>以下关键词未被保存,因本地库中存在：</div>
-        <div  id="context"></div>
+        <div id="context"></div>
     </div>
     <div class="main_bottom">
         <div class="w_list03">
