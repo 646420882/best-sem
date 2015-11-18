@@ -17,6 +17,11 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
 </head>
+<style>
+    .ui-dialog-body {
+        padding: 0;
+    }
+</style>
 <body>
 <input type="text" style="width: 400px;display: none" id="reservationtime" name="reservation"
        class="span4 form-control TimingDelDialog" value="08/01/2013 - 08/01/2013"/>

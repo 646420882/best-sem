@@ -76,3 +76,13 @@
 .ui-widget-header .ui-icon {
     background-image: url("/public/img/ui-icons_ff0084_256x24012.png");
 }
+.ui-dialog-body {
+    background-color: white;
+    padding:10px 0 10px 10px;
+}
+
+.ui-dialog .ui-dialog-content {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0;
+
+}

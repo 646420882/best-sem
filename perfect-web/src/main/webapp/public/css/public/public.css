@@ -270,7 +270,9 @@ table tr, table tr td {
 
 .user_select {
     width: 100%;
+    margin-top: 8px;
     position: relative;
+    background: url(/public/img/background_count.png) center repeat;
 }
 
 .user_select_bg {
@@ -321,7 +323,8 @@ table tr, table tr td {
 
 .user_names {
     position: absolute;
-    top: 25px;
+    top: 27px;
+    left: 4px;
     background: #FFFFFF;
     color: #626262;
     font-weight: bold;
@@ -418,6 +421,7 @@ table tr, table tr td {
 }
 
 .user_detali {
+    background: url(/public/img/background_money.png) center no-repeat;
 }
 
 .user_detali ul li {

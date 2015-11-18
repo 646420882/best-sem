@@ -21,7 +21,7 @@
         <div class="user_mid fr">
             <div class="user_logo fl">
                 <div class="user_logo1">
-                    <div class="user_img fl over">
+                        <div class="user_img fl over">
                             <span id="head_click"><img id="user_img"
                                                        src="${pageContext.request.contextPath}/account/getImg"></span>
                     </div>
@@ -150,11 +150,16 @@
     });
     function downloadUser() {
         var d = top.dialog({
+            id:'my2',
+            content: "<iframe src='/homePage/showCountDownload' width='540' height='340' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             title: "账户下载",
             yesClose: "取消",
+            skin: 'downPopup',
+            time:1000,
+//            className:'succeed noClose',
 
 //            url:'homePage/pageBlock/showcountDownload',
-            content: "<iframe src='/homePage/showCountDownload' width='500' height='300' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+
 //            content: "<iframe src='/assistantKeyword/showTimingPauseDialo+g' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
 //            content: "<div style='width: 550px; height: 470px;'><span>选择账户</span>  <div class='j_list01 over'><ul id='treeDemo' class='ztree'></ul></div></div>",
             oniframeload: function () {
@@ -165,8 +170,10 @@
             onremove: function () {
             }
         }).showModal(dockObj);
-           return false;
+
+        console.log( top.dialog());
     }
+
     var dockObj = document.getElementById('argDialogDiv');
     $("#downloadUser").click(function () {
         downloadUser();
