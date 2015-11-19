@@ -32,7 +32,7 @@
                             </div>
                             <input type="image" onclick="downloadUser()"
                                    src="${pageContext.request.contextPath}/public/img/download.png"
-                                   class="glyphicon-class" style="padding-left: 3px;">
+                                   class="glyphicon-class" style="padding:0 3px;">
 
                             <div class="user_logo2 fr">
                                 <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
@@ -44,7 +44,7 @@
                         </div>
                         <div class="user_select">
                             <div class="user_name">
-                                <span></span>
+                                <span></span><img  src="${pageContext.request.contextPath}/public/img/username_select.png">
                             </div>
                             <div id="switchAccount" class="user_names over hides">
                                 <input type="text" placeholder="请输入关键词..." id="searchCount" class="switchAccountSerach ">

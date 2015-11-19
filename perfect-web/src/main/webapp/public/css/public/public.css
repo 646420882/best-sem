@@ -108,7 +108,7 @@ table tr, table tr td {
 }
 
 .top_mid {
-
+    width: 30%;
 }
 
 .logo {
@@ -208,7 +208,7 @@ table tr, table tr td {
 }
 
 .user_mid {
-    *width: 60%;
+    *width: 68%;
     padding-top: 20px;
 }
 
@@ -313,9 +313,7 @@ table tr, table tr td {
 }
 
 .user_name span {
-    display: block;
-    padding: 0 30px 0 0px;
-    background: url(/public/img/username_select.png) no-repeat right;
+    padding: 0 3px 0 0px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

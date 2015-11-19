@@ -202,10 +202,8 @@
                                         <li id="showbox5"><img src="${pageContext.request.contextPath}/public/img/fenzu.png">重点词分组</li>
                                         <li id="showbox6"><img src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列</li>
                                     </ul>
-                                    <div class="over wd">
-                                        <span class="fl">当前显示数据日期：昨天</span>
-                                    </div>
                                 </div>
+                                <div class="w_list03" style="margin:0 10px 10px 0;"> <span class="fl">当前显示数据日期：昨天</span></div>
                                 <div class="gridcss">
                                     <table id="table1" border="0" cellspacing="0" width="100%">
                                     </table>

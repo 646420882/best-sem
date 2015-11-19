@@ -22,7 +22,6 @@ var _filter = null;
 var matchType = null;
 var keywordQuality = null;
 var keywordPrice = null;
-
 $(function () {
     $(".tab_menu").on('click', function () {
         var lis = $(".tab_menu").find("li");
@@ -799,4 +798,20 @@ var toAnyPage = function (page_index) {
     } else {
 
     }
+};
+window.onload = function () {
+    rDrag.init(document.getElementById('box1'));
+    rDrag.init(document.getElementById('box2'));
+    rDrag.init(document.getElementById('box3'));
+    rDrag.init(document.getElementById('box4'));
+    rDrag.init(document.getElementById('box5'));
+    rDrag.init(document.getElementById('box6'));
+    rDrag.init(document.getElementById('box7'));
+    rDrag.init(document.getElementById('box8'));
+    rDrag.init(document.getElementById('box9'));
+    rDrag.init(document.getElementById('reachBudget_head'));
+    rDrag.init(document.getElementById('downloadBox'));
+    rDrag.init(document.getElementById('CheckCompletion'));
+
+
 };

@@ -573,7 +573,7 @@
         margin-right:10px;
     }
     .zs_concent_top ul li {
-        width: 90px;
+        width: 96px;
     }
     .zs_top, .z_function_hover {
         margin-right: 2px;
@@ -587,9 +587,15 @@
 
     @media screen and (max-width: 900px){
     .user_mid{
-        margin-left:2px;
-        width:55%;
+        margin-left:0px;
+        width:72%;
     }
+        .top_mid{
+            width:28%;
+        }
+        .user_logo{
+            padding-right:0px;
+        }
 }
 @media \0screen {
 

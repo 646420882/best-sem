@@ -396,6 +396,7 @@
     width: 100%;
     height: 30px;
     margin-bottom: 0px;
+    cursor: pointer;
     overflow: hidden;
 }
 
@@ -2339,7 +2340,7 @@ background: #c3def9;
     background:#cce4fb;
 }
 .del{
-    background:#fce59b;
+    background:#c3def9;
 }
 .editor {
     display: inline-block;
@@ -4481,6 +4482,7 @@ background: #34befe;
 .tabmodel .glyphicon{
     font-weight:normal;
     color:#dcdcdc;
+    cursor: pointer;
 
 }
 .repeat {
@@ -4532,4 +4534,7 @@ background: #34befe;
 }
 .ui-dialog .ui-dialog-content{
     overflow: hidden !important;
+}
+.become:focus{
+    color:#fff;
 }
