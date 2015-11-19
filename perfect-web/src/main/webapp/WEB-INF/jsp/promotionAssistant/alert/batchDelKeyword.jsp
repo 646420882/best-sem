@@ -304,6 +304,7 @@
             }
         },
         callback: {
+            onClick: onClick,
             onCheck: onCheck
         }
     };
@@ -312,7 +313,11 @@
     function onCheck(e, treeId, treeNode) {
         count();
     }
-
+    function onClick(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        zTree.checkNode(treeNode, !treeNode.checked, null, true);
+        return false;
+    }
     function setTitle(node) {
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         var nodes = node ? [node] : zTree.transformToArray(zTree.getNodes());

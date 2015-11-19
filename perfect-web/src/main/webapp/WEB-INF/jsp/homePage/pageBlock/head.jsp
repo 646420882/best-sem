@@ -21,7 +21,7 @@
         <div class="user_mid fr">
             <div class="user_logo fl">
                 <div class="user_logo1">
-                        <div class="user_img fl over">
+                    <div class="user_img fl over">
                             <span id="head_click"><img id="user_img"
                                                        src="${pageContext.request.contextPath}/account/getImg"></span>
                     </div>
@@ -37,14 +37,15 @@
                             <div class="user_logo2 fr">
                                 <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
                                     <button style="border: none;color: #FFFFFF;border:none;background: none;line-height: normal;"
-                                           onclick="$('form[logout]').submit();">退出</button>
+                                            onclick="$('form[logout]').submit();">退出
+                                    </button>
 
                                 </form>
                             </div>
                         </div>
                         <div class="user_select">
                             <div class="user_name">
-                                <span></span><img  src="${pageContext.request.contextPath}/public/img/username_select.png">
+                                <span></span><img src="${pageContext.request.contextPath}/public/img/username_select.png">
                             </div>
                             <div id="switchAccount" class="user_names over hides">
                                 <input type="text" placeholder="请输入关键词..." id="searchCount" class="switchAccountSerach ">
@@ -119,8 +120,9 @@
 <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="AlertPrompt">
     <h2 id="AlertPrompTitle">
         <span class="fl alert_span_title" id="AlertPrompt_title"></span>
-       <%-- <a href="#" onclick="AlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a>--%>
+        <%-- <a href="#" onclick="AlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a>--%>
     </h2>
+
     <div class="mainlist">
         <div class="w_list03">
             <ul class="zs_set">
@@ -145,17 +147,34 @@
 <script type="text/javascript">
 
     <!--
+    function onClick(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        zTree.checkNode(treeNode, !treeNode.checked, null, true);
+        return false;
+    }
+
+    function onCheck(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                nodes = zTree.getCheckedNodes(true),
+                v = "";
+        for (var i=0, l=nodes.length; i<l; i++) {
+            v += nodes[i].name + ",";
+        }
+        if (v.length > 0 ) v = v.substring(0, v.length-1);
+        var cityObj = $("#citySel");
+        cityObj.attr("value", v);
+    }
     $(function () {
         window.dialog = dialog;
     });
     function downloadUser() {
         var d = top.dialog({
-            id:'my2',
+            id: 'my2',
             content: "<iframe src='/homePage/showCountDownload' width='540' height='340' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
             title: "账户下载",
             yesClose: "取消",
             skin: 'downPopup',
-            time:1000,
+            time: 1000,
 //            className:'succeed noClose',
 
 //            url:'homePage/pageBlock/showcountDownload',
@@ -171,7 +190,7 @@
             }
         }).showModal(dockObj);
 
-        console.log( top.dialog());
+        console.log(top.dialog());
     }
 
     var dockObj = document.getElementById('argDialogDiv');
@@ -218,7 +237,7 @@
         }
         else
 //            alert("上传失败!");
-        AlertPrompt.show("上传失败!");
+            AlertPrompt.show("上传失败!");
     };
 </script>
 <script type="text/javascript">
@@ -252,24 +271,28 @@
     //弹窗
     /*智能竞价中的alert提示*/
     var AlertPrompt = {
-        show:function(content){
+        show: function (content) {
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
-            });/*蒙版显示*/
+            });
+            /*蒙版显示*/
             $("#AlertPrompt").css({
                 left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
                 top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
-            });/*显示提示DIV*/
+            });
+            /*显示提示DIV*/
             $("#AlertPrompt_title").html(content);
         },
-        hide:function(){
+        hide: function () {
             $(".TB_overlayBG_alert").css({
                 display: "none"
-            });/*蒙版显示*/
+            });
+            /*蒙版显示*/
             $("#AlertPrompt").css({
                 display: "none"
-            });/*显示提示DIV*/
+            });
+            /*显示提示DIV*/
         }
     }
     $(function () {
@@ -338,57 +361,57 @@
                         $.each(results, function (i, item) {
                             var _item = item.baiduRemarkName;
                             if (_item == undefined) _item = item.baiduUserName.substring(0, (i > 0 ? index - 3 : index)) + (item.baiduUserName.length > index ? "..." : "");
-                            tags.push({label:_item, id:item.id});
+                            tags.push({label: _item, id: item.id});
 
                         });
                     }
 
-                    $( "#searchCount" ).autocomplete({
-                        source:tags,
+                    $("#searchCount").autocomplete({
+                        source: tags,
 
-                            select: function(event, ui) {
-                                // 这里的this指向当前输入框的DOM元素
-                                // event参数是事件对象
-                                // ui对象只有一个item属性，对应数据源中被选中的对象
-//
-//                                $(this).value = ui.item.label;
-                                $("#searchCount").val(ui.item.label);
-                                $("#searchCount").attr('card', ui.item.id);
-                                $('.user_name span').html(ui.item.label);
-                                var _accountId = ui.item.id;
-                                $('#switchAccount').hide();
-                                $.ajax({
-                                    url: '/account/switchAccount',
-                                    type: 'POST',
-                                    async: false,
-                                    dataType: 'json',
-                                    data: {
-                                        "accountId": _accountId
-                                    },
-                                    success: function (data, textStatus, jqXHR) {
-                                        if (data.status != null && data.status == true) {
-                                            //location.replace(location.href);
-                                            window.location.reload(true);
-                                        }
+                        select: function (event, ui) {
+                            // 这里的this指向当前输入框的DOM元素
+                            // event参数是事件对象
+                            // ui对象只有一个item属性，对应数据源中被选中的对象
+                            $(this).value = ui.item.label;
+                            $("#searchCount").val(ui.item.label);
+                            $("#searchCount").attr('card', ui.item.id);
+                            $('.user_name span').html(ui.item.label);
+                            var _accountId = ui.item.id;
+                            $('#switchAccount').hide();
+                            $.ajax({
+                                url: '/account/switchAccount',
+                                type: 'POST',
+                                async: false,
+                                dataType: 'json',
+                                data: {
+                                    "accountId": _accountId
+                                },
+                                success: function (data, textStatus, jqXHR) {
+                                    if (data.status != null && data.status == true) {
+                                        //location.replace(location.href);
+                                        window.location.reload(true);
                                     }
-                                })
+                                }
+                            })
 
-                                // 必须阻止默认行为，因为autocomplete默认会把ui.item.value设为输入框的value值
-                                event.preventDefault();
+                            // 必须阻止默认行为，因为autocomplete默认会把ui.item.value设为输入框的value值
+                            event.preventDefault();
 
-                          }
+                        }
 
                     });
-                    $('#searchCount').bind('input propertychange', function() {
-                        setTimeout(function(){
-                        if ($("#searchCount").val() == "") {
-                            $("#searchCount").siblings().show()
-                            $("#switchAccount").height($(".countname").height()+ 44);
+                    $('#searchCount').bind('input propertychange', function () {
+                        setTimeout(function () {
+                            if ($("#searchCount").val() == "") {
+                                $("#searchCount").siblings().show()
+                                $("#switchAccount").height($(".countname").height() + 44);
 //                            $("#switchAccount").height($(window).height());
-                        } else {
-                            $("#searchCount").siblings().hide()
-                            $("#switchAccount").height($(".ui-autocomplete").height()+ 44);
-                        }}, 1000);
+                            } else {
+                                $("#searchCount").siblings().hide()
+                                $("#switchAccount").height($(".ui-autocomplete").height() + 44);
+                            }
+                        }, 1000);
                     });
 
                 })

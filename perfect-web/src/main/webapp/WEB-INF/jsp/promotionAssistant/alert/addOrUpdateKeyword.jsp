@@ -465,11 +465,16 @@
             }
         },
         callback: {
+            onClick: onClick,
             onCheck: onCheck
         }
     };
 
-
+    function onClick(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        zTree.checkNode(treeNode, !treeNode.checked, null, true);
+        return false;
+    }
     function onCheck(e, treeId, treeNode) {
         count();
         var v = getSelectedNodeToString();

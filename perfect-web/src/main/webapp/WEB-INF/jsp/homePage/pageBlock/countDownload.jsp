@@ -54,6 +54,10 @@
             view: {
                 showLine: false,
                 showIcon: false
+            },
+            callback: {
+                onClick: onClick,
+                onCheck: onCheck
             }
         };
         var zNodes = [
@@ -95,6 +99,7 @@
             $("#pn").bind("change", setCheck);
             $("#sn").bind("change", setCheck);
         });
+
         //    弹窗关闭
         function closeDialog() {
             top.dialog.getCurrent().close().remove();

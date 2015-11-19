@@ -51,7 +51,7 @@
                 <div class="newkeyeord_title over">
                     <ul class="over" >
                         <li><input type="radio" checked="checked" name="Target" class="current">选择推广计划、推广单元</li>
-                        <li><input type="radio"  name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>
+                        <li><input type="radio"  name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）11</li>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over">
@@ -264,6 +264,7 @@
             }
         },
         callback: {
+            onClick: onClick,
             onCheck: onCheck
         }
     };
@@ -292,7 +293,11 @@
     function onCheck(e, treeId, treeNode) {
         count();
     }
-
+    function onClick(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        zTree.checkNode(treeNode, !treeNode.checked, null, true);
+        return false;
+    }
     function setTitle(node) {
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         var nodes = node ? [node]:zTree.transformToArray(zTree.getNodes());

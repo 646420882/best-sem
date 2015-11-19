@@ -334,6 +334,7 @@
             }
         },
         callback: {
+            onClick: onClick,
             onCheck: onCheck
         }
     };
@@ -423,6 +424,11 @@
         } else {
             $("#column").html(0);
         }
+    }
+    function onClick(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("creativeMultiTree");
+        zTree.checkNode(treeNode, !treeNode.checked, null, true);
+        return false;
     }
     function count() {
         function isForceHidden(node) {
