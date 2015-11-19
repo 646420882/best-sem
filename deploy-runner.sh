@@ -37,7 +37,7 @@ while getopts "e:c:p:m:" arg
     done
 
 echo "update source code"
-#git checkout develop && git pull
+git pull
 
 echo "rebuilding, please wait for a moment..."
 cp $base_dir/configuration/jndi/jetty-env-$mode.xml $base_dir/perfect-web/src/main/webapp/WEB-INF/jetty-env.xml
@@ -47,7 +47,7 @@ git checkout -- $base_dir/perfect-web/src/main/webapp/WEB-INF/jetty-env.xml
 
 running=$(docker inspect --format="{{ .State.Running }}" $container 2> /dev/null)
 if [ $? -eq 1 ];  then
-    echo "The specific container does't exist!"
+    echo "The $container does't exist!"
 else
     # Check container running status
     if [ $running = "true" ];  then
@@ -58,7 +58,7 @@ fi
 
 imageName=souke/sem-web
 imageVersion=$(mvn org.apache.maven.plugins:maven-help-plugin:2.2:evaluate -Dexpression=project.version | egrep -v '^\[|Downloading:' | tr -d ' \n')
-imageId="$(docker images -q $imageName:$imageVersion 2> /dev/null)"
+imageId=$(docker images -q $imageName:$imageVersion 2> /dev/null)
 if [ ! -z $imageId ];  then
     docker rmi $imageId
 fi
