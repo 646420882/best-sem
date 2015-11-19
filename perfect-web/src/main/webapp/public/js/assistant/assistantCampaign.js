@@ -112,7 +112,7 @@ function campaignDataToHtml(obj, index) {
 
     html = html + "<input type='hidden' value = " + obj.campaignId + " />";
 
-    html = html + "<td><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "'/></td>";
+    html = html + "<td><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/></td>";
     html = html + "<td>" + obj.campaignName + "</td>";
 
     switch (obj.status) {
@@ -1309,3 +1309,17 @@ $("#tbodyClick5").on("mousedown", "tr", function () {
  $(this).addClass("list2_box3");
  }
  });*/
+function campListCheck() {
+    var CheckCount = $("input[name='campaignCheck']").length;
+    var readyCheckCount = 0;
+    for (var i = 0; i < CheckCount; i++) {
+        if ($("input[name='campaignCheck']:eq(" + i + ")").prop("checked")) {
+            readyCheckCount++;
+        }
+    }
+    if (CheckCount == readyCheckCount) {
+        document.getElementsByName("campaignAllCheck")[0].checked = true;
+    } else {
+        document.getElementsByName("campaignAllCheck")[0].checked = false;
+    }
+}

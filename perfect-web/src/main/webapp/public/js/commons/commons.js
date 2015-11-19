@@ -574,7 +574,7 @@ $.extend({
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                             var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                                "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "'/></td>" +
+                                "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/></td>" +
                                 "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                                 "<td >" + until.substring(10, json[i].title) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description1) + "</td>" +
@@ -616,7 +616,7 @@ $.extend({
                             var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                                "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "'/></td>" +
+                                "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/></td>" +
                                 "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                                 "<td >" + json[i].adgroupName + "</td>" +
                                 "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +

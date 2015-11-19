@@ -370,7 +370,7 @@ function loadCreativeData(page_index) {
                 var ls = getLocalStatus(parseInt(_edit));
                 _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "'/></td>" +
+                    "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/></td>" +
                     "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                     "<td >" + until.substring(10, json[i].title) + "</td>" +
                     " <td >" + until.substring(10, json[i].description1) + "</td>" +
@@ -1225,7 +1225,7 @@ function updateOk() {
                     _edit = "<span class='pen' step='2'></span>";
                 }
                 var _tbody =
-                    "<td><input type='checkbox' name='creativeCheck' value='"+formData["oid"]+"''/></td>"+
+                    "<td><input type='checkbox' name='creativeCheck' value='"+formData["oid"]+"'' onchange='creativeListCheck()'/></td>"+
                     "<td>&nbsp;<input type='hidden' value='" + formData["oid"] + "'/></td>" +
                     "<td >" + until.substring(10, formData["title"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description1"]) + "</td>" +
@@ -1300,7 +1300,7 @@ function reBack(oid) {
             var s = until.getCreativeStatus(parseInt(json.data["status"]));
             var d = until.convertDeviceByNum(parseInt(json.data['devicePreference']));
             var _tbody =
-                "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + crid + "'/></td>" +
+                "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + crid + "' onchange='creativeListCheck()'/></td>" +
                 "<td>&nbsp;<input type='hidden' value='" + crid + "'/></td>" +
                 "<td >" + until.substring(10, json.data["title"]) + "</td>" +
                 " <td >" + until.substring(10, json.data["description1"]) + "</td>" +
@@ -1434,6 +1434,20 @@ function cUploadOpreate(crid, ls) {
             AlertPrompt.show(res.msg);
         }
     });
+}
+function creativeListCheck() {
+    var CheckCount = $("input[name='creativeCheck']").length;
+    var readyCheckCount = 0;
+    for (var i = 0; i < CheckCount; i++) {
+        if ($("input[name='creativeCheck']:eq(" + i + ")").prop("checked")) {
+            readyCheckCount++;
+        }
+    }
+    if (CheckCount == readyCheckCount) {
+        document.getElementsByName("creativeAllCheck")[0].checked = true;
+    } else {
+        document.getElementsByName("creativeAllCheck")[0].checked = false;
+    }
 }
 
 

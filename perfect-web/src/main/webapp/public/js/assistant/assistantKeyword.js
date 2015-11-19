@@ -35,7 +35,6 @@ var pageSelectCallback = function (page_index, jq) {
     }
     return false;
 };
-
 var getOptionsFromForm = function (current_page) {
     var opt = {callback: pageSelectCallback};
 
@@ -228,7 +227,7 @@ function keywordDataToHtml(obj, index) {
     html = html + tmpHtml;
 
     /*   if(obj.object.localStatus != -1){*/
-    html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/></td>";
+    html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/></td>";
     /* }else{
      html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/repeat.png' /></td>";
      }*/
@@ -378,7 +377,7 @@ function keywordDataToHtml(obj, index) {
     html = html + "<td>" + matchType + "</td>";
 
     html = html + "<td>" + (obj.object.pcDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.pcDestinationUrl + "'  title='" + obj.object.pcDestinationUrl + "'>" + obj.object.pcDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
-    html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.mobileDestinationUrl + "' title='" +obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
+    html = html + "<td>" + (obj.object.mobileDestinationUrl != null ? "<a target='_blank' class='tabletooltip' href='" + obj.object.mobileDestinationUrl + "' title='" + obj.object.mobileDestinationUrl + "'>" + obj.object.mobileDestinationUrl.substr(0, 20) + "</a>" : "") + "</td>";
     if (getNowChooseCidAndAid().aid) {
         $("#kkeyword").find("th:eq(10)").hide();
         $("#kkeyword").find("th:eq(11)").hide();
@@ -1272,4 +1271,19 @@ function countAddKwd() {
 
 function countChar(textareaName, spanName) {
     document.getElementById(spanName).innerHTML = document.getElementById(textareaName).value.length;
+}
+
+function kwdListCheck() {
+    var kwdCheckCount = $("input[name='keywordCheck']").length;
+    var readyCheckCount = 0;
+    for (var i = 0; i < kwdCheckCount; i++) {
+        if ($("input[name='keywordCheck']:eq(" + i + ")").prop("checked")) {
+            readyCheckCount++;
+        }
+    }
+    if (kwdCheckCount == readyCheckCount) {
+        document.getElementsByName("keyAllCheck")[0].checked = true;
+    } else {
+        document.getElementsByName("keyAllCheck")[0].checked = false;
+    }
 }

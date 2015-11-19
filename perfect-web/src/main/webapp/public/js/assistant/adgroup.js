@@ -153,7 +153,7 @@ function adgroupAddOperate(obj) {
                 var _createTable = $("#adGroupTable tbody");
                 var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='aon(this)'>" +
-                    "<td><input type='checkbox' name='adgroupCheck' value='" + json.data + "'/></td>" +
+                    "<td><input type='checkbox' name='adgroupCheck' value='" + json.data + "' onchange='adgroupListCheck()'/></td>" +
                     "<td>&nbsp;<input type='hidden'  name='oid' value='" + json.data + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>本地新增</td>" +
@@ -229,7 +229,7 @@ function loadAdgroupData(page_index) {
                     var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
                     var _ls = getLocalStatus(parseInt(_edit));
                     var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                        "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "'/></td>" +
+                        "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/></td>" +
                         "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                         "<td >" + json[i].adgroupName + "</td>" +
                         "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
@@ -709,7 +709,7 @@ function adrgoupUpdateOk() {
                 var _span = $("#auSpan").html();
                 var _edit = formData["oid"].length > 18 ? "<span class='pen' step='1'></span>" : "<span class='pen' step='2'></span>";
                 var _tbody =
-                    "<td><input type='checkbox' name='adgroupCheck' value='" + formData["oid"] + "'/></td>" +
+                    "<td><input type='checkbox' name='adgroupCheck' value='" + formData["oid"] + "' onchange='adgroupListCheck()'/></td>" +
                     "<td>&nbsp;<input type='hidden'  name='oid' value='" + formData["oid"] + "'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/></td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
@@ -812,7 +812,7 @@ function agReBack(oid) {
                 var _edit = json.data.localStatus != null ? json.data.localStatus : -1;
                 var _ls = getLocalStatus(parseInt(_edit));
                 var _tbody =
-                    "<td><input type='checkbox' name='adgroupCheck' value='" + _id + "'></td>" +
+                    "<td><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'></td>" +
                     "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
                     "<td >" + json.data.adgroupName + "</td>" +
                     "<td ><input type='hidden' value='" + json.data.status + "'/>" + until.getAdgroupStatus(json.data.status) + "</td>" +
@@ -925,4 +925,18 @@ function adgroupUploadOperate(aid, ls) {
             alert(str.msg);
         }
     })
+}
+function adgroupListCheck() {
+    var CheckCount = $("input[name='adgroupCheck']").length;
+    var readyCheckCount = 0;
+    for (var i = 0; i < CheckCount; i++) {
+        if ($("input[name='adgroupCheck']:eq(" + i + ")").prop("checked")) {
+            readyCheckCount++;
+        }
+    }
+    if (CheckCount == readyCheckCount) {
+        document.getElementsByName("adgroupAllCheck")[0].checked = true;
+    } else {
+        document.getElementsByName("adgroupAllCheck")[0].checked = false;
+    }
 }
