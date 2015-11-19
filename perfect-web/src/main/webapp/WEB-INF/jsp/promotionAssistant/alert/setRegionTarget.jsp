@@ -70,44 +70,7 @@
 </div>
 </div>
 </div>
-<%--alert提示类--%>
-<div class="box7" style=" width: 230px;display:none;z-index: 1005" id="setRegionTargetAlertPrompt">
-    <h2>
-        <span class="fl alert_span_title" id="setRegionTargetAlertPrompt_title"></span>
-        <%--<a href="#" class="close">×</a></h2>--%>
-    <%--<a href="#" onclick="setRegionTargetAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
-    </h2>
-    <div class="mainlist">
-        <div class="w_list03">
-            <ul class="zs_set">
-                <li class="current" onclick="setRegionTargetAlertPrompt.hide()">确认</li>
-            </ul>
-        </div>
-    </div>
-</div>
 <script type="text/javascript">
-    /*智能竞价中的alert提示*/
-    var setRegionTargetAlertPrompt = {
-        show:function(content){
-            $(".TB_overlayBG_alert").css({
-                display: "block", height: $(document).height()
-            });/*蒙版显示*/
-            $("#setRegionTargetAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-                display: "block"
-            });/*显示提示DIV*/
-            $("#setRegionTargetAlertPrompt_title").html(content);
-        },
-        hide:function(){
-            $(".TB_overlayBG_alert").css({
-                display: "none"
-            });/*蒙版显示*/
-            $("#setRegionTargetAlertPrompt").css({
-                display: "none"
-            });/*显示提示DIV*/
-        }
-    }
     $('.ui_radiobox').click(function () {
         if (this.id == 'ctrlradioboxpartRegion') {
             $('#ctrlregionregionBody').show();
@@ -313,7 +276,7 @@
             dataType: "json",
             success: function (data) {
 //                alert("使用账户推广地域成功！");
-                setRegionTargetAlertPrompt.show("使用账户推广地域成功！");
+                AlertPrompt.show("使用账户推广地域成功！");
             }
         });
     });
@@ -362,7 +325,7 @@
             dataType: "json",
             success: function (data) {
 //                alert("使用计划推广地域成功！");
-                setRegionTargetAlertPrompt.show("使用计划推广地域成功！");
+                AlertPrompt.show("使用计划推广地域成功！");
             }
         });
 

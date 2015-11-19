@@ -117,22 +117,26 @@ function adgroupAddOperate(obj) {
     var _an = _this.find("input:eq(2)");
     var _anStr = getChar(_an.val());
     if (parseInt(_anStr) == 0 || parseInt(_anStr) >= 30) {
-        alert("\"推广单元名称\"长度应大于1个字符小于30个字符，汉子占两个字符,且不为空！");
+        //alert("\"推广单元名称\"长度应大于1个字符小于30个字符，汉子占两个字符,且不为空！");
+        AlertPrompt.show("\"推广单元名称\"长度应大于1个字符小于30个字符，汉子占两个字符,且不为空！");
         return false;
     }
     // /^-?\d+\.?\d*$/
     var _mp = _this.find("input:eq(4)").val();
     if (!/^-?\d+\.?\d*$/.test(_mp)) {
-        alert("请输入正确的\"单元出价\"");
+        //alert("请输入正确的\"单元出价\"");
+        AlertPrompt.show("请输入正确的\"单元出价\"");
         return;
     } else {
         if (_mp == "0") {
-            alert("单元出价不能为0");
+            //alert("单元出价不能为0");
+            AlertPrompt.show("单元出价不能为0");
             return;
         } else {
             if (campBgt != "0") {
                 if (parseInt(_mp) > parseInt(campBgt)) {
-                    alert("单元出价不能大于" + campBgt + "元的计划出价");
+                    //alert("单元出价不能大于" + campBgt + "元的计划出价");
+                    AlertPrompt.show("单元出价不能大于" + campBgt + "元的计划出价");
                     return;
                 }
             }
@@ -166,7 +170,8 @@ function adgroupAddOperate(obj) {
                     "</tr>";
                 _createTable.append(_tbody);
             } else if (rs == "3") {
-                alert("异常");
+                AlertPrompt.show("异常");
+                //alert("异常");
             }
         });
     }
@@ -384,7 +389,8 @@ function addAdgroup() {
         var i = $("#adGroupTable tbody tr").size();
         var lastTr = $("#adGroupTable tr:eq(" + i + ")").find("td:eq(1) a").html();
         if (lastTr == "删除") {
-            alert("请提交后再继续添加");
+            //alert("请提交后再继续添加");
+            AlertPrompt.show("请提交后再继续添加");
             return;
         }
         var _createTable = $("#adGroupTable tbody");
@@ -614,7 +620,7 @@ function adgroudAddAlertOk() {
     var cn = $("#aPlan :selected").text() != undefined ? $("#aPlan :selected").text() : plans.cn;
     var pr = $("#aPlan :selected").attr("pr");
     if (aid == "-1") {
-        alert("请选择计划");
+        AlertPrompt.show("请选择计划");
     } else {
         plans.cid = aid;
         plans.cn = cn;
@@ -688,16 +694,19 @@ function adrgoupUpdateOk() {
     var mp = $("#adgroupUpdateForm input[name='maxPrice']").val();
     //  /^-?\d+\.?\d*$/
     if (parseInt(getChar(an)) > 30 || parseInt(getChar(an)) == 0) {
-        alert("单元名长度不能超过30个字符，一个汉字占两个字符,且不为空！");
+        //alert("单元名长度不能超过30个字符，一个汉字占两个字符,且不为空！");
+        AlertPrompt.show("单元名长度不能超过30个字符，一个汉字占两个字符,且不为空！");
         return;
     }
     if (mp != "") {
         if (!/^-?\d+\.?\d*$/.test(mp)) {
-            alert("单元最高出价只能是小数");
+            //alert("单元最高出价只能是小数");
+            AlertPrompt.show("单元最高出价只能是小数");
             return;
         }
     } else {
-        alert("单元最高出价不能为空！");
+        //alert("单元最高出价不能为空！");
+        AlertPrompt.show("单元最高出价不能为空！");
         return;
     }
 
@@ -719,7 +728,8 @@ function adrgoupUpdateOk() {
                     "<td>" + formData["cn"] + "</td>" +
                     "<td>" + _edit + "</td>";
                 $(atmp).html(_tbody);
-                alert("修改完成");
+                //alert("修改完成");
+                AlertPrompt.show("修改完成");
                 loadTree();
             }
         });
@@ -894,14 +904,16 @@ function adgroupUpload() {
             }
         }
     } else {
-        alert("已经是最新数据了！");
+        //alert("已经是最新数据了！");
+        AlertPrompt.show("已经是最新数据了！");
         return;
     }
 }
 function adgroupUploadOperate(aid, ls) {
     $.get("/assistantAdgroup/uploadOperate", {aid: aid, ls: ls}, function (str) {
         if (str.msg == "1") {
-            alert("上传成功");
+            //alert("上传成功");
+            AlertPrompt.show("上传成功");
             if (plans.cid != null) {
                 getAdgroupPlan(plans.cid, plans.cn);
                 loadTree();
@@ -911,18 +923,21 @@ function adgroupUploadOperate(aid, ls) {
             if (conf) {
                 $.get("/assistantAdgroup/uploadAddByUp", {aid: aid}, function (res) {
                     if (res.msg == "1") {
-                        alert("上传成功");
+                        //alert("上传成功");
+                        AlertPrompt.show("上传成功");
                         if (plans.cid != null) {
                             getAdgroupPlan(plans.cid, plans.cn);
                             loadTree();
                         }
                     } else {
-                        alert(res.msg);
+                        //alert(res.msg);
+                        AlertPrompt.show(res.msg);
                     }
                 });
             }
         } else {
-            alert(str.msg);
+            //alert(str.msg);
+            AlertPrompt.show(str.msg);
         }
     })
 }

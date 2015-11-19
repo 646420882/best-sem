@@ -282,8 +282,8 @@
         </div>
     </div>
     <%--alert提示类--%>
-    <div class="box7" style=" width: 230px;display:none;z-index: 1005" id="addOrUpdateKeyWordAlertPrompt">
-        <h2>
+    <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="addOrUpdateKeyWordAlertPrompt">
+        <h2 id="addOrUpdateKeyWordAlertPromptTitle">
             <span class="fl alert_span_title" id="addOrUpdateKeyWordAlertPrompt_title"></span>
             <%--<a href="#" class="close">×</a></h2>--%>
         <%--<a href="#" onclick="addOrUpdateKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
@@ -312,6 +312,7 @@
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });/*蒙版显示*/
+            console.log($(".TB_overlayBG_alert").attr("display"))
             $("#addOrUpdateKeyWordAlertPrompt").css({
                 left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
                 top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
@@ -330,6 +331,7 @@
     }
     var selected_index = 0;
     $(function () {
+        rDrag.init(document.getElementById('addOrUpdateKeyWordAlertPromptTitle'));
         var $tab_li = $('.newkeyeord_title ul li input');
         $('.newkeyeord_title ul li input').click(function () {
             $(this).addClass('current').siblings().removeClass('current');

@@ -164,8 +164,8 @@
     </div>
 </div>
         <%--alert提示类--%>
-        <div class="box7" style=" width: 230px;display:none;z-index: 1005" id="newKeyWordAlertPrompt">
-            <h2>
+        <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="newKeyWordAlertPrompt">
+            <h2 id="newKeyWordAlertPromptTitle">
                 <span class="fl alert_span_title" id="newKeyWordAlertPrompt_title"></span>
                 <%--<a href="#" class="close">×</a></h2>--%>
             <%--<a href="#" onclick="newKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
@@ -186,6 +186,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript">
     $(function () {
+        rDrag.init(document.getElementById('newKeyWordAlertPromptTitle'));
         var $tab_li = $('.addplan_top ul li');
         $('.addplan_top ul li').click(function () {
             $(this).addClass('current');

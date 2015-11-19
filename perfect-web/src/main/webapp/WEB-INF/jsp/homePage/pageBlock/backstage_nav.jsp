@@ -29,8 +29,8 @@
     </div>
 </div>
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display:none;z-index: 1005" id="baiduAccountAlertPrompt">
-    <h2>
+<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="baiduAccountAlertPrompt">
+    <h2 id="baiduAccountAlertPromptTitle">
         <span class="fl alert_span_title" id="baiduAccountAlertPrompt_title"></span>
        <%-- <a href="#" onclick="baiduAccountAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a>--%>
     </h2>
@@ -67,6 +67,7 @@
         }
     }
     $(function () {
+        rDrag.init(document.getElementById('baiduAccountAlertPromptTitle'));
         $(".backstage_menu>ul>li>a").each(function () {
             if ($($(this))[0].href == String(window.location)) {
                 $(".backstage_menu>ul>li").removeClass("current");

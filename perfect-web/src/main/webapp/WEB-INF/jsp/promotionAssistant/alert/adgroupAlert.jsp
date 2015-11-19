@@ -49,7 +49,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li onclick="adgroupNoKeywordOk()">确认</li>
+                <li onclick="adgroupNoKeywordOk()" class="current">确认</li>
                 <li onclick="adgroupAddAlertClose()">取消</li>
             </ul>
         </div>

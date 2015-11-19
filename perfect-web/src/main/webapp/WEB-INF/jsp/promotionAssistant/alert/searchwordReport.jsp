@@ -201,8 +201,8 @@
     </div>
 </div>
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display:none;z-index: 1005" id="searchWordReportAlertPrompt">
-    <h2>
+<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="searchWordReportAlertPrompt">
+    <h2 id="searchWordReportAlertPromptTitle">
         <span class="fl alert_span_title" id="searchWordReportAlertPrompt_title"></span>
         <%--<a href="#" class="close">×</a></h2>--%>
         <%--<a href="#" onclick="searchWordReportAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
@@ -220,6 +220,9 @@
 </body>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript">
+    $(function(){
+        rDrag.init(document.getElementById('searchWordReportAlertPromptTitle'));
+    })
     /*智能竞价中的alert提示*/
     var searchWordReportAlertPrompt = {
         show:function(content){

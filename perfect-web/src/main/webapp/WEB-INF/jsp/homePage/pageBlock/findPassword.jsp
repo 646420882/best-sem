@@ -88,8 +88,8 @@
     </div>
 </div>
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display:none;z-index: 1005" id="findPasswordAlertPrompt">
-    <h2>
+<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="findPasswordAlertPrompt">
+    <h2 id="findPasswordAlertPromptTitle">
         <span class="fl alert_span_title" id="findPasswordAlertPrompt_title"></span>
         <%--<a href="#" class="close">×</a></h2>--%>
     <%--<a href="#" onclick="findPasswordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
@@ -141,6 +141,7 @@
     //初始化函数
     $(window).resize();
     $(document).ready(function () {
+        rDrag.init(document.getElementById('findPasswordAlertPromptTitle'));
         createCode();
         $('#defaultForm').bootstrapValidator({
             message: '此值无效',

@@ -158,8 +158,8 @@
 
     </div>
     <%--alert提示类--%>
-    <div class="box7" style=" width: 230px;display:none;z-index: 1005" id="addKeyAlertPrompt">
-        <h2>
+    <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="addKeyAlertPrompt">
+        <h2 id="addKeyAlertPromptTitle">
             <span class="fl alert_span_title" id="addKeyAlertPrompt_title"></span>
             <%--<a href="#" class="close">×</a></h2>--%>
         <%--<a href="#" onclick="addKeyAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
@@ -201,6 +201,7 @@
         }
     }
 $(function () {
+    rDrag.init(document.getElementById('addKeyAlertPromptTitle'));
     $("#matchType ").change(function () {
         if (this.value == "2") {
             $("#phraseTypeDiv").show();

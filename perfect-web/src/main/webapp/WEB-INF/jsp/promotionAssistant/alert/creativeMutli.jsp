@@ -273,8 +273,8 @@
         </div>
     </div>
     <%--alert提示类--%>
-    <div class="box7" style=" width: 230px;display:none;z-index: 1005" id="creativeMutliAlertPrompt">
-        <h2>
+    <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="creativeMutliAlertPrompt">
+        <h2 id="creativeMutliAlertPromptTitle">
             <span class="fl alert_span_title" id="creativeMutliAlertPrompt_title"></span>
             <%--<a href="#" class="close">×</a></h2>--%>
         <%--<a href="#" onclick="creativeMutliAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
@@ -340,6 +340,7 @@
     var columnSize = 0;
     var selected_index = 0;//判断选择的那种模式进行创意添加标识
     $(function () {
+        rDrag.init(document.getElementById('creativeMutliAlertPromptTitle'));
         initDomain();
         initMutliTree();
         var $tab_li = $('.newkeyeord_title ul li input');

@@ -163,8 +163,8 @@
     </div>
 </div>
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display:none;z-index: 1005" id="quickCreatePlanAlertPrompt">
-    <h2>
+<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="quickCreatePlanAlertPrompt">
+    <h2 id="quickCreatePlanAlertPromptTitle">
         <span class="fl alert_span_title" id="quickCreatePlanAlertPrompt_title"></span>
         <%--<a href="#" class="close">×</a></h2>--%>
     <%--<a href="#" onclick="quickCreatePlanAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
@@ -205,6 +205,9 @@
         }
     }
 
+    $(function () {
+        rDrag.init(document.getElementById('quickCreatePlanAlertPromptTitle'));
+    })
 $("#inputKwd").blur(function(){
     if($(this).val()==""){
         $(this).val("多个以逗号分隔，如:雅思,出国");

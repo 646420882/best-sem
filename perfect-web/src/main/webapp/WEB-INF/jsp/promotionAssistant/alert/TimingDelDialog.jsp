@@ -27,8 +27,8 @@
        class="span4 form-control TimingDelDialog" value="08/01/2013 - 08/01/2013"/>
 
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display:none;z-index: 1005" id="timingDelDialogAlertPrompt">
-    <h2>
+<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="timingDelDialogAlertPrompt">
+    <h2 id="timingDelDialogAlertPromptTitle">
         <span class="fl alert_span_title" id="timingDelDialogAlertPrompt_title"></span>
         <%--<a href="#" class="close">×</a></h2>--%>
     <%--<a href="#" onclick="timingDelDialogAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
@@ -68,7 +68,7 @@
         top.dialog.getCurrent().close().remove();
     }
     $(function () {
-
+        rDrag.init(document.getElementById('timingDelDialogAlertPromptTitle'));
         $("div.daterangepicker").css({"display": "block", "top": "0px", "right": "auto"});
         $(".daterangepicker .ranges li:last").css({"display": "none"});
         $(".minuteselect").css({"display": "none"});

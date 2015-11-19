@@ -15,6 +15,7 @@
     <script type="text/javascript" src="/public/plugs/uploadify/jquery.uploadify.min.js"></script>
     <script type="text/javascript">
         $(function () {
+            rDrag.init(document.getElementById('uploadMainAlertPromptTitle'));
             loadFileList();
             $("#file_upload").uploadify({
                 'buttonText': '请选择',
@@ -100,8 +101,8 @@
     </table>
 </div>
 <%--alert提示类--%>
-<div class="box7" style=" width: 230px;display:none;z-index: 1005" id="uploadMainAlertPrompt">
-    <h2>
+<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="uploadMainAlertPrompt">
+    <h2 id="uploadMainAlertPromptTitle">
         <span class="fl alert_span_title" id="uploadMainAlertPrompt_title"></span>
         <%--<a href="#" class="close">×</a></h2>--%>
     <%--<a href="#" onclick="uploadMainAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
