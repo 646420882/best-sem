@@ -35,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
+import java.util.stream.IntStream;
 
 /**
  * Created by baizz on 2014-08-16.
@@ -61,7 +62,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         fieldName = "pc" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
         List<KeywordReportDTO> list = keywordQualityDAO.findYesterdayKeywordReport();
         if (list.size() == 0)
-            return Collections.emptyMap();
+            return Collections.<String, Object>emptyMap();
 
         //getYesterdayAllKeywordId
         List<Long> keywordIds = new ArrayList<>();
@@ -95,12 +96,10 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         List<Quality10Type> quality10Types = getQuality10Type(redisKey, keywordIds);
 
         Map<Integer, List<KeywordReportDTO>> tempMap = new HashMap<>();
-        for (int i = 0; i <= 10; i++) {
-            tempMap.put(i, new ArrayList<>());
-        }
+        IntStream.rangeClosed(0, 10).forEach(i -> tempMap.put(i, new ArrayList<>()));
 
         final Map<String, KeywordReportDTO> finalMap = map;
-        quality10Types.parallelStream().forEach(q -> tempMap.get(q.getPcQuality()).add(finalMap.get(q.getId().toString())));
+        quality10Types.stream().forEach(q -> tempMap.get(q.getPcQuality()).add(finalMap.get(q.getId().toString())));
 
         Map<String, Object> results = new HashMap<>();
         List<QualityDTO> qualityList = new ArrayList<>();
@@ -109,9 +108,9 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
         final List<KeywordReportDTO> finalList = list;
         final String finalFieldName = fieldName;
-        qList.parallelStream().forEach(i -> {
+        qList.stream().forEach(i -> {
             List<KeywordReportDTO> tempList = new ArrayList<>();
-            tempMap.get(i).parallelStream().filter(o -> o != null).forEach(tempList::add);
+            tempMap.get(i).stream().filter(o -> o != null).forEach(tempList::add);
             if (!tempList.isEmpty()) {
 
                 //质量度级别信息计算
@@ -199,7 +198,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
         if (commonService == null) {
-            return Collections.emptyList();
+            return Collections.<Quality10Type>emptyList();
         }
 
         List<Quality10Type> quality10TypeList = new ArrayList<>();
@@ -239,7 +238,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         } catch (ApiException e) {
             e.printStackTrace();
         }
-        return Collections.emptyList();
+        return Collections.<Quality10Type>emptyList();
     }
 
     @Override
@@ -279,20 +278,18 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
         List<Quality10Type> quality10Types = getQuality10Type(redisKey, keywordIds);
 
         Map<Integer, List<KeywordReportDTO>> tempMap = new HashMap<>();
-        for (int i = 0; i <= 10; i++) {
-            tempMap.put(i, new ArrayList<>());
-        }
+        IntStream.rangeClosed(0, 10).forEach(i -> tempMap.put(i, new ArrayList<>()));
 
         final Map<String, KeywordReportDTO> finalMap = map;
-        quality10Types.parallelStream().forEach(q -> tempMap.get(q.getPcQuality()).add(finalMap.get(q.getId().toString())));
+        quality10Types.stream().forEach(q -> tempMap.get(q.getPcQuality()).add(finalMap.get(q.getId().toString())));
 
         Map<Integer, QualityDTO> qualityDTOMap = new HashMap<>();
         List<KeywordQualityReportVO> reportList = new ArrayList<>();
 
         final List<KeywordReportDTO> finalList = list;
-        qList.parallelStream().forEach(i -> {
+        qList.stream().forEach(i -> {
             List<KeywordReportDTO> tempList = new ArrayList<>();
-            tempMap.get(i).parallelStream().filter(o -> o != null).forEach(tempList::add);
+            tempMap.get(i).stream().filter(o -> o != null).forEach(tempList::add);
             if (!tempList.isEmpty()) {
 
                 //质量度级别信息计算

@@ -787,8 +787,8 @@ To change this template use File | Settings | File Templates.
             }
 
             _url = "/getKRWords/downloadCSV?trade=" + _trade
-            + "&categories=" + JSON.stringify($("#category").multipleSelect('getSelects'))
-            + "&groups=" + JSON.stringify($("#keyword_group").multipleSelect('getSelects'));
+                    + "&categories=" + JSON.stringify($("#category").multipleSelect('getSelects'))
+                    + "&groups=" + JSON.stringify($("#keyword_group").multipleSelect('getSelects'));
 
             if (!!window.ActiveXObject || "ActiveXObject" in window) {
                 document.getElementById("background").style.display = "block";
@@ -929,8 +929,8 @@ To change this template use File | Settings | File Templates.
                                 "<td>" + item.groupName + "</td>" +
                                 "<td>" + item.seedWord + "</td>" +
                                 "<td>" + item.keywordName + "</td>" +
-                                "<td>" + item.dsQuantity + "</td>" +
-                                "<td>" + item.competition + "%</td>" +
+                                "<td>" + (item.dsQuantity == undefined ? 0 : item.dsQuantity) + "</td>" +
+                                "<td>" + (item.competition == undefined ? 0 : item.competition) + "%</td>" +
                                 "</tr>";
                         $("#tbody1").append(newTr);
                     });
@@ -1048,8 +1048,8 @@ To change this template use File | Settings | File Templates.
                                     "<td>" + item.groupName + "</td>" +
                                     "<td>" + item.seedWord + "</td>" +
                                     "<td>" + item.keywordName + "</td>" +
-                                    "<td>" + item.dsQuantity + "</td>" +
-                                    "<td>" + item.competition + "%</td>" +
+                                    "<td>" + (item.dsQuantity == undefined ? 0 : item.dsQuantity) + "</td>" +
+                                    "<td>" + (item.competition == undefined ? 0 : item.competition) + "%</td>" +
                                     "</tr>";
                             $("#tbody1").append(newTr);
                         });

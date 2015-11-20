@@ -280,7 +280,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
         String krFilePath;
 
         //检查关键词推荐结果文件是否生成
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             GetKRFileStateRequest getKRFileStateRequest = new GetKRFileStateRequest();
             getKRFileStateRequest.setKrFileId(krFileId);
             GetKRFileStateResponse getKRFileStateResponse = krService.getKRFileState(getKRFileStateRequest);
