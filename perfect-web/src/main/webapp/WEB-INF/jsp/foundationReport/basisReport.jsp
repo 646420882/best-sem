@@ -178,8 +178,8 @@
                                     <input name="reservation" id="fzk" type="image" cname="dateClick"
                                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                            src="${pageContext.request.contextPath}/public/img/date.png" value="">
-                                    <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
-                                    比较范围
+                                    <label class='checkbox-inlines'> <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
+                                    比较范围</label>
                                     <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly
                                            style=" display:none;height:24px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
                                     <label id="dataComputing"></label>
@@ -307,7 +307,8 @@
                 </div>
                 <div class="containers hides over">
                     <div class="number_concent over">
-                        <div class="list01_top over"><Span>明细数据</Span>
+                        <div class="list01_top over"><Span>明细数据</Span> <button type="button" class="question  btn btn-default" data-toggle="tooltip"
+                                                                               data-placement="bottom" title="按您个性需求，分结构、关键词、创意、地域查看日、周、月的报告。"></button>
                         </div>
                         <div class="shuju_detali over">
                             <ul>
@@ -527,9 +528,9 @@
     <jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
 </div>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
-
 <%--jquery-daterangepicke--%>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
 <%--<script type="text/javascript"  src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
@@ -539,8 +540,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
-
-
 <%--end--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.cxcalendar.min.js"></script>
 <script type="text/javascript"

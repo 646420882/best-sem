@@ -755,22 +755,22 @@ var tabselect =
     "<p>最多同时搜1000个文本</p>";
 var baiduStatus =
     "<ul>" +
-    "<li><input type='checkbox' value='41'>有效</li>" +
-    "<li><input type='checkbox' value='42'>暂停推广</li>" +
-    "<li><input type='checkbox' value='43'>不宜推广</li>" +
-    "<li><input type='checkbox' value='48'>部分无效</li>" +
-    "<li><input type='checkbox' value='46'>审核中</li>" +
-    "<li><input type='checkbox' value='47'>搜索量过低</li>" +
-    "<li><input type='checkbox' value='49'>计算机搜索无效</li>" +
-    "<li><input type='checkbox' value='50'>移动搜索无效</li>" +
-    "<li><input type='checkbox' value='44'>搜索无效</li>" +
-    "<li><input type='checkbox' value='45'>待激活</li>" +
-    "<li><input type='checkbox' value='40'>有效-移动URL审核中</li>" +
-    "<li class='list_bottom'><input type='checkbox' value='-1'>本地新增</li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='41'>有效</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='42'>暂停推广</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='43'>不宜推广</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='48'>部分无效</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='46'>审核中</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='47'>搜索量过低</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='49'>计算机搜索无效</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='50'>移动搜索无效</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='44'>搜索无效</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='45'>待激活</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='checkbox' value='40'>有效-移动URL审核中</label></li>" +
+    "<li class='list_bottom'><label class='checkbox-inlines'><input type='checkbox' value='-1'>本地新增</label></li>" +
     "</ul>";
 var Computerquality =
     "<ul class='quality'>" +
-    "<li>" + "<input type='checkbox' value='2'>" +
+    "<li><label class='checkbox-inlines'>" + "<input type='checkbox' value='2'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star3.png'>" +
@@ -778,8 +778,8 @@ var Computerquality =
     "<img src='/public/img/star3.png'>" +
     "<img src='/public/img/star3.png'>" +
     "</span>" + "<b>1</b>" +
-    "</li>" +
-    "<li>" + "<input type='checkbox' value='4'>" +
+    "</label></li>" +
+    "<li><label class='checkbox-inlines'>" + "<input type='checkbox' value='4'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star.png'>" +
@@ -787,8 +787,8 @@ var Computerquality =
     "<img src='/public/img/star3.png'>" +
     "<img src='/public/img/star3.png'>" +
     "</span>" + "<b>2</b>" +
-    "</li>" +
-    "<li>" + "<input type='checkbox' value='6'>" +
+    "</label></li>" +
+    "<li><label class='checkbox-inlines'>" + "<input type='checkbox' value='6'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star.png'>" +
@@ -796,9 +796,9 @@ var Computerquality =
     "<img src='/public/img/star3.png'>" +
     "<img src='/public/img/star3.png'>" +
     "</span>" + "<b>3</b>" +
-    "</li>" +
+    "</label></li>" +
 
-    "<li>" + "<input type='checkbox' value='8'>" +
+    "<li><label class='checkbox-inlines'>" + "<input type='checkbox' value='8'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star.png'>" +
@@ -807,8 +807,8 @@ var Computerquality =
     "<img src='/public/img/star3.png'>" +
     "</span>"
     + "<b>4</b>" +
-    "</li>" +
-    "<li>" + "<input type='checkbox' value='10'>" +
+    "</label></li>" +
+    "<li><label class='checkbox-inlines'>" + "<input type='checkbox' value='10'>" +
     "<span>" +
     "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star.png'>" +
@@ -816,12 +816,12 @@ var Computerquality =
     "<img src='/public/img/star.png'>" +
     "<img src='/public/img/star.png'>" +
     "</span>" + "<b>5</b>" +
-    "</li>"
+    "</label></li>"
     + "</ul>";
 var pause =
-    "<ul><li><input type='radio' value='-1' name='filterPause'>全部</li>" +
-    "<li class='list_bottom'><input type='radio' value='1' name='filterPause'>启用</li>" +
-    "<li><input type='radio' value='0' name='filterPause'>暂停</li>";
+    "<ul><li><label class='checkbox-inlines'><input type='radio' value='-1' name='filterPause'>全部</label></li>" +
+    "<li class='list_bottom'><label class='checkbox-inlines'><input type='radio' value='1' name='filterPause'>启用</label></li>" +
+    "<li><label class='checkbox-inlines'><input type='radio' value='0' name='filterPause'>暂停</label></li>";
 var price =
     "<input type='number' name='min_points' min='00' max='10' />"
     + "到"
@@ -900,14 +900,14 @@ var TabModel = {
             case "Keyword_matchType":
                 $("#TabTitle").html("关键词匹配模式");
                 var matching =
-                    "<ul><li><input type='checkbox' name='matchType' value='3'>广泛</li>" +
-                    "<li><input type='checkbox' id='Phrase' value='2'>短语" +
-                    "<ul id='PhraseList'><li><input type='checkbox' name='matchType' value='33'>核心包含</li></li>" +
-                    "<li><input type='checkbox' name='matchType' value='11'>同义包含</li>" +
-                    "<li><input type='checkbox' name='matchType' value='22'>精确包含</li></ul>" +
-                    "<li ><input type='checkbox' name='matchType' value='1'>精确</li>" +
-                    "<li class='list_bottom'><input type='checkbox'>基本匹配模式</li>" +
-                    "<li><input type='checkbox'>分匹配出价</li>" +
+                    "<ul><li><label class='checkbox-inlines'><input type='checkbox' name='matchType' value='3'>广泛</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' id='Phrase' value='2'>短语</label>" +
+                    "<ul id='PhraseList'><li><label class='checkbox-inlines'><input type='checkbox' name='matchType' value='33'>核心包含</label></li></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' name='matchType' value='11'>同义包含</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' name='matchType' value='22'>精确包含</label></li></ul>" +
+                    "<li ><label class='checkbox-inlines'><input type='checkbox' name='matchType' value='1'>精确</label></li>" +
+                    "<li class='list_bottom'><label class='checkbox-inlines'><input type='checkbox'>基本匹配模式</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox'>分匹配出价</label></li>" +
                     "</ul>";
                 $("#CheckList").append(matching);
                 $("#Phrase").change(function () {
@@ -968,23 +968,23 @@ var TabModel = {
             case "Creative_state":
                 $("#TabTitle").html("创意状态");
                 var CreativeState =
-                    "<ul><li><input type='checkbox' value='51'>有效</li>" +
-                    "<li><input type='checkbox' value='53'>不宜推广</li>" +
-                    "<ul><li><input type='checkbox' value='52'>暂停推广</li>" +
-                    "<li><input type='checkbox' value='55'>审核中</li>" +
-                    "<li><input type='checkbox' value='54'>待激活</li></ul>" +
-                    "<li><input type='checkbox' value='56'>部分无效</li>" +
-                    "<li><input type='checkbox' value='57'>有效-移动URL审核中</li>" +
-                    "<li class='list_bottom'><input type='checkbox' value='-1'>本地新增</li>" +
+                    "<ul><li><label class='checkbox-inlines'><input type='checkbox' value='51'>有效</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='53'>不宜推广</label></li>" +
+                    "<ul><li><label class='checkbox-inlines'><input type='checkbox' value='52'>暂停推广</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='55'>审核中</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='54'>待激活</label></li></ul>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='56'>部分无效</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='57'>有效-移动URL审核中</label></li>" +
+                    "<li class='list_bottom'><label class='checkbox-inlines'><input type='checkbox' value='-1'>本地新增</label></li>" +
                     "</ul>";
                 $("#CheckList").append(CreativeState);
                 break;
             case "Creative_quipment":
                 $("#TabTitle").html("创意设备偏好");
                 var CreativeEquipment =
-                    "<ul><li><input type='radio' name='filterQuipment' value='-1'>全部</li>" +
-                    "<li class='list_bottom'><input type='radio' name='filterQuipment'  value='0'>全部设备</li>" +
-                    "<li><input type='radio' name='filterQuipment'  value='1'>移动设备优先</li>";
+                    "<ul><li><label class='checkbox-inlines'><input type='radio' name='filterQuipment' value='-1'>全部</label></li>" +
+                    "<li class='list_bottom'><label class='checkbox-inlines'><input type='radio' name='filterQuipment'  value='0'>全部设备</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='radio' name='filterQuipment'  value='1'>移动设备优先</label></li>";
                 $("#CheckList").append(CreativeEquipment);
                 break;
             case "Adgroup_name":
@@ -993,10 +993,10 @@ var TabModel = {
                 break;
             case "Adgroup_state":
                 $("#TabTitle").html("推广单元状态");
-                var ExtensionState = "<ul><li><input type='checkbox' value='31'>有效</li>" +
-                    "<li><input type='checkbox' value='32'>暂停推广</li>" +
-                    "<li><input type='checkbox' value='33'>推广计划暂停推广</li>" +
-                    "<li class='list_bottom'><input type='checkbox' value='-1'>本地新增</li>" +
+                var ExtensionState = "<ul><li><label class='checkbox-inlines'><input type='checkbox' value='31'>有效</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='32'>暂停推广</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='33'>推广计划暂停推广</label></li>" +
+                    "<li class='list_bottom'><label class='checkbox-inlines'><input type='checkbox' value='-1'>本地新增</label></li>" +
                     "</ul>";
                 $("#CheckList").append(ExtensionState);
                 break;
@@ -1015,12 +1015,12 @@ var TabModel = {
             case "Campaign_state":
                 $("#TabTitle").html("推广计划状态");
                 var PromotionState =
-                    "<ul><li><input type='checkbox' value='21'>有效</li>" +
-                    "<li><input type='checkbox' value='23'>暂停推广</li>" +
-                    "<li><input type='checkbox' value='22'>处在暂停阶段</li>" +
-                    "<li><input type='checkbox' value='24'>推广计划预算不足</li>" +
-                    "<li><input type='checkbox' value='24'>账户预算部足</li>" +
-                    "<li class='list_bottom'><input type='checkbox' value='-1'>本地新增</li>";
+                    "<ul><li><label class='checkbox-inlines'><input type='checkbox' value='21'>有效</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='23'>暂停推广</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='22'>处在暂停阶段</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='24'>推广计划预算不足</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='checkbox' value='24'>账户预算部足</label></li>" +
+                    "<li class='list_bottom'><label class='checkbox-inlines'><input type='checkbox' value='-1'>本地新增</label></li>";
                 $("#CheckList").append(PromotionState);
                 break;
             case "Campaign_pause":
@@ -1034,17 +1034,17 @@ var TabModel = {
             case "Campaign_show":
                 $("#TabTitle").html("推广计划创意展现方式");
                 var PromotionShow =
-                    "<ul><li><input type='radio' name='showPro' value='-1'>全部</li>" +
-                    "<li class='list_bottom'><input type='radio' name='showPro' value='1'>优选</li>" +
-                    "<li><input type='radio' name='showPro' value='2'>轮显</li>";
+                    "<ul><li><label class='checkbox-inlines'><input type='radio' name='showPro' value='-1'>全部</label></li>" +
+                    "<li class='list_bottom'><label class='checkbox-inlines'><input type='radio' name='showPro' value='1'>优选</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='radio' name='showPro' value='2'>轮显</label></li>";
                 $("#CheckList").append(PromotionShow);
                 break;
             case "Campaign_dynamic":
                 $("#TabTitle").html("动态创意状态");
                 var PromotionDynamic =
-                    "<ul><li><input type='radio' name='dynamic' value='-1'>全部</li>" +
-                    "<ul><li><input type='radio' name='dynamic' value='1'>开启</li>" +
-                    "<li><input type='radio' name='dynamic' value='0'>关闭</li>";
+                    "<ul><li><label class='checkbox-inlines'><input type='radio' name='dynamic' value='-1'>全部</label></li>" +
+                    "<ul><li><label class='checkbox-inlines'><input type='radio' name='dynamic' value='1'>开启</label></li>" +
+                    "<li><label class='checkbox-inlines'><input type='radio' name='dynamic' value='0'>关闭</label></li>";
                 $("#CheckList").append(PromotionDynamic);
                 break;
 

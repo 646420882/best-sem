@@ -735,12 +735,12 @@ function createChooseTimeUIByCampaignData(data) {
         } else {
             for (var s = 0; s < data.schedule.length; s++) {
                 if (data.schedule[s].weekDay == (i + 1)) {
-                    html = html + "<ul>" + "<div><input type='checkbox'  name='" + (i + 1) + "'/>" + weeks[i] + "</div>";
+                    html = html + "<ul>" + "<div><label class='checkbox-inlines'><input type='checkbox'  name='" + (i + 1) + "'/>" + weeks[i] + "</label></div>";
                     break;
                 }
             }
             if (s >= data.schedule.length) {
-                html = html + "<ul>" + "<div><input type='checkbox' checked='checked'' name='" + (i + 1) + "'/>" + weeks[i] + "</div>";
+                html = html + "<ul>" + "<div>  <label class='checkbox-inlines'><input type='checkbox' checked='checked'' name='" + (i + 1) + "'/>" + weeks[i] + "</label></div>";
             }
         }
 

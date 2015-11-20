@@ -9,7 +9,8 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
@@ -69,8 +70,10 @@
 
                 <div class="newkeyeord_title over">
                     <ul class="over">
-                        <li><input type="radio" checked="checked" name="Target">选择推广计划、推广单元</li>
-                        <li><input type="radio" name="Target">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>
+                        <li><label for="Target"><input type="radio" checked="checked" name="Target" id="Target">选择推广计划、推广单元</label>
+                        </li>
+                        <li><label for="Targets"><input type="radio" name="Target" id="Targets">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</label>
+                        </li>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over chooseKwdInfoDiv">
@@ -102,7 +105,7 @@
 
                                     <p>
                                         <%--<span><input type="checkbox"/>用这些普通创意替换目标推广单元的所有相应内容<br/></span>--%>
-                                            <span><input type="checkbox" id="isReplace"/>创意标题和描述相同时，更新该创意的url等其他设设置&nbsp;<span
+                                            <span><label for="isReplace"><input type="checkbox" id="isReplace"/>创意标题和描述相同时，更新该创意的url等其他设设置</label>&nbsp;<span
                                                     style="color:red;">您的域名:&nbsp;</span><span
                                                     id="doMain"></span></span>
                                     </p>
@@ -131,13 +134,14 @@
                                     <p>例如：鲜花,精品鲜花，礼品，鲜花</p>
                                     <textarea id="specialText" onkeyup="getColumn(this)"></textarea>
 
-                                    <p id="sError">
-                                        不超过：<span id="nowColumn">0</span>
-                                        <
-                                        <span id="sMaxColumns">5000</span>
-                                    </p>
+                                    <p style="margin-top:10px;"><span class="fl">或者从相同格式的csv文件上传：</span><input
+                                            type="file" class="fl"
+                                            name="fileName"
+                                            id="suFile">&nbsp;</span>
+                                        <span class="fl">  (<20万行) </span>
+                                        <span id="sError" class="fr">
+                                             <span id="nowColumn">0</span> /<span id="sMaxColumns">5000</span></span>
 
-                                    <p>或者从相同格式的csv文件上传：<input type="file" name="fileName" id="suFile">&nbsp;(<20万行)
                                     </p>
 
                                     <p>
@@ -146,7 +150,8 @@
                                             id="specialDomain"></span></span>
                                     </p>
 
-                                    <p><input type="checkbox" id="csvReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
+                                    <p><label for="csvReplace"><input type="checkbox" id="csvReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</label>
+                                    </p>
 
                                 </div>
 
@@ -173,62 +178,69 @@
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
                         <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <div class="panel-group" id="creativeMutliAccordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel-group" id="creativeMutliAccordion" role="tablist"
+                                 aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="creativeMutliheadingOne">
                                         <h4 class="panel-title">
                                             <a role="button" data-toggle="collapse"
                                                data-parent="#creativeMutliAccordion"
-                                               href="#creativeMutliCollapseOne" aria-expanded="true" aria-controls="creativeMutliCollapseOne">
+                                               href="#creativeMutliCollapseOne" aria-expanded="true"
+                                               aria-controls="creativeMutliCollapseOne">
                                                 <span class="mycollapse">[ - ] </span>
                                                 <span style="font-weight: bold; line-height:30px;padding:10px;">新增的创意：<span
                                                         id="criSize">0</span></span>
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="creativeMutliCollapseOne" class="panel-collapse collapse in" role="tabpanel"
-                                             aria-labelledby="creativeMutliheadingOne">
-                                            <div class="panel-body">
-                                                <table border="0" cellspacing="0" width="100%" id="createTable"
-                                                       class="table2 table-bordered"
-                                                       data-resizable-columns-id="demo-table">
-                                                    <thead>
-                                                    <tr class="list02_top">
-                                                        <th>&nbsp;推广计划</th>
-                                                        <th>&nbsp;推广单元</th>
-                                                        <th>&nbsp;创意标题</th>
-                                                        <th>&nbsp;创意描述1</th>
-                                                        <th>&nbsp;创意描述2</th>
-                                                        <th>&nbsp;默认访问URL</th>
-                                                        <th>&nbsp;默认显示URL</th>
-                                                        <th>&nbsp;移动访问URL</th>
-                                                        <th>&nbsp;移动显示URL</th>
-                                                        <th>&nbsp;启用/暂停</th>
-                                                        <th>&nbsp;设备偏好</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody id="tbodyClick2">
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                    <div id="creativeMutliCollapseOne" class="panel-collapse collapse in"
+                                         role="tabpanel"
+                                         aria-labelledby="creativeMutliheadingOne">
+                                        <div class="panel-body">
+                                            <table border="0" cellspacing="0" width="100%" id="createTable"
+                                                   class="table2 table-bordered"
+                                                   data-resizable-columns-id="demo-table">
+                                                <thead>
+                                                <tr class="list02_top">
+                                                    <th>&nbsp;推广计划</th>
+                                                    <th>&nbsp;推广单元</th>
+                                                    <th>&nbsp;创意标题</th>
+                                                    <th>&nbsp;创意描述1</th>
+                                                    <th>&nbsp;创意描述2</th>
+                                                    <th>&nbsp;默认访问URL</th>
+                                                    <th>&nbsp;默认显示URL</th>
+                                                    <th>&nbsp;移动访问URL</th>
+                                                    <th>&nbsp;移动显示URL</th>
+                                                    <th>&nbsp;启用/暂停</th>
+                                                    <th>&nbsp;设备偏好</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tbodyClick2">
+                                                </tbody>
+                                            </table>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="panel-group" id="creativeMutliAccordion_2" role="tablist" aria-multiselectable="true">
+                            <div class="panel-group" id="creativeMutliAccordion_2" role="tablist"
+                                 aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="creativeMutliheadingOne_2">
                                         <h4 class="panel-title">
                                             <a role="button" data-toggle="collapse"
                                                data-parent="#creativeMutliAccordion_2"
-                                               href="#creativeMutliCollapseOne_2" aria-expanded="true" aria-controls="creativeMutliCollapseOne_2">
+                                               href="#creativeMutliCollapseOne_2" aria-expanded="true"
+                                               aria-controls="creativeMutliCollapseOne_2">
                                                 <span class="mycollapse">[ - ] </span>
                                                 <span style="font-weight: bold; line-height:30px;padding:10px;">已存在的创意：<span
-                                                    id="dbExistCount">0</span></span><span>重复的创意：<span id="existCount">0</span></span>
+                                                        id="dbExistCount">0</span></span><span>重复的创意：<span
+                                                    id="existCount">0</span></span>
                                             </a>
                                         </h4>
-                                        </div>
-                                    <div id="creativeMutliCollapseOne_2" class="panel-collapse collapse in" role="tabpanel"
+                                    </div>
+                                    <div id="creativeMutliCollapseOne_2" class="panel-collapse collapse in"
+                                         role="tabpanel"
                                          aria-labelledby="creativeMutliheadingOne">
                                         <div class="panel-body">
                                             <table border="0" cellspacing="0" width="100%" id="errorTable"
@@ -253,8 +265,8 @@
                                             </table>
                                         </div>
                                     </div>
-                                    </div>
                                 </div>
+                            </div>
 
                         </div>
                     </div>
@@ -277,8 +289,9 @@
         <h2 id="creativeMutliAlertPromptTitle">
             <span class="fl alert_span_title" id="creativeMutliAlertPrompt_title"></span>
             <%--<a href="#" class="close">×</a></h2>--%>
-        <%--<a href="#" onclick="creativeMutliAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+            <%--<a href="#" onclick="creativeMutliAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
         </h2>
+
         <div class="mainlist">
             <div class="w_list03">
                 <ul class="zs_set">

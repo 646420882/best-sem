@@ -84,11 +84,16 @@
                             <div class="zhushou over">
                                 <div class="zhushou_menu">
                                     <ul class="zs_nav">
-                                        <li class="showbox"><a id="downloadAccountData"><span
+                                        <li class="showbox" data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            title="用户初次使用推广客户端或刚刚启动，请先使用“下载账户”功能进行物料下载，以保证推广客户端中的推广物料与信息全部为最新。"><a
+                                                id="downloadAccountData"><span
                                                 class="glyphicon glyphicon-save"></span><span>下载账户</span></a>
                                         </li>
-                                        <li onclick="uploadDialog()"><a><span
-                                                class="glyphicon glyphicon-open"></span><span>上传更新</span></a></li>
+                                        <li onclick="uploadDialog()" data-toggle="tooltip"
+                                            data-placement="bottom" title="对物料进行必要的修改后，需要点击“上传更新”按钮将修改上传至搜索推广账户中。">
+                                            <a><span
+                                                    class="glyphicon glyphicon-open"></span><span>上传更新</span></a></li>
                                         <li class="current"><a href="javascript:void(0)"
                                                                onclick="AlertPrompt.show('该功能还在开发中！');"><span
                                                 class="glyphicon glyphicon-search"></span><span>高级搜索</span></a>
@@ -148,7 +153,7 @@
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
                                                     <%--<li><a href="#"><span class="z_function_hover"><img--%>
-                                                            <%--src="../public/img/zs_function6.png"></span><b>分析</b></a>--%>
+                                                    <%--src="../public/img/zs_function6.png"></span><b>分析</b></a>--%>
                                                     <%--</li>--%>
                                                     <li><a href="#"><span class="z_function_hover"><img
                                                             src="../public/img/zs_function7.png"></span><b>估算</b></a>
@@ -1314,7 +1319,10 @@
                 </div>
                 <div class="jingjia_left assistant_left fl over">
                     <div class="j_l_top over">
-                        <span class="fl"><h3>账户目录</h3></span>
+                        <span class="fl"><h3><span class="fl">账户目录</span>
+                            <button type="button" class="question  btn btn-default" data-toggle="tooltip"
+                                    data-placement="bottom" title="用于显示所在账户的目录结构，用户可通过点击左侧账户目录进入相对的推广计划、推广单元。"></button>
+                        </h3></span>
                         <a href="javascript:loadTree()" class="fr">刷新</a>
                     </div>
                     <div class="j_l_top2 over">
@@ -1408,6 +1416,9 @@
      store: store
      });
      };*/
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip();
+    });
     //loading
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();

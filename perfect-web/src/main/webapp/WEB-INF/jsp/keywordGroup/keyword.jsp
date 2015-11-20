@@ -12,15 +12,19 @@ To change this template use File | Settings | File Templates.
     <title>大数据智能营销</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/multiple-select.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/creative/creativesearch.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/creative/creativesearch_img.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/creative/creativesearch.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/css/creative/creativesearch_img.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
         .list2 table tr td ul li {
@@ -208,7 +212,9 @@ To change this template use File | Settings | File Templates.
                     <div class="originality over">
                         <div class="originality_left fl">
                             <ul>
-                                <li><input type="radio" checked="checked" name="searchType" value="1"> 选择已有关键词</li>
+                                <li><label class="checkbox-inlines"><input type="radio" checked="checked"
+                                                                           name="searchType" value="1"> 选择已有关键词</label>
+                                </li>
                                 <li><span>计划：</span>
                                     <select id="campagin">
                                         <option value="-1">请选择计划</option>
@@ -226,7 +232,8 @@ To change this template use File | Settings | File Templates.
                         </div>
                         <div class="originality_right fl">
                             <ul>
-                                <li><input type="radio" name="searchType" value="2"> 输入新单元词</li>
+                                <li><label class="checkbox-inlines"><input type="radio" name="searchType" value="2">
+                                    输入新单元词</label></li>
                                 <li>
                                     <textarea id="txt2" name="txt2" style="overflow:auto; resize: none"></textarea>
                                 </li>
@@ -540,9 +547,10 @@ To change this template use File | Settings | File Templates.
 </div>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/pagination/jquery.pagination.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
@@ -779,8 +787,8 @@ To change this template use File | Settings | File Templates.
             }
 
             _url = "/getKRWords/downloadCSV?trade=" + _trade
-                    + "&categories=" + JSON.stringify($("#category").multipleSelect('getSelects'))
-                    + "&groups=" + JSON.stringify($("#keyword_group").multipleSelect('getSelects'));
+            + "&categories=" + JSON.stringify($("#category").multipleSelect('getSelects'))
+            + "&groups=" + JSON.stringify($("#keyword_group").multipleSelect('getSelects'));
 
             if (!!window.ActiveXObject || "ActiveXObject" in window) {
                 document.getElementById("background").style.display = "block";

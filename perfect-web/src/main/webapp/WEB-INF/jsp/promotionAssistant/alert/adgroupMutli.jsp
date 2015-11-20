@@ -9,7 +9,8 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
@@ -68,7 +69,8 @@
 
                 <div class="newkeyeord_title over">
                     <ul class="over">
-                        <li><input type="radio" checked="checked" name="Target" onclick="stepOne();">选择推广计划</li>
+                        <li><label for="Target"><input type="radio" checked="checked" name="Target" id="Target"
+                                                       onclick="stepOne();">选择推广计划</label></li>
                         <%--<li><input type="radio" name="Target" onclick="stepTwo();">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>--%>
                     </ul>
                     <div class="newkeyword_content over">
@@ -156,12 +158,14 @@
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
                         <div style="width:99%;height: 340px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <div class="panel-group" id="adgroupMutliaccordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel-group" id="adgroupMutliaccordion" role="tablist"
+                                 aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="headingOne">
                                         <h4 class="panel-title">
                                             <a role="button" data-toggle="collapse" data-parent="#adgroupMutliaccordion"
-                                               href="#adgroupMutlicollapseOne" aria-expanded="true" aria-controls="adgroupMutlicollapseOne">
+                                               href="#adgroupMutlicollapseOne" aria-expanded="true"
+                                               aria-controls="adgroupMutlicollapseOne">
                                                 <span class="mycollapse">[ - ] </span>
                                             <span style="font-weight: bold; line-height:30px;">新增的单元：<span
                                                     id="criSize">0</span></span></a>
@@ -183,8 +187,8 @@
                                                 <tbody id="tbodyClick2">
                                                 </tbody>
                                             </table>
-                                            </div>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -208,8 +212,9 @@
         <h2 id="adgroupMutliAlertPromptTitle">
             <span class="fl alert_span_title" id="adgroupMutliAlertPrompt_title"></span>
             <%--<a href="#" class="close">×</a></h2>--%>
-        <%--<a href="#" onclick="adgroupMutliAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+            <%--<a href="#" onclick="adgroupMutliAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
         </h2>
+
         <div class="mainlist">
             <div class="w_list03">
                 <ul class="zs_set">

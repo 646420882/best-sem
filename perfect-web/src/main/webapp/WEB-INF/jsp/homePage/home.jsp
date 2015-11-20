@@ -88,6 +88,9 @@
                     <div class="list01 over">
                         <div class="list01_top over">
                             <Span>近期概览</Span>
+                            <button type="button" class="question  btn btn-default" data-toggle="tooltip"
+                                    data-placement="bottom" title="总览大数据指标，查看维度昨天、近七天、近30天及自定义时间范围.
+"></button>
                             <ul id="clickLis">
                                 <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
                                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
@@ -146,7 +149,7 @@
                         <div class="list01_top over">
                             <Span>账户趋势图</Span>
                             <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                    data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势，便于您对关键数据信息一目了然。
+                                    data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势便于用户对关键数据信息一目了然。
 "></button>
 
                             <ul id="clickqushi">
@@ -325,7 +328,7 @@
                     <div class="list01_top over">
                         <Span>质量度分析</Span>
                         <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                data-placement="bottom" title="是SEM核心基础元素，它影响着优化策略和思路的变化。实时把控质量度星级指标，助力核心优化。"></button>
+                                data-placement="bottom" title="SEM核心基础元素，它影响着优化策略和思路的变化，实时把控质量度星级指标，助力核心优化。"></button>
                         <%--<ul id="keywordQualityClass">
                             <li class="current">
                                 <a onclick="loadKeywordQualityData(this, 1);">
@@ -1172,8 +1175,8 @@
 
 <!-- javascript -->
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
 <%--<script type="text/javascript"--%>
@@ -1573,12 +1576,12 @@
         $("#containerLegend").empty();
         /*初始化曲线图所用需求*/
         $("#containerLegend").append("<div class='tu_top over'><ul><li>展示曲线</li>"
-                + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-                + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-                + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-                + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-                + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-                + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+        + "<li><label class='checkbox-inlines'><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></label></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
         getDateParam(date);
         //展现

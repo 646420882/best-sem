@@ -99,7 +99,8 @@
                         <div class="keyworld_text over">
 
                             <div class="keyworld_text2 fl" style="height:440px;">
-                                <textarea style="width: 98%;height:100%;font-size:12px;" id="addedkwd"></textarea>
+                                <textarea style="width: 98%;height:100%;font-size:12px; padding: 0 10px"
+                                          id="addedkwd"></textarea>
                             </div>
                         </div>
                         <%-- <div class="k_l_under over">
@@ -118,8 +119,10 @@
                         <div class="assembly_right_under over">
                             <div class="containers over">
                                 <div class="assembly_search over">
-                                    <span class="fl">搜索相关词 <input id="searchKeyword" type="text" style="width:300px; margin-right:5px;"/></span><a class="fl"
-                                                                                                            href="javascript: clickSearch();">搜索</a>
+                                    <span class="fl">搜索相关词 <input id="searchKeyword" type="text"
+                                                                  style="width:300px; margin-right:5px;"/></span><a
+                                        class="fl"
+                                        href="javascript: clickSearch();">搜索</a>
                                 </div>
 
                                 <div class="zs_function over">
@@ -167,8 +170,9 @@
     <h2 id="quickCreatePlanAlertPromptTitle">
         <span class="fl alert_span_title" id="quickCreatePlanAlertPrompt_title"></span>
         <%--<a href="#" class="close">×</a></h2>--%>
-    <%--<a href="#" onclick="quickCreatePlanAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+        <%--<a href="#" onclick="quickCreatePlanAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
     </h2>
+
     <div class="mainlist">
         <div class="w_list03">
             <ul class="zs_set">
@@ -184,273 +188,277 @@
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var quickCreatePlanAlertPrompt = {
-        show:function(content){
+        show: function (content) {
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
-            });/*蒙版显示*/
+            });
+            /*蒙版显示*/
             $("#quickCreatePlanAlertPrompt").css({
                 left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
                 top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
-            });/*显示提示DIV*/
+            });
+            /*显示提示DIV*/
             $("#quickCreatePlanAlertPrompt_title").html(content);
         },
-        hide:function(){
+        hide: function () {
             $(".TB_overlayBG_alert").css({
                 display: "none"
-            });/*蒙版显示*/
+            });
+            /*蒙版显示*/
             $("#quickCreatePlanAlertPrompt").css({
                 display: "none"
-            });/*显示提示DIV*/
+            });
+            /*显示提示DIV*/
         }
     }
 
     $(function () {
         rDrag.init(document.getElementById('quickCreatePlanAlertPromptTitle'));
     })
-$("#inputKwd").blur(function(){
-    if($(this).val()==""){
-        $(this).val("多个以逗号分隔，如:雅思,出国");
-    }
-});
-/**
- *下一步按钮的单击事件
- */
-$(".nextStep").click(function () {
-    var selectValue = $("#selectPrice").val();
-    var serchKeyword=$("#inputKwd").val();
-    if (serchKeyword == "多个以逗号分隔，如:雅思,出国"||serchKeyword=="") {
+    $("#inputKwd").blur(function () {
+        if ($(this).val() == "") {
+            $(this).val("多个以逗号分隔，如:雅思,出国");
+        }
+    });
+    /**
+     *下一步按钮的单击事件
+     */
+    $(".nextStep").click(function () {
+        var selectValue = $("#selectPrice").val();
+        var serchKeyword = $("#inputKwd").val();
+        if (serchKeyword == "多个以逗号分隔，如:雅思,出国" || serchKeyword == "") {
 //        alert("请输入您从事的业务!");
-        quickCreatePlanAlertPrompt.show("请输入您从事的业务!");
-        return;
-    }
-
-    if (selectValue == "please") {
-        $("#mes").html("<span style='color:red;font-size:13px;'>请先选择</span>");
-        return;
-    }
-
-    searchKeyword($("#inputKwd").val());
-
-    $('.addplan_top ul li:eq(1)').addClass("current");
-
-    $(".inputCreateInfo").addClass("hides");
-    $(".chooseKwd").removeClass("hides");
-});
-
-
-/**
- *上一步按钮的单击事件
- */
-$(".lastStep").click(function () {
-    $('#tabUL li:eq(1)').removeClass("current");
-    $('#tabUL li:eq(0)').addClass("current");
-    $(".chooseKwd").addClass("hides");
-    $(".inputCreateInfo").removeClass("hides");
-});
-
-
-//搜索按钮的单击事件
-function clickSearch() {
-    var seedWord = $("#searchKeyword").val();
-    searchKeyword(seedWord);
-}
-
-
-var wordType = "bWord";
-var wordName = "";
-/**
- *查找关键词
- */
-var searchKeyword = function (seedWord) {
-    wordName = seedWord;
-    if (seedWord == null || seedWord.trim().length == 0) {
-        return;
-    }
-    $("#tbody1").html("查找中...");
-    $.ajax({
-        url: '/getKRWords/getKRbySeedWord',
-        async: false,
-        data: {
-            seedWord: seedWord
-        },
-        dataType: 'json',
-        success: function (data, textStatus, jqXHR) {
-            var results = data.rows;
-            if (results != null && results.length > 0) {
-                var trs = "";
-                var _class = "";
-                $.each(results, function (i, item) {
-                    if (i % 2 == 0) {
-                        _class = "list2_box1";
-                    } else {
-                        _class = "list2_box2";
-                    }
-                    var _tr = "<tr id='" + (wordType + i) + "' class='" + _class + "'><td><input type='checkbox' name='baiduKeyword'/></td>" +
-                            "<td>" + item.word + "</td>" +
-                            "<td>" + item.exactPV + "</td>" +
-                            "<td>" + item.competition + "</td>" +
-                            "<td>" + item.flag1 + "</td></tr>";
-                    trs += _tr;
-                });
-                $("#tbody1").empty();
-                $("#tbody1").append(trs);
-            }
+            quickCreatePlanAlertPrompt.show("请输入您从事的业务!");
+            return;
         }
-    });
-};
 
-
-//添加选中按钮的事件
-$("#addChooseKeyword").click(function () {
-    var checkBoxs=$("#tbody1 :checkbox");
-    var kwds = "";
-    for(var i=0;i<checkBoxs.length;i++){
-        if(checkBoxs[i].checked==true){
-            var value=$(checkBoxs[i]).parents("tr").find("td:eq(1)").html();
-            kwds += value + "\n";
+        if (selectValue == "please") {
+            $("#mes").html("<span style='color:red;font-size:13px;'>请先选择</span>");
+            return;
         }
-    }
-    setNewkeywordToTextArea(kwds);
-});
 
-//添加全部按钮的单击事件
-$("#addAllKeyword").click(function () {
-    var checkedTds1 = $("input[name=baiduKeyword]:checkbox");
-    var kwds = "";
-    for (var i = 0, l = checkedTds1.length; i < l; i++) {
-        kwds += $("#" + wordType + i).find("td").eq(1).text() + "\r";
-    }
-    setNewkeywordToTextArea(kwds);
-});
-$("#addedkwd").keyup(function(){
-    $("#keywordCount").html("已添加关键词（" + $("#addedkwd").val().trim().split("\n").length + "/500）");
-});
-function setNewkeywordToTextArea(kwds) {
-    $("#addedkwd").val(kwds);
-    $("#keywordCount").html("已添加关键词（" + $("#addedkwd").val().trim().split("\n").length + "/500）");
-}
+        searchKeyword($("#inputKwd").val());
 
+        $('.addplan_top ul li:eq(1)').addClass("current");
 
-//完成按钮的事件
-var saveChooseKeyword = function () {
-    //获取所有选中的关键词
-    var jsonArr = [];
-    var values=$("#addedkwd").val();
-    var kwds = $("#addedkwd").val().split("\n");
-    if(values==""){
-//        alert("您没有选择关键词!");
-        quickCreatePlanAlertPrompt.show("您没有选择关键词!");
-        return;
-    }
-    if (kwds.length > 500) {
-//        alert("添加的关键词数量不能超过500个");
-        quickCreatePlanAlertPrompt.show("添加的关键词数量不能超过500个");
-        return;
-    }
-    for (var i = 0; i < kwds.length; i++) {
-        var entity1 = {};
-        entity1["accountId"] = "${sessionScope._accountId}";
-        entity1["keyword"] = kwds[i];
-        entity1["price"] = 1.0;
-        entity1["matchType"] = 1;
-        entity1["pause"] = false;
-        entity1["status"] = -1;
-        entity1["phraseType"] = 1;
-        entity1["localStatus"] = 1;
-        jsonArr.push(entity1);
-    }
-
-    if (jsonArr.length == 0) {
-//        alert("您没有选择关键词!");
-        quickCreatePlanAlertPrompt.show("您没有选择关键词!");
-        return;
-    }
-
-    $.ajax({
-        url: "/assistantCampaign/quickCreateCampaign?name=" + wordName + "&regions=" + getChooseRegions(),
-        type: "POST",
-        dataType: "json",
-        data: JSON.stringify(jsonArr),
-        async: false,
-        contentType: "application/json; charset=UTF-8",
-        success: function (data, textStatus, jqXHR) {
-            if(data=="success"){
-//                alert("添加成功!");
-                quickCreatePlanAlertPrompt.show("添加成功!");
-                top.dialog.getCurrent().close().remove();
-            }
-        }
-    });
-};
-function closeDialog(){
-    top.dialog.getCurrent().close().remove();
-}
-
-/**
- *修改推广地域的单击事件
- */
-$("#updateRegion").click(function () {
-    $("#updateRegionDialog").show(0);
-});
-
-
-/***************************************************修改推广地域*******************************************************************/
-/**
- *使用账户推广地域的确定按钮的事件
- */
-var regions = "";
-$("#Oklabel").click(function () {
-    regions = "";
-    $("#updateRegionDialog").css("display", "none");
-});
-
-function getChooseRegions() {
-    return regions;
-}
-
-function getRegionsStr() {
-    var region = $("input[name=region]");
-    var value = null;
-    region.each(function () {
-        if ($(this)[0].checked == true) {
-            value = $(this).val();
-        }
+        $(".inputCreateInfo").addClass("hides");
+        $(".chooseKwd").removeClass("hides");
     });
 
-    //0是全部地域,1是部分地域
-    var regionstr = "";
-    if (value == 0) {
-        regionstr += "全部区域" + ",";
-    } else if (value == 1) {
-        var leaf = $("#regionList").find("div[class=leaf]");
-        leaf.each(function () {
-            if ($(this).find("input[type=checkbox]")[0].checked == true) {
-                regionstr += $(this).find("label").html() + ",";
+
+    /**
+     *上一步按钮的单击事件
+     */
+    $(".lastStep").click(function () {
+        $('#tabUL li:eq(1)').removeClass("current");
+        $('#tabUL li:eq(0)').addClass("current");
+        $(".chooseKwd").addClass("hides");
+        $(".inputCreateInfo").removeClass("hides");
+    });
+
+
+    //搜索按钮的单击事件
+    function clickSearch() {
+        var seedWord = $("#searchKeyword").val();
+        searchKeyword(seedWord);
+    }
+
+
+    var wordType = "bWord";
+    var wordName = "";
+    /**
+     *查找关键词
+     */
+    var searchKeyword = function (seedWord) {
+        wordName = seedWord;
+        if (seedWord == null || seedWord.trim().length == 0) {
+            return;
+        }
+        $("#tbody1").html("查找中...");
+        $.ajax({
+            url: '/getKRWords/getKRbySeedWord',
+            async: false,
+            data: {
+                seedWord: seedWord
+            },
+            dataType: 'json',
+            success: function (data, textStatus, jqXHR) {
+                var results = data.rows;
+                if (results != null && results.length > 0) {
+                    var trs = "";
+                    var _class = "";
+                    $.each(results, function (i, item) {
+                        if (i % 2 == 0) {
+                            _class = "list2_box1";
+                        } else {
+                            _class = "list2_box2";
+                        }
+                        var _tr = "<tr id='" + (wordType + i) + "' class='" + _class + "'><td><input type='checkbox' name='baiduKeyword'/></td>" +
+                                "<td>" + item.word + "</td>" +
+                                "<td>" + item.exactPV + "</td>" +
+                                "<td>" + item.competition + "</td>" +
+                                "<td>" + item.flag1 + "</td></tr>";
+                        trs += _tr;
+                    });
+                    $("#tbody1").empty();
+                    $("#tbody1").append(trs);
+                }
             }
         });
+    };
+
+
+    //添加选中按钮的事件
+    $("#addChooseKeyword").click(function () {
+        var checkBoxs = $("#tbody1 :checkbox");
+        var kwds = "";
+        for (var i = 0; i < checkBoxs.length; i++) {
+            if (checkBoxs[i].checked == true) {
+                var value = $(checkBoxs[i]).parents("tr").find("td:eq(1)").html();
+                kwds += value + "\n";
+            }
+        }
+        setNewkeywordToTextArea(kwds);
+    });
+
+    //添加全部按钮的单击事件
+    $("#addAllKeyword").click(function () {
+        var checkedTds1 = $("input[name=baiduKeyword]:checkbox");
+        var kwds = "";
+        for (var i = 0, l = checkedTds1.length; i < l; i++) {
+            kwds += $("#" + wordType + i).find("td").eq(1).text() + "\r";
+        }
+        setNewkeywordToTextArea(kwds);
+    });
+    $("#addedkwd").keyup(function () {
+        $("#keywordCount").html("已添加关键词（" + $("#addedkwd").val().trim().split("\n").length + "/500）");
+    });
+    function setNewkeywordToTextArea(kwds) {
+        $("#addedkwd").val(kwds);
+        $("#keywordCount").html("已添加关键词（" + $("#addedkwd").val().trim().split("\n").length + "/500）");
     }
-    return regionstr;
-}
-
-/**
- *推广计划的推广地域的确定按钮的事件
- */
-$("#ctrlbuttonregionOklabel").click(function () {
-    regions = getRegionsStr();
-    $("#updateRegionDialog").css("display", "none");
-});
 
 
-//loading
-var ajaxbg = $("#background,#progressBar");
-ajaxbg.hide();
-$(document).ajaxStart(function () {
-    ajaxbg.show();
-});
-$(document).ajaxStop(function () {
-    ajaxbg.fadeOut(1000);
-});
+    //完成按钮的事件
+    var saveChooseKeyword = function () {
+        //获取所有选中的关键词
+        var jsonArr = [];
+        var values = $("#addedkwd").val();
+        var kwds = $("#addedkwd").val().split("\n");
+        if (values == "") {
+//        alert("您没有选择关键词!");
+            quickCreatePlanAlertPrompt.show("您没有选择关键词!");
+            return;
+        }
+        if (kwds.length > 500) {
+//        alert("添加的关键词数量不能超过500个");
+            quickCreatePlanAlertPrompt.show("添加的关键词数量不能超过500个");
+            return;
+        }
+        for (var i = 0; i < kwds.length; i++) {
+            var entity1 = {};
+            entity1["accountId"] = "${sessionScope._accountId}";
+            entity1["keyword"] = kwds[i];
+            entity1["price"] = 1.0;
+            entity1["matchType"] = 1;
+            entity1["pause"] = false;
+            entity1["status"] = -1;
+            entity1["phraseType"] = 1;
+            entity1["localStatus"] = 1;
+            jsonArr.push(entity1);
+        }
+
+        if (jsonArr.length == 0) {
+//        alert("您没有选择关键词!");
+            quickCreatePlanAlertPrompt.show("您没有选择关键词!");
+            return;
+        }
+
+        $.ajax({
+            url: "/assistantCampaign/quickCreateCampaign?name=" + wordName + "&regions=" + getChooseRegions(),
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify(jsonArr),
+            async: false,
+            contentType: "application/json; charset=UTF-8",
+            success: function (data, textStatus, jqXHR) {
+                if (data == "success") {
+//                alert("添加成功!");
+                    quickCreatePlanAlertPrompt.show("添加成功!");
+                    top.dialog.getCurrent().close().remove();
+                }
+            }
+        });
+    };
+    function closeDialog() {
+        top.dialog.getCurrent().close().remove();
+    }
+
+    /**
+     *修改推广地域的单击事件
+     */
+    $("#updateRegion").click(function () {
+        $("#updateRegionDialog").show(0);
+    });
+
+
+    /***************************************************修改推广地域*******************************************************************/
+    /**
+     *使用账户推广地域的确定按钮的事件
+     */
+    var regions = "";
+    $("#Oklabel").click(function () {
+        regions = "";
+        $("#updateRegionDialog").css("display", "none");
+    });
+
+    function getChooseRegions() {
+        return regions;
+    }
+
+    function getRegionsStr() {
+        var region = $("input[name=region]");
+        var value = null;
+        region.each(function () {
+            if ($(this)[0].checked == true) {
+                value = $(this).val();
+            }
+        });
+
+        //0是全部地域,1是部分地域
+        var regionstr = "";
+        if (value == 0) {
+            regionstr += "全部区域" + ",";
+        } else if (value == 1) {
+            var leaf = $("#regionList").find("div[class=leaf]");
+            leaf.each(function () {
+                if ($(this).find("input[type=checkbox]")[0].checked == true) {
+                    regionstr += $(this).find("label").html() + ",";
+                }
+            });
+        }
+        return regionstr;
+    }
+
+    /**
+     *推广计划的推广地域的确定按钮的事件
+     */
+    $("#ctrlbuttonregionOklabel").click(function () {
+        regions = getRegionsStr();
+        $("#updateRegionDialog").css("display", "none");
+    });
+
+
+    //loading
+    var ajaxbg = $("#background,#progressBar");
+    ajaxbg.hide();
+    $(document).ajaxStart(function () {
+        ajaxbg.show();
+    });
+    $(document).ajaxStop(function () {
+        ajaxbg.fadeOut(1000);
+    });
 
 
 </script>

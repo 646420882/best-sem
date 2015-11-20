@@ -45,8 +45,8 @@
                 <h3>关键词目标</h3>
                 <div class="newkeyeord_title over">
                     <ul class="over" >
-                        <li><input type="radio" checked="checked" name="Target" class="current">选择推广计划、推广单元</li>
-                        <li><input type="radio"  name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>
+                        <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="Target" id="Target" class="current">选择推广计划、推广单元</label></li>
+                        <li><label class='checkbox-inlines'><input type="radio"  name="Target"  id="Targets" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</label></li>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over">

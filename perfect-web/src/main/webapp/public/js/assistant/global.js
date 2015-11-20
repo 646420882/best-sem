@@ -17,7 +17,41 @@ function Copy() {
 //    console.log($(".table-bordered").append(listnumber));
 //    $(".table-bordered").append(listnumber);
 //};
-
+//树右键
+var imageMenuData = [
+    [{
+        text: "添加关键词",
+        img: "../public/img/zs_function1.png"
+    }, {
+        text: "添加创意",
+        img: "../public/img/zs_function1.png",
+        func: function() {
+            $(this).css("padding", "10px");
+        }
+    }, {
+        text: "添加蹊径子链",
+        img: "../public/img/zs_function1.png",
+        func: function() {
+            $(this).css("background-color", "#beceeb");
+        }
+    }],
+    [{
+        text: "添加推广电话",
+        img: "../public/img/zs_function1.png",
+        func: function() {
+            var src = $(this).attr("src");
+            window.open(src.replace("/s512", ""));
+        }
+    }],
+    [{
+        text: "添加移动商桥",
+        img: "../public/img/zs_function1.png",
+        func: function() {
+            var src = $(this).attr("src");
+            window.open(src.replace("/s512", ""));
+        }
+    }]
+];
 /*=======================================公用函数=====================================*/
 /**
  * 点击推广计划树的时候调用
@@ -27,12 +61,12 @@ function Copy() {
 var nowChoose = null;
 var jsonData = {cid: null, aid: null, cn: null};
 function getNowChooseCampaignTreeData(treeNode) {
-
     if (treeNode.level == 0) {
         //点击的是父节点(推广计划)
         jsonData.cid = treeNode.id;
         jsonData.cn = treeNode.name;
         jsonData.aid = null;
+    /*    $(this).smartMenu(imageMenuData);*/
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
         jsonData.cid = treeNode.getParentNode().id;

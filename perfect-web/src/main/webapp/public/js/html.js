@@ -57,6 +57,18 @@ window.onload = function () {
     rDrag.init(document.getElementById('reachBudget_head'));
     rDrag.init(document.getElementById('downloadBox'));
     rDrag.init(document.getElementById('CheckCompletion'));
+    rDrag.init(document.getElementById('changeCreative'));
+    rDrag.init(document.getElementById('excludeIPChange'));
+    rDrag.init(document.getElementById('budgetChange'));
+    rDrag.init(document.getElementById('CampaignChange'));
+    rDrag.init(document.getElementById('uploadHead'));
+    rDrag.init(document.getElementById('RepeartChange'));
+    rDrag.init(document.getElementById('GusuanChange'));
+    rDrag.init(document.getElementById('setFdKeywordDiv'));
+    rDrag.init(document.getElementById('setExtensionDiv'));
+    rDrag.init(document.getElementById('setExcludeIpDiv'));
+    rDrag.init(document.getElementById('plan2'));
+    rDrag.init(document.getElementById('findOrReplaceH'));
 
 
 };
@@ -77,19 +89,6 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $("#download").css("display", "none");
     });
-    rDrag.init(document.getElementById('changeCreative'));
-    rDrag.init(document.getElementById('excludeIPChange'));
-    rDrag.init(document.getElementById('budgetChange'));
-    rDrag.init(document.getElementById('CampaignChange'));
-    rDrag.init(document.getElementById('uploadHead'));
-    rDrag.init(document.getElementById('RepeartChange'));
-    rDrag.init(document.getElementById('GusuanChange'));
-    rDrag.init(document.getElementById('setFdKeywordDiv'));
-    rDrag.init(document.getElementById('setExtensionDiv'));
-    rDrag.init(document.getElementById('setExcludeIpDiv'));
-    rDrag.init(document.getElementById('plan2'));
-    rDrag.init(document.getElementById('findOrReplaceH'));
-
 });
 
 /*******查找重复关键词**************/
@@ -202,10 +201,11 @@ $(document).ready(function () {
     $('.zhushou_menu ul li').click(function () {
         $(this).addClass('current').siblings().removeClass('current');
     });
-});
+});5
 /*******二级菜单****/
 $(document).ready(function () {
     /**推广助手自适应***/
+    console.log($(".assistant_right").offsetHeight);
     $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
     $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
     var $tab_li = $('.zh_menu2 li');
@@ -231,6 +231,10 @@ $(document).ready(function () {
 
 });
 
+$(window).resize(function() {
+    $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
+});
 /*******表格****/
 $(function () {
     var items = $(".list4 table tbody tr ");

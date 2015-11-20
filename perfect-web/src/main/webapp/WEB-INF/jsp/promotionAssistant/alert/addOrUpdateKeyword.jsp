@@ -10,7 +10,8 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
@@ -76,8 +77,10 @@
 
                 <div class="newkeyeord_title over">
                     <ul class="over">
-                        <li><input type="radio" checked="checked" name="Target" class="current">选择推广计划、推广单元</li>
-                        <li><input type="radio" name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>
+                        <li><label for="Target"><input type="radio" checked="checked" name="Target" id="Target"
+                                                       class="current">选择推广计划、推广单元</label></li>
+                        <li><label for="Targets"><input type="radio" name="Target" id="Targets" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</label>
+                        </li>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over">
@@ -108,7 +111,7 @@
                                             id="totalStr"></span>/<span id="maxLength">10000</span></span>
                                     </p>
 
-                                    <p><input type="checkbox" id="isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容&nbsp;<span
+                                    <p><label for="isReplace"><input type="checkbox" id="isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</label>&nbsp;<span
                                             style="color:red;">您的域名:&nbsp;</span><span
                                             id="doMain"></span></p>
                                     <%-- <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>--%>
@@ -136,17 +139,14 @@
                                     <p>例如：t，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
                                     <textarea id="specialText" onkeyup="getColumn(this)"></textarea>
 
+                                    <p><span class="fl">或者从相同格式的csv文件上传：</span><input type="file" class="fl"
+                                                                                      name="fileName" id="suFile">&nbsp;<span
+                                            class="fl">(<20万行)</span> <span id="sError" class="fr">
+                                    <span id="nowColumn">0</span> /  <span id="sMaxColumns">5000</span>
+                                </span></p>
 
-                                    <p id="sError">
-                                        不超过：<span id="nowColumn">0</span>
-                                        <
-                                        <span id="sMaxColumns">5000</span>
+                                    <p><label for="csvReplace"><input type="checkbox" id="csvReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</label>
                                     </p>
-
-                                    <p>或者从相同格式的csv文件上传：<input type="file" name="fileName" id="suFile">&nbsp;(<20万行)
-                                    </p>
-
-                                    <p><input type="checkbox" id="csvReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
 
                                 </div>
                                 <div class="main_bottom" style="margin:0px;  background:none;">
@@ -188,10 +188,14 @@
                                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
                                          aria-labelledby="headingOne">
                                         <div class="panel-body">
-                                            <p><input type="radio" name="insertRadio" value="1" checked="checked">添加这些关键词
+                                            <p><label for="insertRadio"><input type="radio" name="insertRadio"
+                                                                               id="insertRadio" value="1"
+                                                                               checked="checked">添加这些关键词</label>
                                             </p>
 
-                                            <p><input type="radio" name="insertRadio" value="0">不添加这些关键词</p>
+                                            <p><label for="insertRadios"><input type="radio" name="insertRadio"
+                                                                                id="insertRadios"
+                                                                                value="0">不添加这些关键词</label></p>
                                             <table border="0" cellspacing="0" width="100%" id="createTable"
                                                    class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                                 <thead>
@@ -213,7 +217,7 @@
                                     </div>
                                 </div>
 
-                            </div >
+                            </div>
                             <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="headingTwo">
@@ -286,8 +290,9 @@
         <h2 id="addOrUpdateKeyWordAlertPromptTitle">
             <span class="fl alert_span_title" id="addOrUpdateKeyWordAlertPrompt_title"></span>
             <%--<a href="#" class="close">×</a></h2>--%>
-        <%--<a href="#" onclick="addOrUpdateKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+            <%--<a href="#" onclick="addOrUpdateKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
         </h2>
+
         <div class="mainlist">
             <div class="w_list03">
                 <ul class="zs_set">
@@ -308,25 +313,28 @@
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var addOrUpdateKeyWordAlertPrompt = {
-        show:function(content){
+        show: function (content) {
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
-            });/*蒙版显示*/
-            console.log($(".TB_overlayBG_alert").attr("display"))
+            });
+            /*蒙版显示*/
             $("#addOrUpdateKeyWordAlertPrompt").css({
                 left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
                 top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
-            });/*显示提示DIV*/
+            });
+            /*显示提示DIV*/
             $("#addOrUpdateKeyWordAlertPrompt_title").html(content);
         },
-        hide:function(){
+        hide: function () {
             $(".TB_overlayBG_alert").css({
                 display: "none"
-            });/*蒙版显示*/
+            });
+            /*蒙版显示*/
             $("#addOrUpdateKeyWordAlertPrompt").css({
                 display: "none"
-            });/*显示提示DIV*/
+            });
+            /*显示提示DIV*/
         }
     }
     var selected_index = 0;
