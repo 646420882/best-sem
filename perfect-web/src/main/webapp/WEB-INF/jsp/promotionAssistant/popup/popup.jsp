@@ -13,9 +13,9 @@
     <div class="mainlist">
         您希望下载账户的哪个部分？
         <ul class="zs_set">
-            <li><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</li>
-            <li><input type="radio" name="no1">&nbsp; 已下载的推广计划</li>
-            <li><input type="radio" name="no1">&nbsp; 从最新的推广计划列表中选择</li>
+            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" name="no1">&nbsp; 已下载的推广计划</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" name="no1">&nbsp; 从最新的推广计划列表中选择</label></li>
         </ul>
         <div class="zs_sets over">
             <div id="allCampaign" class="zs_ses1" style="overflow: auto">
@@ -49,8 +49,8 @@
     <div class="mainlist">
         您希望上传账户的哪个部分？
         <ul class="zs_set">
-            <li><input type="radio" value="all" name="up1">&nbsp; 所有计划</li>
-            <li><input type="radio" value="opreated" name="up1">&nbsp; 从推广计划列表中选择</li>
+            <li><label class='checkbox-inlines'><input type="radio" value="all" name="up1">&nbsp; 所有计划</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" value="opreated" name="up1">&nbsp; 从推广计划列表中选择</label></li>
         </ul>
         <div class="zs_sets over">
             <div id="allCamp" class="zs_ses1" style="overflow: auto">
@@ -81,24 +81,24 @@
         <span>请指定重复关键词的标准，已删除的关键词不会被当作重复关键词。</span>
         <ul class="zs_set">
             <li><h3>匹配模式</h3></li>
-            <li><input type="radio" checked="checked" name="ms" class="ms">&nbsp; 重复的关键词须为相同的匹配模式
+            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms" class="ms">&nbsp; 重复的关键词须为相同的匹配模式</label>
                 <div class="zs_sets2 over hides">
-                    <input type="checkbox" name="ms2">&nbsp; 所有短语模式视为湘潭
+                    <label class='checkbox-inlines'><input type="checkbox" name="ms2">&nbsp; 所有短语模式视为湘潭</label>
                 </div>
             </li>
             <li></li>
-            <li><input type="radio" checked="checked" name="ms">&nbsp; 重复的关键词可为不同的匹配模式</li>
+            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms">&nbsp; 重复的关键词可为不同的匹配模式</label></li>
         </ul>
         <ul class="zs_set">
             <li><h3>重复关键词位置</h3></li>
-            <li><input type="radio" checked="checked" name="ms3">&nbsp; 在同一推广单元内</li>
-            <li><input type="radio" name="ms3">&nbsp; 在同一推广计划内（所有推广单元）</li>
-            <li><input type="radio" name="ms3">&nbsp; 整个账户内（所有推广计划）</li>
+            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms3">&nbsp; 在同一推广单元内</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" name="ms3">&nbsp; 在同一推广计划内（所有推广单元）</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" name="ms3">&nbsp; 整个账户内（所有推广计划）</label></li>
         </ul>
         <ul class="zs_set">
             <li><h3>不显示以下关键词</h3></li>
-            <li><input type="checkbox" checked="checked" name="ms4">&nbsp; 已删除的推广计划和推广单元内的重复关键词</li>
-            <li><input type="checkbox" name="ms4">&nbsp; 已暂停推广的推广计划和推广单元内的重复关键词</li>
+            <li><label class='checkbox-inlines'><input type="checkbox" checked="checked" name="ms4">&nbsp; 已删除的推广计划和推广单元内的重复关键词L</label></li>
+            <li><label class='checkbox-inlines'><input type="checkbox" name="ms4">&nbsp; 已暂停推广的推广计划和推广单元内的重复关键词</label></li>
 
         </ul>
     </div>

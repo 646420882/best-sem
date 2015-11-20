@@ -28,9 +28,9 @@ function loadOperateCampainList() {
             $.each(results, function (i, item) {
                 var _li = "";
                 if (item.campaignId != undefined) {
-                    _li = "<li><input id='" + item.campaignId + "' type='checkbox' name='camp_o'>" + item.campaignName + "</li>";
+                    _li = "<li><label class='checkbox-inlines'><input id='" + item.campaignId + "' type='checkbox' name='camp_o'>" + item.campaignName + "</label></li>";
                 } else {
-                    _li = "<li><input id='" + item.id + "' type='checkbox' name='camp_o'>" + item.campaignName + "</li>";
+                    _li = "<li><label class='checkbox-inlines'><input id='" + item.id + "' type='checkbox' name='camp_o'>" + item.campaignName + "</label></li>";
                 }
                 $("#existsCamp ul").append(_li);
             });

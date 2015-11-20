@@ -98,7 +98,7 @@ table tr, table tr td {
     -o-background-size: cover;
     background-size: cover;
     vertical-align: middle;
-    z-index: 120;
+    z-index: 998;
     min-width: 700px;
 }
 
@@ -111,10 +111,11 @@ table tr, table tr td {
 
 .top_mid {
     width: 30%;
+    height: 94px;
+    line-height:94px;
 }
 
 .logo {
-    margin-top: 22px;
     padding-left: 2%;
     padding-left: 20px;
 }

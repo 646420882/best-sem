@@ -1115,9 +1115,11 @@
     color: #000;
     font-weight: bold;
 }
-.j_l_top .question{
-    margin-top:2px;
+
+.j_l_top .question {
+    margin-top: 2px;
 }
+
 .j_l_top a {
     color: #7797d0;
 }
@@ -1799,7 +1801,7 @@ ul.ztree.zTreeDragUL {
 }
 
 /* 弹出层 */
-.box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .box10 , .box11{
+.box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .box10, .box11 {
     min-width: 400px;
     *max-width: 600px;
     position: absolute;
@@ -1835,22 +1837,26 @@ ul.ztree.zTreeDragUL {
     border-bottom: 1px solid #e5e5e5;
 }
 
-.box.alertBox h2{
+.box.alertBox h2 {
     height: auto;
     overflow: hidden;
     line-height: 20px;
     padding: 15px 12px;
 }
-.box.alertBox .mainlist{
+
+.box.alertBox .mainlist {
     padding: 0;
 }
-.box.alertBox .mainlist ul{
+
+.box.alertBox .mainlist ul {
     margin-top: 15px;
     margin-bottom: 15px;
 }
-.box.alertBox .mainlist ul li{
+
+.box.alertBox .mainlist ul li {
     margin-bottom: 0;
 }
+
 #downloadData, .box5 {
     *width: 410px;
 }
@@ -2364,7 +2370,7 @@ h2 .close {
 }
 
 .del {
-    background: #c3def9;
+    text-decoration: line-through
 }
 
 .editor {
@@ -4284,7 +4290,8 @@ input[type=checkbox]:focus {
 #sPreview h3 {
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    font-size: 14px;
 }
 
 .ui-dialog-header {
@@ -4670,7 +4677,7 @@ input[type=checkbox]:focus {
     border-bottom: 1px solid #ddd;
 }
 
-#tbodyClick_campaign input {
+#tbodyClick_campaign input, #tbodyClick2 input {
     line-height: 20px;
 }
 
@@ -4694,5 +4701,16 @@ input[type=checkbox]:focus {
 
 .tooltip.bottom .tooltip-arrow {
     border-bottom-color: #fff;
+    /*border: 1px solid #f6f6f6;*/
+}
+
+body .ui-tooltip {
+    background: #fff;
+    color: #000;
     border: 1px solid #f6f6f6;
+    -webkit-box-shadow: #666 0px 0px 10px;
+    -moz-box-shadow: #666 0px 0px 10px;
+    box-shadow: #666 0px 0px 10px;
+    font-weight: normal;
+    z-index: 10000;
 }
