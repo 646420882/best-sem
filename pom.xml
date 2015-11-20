@@ -5,7 +5,7 @@
 
     <groupId>com.perfect</groupId>
     <artifactId>perfect-parent</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2</version>
 
     <packaging>pom</packaging>
 
@@ -64,9 +64,9 @@
 
     <properties>
         <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
-        <springframework-version>4.0.7.RELEASE</springframework-version>
+        <springframework-version>4.1.8.RELEASE</springframework-version>
         <spring-data-mongo-version>1.7.2.RELEASE</spring-data-mongo-version>
-        <spring-security-version>3.2.4.RELEASE</spring-security-version>
+        <spring-security-version>3.2.9.RELEASE</spring-security-version>
         <cglib-version>3.1</cglib-version>
         <guava-version>18.0</guava-version>
         <fasterxml-jackson-version>2.6.3</fasterxml-jackson-version>

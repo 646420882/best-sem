@@ -6,9 +6,10 @@
     <parent>
         <groupId>com.perfect</groupId>
         <artifactId>perfect-parent</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2</version>
     </parent>
     <artifactId>perfect-service</artifactId>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <dependencies>
