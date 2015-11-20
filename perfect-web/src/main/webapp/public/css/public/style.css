@@ -4619,6 +4619,12 @@ input[type=checkbox]:focus {
 }
 
 .daterangepicker td.in-range {
+     background-color: #01aef0;
+     color: white;
+     border-radius: 100%;
+ }
+.daterangepicker td.in-range:hover {
+
     color: #01aef0;
     border-radius: 100%;
 }

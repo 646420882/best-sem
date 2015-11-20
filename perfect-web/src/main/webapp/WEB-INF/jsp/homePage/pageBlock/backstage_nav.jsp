@@ -67,7 +67,7 @@
         }
     }
     $(function () {
-        rDrag.init(document.getElementById('baiduAccountAlertPromptTitle'));
+//        rDrag.init(document.getElementById('baiduAccountAlertPromptTitle'));
         $(".backstage_menu>ul>li>a").each(function () {
             if ($($(this))[0].href == String(window.location)) {
                 $(".backstage_menu>ul>li").removeClass("current");

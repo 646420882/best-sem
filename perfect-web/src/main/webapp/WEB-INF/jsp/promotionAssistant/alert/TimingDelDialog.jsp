@@ -68,7 +68,7 @@
         top.dialog.getCurrent().close().remove();
     }
     $(function () {
-        rDrag.init(document.getElementById('timingDelDialogAlertPromptTitle'));
+//        rDrag.init(document.getElementById('timingDelDialogAlertPromptTitle'));
         $("div.daterangepicker").css({"display": "block", "top": "0px", "right": "auto"});
         $(".daterangepicker .ranges li:last").css({"display": "none"});
         $(".minuteselect").css({"display": "none"});

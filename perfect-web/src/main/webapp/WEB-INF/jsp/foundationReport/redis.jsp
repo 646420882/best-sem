@@ -20,7 +20,9 @@
         .displayNone {
             display: none;
         }
-
+        .fl{
+            float: left;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +45,6 @@
                 <div id="appendtext"></div>
             </li>
         </ul>
-
     </div>
 </div>
 <div class="backstage_concent mid over">

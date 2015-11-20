@@ -1894,8 +1894,10 @@ $(function () {
 
     /********************************搜索词报告******************************************/
     $("#createReport").click(function () {
-        var _startDate = $('.range-start').datepicker('getDate');
-        var _endDate = $('.range-end').datepicker('getDate');
+        var _startDate = daterangepicker_start_date_t;
+        var _endDate = daterangepicker_end_date_t;
+        //var _startDate = $('.range-start').datepicker('getDate');
+        //var _endDate = $('.range-end').datepicker('getDate');
         var levelOfDetails = 12;//分析层级
 
         var device = $("#putinInfo").val();//投放设备
