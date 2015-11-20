@@ -10,7 +10,7 @@
 <head>
     <title>大数据智能营销</title>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css/css/public/public.css/css/accountCss/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
@@ -20,7 +20,9 @@
         .displayNone {
             display: none;
         }
-
+        .fl{
+            float: left;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +45,6 @@
                 <div id="appendtext"></div>
             </li>
         </ul>
-
     </div>
 </div>
 <div class="backstage_concent mid over">
@@ -78,10 +79,12 @@
                 },
                 success: function (data) {
                     if(data.rows == 1){
-                        alert("删除成功！！！");
+//                        alert("删除成功！！！");
+                        baiduAccountAlertPrompt.show("删除成功！！！");
                         getdata();
                     }else{
-                        alert("删除失败！！！")
+//                        alert("删除失败！！！")
+                        baiduAccountAlertPrompt.show("删除失败！！！")
                     }
                 }
             });

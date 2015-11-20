@@ -9,8 +9,10 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/zTreeStyle/zTreeStyle.css">
     <style type="text/css">
@@ -67,7 +69,8 @@
 
                 <div class="newkeyeord_title over">
                     <ul class="over">
-                        <li><input type="radio" checked="checked" name="Target" onclick="stepOne();">选择推广计划</li>
+                        <li><label for="Target"><input type="radio" checked="checked" name="Target" id="Target"
+                                                       onclick="stepOne();">选择推广计划</label></li>
                         <%--<li><input type="radio" name="Target" onclick="stepTwo();">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>--%>
                     </ul>
                     <div class="newkeyword_content over">
@@ -104,7 +107,7 @@
                                     <%--</p>--%>
                                 </div>
 
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px;background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" onclick="nextStep();">下一步</li>
@@ -117,31 +120,31 @@
 
 
                         <%--<div class="containers2 over inputKwdInfoDiv">--%>
-                            <%--<div class="newkeyword_right fr over" style="width: 100%;">--%>
-                                <%--<h3> 删除关键词 </h3>--%>
+                        <%--<div class="newkeyword_right fr over" style="width: 100%;">--%>
+                        <%--<h3> 删除关键词 </h3>--%>
 
-                                <%--<p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>--%>
+                        <%--<p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>--%>
 
-                                <%--<div class="newkeyword_right_mid">--%>
-                                    <%--<p>格式：推广计划名称（必填），推广单元名称（必填），关键词名称（必填）</p>--%>
+                        <%--<div class="newkeyword_right_mid">--%>
+                        <%--<p>格式：推广计划名称（必填），推广单元名称（必填），关键词名称（必填）</p>--%>
 
-                                    <%--<p>例如：北京推广，礼品，鲜花</p>--%>
-                                    <%--<textarea id="deleteKwdText2"></textarea>--%>
+                        <%--<p>例如：北京推广，礼品，鲜花</p>--%>
+                        <%--<textarea id="deleteKwdText2"></textarea>--%>
 
-                                    <%--<p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)--%>
-                                    <%--</p>--%>
+                        <%--<p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)--%>
+                        <%--</p>--%>
 
-                                <%--</div>--%>
+                        <%--</div>--%>
 
-                                <%--<div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">--%>
-                                    <%--<div class="w_list03">--%>
-                                        <%--<ul>--%>
-                                            <%--<li class="current delKwdByinputNext">下一步</li>--%>
-                                            <%--<li class="close">取消</li>--%>
-                                        <%--</ul>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                        <%--<div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">--%>
+                        <%--<div class="w_list03">--%>
+                        <%--<ul>--%>
+                        <%--<li class="current delKwdByinputNext">下一步</li>--%>
+                        <%--<li class="close">取消</li>--%>
+                        <%--</ul>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
 
                     </div>
@@ -154,25 +157,43 @@
                     <div class="newkeword_end">
                         <ul id="creativeMultivalidateDelKwdUl">
                         </ul>
-                        <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <p><span style="font-weight: bold; line-height:30px;">新增的单元：<span
-                                    id="criSize">0</span></span></p>
-                            <table border="0" cellspacing="0" width="100%" id="createTable"
-                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
-                                <thead>
-                                <tr class="list02_top">
-                                    <th>&nbsp;推广计划</th>
-                                    <th>&nbsp;推广单元</th>
-                                    <th>&nbsp;启用</th>
-                                    <th>&nbsp;出价</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbodyClick2">
-                                </tbody>
-                            </table>
+                        <div style="width:99%;height: 340px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
+                            <div class="panel-group" id="adgroupMutliaccordion" role="tablist"
+                                 aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#adgroupMutliaccordion"
+                                               href="#adgroupMutlicollapseOne" aria-expanded="true"
+                                               aria-controls="adgroupMutlicollapseOne">
+                                                <span class="mycollapse">[ - ] </span>
+                                            <span style="font-weight: bold; line-height:30px;">新增的单元：<span
+                                                    id="criSize">0</span></span></a>
+                                        </h4>
+                                    </div>
+                                    <div id="adgroupMutlicollapseOne" class="panel-collapse collapse in" role="tabpanel"
+                                         aria-labelledby="headingOne">
+                                        <div class="panel-body">
+                                            <table border="0" cellspacing="0" width="100%" id="createTable"
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                <thead>
+                                                <tr class="list02_top">
+                                                    <th>&nbsp;推广计划</th>
+                                                    <th>&nbsp;推广单元</th>
+                                                    <th>&nbsp;启用</th>
+                                                    <th>&nbsp;出价</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tbodyClick2">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                    <div class="main_bottom" style="margin:0px;  background:none;">
                         <div class="w_list03">
                             <ul>
                                 <li class="current delKwdLastStep" onclick="preStep();">上一步</li>
@@ -186,12 +207,55 @@
             </div>
         </div>
     </div>
+    <%--alert提示类--%>
+    <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="adgroupMutliAlertPrompt">
+        <h2 id="adgroupMutliAlertPromptTitle">
+            <span class="fl alert_span_title" id="adgroupMutliAlertPrompt_title"></span>
+            <%--<a href="#" class="close">×</a></h2>--%>
+            <%--<a href="#" onclick="adgroupMutliAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+        </h2>
+
+        <div class="mainlist">
+            <div class="w_list03">
+                <ul class="zs_set">
+                    <li class="current" onclick="adgroupMutliAlertPrompt.hide()">确认</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var adgroupMutliAlertPrompt = {
+        show: function (content) {
+            $(".TB_overlayBG_alert").css({
+                display: "block", height: $(document).height()
+            });
+            /*蒙版显示*/
+            $("#adgroupMutliAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });
+            /*显示提示DIV*/
+            $("#adgroupMutliAlertPrompt_title").html(content);
+        },
+        hide: function () {
+            $(".TB_overlayBG_alert").css({
+                display: "none"
+            });
+            /*蒙版显示*/
+            $("#adgroupMutliAlertPrompt").css({
+                display: "none"
+            });
+            /*显示提示DIV*/
+        }
+    }
     var settingCreativeMutli = {
         check: {
             enable: true
@@ -210,7 +274,14 @@
     };
     var columnSize = 0;
     $(function () {
+        rDrag.init(document.getElementById('adgroupMutliAlertPromptTitle'));
         initMutliTree();
+        $('#adgroupMutliaccordion').on('show.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[ + ]</span>")
+        })
+        $('#adgroupMutliaccordion').on('hide.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[-]</span>")
+        })
 
     });
     function initMutliTree() {
@@ -355,16 +426,19 @@
                 var c0 = txtSize[j].split(",")[0] != undefined ? txtSize[j].split(",")[0] : "";
                 var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
                 if (parseInt(getChar(c0)) > 30 || parseInt(getChar(c0)) == 0) {
-                    alert("第" + (j + 1) + "行单元名长度不能超过30个字符，一个汉字占两个字符,且不为空");
+//                    alert("第" + (j + 1) + "行单元名长度不能超过30个字符，一个汉字占两个字符,且不为空");
+                    adgroupMutliAlertPrompt.show("第" + (j + 1) + "行单元名长度不能超过30个字符，一个汉字占两个字符,且不为空");
                     return;
                 }
                 if (c2 != "") {
                     if (!/^-?\d+\.?\d*$/.test(c2)) {
-                        alert("第" + (j + 1) + "行输入正确的单元出价！");
+//                        alert("第" + (j + 1) + "行输入正确的单元出价！");
+                        adgroupMutliAlertPrompt.show("第" + (j + 1) + "行输入正确的单元出价！");
                         return;
                     }
                 } else {
-                    alert("第" + (j + 1) + "行单元出价不能为空!");
+//                    alert("第" + (j + 1) + "行单元出价不能为空!");
+                    adgroupMutliAlertPrompt.show("第" + (j + 1) + "行单元出价不能为空!");
                     return;
                 }
             }
@@ -390,7 +464,8 @@
                 }
             }
         } else {
-            alert("请选择推广计划或者输入单元信息！");
+//            alert("请选择推广计划或者输入单元信息！");
+            adgroupMutliAlertPrompt.show("请选择推广计划或者输入单元信息！");
         }
     }
     /**
@@ -470,7 +545,8 @@
                     status: -1
                 }, function (rs) {
                     if (rs == "1") {
-                        alert("操作成功");
+//                        alert("操作成功");
+                        adgroupMutliAlertPrompt.show("操作成功");
                         top.dialog.getCurrent().close().remove();
                     }
                 });

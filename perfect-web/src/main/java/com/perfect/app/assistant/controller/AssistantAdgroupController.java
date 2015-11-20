@@ -5,13 +5,16 @@ import com.perfect.core.AppContext;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.AdgroupBackUpService;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,17 +61,17 @@ public class AssistantAdgroupController extends WebContextSupport {
         if (cid.length() > OBJ_SIZE) {
             if (cid != "" || !cid.equals("")) {
                 parms.put(MongoEntityConstants.OBJ_CAMPAIGN_ID, cid);
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,null);
             } else {
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,null);
             }
             setCampaignNameByStringObjId((List<AdgroupDTO>) pagerInfo.getList());
         } else {
             if (cid != "" || !cid.equals("")) {
                 parms.put(MongoEntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,null);
             } else {
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,null);
             }
             setCampaignNameByLongId((List<AdgroupDTO>) pagerInfo.getList());
         }
@@ -235,6 +238,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                 adgroupDTOFind.setMaxPrice(maxPrice);
                 adgroupDTOFind.setNegativeWords(nn);
                 adgroupDTOFind.setExactNegativeWords(ne);
+                adgroupDTOFind.setPause(p);
                 adgroupService.updateByObjId(adgroupDTOFind);
                 writeHtml(SUCCESS, response);
             } else {
@@ -246,6 +250,7 @@ public class AssistantAdgroupController extends WebContextSupport {
                 adgroupDTOFind.setMaxPrice(maxPrice);
                 adgroupDTOFind.setNegativeWords(nn);
                 adgroupDTOFind.setExactNegativeWords(ne);
+                adgroupDTOFind.setPause(p);
                 adgroupService.update(adgroupDTOFind, adgroupDTO);
                 writeHtml(SUCCESS, response);
             }
@@ -424,10 +429,19 @@ public class AssistantAdgroupController extends WebContextSupport {
                 add(aid);
             }});
             if (returnAids.size() > 0) {
-                returnAids.stream().forEach(s -> {
-                    adgroupService.update(aid, s);
-                });
-                return writeMapObject(MSG, SUCCESS);
+                int error = 0;
+                for (AdgroupDTO a : returnAids) {
+                    if (a.getAdgroupId() != 0) {
+                        adgroupService.update(aid, a);
+                    } else {
+                        error++;
+                    }
+                }
+                if (error > 0) {
+                    return writeMapObject(MSG, "单元部分上传失败，请检查单元名是否合法，重复等条件...");
+                } else {
+                    return writeMapObject(MSG, SUCCESS);
+                }
             } else {
                 return writeMapObject(MSG, "noUp");
             }
@@ -457,28 +471,57 @@ public class AssistantAdgroupController extends WebContextSupport {
     }
 
     @RequestMapping(value = "/uploadAddByUp")
-    public ModelAndView uploadAddByUp(@RequestParam(value = "aid")String aid){
-        List<AdgroupDTO> adgroupDTOs=adgroupService.uploadAddByUp(aid);
-        if(adgroupDTOs.size()>0){
-            adgroupDTOs.stream().forEach(s ->adgroupService.update(aid, s));
-            return  writeMapObject(MSG,SUCCESS);
+    public ModelAndView uploadAddByUp(@RequestParam(value = "aid") String aid) {
+        List<AdgroupDTO> adgroupDTOs = adgroupService.uploadAddByUp(aid);
+        if (adgroupDTOs.size() > 0) {
+            adgroupDTOs.stream().forEach(s -> adgroupService.update(aid, s));
+            return writeMapObject(MSG, SUCCESS);
         }
-        return writeMapObject(MSG,"级联上传失败");
+        return writeMapObject(MSG, "级联上传失败");
     }
 
     @RequestMapping(value = "/getCampBgt")
-    public ModelAndView getCampBgt(@RequestParam(value = "cid")String cid){
-        Double bgt=0.0;
-        try{
-            if (cid.length()>OBJ_SIZE){
-                bgt= adgroupService.getCampBgt(cid);
-            }else{
-                bgt=adgroupService.getCampBgt(Long.parseLong(cid));
+    public ModelAndView getCampBgt(@RequestParam(value = "cid") String cid) {
+        Double bgt = 0.0;
+        try {
+            if (cid.length() > OBJ_SIZE) {
+                bgt = adgroupService.getCampBgt(cid);
+            } else {
+                bgt = adgroupService.getCampBgt(Long.parseLong(cid));
             }
-            return writeMapObject(DATA,bgt);
-        }catch (Exception e){
+            return writeMapObject(DATA, bgt);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return writeMapObject(DATA,bgt);
+        return writeMapObject(DATA, bgt);
     }
+
+    @RequestMapping(value = "/filterSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView filterSearch(@RequestBody SearchFilterParam sp, HttpServletResponse response) {
+        PagerInfo pagerInfo = null;
+        String cid = sp.getCid();
+        Integer nowPage = 1;
+        Integer pageSize = 1000;
+        Map<String, Object> parms = new HashMap<>();
+        if (cid.length() > OBJ_SIZE) {
+            if (cid != "" || !cid.equals("")) {
+                parms.put(MongoEntityConstants.OBJ_CAMPAIGN_ID, cid);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,sp);
+            } else {
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,sp);
+            }
+            setCampaignNameByStringObjId((List<AdgroupDTO>) pagerInfo.getList());
+        } else {
+            if (cid != "" || !cid.equals("")) {
+                parms.put(MongoEntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,sp);
+            } else {
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,sp);
+            }
+            setCampaignNameByLongId((List<AdgroupDTO>) pagerInfo.getList());
+        }
+        writeJson(pagerInfo, response);
+        return null;
+    }
+
 }

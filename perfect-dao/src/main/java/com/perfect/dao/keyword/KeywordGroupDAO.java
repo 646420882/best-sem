@@ -8,10 +8,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by baizz on 2014-8-21.
- * 2014-12-2 refactor
+ * Created on 2014-08-21.
+ *
+ * @author dolphineor
+ * @update 2015-09-28
  */
 public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, String> {
+
+    String LEXICON_TRADE = "tr";
+
+    String LEXICON_CATEGORY = "cg";
+
+    String LEXICON_GROUP = "gr";
+
+    String LEXICON_KEYWORD = "kw";
+
+    String LEXICON_URL = "url";
 
     /**
      * 查询行业词库下的类别
@@ -19,14 +31,22 @@ public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, String> {
      * @param trade
      * @return
      */
-    List<? extends Object> findCategories(String trade);
+    List<?> findCategories(String trade);
+
+    /**
+     * <p>查询行业词库下的二级目录.
+     *
+     * @param categories
+     * @return
+     */
+    List<?> findSecondDirectoryByCategories(List<String> categories);
 
     /**
      * 加载行业库
      *
      * @return
      */
-    List<? extends Object> findTr();
+    List<?> findTr();
 
     /**
      * 添加行业库数据
@@ -41,7 +61,7 @@ public interface KeywordGroupDAO extends HeyCrudRepository<LexiconDTO, String> {
      * @param params
      * @return
      */
-    int getCurrentRowsSize(Map<String, Object> params);
+    long getCurrentRowsSize(Map<String, Object> params);
 
     /**
      * 分页查询行业库

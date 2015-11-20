@@ -1,4 +1,8 @@
-#perfect-SEM
+#best-sem
 
-	1. helloword
-	2. goodbyeworld
+搜客Web部署说明
+-------------
+
+1. 开发版本: ```./deploy-runner.sh -e dev -c best-sem-web-dev -m 2g```
+2. 测试版本: ```./deploy-runner.sh -e prod -c best-sem-web-beta -p 8081```
+3. 投入生产使用的版本: ```./deploy-runner.sh -e prod -c best-sem-web -m 16g```

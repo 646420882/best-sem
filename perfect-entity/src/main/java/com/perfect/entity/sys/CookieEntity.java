@@ -15,13 +15,13 @@ public class CookieEntity {
     private String id;
 
     @Field("c")
-    private String cookie;
+    private String cookie;//cookie值
 
     @Field("k")
-    private String castk;
+    private String castk;//百度的代码表示
 
     @Field("i")
-    private boolean idle;
+    private boolean idle;//是否空闲
 
     @Field("f")
     private long finishTime;    //下次什么时候可以使用该cookie

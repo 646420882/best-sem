@@ -11,8 +11,8 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
@@ -170,14 +170,14 @@
                         notEmpty: {
                             message: '密码不能为空'
                         },
-                        /*regexp: {
-                            regexp: /^[a-zA-Z0-9_!@#$\.]+$/,
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
                             message: '密码包括数字、字母和下划线'
-                        },*/
+                        },
                         stringLength: {
-                            min: 6,
-                            max: 21,
-                            message: '密码字段须大于6且小于21'
+                            min: 4,
+                            max: 14,
+                            message: '密码字段须大于4且小于14'
                         }
                         /*identical: {
                          field: 'confirmPassword',

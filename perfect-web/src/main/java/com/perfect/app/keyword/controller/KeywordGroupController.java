@@ -1,6 +1,7 @@
 package com.perfect.app.keyword.controller;
 
 import com.perfect.service.KeywordGroupService;
+import com.perfect.utils.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,19 +69,28 @@ public class KeywordGroupController {
      * 从系统词库获取关键词
      *
      * @param trade
-     * @param category
+     * @param categories
+     * @param groups
      * @param skip
      * @param limit
      * @return
      */
     @RequestMapping(value = "/p", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getKeywordFromSystem(@RequestParam(value = "trade", required = false) String trade,
-                                             @RequestParam(value = "category", required = false) String category,
+    public ModelAndView getKeywordFromSystem(@RequestParam(value = "trade") String trade,
+                                             @RequestParam(value = "categories", required = false) String categories,
+                                             @RequestParam(value = "groups", required = false) String groups,
                                              @RequestParam(value = "skip", required = false, defaultValue = "0") Integer skip,
                                              @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
                                              @RequestParam(value = "status", required = false, defaultValue = "0") Integer status) {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        Map<String, Object> values = keywordGroupService.getKeywordFromSystem(trade, category, skip, limit, status);
+        List<String> _categories = null;
+        if (categories != null && !Objects.equals("[]", categories))
+            _categories = JSONUtils.getObjectListByJson(categories, String.class);
+        List<String> _groups = null;
+        if (groups != null && !Objects.equals("[]", groups))
+            _groups = JSONUtils.getObjectListByJson(groups, String.class);
+
+        Map<String, Object> values = keywordGroupService.getKeywordFromSystem(trade, _categories, _groups, skip, limit, status);
         jsonView.setAttributesMap(values);
         return new ModelAndView(jsonView);
     }
@@ -99,6 +109,16 @@ public class KeywordGroupController {
         return new ModelAndView(jsonView);
     }
 
+    @RequestMapping(value = "/findKeywordByCategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getKeywordGroup(@RequestParam String categories) {
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        List<String> _categories = JSONUtils.getObjectListByJson(categories, String.class);
+        Map<String, Object> values = keywordGroupService.findKeywordByCategories(_categories);
+        jsonView.setAttributesMap(values);
+
+        return new ModelAndView(jsonView);
+    }
+
     /**
      * 下载凤巢词库CSV文件
      *
@@ -106,16 +126,15 @@ public class KeywordGroupController {
      * @return
      */
     @RequestMapping(value = "/downloadBaiduCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView downloadBaiduCSV(HttpServletResponse response,
-                                         @RequestParam(value = "seedWords", required = false) String seedWords,
-                                         @RequestParam(value = "krFileId") String krFileId) throws IOException {
+    public void downloadBaiduCSV(HttpServletResponse response,
+                                 @RequestParam(value = "seedWords", required = false) String seedWords,
+                                 @RequestParam(value = "krFileId") String krFileId) throws IOException {
         List<String> seedWordList = new ArrayList<>(Arrays.asList(seedWords.split(",")));
         String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
         response.addHeader("Content-Disposition", "attachment;filename=" + filename);
         try (OutputStream os = response.getOutputStream()) {
             keywordGroupService.downloadBaiduCSV(seedWordList, krFileId, os);
         }
-        return null;
     }
 
     /**
@@ -123,19 +142,23 @@ public class KeywordGroupController {
      *
      * @param response
      * @param trade
-     * @param category
+     * @param categories
+     * @param groups
      * @return
      */
     @RequestMapping(value = "/downloadCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView downloadCSV(HttpServletResponse response,
-                                    @RequestParam(value = "trade", required = false) String trade,
-                                    @RequestParam(value = "category", required = false) String category) throws IOException {
+    public void downloadCSV(HttpServletResponse response,
+                            @RequestParam(value = "trade") String trade,
+                            @RequestParam(value = "categories", required = false) String categories,
+                            @RequestParam(value = "groups", required = false) String groups) throws IOException {
+        List<String> _categories = JSONUtils.getObjectListByJson(categories, String.class);
+        List<String> _groups = JSONUtils.getObjectListByJson(groups, String.class);
+
         String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
         response.addHeader("Content-Disposition", "attachment;filename=" + filename);
         try (OutputStream os = response.getOutputStream()) {
-            keywordGroupService.downloadCSV(trade, category, os);
+            keywordGroupService.downloadCSV(trade, _categories, _groups, os);
         }
-        return null;
     }
 
 //    /**

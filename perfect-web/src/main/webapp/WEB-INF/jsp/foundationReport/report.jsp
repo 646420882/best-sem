@@ -8,16 +8,30 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
-    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
+
+
+
     <style>
+        /*日历*/
+        .list2 table .list2_top td, th {
+            color: #000000;
+        }
         .displayNone{
             display: none;
+        }
+        .table-condensed>thead>tr>th, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>tbody>tr>td, .table-condensed>tfoot>tr>td {
+            padding: 8px 5px;
         }
 
     </style>
@@ -28,55 +42,56 @@
 <div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>--%>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
-        <div class="backstage_notice over">
-            <span>注：如果没有选取时间则默认拉取昨天的数据,拉取时间较长，请勿关闭页面。</span>
-        </div>
-        <div class="backstage_list over">
-            <ul>
-                <li>
-                    <span>选择时间范围：</span>
-                    <input type="text" id="date" readonly>
-                    <input name="reservationa" type="image" class="date"
-                           onclick=" _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                           src="${pageContext.request.contextPath}/public/img/date.png">
-                </li>
-                <li>
-                    <span>选择拉取报告类型：</span>
-                    <select id="selectOP">
-                        <option value="0">拉取全部报告</option>
-                        <option value="1">拉取账户报告</option>
-                        <option value="2">拉取计划报告</option>
-                        <option value="3">拉取单元报告</option>
-                        <option value="4">拉取创意报告</option>
-                        <option value="5">拉取关键词报告</option>
-                        <option value="6">拉取地域报告</option>
-                    </select>
-                </li>
-                <li>
-                    <sapn style="color: #ff0000">注：如果不填写帐号拉取的是全账户的报告数据，填写后则是拉取填写帐号的报告数据</sapn>
-                </li>
-                <li>
-                    <sapn class="fl">帐号: </sapn>
-                    <input type="text" id="zhanghao">
-                </li>
-                <li>
-                    <input type="button" id="tijiao" value="确定" class="sure">
-                </li>
-                <li>
-                    <div id="appendtext"></div>
-                </li>
-            </ul>
+    <div class="backstage_notice over">
+        <span>注：如果没有选取时间则默认拉取昨天的数据,拉取时间较长，请勿关闭页面。</span>
+    </div>
+    <div class="backstage_list over">
+        <ul>
+            <li>
+                <span>选择时间范围：</span>
+                <input type="text" id="date" class="time_input" readonly>
+                <input name="reservation"  type="image" class="date"
+                       onclick=" _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                       src="${pageContext.request.contextPath}/public/img/date.png">
+            </li>
+            <li>
+                <span>选择拉取报告类型：</span>
+                <select id="selectOP">
+                    <option value="0">拉取全部报告</option>
+                    <option value="1">拉取账户报告</option>
+                    <option value="2">拉取计划报告</option>
+                    <option value="3">拉取单元报告</option>
+                    <option value="4">拉取创意报告</option>
+                    <option value="5">拉取关键词报告</option>
+                    <option value="6">拉取地域报告</option>
+                </select>
+            </li>
+            <li>
+                <sapn style="color: #ff0000">注：如果不填写帐号拉取的是全账户的报告数据，填写后则是拉取填写帐号的报告数据</sapn>
+            </li>
+            <li>
+                <sapn class="fl">帐号: </sapn>
+                <input type="text" id="zhanghao">
+            </li>
+            <li>
+                <input type="button" id="tijiao" value="确定" class="sure">
+            </li>
+            <li>
+                <div id="appendtext"></div>
+            </li>
+        </ul>
 
-        </div>
+    </div>
 </div>
 <div class="backstage_concent mid over" >
     <div style="font-size: 14px;font-weight: bold">拉取日志：</div>
     <div id="dataLog"></div>
 </div>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript">
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -84,6 +99,7 @@
     // 例子：
     // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2014-07-02 08:09:04.423
     // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2014-7-2 8:9:4.18
+    var dateclicks = "";
     Date.prototype.Format = function (fmt) {
         var o = {
             "M+": this.getMonth() + 1,                 //月份
@@ -101,16 +117,74 @@
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
+
 </script>
 <script>
     var getPullLog;
     var heartbeat = 10000;
     var daterangepicker_start_date=null,daterangepicker_end_date=null,selectOP = 0,number=0;
     $(document).ready(function(){
-        $("input[name=reservationa]").daterangepicker();
+        $("input[cname=dateClick]").click(function () {
+            dateclicks = $(this)
+        });
+        var distance = 0;
+        //加载日历控件
+        $('input[name="reservation"]').daterangepicker({
+                    "showDropdowns": true,
+                    "timePicker24Hour": true,
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    format: 'DD/MM/YYYY',
+                    ranges: {
+                        //'最近1小时': [moment().subtract('hours',1), moment()],
+                        '今天': [moment().startOf('day'), moment()],
+                        '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                        '过去7天': [moment().subtract('days', 6), moment()],
+                        '过去14天': [moment().subtract('days', 13), moment()],
+                        '过去30天': [moment().subtract('days', 29), moment()],
+                        '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    },
+                    "locale": {
+                        "format": "DD/MM/YYYY",
+                        "separator": " - ",
+                        "applyLabel": "确定",
+                        "cancelLabel": "关闭",
+                        "fromLabel": "From",
+                        "toLabel": "To",
+                        "customRangeLabel": "Custom",
+                        "daysOfWeek": [
+                            "日",
+                            "一",
+                            "二",
+                            "三",
+                            "四",
+                            "五",
+                            "六"
+                        ],
+                        "monthNames": [
+                            "一月",
+                            "二月",
+                            "三月",
+                            "四月",
+                            "五月",
+                            "六月",
+                            "七月",
+                            "八月",
+                            "九月",
+                            "十月",
+                            "十一月",
+                            "十二月"
+                        ],
+                        "firstDay": 1
+                    },
+                    "startDate": moment(),
+                    "endDate": moment()
+                },
+                function (start, end, label,e) {
+                });
         $(".btnDone").on('click', function () {
-            var _startDate = $('.range-start').datepicker('getDate');
-            var _endDate = $('.range-end').datepicker('getDate');
+            var _startDate = daterangepicker_start_date_t;
+            var _endDate = daterangepicker_end_date_t;
             daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
             daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
             $("#date").val(daterangepicker_start_date +" 至 "+ daterangepicker_end_date);

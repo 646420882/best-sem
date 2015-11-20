@@ -4,8 +4,8 @@
 package com.perfect.entity.adgroup;
 
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.entity.baidu.OptTypeEntity;
 import com.perfect.entity.account.AccountIdEntity;
+import com.perfect.entity.baidu.OptTypeEntity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,8 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-
-
+/**
+ * Created by baizz on 2014-08-13.
+ *
+ * @description 百度推广单元实体类
+ */
 @Document(collection = MongoEntityConstants.TBL_ADGROUP)
 public class AdgroupEntity extends AccountIdEntity {
 
@@ -23,50 +26,50 @@ public class AdgroupEntity extends AccountIdEntity {
 
     @Indexed(sparse = true)
     @Field(MongoEntityConstants.ADGROUP_ID)
-    private Long adgroupId;
+    private Long adgroupId;                         // 百度推广单元ID
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
     @Field(MongoEntityConstants.CAMPAIGN_ID)
-    private Long campaignId;
+    private Long campaignId;                        // 百度推广计划ID
 
 
     @Field(MongoEntityConstants.OBJ_CAMPAIGN_ID)
-    private String campaignObjId;
+    private String campaignObjId;                   // 本地推广计划操作ID
 
     @Field("name")
-    private String adgroupName;
+    private String adgroupName;                     // 推广单元名称
 
     @Field("max")
-    private Double maxPrice;
+    private Double maxPrice;                        // 最大单元出价
 
     @Field("neg")
-    private List<String> negativeWords;
+    private List<String> negativeWords;             // 否定关键词
 
     @Field("exneg")
-    private List<String> exactNegativeWords;
+    private List<String> exactNegativeWords;        // 单元精确否定关键词
 
     @Field("res")
-    private String reserved;
+    private String reserved;                        // 预留字段(来自百度API的描述)
 
     @Field("p")
-    private Boolean pause;
+    private Boolean pause;                          // 暂停/启用 推广单元
 
     @Field("s")
-    private Integer status;
+    private Integer status;                         // 推广单元状态
 
     @Field("o")
-    private OptTypeEntity opt;
+    private OptTypeEntity opt;                      // 未知属性
 
     @Field("m")
-    private Double mib;
+    private Double mib;                             // 未知属性
 
     @Field("priceR")
-    private Double priceRatio;
+    private Double priceRatio;                      // 单元无线出价比例
 
     @Field("ls")
-    private Integer localStatus;
+    private Integer localStatus;                    // 本地操作状态标识
 
     public String getCampaignObjId() {
         return campaignObjId;

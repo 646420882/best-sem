@@ -19,7 +19,7 @@ public class BaiduService {
      */
     public void init(ServiceFactory serviceFactory) throws ApiException {
         AccountService accountService = serviceFactory.getService(AccountService.class);
-
+        
         GetAccountInfoRequest getAccountInfoRequest = new GetAccountInfoRequest();
         GetAccountInfoResponse getAccountInfoResponse = accountService.getAccountInfo(getAccountInfoRequest);
 

@@ -17,6 +17,7 @@
  */
 package com.perfect.autosdk.core;
 
+import com.perfect.api.baidu.BaiduApiQuota;
 import com.perfect.autosdk.exception.ApiException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -102,6 +103,7 @@ public class JsonProxy<I> implements InvocationHandler {
             }
         }
         ResHeaderUtil.resHeader.set(response.getHeader());
+        BaiduApiQuota.setQuota(service.username,response.getHeader().getQuota());
         return response.getBody();
     }
 

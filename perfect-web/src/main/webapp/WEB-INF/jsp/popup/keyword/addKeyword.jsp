@@ -10,8 +10,8 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <style type="text/css">
 
         .list4 table {
@@ -65,7 +65,7 @@
                             </select></li>
                             <li>
                                 <div class="assembly_search over">
-                                    <span style="margin-left: 10%;">
+                                    <span>
                                     <input id="price" type="text" placeholder="请输入关键词出价,默认为0.1" onkeypress='until.regDouble(this)' maxlength="5">
                                     </span>
                                 </div>
@@ -157,14 +157,51 @@
         </div>
 
     </div>
-
+    <%--alert提示类--%>
+    <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="addKeyAlertPrompt">
+        <h2 id="addKeyAlertPromptTitle">
+            <span class="fl alert_span_title" id="addKeyAlertPrompt_title"></span>
+            <%--<a href="#" class="close">×</a></h2>--%>
+        <%--<a href="#" onclick="addKeyAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+        </h2>
+        <div class="mainlist">
+            <div class="w_list03">
+                <ul class="zs_set">
+                    <li class="current" onclick="addKeyAlertPrompt.hide()">确认</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 </div>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var addKeyAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG_alert").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#addKeyAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#addKeyAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG_alert").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#addKeyAlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
 $(function () {
+    rDrag.init(document.getElementById('addKeyAlertPromptTitle'));
     $("#matchType ").change(function () {
         if (this.value == "2") {
             $("#phraseTypeDiv").show();
@@ -396,22 +433,26 @@ var saveKeyword = function () {
 
     var campaignId = $("#campaign option:selected").val();
     if (campaignId == null || campaignId.length == 0) {
-        alert("请选择推广计划!");
+//        alert("请选择推广计划!");
+        addKeyAlertPrompt.show("请选择推广计划!");
         return;
     }
     var adgroupId = $("#adgroup option:selected").val();
     if (adgroupId == null || adgroupId.length == 0) {
-        alert("请选择推广单元!");
+//        alert("请选择推广单元!");
+        addKeyAlertPrompt.show("请选择推广单元!");
         return;
     }
     var price=$("#price").val();
     if(price!=""){
         if(!/^-?\d+\.?\d*$/.test(price)){
-            alert("输入正确的关键词出价！");
+//            alert("输入正确的关键词出价！");
+            addKeyAlertPrompt.show("输入正确的关键词出价！");
             return;
         }else{
             if(parseFloat(price)>999.9){
-                alert("关键词出价为：(0,999.9]<=出价&&<计划预算!");
+//                alert("关键词出价为：(0,999.9]<=出价&&<计划预算!");
+                addKeyAlertPrompt.show("关键词出价为：(0,999.9]<=出价&&<计划预算!");
                 return;
             }
         }
@@ -476,7 +517,8 @@ var saveKeyword = function () {
     }
 
     if(jsonArr.length == 0){
-        alert("您没有选择关键词!");
+//        alert("您没有选择关键词!");
+        addKeyAlertPrompt.show("您没有选择关键词!");
         return;
     }
 
@@ -489,7 +531,8 @@ var saveKeyword = function () {
         contentType: "application/json; charset=UTF-8",
         success: function (data, textStatus, jqXHR) {
             if(data.stat==true){
-                alert("添加成功");
+//                alert("添加成功");
+                addKeyAlertPrompt.show("添加成功");
                 top.dialog.getCurrent().close().remove();
             }
         }

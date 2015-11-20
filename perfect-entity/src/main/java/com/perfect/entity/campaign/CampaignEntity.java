@@ -1,9 +1,9 @@
 package com.perfect.entity.campaign;
 
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.entity.baidu.OfflineTimeEntity;
 import com.perfect.entity.ScheduleEntity;
 import com.perfect.entity.account.AccountIdEntity;
+import com.perfect.entity.baidu.OfflineTimeEntity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014-6-26.
+ *
+ * @description 推广计划实体类
  */
 @Document(collection = MongoEntityConstants.TBL_CAMPAIGN)
 public class CampaignEntity extends AccountIdEntity {
@@ -22,56 +24,56 @@ public class CampaignEntity extends AccountIdEntity {
 
     @Indexed(sparse = true)
     @Field(MongoEntityConstants.CAMPAIGN_ID)
-    private Long campaignId;
+    private Long campaignId;                                    // 百度推广计划ID
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
 
     @Field("name")
-    private String campaignName;
+    private String campaignName;                                // 推广计划名称
 
     @Field("bd")
-    private Double budget;
+    private Double budget;                                      // 推广计划每日预算
 
     @Field("rt")
-    private List<Integer> regionTarget;
+    private List<Integer> regionTarget;                         // 推广地域列表
 
     @Field("exip")
-    private List<String> excludeIp;
+    private List<String> excludeIp;                             // IP排除列表
 
     @Field("neg")
-    private List<String> negativeWords;
+    private List<String> negativeWords;                         // 否定关键词列表
 
     @Field("exneg")
-    private List<String> exactNegativeWords;
+    private List<String> exactNegativeWords;                    // 精确否定关键词列表
 
     @Field("sd")
-    private List<ScheduleEntity> schedule;
+    private List<ScheduleEntity> schedule;                      // 暂停推广时段
 
     @Field("off")
-    private List<OfflineTimeEntity> budgetOfflineTime;
+    private List<OfflineTimeEntity> budgetOfflineTime;          // 达到预算下线时间
 
     @Field("sp")
-    private Integer showProb;
+    private Integer showProb;                                   // 创意展现方式
 
     @Field("d")
-    private Integer device=0;
+    private Integer device = 0;                                   // 计划的投放设备
 
     @Field("pr")
-    private Double priceRatio;
+    private Double priceRatio;                                  // 计划的无线出价比例
 
     @Field("p")
-    private Boolean pause;
+    private Boolean pause;                                      // 暂停/启用 推广计划
 
     @Field("s")
-    private Integer status;
+    private Integer status;                                     // 推广计划状态
 
     @Field("idc")
-    private Boolean isDynamicCreative;
+    private Boolean isDynamicCreative;                          // 启用/暂停 动态创意
 
     @Field("ls")
-    private Integer localStatus;
+    private Integer localStatus;                                // 本地操作状态
 
     public Integer getLocalStatus() {
         return localStatus;

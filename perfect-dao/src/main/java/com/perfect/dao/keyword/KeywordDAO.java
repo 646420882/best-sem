@@ -3,14 +3,15 @@ package com.perfect.dao.keyword;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
+import com.perfect.dto.keyword.KeywordAggsDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by baizz on 2014-7-7.
@@ -47,7 +48,15 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     List<KeywordDTO> findHasLocalStatusLong(List<Long> longs);
 
+    List<KeywordDTO> findAllByBaiduAccountId(Long baiduAccountId);
+
+    List<KeywordAggsDTO> findAllKeywordFromBaiduByAccountId(Long baiduAccountId);
+
+    List<KeywordDTO> findAllKeywordFromBaiduByAdgroupId(Long baiduAccountId, Long adgroupId);
+
     Long keywordCount(List<Long> adgroupIds);
+
+    List<KeywordDTO> findByAdgroupId(Long baiduAccountId, Long adgroupId);
 
     /**
      * 安全添加
@@ -58,9 +67,14 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByName(String name, Long accountId);
 
-//    void remove(Query query);
-//
-//    List<KeywordDTO> findByQuery(Query query);
+    /**
+     * <p>获取指定百度账号下在本地新增 修改 删除的关键词
+     * type: 1 -> 新增, 2 -> 修改, 3 -> 删除</p>
+     *
+     * @param baiduAccountId
+     * @return
+     */
+    List<KeywordDTO> findLocalChangedKeywords(Long baiduAccountId, int type);
 
     List<KeywordDTO> findByAdgroupId(Long adgroupId, PaginationParam param, Map<String, Object> queryParams);
 
@@ -70,15 +84,17 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     KeywordDTO findByObjectId(String oid);
 
-    PagerInfo findByPageInfoForAcctounId( int pageSize, int pageNo);
+    KeywordDTO findByLongId(Long oid);
 
-    PagerInfo findByPageInfoForLongId(Long  aid, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo, SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForStringId(String  aid, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo, SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForLongIds(List<Long>  longIds, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo, SearchFilterParam sp);
 
-    PagerInfo findByPageInfoForStringIds(List<String>  stringIds, int pageSize, int pageNo);
+    PagerInfo findByPageInfoForLongIds(List<Long> aids, int pageSize, int pageNo, SearchFilterParam sp);
+
+    PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo, SearchFilterParam sp);
 
     void updateAdgroupIdByOid(String id, Long adgroupId);
 
@@ -112,22 +128,42 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     void insertAll(List<KeywordDTO> dtos);
 
-    List<KeywordDTO> findByParams(Map<String,Object> mapParams);
+    List<KeywordDTO> findByParams(Map<String, Object> mapParams);
 
-    KeywordDTO findByParamsObject(Map<String,Object> mapParams);
+    KeywordDTO findByParamsObject(Map<String, Object> mapParams);
 
     void updateByObjId(KeywordDTO dto);
 
-    void update(String oid,KeywordDTO dto);
+    void update(String oid, KeywordDTO dto);
 
     /**
      * 只用于修改上传修改成功的ls状态,以及获取到的Stauts
+     *
      * @param dto 只包含Status和kid
      */
     void updateLs(KeywordDTO dto);
 
-    Map<String,Map<String,List<String>>> getNoKeywords(Long aid);
+    Map<String, Map<String, List<String>>> getNoKeywords(Long aid);
 
-    Map<String,Map<String,List<String>>> getNoKeywords(String aid);
+    Map<String, Map<String, List<String>>> getNoKeywords(String aid);
+
+
+    /**
+     * 做文字查找或替换时如果用户选取的该计划下所有的数据时，用于查询所有关键词，紧接着的下一个方法也是做改功能的方法，只是这个是id类型不一样
+     *
+     * @param adgroupIds
+     * @return
+     */
+    List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds);
+
+    List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds);
+
+    void batchDelete(List<String> strings);
+
+    /**
+     * @param keywordIds mongodb id  集合
+     * @return
+     */
+    List<KeywordDTO> vaildateKeywordByIds(List<String> keywordIds);
 
 }

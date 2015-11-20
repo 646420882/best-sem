@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class AccountIdEntity {
 
     @Field("acid")
-    private long accountId;
+    private long accountId; // 百度账户ID
 
 
     public long getAccountId() {

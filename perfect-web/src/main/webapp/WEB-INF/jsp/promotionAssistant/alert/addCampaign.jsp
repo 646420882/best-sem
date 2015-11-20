@@ -8,9 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!--------------添加推广计划---------------->
-<div class="TB_overlayBG" style="display:none;"></div>
 <div class="box" id="plan" style="display:none;  z-index:999;">
-    <h2 id="plan2">添加推广计划<b class="close closeAddCampaign">关闭</b></h2>
+    <h2 id="plan2">添加推广计划<b class="close closeAddCampaign">×</b></h2>
 
     <div class="mainlist2 over">
         <div class="mainlist">

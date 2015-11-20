@@ -15,7 +15,7 @@ import java.util.Date;
 public class WarningRuleEntity extends AccountIdEntity {
 
     @Id
-    private String id;
+    private String id; //mongoId
 
     @Field("budgetType")
     private Integer budgetType;//预算类型

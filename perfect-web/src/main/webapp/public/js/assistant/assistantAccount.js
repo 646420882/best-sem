@@ -126,11 +126,11 @@ var AccountPerformance = function () {
 
     $("#containerLegend").empty();
     $("#containerLegend").html("<div class='tu_top over'><ul><li><b>账户表现</b></li>" +
-        "<li><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></li>" +
-        "<li><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></li>" +
-        "<li><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></li>" +
-        "<li><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></li>" +
-        "<li><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></li>" +
+        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></label></li>" +
+        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></label></li>" +
+        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></label></li>" +
+        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></label></li>" +
+        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></label></li>" +
         "<li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
     data1 = {
         name: '展现',
@@ -166,6 +166,7 @@ var AccountPerformance = function () {
 };
 var mychart = function () {
     var myChart = echarts.init(document.getElementById('container'));
+    window.onresize = myChart.resize;
     var dataNew;
     if (data1 == "") {
         dataNew = [data2];
@@ -683,7 +684,8 @@ var changeDynamicCreativeStatus = function () {
 var modifyAccountBudget = function () {
     var _budget = $("#budget_text").val();
     if (parseFloat(_budget) < 50) {
-        alert("日预算不得低于50元!");
+        //alert("日预算不得低于50元!");
+        AlertPrompt.show("日预算不得低于50元!");
         return false;
     }
     $("#accountBudget").text(_budget);

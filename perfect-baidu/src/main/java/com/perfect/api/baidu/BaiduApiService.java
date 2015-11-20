@@ -7,25 +7,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by yousheng on 2014/8/12.
  *
  * @author yousheng
  */
-@SuppressWarnings("unchecked")
 public class BaiduApiService {
 
-    private static Logger log = LoggerFactory.getLogger(BaiduApiService.class);
+    private static final Logger logger = LoggerFactory.getLogger(BaiduApiService.class);
 
     private final CommonService commonService;
+
 
     public BaiduApiService(CommonService commonService) {
         this.commonService = commonService;
     }
+
 
     public AccountInfoType getAccountInfo() {
         try {
@@ -36,9 +37,10 @@ public class BaiduApiService {
             if (response == null) {
                 return null;
             }
+
             return response.getAccountInfoType();
         } catch (ApiException e) {
-            log.error("ERROR", e);
+            logger.error("ERROR", e);
         }
 
         return null;
@@ -51,13 +53,14 @@ public class BaiduApiService {
             GetAllCampaignRequest getAllCampaignRequest = new GetAllCampaignRequest();
             GetAllCampaignResponse response = campaignService.getAllCampaign(getAllCampaignRequest);
             if (response == null) {
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
             return response.getCampaignTypes();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
-        return Collections.EMPTY_LIST;
+
+        return Collections.emptyList();
     }
 
     public List<CampaignType> getCampaignById(List<Long> camIds) {
@@ -67,13 +70,13 @@ public class BaiduApiService {
             request.setCampaignIds(camIds);
             GetCampaignByCampaignIdResponse response = campaignService.getCampaignByCampaignId(request);
             if (response == null) {
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
             return response.getCampaignTypes();
         } catch (final Exception e) {
             e.printStackTrace();
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     public List<Long> getAllCampaignId() {
@@ -83,11 +86,12 @@ public class BaiduApiService {
             GetAllCampaignIdRequest request = new GetAllCampaignIdRequest();
             GetAllCampaignIdResponse response = campaignService.getAllCampaignId(request);
 
-
             return response.getCampaignIds();
         } catch (final Exception e) {
-            return Collections.EMPTY_LIST;
+            e.printStackTrace();
         }
+
+        return Collections.emptyList();
     }
 
 
@@ -150,17 +154,19 @@ public class BaiduApiService {
             }
 
             return adgroupTypes;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
-        return Collections.EMPTY_LIST;
+
+        return Collections.emptyList();
     }
 
     public List<KeywordType> getAllKeyword(List<Long> adgroupIds) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("推广单元总数: " + adgroupIds.size());
+        }
+
         try {
-            if (log.isDebugEnabled()) {
-                log.debug("推广单元总数: " + adgroupIds.size());
-            }
             KeywordService keywordService = commonService.getService(KeywordService.class);
 
             List<KeywordType> keywordTypeList = new ArrayList<>();
@@ -187,20 +193,22 @@ public class BaiduApiService {
                 response1 = keywordService.getKeywordByKeywordId(getKeywordByKeywordIdRequest);
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("当前请求得到的关键词总数: " + response1.getKeywordTypes().size());
+            if (logger.isDebugEnabled()) {
+                logger.debug("当前请求得到的关键词总数: " + response1.getKeywordTypes().size());
             }
 
             keywordTypeList.addAll(response1.getKeywordTypes());
 
             if (keywordTypeList.size() == 0) {
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
+
             return keywordTypeList;
         } catch (final Exception e) {
             e.printStackTrace();
         }
-        return Collections.EMPTY_LIST;
+
+        return Collections.emptyList();
     }
 
     /**
@@ -212,9 +220,10 @@ public class BaiduApiService {
     public List<CreativeType> getAllCreative(List<Long> adgroupIds) {
         List<CreativeType> creativeTypes = new ArrayList<>();
 
-        if (log.isDebugEnabled()) {
-            log.debug("推广单元总数: " + adgroupIds.size());
+        if (logger.isDebugEnabled()) {
+            logger.debug("推广单元总数: " + adgroupIds.size());
         }
+
         try {
             CreativeService creativeService = commonService.getService(CreativeService.class);
 
@@ -265,68 +274,328 @@ public class BaiduApiService {
             KeywordService keywordService = commonService.getService(KeywordService.class);
             GetKeywordQualityRequest request = new GetKeywordQualityRequest();
             request.setIds(keywordIds);
-            request.setType(11);//3: 表示指定id数组为计划id 5:表示指定id数组为单元id 11:表示指定id为关键词id
+            request.setType(11);    // 3: 表示指定id数组为计划id 5:表示指定id数组为单元id 11:表示指定id为关键词id
 
             GetKeywordQualityResponse response = keywordService.getKeywordQuality(request);
 
             if (response == null) {
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
             return response.getQualities();
         } catch (ApiException e) {
             e.printStackTrace();
-            return Collections.EMPTY_LIST;
         }
+
+        return Collections.emptyList();
     }
 
     public List<KeywordType> setKeywordPrice(List<KeywordType> list) throws ApiException {
         if (list == null || list.size() == 0) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
+
         UpdateKeywordRequest request = new UpdateKeywordRequest();
         request.setKeywordTypes(list);
 
         KeywordService keywordService = commonService.getService(KeywordService.class);
         UpdateKeywordResponse response = keywordService.updateKeyword(request);
         if (response == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
+
         return response.getKeywordTypes();
 
     }
 
-    public KeywordType setKeywordPrice(KeywordType type) throws ApiException {
-        List<KeywordType> keywordTypes = setKeywordPrice(Arrays.asList(type));
-        if (keywordTypes == null || keywordTypes.isEmpty()) {
+    // ============================== ADD ==============================
+    public List<CampaignType> addCampaign(List<CampaignType> list) throws ApiException {
+        AddCampaignRequest request = new AddCampaignRequest();
+        request.setCampaignTypes(list);
+
+        CampaignService campaignService = commonService.getService(CampaignService.class);
+        AddCampaignResponse response = campaignService.addCampaign(request);
+        if (response == null) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getCampaignTypes();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<AdgroupType> addAdgroup(List<AdgroupType> list) throws ApiException {
+        AddAdgroupRequest request = new AddAdgroupRequest();
+        request.setAdgroupTypes(list);
+
+        AdgroupService adgroupService = commonService.getService(AdgroupService.class);
+        AddAdgroupResponse response = adgroupService.addAdgroup(request);
+        if (response == null) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getAdgroupTypes();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<KeywordType> addKeyword(List<KeywordType> list) throws ApiException {
+        AddKeywordRequest request = new AddKeywordRequest();
+        request.setKeywordTypes(list);
+
+        KeywordService keywordService = commonService.getService(KeywordService.class);
+        AddKeywordResponse response = keywordService.addKeyword(request);
+        if (response == null) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getKeywordTypes();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<CreativeType> addCreative(List<CreativeType> list) throws ApiException {
+        AddCreativeRequest request = new AddCreativeRequest();
+        request.setCreativeTypes(list);
+
+        CreativeService creativeService = commonService.getService(CreativeService.class);
+        AddCreativeResponse response = creativeService.addCreative(request);
+        if (response == null) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getCreativeTypes();
+        }
+
+        return Collections.emptyList();
+    }
+
+    // ============================== UPDATE ==============================
+
+    /**
+     * <p>账户更新
+     *
+     * @param accountInfo
+     * @return
+     * @throws ApiException
+     */
+    public AccountInfoType updateAccount(AccountInfoType accountInfo) throws ApiException {
+        if (accountInfo == null)
             return null;
-        }
-        return keywordTypes.get(0);
+
+        AccountInfoType accountInfoType = null;
+
+        UpdateAccountInfoRequest request = new UpdateAccountInfoRequest();
+        request.setAccountInfoType(accountInfo);
+
+        AccountService accountService = commonService.getService(AccountService.class);
+        UpdateAccountInfoResponse response = accountService.updateAccountInfo(request);
+        if (response != null)
+            accountInfoType = response.getAccountInfoType();
+
+        return accountInfoType;
     }
 
-    public List<KeywordType> updateKeyword(List<KeywordType> list) throws ApiException {
-        if (list == null || list.size() == 0) {
-            return Collections.EMPTY_LIST;
+    /**
+     * <p>推广计划更新
+     *
+     * @param list 推广计划列表
+     * @return
+     * @throws ApiException
+     */
+    public List<CampaignType> updateCampaign(List<CampaignType> list) throws ApiException {
+        if (list == null || list.isEmpty()) {
+            return Collections.emptyList();
         }
+
+        UpdateCampaignRequest request = new UpdateCampaignRequest();
+        request.setCampaignTypes(list);
+
+        CampaignService campaignService = commonService.getService(CampaignService.class);
+        UpdateCampaignResponse response = campaignService.updateCampaign(request);
+        if (response == null)
+            return Collections.emptyList();
+
+        return response.getCampaignTypes();
+    }
+
+    /**
+     * <p>推广单元更新
+     *
+     * @param list 推广单元列表
+     * @return
+     * @throws ApiException
+     */
+    public List<AdgroupType> updateAdgroup(List<AdgroupType> list) throws ApiException {
+        if (list == null || list.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        UpdateAdgroupRequest request = new UpdateAdgroupRequest();
+        request.setAdgroupTypes(list);
+
+        AdgroupService adgroupService = commonService.getService(AdgroupService.class);
+        UpdateAdgroupResponse response = adgroupService.updateAdgroup(request);
+        if (response == null)
+            return Collections.emptyList();
+
+        return response.getAdgroupTypes();
+    }
+
+    /**
+     * <p>关键词更新
+     *
+     * @param list 关键词列表
+     * @return
+     * @throws ApiException
+     */
+    public List<KeywordType> updateKeyword(List<KeywordType> list) throws ApiException {
+        if (list == null || list.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         UpdateKeywordRequest request = new UpdateKeywordRequest();
         request.setKeywordTypes(list);
 
         KeywordService keywordService = commonService.getService(KeywordService.class);
         UpdateKeywordResponse response = keywordService.updateKeyword(request);
         if (response == null) {
-            return Collections.EMPTY_LIST;
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getKeywordTypes();
         }
-        return response.getKeywordTypes();
+
+        return Collections.emptyList();
     }
 
-//    public List<BaiduPreviewHelper.PreviewData> getPreviewData(int region, List<String> keyList, BaiduPreviewHelper helper) {
-//        GetPreviewRequest request = new GetPreviewRequest();
-//        request.setKeyWords(keyList);
-//        request.setRegion(region);
-//        request.setDevice(0);
-//        request.setPage(0);
-//        List<BaiduPreviewHelper.PreviewData> previewDatas = helper.getPageData(keyList.toArray(new
-//                String[]{}), region);
-//        return previewDatas;
-//    }
+    /**
+     * <p>创意更新
+     *
+     * @param list 创意列表
+     * @return
+     * @throws ApiException
+     */
+    public List<CreativeType> updateCreative(List<CreativeType> list) throws ApiException {
+        if (list == null || list.isEmpty()) {
+            return Collections.emptyList();
+        }
 
+        UpdateCreativeRequest request = new UpdateCreativeRequest();
+        request.setCreativeTypes(list);
+
+        CreativeService creativeService = commonService.getService(CreativeService.class);
+        UpdateCreativeResponse response = creativeService.updateCreative(request);
+        if (response == null)
+            return Collections.emptyList();
+
+        return response.getCreativeTypes();
+    }
+
+    // ============================== DELETE ==============================
+    public Integer deleteCampaign(List<Long> campaignIds) throws ApiException {
+        DeleteCampaignRequest request = new DeleteCampaignRequest();
+        request.setCampaignIds(campaignIds);
+
+        CampaignService campaignService = commonService.getService(CampaignService.class);
+        DeleteCampaignResponse response = campaignService.deleteCampaign(request);
+        if (response == null) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getResult();
+        }
+
+        return -1;
+
+    }
+
+    public String deleteAdgroup(List<Long> adgroupIds) throws ApiException {
+        DeleteAdgroupRequest request = new DeleteAdgroupRequest();
+        request.setAdgroupIds(adgroupIds);
+
+        AdgroupService adgroupService = commonService.getService(AdgroupService.class);
+        DeleteAdgroupResponse response = adgroupService.deleteAdgroup(request);
+        if (response == null) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getResponse();
+        }
+
+        return "";
+
+    }
+
+    public Integer deleteKeyword(List<Long> keywordIds) throws ApiException {
+        DeleteKeywordRequest request = new DeleteKeywordRequest();
+        request.setKeywordIds(keywordIds);
+
+        KeywordService keywordService = commonService.getService(KeywordService.class);
+        DeleteKeywordResponse response = keywordService.deleteKeyword(request);
+        if (response == null) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getResult();
+        }
+
+        return -1;
+
+    }
+
+    public Integer deleteCreative(List<Long> creativeIds) throws ApiException {
+        DeleteCreativeRequest request = new DeleteCreativeRequest();
+        request.setCreativeIds(creativeIds);
+
+        CreativeService creativeService = commonService.getService(CreativeService.class);
+        DeleteCreativeResponse response = creativeService.deleteCreative(request);
+        if (response == null) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+                return response.getResult();
+        }
+
+        return -1;
+
+    }
 }

@@ -9,9 +9,9 @@ var loadExistsCampaign = function () {
                 $.each(results, function (i, item) {
                     var _li = "";
                     if (i % 2 == 0) {
-                        _li = "<li><input id='" + item.campaignId + "' type='checkbox' name='campaign_exists'>" + item.campaignName + "</li>";
+                        _li = "<li><label class='checkbox-inlines'><input id='" + item.campaignId + "' type='checkbox' name='campaign_exists'>" + item.campaignName + "</label></li>";
                     } else {
-                        _li = "<li><input id='" + item.campaignId + "' type='checkbox' class='current' name='campaign_exists'>" + item.campaignName + "</li>";
+                        _li = "<li><label class='checkbox-inlines'><input id='" + item.campaignId + "' type='checkbox' class='current' name='campaign_exists'>" + item.campaignName + "</label></li>";
                     }
                     $("#existsCampaign ul").append(_li);
                 });
@@ -31,9 +31,9 @@ var loadNewCampaignData = function () {
                 $.each(results, function (i, item) {
                     var _li = "";
                     if (i % 2 == 0) {
-                        _li = "<li><input id='" + item.campaignId + "' type='checkbox' name='campaign_new'>" + item.campaignName + "</li>";
+                        _li = "<li><label class='checkbox-inlines'><input id='" + item.campaignId + "' type='checkbox' name='campaign_new'>" + item.campaignName + "</label></li>";
                     } else {
-                        _li = "<li><input id='" + item.campaignId + "' type='checkbox' class='current' name='campaign_new'>" + item.campaignName + "</li>";
+                        _li = "<li><label class='checkbox-inlines'><input id='" + item.campaignId + "' type='checkbox' class='current' name='campaign_new'>" + item.campaignName + "</label></li>";
                     }
                     $("#newCampaign ul").append(_li);
                 });
@@ -48,10 +48,12 @@ var updateAllCampaign = function () {
         type: 'POST',
         dataType: 'json',
         success: function (data, textStatus, jqXHR) {
-            alert("更新成功!");
+            //alert("更新成功!");
+            AlertPrompt.show("更新成功!");
             ajaxbg.hide();
             $(".TB_overlayBG").css("display", "none");
             $("#download").css("display", "none");
+            $("#downloadData").css("display", "none");
 
         }
     });
@@ -79,7 +81,8 @@ var updateExistsCampaign = function () {
             "campaignIds": campaignIds
         },
         success: function (data, textStatus, jqXHR) {
-            alert("更新成功!");
+            //alert("更新成功!");
+            AlertPrompt.show("更新成功!");
             ajaxbg.hide();
             $(".TB_overlayBG").css("display", "none");
             $("#download").css("display", "none");
@@ -107,7 +110,8 @@ var updateNewCampaign = function () {
             "campaignIds": JSON.stringify(campaignIds)
         },
         success: function (data, textStatus, jqXHR) {
-            alert("更新成功!");
+            //alert("更新成功!");
+            AlertPrompt.show("更新成功!");
              ajaxbg.hide();
             $(".TB_overlayBG").css("display", "none");
             $("#download").css("display", "none");

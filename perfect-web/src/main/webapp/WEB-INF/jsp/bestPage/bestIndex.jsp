@@ -12,36 +12,51 @@
     <meta charset="UTF-8">
     <title>欢迎来到百思</title>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/dd.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/dd.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/best_css/public.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/best_css/shun_page.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/perfectNew.js"></script>
+    <script>
+        var _pct = _pct || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//t.best-ad.cn/t.js?tid=76c005e89e020c6e8813a5adaba384d7";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 <body>
 <div class="mid wd">
     <div class="logo">
-        <a href="http://best-ad.cn/" target="_blank"><img src="${pageContext.request.contextPath}/public/img/best_img/logo.png"></a>
+        <a href="http://best-ad.cn/" target="_blank"><img
+                src="${pageContext.request.contextPath}/public/img/best_img/logo.png"></a>
     </div>
     <div class="servicesBox">
         <div class="time over">
-            <b id="time" class="fl"></b><span class="fl">${currSystemUserName}</span><form class="fl" name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
-           <input type="submit" value="| 退出"
-                   onclick="$('form[logout]').submit();"/>
-        </form>
+            <b id="time" class="fl"></b><span class="fl">${currSystemUserName}</span>
+
+            <form class="fl" name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
+                <input type="submit" value="| 退出"
+                       onclick="$('form[logout]').submit();"/>
+            </form>
         </div>
         <div class="serBox disabled">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_sutou.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_sutou2.png"></div>
             <div class="txt1"><span class="tit">百思速投</span>
+
                 <p>针对搜索引擎营销的</p>
-                   <p>第三方优化管理平台</p>
+
+                <p>第三方优化管理平台</p>
             </div>
             <div class="txt2">
                 <a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span class="tit">百思速投</span></a>
+
                 <div class="tex2_mid">
                     <p>针对搜索引擎营销的</p>
+
                     <p>第三方优化管理平台</p>
                 </div>
                 <div class="enter">
@@ -56,33 +71,45 @@
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke2.png"></div>
             <div class="txt1"><span class="tit">百思搜客</span>
+
                 <p>针对搜索引擎营销的</p>
-                   <p>第三方优化管理平台</p></div>
+
+                <p>第三方优化管理平台</p></div>
             <div class="txt2"><a href="javascript:void(0);" class="a_jump"><span
                     class="tit">百思搜客</span></a>
+
                 <div class="tex2_mid">
                     <p>推广额度：<b> ${accountBalance} </b>元</p>
+
                     <p>余额预计可消费<b> ${remainderDays} </b>天</p>
+
                     <p>日预算<b> ${accountBudget} </b>元</p>
                 </div>
                 <div class="enter">
-                    <a href="javascript:void(0);" >点击进入</a>
+                    <a href="javascript:void(0);">点击进入</a>
                 </div>
             </div>
         </div>
-            <div class="serBox" onclick="window.open('http://seo.best-ad.cn/auth/login?username=${currSystemUserName}')">
+        <div class="serBox" onclick="window.open('http://seo.best-ad.cn/auth/login?username=${currSystemUserName}')">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_seo2.png"></div>
             <div class="txt1"><span class="tit">百思SEO</span>
+
                 <p>SEO追踪，集统计、分析和管理</p>
+
                 <p>专家级的建议和优化方案</p>
+
                 <p></p>
             </div>
-            <div class="txt2"><a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span class="tit">百思SEO</span></a>
+            <div class="txt2"><a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span
+                    class="tit">百思SEO</span></a>
+
                 <div class="tex2_mid">
                     <p>SEO追踪，集统计、分析和管理</p>
+
                     <p>专家级的建议和优化方案</p>
+
                     <p></p>
                 </div>
                 <div class="enter">
@@ -96,12 +123,17 @@
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_wuxian2.png"></div>
             <div class="txt1">
                 <span class="tit">百思无线</span>
+
                 <p>一站式解决客户移动建站</p>
-                 <p>及微信运营推广</p>
+
+                <p>及微信运营推广</p>
             </div>
-            <div class="txt2"><a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span class="tit">百思无线</span></a>
+            <div class="txt2"><a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span
+                    class="tit">百思无线</span></a>
+
                 <div class="tex2_mid">
                     <p>一站式解决客户移动建站 </p>
+
                     <p>及微信运营推广</p>
                 </div>
                 <div class="enter">
@@ -109,22 +141,31 @@
                 </div>
             </div>
         </div>
-        <div class="serBox disabled">
+        <div class="serBox" onclick="window.open('http://seo.best-ad.cn/auth/login?username=${currSystemUserName}')">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan2.png"></div>
             <div class="txt1">
                 <span class="tit">百思慧眼</span>
+
                 <p>云端备份数据</p>
-               <p>快速实现信息同步！</p>
+
+                <p>快速实现信息同步</p>
+
+                <p></p>
             </div>
-            <div class="txt2"><a  href="javascript:void(0);" onclick="js_method()"  class="a_jump"><span class="tit">百思慧眼</span></a>
+            <div class="txt2"><a href="javascript:void(0);" onclick="js_method()" class="a_jump"><span
+                    class="tit">百思慧眼</span></a>
+
                 <div class="tex2_mid">
-                    <p><b>2015年5月15日</b></p>
-                    <p><b>正式上线</b></p>
+                    <p>云端备份数据</p>
+
+                    <p>快速实现信息同步</p>
+
+                    <p></p>
                 </div>
                 <div class="enter">
-                    <a href="javascript:void(0);" onclick="js_method()">敬请期待</a>
+                    <a href="javascript:void(0);">点击进入</a>
                 </div>
             </div>
         </div>
@@ -156,7 +197,7 @@
         $(this).children(".txt2").animate({right: -220}, 400);
         $(this).removeAttr("style");
     });
-    $(".disabled").hover(function (){
+    $(".disabled").hover(function () {
         $(this).attr("style", "height:306px;background:#01aeef");
     }, function () {
         $(this).removeAttr("style");

@@ -1,6 +1,7 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.commons.constants.LogStatusConstant;
+import com.google.common.collect.Maps;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignBackUpDAO;
@@ -18,11 +19,11 @@ import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -38,6 +39,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -85,12 +89,16 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     //xj
     public CampaignDTO findCampaignByName(String name) {
+        CampaignDTO campaignDTO = null;
         List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and("name").is(name)), getEntityClass(), TBL_CAMPAIGN);
 
         CampaignEntity campaignEntity = campaignEntityList.size() == 0 ? null : campaignEntityList.get(0);
-
-        CampaignDTO campaignDTO = new CampaignDTO();
-        BeanUtils.copyProperties(campaignEntity, campaignDTO);
+        if (campaignEntity != null) {
+            campaignDTO = new CampaignDTO();
+            BeanUtils.copyProperties(campaignEntity, campaignDTO);
+        } else {
+            return campaignDTO;
+        }
         return campaignDTO;
     }
 
@@ -148,21 +156,48 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
+    public Map<Long, String> findAllDownloadCampaignByBaiduAccountId(Long baiduAccountId) {
+        return getMongoTemplate()
+                .find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(CAMPAIGN_ID).ne(null)), getEntityClass())
+                .stream()
+                .map(e -> Maps.immutableEntry(e.getCampaignId(), e.getCampaignName()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    @Override
+    public List<CampaignDTO> findDownloadCampaignsByBaiduAccountId(Long baiduAccountId) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(CAMPAIGN_ID).ne(null)),
+                project(ACCOUNT_ID, CAMPAIGN_ID, NAME).andExclude(SYSTEM_ID)
+        );
+        AggregationResults<CampaignEntity> results = getMongoTemplate().aggregate(aggregation, TBL_CAMPAIGN, getEntityClass());
+
+        return ObjectUtils.convert(results.getMappedResults(), CampaignDTO.class);
+    }
+
+    @Override
     public List<CampaignDTO> findHasLocalStatus() {
-        List<CampaignEntity> campaignEntityList=getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
-        return ObjectUtils.convert(campaignEntityList,CampaignDTO.class);
+        List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
+        return ObjectUtils.convert(campaignEntityList, CampaignDTO.class);
+    }
+
+    @Override
+    public List<CampaignDTO> findLocalChangedCampaigns(Long baiduAccountId, int type) {
+        List<CampaignEntity> campaignEntityList = getMongoTemplate()
+                .find(Query.query(Criteria.where("ls").is(type).and(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
+        return ObjectUtils.convert(campaignEntityList, CampaignDTO.class);
     }
 
     @Override
     public List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids) {
-        List<CampaignEntity> campaignEntityList=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(SYSTEM_ID).in(cids)),getEntityClass());
-        return ObjectUtils.convert(campaignEntityList,CampaignDTO.class);
+        List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(SYSTEM_ID).in(cids)), getEntityClass());
+        return ObjectUtils.convert(campaignEntityList, CampaignDTO.class);
     }
 
     @Override
     public List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids) {
-        List<CampaignEntity> campaignEntityList=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).in(cids)),getEntityClass());
-        return ObjectUtils.convert(campaignEntityList,CampaignDTO.class);
+        List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(CAMPAIGN_ID).in(cids)), getEntityClass());
+        return ObjectUtils.convert(campaignEntityList, CampaignDTO.class);
     }
 
     @Override
@@ -180,16 +215,26 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         CampaignEntity campaignEntity = getMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(oid)), getEntityClass());
         CampaignDTO campaignDTO = new CampaignDTO();
         if (campaignEntity != null) {
-        BeanUtils.copyProperties(campaignEntity, campaignDTO);
+            BeanUtils.copyProperties(campaignEntity, campaignDTO);
         }
         return campaignDTO;
+    }
+
+    @Override
+    public void pause(Long baiduAccountId) {
+        // TODO 暂停投放
+//        getMongoTemplate()
+//                .updateMulti(
+//                        Query.query(Criteria.where("_id").in(baiduAccountId)),
+//                        Update.update("p", true),
+//                        getEntityClass());
     }
 
 
     public void insert(CampaignDTO campaignDTO) {
         CampaignEntity campaignEntity = new CampaignBackUpEntity();
         if (campaignDTO != null) {
-        BeanUtils.copyProperties(campaignDTO, campaignEntity);
+            BeanUtils.copyProperties(campaignDTO, campaignEntity);
         }
         getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
     }
@@ -205,8 +250,12 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
         CampaignEntity campaignEntity = new CampaignBackUpEntity();
         BeanUtils.copyProperties(campaignDTO, campaignEntity);
-
-        if(!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(campaignDTO.getCampaignName())),getEntityClass())){
+        if (!Objects.equals("edit", campaignDTO.getId())) {
+            if (!getMongoTemplate().exists(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(NAME).is(campaignDTO.getCampaignName())), getEntityClass())) {
+                getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
+            }
+        } else {
+            campaignEntity.setId(null);
             getMongoTemplate().insert(campaignEntity, TBL_CAMPAIGN);
         }
         return campaignEntity.getId();
@@ -262,24 +311,25 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
-    public void update(CampaignDTO dto,String objId) {
-        Update update=new Update();
-        update.set("cid",dto.getCampaignId());
+    public void update(CampaignDTO dto, String objId) {
+        Update update = new Update();
+        update.set("cid", dto.getCampaignId());
         update.set("ls", null);
-        update.set("p",dto.getPause());
-        update.set("s",dto.getStatus());
-        Query q=new Query(Criteria.where(SYSTEM_ID).is(objId));
-        getMongoTemplate().updateFirst(q,update,CampaignEntity.class);
+        update.set("p", dto.getPause());
+        update.set("s", dto.getStatus());
+        Query q = new Query(Criteria.where(SYSTEM_ID).is(objId));
+        getMongoTemplate().updateFirst(q, update, CampaignEntity.class);
         // 计划更新后，计划下的单元的ocid 中的值要去掉，再将该单元的cid设置为从百度获取到的id
-        updateSub(dto.getCampaignId(),objId);
+        updateSub(dto.getCampaignId(), objId);
     }
 
     //54bcd1e3593f6a25cfe4e2da
     @Override
     public void deleteByCampaignId(Long campaginId) {
-        Query q=new Query(Criteria.where(CAMPAIGN_ID).is(campaginId));
-        getMongoTemplate().remove(q,CampaignEntity.class);
-        getMongoTemplate().remove(q,CampaignBackUpEntity.class);
+
+        Query q = new Query(Criteria.where(CAMPAIGN_ID).is(campaginId));
+        getMongoTemplate().remove(q, CampaignEntity.class);
+        getMongoTemplate().remove(q, CampaignBackUpEntity.class);
         deleteSubByUpload(new ArrayList<Long>() {{
             add(campaginId);
         }});
@@ -288,24 +338,62 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     @Override
     public void updateRemoveLs(List<String> afterUpdateStr) {
-        afterUpdateStr.stream().forEach(s->{
-            Update up=new Update();
-            up.set("ls",null);
-            getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(s)),up,CampaignEntity.class);
+        afterUpdateStr.stream().forEach(s -> {
+            Update up = new Update();
+            up.set("ls", null);
+            getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(s)), up, CampaignEntity.class);
         });
     }
 
     @Override
     public List<CampaignDTO> getOperateCamp() {
-        Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + " : 1," + NAME + " : 1,"+SYSTEM_ID+":1}");
+        Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + " : 1," + NAME + " : 1," + SYSTEM_ID + ":1}");
         query.addCriteria(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()));
         List<CampaignEntity> list = getMongoTemplate().find(query, CampaignEntity.class);
-        List<CampaignDTO> campaignDTOs=ObjectUtils.convert(list,CampaignDTO.class);
+        List<CampaignDTO> campaignDTOs = ObjectUtils.convert(list, CampaignDTO.class);
         return campaignDTOs;
 
     }
 
-
+    @Override
+    public void batchDelete(List<String> asList, List<String> adgroupList, List<String> keywordDatas, List<String> creativeDatas) {
+        asList.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 3);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.CAMPAIGN_ID).is(Long.valueOf(e))), update, getEntityClass());
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
+            }
+        });
+        adgroupList.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 4);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(Long.valueOf(e))), update, AdgroupEntity.class);
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), AdgroupEntity.class);
+            }
+        });
+        keywordDatas.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 4);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(Long.valueOf(e))), update, KeywordEntity.class);
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), KeywordEntity.class);
+            }
+        });
+        creativeDatas.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 4);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(Long.valueOf(e))), update, CreativeEntity.class);
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), CreativeEntity.class);
+            }
+        });
+    }
 
 
     /**
@@ -330,7 +418,7 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
                 fieldGetterName.append(fieldName.substring(0, 1).toUpperCase()).append(fieldName.substring(1));
                 Method method = _class.getDeclaredMethod(fieldGetterName.toString());
                 Object after = method.invoke(newCampaign);
-                    update.set(field.getName(), after);
+                update.set(field.getName(), after);
             }
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -344,8 +432,8 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
                 BeanUtils.copyProperties(campaignEntity, backUpEntity);
                 getMongoTemplate().insert(backUpEntity);
             }
-        }else{
-            if(!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(newCampaign.getCampaignName()).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass())){
+        } else {
+            if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(newCampaign.getCampaignName()).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass())) {
                 getMongoTemplate().updateFirst(query, update, CampaignEntity.class, TBL_CAMPAIGN);
                 CampaignBackUpDTO campaignBackUpDTOFind = campaignBackUpDAO.findByObjectId(newCampaign.getId());
                 if (campaignBackUpDTOFind == null && newCampaign.getLocalStatus() == 2) {
@@ -358,18 +446,19 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     }
 
     @Override
-    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo, SearchFilterParam sp) {
         Query q = new Query().addCriteria(Criteria.where(ACCOUNT_ID).is(accountId));
+        searchFilterQueryOperate(q, sp);
         int totalCount = getListTotalCount(q);
 
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
-        q.with(new Sort("name"));
         if (totalCount < 1) {
             p.setList(new ArrayList());
             return p;
         }
+
         List list = getMongoTemplate().find(q, getEntityClass());
         p.setList(list);
         return p;
@@ -536,14 +625,15 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 
     /**
      * 要更新到本地有关联的单元，单元修改需修改关键字和创意的关联
+     *
      * @param campaignId 从百度获取到的id
-     * @param objId 计划的mongodb Id
+     * @param objId      计划的mongodb Id
      */
-    private void updateSub(Long campaignId,String objId){
-        Update up=new Update();
-        up.set(CAMPAIGN_ID,campaignId);
-        Query query=new Query(Criteria.where(OBJ_CAMPAIGN_ID).in(objId));
-        getMongoTemplate().updateFirst(query,up,AdgroupEntity.class);
+    private void updateSub(Long campaignId, String objId) {
+        Update up = new Update();
+        up.set(CAMPAIGN_ID, campaignId);
+        Query query = new Query(Criteria.where(OBJ_CAMPAIGN_ID).in(objId));
+        getMongoTemplate().updateFirst(query, up, AdgroupEntity.class);
 
 
 //        getMongoTemplate().updateFirst(query,up,CreativeEntity.class);
@@ -552,6 +642,85 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
 //        List<String> adgroupIds=new ArrayList<>();
 //        adgroupEntities.parallelStream().forEach(s->adgroupIds.add(s.getId()));
 
+    }
+
+    private Query searchFilterQueryOperate(Query q, SearchFilterParam sp) {
+        if (sp != null) {
+            switch (sp.getFilterField()) {
+                case "name":
+                    getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                    break;
+                case "state":
+                    if (sp.getFilterValue().contains(",")) {
+                        String[] status = sp.getFilterValue().split(",");
+                        Integer[] integers = new Integer[status.length];
+                        for (int i = 0; i < integers.length; i++) {
+                            integers[i] = Integer.parseInt(status[i]);
+                        }
+                        q.addCriteria(Criteria.where("s").in(integers));
+                    } else {
+                        q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
+                    }
+                    break;
+                case "pause":
+                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                        if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                            q.addCriteria(Criteria.where("p").is(false));
+                        } else {
+                            q.addCriteria(Criteria.where("p").is(true));
+                        }
+                    }
+                    break;
+                case "budget":
+                    String[] prs = sp.getFilterValue().split(",");
+                    double starPrice = Double.parseDouble(prs[0]);
+                    double endPrice = Double.parseDouble(prs[1]);
+                    q.addCriteria(Criteria.where("bd").gte(starPrice).lte(endPrice));
+                    break;
+                case "show":
+                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                        q.addCriteria(Criteria.where("sp").is(Integer.valueOf(sp.getFilterValue())));
+                    }
+                    break;
+                case "dynamic":
+                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                        if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                            q.addCriteria(Criteria.where("idc").is(false));
+                        } else {
+                            q.addCriteria(Criteria.where("idc").is(true));
+                        }
+                    }
+                    break;
+            }
+        }
+        return q;
+    }
+
+    private void getNormalQuery(Query q, String field, Integer selected, String filterValue) {
+        switch (selected) {
+            case 1:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^.*?" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 11:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^(?!.*(" + filterValue + ")).*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 2:
+                q.addCriteria(Criteria.where(field).is(filterValue));
+                break;
+            case 22:
+                q.addCriteria(Criteria.where(field).ne(filterValue));
+                break;
+            case 3:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 33:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
+                break;
+        }
     }
 
 }

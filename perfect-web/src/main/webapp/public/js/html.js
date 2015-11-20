@@ -28,6 +28,19 @@ $(document).ready(function () {
         }
 
     });
+    $("#timing").click(function () {
+        if ($("#timing1").css("display") == "none") {//隐藏
+            $("#timing1").show();
+            $("#timing1").mouseleave(function () {
+                $("#timing1").css("display", "none");
+            });
+        }
+        else {
+            $("#timing1").hide();
+
+        }
+
+    });
 });
 
 /*******下载账户**************/
@@ -43,6 +56,19 @@ window.onload = function () {
     rDrag.init(document.getElementById('box9'));
     rDrag.init(document.getElementById('reachBudget_head'));
     rDrag.init(document.getElementById('downloadBox'));
+    rDrag.init(document.getElementById('CheckCompletion'));
+    rDrag.init(document.getElementById('changeCreative'));
+    rDrag.init(document.getElementById('excludeIPChange'));
+    rDrag.init(document.getElementById('budgetChange'));
+    rDrag.init(document.getElementById('CampaignChange'));
+    rDrag.init(document.getElementById('uploadHead'));
+    rDrag.init(document.getElementById('RepeartChange'));
+    rDrag.init(document.getElementById('GusuanChange'));
+    rDrag.init(document.getElementById('setFdKeywordDiv'));
+    rDrag.init(document.getElementById('setExtensionDiv'));
+    rDrag.init(document.getElementById('setExcludeIpDiv'));
+    rDrag.init(document.getElementById('plan2'));
+    rDrag.init(document.getElementById('findOrReplaceH'));
 
 
 };
@@ -63,17 +89,6 @@ $(function () {
         $(".TB_overlayBG").css("display", "none");
         $("#download").css("display", "none");
     });
-    rDrag.init(document.getElementById('changeCreative'));
-    rDrag.init(document.getElementById('excludeIPChange'));
-    rDrag.init(document.getElementById('budgetChange'));
-    rDrag.init(document.getElementById('CampaignChange'));
-    rDrag.init(document.getElementById('uploadHead'));
-    rDrag.init(document.getElementById('RepeartChange'));
-    rDrag.init(document.getElementById('GusuanChange'));
-    rDrag.init(document.getElementById('setFdKeywordDiv'));
-    rDrag.init(document.getElementById('setExtensionDiv'));
-    rDrag.init(document.getElementById('setExcludeIpDiv'));
-
 });
 
 /*******查找重复关键词**************/
@@ -186,21 +201,40 @@ $(document).ready(function () {
     $('.zhushou_menu ul li').click(function () {
         $(this).addClass('current').siblings().removeClass('current');
     });
-});
+});5
 /*******二级菜单****/
 $(document).ready(function () {
+    /**推广助手自适应***/
+    console.log($(".assistant_right").offsetHeight);
+    $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
     var $tab_li = $('.zh_menu2 li');
     $('.zh_menu2 li').click(function () {
+        //alert($(".jingjia_right")[0].offsetHeight)
         $(this).addClass('current').siblings().removeClass('current');
+        $(".zs_function ul li ul").addClass("hide");
+        $(".assstant_editor").hide();
+        $(".dropdown-menus").hide();
+        $(".list4").find("input").prop("checked", false);
         var index = $tab_li.index(this);
         $('div.zs_box > div').eq(index).show().siblings().hide();
+        $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
+        $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
         var xx = $(this).attr("cname");
-        setTimeout(function () {
+     /*   setTimeout(function () {
             resizable(xx)
-        }, 400);
+        }, 400);*/
     });
+    $('.zh_menuMonitor li').click(function () {
+        $("#zTree").height($(".assistant_right")[0].offsetHeight - 230 + "px");
+    });
+
 });
 
+$(window).resize(function() {
+    $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
+});
 /*******表格****/
 $(function () {
     var items = $(".list4 table tbody tr ");
@@ -270,12 +304,57 @@ $(function () {
     });
 
     $(".pinned").pin()
-    $("#jingjia_adds").click(function(){
-        $("#jiangjia_add").show();
-    });
-    $("#jiangjia_chongfu").click(function(){
+    $("#jingjia_adds").click(function () {
         $("#jiangjia_add").hide();
-
+    });
+    $("#jiangjia_chongfu").click(function () {
+        $("#jiangjia_add").fadeIn();
     })
+    //编辑弹窗关闭方法
+    $(".bottom_close").click(function () {
+        $(".bottom_close").parent().parent().fadeOut("slow");
+    })
+    $(".zh_menu2").click(function () {
+        $(".bottom_close").parent().parent().fadeOut("slow");
+    })
+    $(function () {
+        //绑定需要拖拽改变大小的元素对象
+        bindResize(document.getElementById('kkeyword'));
+        bindResize(document.getElementById('tcreative'));
+        bindResize(document.getElementById('aadgroup'));
+        bindResize(document.getElementById('ccampaign'));
+    });
+    function bindResize(el) {
+        var els = el.style,
+            y = 0;
+        $(".zhanghu_input").mousedown(function (e) {
 
+            /*     x = e.clientX - el.offsetWidth,*/
+            y = e.clientY - el.offsetHeight;
+            el.setCapture ? (
+                el.setCapture(),
+                    el.onmousemove = function (ev) {
+                        mouseMove(ev || event);
+                    },
+                    el.onmouseup = mouseUp
+                ) : (
+                $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
+                );
+            e.preventDefault();
+        });
+        function mouseMove(e) {
+//            els.width = e.clientX - x + 'px',
+            els.height = e.clientY - y + 'px';
+
+        }
+
+        function mouseUp() {
+            el.releaseCapture ? (
+                el.releaseCapture(),
+                    el.onmousemove = el.onmouseup = null
+                ) : (
+                $(document).unbind("mousemove", mouseMove).unbind("mouseup", mouseUp)
+                );
+        }
+    }
 });

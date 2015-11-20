@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 
 /**
  * Created by baizz on 2014-08-07.
+ * <p>创意报告</p>
  */
 public class CreativeReportEntity extends AccountIdEntity {
 
@@ -16,31 +17,31 @@ public class CreativeReportEntity extends AccountIdEntity {
     private String id;
 
     @Field(MongoEntityConstants.CREATIVE_ID)
-    private Long creativeId;
+    private Long creativeId;        // 创意ID
 
     @Field(value = "crtl")
-    private String creativeTitle;
+    private String creativeTitle;       //创意标题
 
     @Field(value = "des1")
-    private String description1;
+    private String description1;        //创意描述1
 
     @Field(value = "des2")
-    private String description2;
+    private String description2;        //创意描述2
 
     @Field(value = "url")
-    private String showUrl;
+    private String showUrl;             //显示url
 
     @Field(MongoEntityConstants.ADGROUP_ID)
-    private Long adgroupId;
+    private Long adgroupId;             //单元ID
 
     @Field(value = "agna")
-    private String adgroupName;
+    private String adgroupName;         //单元名称
 
     @Field(MongoEntityConstants.CAMPAIGN_ID)
-    private Long campaignId;
+    private Long campaignId;            //计划ID
 
     @Field(value = "cpna")
-    private String campaignName;
+    private String campaignName;        //计划名称
 
     @Field(value = "pcis")
     private Integer pcImpression;     //PC展现次数
@@ -64,28 +65,28 @@ public class CreativeReportEntity extends AccountIdEntity {
     private Double pcConversion;      //PC转化
 
     @Field(value = "mis")
-    private Integer mobileImpression;
+    private Integer mobileImpression;   //mobile展现次数
 
     @Field(value = "mcli")
-    private Integer mobileClick;
+    private Integer mobileClick;   //mobile点击次数
 
     @Field(value = "mctr")
-    private Double mobileCtr;
+    private Double mobileCtr;   //mobile点击率=点击次数/展现次数
 
     @Field(value = "mcost")
-    private BigDecimal mobileCost;
+    private BigDecimal mobileCost;   //mobile消费
 
     @Field(value = "mcpc")
-    private BigDecimal mobileCpc;
+    private BigDecimal mobileCpc;   //mobile平均点击价格=消费/点击次数
 
     @Field(value = "mpt")
-    private Double mobilePosition;
+    private Double mobilePosition;   //mobile平均排名
 
     @Field(value = "mcpm")
-    private BigDecimal mobileCpm;
+    private BigDecimal mobileCpm;   //mobile千次展现消费
 
     @Field(value = "mcs")
-    private Double mobileConversion;
+    private Double mobileConversion;   //mobile转化
 
     public String getId() {
         return id;

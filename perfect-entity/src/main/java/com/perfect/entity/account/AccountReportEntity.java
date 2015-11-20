@@ -10,63 +10,65 @@ import java.util.Date;
 
 /**
  * Created by baizz on 2014-08-13.
+ *
+ * @description 账户报告实体类
  */
 @Document(collection = MongoEntityConstants.TBL_ACCOUNT_REPORT)
-public class AccountReportEntity implements Comparable<AccountReportEntity>{
+public class AccountReportEntity implements Comparable<AccountReportEntity> {
 
     @Id
     private String id;
 
     @Field(value = MongoEntityConstants.ACCOUNT_ID)
-    private Long accountId;
+    private Long accountId;             // 百度账户ID
 
     @Field(value = "acna")
-    private String accountName;
+    private String accountName;         // 百度账户名称
 
     @Field(value = "date")
-    private Date date;
+    private Date date;                  // 报告日期
 
     @Field(value = "pcis")
-    private Integer pcImpression;     //PC展现次数
+    private Integer pcImpression;       // PC展现次数
 
     @Field(value = "pccli")
-    private Integer pcClick;      //PC点击次数
+    private Integer pcClick;            // PC点击次数
 
     @Field(value = "pcctr")
-    private Double pcCtr;     //PC点击率=点击次数/展现次数
+    private Double pcCtr;               // PC点击率=点击次数/展现次数
 
     @Field(value = "pccost")
-    private BigDecimal pcCost;        //PC消费
+    private BigDecimal pcCost;          // PC消费
 
     @Field(value = "pccpc")
-    private BigDecimal pcCpc;     //PC平均点击价格=消费/点击次数
+    private BigDecimal pcCpc;           // PC平均点击价格=消费/点击次数
 
     @Field(value = "pccpm")
-    private BigDecimal pcCpm;       //PC千次展现消费
+    private BigDecimal pcCpm;           // PC千次展现消费
 
     @Field(value = "pccs")
-    private Double pcConversion;      //PC转化
+    private Double pcConversion;        // PC转化
 
     @Field(value = "mis")
-    private Integer mobileImpression;
+    private Integer mobileImpression;   // 移动展现次数
 
     @Field(value = "mcli")
-    private Integer mobileClick;
+    private Integer mobileClick;        // 移动点击次数
 
     @Field(value = "mctr")
-    private Double mobileCtr;
+    private Double mobileCtr;           // 移动点击率=点击次数/展现次数
 
     @Field(value = "mcost")
-    private BigDecimal mobileCost;
+    private BigDecimal mobileCost;      // 移动消费
 
     @Field(value = "mcpc")
-    private BigDecimal mobileCpc;
+    private BigDecimal mobileCpc;       // 移动平均点击价格=消费/点击次数
 
     @Field(value = "mcpm")
-    private BigDecimal mobileCpm;
+    private BigDecimal mobileCpm;       // 移动千次展现消费
 
     @Field(value = "mcs")
-    private Double mobileConversion;
+    private Double mobileConversion;    // 移动转化
 
     private String orderBy;
 
@@ -260,33 +262,33 @@ public class AccountReportEntity implements Comparable<AccountReportEntity>{
 
     @Override
     public int compareTo(AccountReportEntity o) {
-        switch (o.getOrderBy()){
+        switch (o.getOrderBy()) {
             case "1":
                 return this.getDate().compareTo(o.getDate());
             case "2":
-                    return this.getPcImpression().compareTo(o.getPcImpression());
+                return this.getPcImpression().compareTo(o.getPcImpression());
             case "-2":
-                    return o.getPcImpression().compareTo(this.getPcImpression());
+                return o.getPcImpression().compareTo(this.getPcImpression());
             case "3":
-                    return this.getPcClick().compareTo(o.getPcClick());
+                return this.getPcClick().compareTo(o.getPcClick());
             case "-3":
-                    return o.getPcClick().compareTo(this.getPcClick());
+                return o.getPcClick().compareTo(this.getPcClick());
             case "4":
-                    return this.getPcCost().compareTo(o.getPcCost());
+                return this.getPcCost().compareTo(o.getPcCost());
             case "-4":
-                    return o.getPcCost().compareTo(this.getPcCost());
+                return o.getPcCost().compareTo(this.getPcCost());
             case "5":
-                    return this.getPcCpc().compareTo(o.getPcCpc());
+                return this.getPcCpc().compareTo(o.getPcCpc());
             case "-5":
-                    return o.getPcCpc().compareTo(this.getPcCpc());
+                return o.getPcCpc().compareTo(this.getPcCpc());
             case "6":
-                    return this.getPcCtr().compareTo(o.getPcCtr());
+                return this.getPcCtr().compareTo(o.getPcCtr());
             case "-6":
-                    return o.getPcCtr().compareTo(this.getPcCtr());
+                return o.getPcCtr().compareTo(this.getPcCtr());
             case "7":
-                    return this.getPcConversion().compareTo(o.getPcConversion());
+                return this.getPcConversion().compareTo(o.getPcConversion());
             case "-7":
-                    return o.getPcConversion().compareTo(this.getPcConversion());
+                return o.getPcConversion().compareTo(this.getPcConversion());
             default:
                 return o.getDate().compareTo(this.getDate());
         }

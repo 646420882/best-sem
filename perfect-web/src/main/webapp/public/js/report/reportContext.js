@@ -22,7 +22,7 @@ var colorTow = "#40BC2A";
 var nameOne = "展现";
 var nameTow = "点击";
 
-unitOne ="次";
+unitOne = "次";
 unitTow = "次"
 //展现
 var t_impr = new Array();
@@ -66,11 +66,7 @@ var fieldName = 'date';
 var sort = 1;
 var dateclicks = "";
 
-//日期控件-开始日期
-var daterangepicker_start_date = null;
 
-//日期控件-结束日期
-var daterangepicker_end_date = null;
 
 
 var startDet = 0;
@@ -90,6 +86,11 @@ var limitVS = 20;
 var dataid = 0;
 var dataname = "0";
 var judety = 0;
+//日期控件-开始日期
+var daterangepicker_start_date = null;
+
+//日期控件-结束日期
+var daterangepicker_end_date = null;
 $(function () {
     // 对Date的扩展，将 Date 转化为指定格式的String
     // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -115,17 +116,74 @@ $(function () {
         return fmt;
     }
 
-    $(document).ready(function () {
-        //加载日历控件
-        $("input[name=reservation]").daterangepicker();
+    $(function () {
+        //数据初始化
+        judgeVS = 0;
+        $("#pagination1").empty();
+        reportDataVS();
+        //$("input[name=reservation]").daterangepicker();
         $("#inputTow").cxCalendar();
         $("input[cname=dateClick]").click(function () {
             dateclicks = $(this)
         });
         var distance = 0;
-        $(".btnDone").on('click', function () {
-            var _startDate = $('.range-start').datepicker('getDate');
-            var _endDate = $('.range-end').datepicker('getDate');
+        //加载日历控件
+        $('input[name="reservation"]').daterangepicker({
+            "showDropdowns": true,
+            "timePicker24Hour": true,
+            timePicker: true,
+            timePickerIncrement: 30,
+            format: 'DD/MM/YYYY',
+            ranges: {
+                //'最近1小时': [moment().subtract('hours',1), moment()],
+                '今天': [moment().startOf('day'), moment()],
+                '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                '过去7天': [moment().subtract('days', 6), moment()],
+                '过去14天': [moment().subtract('days', 13), moment()],
+                '过去30天': [moment().subtract('days', 29), moment()],
+                '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            "locale": {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "确定",
+                "cancelLabel": "关闭",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "daysOfWeek": [
+                    "日",
+                    "一",
+                    "二",
+                    "三",
+                    "四",
+                    "五",
+                    "六"
+                ],
+                "monthNames": [
+                    "一月",
+                    "二月",
+                    "三月",
+                    "四月",
+                    "五月",
+                    "六月",
+                    "七月",
+                    "八月",
+                    "九月",
+                    "十月",
+                    "十一月",
+                    "十二月"
+                ],
+                "firstDay": 1
+            },
+            "startDate": moment(),
+            "endDate": moment()
+        },
+            function (start, end, label,e) {
+            });
+        $(".btnDone").bind('click', function () {
+            var _startDate = daterangepicker_start_date_t;
+            var _endDate = daterangepicker_end_date_t;
             if (_startDate != null && _endDate != null) {
                 daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
                 daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
@@ -141,7 +199,8 @@ $(function () {
                 if (fen < 0) {
                     daterangepicker_start_date = null;
                     daterangepicker_end_date = null;
-                    alert("请选择正确的时间范围");
+                    //alert("请选择正确的时间范围");
+                    AlertPrompt.show("请选择正确的时间范围");
                     dateclicks.prev().val();
                     return;
                 }
@@ -159,6 +218,7 @@ $(function () {
                 dataname = "0";
                 $("#downAccountReport").empty();
                 $("#downReport").empty();
+                $("#downReportSearch").empty();
             }
         });
 
@@ -175,7 +235,14 @@ $(function () {
             var index = $tab_li.index(this);
             $('div.tab_box > div').eq(index).show().siblings().hide();
             $("#pageDet").empty();
+            if ($("#reportType>a").eq(4).attr("class") == "current") {
+                SearchClass();
+            }
         });
+        $('.tab_menu li:first').click(function () {
+            $(".searh_report").hide();
+        })
+
         $("#reportType>a").click(function () {
             $("#reportType>a").removeClass("current");
             $(this).addClass("current");
@@ -263,7 +330,7 @@ $(function () {
             colorTow = "#40BC2A";
             nameOne = "展现";
             nameTow = "点击";
-            unitOne ="次";
+            unitOne = "次";
             unitTow = "次"
             $("#downReport").empty();
             $("#pagination1").empty()
@@ -286,7 +353,7 @@ $(function () {
                             dataOne = {
                                 name: '展现',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_impr,
                                 itemStyle: {
                                     normal: {
@@ -305,9 +372,9 @@ $(function () {
                             dataTow = {
                                 name: '展现',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_impr,
-                                yAxisIndex:1,
+                                yAxisIndex: 1,
                                 itemStyle: {
                                     normal: {
                                         lineStyle: {
@@ -339,7 +406,7 @@ $(function () {
                             dataOne = {
                                 name: '点击',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_clicks,
                                 itemStyle: {
                                     normal: {
@@ -358,9 +425,9 @@ $(function () {
                             dataTow = {
                                 name: '点击',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_clicks,
-                                yAxisIndex:1,
+                                yAxisIndex: 1,
                                 itemStyle: {
                                     normal: {
                                         lineStyle: {
@@ -392,7 +459,7 @@ $(function () {
                             dataOne = {
                                 name: '消费',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_cost,
                                 itemStyle: {
                                     normal: {
@@ -411,9 +478,9 @@ $(function () {
                             dataTow = {
                                 name: '消费',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_cost,
-                                yAxisIndex:1,
+                                yAxisIndex: 1,
                                 itemStyle: {
                                     normal: {
                                         lineStyle: {
@@ -445,7 +512,7 @@ $(function () {
                             dataOne = {
                                 name: '点击率',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_ctr,
                                 itemStyle: {
                                     normal: {
@@ -464,9 +531,9 @@ $(function () {
                             dataTow = {
                                 name: '点击率',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_ctr,
-                                yAxisIndex:1,
+                                yAxisIndex: 1,
                                 itemStyle: {
                                     normal: {
                                         lineStyle: {
@@ -498,7 +565,7 @@ $(function () {
                             dataOne = {
                                 name: '平均点击价格',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_cpc,
                                 itemStyle: {
                                     normal: {
@@ -517,9 +584,9 @@ $(function () {
                             dataTow = {
                                 name: '平均点击价格',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_cpc,
-                                yAxisIndex:1,
+                                yAxisIndex: 1,
                                 itemStyle: {
                                     normal: {
                                         lineStyle: {
@@ -551,7 +618,7 @@ $(function () {
                             dataOne = {
                                 name: '转化',
                                 type: 'line',
-                                smooth:true,
+                                smooth: true,
                                 data: t_conversion,
                                 itemStyle: {
                                     normal: {
@@ -570,8 +637,8 @@ $(function () {
                             dataTow = {
                                 name: '转化',
                                 type: 'line',
-                                smooth:true,
-                                yAxisIndex:1,
+                                smooth: true,
+                                yAxisIndex: 1,
                                 data: t_conversion,
                                 itemStyle: {
                                     normal: {
@@ -784,7 +851,7 @@ $(function () {
                             if (dateLis == 0) {
                                 $.each(data.countData, function (i, countdata) {
                                     $.each(data.impr, function (i, impr) {
-                                        if(impr.regionName != "其他") {
+                                        if (impr.regionName != "其他") {
                                             if (devices == 2) {
                                                 if (isNaN(impr.mobileImpression / countdata.mobileImpression) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_impr.push(eval("({name:'" + impr.regionName + "', value:0})"));
@@ -805,7 +872,7 @@ $(function () {
                                         }
                                     });
                                     $.each(data.click, function (i, impr) {
-                                        if(impr.regionName != "其他") {
+                                        if (impr.regionName != "其他") {
                                             if (devices == 2) {
                                                 if (isNaN(impr.mobileClick / countdata.mobileClick) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_click.push(eval("({name:'" + impr.regionName + "', value:0})"));
@@ -826,7 +893,7 @@ $(function () {
                                         }
                                     });
                                     $.each(data.cost, function (i, impr) {
-                                        if(impr.regionName != "其他") {
+                                        if (impr.regionName != "其他") {
                                             if (devices == 2) {
                                                 if (isNaN(impr.mobileCost / countdata.mobileCost) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
                                                     pie_cost.push(eval("({name:'" + impr.regionName + "', value:0})"));
@@ -847,21 +914,21 @@ $(function () {
                                         }
                                     });
                                     $.each(data.conv, function (i, impr) {
-                                        if(impr.regionName != "其他"){
+                                        if (impr.regionName != "其他") {
                                             if (devices == 2) {
                                                 if (isNaN(impr.mobileConversion / countdata.mobileConversion) || (impr.mobileImpression / countdata.mobileImpression) == 'Infinity') {
-                                                    pie_conv.push(eval("({name:'"+impr.regionName+"', value:0})"));
+                                                    pie_conv.push(eval("({name:'" + impr.regionName + "', value:0})"));
                                                 } else {
                                                     var number = Math.round((impr.mobileConversion / countdata.mobileConversion) * 10000) / 100;
-                                                    pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+number +"})"));
+                                                    pie_conv.push(eval("({name:'" + impr.regionName + "',value:" + number + "})"));
                                                     pie_num4 = 1;
                                                 }
                                             } else {
                                                 if (isNaN(impr.pcConversion / countdata.pcConversion) || (impr.mobileImpression / countdata.mobileImpression) == Infinity) {
-                                                    pie_conv.push(eval("({name:'"+impr.regionName+"', value:0})"));
+                                                    pie_conv.push(eval("({name:'" + impr.regionName + "', value:0})"));
                                                 } else {
                                                     var number = Math.round((impr.pcConversion / countdata.pcConversion) * 10000) / 100;
-                                                    pie_conv.push(eval("({name:'"+impr.regionName+"',value:"+ number +"})"));
+                                                    pie_conv.push(eval("({name:'" + impr.regionName + "',value:" + number + "})"));
                                                     pie_num4 = 1;
                                                 }
                                             }
@@ -876,12 +943,12 @@ $(function () {
                                     nameAll.push("消费");
                                     dataAll.push(pie_conv);
                                     nameAll.push("转化");
-                                    binFalg=1;
-                                    for(var i = 0 ; i < dataAll.length; i++){
+                                    binFalg = 1;
+                                    for (var i = 0; i < dataAll.length; i++) {
                                         pm_array.push(dataAll[i]);
                                     }
 
-                                    pieChart(dataAll,nameAll,"imprDiv",pm_array);
+                                    pieChart(dataAll, nameAll, "imprDiv", pm_array);
 
 
                                 });
@@ -1161,7 +1228,7 @@ $(function () {
                                 dataOne = {
                                     name: '展现',
                                     type: 'line',
-                                    smooth:true,
+                                    smooth: true,
                                     data: t_impr,
                                     itemStyle: {
                                         normal: {
@@ -1174,9 +1241,9 @@ $(function () {
                                 dataTow = {
                                     name: '点击',
                                     type: 'line',
-                                    smooth:true,
+                                    smooth: true,
                                     data: t_clicks,
-                                    yAxisIndex:1,
+                                    yAxisIndex: 1,
                                     itemStyle: {
                                         normal: {
                                             lineStyle: {
@@ -1209,33 +1276,33 @@ $(function () {
                                 html_GoAll = html_GoAll + "<tr><td>合计</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
                                 + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
-                                + "<td>" + Math.round(((items.pcClick + items.mobileClick) / ((items.pcImpression + items.mobileImpression)==0?1:items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
-                                + "<td>" + Math.round(((items.pcCost + items.mobileCost) / ((items.pcClick + items.mobileClick)==0?1:(items.pcClick + items.mobileClick))) * 100) / 100 + "</td>"
+                                + "<td>" + Math.round(((items.pcClick + items.mobileClick) / ((items.pcImpression + items.mobileImpression) == 0 ? 1 : items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
+                                + "<td>" + Math.round(((items.pcCost + items.mobileCost) / ((items.pcClick + items.mobileClick) == 0 ? 1 : (items.pcClick + items.mobileClick))) * 100) / 100 + "</td>"
                                 + "<td>" + (items.pcConversion + items.mobileConversion) + "</td><td>-</td><td>-</td></tr>";
                             } else {
                                 var headTd = "";
                                 var bodyTd = "";
-                                if(reportTypes == "6"){
-                                    headTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                                    bodyTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                                }else if(reportTypes =="7"){
-                                    headTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                                    bodyTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                                }else{
-                                    headTd ="<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                                    bodyTd ="<td>&nbsp;</td><td>&nbsp;</td>";
+                                if (reportTypes == "6") {
+                                    headTd = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                    bodyTd = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                } else if (reportTypes == "7") {
+                                    headTd = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                    bodyTd = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                } else {
+                                    headTd = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                                    bodyTd = "<td>&nbsp;</td><td>&nbsp;</td>";
                                 }
-                                html_GoAll = "<tr><td>合计</td>"+headTd+"</tr>"
+                                html_GoAll = "<tr><td>合计</td>" + headTd + "</tr>"
                                 html_GoAll = html_GoAll + "<tr><td>计算机</td>"
-                                + bodyTd +"<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
+                                + bodyTd + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
                                 + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(items.pcCtr * 100) / 100 + "%</td><td>" + Math.round(items.pcCpc * 100) / 100 + "</td><td>" + items.pcConversion + "</td><td>-</td><td>-</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>移动设备</td>"
-                                + bodyTd +"<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
+                                + bodyTd + "<td>" + items.mobileImpression + "</td><td>" + items.mobileClick + "</td>"
                                 + "<td>" + Math.round(items.mobileCost * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(items.mobileCtr * 100) / 100 + "%</td><td>" + Math.round(items.mobileCpc * 100) / 100 + "</td><td>" + items.mobileConversion + "</td><td>-</td><td>-</td></tr>"
                                 html_GoAll = html_GoAll + "<tr><td>合计</td>"
-                                + bodyTd +"<td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
+                                + bodyTd + "<td>" + (items.pcImpression + items.mobileImpression) + "</td><td>" + (items.pcClick + items.mobileClick) + "</td>"
                                 + "<td>" + Math.round((items.pcCost + items.mobileCost) * 100) / 100 + "</td>"
                                 + "<td>" + Math.round(((items.pcClick + items.mobileClick) / (items.pcImpression + items.mobileImpression)) * 10000) / 100 + "%</td>"
                                 + "<td>" + Math.round(((items.pcCost + items.mobileCost) / (items.pcClick + items.mobileClick)) * 100) / 100 + "</td>"
@@ -1461,7 +1528,8 @@ $(function () {
                 }
             }
         });
-    }
+    };
+    reportDataVS
     /**
      *
      * 账户基础报告
@@ -1517,64 +1585,65 @@ $(function () {
         $("#costDiv").empty();
         $("#convDiv").empty();
         var myChart = echarts.init(document.getElementById('container'));
-        var dataNew ;
-        if(dataOne == ""){
+        var dataNew;
+        if (dataOne == "") {
             dataNew = [dataTow];
-        }else if(dataTow == ""){
+        } else if (dataTow == "") {
             dataNew = [dataOne];
-        }else{
-            dataNew = [dataOne,dataTow];
+        } else {
+            dataNew = [dataOne, dataTow];
         }
         var option = {
-            tooltip : {
+            tooltip: {
                 trigger: 'axis'
             },
             toolbox: {
-                show : true,
-                feature : {
-                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
+                show: true,
+                feature: {
+                    magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
                 }
             },
-            calculable : true,
-            xAxis : [
+            calculable: true,
+            xAxis: [
                 {
-                    type : 'category',
-                    boundaryGap : false,
-                    data : t_date
+                    type: 'category',
+                    boundaryGap: false,
+                    data: t_date
                 }
             ],
-            yAxis : [
+            yAxis: [
                 {
-                    type : 'value',
-                    name:nameOne,
-                    scale:true,
-                    axisLabel : {
+                    type: 'value',
+                    name: nameOne,
+                    scale: true,
+                    axisLabel: {
                         formatter: '{value} ' + unitOne
                     },
-                    axisLine:{
-                        show:true,
-                        lineStyle:{
-                            color:colorOne
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: colorOne
                         }
                     }
-                },{
-                    type : 'value',
-                    name:nameTow,
-                    scale:true,
-                    axisLabel : {
+                },
+                {
+                    type: 'value',
+                    name: nameTow,
+                    scale: true,
+                    axisLabel: {
                         formatter: '{value} ' + unitTow
                     },
-                    axisLine:{
-                        show:true,
-                        lineStyle:{
-                            color:colorTow
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: colorTow
                         }
                     }
                 }
             ],
-            series : dataNew
+            series: dataNew
         };
         myChart.setOption(option);
 
@@ -1583,84 +1652,87 @@ $(function () {
     var legenddata;
     pieChart = function (showData, showName, showId, pm_array) {
         $("#pm_data").empty();
-        if(binFalg==1) {
+        if (binFalg == 1) {
             var html = "<table>";
-            $.each(pm_array[0],function(i,item){
-                html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
+            $.each(pm_array[0], function (i, item) {
+                html = html + "<tr><td class='map_number'><em></em>" + (i + 1) + "</td><td><span>" + item.name + "</span></td><td><span>" + item.value + "%</span></td></tr>"
             });
             html = html + "</table>";
             $("#pm_data").append(html);
             legenddata = eval("({ " + showName[1] + " : false," + showName[2] + " : false," + showName[3] + " : false})");
         }
-        $("#"+showId).show();
+        $("#" + showId).show();
         $("#pm_data").show();
         $("#container").hide();
         var myChartes = echarts.init(document.getElementById(showId));
         var optionbing = {
-            tooltip : {
+            tooltip: {
                 trigger: 'item',
                 formatter: '{b} {a}<br/>占全国百分比：{c}%'
             },
             legend: {
                 orient: 'vertical',
-                x:'left',
+                x: 'left',
                 selected: legenddata,
-                data:[showName[0],showName[1],showName[2],showName[3]]
+                data: [showName[0], showName[1], showName[2], showName[3]]
             },
             dataRange: {
                 min: 0,
                 max: 100,
-                text:['高','低'],           // 文本，默认为数值文本
-                calculable : true
+                text: ['高', '低'],           // 文本，默认为数值文本
+                calculable: true
             },
             toolbox: {
                 show: true,
-                orient : 'vertical',
+                orient: 'vertical',
                 x: 'right',
                 y: 'center',
-                feature : {
-                    restore : {show: true},
-                    saveAsImage : {show: true}
+                feature: {
+                    restore: {show: true},
+                    saveAsImage: {show: true}
                 }
             },
-            series : [
+            series: [
                 {
                     name: showName[0],
                     type: 'map',
                     mapType: 'china',
                     roam: false,
-                    itemStyle:{
-                        normal:{label:{show:true}},
-                        emphasis:{label:{show:true}}
+                    itemStyle: {
+                        normal: {label: {show: true}},
+                        emphasis: {label: {show: true}}
                     },
-                    data:showData[0]
-                },{
+                    data: showData[0]
+                },
+                {
                     name: showName[1],
                     type: 'map',
                     mapType: 'china',
-                    itemStyle:{
-                        normal:{label:{show:true}},
-                        emphasis:{label:{show:true}}
+                    itemStyle: {
+                        normal: {label: {show: true}},
+                        emphasis: {label: {show: true}}
                     },
-                    data:showData[1]
-                },{
+                    data: showData[1]
+                },
+                {
                     name: showName[2],
                     type: 'map',
                     mapType: 'china',
-                    itemStyle:{
-                        normal:{label:{show:true}},
-                        emphasis:{label:{show:true}}
+                    itemStyle: {
+                        normal: {label: {show: true}},
+                        emphasis: {label: {show: true}}
                     },
-                    data:showData[2]
-                },{
+                    data: showData[2]
+                },
+                {
                     name: showName[3],
                     type: 'map',
                     mapType: 'china',
-                    itemStyle:{
-                        normal:{label:{show:true}},
-                        emphasis:{label:{show:true}}
+                    itemStyle: {
+                        normal: {label: {show: true}},
+                        emphasis: {label: {show: true}}
                     },
-                    data:showData[3]
+                    data: showData[3]
                 }
             ]
         };
@@ -1668,44 +1740,42 @@ $(function () {
         myChartes.setOption(optionbing);
 
         // 动态添加默认不显示的数据
-        myChartes.on(echarts.config.EVENT.LEGEND_SELECTED, function (param){
+        myChartes.on(echarts.config.EVENT.LEGEND_SELECTED, function (param) {
             var clickName = param.target;
             $("#pm_data").empty();
             var html = "<table>";
             if (clickName == showName[0]) {
-                legenddata = eval("({ "+showName[1]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
-                $.each(pm_array[0],function(i,item){
-                    html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
+                legenddata = eval("({ " + showName[1] + " : false," + showName[2] + " : false," + showName[3] + " : false})");
+                $.each(pm_array[0], function (i, item) {
+                    html = html + "<tr><td class='map_number'><em></em>" + (i + 1) + "</td><td><span>" + item.name + "</span></td><td><span>" + item.value + "%</span></td></tr>"
                 });
-                pieChart(showData,showName,showId,pm_array);
+                pieChart(showData, showName, showId, pm_array);
             }
             if (clickName == showName[1]) {
-                legenddata = eval("({ "+showName[0]+" : false,"+showName[2]+" : false,"+showName[3]+" : false})");
-                $.each(pm_array[1],function(i,item){
-                    html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
+                legenddata = eval("({ " + showName[0] + " : false," + showName[2] + " : false," + showName[3] + " : false})");
+                $.each(pm_array[1], function (i, item) {
+                    html = html + "<tr><td class='map_number'><em></em>" + (i + 1) + "</td><td><span>" + item.name + "</span></td><td><span>" + item.value + "%</span></td></tr>"
                 });
-                pieChart(showData,showName,showId,pm_array);
+                pieChart(showData, showName, showId, pm_array);
             }
             if (clickName == showName[2]) {
-                legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[3]+" : false})");
-                $.each(pm_array[2],function(i,item){
-                    html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
+                legenddata = eval("({ " + showName[0] + " : false," + showName[1] + " : false," + showName[3] + " : false})");
+                $.each(pm_array[2], function (i, item) {
+                    html = html + "<tr><td class='map_number'><em></em>" + (i + 1) + "</td><td><span>" + item.name + "</span></td><td><span>" + item.value + "%</span></td></tr>"
                 });
-                pieChart(showData,showName,showId,pm_array);
+                pieChart(showData, showName, showId, pm_array);
             }
             if (clickName == showName[3]) {
-                legenddata = eval("({ "+showName[0]+" : false,"+showName[1]+" : false,"+showName[2]+" : false})");
-                $.each(pm_array[3],function(i,item){
-                    html = html +"<tr><td class='map_number'><em></em>"+(i+1)+"</td><td><span>"+item.name+"</span></td><td><span>"+item.value+"%</span></td></tr>"
+                legenddata = eval("({ " + showName[0] + " : false," + showName[1] + " : false," + showName[2] + " : false})");
+                $.each(pm_array[3], function (i, item) {
+                    html = html + "<tr><td class='map_number'><em></em>" + (i + 1) + "</td><td><span>" + item.name + "</span></td><td><span>" + item.value + "%</span></td></tr>"
                 });
-                pieChart(showData,showName,showId,pm_array);
+                pieChart(showData, showName, showId, pm_array);
             }
             html = html + "</table>";
             $("#pm_data").append(html);
         });
     };
-
-
 
 
     $("body").on("click", "a[cname=nameDet]", function () {
@@ -1795,7 +1865,7 @@ $(function () {
         opt["next_text"] = "下一页";
 
         //avoid html injections
-        var htmlspecialchars = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
+        var htmlspecialchars = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"};
         $.each(htmlspecialchars, function (k, v) {
             opt.prev_text = opt.prev_text.replace(k, v);
             opt.next_text = opt.next_text.replace(k, v);
@@ -1820,5 +1890,129 @@ $(function () {
             $("#pagination2").pagination(records, getOptionsFromForm(_number));
         }
     };
+    /**********************************************************************************/
+
+    /********************************搜索词报告******************************************/
+    $("#createReport").click(function () {
+        var _startDate = daterangepicker_start_date_t;
+        var _endDate = daterangepicker_end_date_t;
+        //var _startDate = $('.range-start').datepicker('getDate');
+        //var _endDate = $('.range-end').datepicker('getDate');
+        var levelOfDetails = 12;//分析层级
+
+        var device = $("#putinInfo").val();//投放设备
+        var regions = getRegionNames();//推广地域
+        var dateUnit = $("#dateUnit .current").attr("cname");
+        $("#searchWordTbody").html("正在联网为您获取搜索词报告...");
+        $.ajax({
+            url: "/assistantKeyword/getSearchWordReport",
+            type: "post",
+            data: {
+                "levelOfDetails": levelOfDetails,
+                "startDate": _startDate != null ? _startDate.Format("yyyy-MM-dd hh:mm:ss") : _startDate,
+                "endDate": _endDate != null ? _endDate.Format("yyyy-MM-dd hh:mm:ss") : _endDate,
+                "device": device,
+                "attributes": regions,
+                "status": dateUnit
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.length == 0) {
+                    $("#searchWordTbody").empty();
+                    $("#searchWordTbody").html("没有该范围的数据!");
+                } else {
+                    var basisHtml = "";
+                    data.forEach(function (item, i) {
+                        if (i % 2 == 0) {
+                            basisHtml = basisHtml + "<tr class='list2_box1'><td>&nbsp;" + item.date + "</td>"
+                            + "<td><span>&nbsp;" + item.campaignName + "</td>"
+                            + "<td><span>&nbsp;" + item.adgroupName + "</td>"
+                                /*+ "<td><span>&nbsp;" + item.createTitle + "</td>"
+                                 + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
+                                 + "<td><span>&nbsp;" + item.createDesc2 + "</td>"*/
+                            + "<td><span>&nbsp;" + item.searchEngine + "</td>"
+                            + "<td><span>&nbsp;" + item.click + "</td>"
+                            + "<td><span>&nbsp;" + item.impression + "</td>"
+                            + "<td><span>&nbsp;" + item.clickRate + "</td>"
+                            + "<td><span>&nbsp;" + item.searchWord + "</td>"
+                            + "<td><span>&nbsp;" + item.keyword + "</td>"
+                            + "<td><span>&nbsp;" + item.parseExtent + "</td>"
+                            + "</tr>"
+                        } else {
+                            basisHtml = basisHtml + "<tr class='list2_box2'><td>&nbsp;" + item.date + "</td>"
+                            + "<td><span>&nbsp;" + item.campaignName + "</td>"
+                            + "<td><span>&nbsp;" + item.adgroupName + "</td>"
+                                /*+ "<td><span>&nbsp;" + item.createTitle + "</td>"
+                                 + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
+                                 + "<td><span>&nbsp;" + item.createDesc2 + "</td>"*/
+                            + "<td><span>&nbsp;" + item.searchEngine + "</td>"
+                            + "<td><span>&nbsp;" + item.click + "</td>"
+                            + "<td><span>&nbsp;" + item.impression + "</td>"
+                            + "<td><span>&nbsp;" + item.clickRate + "</td>"
+                            + "<td><span>&nbsp;" + item.searchWord + "</td>"
+                            + "<td><span>&nbsp;" + item.keyword + "</td>"
+                            + "<td><span>&nbsp;" + item.parseExtent + "</td>"
+                            + "</tr>"
+                        }
+                    });
+
+                    $("#searchWordTbody").empty();
+                    $("#searchWordTbody").html(basisHtml);
+                    $("#downReportSearch").empty();
+                    var downUrl = "date1=" + daterangepicker_start_date + "&date2=" + daterangepicker_end_date;
+                    var url = "assistantKeyword/downSeachKeyWordReportCSV?levelOfDetails="+levelOfDetails+"&startDate="+(_startDate != null ? _startDate.Format("yyyy-MM-dd hh:mm:ss") : _startDate)+
+                        "&endDate=" + (_endDate != null ? _endDate.Format("yyyy-MM-dd hh:mm:ss") : _endDate) +"&attributes = "+regions+"&device="+device+"&status="+dateUnit;
+                    $("#downReportSearch").append("<a href='"+url+"'  class='become fl'>下载报告</a>")
+                }
+            }
+        });
+    });
+    $("#putin>a").click(function () {
+        $("#putin>a").removeClass("current");
+        $(this).addClass("current");
+        $("#putinInfo").val($(this).attr("cname"));
+        $("#downReportSearch").empty();
+    });
+    $("#dateUnit>a").click(function () {
+        $("#dateUnit>a").removeClass("current");
+        $(this).addClass("current");
+        $("#downReportSearch").empty();
+    });
+    /**
+     *选中推广地域
+     */
+    $("#chooseRegion").click(function () {
+        $("#ctrldialogplanRegionDialog").css("top", "98px")
+            .css("left", ($(this).offset().left + $(this).outerWidth()) + "px");
+        $("#ctrldialogplanRegionDialog").show(0);
+    });
+
+    //得到已经选中的的地域
+    function getRegionNames() {
+        var regions = "";
+        var leaf = $("#regionList").find("div[class=leaf]");
+        leaf.each(function () {
+            if ($(this).find("input[type=checkbox]")[0].checked == true) {
+                regions += $(this).find("label").html() + ",";
+            }
+        });
+        return regions;
+    }
+
+    $("#ctrlbuttonregionOklabel").click(function () {
+        $("#downReportSearch").empty();
+    });
+    /**搜索词报告*/
+    function SearchClass() {
+        $(".searh_report").show();
+        $(".number_concent").css("border", "none");
+        $(".number_concent").css("padding-bottom", "0px");
+        $(".searchhide").hide();
+    }
+
+    $("#SearchReport").click(function () {
+        SearchClass();
+    });
+
     /**********************************************************************************/
 });

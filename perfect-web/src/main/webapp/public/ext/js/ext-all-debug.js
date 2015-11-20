@@ -31662,7 +31662,7 @@ Ext.apply(Ext, {
 
 Ext.define('Ext.AbstractManager', {
 
-    
+
 
     requires: ['Ext.util.HashMap'],
 

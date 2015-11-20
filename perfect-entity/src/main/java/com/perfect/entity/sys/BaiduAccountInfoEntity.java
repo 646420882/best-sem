@@ -13,56 +13,58 @@ public class BaiduAccountInfoEntity {
 
     private Long id;
 
-    private String baiduUserName;
+    private String baiduUserName;//百度账号
 
-    private String baiduPassword;
+    private String baiduRemarkName;//百度账户备注名
 
-    private String token;
+    private String baiduPassword;//百度账号密码
+
+    private String token;//百度的代码标识
 
     @Field("dft")
-    private Boolean dfault = false;
+    private Boolean dfault = false;//是否是默认加载账号
 
     @Field("b")
-    private Double balance;
+    private Double balance;//账户余额
 
     @Field("c")
-    private Double cost;
+    private Double cost;//账户积累消费
 
     @Field("pay")
-    private Double payment;
+    private Double payment;//账户投资
 
     @Field("bgtt")
-    private Integer budgetType;
+    private Integer budgetType;//账户预算类型，0不设预算，1日预算，2周预算
 
     @Field("bgt")
-    private Double budget;
+    private Double budget;//账户预算
 
     @Field("rt")
-    private List<Integer> regionTarget;
+    private List<Integer> regionTarget;//推广地域列表
 
     @Field("exIp")
-    private List<String> excludeIp;
+    private List<String> excludeIp;//ip排除列表
 
     @Field("od")
-    private List<String> openDomains;
+    private List<String> openDomains;//账户开放域名列表
 
     @Field("rd")
-    private String regDomain;
+    private String regDomain;//账户注册域名
 
     @Field("bot")
-    private List<OfflineTimeEntity> budgetOfflineTime;
+    private List<OfflineTimeEntity> budgetOfflineTime;//到达预算下线时段
 
     @Field("wb")
-    private List<Double> weeklyBudget;
+    private List<Double> weeklyBudget;//返回本周的每日预算值
 
     @Field("us")
-    private Integer userStat;
+    private Integer userStat;//账户状态
 
     @Field("dc")
-    private Boolean isDynamicCreative;
+    private Boolean isDynamicCreative;//是否开启动态创意 
 
     @Field("dcp")
-    private String dynamicCreativeParam;
+    private String dynamicCreativeParam;//动态创意统计参数
 
     @Field("o")
     private OptTypeEntity opt;
@@ -236,5 +238,13 @@ public class BaiduAccountInfoEntity {
 
     public void setState(Long state) {
         this.state = state;
+    }
+
+    public String getBaiduRemarkName() {
+        return baiduRemarkName;
+    }
+
+    public void setBaiduRemarkName(String baiduRemarkName) {
+        this.baiduRemarkName = baiduRemarkName;
     }
 }

@@ -10,8 +10,8 @@
 <head>
     <title>审核帐号</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/public/css/accountCss/backstage.css">
 </head>
@@ -45,11 +45,12 @@
     </div>
 </div>
 <div class="TB_overlayBG"></div>
+<div class="TB_overlayBG_alert"></div>
 <%--添加监控对象弹出窗口--%>
 <div class="box" style="display:none" id="auditDiv">
     <h2 id="auditTUO">
         <span class="fl">审核帐号</span>
-        <a href="javascript:closeAlert()" class="close">关闭</a></h2>
+        <a href="javascript:closeAlert()" class="close">×</a></h2>
     <div class="mainlist">
         是否确认审核通过，使此帐号在系统中使用！！
     </div>
@@ -86,7 +87,8 @@
                     if(data.struts == 1){
                         showData();
                         closeAlert();
-                        alert("审核成功！");
+//                        alert("审核成功！");
+                        baiduAccountAlertPrompt.show("审核成功！")
                     }
                 }
             });

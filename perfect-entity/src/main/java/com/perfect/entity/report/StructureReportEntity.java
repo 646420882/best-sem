@@ -31,7 +31,7 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
     private String adgroupName; //单元
 
     @Field(value = "cid")
-    private Long campaignId;
+    private Long campaignId;//计划id
 
     @Field(value = "cpna")
     private String campaignName; //计划
@@ -73,35 +73,35 @@ public class StructureReportEntity implements Comparable<StructureReportEntity>{
     private Double pcConversion;      //PC转化
 
     @Field(value = "mis")
-    private Integer mobileImpression;
+    private Integer mobileImpression;//移动展现量
 
     @Field(value = "mcli")
-    private Integer mobileClick;
+    private Integer mobileClick;//移动点击两
 
     @Field(value = "mctr")
-    private Double mobileCtr;
+    private Double mobileCtr;//移动点击率
 
     @Field(value = "mcost")
-    private BigDecimal mobileCost;
+    private BigDecimal mobileCost;//移动消费
 
     @Field(value = "mcpc")
-    private BigDecimal mobileCpc;
+    private BigDecimal mobileCpc;//移动平均点击价格
 
     @Field(value = "mcpm")
-    private BigDecimal mobileCpm;
+    private BigDecimal mobileCpm;//移动千次展现消费
 
     @Field(value = "mcs")
-    private Double mobileConversion;
+    private Double mobileConversion;//移动转化
 
-    private Date dateRep;
+    private Date dateRep;//查询时间段
 
-    private int count;
+    private int count;//统计数
 
-    private String orderBy;
+    private String orderBy;//排序字段
 
-    private int terminal;
+    private int terminal;//投放设备
 
-    private String account;
+    private String account;//账户id
 
     public String getId() {
         return id;

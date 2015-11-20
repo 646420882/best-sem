@@ -12,6 +12,7 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.entity.backup.CreativeBackUpEntity;
 import com.perfect.entity.creative.CreativeEntity;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
@@ -22,7 +23,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import sun.security.krb5.internal.crypto.dk.AesDkCrypto;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
@@ -31,6 +31,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Created by baizz on 2014-07-10.
@@ -59,6 +61,18 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         List<CreativeEntity> creativeEntityList = mongoTemplate.find(new Query(Criteria.where(ADGROUP_ID).is(adgroupId)), getEntityClass());
         List<CreativeDTO> returnList = ObjectUtils.convert(creativeEntityList, CreativeDTO.class);
         return returnList;
+    }
+
+    @Override
+    public List<CreativeDTO> findByAdgroupId(Long baiduAccountId, Long adgroupId) {
+        List<CreativeEntity> creativeEntityList = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(ADGROUP_ID).is(adgroupId)), getEntityClass());
+        return ObjectUtils.convert(creativeEntityList, CreativeDTO.class);
+    }
+
+    @Override
+    public List<CreativeDTO> findByAdgroupId(Long baiduAccountId, String adgroupId) {
+        List<CreativeEntity> creativeEntityList = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(OBJ_ADGROUP_ID).is(adgroupId)), getEntityClass());
+        return ObjectUtils.convert(creativeEntityList, CreativeDTO.class);
     }
 
     public List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
@@ -102,34 +116,47 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
 
     @Override
     public List<CreativeDTO> findHasLocalStatus() {
-        List<CreativeEntity> creativeEntities=getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())),getEntityClass());
-        return ObjectUtils.convert(creativeEntities,CreativeDTO.class);
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where("ls").ne(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
     }
 
     @Override
     public List<CreativeDTO> findHasLocalStatusStr(List<String> strs) {
-        List<CreativeEntity> creativeEntities=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_ADGROUP_ID).in(strs)),getEntityClass());
-        return ObjectUtils.convert(creativeEntities,CreativeDTO.class);
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(OBJ_ADGROUP_ID).in(strs)), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
     }
 
     @Override
     public List<CreativeDTO> findHasLocalStatusLong(List<Long> longs) {
-        List<CreativeEntity> creativeEntities=getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)),getEntityClass());
-        return ObjectUtils.convert(creativeEntities,CreativeDTO.class);
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId()).and(ADGROUP_ID).in(longs)), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
+    }
+
+    @Override
+    public List<CreativeDTO> findAllCreativeFromBaiduByAdgroupId(Long baiduAccountId, Long adgroupId) {
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(
+                Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(ADGROUP_ID).is(adgroupId).and("ls").is(null)), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, getDTOClass());
+    }
+
+    @Override
+    public List<CreativeDTO> findLocalChangedCreative(Long baiduAccountId, int type) {
+        List<CreativeEntity> creativeEntities = getMongoTemplate().find(new Query(Criteria.where("ls").is(type).and(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
+        return ObjectUtils.convert(creativeEntities, CreativeDTO.class);
     }
 
     @Override
     public CreativeDTO getAllsBySomeParams(Map<String, Object> params) {
         Query q = new Query();
         Criteria c = new Criteria();
-        if (params != null && params.size() > 0) {
+        if (params != null && !params.isEmpty()) {
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 c.and(entry.getKey()).is(entry.getValue());
             }
         }
         q.addCriteria(c);
         CreativeEntity creativeEntity = getMongoTemplate().findOne(q, getEntityClass());
-        CreativeDTO creativeDTO= ObjectUtils.convert(creativeEntity,CreativeDTO.class);
+        CreativeDTO creativeDTO = ObjectUtils.convert(creativeEntity, CreativeDTO.class);
         return creativeDTO;
     }
 
@@ -245,7 +272,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
         Query q = new Query();
         Criteria c = new Criteria();
         if (params.size() > 0 || params != null) {
@@ -262,6 +289,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(q, sp);
         List<CreativeEntity> creativeEntityList = getMongoTemplate().find(q, getEntityClass());
         p.setList(creativeEntityList);
         return p;
@@ -284,7 +312,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize) {
+    public PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
         Query q = new Query(Criteria.where(ADGROUP_ID).in(l));
         Integer totalCount = getTotalCount(q, getEntityClass());
         PagerInfo p = new PagerInfo(nowPage, pageSize, totalCount);
@@ -294,13 +322,14 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(q, sp);
         List<CreativeEntity> creativeEntityList = getMongoTemplate().find(q, getEntityClass());
         p.setList(creativeEntityList);
         return p;
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize) {
+    public PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
         Query q = new Query(Criteria.where(ADGROUP_ID).in(l));
         Integer totalCount = getTotalCount(q, getEntityClass());
         PagerInfo p = new PagerInfo(nowPage, pageSize, totalCount);
@@ -310,6 +339,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(q, sp);
         List<CreativeEntity> creativeEntityList = getMongoTemplate().find(q, getEntityClass());
         p.setList(creativeEntityList);
         return p;
@@ -337,6 +367,36 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         up.set("s", dto.getStatus());
         getMongoTemplate().updateFirst(new Query(Criteria.where(CREATIVE_ID).is(crid)), up, CreativeEntity.class);//修改掉本地状态的ls
         getMongoTemplate().remove(new Query(Criteria.where(CREATIVE_ID).is(crid)), CreativeBackUpEntity.class);//删除备份的数据
+    }
+
+    @Override
+    public void batchDelete(List<String> param) {
+        param.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 3);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.CREATIVE_ID).is(Long.valueOf(e))), update, getEntityClass());
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
+            }
+        });
+    }
+
+    @Override
+    public CreativeDTO existDTO(Map<String, Object> params) {
+        Query q = new Query();
+        Criteria c = new Criteria();
+        if (params.size() > 0 || params != null) {
+            for (Map.Entry<String, Object> cri : params.entrySet()) {
+                c.and(cri.getKey()).is(cri.getValue());
+            }
+            q.addCriteria(c);
+        }
+        CreativeEntity creativeEntity = getMongoTemplate().findOne(q, getEntityClass());
+        if (creativeEntity != null)
+            return wrapperObject(creativeEntity);
+
+        return null;
     }
 
     private Integer getTotalCount(Query q, Class<?> cls) {
@@ -426,7 +486,91 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     private CreativeDTO wrapperObject(CreativeEntity entity) {
-        CreativeDTO dto=   ObjectUtils.convert(entity,CreativeDTO.class);
+        CreativeDTO dto = ObjectUtils.convert(entity, CreativeDTO.class);
         return dto;
+    }
+
+    private Query searchFilterQueryOperate(Query q, SearchFilterParam sp) {
+        if (sp != null) {
+            if (Objects.equals(sp.getFilterType(), "Creative")) {
+                switch (sp.getFilterField()) {
+                    case "title":
+                        getNormalQuery(q, "t", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "desc1":
+                        getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "desc2":
+                        getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "pcUrl":
+                        getNormalQuery(q, "pc", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "pcsUrl":
+                        getNormalQuery(q, "pcd", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "mibUrl":
+                        getNormalQuery(q, "m", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "mibsUrl":
+                        getNormalQuery(q, "md", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "pause":
+                        if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                            if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                                q.addCriteria(Criteria.where("p").is(false));
+                            } else {
+                                q.addCriteria(Criteria.where("p").is(true));
+                            }
+                        }
+                        break;
+                    case "state":
+                        if (sp.getFilterValue().contains(",")) {
+                            String[] status = sp.getFilterValue().split(",");
+                            Integer[] integers = new Integer[status.length];
+                            for (int i = 0; i < integers.length; i++) {
+                                integers[i] = Integer.parseInt(status[i]);
+                            }
+                            q.addCriteria(Criteria.where("s").in(integers));
+                        } else {
+                            q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
+                        }
+                        break;
+                    case "quipment":
+                        if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                            q.addCriteria(Criteria.where("d").is(Integer.valueOf(sp.getFilterValue())));
+                        }
+                        break;
+                }
+            }
+        }
+        return q;
+    }
+
+    private void getNormalQuery(Query q, String field, Integer selected, String filterValue) {
+        switch (selected) {
+            case 1:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^.*?" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 11:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^(?!.*(" + filterValue + ")).*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 2:
+                q.addCriteria(Criteria.where(field).is(filterValue));
+                break;
+            case 22:
+                q.addCriteria(Criteria.where(field).ne(filterValue));
+                break;
+            case 3:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 33:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
+                break;
+        }
     }
 }

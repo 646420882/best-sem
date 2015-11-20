@@ -10,8 +10,8 @@
 <head>
     <title>审核帐号</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/public/css/accountCss/backstage.css">
 </head>
@@ -31,7 +31,6 @@
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
     <div id="bidding_box">
-        <div>
             <div style="color: red;font-size: 16px;padding: 10px 0px 20px 20px">注：被停用的系统帐号将不能进行任何操作！请谨慎操作！！</div>
             <table id="table1" class="table table-striped table-bordered table-hover datatable dataTable"
                    aria-describedby="DataTables_Table_0_info">
@@ -45,15 +44,15 @@
                 </thead>
                 <tbody id="shuju"></tbody>
             </table>
-        </div>
     </div>
 </div>
 <div class="TB_overlayBG"></div>
+<div class="TB_overlayBG_alert"></div>
 <%--添加监控对象弹出窗口--%>
 <div class="box" style="display:none" id="enableDiv">
     <h2 id="enableTUO">
         <span class="fl">提示框</span>
-        <a href="javascript:closeAlert()" class="close">关闭</a></h2>
+        <a href="javascript:closeAlert()" class="close">×</a></h2>
 
     <div class="mainlist">
         是否确认启用/禁用！！
@@ -67,6 +66,7 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="application/javascript">
@@ -96,7 +96,8 @@
                     closeAlert();
                     if (data.rows == 1) {
                     } else {
-                        alert("操作失败！");
+//                        alert("操作失败！");
+                        baiduAccountAlertPrompt.show("操作失败！");
                     }
                 }
             });

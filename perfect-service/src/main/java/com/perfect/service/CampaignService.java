@@ -1,6 +1,8 @@
 package com.perfect.service;
 
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -10,27 +12,29 @@ import java.util.List;
  */
 public interface CampaignService {
 
-    public CampaignDTO findOne(Long campaignId);
+    CampaignDTO findOne(Long campaignId);
 
-    public Iterable<CampaignDTO> findAll();
+    Iterable<CampaignDTO> findAll();
 
-    public List<CampaignDTO> findHasLocalStatus();
+    List<CampaignDTO> findHasLocalStatus();
 
-    public List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids);
+    List<CampaignDTO> findHasLocalStatusByStrings(List<String> cids);
 
-    public List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids);
+    List<CampaignDTO> findHasLocalStatusByLongs(List<Long> cids);
 
-    public Iterable<CampaignDTO> findAllDownloadCampaign();
+    Iterable<CampaignDTO> findAllDownloadCampaign();
 
-    public void insertAll(List<CampaignDTO> list);
+    void insertAll(List<CampaignDTO> list);
 
-    public void update(CampaignDTO campaignEntity);
+    void update(CampaignDTO campaignEntity);
 
-    public void delete(Long campaignId);
+    void updateCampaign(CampaignDTO dto);
 
-    public void deleteByIds(List<Long> campaignIds);
+    void delete(Long campaignId);
 
-    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo);
+    void deleteByIds(List<Long> campaignIds);
+
+    PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo, SearchFilterParam sp);
 
     CampaignDTO findByObjectId(String oid);
 
@@ -48,13 +52,15 @@ public interface CampaignService {
 
     /**
      * 上传到百度更新方法，慎用！
+     *
      * @param cid 要上传的本地id
      * @return
      */
-    List<CampaignDTO> uploadAdd(String  cid);
+    List<CampaignDTO> uploadAdd(String cid);
 
     /**
      * 更新本地删除操作到百度
+     *
      * @param campaignIds 要删除的计划id
      * @return
      */
@@ -62,31 +68,41 @@ public interface CampaignService {
 
     /**
      * 更新本地修改操作到百度
+     *
      * @param campaignIds 要更新的计划id
      * @return
      */
-    public List<Long> uploadUpdate(List<Long> campaignIds);
+    List<Long> uploadUpdate(List<Long> campaignIds);
 
     /**
      * 上传成功后本地修改方法，此方法只能修改计划的百度Id，其他修改不能修改，用者需看清后台代码
-     * @param dto 从百度得到计划的dto对象，内只包含了campaignId的百度Id，Status，Pause三个属性，用于后台修改
+     *
+     * @param dto   从百度得到计划的dto对象，内只包含了campaignId的百度Id，Status，Pause三个属性，用于后台修改
      * @param objId 本地id，用于查询
      */
-    void update(CampaignDTO dto,String objId);
+    void update(CampaignDTO dto, String objId);
 
     void updateRemoveLs(List<String> afterUpdateStr);
 
     /**
      * 获取有本地操作的计划列表，用于加载给用户选择
+     *
      * @return
      */
     List<CampaignDTO> getOperateCamp();
 
     /**
      * 强制删除本地带凤巢数据
+     *
      * @param cid
      */
     void deleteByCampaignId(Long cid);
 
 
+    /**
+     * 批量删除关键字
+     *
+     * @param param
+     */
+    void batchDelete(FindOrReplaceParam param);
 }

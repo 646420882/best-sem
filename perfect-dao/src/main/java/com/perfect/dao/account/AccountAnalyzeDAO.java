@@ -14,24 +14,52 @@ import java.util.List;
  * 2014-12-2 refactor
  */
 public interface AccountAnalyzeDAO extends HeyCrudRepository<AccountReportDTO, Long> {
-    public List<KeywordRealDTO> performance(String userTable);
+    List<KeywordRealDTO> performance(String userTable);
 
     /**
      * 获取账户表现数据
      *
      * @return
      */
-    public List<AccountReportDTO> performaneUser(Date startDate, Date endDate);
+    List<AccountReportDTO> performaneUser(Date startDate, Date endDate);
 
     /**
      * 获取账户表现数据
      *
      * @return
      */
-    public List<AccountReportDTO> performaneCurve(Date startDate, Date endDate);
+    List<AccountReportDTO> performaneCurve(Date startDate, Date endDate);
 
     /**
      * csv文件数据获取
      */
-    public List<AccountReportDTO> downAccountCSV();
+    List<AccountReportDTO> downAccountCSV();
+
+    /**
+     * 统计推广助手关键字
+     * @param number 0 为查询所有.不为0为查询修改后的数据
+     * @return
+     */
+    Long countKeyword(int number);
+
+    /**
+     * 统计推广助手计划
+     * @param number 0 为查询所有.不为0为查询修改后的数据
+     * @return
+     */
+    Long countCampaign(int number);
+
+    /**
+     * 统计推广助手创意
+     * @param number 0 为查询所有.不为0为查询修改后的数据
+     * @return
+     */
+    Long countCreative(int number);
+
+    /**
+     * 统计推广助手单元
+     * @param number 0 为查询所有.不为0为查询修改后的数据
+     * @return
+     */
+    Long countAdgroup(int number);
 }

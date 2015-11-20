@@ -11,8 +11,8 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
@@ -87,6 +87,21 @@
         <a href="#">普菲特官网 </a>如在使用过程中有任何问题请联系客服：010-84922996
     </div>
 </div>
+<%--alert提示类--%>
+<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="findPasswordAlertPrompt">
+    <h2 id="findPasswordAlertPromptTitle">
+        <span class="fl alert_span_title" id="findPasswordAlertPrompt_title"></span>
+        <%--<a href="#" class="close">×</a></h2>--%>
+    <%--<a href="#" onclick="findPasswordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+    </h2>
+    <div class="mainlist">
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current" onclick="findPasswordAlertPrompt.hide()">确认</li>
+            </ul>
+        </div>
+    </div>
+</div>
 </div>
 <input type="hidden" id="dataRe" value="${state}">
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
@@ -94,6 +109,28 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/bootstrapValidator.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var findPasswordAlertPrompt = {
+        show:function(content){
+            $(".TB_overlayBG_alert").css({
+                display: "block", height: $(document).height()
+            });/*蒙版显示*/
+            $("#findPasswordAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });/*显示提示DIV*/
+            $("#findPasswordAlertPrompt_title").html(content);
+        },
+        hide:function(){
+            $(".TB_overlayBG_alert").css({
+                display: "none"
+            });/*蒙版显示*/
+            $("#findPasswordAlertPrompt").css({
+                display: "none"
+            });/*显示提示DIV*/
+        }
+    }
     $(window).resize(function () {
         $('.login_box').css({
             position: 'absolute',
@@ -104,6 +141,7 @@
     //初始化函数
     $(window).resize();
     $(document).ready(function () {
+        rDrag.init(document.getElementById('findPasswordAlertPromptTitle'));
         createCode();
         $('#defaultForm').bootstrapValidator({
             message: '此值无效',
@@ -262,14 +300,18 @@
                 if (XMLHttpReq.status == 200) {
                     var text = XMLHttpReq.responseText;
                     if(text=='"updateSuccess"'){
-                        alert("重置密码成功!");
+//                        alert("重置密码成功!");
+                        findPasswordAlertPrompt.show("重置密码成功!");
                         window.location = "/login";
                     }else if(text=='"updateFail"'){
-                        alert("重置密码失败!");
+//                        alert("重置密码失败!");
+                        findPasswordAlertPrompt.show("重置密码失败!");
                     }else if(text=='"NoAccount"'){
-                       alert("该子账户不存在,不能重置密码!");
+//                       alert("该子账户不存在,不能重置密码!");
+                        findPasswordAlertPrompt.show("该子账户不存在,不能重置密码!");
                     }else if(text=='"urlInvali"'){
-                       alert("修改密码链接已失效，请重申!");
+//                       alert("修改密码链接已失效，请重申!");
+                        findPasswordAlertPrompt.show("修改密码链接已失效，请重申!");
                         window.location = "/login";
                     }
                 }

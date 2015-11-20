@@ -1,10 +1,8 @@
 package com.perfect.db.mongodb.impl;
 
 import com.perfect.core.AppContext;
-import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.creative.SublinkDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.creative.SublinkDTO;
 import com.perfect.entity.creative.MobileSublinkEntity;
 import com.perfect.entity.creative.MobileSublinkInfoEntity;
@@ -12,13 +10,11 @@ import com.perfect.entity.creative.SublinkEntity;
 import com.perfect.entity.creative.SublinkInfoEntity;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
-import com.perfect.vo.SublinkInfoVo;
-import com.perfect.vo.SublinkVo;
+import com.perfect.vo.SublinkVO;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -142,10 +138,10 @@ public class SublinkDAOImpl extends AbstractSysBaseDAOImpl<SublinkDTO, Long> imp
         return null;
     }
 
-    private List<SublinkVo> getSublinkVos(List<SublinkEntity> sublinkEntityList,List<MobileSublinkEntity> mobileSublinkEntityList){
-        List<SublinkVo> sublinkVoList = new ArrayList<>();
+    private List<SublinkVO> getSublinkVos(List<SublinkEntity> sublinkEntityList,List<MobileSublinkEntity> mobileSublinkEntityList){
+        List<SublinkVO> sublinkVoList = new ArrayList<>();
         sublinkEntityList.stream().forEach(s -> {
-            SublinkVo sublinkVo = new SublinkVo();
+            SublinkVO sublinkVo = new SublinkVO();
             sublinkVo.setAccountId(s.getAccountId());
             sublinkVo.setPause(s.getPause());
             sublinkVo.setAdgroupId(s.getAdgroupId());
@@ -159,7 +155,7 @@ public class SublinkDAOImpl extends AbstractSysBaseDAOImpl<SublinkDTO, Long> imp
                 sublinkInfoVos+=sl.getDescription()+","+sl.getDestinationUrl()+"|";
             }
 //            sublinkInfoEntities.stream().forEach(j -> {
-//                SublinkInfoVo sublinkInfoVo=new SublinkInfoVo();
+//                SublinkInfoVO sublinkInfoVo=new SublinkInfoVO();
 //                sublinkInfoVo.setDescription(j.getDescription());
 //                sublinkInfoVo.setDestinationUrl(j.getDestinationUrl());
 //                sublinkInfoVos.add(sublinkInfoVo);
@@ -169,7 +165,7 @@ public class SublinkDAOImpl extends AbstractSysBaseDAOImpl<SublinkDTO, Long> imp
             sublinkVoList.add(sublinkVo);
         });
         mobileSublinkEntityList.stream().forEach(s->{
-            SublinkVo sublinkVo = new SublinkVo();
+            SublinkVO sublinkVo = new SublinkVO();
             sublinkVo.setAccountId(s.getAccountId());
             sublinkVo.setPause(s.getPause());
             sublinkVo.setAdgroupId(s.getAdgroupId());
@@ -182,9 +178,9 @@ public class SublinkDAOImpl extends AbstractSysBaseDAOImpl<SublinkDTO, Long> imp
             for (MobileSublinkInfoEntity sl:mobileSublinkInfoEntities){
                 sublinkInfoVos+=sl.getDescription()+","+sl.getDestinationUrl()+"|";
             }
-//            List<SublinkInfoVo> sublinkInfoVos=new ArrayList<>();
+//            List<SublinkInfoVO> sublinkInfoVos=new ArrayList<>();
 //            mobileSublinkInfoEntities.stream().forEach(j->{
-//                SublinkInfoVo sublinkInfoVo=new SublinkInfoVo();
+//                SublinkInfoVO sublinkInfoVo=new SublinkInfoVO();
 //                sublinkInfoVo.setDescription(j.getDescription());
 //                sublinkInfoVo.setDestinationUrl(j.getDestinationUrl());
 //                sublinkInfoVos.add(sublinkInfoVo);

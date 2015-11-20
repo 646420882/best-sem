@@ -9,23 +9,26 @@ import java.math.BigDecimal;
 
 /**
  * Created by vbzer_000 on 2014/9/4.
+ *
+ * @description 智能竞价日志实体类
  */
 @Document(collection = "bid_log")
 public class BiddingLogEntity {
+
     @Id
     private String id;
 
     @Field(MongoEntityConstants.KEYWORD_ID)
-    private long keywordId;
+    private long keywordId;                     // 关键词ID
 
     @Field("b")
-    private BigDecimal before;
+    private BigDecimal before;                  // 竞价前的出价
 
     @Field("a")
-    private BigDecimal after;
+    private BigDecimal after;                   // 竞价后的出价
 
     @Field("t")
-    private long date;
+    private long date;                          // 操作日期
 
     public String getId() {
         return id;

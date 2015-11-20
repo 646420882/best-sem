@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * Created by XiaoWei on 2014/12/2.
  */
+@Deprecated //慧眼相关代码，已经被遗弃
 @Document(collection = MongoEntityConstants.SYS_CENSUS_CONFIG)
 public class CensusCfgEntity  {
     @Id

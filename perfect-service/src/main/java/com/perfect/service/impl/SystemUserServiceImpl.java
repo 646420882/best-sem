@@ -284,6 +284,12 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
+    public boolean updateBaiDuName(String name, Long baiduId) {
+        boolean flag = accountManageDAO.updateBaiDuName(name,baiduId);
+        return flag;
+    }
+
+    @Override
     public void updateAccountData(String userName, long accountId, List<Long> camIds) {
         SystemUserDTO systemUserDTO = getSystemUser(userName);
 

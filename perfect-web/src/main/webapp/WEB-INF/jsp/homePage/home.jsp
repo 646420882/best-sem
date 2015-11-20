@@ -10,21 +10,40 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <%--<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">--%>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
+
     <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">
+    <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <%--<link rel="Shortcut Icon" href="${pageContext.request.contextPath}/public/css/images/favicon.ico"/>--%>
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/census/perfectNew.js"></script>
+    <script>
+        var _pct = _pct || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//t.best-ad.cn/t.js?tid=76c005e89e020c6e8813a5adaba384d7";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <style>
+        /*日历*/
+        .list2 table .list2_top td, th {
+            color: #000000;
+        }
+
+        /*日历*/
         .page2 .ajc {
             background: #ffb900;
             border: 1px solid #fab30b;
@@ -69,6 +88,9 @@
                     <div class="list01 over">
                         <div class="list01_top over">
                             <Span>近期概览</Span>
+                            <button type="button" class="question  btn btn-default" data-toggle="tooltip"
+                                    data-placement="bottom" title="总览大数据指标，查看维度昨天、近七天、近30天及自定义时间范围.
+"></button>
                             <ul id="clickLis">
                                 <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
                                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
@@ -85,33 +107,37 @@
                         </div>
                         <div class="datebox hides"></div>
                         <div class="list01_under2 over">
+                            <ul id="countAssisted">
+                            </ul>
+                        </div>
+                        <div class="list01_under2 list01_color  over">
                             <ul>
                                 <li>
-                                    <div class="blue1 fl wd1"></div>
-                                    <div class="blue2 fl wd2"><Span class="impression"></Span>
-
+                                    <div class="blue1 fr wd1"></div>
+                                    <div class="blue2 fl wd2">
                                         <p>展现次数</p>
+                                        <Span class="impression"></Span>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="green1 fl wd1"></div>
-                                    <div class="green2 fl wd2"><Span class="click"></Span>
-
+                                    <div class="green1 fr wd1"></div>
+                                    <div class="green2 fl wd2">
                                         <p>点击次数</p>
+                                        <Span class="click"></Span>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="red1 fl wd1"></div>
-                                    <div class="red2 fl wd2"><Span class="cos"></Span>
-
+                                    <div class="red1 fr wd1"></div>
+                                    <div class="red2 fl wd2">
                                         <p>消费</p>
+                                        <Span class="cos"></Span>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="yellow1 fl wd1"></div>
-                                    <div class="yellow2 fl wd2"><Span class="conversion"></Span>
-
+                                    <div class="yellow1 fr wd1"></div>
+                                    <div class="yellow2 fl wd2">
                                         <p>转化次数</p>
+                                        <Span class="conversion"></Span>
                                     </div>
                                 </li>
                             </ul>
@@ -123,7 +149,7 @@
                         <div class="list01_top over">
                             <Span>账户趋势图</Span>
                             <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                    data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势，便于您对关键数据信息一目了然。
+                                    data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势便于用户对关键数据信息一目了然。
 "></button>
 
                             <ul id="clickqushi">
@@ -178,11 +204,12 @@
                                     </a>
                                 </li>
                             </ul>
+                            <div class="download fr over">
+                                <a href="/account/downAccountCSV">下载全部 </a>
+                            </div>
                         </div>
                         <div class="datebox hides"></div>
-                        <div class="download over">
-                            <a href="/account/downAccountCSV" class="fr">下载全部 </a>
-                        </div>
+
                         <div class="list2 fenrilist wd">
                             <table border="0" cellspacing="0" cellspacing="0">
                                 <thead>
@@ -301,7 +328,7 @@
                     <div class="list01_top over">
                         <Span>质量度分析</Span>
                         <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                data-placement="bottom" title="是SEM核心基础元素，它影响着优化策略和思路的变化。实时把控质量度星级指标，助力核心优化。"></button>
+                                data-placement="bottom" title="SEM核心基础元素，它影响着优化策略和思路的变化，实时把控质量度星级指标，助力核心优化。"></button>
                         <%--<ul id="keywordQualityClass">
                             <li class="current">
                                 <a onclick="loadKeywordQualityData(this, 1);">
@@ -992,11 +1019,12 @@
                                     </a>
                                 </li>
                             </ul>
+                            <div class="download fr over">
+                                <a href="javascript:void(0)" onclick="importDownload(this);">下载全部 </a>
+                            </div>
                         </div>
                         <div class="datebox hides" style="margin-bottom:0px;"></div>
-                        <div class="download over">
-                            <a href="javascript:void(0)" class="fr" onclick="importDownload(this);">下载全部 </a>
-                        </div>
+
                         <div class="list2 gjclist wd">
                             <table border="0" cellspacing="0" cellspacing="0">
                                 <tr class="list2_top">
@@ -1147,12 +1175,15 @@
 
 <!-- javascript -->
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
+<%--<script type="text/javascript"--%>
+<%--src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>
+        src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/map.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
@@ -1183,6 +1214,7 @@
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
+
 </script>
 <script type="text/javascript">
 
@@ -1211,7 +1243,23 @@
     var _posX = 0, _posY = 0;
     var clickdddd = null;
 
-    $(function () {
+    $(document).ready(function () {
+        /////count
+        $.ajax({
+            url: "/account/countAssistant",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#countAssisted").empty();
+                var classArray = ["blue", "green", "red", "yellow"];
+                var html = "";
+                data.rows.forEach(function (item, i) {
+                    html = html + "<li><div class='" + classArray[i] + "1 fr wd1'></div><div class='" + classArray[i] + "2 fl wd2'><p>" + item.name + "</p><span> " + item.countNumber + " </span><span style='display:none'>修改: " + item.modifiyNumber + " </span></div></li>";
+                });
+                $("#countAssisted").append(html)
+            }
+        });
+
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');
@@ -1237,10 +1285,56 @@
             clickdddd = $(this);
         });
         //加载日历控件
-        $("input[name=reservation]").daterangepicker();
+        $('input[name="reservation"]').daterangepicker({
+                    "showDropdowns": true,
+                    "timePicker24Hour": true,
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    format: 'DD/MM/YYYY',
+                    "locale": {
+                        "format": "DD/MM/YYYY",
+                        "separator": " - ",
+                        "applyLabel": "确定",
+                        "cancelLabel": "关闭",
+                        "fromLabel": "From",
+                        "toLabel": "To",
+                        "customRangeLabel": "Custom",
+                        "daysOfWeek": [
+                            "日",
+                            "一",
+                            "二",
+                            "三",
+                            "四",
+                            "五",
+                            "六"
+                        ],
+                        "monthNames": [
+                            "一月",
+                            "二月",
+                            "三月",
+                            "四月",
+                            "五月",
+                            "六月",
+                            "七月",
+                            "八月",
+                            "九月",
+                            "十月",
+                            "十一月",
+                            "十二月"
+                        ],
+                        "firstDay": 1
+                    },
+                    "startDate": moment(),
+                    "endDate": moment()
+                },
+                function (start, end, label, e) {
+                });
+//        $("input[name=reservation]").daterangepicker();
         $(".btnDone").on('click', function () {
-            var _startDate = $('.range-start').datepicker('getDate');
-            var _endDate = $('.range-end').datepicker('getDate');
+            var _startDate = daterangepicker_start_date_t;
+            var _endDate = daterangepicker_end_date_t;
+//                 console.log(daterangepicker_end_date);
+
             if (_startDate != null && _endDate != null) {
                 if (_startDate > _endDate) {
                     return false;
@@ -1262,10 +1356,10 @@
                     category = "data";
                     loadPerformanceCurve(0);
                 }
-
                 showDate();
             }
         });
+
 
         document.getElementById("background").style.display = "none";
         document.getElementById("progressBar1").style.display = "none";
@@ -1482,12 +1576,12 @@
         $("#containerLegend").empty();
         /*初始化曲线图所用需求*/
         $("#containerLegend").append("<div class='tu_top over'><ul><li>展示曲线</li>"
-        + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-        + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-        + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-        + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-        + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-        + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+        + "<li><label class='checkbox-inlines'><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></label></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
         getDateParam(date);
         //展现
@@ -1900,6 +1994,7 @@
     });
     var curve = function () {
         var myChart = echarts.init(document.getElementById('container'));
+        window.onresize = myChart.resize;
         var dataNew;
         if (dataOne == "") {
             dataNew = [dataTow];
@@ -2091,7 +2186,7 @@
                     var calssStr = i % 2 != 0 ? "list2_box2" : "list2_box1";
                     var item = gson.list[i];
                     var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;￥" + item.pcCost + "</li><li> &nbsp;￥" + item.pcCpc + "</li>"
-                            + "<li> &nbsp;" + item.pcCtr * 100 + "%</li><li class='home_quality'> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li><li> &nbsp;" + item.quality + "</li><li>&nbsp;" + until.getMatchTypeName(item.matchType) + "</li></ul></td></tr>";
+                            + "<li> &nbsp;" + item.pcCtr + "%</li><li class='home_quality'> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li><li> &nbsp;" + item.quality + "</li><li>&nbsp;" + until.getMatchTypeName(item.matchType) + "</li></ul></td></tr>";
                     $("#importTr").append(_div);
                 }
             } else {
@@ -2149,8 +2244,6 @@
 
     //初始化账户概览页面数据
     lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
-
-
     var showDate = function () {
         $(".datebox").show();
         clickdddd.parent().parent().parent().parent().next().text("当前时间范围：" + daterangepicker_start_date + " 至 " + daterangepicker_end_date);

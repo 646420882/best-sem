@@ -10,23 +10,29 @@ import java.util.List;
 
 /**
  * Created by XiaoWei on 2015/2/27.
+ * mobile蹊径子链
  */
 @Document(collection = MongoEntityConstants.TBL_MOBILESUBLINK)
 public class MobileSublinkEntity extends AccountIdEntity {
     @Id
     private String id;
     @Field(value =MongoEntityConstants.SUBLINK_ID)
-    private Long sublinkId;
+    private Long sublinkId;     //mobile蹊径子链id
+
     @Field(value = "sif")
-    private List<MobileSublinkInfoEntity> mobileSublinkInfos;
+    private List<MobileSublinkInfoEntity> mobileSublinkInfos;//mobile蹊径子链信息
+
     @Field(value = MongoEntityConstants.ADGROUP_ID)
-    private Long adgroupId;
+    private Long adgroupId;     //单元ID
+
     @Field(value = "p")
-    private Boolean pause;
+    private Boolean pause;      //暂停/启用
+
     @Field(value = "s")
-    private Integer status;
+    private Integer status;     //状态
+
     @Field(MongoEntityConstants.OBJ_ADGROUP_ID)
-    private String adgroupObjId;
+    private String adgroupObjId;    //本地单元ID
 
     public Long getAdgroupId() {
         return adgroupId;

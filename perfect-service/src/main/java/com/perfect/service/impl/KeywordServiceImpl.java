@@ -1,12 +1,17 @@
 package com.perfect.service.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.keyword.KeywordDAO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.service.AccountManageService;
 import com.perfect.service.KeywordService;
+import com.perfect.service.KeywordDeduplicateService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +24,10 @@ public class KeywordServiceImpl implements KeywordService {
 
     @Resource
     private KeywordDAO keywordDAO;
+    @Resource
+    private KeywordDeduplicateService keywordDeduplicateService;
+    @Resource
+    private AccountManageService accountManageService;
 
     @Override
     public List<KeywordDTO> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
@@ -41,8 +50,14 @@ public class KeywordServiceImpl implements KeywordService {
     }
 
     @Override
-    public void insertAll(List<KeywordDTO> keywordDTOList) {
-        keywordDAO.save(keywordDTOList);
+    public List<String> insertAll(List<KeywordDTO> keywordDTOList) {
+
+        List<KeywordDTO> dtos = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), keywordDTOList.get(0).getAdgroupId(), keywordDTOList);
+
+        Iterable<KeywordDTO> keywordDTOs = keywordDAO.save(dtos);
+        List<String> strings = new ArrayList<>();
+        keywordDTOs.forEach(e -> strings.add(e.getKeyword()));
+        return strings;
     }
 
     @Override

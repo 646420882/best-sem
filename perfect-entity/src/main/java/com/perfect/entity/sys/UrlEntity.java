@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * Created by vbzer_000 on 2014/9/24.
  */
+@Deprecated //涉及的实现类未使用
 @Document(collection = "sys_urlpool")
 public class UrlEntity {
 

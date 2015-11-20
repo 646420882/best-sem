@@ -14,21 +14,21 @@ public interface MonitoringService {
      *
      * @return
      */
-    public List<FolderDTO> getFolder();
+    List<FolderDTO> getFolder();
 
     /**
      * 修改监控文件夹名称
      *
      * @return
      */
-    public boolean updateFolderName(Long folderId, String folderName);
+    boolean updateFolderName(Long folderId, String folderName);
 
     /**
      * 添加监控文件夹
      *
      * @return
      */
-    public int addFolder(String folderName);
+    int addFolder(String folderName);
 
     /**
      * 删除监控文件夹
@@ -36,21 +36,21 @@ public interface MonitoringService {
      * @param folderId
      * @return
      */
-    public boolean deleteFolder(Long folderId);
+    boolean deleteFolder(Long folderId);
 
     /**
      * 获取监控文件夹下的所有内容
      *
      * @return
      */
-    public List<KeywordInfoDTO> getMonitor();
+    List<KeywordInfoDTO> getMonitor();
 
     /**
      * 通过监控文件夹ID获取所有监控对象内容
      *
      * @return
      */
-    public List<KeywordInfoDTO> getMonitorId(Long folderId);
+    List<KeywordInfoDTO> getMonitorId(Long folderId);
 
     /**
      * 删除监控对象
@@ -58,7 +58,7 @@ public interface MonitoringService {
      * @param monitorId
      * @return
      */
-    public boolean deleteMonitorId(Long monitorId);
+    boolean deleteMonitorId(Long monitorId);
 
     /**
      * 添加监控对象
@@ -69,5 +69,11 @@ public interface MonitoringService {
      * @param acliId     实际ID
      * @return
      */
-    public int addMonitorId(Long folderID, Long campaignId, Long adgroupId, Long acliId);
+    int addMonitorId(Long folderID, Long campaignId, Long adgroupId, Long acliId);
+
+    /**
+     * 监控文件夹上传
+     * @return
+     */
+    int upMonitor();
 }

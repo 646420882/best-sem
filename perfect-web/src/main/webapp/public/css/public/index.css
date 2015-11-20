@@ -1,0 +1,88 @@
+/*****fzk***/
+.aline  input{
+    float: left;
+}
+.aline  p{
+    float: left;
+    margin: -2px 0 0 5px;
+}
+.aline2  p{
+    float: left;
+    margin: 3px 0 0 5px;
+}
+.mid_left{
+    padding-left: 0;
+}
+.question_help{
+    color: #030303;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.help_content{
+    margin: 15px 0 0 20px;
+}
+.help_content li {
+    margin-bottom: 10px;
+    line-height: 25px;
+
+}
+.ui-widget-header {
+    margin-left: 13px;
+    border: 1px solid #ffffff;
+    background: #ffffff ;
+    color: #444;
+    font-weight: bold;
+}
+.ui-widget-content {
+  border: none;
+    background: none;
+
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #ffffff;
+    font-weight: bold;
+    color: #000000;
+    background: none;
+}
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+ background: #c3def9;
+    border-radius: 100%;
+    color: white;
+}
+.ui-daterangepicker .ui-widget-content a {
+    text-decoration: none !important;
+    /* height: 28px; */
+    padding: 5px;
+    margin: 2px;
+    width: 29px;
+}
+.ui-daterangepicker .ranges {
+    width: 530px;
+    position: relative;
+    padding: 5px 5px 40px 0;
+}
+.ui-daterangepicker .range-end {
+    margin-left: 27px;
+}
+.ui-daterangepicker .range-start{
+    margin-left: 10px;
+}
+.ui-daterangepicker .title-start, .ui-daterangepicker .title-end {
+    display: block;
+    margin: 0 0 .2em;
+    font-size: 1em;
+    padding: 10px 4px 2px 16px;
+}
+.ui-widget-header .ui-icon {
+    background-image: url("/public/img/ui-icons_ff0084_256x24012.png");
+}
+.ui-dialog-body {
+    background-color: white;
+    padding:10px 0 10px 10px;
+}
+
+.ui-dialog .ui-dialog-content {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0;
+
+}

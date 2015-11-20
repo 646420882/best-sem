@@ -72,7 +72,7 @@ function beforeClick(treeId, treeNode) {
                 var urlPc = ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl.substring(0, 25));
                 var urlMobile = ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl.substring(0, 25));
                 if (i % 2 == 0) {
-                    html_Monitor = "<tr class='list2_box1' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = "+item.monitorId+"pause = "+item.object.pause+">"
+                    html_Monitor = "<tr class='list2_box1' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = " + item.monitorId + "pause = " + item.object.pause + ">"
                         + "<td>&nbsp;" + item.object.keyword + "</td>"
                         + "<td>&nbsp;" + item.campaignName + "</td>"
                         + "<td>&nbsp;" + item.adgroupName + "</td>"
@@ -86,7 +86,7 @@ function beforeClick(treeId, treeNode) {
                         + "<td>&nbsp;<a href=" + urlMobile + " title=" + urlMobile + " target='_blank'>" + urlMobile + "</a></td>"
                         + "<td>&nbsp;" + item.folderName + "</td></tr>";
                 } else {
-                    html_Monitor = "<tr class='list2_box2' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = "+item.monitorId+"pause = "+item.object.pause+">"
+                    html_Monitor = "<tr class='list2_box2' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = " + item.monitorId + "pause = " + item.object.pause + ">"
                         + "<td>&nbsp;" + item.object.keyword + "</td>"
                         + "<td>&nbsp;" + item.campaignName + "</td>"
                         + "<td>&nbsp;" + item.adgroupName + "</td>"
@@ -146,9 +146,11 @@ $(function () {
     $(".jiangkong").click(function () {
         if ($(".j_list02").css("display") == "none") {//隐藏
             $(".j_list02").show();
+            $("#zTree").height($(".assistant_right")[0].offsetHeight - 230 + "px");
         }
         else {
             $(".j_list02").hide();
+            $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
             $("#jiangkong_box3").hide();
             $("#jiangkong_box2").show();
 
@@ -177,17 +179,53 @@ $(function () {
             success: function (data) {
                 verify = data;
                 if (verify == 1) {
-                    alert("同步已完成！请继续操作");
+                    //alert("同步已完成！请继续操作");
+                    AlertPrompt.show("同步已完成！请继续操作");
                     getFolder();
                     getMonitor();
                     getTreeM();
                     verify = -1;
                 } else {
-                    alert("同步过程中出现了意想不到的结果，请重新同步")
+                    //alert("同步过程中出现了意想不到的结果，请重新同步")
+                    AlertPrompt.show("同步过程中出现了意想不到的结果，请重新同步")
                 }
             }
         });
     });
+    var downSyncFuc = function () {
+        $.ajax({
+            url: "/monitoring/synchronous",
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                getFolder();
+                getMonitor();
+                getTreeM();
+            }
+        });
+    }
+    //数据上传
+    $("#upSync").click(function () {
+        if (confirm("是否确定将本地监控文件夹数据上传到蜂巢")) {
+            $.ajax({
+                url: "/monitoring/upMonitor",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data == 0) {
+                        //alert("上传完成！请继续操作");
+                        AlertPrompt.show("上传完成！请继续操作");
+                        downSyncFuc();
+                    } else {
+                        //alert("上传过程中出现了意想不到的结果，请重新同步")
+                        AlertPrompt.show("上传过程中出现了意想不到的结果，请重新同步")
+                    }
+                }
+            });
+        }
+    })
     /***************************************************/
     $("#jkwjj").click(function () {
         getFolder();
@@ -198,28 +236,27 @@ $(function () {
         var cid = $(this).attr("cid");
         var folderName = $(this).attr("folderName");
         var count = $(this).attr("count");
-        $("#count").val(count);
+        $("#count").val((count == "undefined" ? 0 : count));
         $("#folder").val(folderName);
-        $("#count").attr("fol",cid);
+        $("#count").attr("fol", cid);
     });
 
     /********************修改监控文件夹名称*******************************/
     var Judge = 0;
     $("body").on("dblclick", "input[cname=folderName]", function () {
-        $(this).attr("type","text");
+        $(this).attr("type", "text");
         $(this).removeAttr("readonly");
         $(this).removeClass("list2_input");
         Judge = 1;
     });
 
     $("body").on("blur", "input[cname=folderName]", function () {
-        if(Judge == 1){
+        if (Judge == 1) {
             $(this).removeAttr("type");
-            $(this).attr("readonly",true);
+            $(this).attr("readonly", true);
             $(this).addClass("list2_input");
-            if($(this).parent().parent().attr("folderName") != $(this).val()){
-                if(confirm("是否确定保存你的修改操作"))
-                {
+            if ($(this).parent().parent().attr("folderName") != $(this).val()) {
+                if (confirm("是否确定保存你的修改操作")) {
                     var name = $(this).val();
 
                     var foid = $(this).parent().parent().attr("cid");
@@ -227,18 +264,18 @@ $(function () {
                         url: "/monitoring/updateFolderName",
                         type: "GET",
                         dataType: "json",
-                        data:{
-                            forlderId:foid,
-                            forlderName:name
+                        data: {
+                            forlderId: foid,
+                            forlderName: name
                         },
                         success: function (data) {
-                            if(data){
+                            if (data) {
                                 getFolder();
                                 getTreeM();
                             }
                         }
                     });
-                }else{
+                } else {
                     $(this).val($(this).parent().parent().attr("folderName"));
                 }
             }
@@ -248,30 +285,33 @@ $(function () {
     /***************************************************/
 
     /*************************添加监控文件夹**************************/
-    $("body").on("click", "#addFolderQR", function (){
+    $("body").on("click", "#addFolderQR", function () {
         var name = $("#folderInput").val();
-        if(name != ""){
+        if (name != "") {
             $.ajax({
                 url: "/monitoring/addFolder",
                 type: "GET",
                 dataType: "json",
-                data:{
-                    forlderName:name
+                data: {
+                    forlderName: name
                 },
                 success: function (data) {
-                    if(data == 1){
+                    if (data == 1) {
                         $("#dialogMsg").empty();
                         $("#dialogMsg").append("添加成功");
-                    }else if(data == 0){
+                        getFolder();
+                        getTreeM();
+                        closeAlert();
+                    } else if (data == 0) {
                         $("#dialogMsg").empty();
                         $("#dialogMsg").append("添加失败");
-                    }else if(data == -1){
+                    } else if (data == -1) {
                         $("#dialogMsg").empty();
                         $("#dialogMsg").append("监控文加件最多添加20个！！");
                     }
                 }
             });
-        }else{
+        } else {
             $("#dialogMsg").empty();
             $("#dialogMsg").append("文件夹名称不能为空！");
         }
@@ -280,59 +320,63 @@ $(function () {
     /***************************************************/
 
     /*************************删除监控文件夹**************************/
-    $("body").on("click", "#removeFolder", function(){
+    $("body").on("click", "#removeFolder", function () {
         var folId = $("#count").attr("fol");
-        if(confirm("确定你的删除操作？")){
+        if (confirm("确定你的删除操作？")) {
             $.ajax({
                 url: "/monitoring/removeFolder",
                 type: "GET",
                 dataType: "json",
-                data:{
-                    forlderId:folId
+                data: {
+                    forlderId: folId
                 },
                 success: function (data) {
-                    if(data){
+                    if (data) {
                         getFolder();
                         getMonitor();
                         getTreeM();
-                        alert("删除成功");
-                    }else{
-                        alert("删除失败");
+                        //alert("删除成功");
+                        AlertPrompt.show("删除成功");
+                    } else {
+                        //alert("删除失败");
+                        AlertPrompt.show("删除失败");
                     }
                 }
             });
         }
     });
     /***************************************************/
-    $("body").on("click","tr[mon=monitorClick]",function(){
+    $("body").on("click", "tr[mon=monitorClick]", function () {
         $("#remoneMonitor").val($(this).attr("mtid"));
         $("#hiddenkwid_1").val($(this).attr("cname"));
         activate_Struts = $(this).attr("pause");
-        if($(this).attr("pause") == "false"){
+        if ($(this).attr("pause") == "false") {
             $("#activate").html("暂停");
-        }else if($(this).attr("pause") == "true"){
+        } else if ($(this).attr("pause") == "true") {
             $("#activate").html("激活");
         }
     })
     /*************************删除监控对象**************************/
-    $("body").on("click", "#removeMonitor", function(){
+    $("body").on("click", "#removeMonitor", function () {
         var mtId = $("#remoneMonitor").val();
-        if(confirm("确定你的删除操作？")){
+        if (confirm("确定你的删除操作？")) {
             $.ajax({
                 url: "/monitoring/removeMonitor",
                 type: "GET",
                 dataType: "json",
-                data:{
-                    monitorId:mtId
+                data: {
+                    monitorId: mtId
                 },
                 success: function (data) {
-                    if(data){
+                    if (data) {
                         getFolder();
                         getMonitor();
                         getTreeM();
-                        alert("删除成功");
-                    }else{
-                        alert("删除失败");
+                        //alert("删除成功");
+                        AlertPrompt.show("删除成功");
+                    } else {
+                        //alert("删除失败");
+                        AlertPrompt.show("删除失败");
                     }
                 }
             });
@@ -341,10 +385,11 @@ $(function () {
     /***************************************************/
 
     /**********************添加监控对象*************/
-    $("body").on("click","#addMonitorQR",function(){
+    $("body").on("click", "#addMonitorQR", function () {
         var aliId = $("#tbodyClick").find(".list2_box3").find("input").val();
-        if(aliId.length >= 24){
-            alert("请上传更新，关键词变化后再进行添加监控！");
+        if (aliId.length >= 24) {
+            //alert("请上传更新，关键词变化后再进行添加监控！");
+            AlertPrompt.show("请上传更新，关键词变化后再进行添加监控！");
             return;
         }
         var folderId = $("#monitorSelect").val();
@@ -355,22 +400,26 @@ $(function () {
             url: "/monitoring/addMonitor",
             type: "GET",
             dataType: "json",
-            data:{
-                folderID:folderId,
-                campaignId:campaignid,
-                adgroupId:adgroupId,
-                acliId:aliId
+            data: {
+                folderID: folderId,
+                campaignId: campaignid,
+                adgroupId: adgroupId,
+                acliId: aliId
             },
             success: function (data) {
-                if(data == 1){
-                    alert("添加成功");
+                if (data == 1) {
+                    //alert("添加成功");
+                    AlertPrompt.show("添加成功");
                     closeAlert();
-                }else if(data == 0){
-                    alert("添加失败");
-                }else if(data == -1){
-                    alert("监控对象最多添加2000个！");
-                }else if(data == -2){
-                    alert("该文件夹下已有此监控对象！");
+                } else if (data == 0) {
+                    //alert("添加失败");
+                    AlertPrompt.show("添加失败");
+                } else if (data == -1) {
+                    //alert("监控对象最多添加2000个！");
+                    AlertPrompt.show("监控对象最多添加2000个！");
+                } else if (data == -2) {
+                    //alert("该文件夹下已有此监控对象！");
+                    AlertPrompt.show("该文件夹下已有此监控对象！");
                 }
             }
         });
@@ -378,13 +427,13 @@ $(function () {
     });
     /*****************************************************/
 
-    $("#activate").click(function(){
-        if(activate_Struts == "false"){
+    $("#activate").click(function () {
+        if (activate_Struts == "false") {
             activate_Struts = true;
-        }else{
+        } else {
             activate_Struts = false;
         }
-        whenBlurEditKeyword(7,activate_Struts);
+        whenBlurEditKeyword(7, activate_Struts);
         getMonitor();
     });
 });
@@ -392,7 +441,7 @@ $(function () {
 /**
  * 获取监控文件夹 公用方法
  */
-var getFolder = function(){
+var getFolder = function () {
     $("#MonitorTbody").empty();
     $.ajax({
         url: "/monitoring/getFolder",
@@ -401,10 +450,12 @@ var getFolder = function(){
         success: function (data) {
             var monitor_html = "";
             $.each(data.rows, function (i, items) {
-                if (i % 2 != 0) {
-                    monitor_html = "<tr class='list2_box1 folder' cname='trName' cid='" + items.folderId + "' folderName='" + items.folderName + "' count='" + items.countNumber + "'><td >&nbsp;<input cname='folderName' class='list2_input' readonly value="+items.folderName+"></td><td>&nbsp;" + items.countNumber + "</td><td>&nbsp;</td>"
-                } else {
-                    monitor_html = "<tr class='list2_box2 folder' cname='trName' cid='" + items.folderId + "' folderName='" + items.folderName + "' count='" + items.countNumber + "'><td >&nbsp;<input cname='folderName' class='list2_input' readonly value="+items.folderName+"></td><td>&nbsp;" + items.countNumber + "</td><td>&nbsp;</td>"
+                if (items.localStatus != 4) {
+                    if (i % 2 != 0) {
+                        monitor_html = "<tr class='list2_box1 folder' cname='trName' cid='" + items.folderId + "' folderName='" + items.folderName + "' count='" + items.countNumber + "'><td >&nbsp;<input cname='folderName' class='list2_input' readonly value=" + items.folderName + "></td><td>&nbsp;" + (items.countNumber == undefined ? 0 : items.countNumber) + "</td><td>&nbsp;</td>"
+                    } else {
+                        monitor_html = "<tr class='list2_box2 folder' cname='trName' cid='" + items.folderId + "' folderName='" + items.folderName + "' count='" + items.countNumber + "'><td >&nbsp;<input cname='folderName' class='list2_input' readonly value=" + items.folderName + "></td><td>&nbsp;" + (items.countNumber == undefined ? 0 : items.countNumber) + "</td><td>&nbsp;</td>"
+                    }
                 }
                 $("#MonitorTbody").append(monitor_html);
             });
@@ -418,7 +469,7 @@ var getFolder = function(){
  * @returns {string}
  */
 
-var getMonitor = function(){
+var getMonitor = function () {
     $("#monitorFolder").empty();
     $.ajax({
         url: "/monitoring/getMonitor",
@@ -432,8 +483,8 @@ var getMonitor = function(){
                 var quanlityHtml = "";
                 var quanlityText = "";
                 if (item.quality > 0) {
-                     quanlityHtml = getStar(item.quality);
-                     quanlityText = getStarStr(item.quality);
+                    quanlityHtml = getStar(item.quality);
+                    quanlityText = getStarStr(item.quality);
                 }
 
                 //移动质量度
@@ -454,36 +505,37 @@ var getMonitor = function(){
                 var matchType = getMatching(item.object.matchType);
                 var urlPc = ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl.substring(0, 25));
                 var urlMobile = ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl.substring(0, 25));
-                if (i % 2 == 0) {
-                    html_Monitor = "<tr class='list2_box1' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = "+item.monitorId+" pause = "+item.object.pause+">"
-                        + "<td>&nbsp;" + item.object.keyword + "</td>"
-                        + "<td>&nbsp;" + item.campaignName + "</td>"
-                        + "<td>&nbsp;" + item.adgroupName + "</td>"
-                        + "<td>&nbsp;" + status + "</td>"
-                        + "<td>&nbsp;" + ((item.object.pause == false) ? '启用' : '暂停') + "</td>"
-                        + "<td>&nbsp;" + item.object.price + "</td>"
-                        + "<td>&nbsp;" + quanlityHtml + quanlityText + "</td>"
-                        + "<td>&nbsp;" + mobileQuanlityHtml + "</td>"
-                        + "<td>&nbsp;" + matchType + "</td>"
-                        + "<td>&nbsp;<a href=" + urlPc + " title=" + urlPc + " target='_blank'>" + urlPc + "</a></td>"
-                        + "<td>&nbsp;<a href=" + urlMobile + " title=" + urlMobile + " target='_blank'>" + urlMobile + "</a></td>"
-                        + "<td>&nbsp;" + item.folderName + "</td></tr>";
-                } else {
-                    html_Monitor = "<tr class='list2_box2' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = "+item.monitorId+" pause = "+item.object.pause+">"
-                        + "<td>&nbsp;" + item.object.keyword + "</td>"
-                        + "<td>&nbsp;" + item.campaignName + "</td>"
-                        + "<td>&nbsp;" + item.adgroupName + "</td>"
-                        + "<td>&nbsp;" + status + "</td>"
-                        + "<td>&nbsp;" + ((item.object.pause == false) ? '启用' : '暂停') + "</td>"
-                        + "<td>&nbsp;" + item.object.price + "</td>"
-                        + "<td>&nbsp;" + quanlityHtml + quanlityText + "</td>"
-                        + "<td>&nbsp;" + mobileQuanlityHtml + "</td>"
-                        + "<td>&nbsp;" + matchType + "</td>"
-                        + "<td>&nbsp;<a href=" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + " title=" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + " target='_blank'>" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + "</a></td>"
-                        + "<td>&nbsp;<a href=" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + " title=" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + " target='_blank'>" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + "</a></td>"
-                        + "<td>&nbsp;" + item.folderName + "</td></tr>";
+                if (item.localstatus != 4) {
+                    if (i % 2 == 0) {
+                        html_Monitor = "<tr class='list2_box1' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = " + item.monitorId + " pause = " + item.object.pause + ">"
+                            + "<td>&nbsp;" + item.object.keyword + "</td>"
+                            + "<td>&nbsp;" + item.campaignName + "</td>"
+                            + "<td>&nbsp;" + item.adgroupName + "</td>"
+                            + "<td>&nbsp;" + status + "</td>"
+                            + "<td>&nbsp;" + ((item.object.pause == false) ? '启用' : '暂停') + "</td>"
+                            + "<td>&nbsp;" + item.object.price + "</td>"
+                            + "<td>&nbsp;" + quanlityHtml + quanlityText + "</td>"
+                            + "<td>&nbsp;" + mobileQuanlityHtml + "</td>"
+                            + "<td>&nbsp;" + matchType + "</td>"
+                            + "<td>&nbsp;<a href=" + urlPc + " title=" + urlPc + " target='_blank'>" + urlPc + "</a></td>"
+                            + "<td>&nbsp;<a href=" + urlMobile + " title=" + urlMobile + " target='_blank'>" + urlMobile + "</a></td>"
+                            + "<td>&nbsp;" + item.folderName + "</td></tr>";
+                    } else {
+                        html_Monitor = "<tr class='list2_box2' mon='monitorClick' cname=" + item.object.keywordId + " folderID=" + item.folderId + " mtid = " + item.monitorId + " pause = " + item.object.pause + ">"
+                            + "<td>&nbsp;" + item.object.keyword + "</td>"
+                            + "<td>&nbsp;" + item.campaignName + "</td>"
+                            + "<td>&nbsp;" + item.adgroupName + "</td>"
+                            + "<td>&nbsp;" + status + "</td>"
+                            + "<td>&nbsp;" + ((item.object.pause == false) ? '启用' : '暂停') + "</td>"
+                            + "<td>&nbsp;" + item.object.price + "</td>"
+                            + "<td>&nbsp;" + quanlityHtml + quanlityText + "</td>"
+                            + "<td>&nbsp;" + mobileQuanlityHtml + "</td>"
+                            + "<td>&nbsp;" + matchType + "</td>"
+                            + "<td>&nbsp;<a href=" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + " title=" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + " target='_blank'>" + ((item.object.pcDestinationUrl == undefined) ? '' : item.object.pcDestinationUrl) + "</a></td>"
+                            + "<td>&nbsp;<a href=" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + " title=" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + " target='_blank'>" + ((item.object.mobileDestinationUrl == undefined) ? '' : item.object.mobileDestinationUrl) + "</a></td>"
+                            + "<td>&nbsp;" + item.folderName + "</td></tr>";
+                    }
                 }
-
                 $("#monitorFolder").append(html_Monitor);
             });
         }
@@ -492,7 +544,7 @@ var getMonitor = function(){
 
 
 //质量度星级
-function getStar(number){
+function getStar(number) {
     var str = ""
     switch (number) {
         case 11:
@@ -523,7 +575,7 @@ function getStar(number){
 }
 
 //质量度星级注解
-function getStarStr(number){
+function getStarStr(number) {
     var str = "";
     switch (number) {
         case 11:
@@ -549,14 +601,28 @@ function getStarStr(number){
 }
 
 //匹配模式
-function getMatching(number){
+function getMatching(number, phraseType) {
     var str = "";
-    switch (number){
+    switch (number) {
         case 1:
             str = "精确";
             break;
         case 2:
-            str = "高级短语";
+            if (phraseType) {
+                switch (phraseType) {
+                    case 1:
+                        str="短语-同义";
+                        break;
+                    case 2:
+                        str="短语-精确";
+                        break;
+                    case 3:
+                        str="短语-核心";
+                        break;
+                }
+            } else {
+                str = "短语";
+            }
             break;
         case 3:
             str = "广泛";
@@ -608,7 +674,7 @@ function getStr(number) {
 /**
  * 监控文件夹树
  */
-function getTreeM(){
+function getTreeM() {
     $.ajax({
         url: "/monitoring/getTree",
         type: "GET",
@@ -626,9 +692,9 @@ function getTreeM(){
  */
 function folderDialog() {
     var jcBox = $("#adfd");
-        jcBox.empty();
-        jcBox.append("<li>监控文件夹名：<input type='text' id='folderInput'></li>");
-        showDialog();
+    jcBox.empty();
+    jcBox.append("<li>监控文件夹名：<input type='text' id='folderInput'></li>");
+    showDialog();
 }
 /**
  * 添加监控对象弹出框
@@ -645,12 +711,12 @@ function MonitorDialog() {
         success: function (data) {
             de_html = "<select id='monitorSelect'>";
             $.each(data.rows, function (i, items) {
-                de_html = de_html+"<option value="+items.folderId+">"+items.folderName+"</option>";
+                de_html = de_html + "<option value=" + items.folderId + ">" + items.folderName + "</option>";
             });
-            de_html = de_html+"</select>";
+            de_html = de_html + "</select>";
         }
     });
-    jcBox.append("<li>选择监控文件夹名："+de_html+"</li>");
+    jcBox.append("<li>选择监控文件夹名：" + de_html + "</li>");
     showDialogMon();
 }
 
@@ -695,4 +761,6 @@ function closeAlert() {
     $("#addMonitorDiv ").css("display", "none");
     //监控文件夹窗口关闭
     $("#addFolderDiv ").css("display", "none");
+    //检查更改窗口关闭
+    $("#CheckCompletion ").css("display", "none");
 }

@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- MongoDB配置 -->
     <mongo:mongo id="mongo" replica-set="${mongo.host}">
@@ -13,19 +14,19 @@
     </mongo:mongo>
 
     <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
-    <mongo:mapping-converter id="mongoConverter"/>
-
-    <bean id="noClassMongoConverter" class="com.perfect.db.mongodb.base.MongoConverterEnhanceFactoryBean">
-        <property name="mongoConverter" ref="mongoConverter"/>
-    </bean>
 
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-        <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
+        <property name="writeConcern">
+            <util:constant static-field="com.mongodb.WriteConcern.FSYNC_SAFE"/>
+        </property>
+        <property name="writeResultChecking">
+            <util:constant static-field="org.springframework.data.mongodb.core.WriteResultChecking.EXCEPTION"/>
+        </property>
     </bean>
 
     <bean id="mongoSysTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-        <constructor-arg name="mongoConverter" ref="noClassMongoConverter"/>
     </bean>
+
 </beans>

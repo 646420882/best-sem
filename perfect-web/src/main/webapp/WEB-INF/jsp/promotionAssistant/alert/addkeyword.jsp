@@ -49,7 +49,7 @@
 
 </style>
 <div class="box" style="background-color: #f3f5fd; width: 900px; height: 550px;display: none;" id="addKeywordDiv">
-    <h2 id="kAdd">添加关键字<a href="javascript:void(0)" onclick="closeAddKeywordDialog()" class="close">关闭</a></h2>
+    <h2 id="kAdd">添加关键字<a href="javascript:void(0)" onclick="closeAddKeywordDialog()" class="close">×</a></h2>
 
     <div class="assembly_under over">
         <div class="keyword_left fl over" style="height:460px;">
@@ -67,9 +67,9 @@
                 </li>
                 <li>
                     <select id="matchType" class="team04">
-                        <option value="3">广泛</option>
                         <option value="1">精确</option>
                         <option value="2">短语</option>
+                        <option value="3">广泛</option>
                     </select>
 
                     <div id="phraseTypeDiv" style="display: none;"><select id="phraseType" class="team04">

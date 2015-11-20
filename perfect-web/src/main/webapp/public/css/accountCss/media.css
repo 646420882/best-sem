@@ -1,20 +1,6 @@
 @charset "utf-8";
 /******1920************/
-@media screen and (min-width: 1921px){
-    .mid {
-        width: 91%;
-    }
-}
-@media screen and (min-width: 1800px) and (max-width: 1920px) {
-    .mid {
-        width: 91%;
-    }
-}
 @media screen and (min-width: 1682px) and (max-width: 1818px) {
-
-    .mid {
-        width: 90%;
-    }
     .t_list02, .t_list03 {
         width: 88%;
     }
@@ -29,10 +15,6 @@
 }
 /******1680************/
 @media screen and (min-width: 1601px) and (max-width: 1681px) {
-
-    .mid {
-       width:89.1%;
-    }
 
     .zs_bottom1 ul li .zs_input1 {
         width: 82%;
@@ -70,11 +52,6 @@
 /******1600************/
 @media screen and (min-width: 1500px) and (max-width: 1600px) {
 
-    .mid {
-        width: 88.6%;
-
-    }
-
     .zs_bottom1 ul li .zs_input1 {
         width: 82%;
     }
@@ -99,9 +76,6 @@
 }
 /******1500************/
 @media screen and (min-width: 1580px) and (max-width: 1600px) {
-    .mid {
-        width: 88.6%;
-    }
     .zs_bottom1 ul li .zs_input1 {
         width: 89%;
     }
@@ -140,10 +114,6 @@
     }
 }
 @media screen and (min-width: 1442px) and (max-width: 1579px) {
-    .mid {
-        width: 88.4%;
-        *width: 88.3%;
-    }
     .zs_bottom1 ul li .zs_input1 {
         width: 80%;
     }
@@ -172,10 +142,6 @@
 }
 /******1440************/
  @media screen and (min-width: 1371px) and (max-width: 1441px) {
-        .mid {
-            width: 87.4%;
-            *width:87%;
-        }
         .zs_top, {
             margin-right:0px;
         }
@@ -238,11 +204,6 @@
 /******1368************/
 
 @media screen and (min-width: 1360px)and (max-width: 1368px) {
-    .mid {
-        width: 86.6%;
-        *width: 86.2%;
-
-    }
 
     .zs_top, {
         margin-right: 0px;
@@ -319,8 +280,6 @@
 }
 /******1360************/
 @media screen and (min-width: 1359px) and (max-width: 1361px)  {
-    .mid {width: 86.5%;
-    }
     .zhilianglist table tr td ul li{
         width: 12.5%;
     }
@@ -337,10 +296,6 @@
 }
 /******1280************/
 @media screen and (min-width: 1031px) and (max-width: 1290px) {
-  .mid {
-      width: 85.8%;
-  }
-
   .zs_top, {
       margin-right:0px;
   }
@@ -368,9 +323,6 @@
     }
     .t_list05 {
         width: 60%;
-    }
-    .user_mid {
-        width: 50%;
     }
    .page ul {
 
@@ -407,21 +359,17 @@
         font-size: 26px;
     }
     .w_list03 ul li{
+
         padding:0 4px;
         margin-right:5px;
     }
+
 }
 
 /******1152************/
 @media screen and (min-width: 1031px) and (max-width: 1153px) {
-    .mid {
-        width: 84.1%;
-    }
     .t_list05 {
         width: 100%;
-    }
-    .user_mid {
-        width: 60%;
     }
     .page ul {
         *float: left;
@@ -470,6 +418,7 @@
         font-size: 20px;
     }
     .w_list03 ul li{
+        width: 17%;
         padding:0 5px;
         margin-right:10px;
     }
@@ -493,26 +442,22 @@
     .wrap_list01{
     margin-bottom: 10px;
          }
-    .zs_function ul li {
-        margin: 0 5px 0 0;
+    .zs_function{
+        padding:0 1px;
+    }
+    .zs_function ul li{
+        margin: 0px 0.5% 0px 0;
     }
 
 
 }
 /******1024************/
 @media screen and (max-width: 1030px) {
-    .mid {
-        width: 82.2%;
-        *width: 82%;
-    }
-
     .zs_top, {
         margin-right: 0px;
     }
 
-    .zs_function ul li {
-        margin: 0px 0px 0px 0;
-    }
+
 
     .zs_function ul li b {
         margin-right: 0px;
@@ -623,25 +568,37 @@
         padding: 0.5px;
     }
     .w_list03 ul li{
+
         padding:0 5px;
         margin-right:10px;
     }
     .zs_concent_top ul li {
-        width: 90px;
+        width: 96px;
     }
     .zs_top, .z_function_hover {
         margin-right: 2px;
 
     }
-}
-@media screen and (max-width: 900px){
-    .user_mid{
-        margin-left:2px;
-        width:55%;
+    .zs_function ul li{
+        margin: 0px 0.1% 0px 0;
     }
+
+}
+
+    @media screen and (max-width: 900px){
+    .user_mid{
+        margin-left:0px;
+        width:72%;
+    }
+        .top_mid{
+            width:28%;
+        }
+        .user_logo{
+            padding-right:0px;
+        }
 }
 @media \0screen {
-        .zs_function ul li { margin: 0px 2px 0px 0; }
+
     }
 
 /* CSS Document */

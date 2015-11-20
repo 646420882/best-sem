@@ -12,7 +12,7 @@ public interface FarmDAO extends HeyCrudRepository<UrlDTO, String> {
 
     public UrlDTO takeOne();
 
-    public void returnOne(UrlDTO urlEntity);
+//    public void returnOne(UrlDTO urlEntity);
 
     public List<UrlDTO> allUnused();
 }

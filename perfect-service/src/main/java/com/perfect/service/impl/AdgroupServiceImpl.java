@@ -1,17 +1,25 @@
 package com.perfect.service.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
+import com.perfect.dao.creative.CreativeDAO;
+import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.AdgroupBackupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.param.FindOrReplaceParam;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
@@ -20,9 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-11-26.
@@ -30,11 +36,18 @@ import java.util.Map;
  */
 @Service("adgroupService")
 public class AdgroupServiceImpl implements AdgroupService {
+    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
 
     @Resource
     private AdgroupDAO adgroupDAO;
     @Resource
     AccountManageDAO accountManageDAO;
+
+    @Resource
+    private KeywordDAO keywordDAO;
+
+    @Resource
+    private CreativeDAO creativeDAO;
 
     @Resource
     CampaignDAO campaignDAO;
@@ -69,9 +82,9 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public List<AdgroupDTO> findHasLocalStatusStr(List<CampaignDTO> campaignDTOStr) {
-        List<String> strs=new ArrayList<>();
-        for (CampaignDTO camp:campaignDTOStr){
-            if(camp.getCampaignId()==null){
+        List<String> strs = new ArrayList<>();
+        for (CampaignDTO camp : campaignDTOStr) {
+            if (camp.getCampaignId() == null) {
                 strs.add(camp.getId());
             }
         }
@@ -80,9 +93,9 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public List<AdgroupDTO> findHasLocalStatusLong(List<CampaignDTO> campaignDTOLong) {
-        List<Long> longs=new ArrayList<>();
-        for (CampaignDTO camp:campaignDTOLong){
-            if(camp.getCampaignId()!=null){
+        List<Long> longs = new ArrayList<>();
+        for (CampaignDTO camp : campaignDTOLong) {
+            if (camp.getCampaignId() != null) {
                 longs.add(camp.getCampaignId());
             }
         }
@@ -122,6 +135,43 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
+    public void updateAdgroup(AdgroupDTO dto) {
+        AdgroupDTO adgroupDTO;
+
+        if (dto.getAdgroupId() == null) {
+            adgroupDTO = adgroupDAO.findOne(dto.getAdgroupId());
+        } else {
+            adgroupDTO = adgroupDAO.findByObjId(dto.getId());
+        }
+
+        AdgroupBackupDTO adgroupBackupDTO = new AdgroupBackupDTO();
+        BeanUtils.copyProperties(adgroupDTO, adgroupBackupDTO);
+
+        if (adgroupDTO.getAdgroupId() == null) {
+            adgroupDTO.setLocalStatus(1);
+        } else {
+            adgroupDTO.setLocalStatus(2);
+        }
+
+        if (dto.getAdgroupName() != null) {
+            adgroupDTO.setAdgroupName(dto.getAdgroupName());
+        }
+        if (dto.getMaxPrice() != null) {
+            adgroupDTO.setMaxPrice(dto.getMaxPrice());
+        }
+        if (dto.getNegativeWords() != null) {
+            adgroupDTO.setNegativeWords(dto.getNegativeWords());
+        }
+        if (dto.getExactNegativeWords() != null) {
+            adgroupDTO.setExactNegativeWords(dto.getExactNegativeWords());
+        }
+
+        adgroupDAO.update(adgroupDTO, adgroupBackupDTO);
+
+
+    }
+
+    @Override
     public void delete(Long id) {
         adgroupDAO.delete(id);
     }
@@ -132,8 +182,8 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
-    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize) {
-        return adgroupDAO.findByPagerInfo(params,nowPage,pageSize);
+    public PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp) {
+        return adgroupDAO.findByPagerInfo(params, nowPage, pageSize, sp);
     }
 
     @Override
@@ -163,7 +213,7 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public void update(AdgroupDTO adgroupEntity, AdgroupDTO bakAdgroupEntity) {
-        adgroupDAO.update(adgroupEntity,bakAdgroupEntity);
+        adgroupDAO.update(adgroupEntity, bakAdgroupEntity);
     }
 
     @Override
@@ -205,27 +255,25 @@ public class AdgroupServiceImpl implements AdgroupService {
             }
         });
         if (adgroupTypes.size() > 0) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
-        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-        try {
-            com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
-            AddAdgroupRequest addAdgroupRequest = new AddAdgroupRequest();
-            addAdgroupRequest.setAdgroupTypes(adgroupTypes);
-            AddAdgroupResponse addAdgroupResponse=adgroupService.addAdgroup(addAdgroupRequest);
-            List<AdgroupType> returnAdgroupType=addAdgroupResponse.getAdgroupTypes();
-            returnAdgroupType.stream().forEach(s -> {
-                if (s.getAdgroupId() != null) {
+            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+            try {
+                com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
+                AddAdgroupRequest addAdgroupRequest = new AddAdgroupRequest();
+                addAdgroupRequest.setAdgroupTypes(adgroupTypes);
+                AddAdgroupResponse addAdgroupResponse = adgroupService.addAdgroup(addAdgroupRequest);
+                List<AdgroupType> returnAdgroupType = addAdgroupResponse.getAdgroupTypes();
+                returnAdgroupType.stream().filter(s -> s.getAdgroupId() != null).forEach(s -> {
                     AdgroupDTO dto = new AdgroupDTO();
                     dto.setAdgroupId(s.getAdgroupId());
                     dto.setStatus(s.getStatus());
                     dto.setPause(s.getPause());
                     returnDto.add(dto);
-                }
-            });
-            return returnDto;
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
+                });
+                return returnDto;
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
         }
         return returnDto;
     }
@@ -296,21 +344,21 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public List<AdgroupDTO> uploadAddByUp(String aid) {
-        List<AdgroupDTO> returnAdgroupDto=new ArrayList<>();
-        AdgroupDTO adgroupDTOFind=adgroupDAO.findByObjId(aid);
-        if(adgroupDTOFind!=null){//如果本地数据库存在该数据
+        List<AdgroupDTO> returnAdgroupDto = new ArrayList<>();
+        AdgroupDTO adgroupDTOFind = adgroupDAO.findByObjId(aid);
+        if (adgroupDTOFind != null) {//如果本地数据库存在该数据
 
             //计划级联上传 star
             //计划表中查询这条数据，用以cid是否存在，如果存在，嘿嘿...
-            if(adgroupDTOFind.getCampaignId()==null){//如果计划cid已经有了，则不需要再上传了
-                List<CampaignDTO> dtos=campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
-                dtos.stream().forEach(j->campaignService.update(j,adgroupDTOFind.getCampaignObjId()));
+            if (adgroupDTOFind.getCampaignId() == null) {//如果计划cid已经有了，则不需要再上传了
+                List<CampaignDTO> dtos = campaignService.uploadAdd(adgroupDTOFind.getCampaignObjId());
+                dtos.stream().forEach(j -> campaignService.update(j, adgroupDTOFind.getCampaignObjId()));
             }
             //计划级联上传 end
 
             //单元级联上传 star
             //如果上面判断了计划，则肯定只有单元没有上传了，这里就不需要判断了，如果有agid则根本不会进入这个方法，所以不用判断单元是否上传
-             returnAdgroupDto = uploadAdd(new ArrayList<String>() {{
+            returnAdgroupDto = uploadAdd(new ArrayList<String>() {{
                 add(aid);
             }});
             //上传完毕后执行修改单元操作
@@ -321,7 +369,7 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Override
     public void updateUpdate(Long aid, AdgroupDTO dto) {
-        adgroupDAO.pdateUpdate( aid,dto);
+        adgroupDAO.pdateUpdate(aid, dto);
     }
 
     @Override
@@ -338,4 +386,152 @@ public class AdgroupServiceImpl implements AdgroupService {
     public double getCampBgt(Long cid) {
         return adgroupDAO.getCampBgt(cid);
     }
+
+    @Override
+    public void batchDelete(FindOrReplaceParam param) {
+        if (param != null) {
+            List<String> asList = new ArrayList<>();
+            List<String> keywordDatas = new ArrayList<>();
+            List<String> creativeDatas = new ArrayList<>();
+            if (param.getCheckData() != null) {
+                String[] list = param.getCheckData().split(",");
+                Collections.addAll(asList, list);
+                asList.forEach(e -> {
+                    List<KeywordDTO> keywordDTOs;
+                    List<CreativeDTO> creativeDTOs;
+                    if (e.length() < 24) {
+                        List<Long> longs = Lists.newArrayList();
+                        longs.add(Long.valueOf(e));
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs);
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                    } else {
+                        List<String> strings = Lists.newArrayList();
+                        strings.add(e);
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(strings);
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                    }
+                    keywordDatas.clear();
+                    creativeDatas.clear();
+                    keywordDTOs.forEach(a -> {
+                        if (a.getKeywordId() != null) keywordDatas.add(String.valueOf(a.getKeywordId()));
+                        else keywordDatas.add(a.getId());
+                    });
+                    creativeDTOs.forEach(a -> {
+                        if (a.getCreativeId() != null) creativeDatas.add(String.valueOf(a.getCreativeId()));
+                        else creativeDatas.add(a.getId());
+                    });
+                });
+            }
+
+            if (param.getForType() != 0) {
+                String dataId = param.getCampaignId();
+                List<CreativeDTO> creativeDTOs;
+                List<KeywordDTO> keywordDTOs;
+                if (dataId.length() < 24) {
+                    List<String> strings = Lists.newArrayList();
+                    List<Long> longs = Lists.newArrayList();
+                    adgroupDAO.findByCampaignId(Long.valueOf(param.getCampaignId())).forEach(e -> {
+                        if (e.getAdgroupId() != null) {
+                            longs.add(e.getAdgroupId());
+                            asList.add(String.valueOf(e.getAdgroupId()));
+                        } else {
+                            strings.add(e.getId());
+                            asList.add(String.valueOf(e.getId()));
+                        }
+
+                    });
+                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                    keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs);
+                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings);
+                    if (!Objects.isNull(keydtos)) keywordDTOs.addAll(keydtos);
+                    if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
+                } else {
+                    List<String> strings = Lists.newArrayList();
+                    List<Long> longs = Lists.newArrayList();
+                    adgroupDAO.findByCampaignOId(param.getCampaignId()).forEach(e -> {
+                        if (e.getAdgroupId() != null) {
+                            longs.add(e.getAdgroupId());
+                            asList.add(String.valueOf(e.getAdgroupId()));
+                        } else {
+                            strings.add(e.getId());
+                            asList.add(String.valueOf(e.getId()));
+                        }
+                    });
+                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                    keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs);
+                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings);
+                    if (!Objects.isNull(keydtos)) keywordDTOs.addAll(keydtos);
+                    if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
+                }
+                keywordDatas.clear();
+                creativeDatas.clear();
+                keywordDTOs.forEach(a -> {
+                    if (a.getKeywordId() != null) keywordDatas.add(String.valueOf(a.getKeywordId()));
+                    else keywordDatas.add(a.getId());
+                });
+                creativeDTOs.forEach(a -> {
+                    if (a.getCreativeId() != null) creativeDatas.add(String.valueOf(a.getCreativeId()));
+                    else creativeDatas.add(a.getId());
+                });
+
+            }
+            adgroupDAO.batchDelete(asList, keywordDatas, creativeDatas);
+        }
+    }
+
+    public void cut(AdgroupDTO dto, String cid) {
+        AdgroupBackupDTO adgroupBackupDTO = new AdgroupBackupDTO();
+        BeanUtils.copyProperties(dto, adgroupBackupDTO);
+        if (cid.length() > OBJ_SIZE) {
+            dto.setCampaignObjId(cid);
+            dto.setLocalStatus(1);
+        } else {
+            dto.setCampaignId(Long.valueOf(cid));
+            dto.setLocalStatus(2);
+        }
+        adgroupDAO.update(dto, adgroupBackupDTO);
+    }
+
+    @Override
+    public AdgroupDTO autoBAG(String cname, String aname) {
+        AdgroupDTO adgroupDTO = null;
+        CampaignDTO campaignDTO = campaignDAO.findCampaignByName(cname);
+        if (campaignDTO != null) {
+            Map<String, Object> mapParams = new HashMap<>();
+            if (campaignDTO.getCampaignId() != null) {
+                mapParams.put(MongoEntityConstants.CAMPAIGN_ID, campaignDTO.getCampaignId());
+            } else {
+                mapParams.put(MongoEntityConstants.OBJ_CAMPAIGN_ID, campaignDTO.getId());
+            }
+            mapParams.put("name", aname);
+            adgroupDTO = adgroupDAO.fndEntity(mapParams);
+            return adgroupDTO;
+        } else {
+            CampaignDTO newCampaign = new CampaignDTO();
+            newCampaign.setCampaignName(cname);
+            newCampaign.setPause(true);
+            newCampaign.setShowProb(1);
+            newCampaign.setLocalStatus(1);
+            newCampaign.setStatus(-1);
+            newCampaign.setAccountId(AppContext.getAccountId());
+            String id = campaignDAO.insertReturnId(newCampaign);
+            AdgroupDTO adgroupDTOFind = adgroupDAO.findByAdgroupName(aname);
+            if (adgroupDTOFind != null) {
+                return adgroupDTOFind;
+            } else {
+                AdgroupDTO newAdgroup = new AdgroupDTO();
+                newAdgroup.setLocalStatus(1);
+                newAdgroup.setCampaignObjId(id);
+                newAdgroup.setAdgroupName(aname);
+                newAdgroup.setPause(false);
+                newAdgroup.setAccountId(AppContext.getAccountId());
+                Object adgroupStrId = adgroupDAO.insertOutId(newAdgroup);
+                newAdgroup.setId(adgroupStrId.toString());
+                return newAdgroup;
+            }
+        }
+    }
 }
+

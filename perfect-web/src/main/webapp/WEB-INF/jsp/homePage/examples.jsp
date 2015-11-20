@@ -14,13 +14,13 @@
 <html>
 <head>
     <base href="<%=basePath%>">
-    <link type="text/css" href="../public/css/accountCss/style.css" rel="stylesheet">
-    <link type="text/css" href="../public/css/accountCss/public.css" rel="stylesheet">
+    <link type="text/css" href="../public/css/public/style.css" rel="stylesheet">
+    <link type="text/css" href="../public/css/public/public.css" rel="stylesheet">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <title></title>
     <script type="text/javascript">
         $(document).ready(function(){
-            alert(1);
+//            alert(1);
             var $tab_li = $('.tab_menu li');
             $tab_li.hover(function(){
                 $(this).addClass('selected').siblings().removeClass('selected');

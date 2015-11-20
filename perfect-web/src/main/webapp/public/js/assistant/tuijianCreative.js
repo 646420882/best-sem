@@ -78,7 +78,8 @@ function reView(res) {
                 }
                 //判断如果这里是闪投创意
                 if (viewType == 1) {
-                    alert("该创意是闪投创意，暂不支持！");
+                    //alert("该创意是闪投创意，暂不支持！");
+                    AlertPrompt.show("该创意是闪投创意，暂不支持！");
 //        $("#subTitle").html(title);
 //        $("#Url").html(_liObj.find("div:eq(4) span:eq(0)").html());
 //        subShowEditor(_liObj);
@@ -97,13 +98,16 @@ function reView(res) {
                     reShowEditor();
                 }
             }else{
-                alert("该创意是闪投创意，暂不支持！");
+                //alert("该创意是闪投创意，暂不支持！");
+                AlertPrompt.show("该创意是闪投创意，暂不支持！");
             } //end EC_pap_big
         }else{
-            alert("该创意是闪投创意，暂不支持！");
+            //alert("该创意是闪投创意，暂不支持！");
+            AlertPrompt.show("该创意是闪投创意，暂不支持！");
         } //end EC_palist
     }else{
-        alert("该创意是闪投创意，暂不支持！");
+        //alert("该创意是闪投创意，暂不支持！");
+        AlertPrompt.show("该创意是闪投创意，暂不支持！");
     }//end tbody
 
 }
@@ -304,28 +308,34 @@ function reSave() {
     var pcUrl = $("textarea[name='pcUrl']").val();
     var pcsUrl = $("input[name='pcsUrl']").val();
     if ($("#_editor span:eq(0)").attr("class") == "span-error") {
-        alert("\"标题\"字符不符合规范，请重新输入！");
+        //alert("\"标题\"字符不符合规范，请重新输入！");
+        AlertPrompt.show("\"标题\"字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor span:eq(1)").attr("class") == "span-error") {
-        alert("\"描述1\"字符不符合规范，请重新输入！");
+        //alert("\"描述1\"字符不符合规范，请重新输入！");
+        AlertPrompt.show("\"描述1\"字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor span:eq(2)").attr("class") == "span-error") {
-        alert("\"描述2\"字符不符合规范，请重新输入！");
+        //alert("\"描述2\"字符不符合规范，请重新输入！");
+        AlertPrompt.show("\"描述2\"字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor span:eq(3)").attr("class") == "span-error") {
-        alert("\"访问\"Url字符不符合规范，请重新输入！");
+        //alert("\"访问\"Url字符不符合规范，请重新输入！");
+        AlertPrompt.show("\"访问\"Url字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor span:eq(4)").attr("class") == "span-error") {
-        alert("\"显示\"Url字符不符合规范，请重新输入！");
+        //alert("\"显示\"Url字符不符合规范，请重新输入！");
+        AlertPrompt.show("\"显示\"Url字符不符合规范，请重新输入！");
         return false;
     }
     if ($("#_editor textarea[name='pcUrl']").val().indexOf(dm) == -1) {
         $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
-        alert("\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
+        //alert("\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
+        AlertPrompt.show("\"访问\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
         return false;
     }
     //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
@@ -333,13 +343,15 @@ function reSave() {
         var _pcSize = $("#_editor textarea[name='pcUrl']").val();
         if ($("#_editor textarea[name='pcUrl']").val().substr($("#_editor textarea[name='pcUrl']").val().indexOf(dm)) != dm) {
             $("#pcUrlMsg").html("<b style='color: red;'>\"访问\"Url地址必须以\"" + dm + "\"结尾！</b>");
-            alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+            //alert("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+            AlertPrompt.show("\"访问\"Url地址必须以\"" + dm + "\"结尾！");
             return false;
         }
     }
     if ($("#_editor input[name='pcsUrl']").val().indexOf(dm) == -1) {
         $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!！</b>");
-        alert("\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
+        //alert("\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
+        AlertPrompt.show("\"显示\"Url地址中必须包含\"" + dm + "\"的域名后缀!");
         return false;
     }
     //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
@@ -347,7 +359,8 @@ function reSave() {
         var _pcSize = $("#_editor input[name='pcsUrl']").val();
         if ($("#_editor input[name='pcsUrl']").val().substr($("#_editor input[name='pcsUrl']").val().indexOf(dm)) != dm) {
             $("#pcsUrlMsg").html("<b style='color: red;'>\"显示\"Url地址必须以\"" + dm + "\"结尾！</b>");
-            alert("\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+            //alert("\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+            AlertPrompt.show("\"显示\"Url地址必须以\"" + dm + "\"结尾！");
             return false;
         }
     }
@@ -410,9 +423,11 @@ function replanUnit() {
     var cid = $("#sPlan :selected").val() == undefined ? sparams.cid : $("#sPlan :selected").val();
     var aid = $("#sUnit :selected").val() == undefined ? sparams.aid : $("#sUnit :selected").val();
     if (cid == "-1") {
-        alert("请选择计划");
+        //alert("请选择计划");
+        AlertPrompt.show("请选择计划");
     } else if (aid == "-1") {
-        alert("请选择单元");
+        AlertPrompt.show("请选择单元");
+        //alert("请选择单元");
     } else {
         reParms.cid = cid;
         reParms.aid = aid;
@@ -451,15 +466,18 @@ function addCreativeOk() {
                 $("#rTitle").html("xxxxxxxx");
                 $("#rDesc").html("xxxxxxxx");
                 $("#rUrl").html("xxxxxxxxx");
-                alert("上传成功!");
+                //alert("上传成功!");
+                AlertPrompt.show("上传成功!");
                 $("#dm").val("");
                 $("#reOkView").hide();
             } else {
-                alert("创意添加失败，请检查后提交！");
+                //alert("创意添加失败，请检查后提交！");
+                AlertPrompt.show("创意添加失败，请检查后提交！");
             }
         });
     } else {
-        alert("请选择计划或者单元！");
+        //alert("请选择计划或者单元！");
+        AlertPrompt.show("请选择计划或者单元！");
     }
 }
 function textSizeValid() {
@@ -486,13 +504,15 @@ function addSub() {
             }
         });
         if (error > 0) {
-            alert("请正确输入！");
+            //alert("请正确输入！");
+            AlertPrompt.show("请正确输入！");
         } else {
             var _input = "<li>描述：<input type='text' name='subtitle'/>访问地址：<input type='text' name='subUrl'/><a href='javascript:void(0)' onclick='removeLi(this)'>删除</a></li>";
             $("#sub").append(_input);
         }
     } else {
-        alert("一次最多添加10条！");
+        //alert("一次最多添加10条！");
+        AlertPrompt.show("一次最多添加10条！");
     }
 }
 function removeLi(rs) {

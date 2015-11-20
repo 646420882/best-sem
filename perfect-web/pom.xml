@@ -4,12 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perfect-web</artifactId>
+    <version>1.2</version>
     <packaging>war</packaging>
 
     <parent>
         <artifactId>perfect-parent</artifactId>
         <groupId>com.perfect</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2</version>
     </parent>
 
     <dependencies>
@@ -36,6 +37,13 @@
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-db</artifactId>
+        </dependency>
+
+        <!-- 日志组件嵌入 -->
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-comp-logging</artifactId>
+            <version>${perfect-comp-logging-version}</version>
         </dependency>
 
         <dependency>
@@ -122,6 +130,11 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
         </dependency>
 
         <!-- Jsoup -->
@@ -216,6 +229,7 @@
 
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.7</version>
                 <configuration>
@@ -235,7 +249,9 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
                     <warName>${project.artifactId}</warName>
                     <archiveClasses>false</archiveClasses>
@@ -247,21 +263,6 @@
                         </resource>
                     </webResources>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.zeroturnaround</groupId>
-                <artifactId>javarebel-maven-plugin</artifactId>
-                <version>1.0.5</version>
-                <executions>
-                    <execution>
-                        <id>generate-rebel-xml</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

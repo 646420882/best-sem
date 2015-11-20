@@ -3,6 +3,7 @@ package com.perfect.service.impl;
 import com.perfect.dao.account.AccountAnalyzeDAO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.service.AccountOverviewService;
+import com.perfect.vo.CountAssistantVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -10,9 +11,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by john on 2014/7/25.
@@ -80,12 +79,50 @@ public class AccountOverviewServiceImpl implements AccountOverviewService {
         //数字格式化
         DecimalFormat decimalFormat = new DecimalFormat("#,##,###");
         DecimalFormat costFormat = new DecimalFormat("#,##,##0.00");
-        Map<String, Object> map = new Hashtable<String, Object>();
+        Map<String, Object> map = new Hashtable<>();
         map.put("impression", decimalFormat.format(impressionCount));
         map.put("click", decimalFormat.format(clickCount));
         map.put("cos", costFormat.format(costCount));
         map.put("conversion", decimalFormat.format((long) conversionCount));
         return map;
+    }
+
+    @Override
+    public List<CountAssistantVO> countAssistant() {
+        List<CountAssistantVO> vos = new ArrayList<>();
+        CountAssistantVO vo = new CountAssistantVO();
+
+        Long campaign = accountAnalyzeDAO.countCampaign(0);
+        Long campaignLong = accountAnalyzeDAO.countCampaign(1);
+        vo.setName("计划数");
+        vo.setCountNumber(campaign);
+        vo.setModifiyNumber(campaignLong);
+        vos.add(vo);
+
+        Long adgroup = accountAnalyzeDAO.countAdgroup(0);
+        Long adgroupLong = accountAnalyzeDAO.countAdgroup(1);
+        vo = new CountAssistantVO();
+        vo.setName("单元数");
+        vo.setCountNumber(adgroup);
+        vo.setModifiyNumber(adgroupLong);
+        vos.add(vo);
+
+        Long keyword = accountAnalyzeDAO.countKeyword(0);
+        Long keywordLong = accountAnalyzeDAO.countKeyword(1);
+        vo = new CountAssistantVO();
+        vo.setName("关键词数");
+        vo.setCountNumber(keyword);
+        vo.setModifiyNumber(keywordLong);
+        vos.add(vo);
+
+        Long creative = accountAnalyzeDAO.countCreative(0);
+        Long creativeLong = accountAnalyzeDAO.countCreative(1);
+        vo = new CountAssistantVO();
+        vo.setName("创意数");
+        vo.setCountNumber(creative);
+        vo.setModifiyNumber(creativeLong);
+        vos.add(vo);
+        return vos;
     }
 
 }

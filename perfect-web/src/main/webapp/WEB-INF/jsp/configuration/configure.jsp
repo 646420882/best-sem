@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
@@ -78,6 +78,7 @@
                                 <td>&nbsp;<b>已绑定推广账户</b></td>
                                 <td>&nbsp;<b>推广URL</b></td>
                                 <td>&nbsp;<b>Token</b></td>
+                                <td>&nbsp;<b>备注名(双击更改)</b></td>
                                 <td>&nbsp;<b>操作</b></td>
                             </tr>
                             </thead>
@@ -89,14 +90,43 @@
                                             class="fl">${i.baiduUserName}</b></td>
                                     <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
                                     <td>&nbsp;${i.token}</td>
+                                    <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}" style="border: none" remarkName="${i.baiduRemarkName}" value="${i.baiduRemarkName}" width="10px" readonly></td>
                                     <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}" data-userName="${currSystemUserName}" class="delBtn" style="cursor: pointer">删除</a></td>
                                 </tr>
 
                             </c:forEach>
                             <script type="application/javascript">
+                                $("#updateInput").dblclick(function(){
+                                    if($("#updateInput").attr("readonly")=="readonly"){
+                                        $("#updateInput").attr("style","border: none");
+                                        $("#updateInput").removeAttr("readonly");
+                                    }
+                                });
+                                $("#updateInput").blur(function(){
+                                    if($("#updateInput").attr("readonly") != "readonly"){
+                                        if($(this).val() != ""){
+                                            $.ajax({
+                                                url:"/configuration/acc/upBaiduName",
+                                                type:"GET",
+                                                dataType:"json",
+                                                data:{
+                                                    id:$(this).attr("data-baidu-id"),
+                                                    name:$(this).val()
+                                                }
+                                            })
+                                        }else{
+                                            $(this).val($(this).attr("remarkName"));
+//                                            alert("备注名不能为空！！")
+                                            AlertPrompt.show("备注名不能为空!")
+                                        }
+
+                                    }
+                                    $("#updateInput").attr("style","border: none");
+                                    $("#updateInput").attr("readonly","readonly");
+                                });
                                 $('.delBtn').click(function () {
-                                    var id = $('.delBtn').attr('data-id');
-                                    var userName = $('.delBtn').attr('data-userName');
+                                    var id = $(this).attr('data-id');
+                                    var userName = $(this).attr('data-userName');
                                     if(confirm("是否确定删除此帐号")){
                                         $.ajax({
                                             url: "/configuration/acc/deletebdUser",
@@ -108,10 +138,12 @@
                                             },
                                             success: function (datas) {
                                                 if (datas.status != null && datas.status == true) {
-                                                    alert("删除成功!请重新登陆你的帐号");
+//                                                    alert("删除成功!请重新登陆你的帐号");
+                                                    AlertPrompt.show("删除成功!请重新登陆你的帐号!")
                                                     window.location.reload(true);
                                                 } else {
-                                                    alert("删除失败!")
+//                                                    alert("删除失败!")
+                                                    AlertPrompt.show("删除失败!")
                                                 }
                                             }
                                         });
@@ -135,8 +167,9 @@
 </div>
 </div>
 <div class="TB_overlayBG"></div>
+<div class="TB_overlayBG_alert"></div>
 <div class="box" id="new_riginality" style="display:none; width:452px;">
-    <h2 id="new_riginality2">同步密码<a href="#" class="close">关闭</a></h2>
+    <h2 id="new_riginality2">同步密码<a href="#" class="close">×</a></h2>
     <div class="mainlist2 over"  style="width:452px;">
         <div class="mainlist">
             <ul>

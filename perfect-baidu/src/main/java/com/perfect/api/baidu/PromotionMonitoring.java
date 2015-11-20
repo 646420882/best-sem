@@ -19,7 +19,7 @@ public class PromotionMonitoring {
     private FolderService folderService;
 
     public PromotionMonitoring(String username, String passwd, String token) {
-        service = BaiduServiceSupport.getCommonService(username,passwd,token);
+        service = BaiduServiceSupport.getCommonService(username, passwd, token);
         init();
     }
 
@@ -63,7 +63,7 @@ public class PromotionMonitoring {
         request.setFolderIds(folderLong);
         //接收请求API后的数据
         GetMonitorWordByFolderIdResponse monitorword = folderService.getMonitorWordByFolderId(request);
-        List<FolderMonitor> folderMonitors=new ArrayList<>();
+        List<FolderMonitor> folderMonitors = new ArrayList<>();
         if (monitorword != null) {
             folderMonitors = monitorword.getFolderMonitors();
         }
@@ -75,7 +75,7 @@ public class PromotionMonitoring {
      *
      * @return
      */
-    public List<FolderMonitor> getMonitorWordByFolderId(List<Long> folderLong) {
+    public List<FolderMonitor> getMonitorWordByFolderIdAPI(List<Long> folderLong) {
         //创建监控对象请求
         GetMonitorWordByFolderIdRequest request = new GetMonitorWordByFolderIdRequest();
         request.setFolderIds(folderLong);
@@ -108,7 +108,7 @@ public class PromotionMonitoring {
      * @param folders
      * @return
      */
-    public List<Folder> updateFolder(List<Folder> folders) {
+    public List<Folder> updateFolderAPI(List<Folder> folders) {
         //创建监控对象请求
         UpdateFolderRequest request = new UpdateFolderRequest();
         request.setFolders(folders);
@@ -124,7 +124,7 @@ public class PromotionMonitoring {
      * @param monitors
      * @return
      */
-    public List<Monitor> addMonitorWord(List<Monitor> monitors) {
+    public List<Monitor> addMonitorWordAPI(List<Monitor> monitors) {
         //创建请求
         AddMonitorWordRequest addMonitorWordRequest = new AddMonitorWordRequest();
         addMonitorWordRequest.setMonitors(monitors);
@@ -136,9 +136,24 @@ public class PromotionMonitoring {
     }
 
 
-    public int deleteFolder(List<Long> folders) {
+    public void deleteFolderAPI(List<Long> folders) {
+        //创建请求
         DeleteFolderRequest request = new DeleteFolderRequest();
         request.setFolderIds(folders);
-        return -1;
+        //活取返回数据
+        DeleteFolderResponse deleteFolderResponse = folderService.deleteFolder(request);
+        //String response = deleteFolderResponse.getResponse();
+        //return -1;
+    }
+
+    public void deleteMonitorWordAPI(List<Long> monitorids){
+        //创建请求
+        DeleteMonitorWordRequest deleteMonitorWordRequest = new DeleteMonitorWordRequest();
+        deleteMonitorWordRequest.setMonitorIds(monitorids);
+        //活取返回数据
+        DeleteMonitorWordResponse deleteMonitorWordResponse = folderService.deleteMonitorWord(deleteMonitorWordRequest);
+        //String response = deleteMonitorWordResponse.getResponse();
+
+        //return -1;
     }
 }

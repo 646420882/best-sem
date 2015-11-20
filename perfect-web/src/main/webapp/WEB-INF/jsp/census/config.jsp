@@ -26,14 +26,17 @@
                 var _urlDesc=$("#urlDesc").val();
                 var _trSize=$("table tbody tr").length;
                 if(_trSize>=4){
-                    alert("目前只支持4个统计地址");
+//                    alert("目前只支持4个统计地址");
+                    AlertPrompt.show("目前只支持4个统计地址");
                     return;
                 }
                 if(_val==""){
-                    alert("请输入要统计的Url地址..");
+//                    alert("请输入要统计的Url地址..");
+                   AlertPrompt.show("请输入要统计的Url地址");
                     return;
                 }if(!IsURL(_val)){
-                    alert("请输入正确的Url地址");
+//                    alert("请输入正确的Url地址");
+                    AlertPrompt.show("请输入正确的Url地址");
                     return;
                 }
 
@@ -43,7 +46,8 @@
                         if(res.result=="1"){
                             loadGrid();
                         }if(res.result=="0"){
-                            alert("已经添加该Url地址了");
+//                            alert("已经添加该Url地址了");
+                            AlertPrompt.show("已经添加该Url地址了");
                         }
                     });
                 }
@@ -75,7 +79,8 @@
                     if(res.result=="1"){
                         $(str).parents("tr").remove();
                     }else{
-                        alert("删除失败");
+//                        alert("删除失败");
+                        AlertPrompt.show("删除失败");
                     }
                 });
             }

@@ -12,11 +12,13 @@ import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
+import com.perfect.dto.keyword.KeywordAggsDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
@@ -24,6 +26,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -37,6 +42,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
  * Created by baizz on 2014-07-07.
@@ -219,10 +226,41 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
+    public List<KeywordDTO> findAllByBaiduAccountId(Long baiduAccountId) {
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
+    }
+
+    @Override
+    public List<KeywordAggsDTO> findAllKeywordFromBaiduByAccountId(Long baiduAccountId) {
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("ls").is(null)),
+                project("kwid", "name", "agid")
+        ).withOptions(new AggregationOptions.Builder().allowDiskUse(true).build());
+
+        AggregationResults<KeywordAggsDTO> aggregationResults = getMongoTemplate().aggregate(aggregation, TBL_KEYWORD, KeywordAggsDTO.class);
+
+        return aggregationResults.getMappedResults();
+    }
+
+    @Override
+    public List<KeywordDTO> findAllKeywordFromBaiduByAdgroupId(Long baiduAccountId, Long adgroupId) {
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(
+                Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(ADGROUP_ID).is(adgroupId).and("ls").is(null)), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, getDTOClass());
+    }
+
+    @Override
     public Long keywordCount(List<Long> adgroupIds) {
         return getMongoTemplate().count(Query.query(
                         Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),
                 getEntityClass());
+    }
+
+    @Override
+    public List<KeywordDTO> findByAdgroupId(Long baiduAccountId, Long adgroupId) {
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and(ADGROUP_ID).is(adgroupId)), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
     }
 
     @Override
@@ -242,6 +280,12 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             return null;
         }
         return list.get(0);
+    }
+
+    @Override
+    public List<KeywordDTO> findLocalChangedKeywords(Long baiduAccountId, int type) {
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(new Query(Criteria.where("ls").is(type).and(ACCOUNT_ID).is(baiduAccountId)), getEntityClass());
+        return ObjectUtils.convert(keywordEntities, KeywordDTO.class);
     }
 
     @Override
@@ -327,7 +371,13 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo) {
+    public KeywordDTO findByLongId(Long oid) {
+        KeywordEntity entity = getMongoTemplate().findOne(Query.query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(oid)), getEntityClass());
+        return ObjectUtils.convert(entity, getDTOClass());
+    }
+
+    @Override
+    public PagerInfo findByPageInfoForAcctounId(int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         int totalCount = getListTotalCount(query);
@@ -338,6 +388,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
         p.setList(dtos);
@@ -349,7 +400,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForLongId(Long aid, int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).is(aid));
@@ -361,6 +412,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, KeywordDTO.class);
         p.setList(dtos);
@@ -368,7 +420,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForStringId(String aid, int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).is(aid));
@@ -380,6 +432,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
@@ -387,10 +440,10 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForLongIds(List<Long> longIds, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForLongIds(List<Long> adis, int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
-        query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(longIds));
+        query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adis));
         int totalCount = getListTotalCount(query);
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         query.skip(p.getFirstStation());
@@ -399,6 +452,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
@@ -406,10 +460,10 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public PagerInfo findByPageInfoForStringIds(List<String> stringIds, int pageSize, int pageNo) {
+    public PagerInfo findByPageInfoForStringIds(List<String> aids, int pageSize, int pageNo, SearchFilterParam sp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
-        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(stringIds));
+        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(aids));
         int totalCount = getListTotalCount(query);
         PagerInfo p = new PagerInfo(pageNo, pageSize, totalCount);
         query.skip(p.getFirstStation());
@@ -418,6 +472,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             p.setList(new ArrayList());
             return p;
         }
+        searchFilterQueryOperate(query, sp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         p.setList(dtos);
@@ -441,13 +496,18 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     public Iterable<KeywordDTO> save(Iterable<KeywordDTO> keywordDTOs) {
         List<KeywordDTO> dtoList = Lists.newArrayList(keywordDTOs);
         List<KeywordEntity> entityList = ObjectUtils.convert(dtoList, getEntityClass());
+        List<KeywordDTO> dtos = Lists.newArrayList();
         entityList.stream().forEach(s -> {
-            if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword())), getEntityClass())) {
+            if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword()).and(LOCALSTATUS).is(1)), getEntityClass())) {
                 getMongoTemplate().insert(s);
+            }else{
+                KeywordDTO keywordDTO = new KeywordBackUpDTO();
+                keywordDTO.setKeyword(s.getKeyword());
+                dtos.add(keywordDTO);
             }
         });
-        dtoList = ObjectUtils.convert(entityList, getDTOClass());
-        return dtoList;
+        //dtoList = ObjectUtils.convert(entityList, getDTOClass());
+        return dtos;
     }
 
 //    public void update(KeywordDTO keywordDTO) {
@@ -526,7 +586,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     public void update(KeywordDTO keywordDTO, KeywordDTO keywordBackUpDTO) {
         Long id = keywordDTO.getKeywordId();
         Query query = new Query();
-        query.addCriteria(Criteria.where(CREATIVE_ID).is(id));
+        query.addCriteria(Criteria.where(KEYWORD_ID).is(id));
         Update update = new Update();
         try {
             Class _class = keywordDTO.getClass();
@@ -547,8 +607,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             e.printStackTrace();
         }
         getMongoTemplate().updateFirst(query, update, getEntityClass());
-        KeywordBackUpDTO creativeBackUpDTOFind = keywordBackUpDAO.findByObjectId(keywordDTO.getId());
-        if (creativeBackUpDTOFind.getId() == null) {
+        KeywordBackUpDTO keywordBackUpDTOFind = keywordBackUpDAO.findByObjectId(keywordDTO.getId());
+        if (keywordBackUpDTOFind == null) {
             KeywordBackUpEntity backUpEntity = new KeywordBackUpEntity();
             BeanUtils.copyProperties(keywordBackUpDTO, backUpEntity);
             getMongoTemplate().insert(backUpEntity);
@@ -726,6 +786,52 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         return map;
     }
 
+    @Override
+    public List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(adgroupIds));
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
+        return dtos;
+    }
+
+    @Override
+    public List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds));
+        List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
+        List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
+        return dtos;
+    }
+
+    @Override
+    public void batchDelete(List<String> strings) {
+        strings.forEach(e -> {
+            if (e.length() < 24) {
+                Update update = new Update();
+                update.set("ls", 3);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(Long.valueOf(e))), update, getEntityClass());
+            } else {
+                getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
+            }
+        });
+    }
+
+    @Override
+    public List<KeywordDTO> vaildateKeywordByIds(List<String> keywordIds) {
+        List<KeywordDTO> returnList = null;
+        Query q = new Query();
+        q.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
+        q.addCriteria(Criteria.where(MongoEntityConstants.SYSTEM_ID).in(keywordIds));
+        List<KeywordEntity> keywordEntities = getMongoTemplate().find(q, getEntityClass());
+        if (keywordEntities.size() > 0)
+            returnList = convert(keywordEntities);
+
+        return returnList;
+    }
+
     /**
      * 根据mongodbID修改
      *
@@ -855,4 +961,105 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         getMongoTemplate().remove(query, getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
     }
 
+    private Query searchFilterQueryOperate(Query q, SearchFilterParam sp) {
+
+        if (sp != null) {
+            if (Objects.equals(sp.getFilterType(), "Keyword")) {
+
+                switch (sp.getFilterField()) {
+                    case "name":
+                        getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "state":
+                        if (sp.getFilterValue().contains(",")) {
+                            String[] status = sp.getFilterValue().split(",");
+                            Integer[] integers = new Integer[status.length];
+                            for (int i = 0; i < integers.length; i++) {
+                                integers[i] = Integer.parseInt(status[i]);
+                            }
+                            q.addCriteria(Criteria.where("s").in(integers));
+                        } else {
+                            q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
+                        }
+                        break;
+                    case "pause":
+                        if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                            if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                                q.addCriteria(Criteria.where("p").is(false));
+                            } else {
+                                q.addCriteria(Criteria.where("p").is(true));
+                            }
+                        }
+                        break;
+                    case "price":
+                        String[] prs = sp.getFilterValue().split(",");
+                        double starPrice = Double.parseDouble(prs[0]);
+                        double endPrice = Double.parseDouble(prs[1]);
+                        q.addCriteria(Criteria.where("pr").gt(starPrice).lt(endPrice));
+                        break;
+                    case "matchType":
+                        if (sp.getFilterValue().contains(",")) {
+                            List<Integer> matchType = new ArrayList<>();
+                            List<Integer> phraseType = new ArrayList<>();
+                            String[] ids = sp.getFilterValue().split(",");
+                            for (int i = 0; i < ids.length; i++) {
+                                if (ids[i].length() == 2) {
+                                    phraseType.add(Integer.valueOf(ids[i].substring(0, 1)));
+                                } else {
+                                    matchType.add(Integer.valueOf(ids[i]));
+                                }
+                            }
+                            if (matchType.size() > 0) {
+                                q.addCriteria(Criteria.where("mt").in(matchType));
+                            }
+                            if (phraseType.size() > 0)
+                                q.addCriteria(Criteria.where("pt").in(phraseType).and("mt").is(2));
+
+                        } else {
+                            if (sp.getFilterValue().length() == 1) {
+                                q.addCriteria(Criteria.where("mt").is(Integer.valueOf(sp.getFilterValue())));
+                            } else {
+                                q.addCriteria(Criteria.where("pt").is(Integer.valueOf(sp.getFilterValue().substring(0, 1))).and("mt").is(2));
+                            }
+                        }
+                        break;
+                    case "pcUrl":
+                        getNormalQuery(q, "pc", sp.getSelected(), sp.getFilterValue());
+                        break;
+                    case "mibUrl":
+                        getNormalQuery(q, "mobile", sp.getSelected(), sp.getFilterValue());
+                        break;
+                }
+                return q;
+            }
+        }
+        return q;
+    }
+
+    private void getNormalQuery(Query q, String field, Integer selected, String filterValue) {
+        switch (selected) {
+            case 1:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^.*?" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 11:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^(?!.*(" + filterValue + ")).*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 2:
+                q.addCriteria(Criteria.where(field).is(filterValue));
+                break;
+            case 22:
+                q.addCriteria(Criteria.where(field).ne(filterValue));
+                break;
+            case 3:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile("^" + filterValue + ".*$", Pattern.CASE_INSENSITIVE)));
+                break;
+            case 33:
+                q.addCriteria(Criteria.where(field).
+                        regex(Pattern.compile(".*" + filterValue + "$", Pattern.CASE_INSENSITIVE)));
+                break;
+        }
+    }
 }

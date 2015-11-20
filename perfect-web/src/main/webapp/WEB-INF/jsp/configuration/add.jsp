@@ -5,14 +5,15 @@
     <meta charset="utf-8">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
     <script type="text/javascript">
+
         var judeit =0;
        $(function () {
             var $ = function (ID) {
@@ -93,19 +94,23 @@
                                     setTimeout('location.href="/home"',2000)
                                     judeit =1;
                                 }else{
-                                    alert("请确认你的信息是否填写正确后重新提交！");
+//                                    alert("请确认你的信息是否填写正确后重新提交！");
+                                    AlertPrompt.show("请确认你的信息是否填写正确后重新提交!")
                                 }
                             }
                         });
                     }else{
                         if (pwd == null || pwd==undefined || pwd == "") {
-                            alert("密码不能为空！");
+//                            alert("密码不能为空！");
+                            AlertPrompt.show("密码不能为空!")
                             return false;
                         } else if (token == null || token==undefined || token == "") {
-                            alert("token不能为空!");
+//                            alert("token不能为空!");
+                            AlertPrompt.show("token不能为空!")
                             return false;
                         } else if (userName == null || userName==undefined || userName == "") {
-                            alert("用户名不能为空!");
+//                            alert("用户名不能为空!");
+                            AlertPrompt.show("用户名不能为空!")
                             return false;
                         }
                     }
@@ -202,10 +207,12 @@
                 return false;
             } else*/
             if (t == null) {
-                alert("token不能为空!");
+//                alert("token不能为空!");
+                AlertPrompt.show("token不能为空!")
                 return false;
             } else if (n == null) {
-                alert("用户名不能为空!");
+//                alert("用户名不能为空!");
+                AlertPrompt.show("用户名不能为空!")
                 return false;
             }
         })

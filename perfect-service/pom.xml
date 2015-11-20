@@ -6,13 +6,15 @@
     <parent>
         <groupId>com.perfect</groupId>
         <artifactId>perfect-parent</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2</version>
     </parent>
     <artifactId>perfect-service</artifactId>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <dependencies>
 
+        <!-- Module Dependencies -->
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-commons</artifactId>
@@ -57,6 +59,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
         <dependency>
@@ -85,13 +91,13 @@
         <dependency>
             <groupId>io.reactivex</groupId>
             <artifactId>rxjava</artifactId>
-            <version>1.0.13</version>
+            <version>1.0.14</version>
         </dependency>
 
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>1.6.1</version>
+            <version>1.7.2</version>
         </dependency>
 
         <dependency>
@@ -129,14 +135,14 @@
         </dependency>
 
 
-        <!-- message -->
+        <!-- Message -->
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>mailapi</artifactId>
         </dependency>
 
 
-        <!-- test -->
+        <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

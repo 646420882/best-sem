@@ -23,7 +23,7 @@ public interface BasisReportService {
      * @param start      开始数
      * @return
      */
-    public Map<String, List<StructureReportDTO>> getReportDate(String[] date, int devices, int dateType, int reportType, int start, int limit, String sort, Long dataId, String dateName);
+    Map<String, List<StructureReportDTO>> getReportDate(String[] date, int devices, int dateType, int reportType, int start, int limit, String sort, Long dataId, String dateName);
 
     /**
      * 获取用户所有数据
@@ -32,40 +32,7 @@ public interface BasisReportService {
      * @param fieldName
      * @return
      */
-    public Map<String, List<AccountReportDTO>> getAccountAll(int Sorted, String fieldName, int startJC, int limitJC);
-
-    /**
-     * 账户报告数据对比
-     *
-     * @param startDate  数据1 开始时间
-     * @param endDate    数据1 结束时间
-     * @param startDate1 数据2 开始时间
-     * @param endDate1   数据2 结束时间
-     * @param dateType   时间类型  默认：0  分日:1  分周：2 分月：3
-     * @param devices    推广设备 0、全部  1、PC端 2、移动端
-     * @param compare    是否需要数据比较 1、比较 0、不比较
-     * @return
-     */
-    public Map<String, List<Object>> getAccountDateVS(Date startDate, Date endDate, Date startDate1, Date endDate1, int dateType, int devices, int compare, String sortVS, int startVS, int limitVS);
-
-
-    /**
-     * 下载已生成的数据报告
-     *
-     * @param os
-     * @param redisKey   redisKey值
-     * @param reportTime 报告分为时间
-     * @param terminal   报告选择终端
-     */
-    public void downReportCSV(OutputStream os, String redisKey, int reportTime, int terminal, int reportType, String dateHead);
-
-    /**
-     * 下载已生成的账户数据报告
-     *
-     * @param os
-     */
-    public void downAccountReportCSV(OutputStream os, Date startDate, Date endDate, Date startDate1, Date endDate1, int dateType, int devices, String sortVS, int startVS, int limitVS);
-
+    Map<String, List<AccountReportDTO>> getAccountAll(int Sorted, String fieldName, int startJC, int limitJC);
 
 /*******************************************AIP***************************************************/
     /**
@@ -80,5 +47,5 @@ public interface BasisReportService {
      *                  PC  及getPc  Mobile 及 getMobile
      * @return
      */
-    public Map<String, List<StructureReportDTO>> getKeywordReport(Long[] id, String startDate, String endDate, int devices);
+    Map<String, List<StructureReportDTO>> getKeywordReport(Long[] id, String startDate, String endDate, int devices);
 }

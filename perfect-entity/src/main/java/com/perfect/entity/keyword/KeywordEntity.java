@@ -2,7 +2,9 @@
 /*This code was generated using the UMPLE 1.18.0.3036 modeling language!*/
 
 package com.perfect.entity.keyword;
-
+/**
+ *  推广助手关键词
+ */
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.entity.account.AccountIdEntity;
 import org.springframework.data.annotation.Id;
@@ -24,16 +26,16 @@ public class KeywordEntity extends AccountIdEntity implements Comparable<Keyword
     //KeywordType Attributes
     @Indexed(sparse = true)
     @Field(MongoEntityConstants.KEYWORD_ID)
-    private Long keywordId;
+    private Long keywordId;         //关键词ID
 
     @Field(MongoEntityConstants.ADGROUP_ID)
-    private Long adgroupId;
+    private Long adgroupId;         //百度单元ID
 
     @Field(MongoEntityConstants.OBJ_ADGROUP_ID)
-    private String adgroupObjId;
+    private String adgroupObjId;    //本地单元id
 
     @Field("name")
-    private String keyword;
+    private String keyword;     //关键词名称
 
     @Field("pr")
     private BigDecimal price;//出价
@@ -54,7 +56,7 @@ public class KeywordEntity extends AccountIdEntity implements Comparable<Keyword
     private Integer status;//关键词状态
 
     @Field("pt")
-    private Integer phraseType;//高级短语细分  匹配模式  注：
+    private Integer phraseType;//高级短语细分  匹配模式
 
     @Field("ls")
     private Integer localStatus;//关键词本地状态，1为新增，2为修改，3为删除（软删除），4为级联删除标识

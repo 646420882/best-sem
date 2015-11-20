@@ -37,7 +37,7 @@
 					}
 					if ($.isArray(arr)) {
 						$.each(arr, function(j, obj) {
-							var text = obj.text, htmlMenuLi = "", strTitle = "", rand = Math.random().toString().replace(".", "");
+							var text = obj.text, htmlMenuLi = "", strTitle = "", rand = Math.random().toString().replace(".", ""), img=obj.img||'';
 							if (text) {
 								if (text.length > params.textLimit) {
 									text = text.slice(0, params.textLimit)	+ "…";
@@ -45,11 +45,11 @@
 								}
 								if ($.isArray(obj.data) && obj.data.length) {
 									htmlMenuLi = '<li class="'+ clKey +'li" data-hover="true">' + htmlCreateMenu(obj.data) +
-										'<a href="javascript:" class="'+ clKey +'a"'+ strTitle +' data-key="'+ rand +'"><i class="'+ clKey +'triangle"></i>'+ text +'</a>' + 
+										'<a href="javascript:" class="'+ clKey +'a"'+ strTitle +' data-key="'+ rand +'"><span class="zs_top">'+'<img src="'+img+'">'+'</span>"<i class="'+ clKey +'triangle"></i>'+ text +'</a>' +
 									'</li>';
 								} else {
 									htmlMenuLi = '<li class="'+ clKey +'li">' +
-										'<a href="javascript:" class="'+ clKey +'a"'+ strTitle +' data-key="'+ rand +'">'+ text +'</a>' + 
+										'<a href="javascript:" class="'+ clKey +'a"'+ strTitle +' data-key="'+ rand +'"><span class="zs_top">'+'<img src="'+img+'">'+'</span>'+ text +'</a>' +
 									'</li>';
 								}
 								

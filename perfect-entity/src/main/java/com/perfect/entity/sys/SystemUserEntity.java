@@ -19,22 +19,22 @@ public class SystemUserEntity implements Serializable {
     private String id;
 
     @Indexed(unique = true)
-    private String userName;
+    private String userName;//用户名
 
-    private String password;
+    private String password;//密码
 
-    private String companyName;
+    private String companyName;//公司名
 
     private Integer state;      //审核状态: 1审核通过, 0审核未通过
 
     private Integer access;     //1.admin; 2.user
 
-    private byte[] img;
+    private byte[] img;//二进制头像图片
 
-    private String email;
+    private String email;//邮箱
 
     @Field(value = "bdAccounts")
-    private List<BaiduAccountInfoEntity> baiduAccounts;
+    private List<BaiduAccountInfoEntity> baiduAccounts;//百度账号列表
 
     //系统帐号状态: 1.启用  0.禁用
     @Field(value = "acstate")

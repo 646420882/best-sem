@@ -8,9 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by baizz on 2014-08-09.
+ * Created on 2014-08-09.
+ *
+ * @author dolphineor
+ * @update 2015-09-28
  */
 public interface KeywordGroupService {
+
+    String KR_FIELD_ID = "krFileId";
+    String RESULT_TOTAL = "total";
+    String LEXICON_TRADE = "tr";
+    String LEXICON_CATEGORY = "cg";
+    String LEXICON_GROUP = "gr";
+
 
     /**
      * <br>-----------------------</br>
@@ -41,22 +51,24 @@ public interface KeywordGroupService {
      * 从系统词库获取关键词
      *
      * @param trade
-     * @param category
+     * @param categories
+     * @param groups
      * @param skip
      * @param limit
      * @param status
      * @return
      */
-    Map<String, Object> getKeywordFromSystem(String trade, String category, int skip, int limit, int status);
+    Map<String, Object> getKeywordFromSystem(String trade, List<String> categories, List<String> groups, int skip, int limit, int status);
 
     /**
      * CSV文件下载
      *
      * @param trade
-     * @param category
+     * @param categories
+     * @param groups
      * @param os
      */
-    void downloadCSV(String trade, String category, OutputStream os);
+    void downloadCSV(String trade, List<String> categories, List<String> groups, OutputStream os);
 
     /**
      * 凤巢CSV文件下载
@@ -74,6 +86,15 @@ public interface KeywordGroupService {
      * @return
      */
     Map<String, Object> findCategories(String trade);
+
+
+    /**
+     * 查询某个类别下具体的关键词信息
+     *
+     * @param categories
+     * @return
+     */
+    Map<String, Object> findKeywordByCategories(List<String> categories);
 
     /**
      * save
@@ -123,14 +144,16 @@ public interface KeywordGroupService {
 
     /**
      * 根据行业，关键词删除一条数据
+     *
      * @param trade
      * @param keyword
      */
-    void deleteByParams(String trade,String keyword);
+    void deleteByParams(String trade, String keyword);
 
     /**
      * 根据一些参数修改
+     *
      * @param mapParams
      */
-    void updateByParams(Map<String,Object> mapParams);
+    void updateByParams(Map<String, Object> mapParams);
 }

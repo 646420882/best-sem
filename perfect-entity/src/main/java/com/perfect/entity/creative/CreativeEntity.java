@@ -10,6 +10,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+/**
+ * @description 创意实体类
+ */
 @Document(collection = MongoEntityConstants.TBL_CREATIVE)
 public class CreativeEntity extends AccountIdEntity {
     //CreativeType Attributes
@@ -18,53 +21,53 @@ public class CreativeEntity extends AccountIdEntity {
 
     @Indexed(sparse = true)
     @Field(MongoEntityConstants.CREATIVE_ID)
-    private Long creativeId;
+    private Long creativeId;                                // 创意ID
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
     @Field(MongoEntityConstants.ADGROUP_ID)
-    private Long adgroupId;
+    private Long adgroupId;                                 // 百度推广单元ID
 
 
     @Field(MongoEntityConstants.OBJ_ADGROUP_ID)
-    private String adgroupObjId;
+    private String adgroupObjId;                            // 本地操作推广单元ID
 
     @Field("t")
-    private String title;
+    private String title;                                   // 创意标题
 
     @Field("desc1")
-    private String description1;
+    private String description1;                            // 创意描述一
 
     @Field("desc2")
-    private String description2;
+    private String description2;                            // 创意描述二
 
     @Field("pc")
-    private String pcDestinationUrl;
+    private String pcDestinationUrl;                        // PC目标URL
 
     @Field("pcd")
-    private String pcDisplayUrl;
+    private String pcDisplayUrl;                            // PC显示URL
 
     @Field("m")
-    private String mobileDestinationUrl;
+    private String mobileDestinationUrl;                    // 移动目标URL
 
     @Field("md")
-    private String mobileDisplayUrl;
+    private String mobileDisplayUrl;                        // 移动显示URL
 
     @Field("p")
-    private Boolean pause;
+    private Boolean pause;                                  // 暂停/启动 创意
 
     @Field("s")
-    private Integer status;
+    private Integer status;                                 // 创意状态
 
     @Field("d")
-    private Integer devicePreference;
+    private Integer devicePreference;                       // 设备偏好: 0->整合型, 1->移动设备优先
 
     @Field("ls")
-    private Integer localStatus;//本地状态1为新增,2为修改,3为删除,4为级联删除标识
+    private Integer localStatus;                            //本地状态1为新增,2为修改,3为删除,4为级联删除标识
 
     @Field("k")
-    private String key;
+    private String key;                                     //关键词百度ID(提供慧眼使用)
 
     public String getAdgroupObjId() {
         return adgroupObjId;

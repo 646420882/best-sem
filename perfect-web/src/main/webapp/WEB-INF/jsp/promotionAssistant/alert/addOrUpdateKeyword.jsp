@@ -10,11 +10,16 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/style.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/zTreeStyle/zTreeStyle.css">
     <style type="text/css">
+        h1, h2, h3 {
+            margin: 0px;
+        }
 
         .list4 table {
             border: 1px solid #eaf0f3;
@@ -51,12 +56,14 @@
         .list2 table .list2_top td, th {
             color: #333;
         }
+
+
     </style>
 </head>
 <body>
 <div id="background" class="background hides"></div>
 <div id="progressBar" class="progressBar hides">数据处理中，请稍等...</div>
-<div style="background-color: #f3f5fd; width: 900px; height: 900px">
+<div style="background-color: #f8f8f8; width:900px;height:900px;">
     <div class="addplan_top over">
         <ul id="tabUl">
             <li class="current">1、输入内容</li>
@@ -70,8 +77,10 @@
 
                 <div class="newkeyeord_title over">
                     <ul class="over">
-                        <li><input type="radio" checked="checked" name="Target" class="current">选择推广计划、推广单元</li>
-                        <%-- <li><input type="radio"  name="Target" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</li>--%>
+                        <li><label for="Target"><input type="radio" checked="checked" name="Target" id="Target"
+                                                       class="current">选择推广计划、推广单元</label></li>
+                        <li><label for="Targets"><input type="radio" name="Target" id="Targets" class="current">输入信息包含推广计划名称（第一项）、推广单元名称（第二项）</label>
+                        </li>
                     </ul>
                     <div class="newkeyword_content over">
                         <div class="containers2 over">
@@ -99,15 +108,15 @@
 
                                     <p id="pError"><span><span id="checkedNodes">0</span>x<span
                                             id="column">0</span>=<span
-                                            id="totalStr"></span>/<span id="maxLength">5000</span></span>
+                                            id="totalStr"></span>/<span id="maxLength">10000</span></span>
                                     </p>
 
-                                    <p><input type="checkbox" id="isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容&nbsp;<span
+                                    <p><label for="isReplace"><input type="checkbox" id="isReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</label>&nbsp;<span
                                             style="color:red;">您的域名:&nbsp;</span><span
                                             id="doMain"></span></p>
                                     <%-- <p><input type="checkbox">&nbsp;用输入的关键词搜索更多相关关键词，把握题词质量</p>--%>
                                 </div>
-                                <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
+                                <div class="main_bottom" style="margin:0px; background:none;">
                                     <div class="w_list03">
                                         <ul>
                                             <li class="current" id="downloadAccount">下一步</li>
@@ -122,19 +131,31 @@
                             <div class="newkeyword_right fr over" style="width:100%;">
                                 <h3> 输入关键词 </h3>
 
-                                <p>请输入关键词信息（每行一个），并用Tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
+                                <p>请输入关键词信息（每行一个），并用tab键或逗号（英文）分隔各字段，也可直接从Excel复制并粘贴</p>
 
                                 <div class="newkeyword_right_mid">
-                                    <p>格式：关键词名称（必填），匹配模式，出价（为0则使用推广单元出价），访问URL，移动访问URL，启用/暂停</p>
+                                    <p>格式：计划，单元，创意标题，描述1，描述2，启用/暂停</p>
 
-                                    <p>例如：鲜花，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
-                                    <textarea></textarea>
+                                    <p>例如：t，精确，1.0，www.com.perfect.api.baidu.com,www.com.perfect.api.baidu.com,启用</p>
+                                    <textarea id="specialText" onkeyup="getColumn(this)"></textarea>
 
-                                    <p>或者从相同格式的csv文件输入：<input type="button" class="zs_input2" value="选择文件">&nbsp;(<20万行)
+                                    <p><span class="fl">或者从相同格式的csv文件上传：</span><input type="file" class="fl"
+                                                                                      name="fileName" id="suFile">&nbsp;<span
+                                            class="fl">(<20万行)</span> <span id="sError" class="fr">
+                                    <span id="nowColumn">0</span> /  <span id="sMaxColumns">5000</span>
+                                </span></p>
+
+                                    <p><label for="csvReplace"><input type="checkbox" id="csvReplace">&nbsp;用这些关键词替换目标推广单元的所有对应内容</label>
                                     </p>
 
-                                    <p><input type="checkbox">&nbsp;用这些关键词替换目标推广单元的所有对应内容</p>
-
+                                </div>
+                                <div class="main_bottom" style="margin:0px;  background:none;">
+                                    <div class="w_list03">
+                                        <ul>
+                                            <li class="current" onclick="specialUpload()">下一步</li>
+                                            <li class="close" onclick="closeDialog()">取消</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -151,53 +172,179 @@
                 <div class="assembly_right3 over">
                     <div class="newkeword_end">
                         <div style="width:99%;height: 400px;background:#fff;overflow: auto; font-size:12px; border: 1px solid #dadadd;">
-                            <p><span style="font-weight: bold; line-height:30px;padding:10px;">新增的关键字：<span
-                                    id="criSize">0</span></span></p>
-                            <table border="0" cellspacing="0" width="100%" id="createTable"
-                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
-                                <thead>
-                                <tr class="list02_top">
-                                    <th>&nbsp;计划名称</th>
-                                    <th>&nbsp;单元名称</th>
-                                    <th>&nbsp;关键字名称</th>
-                                    <th>&nbsp;匹配模式</th>
-                                    <th>&nbsp;出价</th>
-                                    <th>&nbsp;访问url</th>
-                                    <th>&nbsp;移动访问url</th>
-                                    <th>&nbsp;启用/暂停</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbodyClick2">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="main_bottom" style="margin:0px; padding-left:30%; background:none;">
-                        <div class="w_list03">
-                            <ul>
-                                <li class="current lastStep">上一步</li>
-                                <li id="finish">完成</li>
-                                <%--<li class="close">取消</li>--%>
-                            </ul>
-                        </div>
-                    </div>
 
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <span class="mycollapse">[ - ] </span><span
+                                                    style="font-weight: bold; line-height:30px;padding:10px;">新增的关键字：<span
+                                                    id="criSize">0</span></span>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
+                                         aria-labelledby="headingOne">
+                                        <div class="panel-body">
+                                            <p><label for="insertRadio"><input type="radio" name="insertRadio"
+                                                                               id="insertRadio" value="1"
+                                                                               checked="checked">添加这些关键词</label>
+                                            </p>
+
+                                            <p><label for="insertRadios"><input type="radio" name="insertRadio"
+                                                                                id="insertRadios"
+                                                                                value="0">不添加这些关键词</label></p>
+                                            <table border="0" cellspacing="0" width="100%" id="createTable"
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                <thead>
+                                                <tr class="list02_top">
+                                                    <th>&nbsp;计划名称</th>
+                                                    <th>&nbsp;单元名称</th>
+                                                    <th>&nbsp;关键字名称</th>
+                                                    <th>&nbsp;匹配模式</th>
+                                                    <th>&nbsp;出价</th>
+                                                    <th>&nbsp;访问url</th>
+                                                    <th>&nbsp;移动访问url</th>
+                                                    <th>&nbsp;启用/暂停</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tbodyClick2">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse"
+                                               data-parent="#accordion_2" href="#collapseTwo" aria-expanded="false"
+                                               aria-controls="collapseTwo">
+                                                <span class="mycollapse">[ + ] </span> <span
+                                                    style="font-weight: bold; line-height:30px;padding:10px;">忽略的关键词(本地已存在的关键词)：<span
+                                                    id="existCount">0</span></span>
+                                                <span>错误输入的关键词：</span><span id="sepakError"></span>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel"
+                                         aria-labelledby="headingTwo">
+                                        <div class="panel-body">
+                                            <%--<p><input type="radio" name="hasRadio" checked="checked">更新这些关键词</p>--%>
+
+                                            <%--<p><input type="radio" name="hasRadio">不更新这些关键词</p>--%>
+                                            <table border="0" cellspacing="0" width="100%"
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                <thead>
+                                                <tr class="list02_top">
+                                                    <th>&nbsp;计划名称</th>
+                                                    <th>&nbsp;单元名称</th>
+                                                    <th>&nbsp;关键字名称</th>
+                                                    <th>&nbsp;匹配模式</th>
+                                                    <th>&nbsp;出价</th>
+                                                    <th>&nbsp;访问url</th>
+                                                    <th>&nbsp;移动访问url</th>
+                                                    <th>&nbsp;启用/暂停</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="existKeyword">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="progress_box">
+                <span>完成数据验证</span>
+
+                <div class="progress" style="width:300px;">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                         aria-valuemax="100" style="width: 60%;">
+                        60%
+                    </div>
+                </div>
+            </div>
+
+            <div class="main_bottom" style="margin:0px;background:none;">
+                <div class="w_list03">
+                    <ul>
+                        <li class="current lastStep" onclick="csvPrev()">上一步</li>
+                        <li id="finish">完成</li>
+                        <%--<li class="close">取消</li>--%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%--alert提示类--%>
+    <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="addOrUpdateKeyWordAlertPrompt">
+        <h2 id="addOrUpdateKeyWordAlertPromptTitle">
+            <span class="fl alert_span_title" id="addOrUpdateKeyWordAlertPrompt_title"></span>
+            <%--<a href="#" class="close">×</a></h2>--%>
+            <%--<a href="#" onclick="addOrUpdateKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
+        </h2>
+
+        <div class="mainlist">
+            <div class="w_list03">
+                <ul class="zs_set">
+                    <li class="current" onclick="addOrUpdateKeyWordAlertPrompt.hide()">确认</li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/ajaxFileUpload.js"></script>
 <script type="text/javascript">
+    /*智能竞价中的alert提示*/
+    var addOrUpdateKeyWordAlertPrompt = {
+        show: function (content) {
+            $(".TB_overlayBG_alert").css({
+                display: "block", height: $(document).height()
+            });
+            /*蒙版显示*/
+            $("#addOrUpdateKeyWordAlertPrompt").css({
+                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                display: "block"
+            });
+            /*显示提示DIV*/
+            $("#addOrUpdateKeyWordAlertPrompt_title").html(content);
+        },
+        hide: function () {
+            $(".TB_overlayBG_alert").css({
+                display: "none"
+            });
+            /*蒙版显示*/
+            $("#addOrUpdateKeyWordAlertPrompt").css({
+                display: "none"
+            });
+            /*显示提示DIV*/
+        }
+    }
+    var selected_index = 0;
     $(function () {
+        rDrag.init(document.getElementById('addOrUpdateKeyWordAlertPromptTitle'));
         var $tab_li = $('.newkeyeord_title ul li input');
         $('.newkeyeord_title ul li input').click(function () {
             $(this).addClass('current').siblings().removeClass('current');
             var index = $tab_li.index(this);
+            selected_index = index;
             $('div.newkeyword_content > div').eq(index).show().siblings().hide();
         });
         $(".newkeyword_add").click(function () {
@@ -230,6 +377,18 @@
             $("#checkAll2").prop("checked", $subbox2.length == $("input[name='subbox2']:checked").length ? true : false);
         });
 
+        $('#accordion').on('show.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[ + ]</span>")
+        })
+        $('#accordion').on('hide.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[-]</span>")
+        })
+        $('#accordion_2').on('show.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[ + ]</span>")
+        })
+        $('#accordion_2').on('hide.bs.collapse', function () {
+            $(this).find(".mycollapse").html("<span>[-]</span>")
+        })
 
     });
 </script>
@@ -314,11 +473,16 @@
             }
         },
         callback: {
+            onClick: onClick,
             onCheck: onCheck
         }
     };
 
-
+    function onClick(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        zTree.checkNode(treeNode, !treeNode.checked, null, true);
+        return false;
+    }
     function onCheck(e, treeId, treeNode) {
         count();
         var v = getSelectedNodeToString();
@@ -378,7 +542,8 @@
         var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
                 nodes = zTree.getSelectedNodes();
         if (nodes.length == 0) {
-            alert("请至少选择一个节点");
+//            alert("请至少选择一个节点");
+            addOrUpdateKeyWordAlertPrompt.show("请至少选择一个节点");
             return;
         }
         zTree.hideNodes(nodes);
@@ -460,63 +625,72 @@
                 var pc = txtSize[j].split(",")[3] != undefined ? txtSize[j].split(",")[3] : "";
                 var mib = txtSize[j].split(",")[4] != undefined ? txtSize[j].split(",")[4] : "";
                 if (parseInt(getChar(kwd)) > 30 || parseInt(getChar(kwd)) < 1) {
-                    alert("第" + (j + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
+//                    alert("第" + (j + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
+                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
                     return;
-                }else{
-
                 }
                 // /^-?\d+\.?\d*$/
                 if (!/^-?\d+\.?\d*$/.test(pr)) {
-                    alert("第" + (j + 1) + "行的\"出价\"小数输入不正确!");
+//                    alert("第" + (j + 1) + "行的\"出价\"小数输入不正确!");
+                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"出价\"小数输入不正确!");
                     return;
                 } else {
                     if (parseFloat(pr).toFixed(3) >= 999.9) {
-                        alert("第" + (j + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
+//                        alert("第" + (j + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
+                        addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
                         return;
                     }
                 }
                 if (pc != "") {
                     if (pc != "空") {
                         if (parseInt(getChar(pc)) > 1024) {
-                            alert("访问Url不能超过1024个字符");
+//                            alert("访问Url不能超过1024个字符");
+                            addOrUpdateKeyWordAlertPrompt.show("访问Url不能超过1024个字符");
                             return;
                         } else {
                             if ((pc.indexOf(dm) == -1)) {
-                                alert("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+//                                alert("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                                addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                                 return;
                             }
-//                            else {
-//                                if (pc.substr(pc.indexOf(dm)) != dm) {
+                            else {
+                                if (pc.substr(pc.indexOf(dm)) != dm) {
 //                                    alert("第" + (j + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-//                                    return false;
-//                                }
-//                            }
+                                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                    return false;
+                                }
+                            }
                         }
                     }
                 } else {
-                    alert("第" + (j + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
+//                    alert("第" + (j + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
+                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
                     return;
                 }
                 if (mib != "") {
                     if (mib != "空") {
                         if (parseInt(getChar(mib)) > 1024) {
-                            alert("访问Url不能超过1024个字符");
+//                            alert("访问Url不能超过1024个字符");
+                            addOrUpdateKeyWordAlertPrompt.show("访问Url不能超过1024个字符");
                             return;
                         } else {
                             if ((mib.indexOf(dm) == -1)) {
-                                alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+//                                alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                                addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                                 return;
                             }
-//                            else {
-//                                if (mib.substr(mib.indexOf(dm)) != dm) {
+                            else {
+                                if (mib.substr(mib.indexOf(dm)) != dm) {
 //                                    alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
-//                                    return false;
-//                                }
-//                            }
+                                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                    return false;
+                                }
+                            }
                         }
                     }
                 } else {
-                    alert("第" + (j + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
+//                    alert("第" + (j + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
+                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
                     return;
                 }
             }
@@ -551,7 +725,8 @@
                 }
             }
         } else {
-            alert("请选择某单元或者填写正确的关键词数据！");
+//            alert("请选择某单元或者填写正确的关键词数据！");
+            addOrUpdateKeyWordAlertPrompt.show("请选择某单元或者填写正确的关键词数据！");
         }
     }
     function overStep(isReplace) {
@@ -626,6 +801,7 @@
             pauses = pauses.slice(0, -1);
             $.post("../assistantKeyword/batchAddOrUpdate",
                     {
+                        index: selected_index,
                         isReplace: isReplace,
                         cids: cids,
                         aids: aids,
@@ -639,15 +815,17 @@
                     },
                     function (rs) {
                         if (rs == "1") {
-                            alert("操作成功!");
+//                            alert("操作成功!");
+                            addOrUpdateKeyWordAlertPrompt.show("操作成功!");
                         } else {
-                            alert("添加失败!");
+//                            alert("添加失败!");
+                            addOrUpdateKeyWordAlertPrompt.show("添加失败!");
                         }
                         top.dialog.getCurrent().close().remove();
                     });
         }
     }
-    function closeDialog(){
+    function closeDialog() {
         top.dialog.getCurrent().close().remove();
     }
 
@@ -736,7 +914,6 @@
                     } else if (list[i].object.phraseType == 3) {
                         matchType = matchType + "-核心包含";
                     }
-                    ;
                     break;
                 case 3:
                     matchType = "广泛";
@@ -810,9 +987,17 @@
      *完成按钮的事件
      */
     $("#finish").click(function () {
-
-        var isReplace = $("#isReplace")[0].checked;
-        overStep(isReplace);
+        var dis = $(this).attr("disable");
+        if (dis == "disable") {
+            return;
+        }
+        if (selected_index == 0) {
+            var isReplace = $("#isReplace")[0].checked;
+            overStep(isReplace);
+        } else {
+            var isReplace = $("#csvReplace")[0].checked;
+            overStep(isReplace);
+        }
 
 //    if (isReplace == true) {
 //        var isOk = window.confirm("该次操作会将已选定单元下的所有关键词替换，确定要继续?");
@@ -851,14 +1036,14 @@
 
 
     //loading
-    var ajaxbg = $("#background,#progressBar");
-    ajaxbg.hide();
-    $(document).ajaxStart(function () {
-        ajaxbg.show();
-    });
-    $(document).ajaxStop(function () {
-        ajaxbg.fadeOut(1000);
-    });
+    //    var ajaxbg = $("#background,#progressBar");
+    //    ajaxbg.hide();
+    //    $(document).ajaxStart(function () {
+    //        ajaxbg.show();
+    //    });
+    //    $(document).ajaxStop(function () {
+    //        ajaxbg.fadeOut(1000);
+    //    });
 
     /**
      获取文本框中数据的行数*
@@ -866,12 +1051,23 @@
      */
     function getColumn(rs) {
         var _this = $(rs);
+        var id = _this.attr("id");
+        var column_id = "checkedNodes";
+        if (id == "specialText") {
+            column_id = "nowColumn";
+        } else {
+            column_id = "checkedNodes";
+        }
         if (_this.val() != "") {
             var column = _this.val().trim().split("\n");
-            $("#checkedNodes").html(column.length);
-            focuspError();
+            $("#" + column_id).html(column.length);
+            if (id == "specialText") {
+                specialError();
+            } else {
+                focuspError();
+            }
         } else {
-            $("#checkedNodes").html(0);
+            $("#" + column_id).html(0);
         }
     }
     /**
@@ -887,6 +1083,381 @@
             $("#pError").css("color", "black");
         }
     }
+    function specialError() {
+        var plans = parseInt($("#nowColumn").html());
+        if (plans > 10000) {
+            $("#sError").css("color", "red");
+        } else {
+            $("#sError").css("color", "black");
+        }
+    }
+
+
+    function specialUpload() {
+        var suText = $("#specialText").val();
+        if (suText) {
+            getSpecialText(suText);
+        } else {
+            var suFile = $("#suFile");
+            var fileName = suFile.val();
+            if (fileName) {
+                uploadFile();
+            } else {
+//                alert("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
+                addOrUpdateKeyWordAlertPrompt.show("请输入要添加的关键词或者要上传的csv文件！");
+            }
+        }
+
+    }
+    //    test test 鲜花 精确 1.2 http://www.perfect-cn.cn http://www.perfect-cn.cn 启用
+    //    test,test,鲜花,精确,1.2,http://www.perfect-cn.cn,http://www.perfect-cn.cn,启用
+    function getSpecialText(text) {
+        var textArea = text.split("\n");
+        validateKeyword(textArea);
+    }
+    function validateKeyword(textArea) {
+        var dm = "." + $("#doMain").html();
+        for (var i = 0; i < textArea.length; i++) {
+            var splitType = "\t";
+            if (textArea[i].indexOf(",") > 0) {
+                splitType = ",";
+            }
+            var t = textArea[i].split(splitType);
+            var campaignName = t[0] ? t[0] : "";
+            var adgroupName = t[1] ? t[1] : "";
+            var kwd = t[2] ? t[2] : "";
+            var matchType = t[3] ? t[3] : "";
+            var price = t[4] ? t[4] : "";
+            var pc = t[5] ? t[5] : "";
+            var mib = t[6] ? t[6] : "";
+            // vaildateKeyword info start
+            if (!campaignName) {
+//                alert("第" + (i + 1) + "行请输入计划名称!");
+                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行请输入计划名称!");
+                return;
+            }
+            if (!adgroupName) {
+//                alert("第" + (i + 1) + "行请输入单元名称!");
+                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行请输入单元名称!");
+                return;
+            }
+            if (parseInt(getChar(kwd)) > 30 || parseInt(getChar(kwd)) < 1) {
+//                alert("第" + (i + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
+                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
+                return;
+            }
+            if (!matchType) {
+//                alert("请输入匹配模式！")
+                addOrUpdateKeyWordAlertPrompt.show("请输入匹配模式！")
+                return;
+            }
+            if (!/^-?\d+\.?\d*$/.test(price)) {
+//                alert("第" + (i + 1) + "行的\"出价\"小数输入不正确!");
+                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"出价\"小数输入不正确!");
+                return;
+            } else {
+                if (parseFloat(price).toFixed(3) >= 999.9) {
+//                    alert("第" + (i + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
+                    addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
+                    return;
+                }
+            }
+
+            if (pc != "") {
+                if (pc != "空") {
+                    if (parseInt(getChar(pc)) > 1024) {
+//                        alert("访问Url不能超过1024个字符");
+                        addOrUpdateKeyWordAlertPrompt.show("访问Url不能超过1024个字符");
+                        return;
+                    } else {
+                        if ((pc.indexOf(dm) == -1)) {
+//                            alert("第" + (i + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            return;
+                        }
+                        else {
+                            if (pc.substr(pc.indexOf(dm)) != dm) {
+//                                alert("第" + (i + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                return false;
+                            }
+                        }
+                    }
+                }
+            } else {
+//                alert("第" + (i + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
+                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
+                return;
+            }
+
+            if (mib != "") {
+                if (mib != "空") {
+                    if (parseInt(getChar(mib)) > 1024) {
+//                        alert("访问Url不能超过1024个字符");
+                        addOrUpdateKeyWordAlertPrompt.show("访问Url不能超过1024个字符");
+                        return;
+                    } else {
+                        if ((mib.indexOf(dm) == -1)) {
+//                            alert("第" + (i + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            return;
+                        }
+                        else {
+                            if (mib.substr(mib.indexOf(dm)) != dm) {
+//                                alert("第" + (i + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                return false;
+                            }
+                        }
+                    }
+                }
+            } else {
+//                alert("第" + (i + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
+                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
+                return;
+            }
+        }
+        // vaildateKeyword info end
+
+        //vaildateKeyword count start
+
+
+        if ($("#sError").attr("style") == "color: red;") {
+//            alert("网页中最多只支持上传10000行关键词，如果需要更多上传，请选择csv导入!");
+            addOrUpdateKeyWordAlertPrompt.show("网页中最多只支持上传10000行关键词，如果需要更多上传，请选择csv导入!");
+            return;
+        }
+
+
+//        鲜花6,精确,1,http://www.perfect-cn.cn,http://www.perfect-cn.cn,启用
+
+        //添加到预览关键字添加页面
+        $("#tabUl li:eq(1)").addClass("current");
+        $("#inputDwdInfo").hide();
+        $("#validateDiv").show();
+        $("#criSize").html(textArea.length);
+        var _createTable = $("#createTable tbody");
+        _createTable.empty();
+        var _trClass = "";
+        for (var j = 0; j < textArea.length; j++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+            var campaginName = textArea[j].split("\t")[0] ? textArea[j].split("\t")[0] : "";
+            var adgroupName = textArea[j].split("\t")[1] ? textArea[j].split("\t")[1] : "";
+            var keywordName = textArea[j].split("\t")[2] ? textArea[j].split("\t")[2] : "";
+            var matchType = textArea[j].split("\t")[3] ? textArea[j].split("\t")[3] : "";
+            var price = textArea[j].split("\t")[4] ? textArea[j].split("\t")[4] : "";
+            var pcUrl = textArea[j].split("\t")[5] ? textArea[j].split("\t")[5] : "";
+            var pcsUrl = textArea[j].split("\t")[6] ? textArea[j].split("\t")[6] : "";
+            var c7 = textArea[j].split("\t")[7] ? textArea[j].split("\t")[7] : "";
+            var pause = c7 == "启用" ? "启用" : "暂停";
+            var _tbody = "<tr class='" + _trClass + "'>" +
+                    "<td>" + campaginName + "<input type='hidden' value=" + campaginName + "></td>" +
+                    "<td>" + campaginName + "<input type='hidden' value=" + adgroupName + "></td>" +
+                    "<td>" + keywordName + "</td>" +
+                    "<td>" + matchType + "</td>" +
+                    "<td>" + price + "</td>" +
+                    "<td>" + pcUrl + "</td>" +
+                    "<td>" + pcsUrl + "</td>" +
+                    "<td>" + pause + "</td>" +
+                    "</tr>";
+            _createTable.append(_tbody);
+        }
+        vaildateKeyword();
+    }
+    function vaildateKeyword() {
+        var isReplace = $("#csvReplace")[0].checked;
+        var _table = $("#createTable tbody");
+        var trs = _table.find("tr");
+        var cids = "";
+        var aids = "";
+        var kwds = "";
+        var mts = "";
+        var pts = "";
+        var prices = "";
+        var pcs = "";
+        var mibs = "";
+        var pauses = "";
+        $(trs).each(function (i, o) {
+            var _tr = $(o);
+            cids = cids + _tr.find("td:eq(0) input").val() + "\n";
+            aids = aids + _tr.find("td:eq(1) input").val() + "\n";
+            kwds = kwds + _tr.find("td:eq(2)").html() + "\n";
+            var starMatchType = _tr.find("td:eq(3)").html();
+            var phraseType = "1";
+            var matchType = "";
+            if (starMatchType.indexOf("短语-") > -1) {
+                matchType = 2;//如果输入短语-xx，必定匹配模式是2
+                switch (starMatchType.split("-")[1]) {
+                    case "同义":
+                        phraseType = 1;
+                        break;
+                    case "精确":
+                        phraseType = 2;
+                        break;
+                    case "核心":
+                        phraseType = 3;
+                        break;
+                    default :
+                        phraseType = 1;
+                        break;
+                }
+            } else {
+                matchType = until.getMatchTypeNumByName(starMatchType);
+            }
+            mts = mts + matchType + "\n";
+            pts = pts + phraseType + "\n";
+            var money = _tr.find("td:eq(4)").html();
+            if (/^-?\d+\.?\d*$/.test(money)) {
+                prices = prices + money + "\n";
+            } else {
+                prices = prices + "0.0" + "\n";
+            }
+            pcs = pcs + _tr.find("td:eq(5)").html() + "\n";
+            mibs = mibs + _tr.find("td:eq(6)").html() + "\n";
+            var pause = _tr.find("td:eq(7)").html();
+            var pause_ToF = pause != "启用" ? false : true;
+            pauses = pauses + pause_ToF + "\n";
+        });
+        cids = cids.slice(0, -1);
+        aids = aids.slice(0, -1);
+        kwds = kwds.slice(0, -1);
+        mts = mts.slice(0, -1);
+        pts = pts.slice(0, -1);
+        prices = prices.slice(0, -1);
+        pcs = pcs.slice(0, -1);
+        mibs = mibs.slice(0, -1);
+        pauses = pauses.slice(0, -1);
+        var data = {
+            index: selected_index,
+            isReplace: isReplace,
+            cids: cids,
+            aids: aids,
+            kwds: kwds,
+            mts: mts,
+            pts: pts,
+            prices: prices,
+            pcs: pcs,
+            mibs: mibs,
+            pauses: pauses
+        }
+
+        $.post("../assistantKeyword/vaildateKeyword", data, function (res) {
+            var errorbody = $("#existKeyword");
+            var safeTbody = $("#createTable tbody");
+            safeTbody.empty()
+            var result = $.parseJSON(res);
+            if (result.endGetCount) {
+                $("#sepakError").html(result.endGetCount);
+            }
+            if (result.safeKeywordList.length) {
+                var json = result.safeKeywordList;
+                $("#criSize").html(result.safeKeywordList.length);
+                renderSelfTableData(json, safeTbody);
+            }
+
+            if (result.dbExistKeywordList) {
+                if (result.dbExistKeywordList.length) {
+                    var json = result.dbExistKeywordList;
+                    $("#existCount").html(result.dbExistKeywordList.length);
+                    renderErrorTableData(json, errorbody);
+                }
+            }
+        });
+
+    }
+    function renderSelfTableData(json, safeTbody) {
+        var _trClass = "";
+        for (var i = 0; i < json.length; i++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+            var phraseType = json[i].object.phraseType;
+            var _tbody = "<tr class='" + _trClass + "'>" +
+                    "<td>" + json[i].campaignName + "<input type='hidden' value='" + json[i].campaignName + "'/></td>" +
+                    "<td>" + json[i].adgroupName + "<input type='hidden' value='" + json[i].adgroupName + "'></td>" +
+                    "<td>" + json[i].object.keyword + "</td>" +
+                    "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)).replace("匹配", "") + "</td>" +
+                    "<td>" + json[i].object.price + "</td>" +
+                    "<td>" + json[i].object.pcDestinationUrl + "</td>" +
+                    "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
+                    "<td>" + until.convert(json[i].object.pause, "启用:暂停") + "</td>" +
+                    "</tr>";
+            safeTbody.append(_tbody);
+        }
+    }
+    function renderErrorTableData(json, errorbody) {
+        var _trClass = "";
+        for (var i = 0; i < json.length; i++) {
+            _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
+            var phraseType = json[i].object.phraseType;
+            var _tbody = "<tr class='" + _trClass + "'>" +
+                    "<td>" + json[i].campaignName + "</td>" +
+                    "<td>" + json[i].adgroupName + "</td>" +
+                    "<td>" + json[i].object.keyword + "</td>" +
+                    "<td>" + until.getMatchTypeName(json[i].object.matchType + "", Number(phraseType)) + "</td>" +
+                    "<td>" + json[i].object.price + "</td>" +
+                    "<td>" + json[i].object.pcDestinationUrl + "</td>" +
+                    "<td>" + json[i].object.mobileDestinationUrl + "</td>" +
+                    "<td>" + until.convert(json[i].object.pause, "启用:暂停") + "</td>" +
+                    "</tr>";
+            errorbody.append(_tbody);
+        }
+    }
+    function csvPrev() {
+        $("#existCount").html(0);
+        $("#existKeyword").empty();
+        $("#sepakError").html(0);
+    }
+
+    function uploadFile() {
+
+        var fileObj = document.getElementById("suFile").files[0]; // 获取文件对象
+        var FileController = "/assistantKeyword/importByFile";                    // 接收上传文件的后台地址
+        // FormData 对象
+        var form = new FormData();
+        form.append("author", "hooyes");                        // 可以增加表单数据
+        form.append("file", fileObj);
+
+        // XMLHttpRequest 对象
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", FileController, true);
+        xhr.onload = function () {
+            var result = $.parseJSON(xhr.responseText);
+            if (result.msg != "Ok") {
+//                alert(result.msg);
+                addOrUpdateKeyWordAlertPrompt.show(result.msg);
+            } else {
+                var errorbody = $("#existKeyword");
+                var safeTbody = $("#createTable tbody");
+                if (result.vk.safeKeywordList.length) {
+                    var json = result.vk.safeKeywordList;
+                    $("#criSize").html(result.vk.safeKeywordList.length);
+                    renderSelfTableData(json, safeTbody);
+                }
+
+                if (result.vk.dbExistKeywordList) {
+                    if (result.vk.dbExistKeywordList.length) {
+                        var json = result.vk.dbExistKeywordList;
+                        $("#existCount").html(result.vk.dbExistKeywordList.length);
+                        renderErrorTableData(json, errorbody);
+                    }
+                }
+
+                $("#inputDwdInfo").hide();
+                $("#validateDiv").show();
+            }
+        };
+        xhr.send(form);
+    }
+
+
+    $(function () {
+        $("input[name='insertRadio']").change(function () {
+            if ($(this).val() == 0) {
+                $("#finish").attr("disable", "disable");
+            } else {
+                $("#finish").attr("disable", "");
+            }
+        });
+    })
 </script>
 
 </body>

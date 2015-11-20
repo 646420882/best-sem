@@ -2,6 +2,7 @@ package com.perfect.dao.creative;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -16,6 +17,10 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     List<CreativeDTO> findByAgroupId(Long adgroupId);
 
+    List<CreativeDTO> findByAdgroupId(Long baiduAccountId, Long adgroupId);
+
+    List<CreativeDTO> findByAdgroupId(Long baiduAccountId, String adgroupId);
+
     List<CreativeDTO> getCreativeByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit);
 
     List<CreativeDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
@@ -23,12 +28,23 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
     List<CreativeDTO> getAllsByAdgroupIds(List<Long> l);
 
     List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l);
-    
+
     List<CreativeDTO> findHasLocalStatus();
 
     List<CreativeDTO> findHasLocalStatusStr(List<String> strs);
 
     List<CreativeDTO> findHasLocalStatusLong(List<Long> longs);
+
+    List<CreativeDTO> findAllCreativeFromBaiduByAdgroupId(Long baiduAccountId, Long adgroupId);
+
+    /**
+     * <p>获取指定百度账号下在本地新增 修改 删除的创意
+     * type: 1 -> 新增, 2 -> 修改, 3 -> 删除</p>
+     *
+     * @param baiduAccountId
+     * @return
+     */
+    List<CreativeDTO> findLocalChangedCreative(Long baiduAccountId, int type);
 
     void deleteByCacheId(Long cacheCreativeId);
 
@@ -54,17 +70,26 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     void delBack(Long oid);
 
-    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfo(Map<String, Object> params, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
     PagerInfo findByPagerInfoForString(List<String> l, Integer nowPage, Integer pageSize);
 
-    PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfoForLong(List<Long> l, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
-    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize);
+    PagerInfo findByPagerInfo(Long l, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
-    void update(String crid,CreativeDTO dto);
+    void update(String crid, CreativeDTO dto);
 
     void deleteByLongId(Long crid);
 
-    void updateLs(Long crid,CreativeDTO dto);
+    void updateLs(Long crid, CreativeDTO dto);
+
+    /**
+     * 批量删除关键字
+     *
+     * @param param
+     */
+    void batchDelete(List<String> param);
+
+    CreativeDTO existDTO(Map<String,Object> params);
 }

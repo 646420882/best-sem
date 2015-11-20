@@ -7,25 +7,31 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Created by XiaoWei on 2014/9/22.
+ * 重点关键词监控
  */
 @Document(collection = MongoEntityConstants.TBL_IMPORTANT_KEYWORD)
 public class KeywordImportEntity {
     @Id
     private String id;
     @Field(value = "cgid")
-    private String customGroupId;
+    private String customGroupId;//自定义分组的id
+
     @Field(value = "kwid")
-    private Long keywordId;
+    private Long keywordId;     //关键词id
+
     @Field(value = "name")
-    private String keywordName;
+    private String keywordName;     //关键词名称
+
     @Field(value = MongoEntityConstants.ACCOUNT_ID)
-    private Long accountId;
+    private Long accountId;     //账户ID
+
     @Field(value = "bs")
-    private String biddingStatus;
+    private String biddingStatus;       //竞价状态
+
     @Field(value = "rule")
-    private Boolean rule;
+    private Boolean rule;       //否监控
     @Field(value = MongoEntityConstants.ADGROUP_ID)
-    private Long adgroupId;
+    private Long adgroupId;     //单元ID
 
     public Long getAdgroupId() {
         return adgroupId;

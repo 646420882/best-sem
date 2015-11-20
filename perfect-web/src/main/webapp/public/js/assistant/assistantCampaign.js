@@ -37,7 +37,7 @@ function getCampaignList(nowPage) {
             $("#tbodyClick5").empty();
 
             records = data.totalCount;
-            pageIndex = data.pageNo;
+            pageIndex = data.nextPage;
             $("#pagination_campaignPage").pagination(records, getOptionsFromForm(pageIndex));
 
 
@@ -76,6 +76,7 @@ function skipCampaignPage() {
  */
 $("#tbodyClick5").delegate("tr", "click", function () {
     var span = $(this).find("td:last");
+    $("#planBottom").fadeIn("slow");
     if (span.html() != "&nbsp;") {
         $("#reduction_caipamgin").find("span").removeClass("z_function_hover");
         $("#reduction_caipamgin").find("span").addClass("zs_top");
@@ -110,6 +111,8 @@ function campaignDataToHtml(obj, index) {
     }
 
     html = html + "<input type='hidden' value = " + obj.campaignId + " />";
+
+    html = html + "<td><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/></td>";
     html = html + "<td>" + obj.campaignName + "</td>";
 
     switch (obj.status) {
@@ -171,39 +174,39 @@ function campaignDataToHtml(obj, index) {
 function setCampaignValue(obj, campaignId) {
     $("#hiddenCampaignId").val(campaignId);
     var _tr = $(obj);
-    $(".campaignName_5").val(_tr.find("td:eq(0)").html());
+    $(".campaignName_5").val(_tr.find("td:eq(1)").html());
 
-    if (/^[0-9]+|[0-9]+.[0-9]*$/.test(_tr.find("td:eq(3)").html())) {
-        $(".budget_5").val(_tr.find("td:eq(3)").html());
+    if (/^[0-9]+|[0-9]+.[0-9]*$/.test(_tr.find("td:eq(4)").html())) {
+        $(".budget_5").val(_tr.find("td:eq(4)").html());
     } else {
         $(".budget_5").val("<不限定>");
     }
 
     $(".priceRatio_5").val(_tr.find(".hidden").val());
-    $(".schedule_5").html("<a>" + _tr.find("td:eq(6)").html() + "</a>");
-    $(".regionTarget_5").html("<a>" + _tr.find("td:eq(7)").html() + "</a>");
-    $(".isDynamicCreative_5").html("<a>" + _tr.find("td:eq(5)").html() + "</a>");
-    $(".negativeWords_5").html(until.convert(_tr.find("td:eq(8)").html() != "未设置", "<a>已设置(" + _tr.find("td:eq(8)").html() + ")</a>:<a>未设置</a>"));
-    $(".excluedIp_5").html(until.convert(_tr.find("td:eq(9)").html() == "0", "<a>未设置</a>" + ":" + "<a>已设置(" + _tr.find("td:eq(9)").html() + ")</a>"));
+    $(".schedule_5").html("<a>" + _tr.find("td:eq(7)").html() + "</a>");
+    $(".regionTarget_5").html("<a>" + _tr.find("td:eq(8)").html() + "</a>");
+    $(".isDynamicCreative_5").html("<a>" + _tr.find("td:eq(6)").html() + "</a>");
+    $(".negativeWords_5").html(until.convert(_tr.find("td:eq(9)").html() != "未设置", "<a>已设置(" + _tr.find("td:eq(9)").html() + ")</a>:<a>未设置</a>"));
+    $(".excluedIp_5").html(until.convert(_tr.find("td:eq(10)").html() == "0", "<a>未设置</a>" + ":" + "<a>已设置(" + _tr.find("td:eq(10)").html() + ")</a>"));
 
-    if (_tr.find("td:eq(4)").html() == "优选") {
+    if (_tr.find("td:eq(5)").html() == "优选") {
         $(".selectShowProb_5").html("<option value = '1' selected='selected'>优选</option><option value='2'>轮显</option>");
     } else {
         $(".selectShowProb_5").html("<option value = '1' >优选</option><option value='2' selected='selected'>轮显</option>");
     }
 
-    $(".status_5").html(_tr.find("td:eq(1)").html());
+    $(".status_5").html(_tr.find("td:eq(2)").html());
 
-    if (_tr.find("td:eq(10)").html() == "-") {
+    if (_tr.find("td:eq(11)").html() == "-") {
         //达到预算下线
         $(".budgetOfflineTime_5").html("0次");
     } else {
         //达到预算下线
-        $(".budgetOfflineTime_5").html(_tr.find("td:eq(10)").html() + "次");
+        $(".budgetOfflineTime_5").html(_tr.find("td:eq(11)").html() + "次");
     }
 
     //推广计划状态
-    if (_tr.find("td:eq(2)").html() == "启用") {
+    if (_tr.find("td:eq(3)").html() == "启用") {
         $(".selectPause_5").html("<option value = 'true' selected='selected'>启用</option><option value='false'>暂停</option>");
     } else {
         $(".selectPause_5").html("<option value = 'true' >启用</option><option value='false' selected='selected'>暂停</option>");
@@ -246,7 +249,8 @@ function whenBlurEditCampaign(num, value) {
         case 1:
             if (value != "") {
                 if (parseInt(getChar(value)) > 30) {
-                    alert("推广计划名不能超过30个字符，汉字占两个字符");
+                    //alert("推广计划名不能超过30个字符，汉字占两个字符");
+                    AlertPrompt.show("推广计划名不能超过30个字符，汉字占两个字符！");
                     return;
                 } else {
                     jsonData["campaignName"] = value;
@@ -258,24 +262,28 @@ function whenBlurEditCampaign(num, value) {
         case 2:
             if (value != "<不限定>") {
                 if (!/^-?\d+\.?\d*$/.test(value)) {
-                    alert("输入正确的每日预算");
+                    //alert("输入正确的每日预算");
+                    AlertPrompt.show("输入正确的每日预算！");
                     return;
                 } else {
                     if (parseFloat(value).toFixed(3) < 50.0) {
-                        alert("每日预算必须大于50RMB");
+                        //alert("每日预算必须大于50RMB");
+                        AlertPrompt.show("每日预算必须大于50RMB");
                         return;
                     } else {
                         var bgt = $("#acBgt").html();
                         if (bgt != "") {
-                            if (parseInt(value)>parseInt(bgt)) {
-                                alert("您的每日预算为"+bgt+"，该计划的每日预算不能超过"+bgt+"元");
+                            if (parseInt(value) > parseInt(bgt)) {
+                                //alert("您的每日预算为" + bgt + "，该计划的每日预算不能超过" + bgt + "元");
+                                AlertPrompt.show("您的每日预算为" + bgt + "，该计划的每日预算不能超过" + bgt + "元");
                                 return;
-                            }else{
+                            } else {
                                 jsonData["budget"] = value;
                             }
                         } else {
-                            alert("您的账户预算加载失败，请加载成功后再进行修改");
-                              return;
+                            //alert("您的账户预算加载失败，请加载成功后再进行修改");
+                            AlertPrompt.show("您的账户预算加载失败，请加载成功后再进行修改");
+                            return;
                         }
                     }
                 }
@@ -287,7 +295,8 @@ function whenBlurEditCampaign(num, value) {
         case 3:
             if (value != "") {
                 if (!/^-?\d+\.?\d*$/.test(value)) {
-                    alert("输入正确的移动出价比例后再修改！");
+                    //alert("输入正确的移动出价比例后再修改！");
+                    AlertPrompt.show("输入正确的移动出价比例后再修改");
                     return;
                 } else {
                     jsonData["priceRatio"] = value;
@@ -332,7 +341,8 @@ function deleteCampaign() {
         cids += $(this).find("input[type=hidden]").val() + ",";
     });
     if (cids == "") {
-        alert("请选择行再操作!");
+        //alert("请选择行再操作!");
+        AlertPrompt.show("请选择行再操作!");
         return;
     }
 
@@ -382,13 +392,15 @@ $(".ntwOk").click(function () {
 function validateKeyword(keywords) {
     var kwds = keywords.split("\n");
     if (kwds.length > 200) {
-        alert("设置的否定关键词最大不能超过200个!");
+        //alert("设置的否定关键词最大不能超过200个!");
+        AlertPrompt.show("设置的否定关键词最大不能超过200个!");
         return false;
     }
     for (var i = 0; i < kwds.length; i++) {
         var len = kwds[i].replace(/[^\x00-\xff]/g, 'xx').length;
         if (len > 40) {//否定关键词最大为40字节
-            alert("关键词字节数最大不能超过40个字节。\n" + kwds[i]);
+            //alert("关键词字节数最大不能超过40个字节。\n" + kwds[i]);
+            AlertPrompt.show("关键词字节数最大不能超过40个字节。\n" + kwds[i]);
             return false;
         }
     }
@@ -542,7 +554,8 @@ $(".excludeIpOk").click(function () {
     var errorIp = "";
 
     if (ipArray.length > 20) {
-        alert("IP排除数量最大为20个");
+        //alert("IP排除数量最大为20个");
+        AlertPrompt.show("IP排除数量最大为20个");
         return;
     }
 
@@ -554,6 +567,7 @@ $(".excludeIpOk").click(function () {
 
     if (errorIp.length != 0 && ipArray[0] != "") {
         alert("IP地址格式输入不正确!" + errorIp);
+        AlertPrompt.show("IP地址格式输入不正确!" + errorIp);
         return;
     }
 
@@ -721,12 +735,12 @@ function createChooseTimeUIByCampaignData(data) {
         } else {
             for (var s = 0; s < data.schedule.length; s++) {
                 if (data.schedule[s].weekDay == (i + 1)) {
-                    html = html + "<ul>" + "<div><input type='checkbox'  name='" + (i + 1) + "'/>" + weeks[i] + "</div>";
+                    html = html + "<ul>" + "<div><label class='checkbox-inlines'><input type='checkbox'  name='" + (i + 1) + "'/>" + weeks[i] + "</label></div>";
                     break;
                 }
             }
             if (s >= data.schedule.length) {
-                html = html + "<ul>" + "<div><input type='checkbox' checked='checked'' name='" + (i + 1) + "'/>" + weeks[i] + "</div>";
+                html = html + "<ul>" + "<div>  <label class='checkbox-inlines'><input type='checkbox' checked='checked'' name='" + (i + 1) + "'/>" + weeks[i] + "</label></div>";
             }
         }
 
@@ -766,22 +780,42 @@ function createChooseTimeUIByCampaignData(data) {
 
 
 /*显示设置推广地域窗口*/
+rDrag.init(document.getElementById('SetAera'));
 $(".regionTarget_5").click(function () {
+    $(".TB_overlayBG").css({
+        display: "block", height: $(document).height()
+    });
+    $("#ctrldialogplanRegionDialog").css({
+        left: ($("body").width() - $("#ctrldialogplanRegionDialog").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#ctrldialogplanRegionDialog").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $("#ctrldialogplanRegionDialog").css("display", "none");
+    });
     var cid = $("#hiddenCampaignId").val();
-    top.dialog({
-        title: "设置推广地域",
-        padding: "5px",
-        content: "<iframe src='/assistantCampaign/showSetPlace?cid=" + cid + "' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-        oniframeload: function () {
-        },
-        onclose: function () {
-        },
-        onremove: function () {
-        }
-    }).showModal();
+    /*    top.dialog({
+     title: "设置推广地域",
+     padding: "5px",
+     content: "<iframe src='/assistantCampaign/showSetPlace?cid=" + cid + "' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+     oniframeload: function () {
+     },
+     onclose: function () {
+     },
+     onremove: function () {
+     }
+     }).showModal();*/
 
 });
-
+var AreaClick = $("#ctrlradioboxpartRegion,#ctrlradioboxallRegion,#useAcctRegion,#usePlanRegion");
+AreaClick.click(function () {
+    $("#ctrldialogplanRegionDialog").css({
+        left: ($("body").width() - $("#ctrldialogplanRegionDialog").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#ctrldialogplanRegionDialog").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+});
 
 /**
  * 弹出添加推广计划的窗口
@@ -819,26 +853,31 @@ $("#createCampaignOk").click(function () {
     var adgroupPause = $("#inputAdgroupPause").val();
 
     if (campaignName == "" || campaignName == "<请输入推广计划名称>") {
-        alert("请输入推广计划名称");
+        AlertPrompt.show("请输入推广计划名称！");
+        //alert("请输入推广计划名称");
         return;
     } else {
         if (parseInt(getChar(campaignName)) > 30) {
-            alert("推广计划名不能超过30个字符，汉字占两个字符");
+            //alert("推广计划名不能超过30个字符，汉字占两个字符");
+            AlertPrompt.show("推广计划名不能超过30个字符，汉字占两个字符");
             return;
         }
     }
 // /^-?\d+\.?\d*$/
     if (budget != "<请输入每日预算，不填默认为不限定>") {
         if (/^[0-9]+|[0-9]+\.[0-9]{2}$/.test(budget) == false) {
-            alert("每日预算只能是数值");
+            //alert("每日预算只能是数值");
+            AlertPrompt.show("每日预算只能是数值");
             return;
         } else {
             if (parseFloat(budget).toFixed(3) <= 49) {
-                alert("每日预算必须大于50RMB");
+                //alert("每日预算必须大于50RMB");
+                AlertPrompt.show("每日预算必须大于50RMB");
                 return;
             } else {
                 if (parseInt(budget) > parseInt(bgt)) {
-                    alert("每日预算不能大于账户预算值");
+                    //alert("每日预算不能大于账户预算值");
+                    AlertPrompt.show("每日预算不能大于账户预算值");
                     return;
                 }
             }
@@ -848,11 +887,13 @@ $("#createCampaignOk").click(function () {
     }
     if (priceRatio != "") {
         if (!/^-?\d+\.?\d*$/.test(priceRatio)) {
-            alert("移动出价比例只能是数值");
+            //alert("移动出价比例只能是数值");
+            AlertPrompt.show("移动出价比例只能是数值");
             return;
         } else {
             if (parseFloat(priceRatio).toFixed(2) < 0.1 || parseFloat(priceRatio).toFixed(2) > 10.0) {
-                alert("0.1<移动出价比例<10.0");
+                //alert("0.1<移动出价比例<10.0");
+                AlertPrompt.show("0.1<移动出价比例<10.0");
                 return;
             }
         }
@@ -861,21 +902,25 @@ $("#createCampaignOk").click(function () {
 
     }
     if (adgroupName == "" || adgroupName == "<请输入推广单元名称>") {
-        alert("请输入推广单元名称");
+        //alert("请输入推广单元名称");
+        AlertPrompt.show("请输入推广单元名称");
         return;
     } else {
         if (parseInt(getChar(adgroupName)) > 30) {
-            alert("推广单元名不能超过30个字符，汉字占两个字符");
+            //alert("推广单元名不能超过30个字符，汉字占两个字符");
+            AlertPrompt.show("推广单元名不能超过30个字符，汉字占两个字符");
             return;
         }
     }
     if (maxPrice != "") {
         if (!/^-?\d+\.?\d*$/.test(maxPrice)) {
-            alert("推广单元的最高出价只能是数字!");
+            //alert("推广单元的最高出价只能是数字!");
+            AlertPrompt.show("推广单元的最高出价只能是数字！");
             return;
         }
     } else {
-        alert("请输入推广单元最高出价！");
+        //alert("请输入推广单元最高出价！");
+        AlertPrompt.show("请输入推广单元最高出价！");
         return;
     }
 
@@ -898,7 +943,8 @@ $("#createCampaignOk").click(function () {
         },
         success: function (data) {
             if (data.msg == "1") {
-                alert("添加成功");
+                //alert("添加成功");
+                AlertPrompt.show("添加成功！");
                 loadTree();
                 getCampaignList(0)
                 jsonSchdule_add = null;
@@ -908,7 +954,8 @@ $("#createCampaignOk").click(function () {
                 $("#plan input[type=text]").val("");
                 $(".TB_overlayBG,#plan").hide(0);
             } else {
-                alert(data.msg);
+                //alert(data.msg);
+                AlertPrompt.show(data.msg);
             }
         }
     });
@@ -941,15 +988,6 @@ function setDialogCss(idSelector) {
         display: "block"
     });
 }
-function cdrgg() {
-    var _height = $("#ccampaign").css("height");
-    if (_height == "400px") {
-        $("#ccampaign").css("height", "350px");
-    } else {
-        $("#ccampaign").css("height", "400px");
-    }
-}
-
 $(".closeAddCampaign").click(function () {
     //关闭该窗口时重新赋值
     jsonSchdule_add = null;
@@ -1066,7 +1104,8 @@ function uploadCampagin() {
             return;
         }
     } else {
-        alert("已经是最新数据了！");
+        //alert("已经是最新数据了！");
+        AlertPrompt.show("已经是最新数据了！");
         return;
     }
     switch (parseInt(step)) {
@@ -1090,11 +1129,13 @@ function uploadCampagin() {
 function uploadOperate(id, ls) {
     $.get("/assistantCampaign/upload", {cid: id, ls: ls}, function (result) {
         if (result.msg == "1") {
-            alert("上传成功!");
+            //alert("上传成功!");
+            AlertPrompt.show("上传成功！");
             getCampaignList(0);
             setTimeout("loadTree()", 1500);
         } else {
-            alert(result.msg);
+            AlertPrompt.show(result.msg);
+            //alert(result.msg);
         }
     });
 }
@@ -1160,50 +1201,77 @@ $(window).on("keydown keyup", function (event) {
         }
     }
 });
-
-
 /************************************************************关键词的右击菜单************************************************************/
 /**
  * 菜单名，方法
  * @type {{text: string, func: func}}
  */
 var menu_campaign_add = {
-    text: "添加计划",
-    func: function () {
-        showAddCampaignWindow();
+        text: "添加计划",
+        img: "../public/img/zs_function1.png",
+        func: function () {
+            showAddCampaignWindow();
+        }
+    }, menu_campaign_quickCreatePlan = {
+        text: "快速创建计划",
+        img: "../public/img/zs_function17.png",
+        func: function () {
+            showQuickAddPlanWindow();
+        }
+    }, menu_campaign_del = {
+        text: "删除计划",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            deleteCampaign();
+        }
+    }, menu_campaign_redu = {
+        text: "还原",
+        img: "../public/img/zs_function9.png",
+        func: function () {
+            showReductionCampaignWindow();
+        }
+    }, menu_campaign_upload = {
+        text: "更新到凤巢",
+        img: "../public/img/update2.png",
+        func: function () {
+            uploadCampagin();
+        }
+    }, menu_campaign_searchWord = {
+        text: "搜索词",
+        img: "../public/img/zs_function10.png",
+        func: function () {
+            searchword();
+        }
     }
-}, menu_campaign_quickCreatePlan = {
-    text: "快速创建计划",
-    func: function () {
-        showQuickAddPlanWindow();
+    , menu_keyword_copy = {
+        text: "复制",
+        img: "../public/img/zs_function13.png",
+        func: function () {
+            editCommons.Copy();
+        }
+
     }
-}, menu_campaign_del = {
-    text: "删除计划",
-    func: function () {
-        deleteCampaign();
+    , menu_keyword_paste = {
+        text: "粘贴",
+        img: "../public/img/zs_function15.png",
+        func: function () {
+            editCommons.Parse();
+        }
     }
-}, menu_campaign_redu = {
-    text: "还原",
-    func: function () {
-        showReductionCampaignWindow();
+    , menu_keyword_select = {
+        text: "全选",
+        img: "../public/img/zs_function16.png",
+        func: function () {
+            CtrlAll();
+        }
+
     }
-}, menu_campaign_upload = {
-    text: "更新到凤巢",
-    func: function () {
-        uploadCampagin();
-    }
-}, menu_campaign_searchWord = {
-    text: "搜索词",
-    func: function () {
-        searchword();
-    }
-}
 /**
  * 右键菜单显示的选项
  * @type {*[]}
  */
 var campaignMenuData = [
-    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu, menu_campaign_upload, menu_campaign_searchWord]
+    [menu_campaign_add, menu_campaign_quickCreatePlan, menu_campaign_del, menu_campaign_redu, menu_campaign_upload, menu_campaign_searchWord, menu_keyword_copy, menu_keyword_paste, menu_keyword_select]
 ];
 /**
  * 用户缓存右键点击的对象
@@ -1222,7 +1290,6 @@ var campaignMenuExt = {
         $.smartMenu.remove();
     }
 };
-
 $("#tbodyClick5").on("mousedown", "tr", function () {
     $(this).smartMenu(campaignMenuData, campaignMenuExt);
 });
@@ -1242,3 +1309,17 @@ $("#tbodyClick5").on("mousedown", "tr", function () {
  $(this).addClass("list2_box3");
  }
  });*/
+function campListCheck() {
+    var CheckCount = $("input[name='campaignCheck']").length;
+    var readyCheckCount = 0;
+    for (var i = 0; i < CheckCount; i++) {
+        if ($("input[name='campaignCheck']:eq(" + i + ")").prop("checked")) {
+            readyCheckCount++;
+        }
+    }
+    if (CheckCount == readyCheckCount) {
+        document.getElementsByName("campaignAllCheck")[0].checked = true;
+    } else {
+        document.getElementsByName("campaignAllCheck")[0].checked = false;
+    }
+}

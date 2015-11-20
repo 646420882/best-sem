@@ -100,8 +100,21 @@ public class ConfigurationController {
     }
 
     @RequestMapping(value = "/acc/deletebdUser", method = RequestMethod.GET)
-    public ModelAndView del(Long id,String account) {
-        boolean success = systemUserService.removeAccount(id,account);
+    public ModelAndView del(Long id, String account) {
+        boolean success = systemUserService.removeAccount(id, account);
+
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> statusMap = new HashMap<>();
+        statusMap.put("status", success);
+
+        jsonView.setAttributesMap(statusMap);
+
+        return new ModelAndView(jsonView);
+    }
+
+    @RequestMapping(value = "/acc/upBaiduName", method = RequestMethod.GET)
+    public ModelAndView upBaiduName(Long id, String name) {
+        boolean success = systemUserService.updateBaiDuName(name, id);
 
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> statusMap = new HashMap<>();

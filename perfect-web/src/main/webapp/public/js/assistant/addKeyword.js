@@ -14,6 +14,13 @@ $(function () {
             $("#phraseTypeDiv").hide();
         }
     });
+    $("#matchTypeNew").change(function () {
+        if (this.value == "2") {
+            $("#phraseTypeDivNew").show();
+        } else {
+            $("#phraseTypeDivNew").hide();
+        }
+    });
     var $tab_li = $('.assembly_checkbox li');
     $('.assembly_checkbox li').click(function () {
         wordType = $(this).attr("id");
@@ -31,7 +38,7 @@ $(function () {
 
     $("#campaign_select").change(function () {
         var campaignId = $("#campaign_select option:selected").val();
-        if(campaignId!=""){
+        if (campaignId != "") {
             if (campaignId.length < 24) {
                 $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
                     {
@@ -72,7 +79,50 @@ $(function () {
                     });
             }
         }
-
+    });
+    $("#campaign_selectNew").change(function () {
+        var campaignId = $("#campaign_selectNew option:selected").val();
+        if (campaignId != "") {
+            if (campaignId.length < 24) {
+                $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
+                    function (data) {
+                        var adgroups = "", datas = data.rows;
+                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            var _adgroupId = "";
+                            if (datas[i].adgroupId != null) {
+                                _adgroupId = datas[i].adgroupId;
+                            } else {
+                                _adgroupId = datas[i].id;
+                            }
+                            adgroups += "<option maxPrice="+ datas[i].maxPrice +" value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
+                        }
+                        $("#adgroup_selectNew").empty();
+                        $("#adgroup_selectNew").append(adgroups);
+                    });
+            } else {
+                $.getJSON("/adgroup/getAdgroupByCampaignObjId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
+                    function (data) {
+                        var adgroups = "", datas = data.rows;
+                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
+                        for (var i = 0, l = datas.length; i < l; i++) {
+                            adgroups += "<option  maxPrice="+ datas[i].maxPrice +" value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
+                        }
+                        $("#adgroup_selectNew").empty();
+                        $("#adgroup_selectNew").append(adgroups);
+                    });
+            }
+        }
     });
 
 
@@ -226,30 +276,134 @@ function addKeywordInitCampSelect() {
             }
             $("#campaign_select").empty();
             $("#campaign_select").append(campaigns);
+            $("#adgroup_select").empty();
+            $("#adgroup_select").append("<option value=''>请选择推广计划</option>");
+            $("#campaign_selectNew").empty();
+            $("#campaign_selectNew").append(campaigns);
+            $("#adgroup_selectNew").empty();
+            $("#adgroup_selectNew").append("<option value=''>请选择推广计划</option>");
         }
     });
 }
+
+var saveKeywordNew = function () {
+    var camBgt = $("#acBgt").html();
+    var price = $("#priceNew").val();
+    if (price != "") {
+        if (!/^-?\d+\.?\d*$/.test(price)) {
+            //alert("输入正确的关键词出价！");
+            AlertPrompt.show("输入正确的关键词出价!");
+            return;
+        } else {
+            if (parseFloat(price) > 999.9 || parseFloat(price) > parseFloat(camBgt)) {
+                //alert("关键词出价为：(0,999.9]<=出价&&<计划预算" + camBgt + "元");
+                AlertPrompt.show("关键词出价为：(0,999.9]<=出价&&<计划预算" + camBgt + "元");
+                return;
+            }
+        }
+    } else {
+        price = $("#adgroup_selectNew option:selected").attr("maxprice");
+    }
+    var matchType = $("#matchTypeNew :selected").val();
+    var phraseType = $("#phraseTypeNew :selected").val();
+    var adgroupId = $("#adgroup_selectNew option:selected").val();
+    //获取所有选中的关键词
+    var jsonObj = [];
+
+    var kwd = $("#statusNew").val().split("\n");
+    kwd.forEach(function(item,i){
+        if (item != undefined) {
+            var entity1 = {};
+            entity1["accountId"] = $("#bdAccountId").html();
+            if (adgroupId.length < 24) {
+                entity1["adgroupId"] = adgroupId;
+            } else {
+                entity1["adgroupObjId"] = adgroupId;
+            }
+            entity1["keyword"] = item;
+            entity1["price"] = (price==undefined || price == ""?"0.1":price);
+            entity1["matchType"] = matchType;
+            entity1["pause"] = false;
+            entity1["status"] = -1;
+            if (matchType == "2") {
+                entity1["phraseType"] = phraseType;
+            } else {
+                entity1["phraseType"] = 1;
+            }
+            entity1["localStatus"] = 1;
+            jsonObj.push(entity1);
+        }
+    });
+    $.ajax({
+        url: "/keyword/add",
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify(jsonObj),
+        async: false,
+        contentType: "application/json; charset=UTF-8",
+        success: function (data, textStatus, jqXHR) {
+            if (data.rows != undefined || data.rows !="") {
+                var string = "";
+                data.rows.forEach(function(item,i){
+                    string +=item + ","+ (i/5==0?"\n":"");
+                })
+                saveSeccuss(data);
+                $("#context").empty();
+                $("#context").append(string);
+                $("#SaveSet").css("display", "none");
+                reloadGrid();
+            }
+        }
+    });
+
+}
+
+var saveSeccuss = function(data){
+    if(data.rows.length){
+        $("#SaveSeccuss").css({
+            left: ($("body").width() - $("#SaveSeccuss").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#SaveSeccuss").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
+        $(".addcolse").click(function () {
+            $(".TB_overlayBG").css("display", "none");
+            $("#SaveSet").css("display", "none");
+            $("#SaveSeccuss").css("display", "none");
+        });
+    }else{
+        $(".TB_overlayBG").css("display", "none");
+        $("#SaveSet").css("display", "none");
+        $("#SaveSeccuss").css("display", "none");
+        alert("添加成功");
+    }
+
+}
+
 var saveKeyword = function () {
 
     var campaignId = $("#campaign_select option:selected").val();
     if (campaignId == null || campaignId.length == 0) {
-        alert("请选择推广计划!");
+        //alert("请选择推广计划!");
+        AlertPrompt.show("请选择推广计划!");
         return;
     }
     var adgroupId = $("#adgroup_select option:selected").val();
     if (adgroupId == null || adgroupId.length == 0) {
-        alert("请选择推广单元!");
+        //alert("请选择推广单元!");
+        AlertPrompt.show("请选择推广单元!");
         return;
     }
     var camBgt = $("#acBgt").html();
     var price = $("#price").val();
     if (price != "") {
         if (!/^-?\d+\.?\d*$/.test(price)) {
-            alert("输入正确的关键词出价！");
+            //alert("输入正确的关键词出价！");
+            AlertPrompt.show("输入正确的关键词出价!");
             return;
         } else {
             if (parseFloat(price) > 999.9 || parseFloat(price) > parseFloat(camBgt)) {
-                alert("关键词出价为：(0,999.9]<=出价&&<计划预算" + camBgt + "元");
+                //alert("关键词出价为：(0,999.9]<=出价&&<计划预算" + camBgt + "元");
+                AlertPrompt.show("关键词出价为：(0,999.9]<=出价&&<计划预算" + camBgt + "元");
                 return;
             }
         }
@@ -314,7 +468,8 @@ var saveKeyword = function () {
     }
 
     if (jsonArr.length == 0) {
-        alert("您没有选择关键词!");
+        //alert("您没有选择关键词!");
+        AlertPrompt.show("您没有选择关键词!");
         return;
     }
     for (var i = 0; i < jsonArr.length; i++) {
@@ -326,30 +481,36 @@ var saveKeyword = function () {
         if (matchType == 1) {
             if (adExNeg.indexOf(keyword_selected) > -1) {
 
-                alert("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
+                //alert("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
+                AlertPrompt.show("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
                 return;
             }
             if (caExNeg.indexOf(keyword_selected) > -1) {
-                alert("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
+                //alert("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
+                AlertPrompt.show("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
                 return;
             }
         }
         if (matchType == 3 || matchType == 2) {
             if (adNeg.indexOf(keyword_selected) > -1) {
-                alert("关键词\"" + keyword_selected + "\"存在于单元广泛，短语否定词中,该词不能被添加!");
+                //alert("关键词\"" + keyword_selected + "\"存在于单元广泛，短语否定词中,该词不能被添加!");
+                AlertPrompt.show("关键词\"" + keyword_selected + "\"存在于单元广泛，短语否定词中,该词不能被添加!");
                 return;
             } else {
-                if (adExNeg.indexOf(keyword_selected)>-1) {
-                    alert("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
+                if (adExNeg.indexOf(keyword_selected) > -1) {
+                    //alert("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
+                    AlertPrompt.show("关键词\"" + keyword_selected + "\"存在于单元精确否定词中,该词不能被添加!");
                     return;
                 }
             }
             if (caNeg.indexOf(keyword_selected) > -1) {
-                alert("关键词\"" + keyword_selected + "\"存在于计划广泛，短语否定词中,该词不能被添加!");
+                //alert("关键词\"" + keyword_selected + "\"存在于计划广泛，短语否定词中,该词不能被添加!");
+                AlertPrompt.show("关键词\"" + keyword_selected + "\"存在于计划广泛，短语否定词中,该词不能被添加!");
                 return;
             } else {
-                if (caExNeg.indexOf(keyword_selected)>-1) {
-                    alert("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
+                if (caExNeg.indexOf(keyword_selected) > -1) {
+                    //alert("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
+                    AlertPrompt.show("关键词\"" + keyword_selected + "\"存在于计划精确否定词中,该词不能被添加!");
                     return;
                 }
             }
@@ -367,7 +528,8 @@ var saveKeyword = function () {
         contentType: "application/json; charset=UTF-8",
         success: function (data, textStatus, jqXHR) {
             if (data.stat == true) {
-                alert("添加成功");
+                //alert("添加成功");
+                AlertPrompt.show("添加成功");
                 closeAddKeywordDialog();
                 reloadGrid();
             }

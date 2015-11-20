@@ -7,6 +7,7 @@ public interface MongoEntityConstants {
 
     //SYS
     String SYS_KEYWORD = "sys_keyword";
+    String TBL_ANSWERS = "sys_answers";
     String SYS_CENSUS = "sys_census";
     String SYS_CENSUS_EVERYDAY_REPORT = "sys_census_everyday_report";
     String SYS_CENSUS_CONFIG = "sys_census_config";
@@ -29,6 +30,7 @@ public interface MongoEntityConstants {
     String TBL_CUSTOMGROUP = "custom_group";
     String TBL_IMPORTANT_KEYWORD = "important_keyword_bidding";
     String TBL_NMS_ACCOUNT_REPORT = "nms_account_report";
+    String TBL_MATERIALS_SCHEDULER = "sys_materials_scheduler";
 
     //backUp
     String BAK_CREATIVE = "creative_bak";
@@ -54,6 +56,7 @@ public interface MongoEntityConstants {
     String MONITOR_ID = "mtId";
     String MONITOR_ACLID = "aclid";
     String NAME = "name";
+    String LOCALSTATUS = "ls";
 
 
     String DATE_FIELD = "dat";  //时间查询字段

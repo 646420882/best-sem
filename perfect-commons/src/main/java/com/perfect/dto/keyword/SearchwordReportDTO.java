@@ -29,21 +29,8 @@ public class SearchwordReportDTO {
 
     private String parseExtent;
 
+    private String ClickRate;
 
-    public SearchwordReportDTO(String keyword, String searchWord, String click, String impression, String searchEngine, String adgroupName, String campaignName, String createTitle, String createDesc1, String createDesc2, String date, String parseExtent) {
-        this.keyword = keyword;
-        this.searchWord = searchWord;
-        this.click = click;
-        this.impression = impression;
-        this.searchEngine = searchEngine;
-        this.adgroupName = adgroupName;
-        this.campaignName = campaignName;
-        this.createTitle = createTitle;
-        this.createDesc1 = createDesc1;
-        this.createDesc2 = createDesc2;
-        this.date = date;
-        this.parseExtent = parseExtent;
-    }
 
     public SearchwordReportDTO() {
     }
@@ -143,5 +130,13 @@ public class SearchwordReportDTO {
 
     public void setParseExtent(String parseExtent) {
         this.parseExtent = parseExtent;
+    }
+
+    public String getClickRate() {
+        return ClickRate;
+    }
+
+    public void setClickRate(String clickRate) {
+        ClickRate = clickRate;
     }
 }

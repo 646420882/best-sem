@@ -279,3 +279,6 @@
 .daterangepicker th.month {
     width: auto;
 }
+.ui-daterangepickercontain .ui-daterangepicker{
+    padding: 0 !important;
+}
