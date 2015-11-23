@@ -148,7 +148,7 @@
                                                               src="../public/img/zs_function5.png"></span><b>快速添加关键词</b></a>
                                                       </li>--%>
                                                     <li onclick="commons.foRShow('keyword',this)"><a href="javascript:;"
-                                                            ><span class="z_function_hover"><img
+                                                    ><span class="z_function_hover"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -356,7 +356,7 @@
                                                        </li>--%>
                                                     <li onclick="commons.foRShow('creative',this)"><a
                                                             href="javascript:;" class="editer"
-                                                            ><span class="zs_top"><img
+                                                    ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -563,7 +563,7 @@
                                                         </li>
                                                         <li onclick="commons.foRShow(this)"><a href="javascript:;"
                                                                                                class="editer"
-                                                                ><span class="zs_top"><img
+                                                        ><span class="zs_top"><img
                                                                 src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                                 src="../public/img/zs_input.png"></a>
                                                         </li>
@@ -784,7 +784,7 @@
                                                         </li>--%>
                                                     <li onclick="commons.foRShow('adgroup',this)"><a href="javascript:;"
                                                                                                      class="editer"
-                                                            ><span class="zs_top"><img
+                                                    ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -920,7 +920,7 @@
                                                     </li>
                                                     <li onclick="commons.foRShow('campaign',this)"><a
                                                             href="javascript:;" class="editer"
-                                                            ><span class="zs_top"><img
+                                                    ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -1364,6 +1364,11 @@
 <%--添加关键词弹出窗口--%>
 <jsp:include page="../promotionAssistant/popup/addkeywordNews.jsp"/>
 <jsp:include page="../promotionAssistant/alert/addkeyword.jsp"/>
+<div style="display: none; width: 0; height: 0">
+    <input id="assistant_keyword_id" type="text" value="${keywordId}"/>
+    <input id="assistant_adgroup_id" type="text" value="${adgroupId}"/>
+    <input id="assistant_campaign_id" type="text" value="${campaignId}"/>
+</div>
 <!-- javascript -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/index.css">
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>

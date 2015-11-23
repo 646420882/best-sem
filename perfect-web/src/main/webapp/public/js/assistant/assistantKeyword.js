@@ -908,81 +908,81 @@ function reducKwd_del(id) {
  * @type {{text: string, func: func}}
  */
 var menu_keyword_add = {
-        text: "添加关键词",
-        img: "../public/img/zs_function1.png",
-        func: function () {
-            /* showSearchWord();*/
-            AddKeywords();
-        }
-    }, menu_keyword_del = {
-        text: "删除",
-        img: "../public/img/zs_function2.png",
-        func: function () {
-            deleteKwd();
-        }
-    }, menu_keyword_batchAddOrUpdate = {
-        text: "批量添加/更新",
-        img: "../public/img/zs_function3.png",
-        func: function () {
-            batchAddOrUpdate();
-        }
-    }, menu_keyword_batchDel = {
-        text: "批量删除",
-        img: "../public/img/zs_function2.png",
-        func: function () {
-            batchDelKeyword();
-        }
-    }, menu_keyword_redu = {
-        text: "还原",
-        img: "../public/img/zs_function9.png",
-        func: function () {
-            reductionKeyword();
-        }
-    }, menu_keyword_upload = {
-        text: "更新到凤巢",
-        img: "../public/img/update2.png",
-        func: function () {
-            kUpload();
-        }
-    }, menu_keyword_searchWord = {
-        text: "快速添加关键词",
-        img: "../public/img/zs_function10.png",
-        func: function () {
-            searchword();
-        }
-
+    text: "添加关键词",
+    img: "../public/img/zs_function1.png",
+    func: function () {
+        /* showSearchWord();*/
+        AddKeywords();
     }
+}, menu_keyword_del = {
+    text: "删除",
+    img: "../public/img/zs_function2.png",
+    func: function () {
+        deleteKwd();
+    }
+}, menu_keyword_batchAddOrUpdate = {
+    text: "批量添加/更新",
+    img: "../public/img/zs_function3.png",
+    func: function () {
+        batchAddOrUpdate();
+    }
+}, menu_keyword_batchDel = {
+    text: "批量删除",
+    img: "../public/img/zs_function2.png",
+    func: function () {
+        batchDelKeyword();
+    }
+}, menu_keyword_redu = {
+    text: "还原",
+    img: "../public/img/zs_function9.png",
+    func: function () {
+        reductionKeyword();
+    }
+}, menu_keyword_upload = {
+    text: "更新到凤巢",
+    img: "../public/img/update2.png",
+    func: function () {
+        kUpload();
+    }
+}, menu_keyword_searchWord = {
+    text: "快速添加关键词",
+    img: "../public/img/zs_function10.png",
+    func: function () {
+        searchword();
+    }
+
+}
     , menu_keyword_copy = {
-        text: "复制",
-        img: "../public/img/zs_function13.png",
-        func: function () {
-            editCommons.Copy();
-        }
-
+    text: "复制",
+    img: "../public/img/zs_function13.png",
+    func: function () {
+        editCommons.Copy();
     }
+
+}
     , menu_keyword_shear = {
-        text: "剪切",
-        img: "../public/img/zs_function14.png",
-        func: function () {
-            editCommons.Cut();
-        }
-
+    text: "剪切",
+    img: "../public/img/zs_function14.png",
+    func: function () {
+        editCommons.Cut();
     }
+
+}
     , menu_keyword_paste = {
-        text: "粘贴",
-        img: "../public/img/zs_function15.png",
-        func: function () {
-            editCommons.Parse();
-        }
+    text: "粘贴",
+    img: "../public/img/zs_function15.png",
+    func: function () {
+        editCommons.Parse();
     }
+}
     , menu_keyword_select = {
-        text: "全选",
-        img: "../public/img/zs_function16.png",
-        func: function () {
-            CtrlAll();
-        }
-
+    text: "全选",
+    img: "../public/img/zs_function16.png",
+    func: function () {
+        CtrlAll();
     }
+
+};
 function showSearchWord() {
     $("#adgroup_select").empty();
     $("#phraseTypeDiv").hide();
@@ -1287,3 +1287,13 @@ function kwdListCheck() {
         document.getElementsByName("keyAllCheck")[0].checked = false;
     }
 }
+
+$(function () {
+    var keywordId = $("#assistant_keyword_id").val();
+    var adgroupId = $("#assistant_adgroup_id").val();
+    var campaignId = $("#assistant_campaign_id").val();
+
+    if (keywordId != 0 && adgroupId != 0 && campaignId != 0) {
+        // 加载指定关键词
+    }
+});

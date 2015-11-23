@@ -78,7 +78,7 @@ function getTime() {
 var colorOne = "#4572A7";
 var colorTow = "#40BC2A";
 var unitOne = "次";
-var unitTow = "次"
+var unitTow = "次";
 var arr_impr = [];
 var arr_click = [];
 var arr_ctr = [];
