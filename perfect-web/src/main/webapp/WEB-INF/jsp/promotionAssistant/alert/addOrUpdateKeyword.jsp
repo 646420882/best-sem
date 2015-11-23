@@ -285,58 +285,18 @@
             </div>
         </div>
     </div>
-    <%--alert提示类--%>
-    <div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="addOrUpdateKeyWordAlertPrompt">
-        <h2 id="addOrUpdateKeyWordAlertPromptTitle">
-            <span class="fl alert_span_title" id="addOrUpdateKeyWordAlertPrompt_title"></span>
-            <%--<a href="#" class="close">×</a></h2>--%>
-            <%--<a href="#" onclick="addOrUpdateKeyWordAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
-        </h2>
-
-        <div class="mainlist">
-            <div class="w_list03">
-                <ul class="zs_set">
-                    <li class="current" onclick="addOrUpdateKeyWordAlertPrompt.hide()">确认</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </div>
+<input type="hidden" id="alertWord">
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/public/js/ajaxFileUpload.js"></script>
 <script type="text/javascript">
-    /*智能竞价中的alert提示*/
-    var addOrUpdateKeyWordAlertPrompt = {
-        show: function (content) {
-            $(".TB_overlayBG_alert").css({
-                display: "block", height: $(document).height()
-            });
-            /*蒙版显示*/
-            $("#addOrUpdateKeyWordAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-                display: "block"
-            });
-            /*显示提示DIV*/
-            $("#addOrUpdateKeyWordAlertPrompt_title").html(content);
-        },
-        hide: function () {
-            $(".TB_overlayBG_alert").css({
-                display: "none"
-            });
-            /*蒙版显示*/
-            $("#addOrUpdateKeyWordAlertPrompt").css({
-                display: "none"
-            });
-            /*显示提示DIV*/
-        }
-    }
     var selected_index = 0;
     $(function () {
         rDrag.init(document.getElementById('addOrUpdateKeyWordAlertPromptTitle'));
@@ -543,7 +503,7 @@
                 nodes = zTree.getSelectedNodes();
         if (nodes.length == 0) {
 //            alert("请至少选择一个节点");
-            addOrUpdateKeyWordAlertPrompt.show("请至少选择一个节点");
+            parent.window.AlertPrompt.show("请至少选择一个节点");
             return;
         }
         zTree.hideNodes(nodes);
@@ -626,18 +586,18 @@
                 var mib = txtSize[j].split(",")[4] != undefined ? txtSize[j].split(",")[4] : "";
                 if (parseInt(getChar(kwd)) > 30 || parseInt(getChar(kwd)) < 1) {
 //                    alert("第" + (j + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
-                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
+                    parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
                     return;
                 }
                 // /^-?\d+\.?\d*$/
                 if (!/^-?\d+\.?\d*$/.test(pr)) {
 //                    alert("第" + (j + 1) + "行的\"出价\"小数输入不正确!");
-                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"出价\"小数输入不正确!");
+                    parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"出价\"小数输入不正确!");
                     return;
                 } else {
                     if (parseFloat(pr).toFixed(3) >= 999.9) {
 //                        alert("第" + (j + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
-                        addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
+                        parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
                         return;
                     }
                 }
@@ -645,18 +605,18 @@
                     if (pc != "空") {
                         if (parseInt(getChar(pc)) > 1024) {
 //                            alert("访问Url不能超过1024个字符");
-                            addOrUpdateKeyWordAlertPrompt.show("访问Url不能超过1024个字符");
+                            parent.window.AlertPrompt.show("访问Url不能超过1024个字符");
                             return;
                         } else {
                             if ((pc.indexOf(dm) == -1)) {
 //                                alert("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
-                                addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                                parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                                 return;
                             }
                             else {
                                 if (pc.substr(pc.indexOf(dm)) != dm) {
 //                                    alert("第" + (j + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                    parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
                                     return false;
                                 }
                             }
@@ -664,25 +624,25 @@
                     }
                 } else {
 //                    alert("第" + (j + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
-                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
+                    parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
                     return;
                 }
                 if (mib != "") {
                     if (mib != "空") {
                         if (parseInt(getChar(mib)) > 1024) {
 //                            alert("访问Url不能超过1024个字符");
-                            addOrUpdateKeyWordAlertPrompt.show("访问Url不能超过1024个字符");
+                            parent.window.AlertPrompt.show("访问Url不能超过1024个字符");
                             return;
                         } else {
                             if ((mib.indexOf(dm) == -1)) {
 //                                alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
-                                addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                                parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                                 return;
                             }
                             else {
                                 if (mib.substr(mib.indexOf(dm)) != dm) {
 //                                    alert("第" + (j + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
-                                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                    parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
                                     return false;
                                 }
                             }
@@ -690,7 +650,7 @@
                     }
                 } else {
 //                    alert("第" + (j + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
-                    addOrUpdateKeyWordAlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
+                    parent.window.AlertPrompt.show("第" + (j + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
                     return;
                 }
             }
@@ -726,7 +686,7 @@
             }
         } else {
 //            alert("请选择某单元或者填写正确的关键词数据！");
-            addOrUpdateKeyWordAlertPrompt.show("请选择某单元或者填写正确的关键词数据！");
+            parent.window.AlertPrompt.show("请选择某单元或者填写正确的关键词数据！");
         }
     }
     function overStep(isReplace) {
@@ -816,10 +776,10 @@
                     function (rs) {
                         if (rs == "1") {
 //                            alert("操作成功!");
-                            addOrUpdateKeyWordAlertPrompt.show("操作成功!");
+                            parent.window.AlertPrompt.show("操作成功!");
                         } else {
 //                            alert("添加失败!");
-                            addOrUpdateKeyWordAlertPrompt.show("添加失败!");
+                            parent.window.AlertPrompt.show("添加失败!");
                         }
                         top.dialog.getCurrent().close().remove();
                     });
@@ -1104,7 +1064,7 @@
                 uploadFile();
             } else {
 //                alert("请输入要添加的关键词或者要上传的excel文件或者csv文件！");
-                addOrUpdateKeyWordAlertPrompt.show("请输入要添加的关键词或者要上传的csv文件！");
+                parent.window.AlertPrompt.show("请输入要添加的关键词或者要上传的csv文件！");
             }
         }
 
@@ -1133,32 +1093,32 @@
             // vaildateKeyword info start
             if (!campaignName) {
 //                alert("第" + (i + 1) + "行请输入计划名称!");
-                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行请输入计划名称!");
+                parent.window.AlertPrompt.show("第" + (i + 1) + "行请输入计划名称!");
                 return;
             }
             if (!adgroupName) {
 //                alert("第" + (i + 1) + "行请输入单元名称!");
-                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行请输入单元名称!");
+                parent.window.AlertPrompt.show("第" + (i + 1) + "行请输入单元名称!");
                 return;
             }
             if (parseInt(getChar(kwd)) > 30 || parseInt(getChar(kwd)) < 1) {
 //                alert("第" + (i + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
-                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
+                parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"关键字\"长度最大为30个字符，30个英文字符,并且不能为空，汉字占两个字符！");
                 return;
             }
             if (!matchType) {
 //                alert("请输入匹配模式！")
-                addOrUpdateKeyWordAlertPrompt.show("请输入匹配模式！")
+                parent.window.AlertPrompt.show("请输入匹配模式！")
                 return;
             }
             if (!/^-?\d+\.?\d*$/.test(price)) {
 //                alert("第" + (i + 1) + "行的\"出价\"小数输入不正确!");
-                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"出价\"小数输入不正确!");
+                parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"出价\"小数输入不正确!");
                 return;
             } else {
                 if (parseFloat(price).toFixed(3) >= 999.9) {
 //                    alert("第" + (i + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
-                    addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
+                    parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"出价\"大小为：(0,999.9]<=关键词出价&&<=所属计划预算");
                     return;
                 }
             }
@@ -1167,18 +1127,18 @@
                 if (pc != "空") {
                     if (parseInt(getChar(pc)) > 1024) {
 //                        alert("访问Url不能超过1024个字符");
-                        addOrUpdateKeyWordAlertPrompt.show("访问Url不能超过1024个字符");
+                        parent.window.AlertPrompt.show("访问Url不能超过1024个字符");
                         return;
                     } else {
                         if ((pc.indexOf(dm) == -1)) {
 //                            alert("第" + (i + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
-                            addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                             return;
                         }
                         else {
                             if (pc.substr(pc.indexOf(dm)) != dm) {
 //                                alert("第" + (i + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
-                                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须以\"" + dm + "\"结尾！");
                                 return false;
                             }
                         }
@@ -1186,7 +1146,7 @@
                 }
             } else {
 //                alert("第" + (i + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
-                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
+                parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"访问\"Url地址必须如果不输入请输入字符:\"空\"");
                 return;
             }
 
@@ -1194,18 +1154,18 @@
                 if (mib != "空") {
                     if (parseInt(getChar(mib)) > 1024) {
 //                        alert("访问Url不能超过1024个字符");
-                        addOrUpdateKeyWordAlertPrompt.show("访问Url不能超过1024个字符");
+                        parent.window.AlertPrompt.show("访问Url不能超过1024个字符");
                         return;
                     } else {
                         if ((mib.indexOf(dm) == -1)) {
 //                            alert("第" + (i + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
-                            addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址必须包含以\"" + dm + "\"的域名！");
                             return;
                         }
                         else {
                             if (mib.substr(mib.indexOf(dm)) != dm) {
 //                                alert("第" + (i + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
-                                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
+                                parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址必须以\"" + dm + "\"结尾！");
                                 return false;
                             }
                         }
@@ -1213,7 +1173,7 @@
                 }
             } else {
 //                alert("第" + (i + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
-                addOrUpdateKeyWordAlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
+                parent.window.AlertPrompt.show("第" + (i + 1) + "行的\"移动访问\"Url地址如果不输入请输入字符:\"空\"");
                 return;
             }
         }
@@ -1224,7 +1184,7 @@
 
         if ($("#sError").attr("style") == "color: red;") {
 //            alert("网页中最多只支持上传10000行关键词，如果需要更多上传，请选择csv导入!");
-            addOrUpdateKeyWordAlertPrompt.show("网页中最多只支持上传10000行关键词，如果需要更多上传，请选择csv导入!");
+            parent.window.AlertPrompt.show("网页中最多只支持上传10000行关键词，如果需要更多上传，请选择csv导入!");
             return;
         }
 
@@ -1423,7 +1383,7 @@
             var result = $.parseJSON(xhr.responseText);
             if (result.msg != "Ok") {
 //                alert(result.msg);
-                addOrUpdateKeyWordAlertPrompt.show(result.msg);
+                parent.window.AlertPrompt.show(result.msg);
             } else {
                 var errorbody = $("#existKeyword");
                 var safeTbody = $("#createTable tbody");

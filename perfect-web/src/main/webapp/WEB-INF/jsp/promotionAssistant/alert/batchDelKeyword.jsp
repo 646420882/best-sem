@@ -161,19 +161,20 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/untils/untils.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var batchDelKeyWordAlertPrompt = {
         show:function(content){
+            $("#batchDelKeyWordAlertPrompt_title").html(content);
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });/*蒙版显示*/
             $("#batchDelKeyWordAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#batchDelKeyWordAlertPrompt").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#batchDelKeyWordAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });/*显示提示DIV*/
-            $("#batchDelKeyWordAlertPrompt_title").html(content);
         },
         hide:function(){
             $(".TB_overlayBG_alert").css({

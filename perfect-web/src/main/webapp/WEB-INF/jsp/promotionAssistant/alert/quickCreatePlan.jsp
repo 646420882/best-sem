@@ -165,53 +165,12 @@
         </div>
     </div>
 </div>
-<%--alert提示类--%>
-<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="quickCreatePlanAlertPrompt">
-    <h2 id="quickCreatePlanAlertPromptTitle">
-        <span class="fl alert_span_title" id="quickCreatePlanAlertPrompt_title"></span>
-        <%--<a href="#" class="close">×</a></h2>--%>
-        <%--<a href="#" onclick="quickCreatePlanAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
-    </h2>
-
-    <div class="mainlist">
-        <div class="w_list03">
-            <ul class="zs_set">
-                <li class="current" onclick="quickCreatePlanAlertPrompt.hide()">确认</li>
-            </ul>
-        </div>
-    </div>
-</div>
 <jsp:include page="./updateRegionTarget.jsp"/>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 
 <script type="text/javascript">
-    /*智能竞价中的alert提示*/
-    var quickCreatePlanAlertPrompt = {
-        show: function (content) {
-            $(".TB_overlayBG_alert").css({
-                display: "block", height: $(document).height()
-            });
-            /*蒙版显示*/
-            $("#quickCreatePlanAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-                display: "block"
-            });
-            /*显示提示DIV*/
-            $("#quickCreatePlanAlertPrompt_title").html(content);
-        },
-        hide: function () {
-            $(".TB_overlayBG_alert").css({
-                display: "none"
-            });
-            /*蒙版显示*/
-            $("#quickCreatePlanAlertPrompt").css({
-                display: "none"
-            });
-            /*显示提示DIV*/
-        }
-    }
 
     $(function () {
         rDrag.init(document.getElementById('quickCreatePlanAlertPromptTitle'));
@@ -229,7 +188,7 @@
         var serchKeyword = $("#inputKwd").val();
         if (serchKeyword == "多个以逗号分隔，如:雅思,出国" || serchKeyword == "") {
 //        alert("请输入您从事的业务!");
-            quickCreatePlanAlertPrompt.show("请输入您从事的业务!");
+            parent.window.AlertPrompt.show("请输入您从事的业务!");
             return;
         }
 
@@ -348,12 +307,12 @@
         var kwds = $("#addedkwd").val().split("\n");
         if (values == "") {
 //        alert("您没有选择关键词!");
-            quickCreatePlanAlertPrompt.show("您没有选择关键词!");
+            parent.window.AlertPrompt.show("您没有选择关键词!");
             return;
         }
         if (kwds.length > 500) {
 //        alert("添加的关键词数量不能超过500个");
-            quickCreatePlanAlertPrompt.show("添加的关键词数量不能超过500个");
+            parent.window.AlertPrompt.show("添加的关键词数量不能超过500个");
             return;
         }
         for (var i = 0; i < kwds.length; i++) {
@@ -371,7 +330,7 @@
 
         if (jsonArr.length == 0) {
 //        alert("您没有选择关键词!");
-            quickCreatePlanAlertPrompt.show("您没有选择关键词!");
+            parent.window.AlertPrompt.show("您没有选择关键词!");
             return;
         }
 
@@ -385,7 +344,7 @@
             success: function (data, textStatus, jqXHR) {
                 if (data == "success") {
 //                alert("添加成功!");
-                    quickCreatePlanAlertPrompt.show("添加成功!");
+                    parent.window.AlertPrompt.show("添加成功!");
                     top.dialog.getCurrent().close().remove();
                 }
             }

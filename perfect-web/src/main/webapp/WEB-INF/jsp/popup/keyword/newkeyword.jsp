@@ -210,6 +210,7 @@
 </div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript">
@@ -260,17 +261,17 @@
 <script type="text/javascript">
     var newKeyWordAlertPrompt = {
         show: function (content) {
+            $("#newKeyWordAlertPrompt_title").html(content);
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });
             /*蒙版显示*/
             $("#newKeyWordAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#newKeyWordAlertPrompt").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#newKeyWordAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });
             /*显示提示DIV*/
-            $("#newKeyWordAlertPrompt_title").html(content);
         },
         hide: function () {
             $(".TB_overlayBG_alert").css({

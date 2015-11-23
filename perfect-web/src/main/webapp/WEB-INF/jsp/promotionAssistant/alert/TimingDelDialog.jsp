@@ -42,18 +42,19 @@
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="application/javascript">
     var timingDelDialogAlertPrompt = {
         show:function(content){
+            $("#timingDelDialogAlertPrompt_title").html(content);
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });/*蒙版显示*/
             $("#timingDelDialogAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#timingDelDialogAlertPrompt").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#timingDelDialogAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });/*显示提示DIV*/
-            $("#timingDelDialogAlertPrompt_title").html(content);
         },
         hide:function(){
             $(".TB_overlayBG_alert").css({

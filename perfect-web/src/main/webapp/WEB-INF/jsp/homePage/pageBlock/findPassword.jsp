@@ -108,19 +108,20 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/bootstrapValidator.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var findPasswordAlertPrompt = {
         show:function(content){
+            $("#findPasswordAlertPrompt_title").html(content);
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });/*蒙版显示*/
             $("#findPasswordAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#findPasswordAlertPrompt").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#findPasswordAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });/*显示提示DIV*/
-            $("#findPasswordAlertPrompt_title").html(content);
         },
         hide:function(){
             $(".TB_overlayBG_alert").css({

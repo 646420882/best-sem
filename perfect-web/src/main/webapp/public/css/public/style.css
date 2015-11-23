@@ -1801,7 +1801,7 @@ ul.ztree.zTreeDragUL {
 }
 
 /* 弹出层 */
-.box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .box10, .box11 {
+.box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .box10{
     min-width: 400px;
     *max-width: 600px;
     position: absolute;
@@ -1961,7 +1961,7 @@ h2 .close {
 .TB_overlayBG_alert {
     background-color: #666;
     position: fixed;
-    z-index: 1003;
+    z-index: 10000;
     left: 0;
     top: 0;
     display: none;

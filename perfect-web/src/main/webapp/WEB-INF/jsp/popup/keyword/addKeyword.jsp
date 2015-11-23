@@ -177,19 +177,20 @@
 <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var addKeyAlertPrompt = {
         show:function(content){
+            $("#addKeyAlertPrompt_title").html(content);
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });/*蒙版显示*/
             $("#addKeyAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#addKeyAlertPrompt").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#addKeyAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });/*显示提示DIV*/
-            $("#addKeyAlertPrompt_title").html(content);
         },
         hide:function(){
             $(".TB_overlayBG_alert").css({

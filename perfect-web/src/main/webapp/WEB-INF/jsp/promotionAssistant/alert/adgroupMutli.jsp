@@ -229,21 +229,22 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
     /*智能竞价中的alert提示*/
     var adgroupMutliAlertPrompt = {
         show: function (content) {
+            $("#adgroupMutliAlertPrompt_title").html(content);
             $(".TB_overlayBG_alert").css({
                 display: "block", height: $(document).height()
             });
             /*蒙版显示*/
             $("#adgroupMutliAlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#adgroupMutliAlertPrompt").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#adgroupMutliAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });
             /*显示提示DIV*/
-            $("#adgroupMutliAlertPrompt_title").html(content);
         },
         hide: function () {
             $(".TB_overlayBG_alert").css({
@@ -427,18 +428,18 @@
                 var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
                 if (parseInt(getChar(c0)) > 30 || parseInt(getChar(c0)) == 0) {
 //                    alert("第" + (j + 1) + "行单元名长度不能超过30个字符，一个汉字占两个字符,且不为空");
-                    adgroupMutliAlertPrompt.show("第" + (j + 1) + "行单元名长度不能超过30个字符，一个汉字占两个字符,且不为空");
+                    parent.window.AlertPrompt.show("第" + (j + 1) + "行单元名长度不能超过30个字符，一个汉字占两个字符,且不为空");
                     return;
                 }
                 if (c2 != "") {
                     if (!/^-?\d+\.?\d*$/.test(c2)) {
 //                        alert("第" + (j + 1) + "行输入正确的单元出价！");
-                        adgroupMutliAlertPrompt.show("第" + (j + 1) + "行输入正确的单元出价！");
+                        parent.window.AlertPrompt.show("第" + (j + 1) + "行输入正确的单元出价！");
                         return;
                     }
                 } else {
 //                    alert("第" + (j + 1) + "行单元出价不能为空!");
-                    adgroupMutliAlertPrompt.show("第" + (j + 1) + "行单元出价不能为空!");
+                    parent.window.AlertPrompt.show("第" + (j + 1) + "行单元出价不能为空!");
                     return;
                 }
             }
@@ -465,7 +466,7 @@
             }
         } else {
 //            alert("请选择推广计划或者输入单元信息！");
-            adgroupMutliAlertPrompt.show("请选择推广计划或者输入单元信息！");
+            parent.window.AlertPrompt.show("请选择推广计划或者输入单元信息！");
         }
     }
     /**
@@ -546,7 +547,7 @@
                 }, function (rs) {
                     if (rs == "1") {
 //                        alert("操作成功");
-                        adgroupMutliAlertPrompt.show("操作成功");
+                        parent.window.AlertPrompt.show("操作成功");
                         top.dialog.getCurrent().close().remove();
                     }
                 });

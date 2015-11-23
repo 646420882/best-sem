@@ -13,6 +13,7 @@
     <link href="/public/plugs/uploadify/uploadify.css" rel="stylesheet"/>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="/public/plugs/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
     <script type="text/javascript">
         $(function () {
             rDrag.init(document.getElementById('uploadMainAlertPromptTitle'));
@@ -63,15 +64,15 @@
         /*智能竞价中的alert提示*/
         var uploadMainAlertPrompt = {
             show:function(content){
+                $("#uploadMainAlertPrompt_title").html(content);
                 $(".TB_overlayBG_alert").css({
                     display: "block", height: $(document).height()
                 });/*蒙版显示*/
                 $("#uploadMainAlertPrompt").css({
-                    left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                    top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                    left: ($("body").width() - $("#uploadMainAlertPrompt").width()) / 2 - 20 + "px",
+                    top: ($(window).height() - $("#uploadMainAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
                     display: "block"
                 });/*显示提示DIV*/
-                $("#uploadMainAlertPrompt_title").html(content);
             },
             hide:function(){
                 $(".TB_overlayBG_alert").css({
