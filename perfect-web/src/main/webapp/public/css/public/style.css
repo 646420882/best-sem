@@ -1019,24 +1019,27 @@
 }
 
 .k_top2_text {
-    width: 46%;
+    width: 100%;
     border-right: 1px solid #cdd6ed;
     padding: 20px 2%;
-    height: 340px;
+    background: #e4eafa;
+    /*  height: 340px;*/
 }
 
 .k_top2_text textarea {
-    width: 100%;
-    height: 187px;
-    margin-bottom: 20px;
+    width: 40%;
+    height: 30px;
     line-height: 22px;
     overflow: auto;
+
 }
 
 .k_top2_text select {
-    width: 100%;
+    width: 30%;
     height: 30px;
     display: block;
+    float: left;
+    margin-right: 10px;
     line-height: 30px;
     border: 1px solid #dadadd;
     color: #8d8d8d;
@@ -1046,12 +1049,15 @@
 
 .k_top2_text p {
     color: #ff0000;
-    line-height: 24px;
+    line-height: 22px;
+    float: left;
+    width: 100%;
 }
 
 .k_top2_text1 {
     /* height: 190px;*/
     position: relative;
+    overflow: inherit;
 }
 
 .become2 {
@@ -3855,7 +3861,17 @@ h2 .close {
 .k_r_top2 .k_r_under {
     background: none;
     margin-top: 5px;
+    width: 100%;
+    float: left;
 
+}
+
+.ms-drop {
+    position: relative;
+}
+
+.ms-parent {
+    margin-right: 10px;
 }
 
 .k_r_top2 .k_r_under .download a {
@@ -3864,6 +3880,11 @@ h2 .close {
 
 .k_top2_text1 {
     width: 100%;
+    margin-right: 10px;
+}
+
+.ms-parent {
+    float: left;
 }
 
 /****map*****/
@@ -4619,10 +4640,11 @@ input[type=checkbox]:focus {
 }
 
 .daterangepicker td.in-range {
-     background-color: #01aef0;
-     color: white;
-     border-radius: 100%;
- }
+    background-color: #01aef0;
+    color: white;
+    border-radius: 100%;
+}
+
 .daterangepicker td.in-range:hover {
 
     color: #01aef0;

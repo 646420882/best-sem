@@ -23,6 +23,12 @@ var matchType = null;
 var keywordQuality = null;
 var keywordPrice = null;
 $(function () {
+    $("#jingjia_adds").click(function () {
+        $("#jiangjia_add").hide();
+    });
+    $("#jiangjia_chongfu").click(function () {
+        $("#jiangjia_add").fadeIn();
+    })
     $(".tab_menu").on('click', function () {
         var lis = $(".tab_menu").find("li");
         if (lis.eq(0).hasClass("selected")) {

@@ -201,11 +201,10 @@ $(document).ready(function () {
     $('.zhushou_menu ul li').click(function () {
         $(this).addClass('current').siblings().removeClass('current');
     });
-});5
+});
 /*******二级菜单****/
 $(document).ready(function () {
     /**推广助手自适应***/
-    console.log($(".assistant_right").offsetHeight);
     $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
     $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
     var $tab_li = $('.zh_menu2 li');
@@ -304,12 +303,7 @@ $(function () {
     });
 
     $(".pinned").pin()
-    $("#jingjia_adds").click(function () {
-        $("#jiangjia_add").hide();
-    });
-    $("#jiangjia_chongfu").click(function () {
-        $("#jiangjia_add").fadeIn();
-    })
+
     //编辑弹窗关闭方法
     $(".bottom_close").click(function () {
         $(".bottom_close").parent().parent().fadeOut("slow");

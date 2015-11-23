@@ -574,7 +574,7 @@
 
 <!---------分组管理----------->
 <div class="box5" style="display:none;*width:400px;*width:410px;">
-    <h2 id="box5"><span class="fl">分组管理</span><a href="#" class="close">×</a></h2>
+    <h2 id="box5"><span class="fl">重点词分组</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
         <div class="gusuan_bottom1 over fl ">

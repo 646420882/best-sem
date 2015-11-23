@@ -65,10 +65,12 @@ html {
     float: right;
 }
 
-textarea {
+/*textarea {
     resize: none;
+}*/
+label{
+    font-weight:normal;
 }
-
 table {
     overflow: auto;
 }
