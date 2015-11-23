@@ -10,6 +10,7 @@ package com.perfect.param;
 public class SearchFilterParam {
     private String cid;//计划id
     private String aid;//单元id
+    private String oid;//用于层级数据id载体
     private String filterType;//筛选条件是哪一个层级
 
     private String filterField;//筛选字段
@@ -66,11 +67,20 @@ public class SearchFilterParam {
         this.aid = aid;
     }
 
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
     @Override
     public String toString() {
         return "SearchFilterParam{" +
                 "cid='" + cid + '\'' +
                 ", aid='" + aid + '\'' +
+                ", oid='" + oid + '\'' +
                 ", filterType='" + filterType + '\'' +
                 ", filterField='" + filterField + '\'' +
                 ", filterValue='" + filterValue + '\'' +
