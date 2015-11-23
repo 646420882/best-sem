@@ -23,10 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/8/21.
@@ -61,17 +58,17 @@ public class AssistantAdgroupController extends WebContextSupport {
         if (cid.length() > OBJ_SIZE) {
             if (cid != "" || !cid.equals("")) {
                 parms.put(MongoEntityConstants.OBJ_CAMPAIGN_ID, cid);
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,null);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize, null);
             } else {
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,null);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize, null);
             }
             setCampaignNameByStringObjId((List<AdgroupDTO>) pagerInfo.getList());
         } else {
-            if (cid != "" || !cid.equals("")) {
+            if (!Objects.equals("", cid)) {
                 parms.put(MongoEntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,null);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize, null);
             } else {
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,null);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize, null);
             }
             setCampaignNameByLongId((List<AdgroupDTO>) pagerInfo.getList());
         }
@@ -506,17 +503,17 @@ public class AssistantAdgroupController extends WebContextSupport {
         if (cid.length() > OBJ_SIZE) {
             if (cid != "" || !cid.equals("")) {
                 parms.put(MongoEntityConstants.OBJ_CAMPAIGN_ID, cid);
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,sp);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize, sp);
             } else {
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,sp);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize, sp);
             }
             setCampaignNameByStringObjId((List<AdgroupDTO>) pagerInfo.getList());
         } else {
             if (cid != "" || !cid.equals("")) {
                 parms.put(MongoEntityConstants.CAMPAIGN_ID, Long.parseLong(cid));
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,sp);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize, sp);
             } else {
-                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize,sp);
+                pagerInfo = adgroupService.findByPagerInfo(parms, nowPage, pageSize, sp);
             }
             setCampaignNameByLongId((List<AdgroupDTO>) pagerInfo.getList());
         }

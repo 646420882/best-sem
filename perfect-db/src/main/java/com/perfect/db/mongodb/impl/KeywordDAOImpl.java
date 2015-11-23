@@ -500,7 +500,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         entityList.stream().forEach(s -> {
             if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword()).and(LOCALSTATUS).is(1)), getEntityClass())) {
                 getMongoTemplate().insert(s);
-            }else{
+            } else {
                 KeywordDTO keywordDTO = new KeywordBackUpDTO();
                 keywordDTO.setKeyword(s.getKeyword());
                 dtos.add(keywordDTO);
@@ -965,72 +965,76 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
 
         if (sp != null) {
             if (Objects.equals(sp.getFilterType(), "Keyword")) {
-
-                switch (sp.getFilterField()) {
-                    case "name":
-                        getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
-                        break;
-                    case "state":
-                        if (sp.getFilterValue().contains(",")) {
-                            String[] status = sp.getFilterValue().split(",");
-                            Integer[] integers = new Integer[status.length];
-                            for (int i = 0; i < integers.length; i++) {
-                                integers[i] = Integer.parseInt(status[i]);
-                            }
-                            q.addCriteria(Criteria.where("s").in(integers));
-                        } else {
-                            q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
-                        }
-                        break;
-                    case "pause":
-                        if (Integer.valueOf(sp.getFilterValue()) != -1) {
-                            if (Integer.valueOf(sp.getFilterValue()) == 0) {
-                                q.addCriteria(Criteria.where("p").is(false));
+                if (Objects.equals(sp.getOid(), null)) {
+                    switch (sp.getFilterField()) {
+                        case "name":
+                            getNormalQuery(q, sp.getFilterField(), sp.getSelected(), sp.getFilterValue());
+                            break;
+                        case "state":
+                            if (sp.getFilterValue().contains(",")) {
+                                String[] status = sp.getFilterValue().split(",");
+                                Integer[] integers = new Integer[status.length];
+                                for (int i = 0; i < integers.length; i++) {
+                                    integers[i] = Integer.parseInt(status[i]);
+                                }
+                                q.addCriteria(Criteria.where("s").in(integers));
                             } else {
-                                q.addCriteria(Criteria.where("p").is(true));
+                                q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
                             }
-                        }
-                        break;
-                    case "price":
-                        String[] prs = sp.getFilterValue().split(",");
-                        double starPrice = Double.parseDouble(prs[0]);
-                        double endPrice = Double.parseDouble(prs[1]);
-                        q.addCriteria(Criteria.where("pr").gt(starPrice).lt(endPrice));
-                        break;
-                    case "matchType":
-                        if (sp.getFilterValue().contains(",")) {
-                            List<Integer> matchType = new ArrayList<>();
-                            List<Integer> phraseType = new ArrayList<>();
-                            String[] ids = sp.getFilterValue().split(",");
-                            for (int i = 0; i < ids.length; i++) {
-                                if (ids[i].length() == 2) {
-                                    phraseType.add(Integer.valueOf(ids[i].substring(0, 1)));
+                            break;
+                        case "pause":
+                            if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                                if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                                    q.addCriteria(Criteria.where("p").is(false));
                                 } else {
-                                    matchType.add(Integer.valueOf(ids[i]));
+                                    q.addCriteria(Criteria.where("p").is(true));
                                 }
                             }
-                            if (matchType.size() > 0) {
-                                q.addCriteria(Criteria.where("mt").in(matchType));
-                            }
-                            if (phraseType.size() > 0)
-                                q.addCriteria(Criteria.where("pt").in(phraseType).and("mt").is(2));
+                            break;
+                        case "price":
+                            String[] prs = sp.getFilterValue().split(",");
+                            double starPrice = Double.parseDouble(prs[0]);
+                            double endPrice = Double.parseDouble(prs[1]);
+                            q.addCriteria(Criteria.where("pr").gt(starPrice).lt(endPrice));
+                            break;
+                        case "matchType":
+                            if (sp.getFilterValue().contains(",")) {
+                                List<Integer> matchType = new ArrayList<>();
+                                List<Integer> phraseType = new ArrayList<>();
+                                String[] ids = sp.getFilterValue().split(",");
+                                for (int i = 0; i < ids.length; i++) {
+                                    if (ids[i].length() == 2) {
+                                        phraseType.add(Integer.valueOf(ids[i].substring(0, 1)));
+                                    } else {
+                                        matchType.add(Integer.valueOf(ids[i]));
+                                    }
+                                }
+                                if (matchType.size() > 0) {
+                                    q.addCriteria(Criteria.where("mt").in(matchType));
+                                }
+                                if (phraseType.size() > 0)
+                                    q.addCriteria(Criteria.where("pt").in(phraseType).and("mt").is(2));
 
-                        } else {
-                            if (sp.getFilterValue().length() == 1) {
-                                q.addCriteria(Criteria.where("mt").is(Integer.valueOf(sp.getFilterValue())));
                             } else {
-                                q.addCriteria(Criteria.where("pt").is(Integer.valueOf(sp.getFilterValue().substring(0, 1))).and("mt").is(2));
+                                if (sp.getFilterValue().length() == 1) {
+                                    q.addCriteria(Criteria.where("mt").is(Integer.valueOf(sp.getFilterValue())));
+                                } else {
+                                    q.addCriteria(Criteria.where("pt").is(Integer.valueOf(sp.getFilterValue().substring(0, 1))).and("mt").is(2));
+                                }
                             }
-                        }
-                        break;
-                    case "pcUrl":
-                        getNormalQuery(q, "pc", sp.getSelected(), sp.getFilterValue());
-                        break;
-                    case "mibUrl":
-                        getNormalQuery(q, "mobile", sp.getSelected(), sp.getFilterValue());
-                        break;
+                            break;
+                        case "pcUrl":
+                            getNormalQuery(q, "pc", sp.getSelected(), sp.getFilterValue());
+                            break;
+                        case "mibUrl":
+                            getNormalQuery(q, "mobile", sp.getSelected(), sp.getFilterValue());
+                            break;
+                    }
+                    return q;
+                } else {
+                    q.addCriteria(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(Long.valueOf(sp.getOid())));
+                    return q;
                 }
-                return q;
             }
         }
         return q;

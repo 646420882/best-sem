@@ -126,12 +126,12 @@ var AccountPerformance = function () {
 
     $("#containerLegend").empty();
     $("#containerLegend").html("<div class='tu_top over'><ul><li><b>账户表现</b></li>" +
-        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></label></li>" +
-        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></label></li>" +
-        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></label></li>" +
-        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></label></li>" +
-        "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></label></li>" +
-        "<li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+    "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='impression' xname=''  type='checkbox' checked='checked'><span style='background-color: #1e90ff'></span><b>展现</b></label></li>" +
+    "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='click'      xname=''  type='checkbox' checked='checked'><span style='background-color: #ff0000'></span><b>点击</b></label></li>" +
+    "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='ctr'        xname=''  type='checkbox'><span style='background-color: #ffa500'></span><b>点击率</b></label></li>" +
+    "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='cost'       xname=''  type='checkbox'><span style='background-color: #008000'></span><b>消费</b></label></li>" +
+    "<li><label class='checkbox-inlines'><input name='chartcheckbox' cname='conversion' xname=''  type='checkbox'><span style='background-color: #9370db'></span><b>转化</b></label></li>" +
+    "<li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
     data1 = {
         name: '展现',
         type: 'line',
@@ -565,7 +565,19 @@ var loadTree = function () {
         dataType: "json",
         success: function (data, textStatus, jqXHR) {
             zNodes = data.trees;
-            $.fn.zTree.init($("#zTree"), setting, zNodes);
+            var zTreeObj = $.fn.zTree.init($("#zTree"), setting, zNodes);
+            var keywordId = $("#assistant_keyword_id").val();
+            var adgroupId = $("#assistant_adgroup_id").val();
+            var campaignId = $("#assistant_campaign_id").val();
+
+            if (keywordId != 0 && adgroupId != 0 && campaignId != 0) {//判断是否是跳转过来的node
+                // 加载指定关键词
+                var campaginNode = zTreeObj.getNodeByParam("id", campaignId, null);
+                var exp = zTreeObj.expandNode(campaginNode, true, false, true);
+                var adgroupNode= zTreeObj.getNodeByParam("id", adgroupId, null);
+                zTreeObj.selectNode(adgroupNode);
+            }
+
         }
     });
 };

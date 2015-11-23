@@ -25,20 +25,20 @@ var imageMenuData = [
     }, {
         text: "添加创意",
         img: "../public/img/zs_function1.png",
-        func: function() {
+        func: function () {
             $(this).css("padding", "10px");
         }
     }, {
         text: "添加蹊径子链",
         img: "../public/img/zs_function1.png",
-        func: function() {
+        func: function () {
             $(this).css("background-color", "#beceeb");
         }
     }],
     [{
         text: "添加推广电话",
         img: "../public/img/zs_function1.png",
-        func: function() {
+        func: function () {
             var src = $(this).attr("src");
             window.open(src.replace("/s512", ""));
         }
@@ -46,7 +46,7 @@ var imageMenuData = [
     [{
         text: "添加移动商桥",
         img: "../public/img/zs_function1.png",
-        func: function() {
+        func: function () {
             var src = $(this).attr("src");
             window.open(src.replace("/s512", ""));
         }
@@ -58,7 +58,7 @@ var imageMenuData = [
  * @param treeNode
  * @returns {{cid: null, aid: null}}
  */
-var nowChoose = null;
+var nowChoose = {};
 var jsonData = {cid: null, aid: null, cn: null};
 function getNowChooseCampaignTreeData(treeNode) {
     if (treeNode.level == 0) {
@@ -66,7 +66,7 @@ function getNowChooseCampaignTreeData(treeNode) {
         jsonData.cid = treeNode.id;
         jsonData.cn = treeNode.name;
         jsonData.aid = null;
-    /*    $(this).smartMenu(imageMenuData);*/
+        /*    $(this).smartMenu(imageMenuData);*/
     } else if (treeNode.level == 1) {
         //点击的是子节点(推广单元)
         jsonData.cid = treeNode.getParentNode().id;
@@ -99,6 +99,8 @@ function whenClickTreeLoadData(tabName, param) {
     if (tabName == "关键词") {
         if (param.cid != null) {
             getKwdList(0);
+        } else {
+            getKwdList(0);
         }
     } else if (tabName == "推广计划") {
         getCampaignList(0);
@@ -109,6 +111,9 @@ function whenClickTreeLoadData(tabName, param) {
             } else {
                 getCreativePlan(param.cid);
             }
+        } else {
+            sparams = {cid: null, aid: null, nowPage: 0, pageSize: 20}//初始化创意的查询条件
+            loadCreativeData(0);
         }
     } else if (tabName == "附加创意") {
         if (param.cid != null) {
@@ -122,6 +127,8 @@ function whenClickTreeLoadData(tabName, param) {
     } else if (tabName == "推广单元") {
         if (param.cid != null) {
             getAdgroupPlan(param.cid, param.cn);
+        }else{
+            loadAdgroupData(0);
         }
     }
     $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
