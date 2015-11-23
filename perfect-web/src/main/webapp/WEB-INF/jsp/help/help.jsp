@@ -55,6 +55,7 @@
             <div class="on_title over">
                 <a href="#">
                     帮助中心
+                    &nbsp;&nbsp;>&nbsp;&nbsp;<a href="/home" style="color: #8e8e8e;">账户全景</a>
                 </a>
             </div>
         </div>

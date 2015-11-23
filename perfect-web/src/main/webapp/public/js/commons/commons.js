@@ -37,8 +37,8 @@ var commons = {
                 display: "block", height: $(document).height()
             });
             $("#findOrReplace").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#findOrReplace").width()) / 2 - 20 + "px",
+                top: ($(window).height() - $("#findOrReplace").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });
         });
@@ -79,8 +79,8 @@ var commons = {
             display: "block", height: $(document).height()
         });
         $("#findBatchDel").css({
-            left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-            top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
+            left: ($("body").width() - $("#findBatchDel").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $("#findBatchDel").height()) / 2 + $(window).scrollTop() + "px",
             display: "block"
         });
     }
@@ -510,7 +510,7 @@ $.extend({
         form.foRSubmit("../assistantCommons/checkSome", foR_params, function (result) {
             if (result.data) {
                 $.foRComplete({type: foR_params.type, forType: foR_params.forType, data: result.data});
-                commons.foRClose();
+                //commons.foRClose();
             }
         });
     },
@@ -1060,11 +1060,13 @@ var TabModel = {
             case "Keyword_state":
                 this.inputSubmit("checkbox", filterField, null, function (result) {
                     $.leveComplete("keyword", {data: result.data.list});
+                    TabModel.modelClose()
                 });
                 break;
             case "Keyword_pause":
                 this.inputSubmit(null, filterField, null, function (result) {
                     $.leveComplete("keyword", {data: result.data.list});
+                    TabModel.modelClose()
                 });
                 break;
             case "Keyword_price":
@@ -1083,6 +1085,7 @@ var TabModel = {
                         $.leveComplete("keyword", {data: result.data.list});
                     });
                     errorMsg.html('');
+                    TabModel.modelClose()
                 } else {
                     errorMsg.html("请输入正确的价格范围!");
                 }
@@ -1090,6 +1093,7 @@ var TabModel = {
             case "Keyword_cquality":
                 var quality = this.getCheckData();
                 console.log(quality);
+                TabModel.modelClose()
                 break;
             case "Keyword_matchType":
                 var checkData = [];
@@ -1112,11 +1116,13 @@ var TabModel = {
                         $.leveComplete("keyword", {data: result.data.list});
                     });
                 }
+                TabModel.modelClose()
                 break;
             case "Creative_pause":
                 this.inputSubmit(null, filterField, "../assistantCreative/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("creative", {data: result.list});
+                    TabModel.modelClose()
                 });
                 break;
             case "Creative_state":
@@ -1129,54 +1135,63 @@ var TabModel = {
                 this.inputSubmit(null, filterField, "../assistantCreative/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("creative", {data: result.list});
+                    TabModel.modelClose()
                 });
                 break;
             case "Adgroup_state":
                 this.inputSubmit("checkbox", filterField, "../assistantAdgroup/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("adgroup", {data: result.list});
+                    TabModel.modelClose()
                 });
                 break;
             case "Adgroup_pause":
                 this.inputSubmit(null, filterField, "../assistantAdgroup/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("adgroup", {data: result.list});
+                    TabModel.modelClose();
                 });
                 break;
             case "Adgroup_price":
                 this.moneyAbuoutSubmit(filterField, "../assistantAdgroup/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("adgroup", {data: result.list});
+                    TabModel.modelClose();
                 });
                 break;
             case "Campaign_state":
                 this.inputSubmit("checkbox", filterField, "../assistantCampaign/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("campaign", {data: result.list});
+                    TabModel.modelClose();
                 });
                 break;
             case "Campaign_pause":
                 this.inputSubmit(null, filterField, "../assistantCampaign/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("campaign", {data: result.list});
+                    TabModel.modelClose();
                 });
                 break;
             case "Campaign_budget":
                 this.moneyAbuoutSubmit(filterField, "../assistantCampaign/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("campaign", {data: result.list});
+                    TabModel.modelClose();
                 });
                 break;
             case "Campaign_show":
                 this.inputSubmit(null, filterField, "../assistantCampaign/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("campaign", {data: result.list});
+                    TabModel.modelClose();
                 });
                 break;
             case "Campaign_dynamic":
                 this.inputSubmit(null, filterField, "../assistantCampaign/filterSearch", function (res) {
                     var result = $.parseJSON(res);
                     $.leveComplete("campaign", {data: result.list});
+                    TabModel.modelClose();
                 });
                 break;
                 break;
@@ -1195,23 +1210,27 @@ var TabModel = {
                             this.filterSearchSubmit(formData, "../assistantCreative/filterSearch", function (result) {
                                 var gson = $.parseJSON(result);
                                 $.leveComplete("creative", {data: gson.list});
+                                TabModel.modelClose();
                             });
                             break;
                         case "Adgroup":
                             this.filterSearchSubmit(formData, "../assistantAdgroup/filterSearch", function (result) {
                                 var gson = $.parseJSON(result);
                                 $.leveComplete("adgroup", {data: gson.list});
+                                TabModel.modelClose();
                             });
                             break;
                         case "Campaign":
                             this.filterSearchSubmit(formData, "../assistantCampaign/filterSearch", function (res) {
                                 var result = $.parseJSON(res);
                                 $.leveComplete("campaign", {data: result.list});
+                                TabModel.modelClose();
                             });
                             break;
                         default:
                             this.filterSearchSubmit(formData, null, function (result) {
                                 $.leveComplete("keyword", {data: result.data.list});
+                                TabModel.modelClose();
                             });
                             break;
                     }

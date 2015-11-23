@@ -409,8 +409,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li id="addMonitorQR" class="current">确认</li>
-                <li id="addFolderQR">确认</li>
+                <li id="addFolderQR" class="current">确认</li>
                 <li onclick="closeAlert();">取消</li>
             </ul>
         </div>

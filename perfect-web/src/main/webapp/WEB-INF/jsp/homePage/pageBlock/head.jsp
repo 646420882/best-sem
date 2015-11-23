@@ -298,6 +298,11 @@
     $(function () {
         rDrag.init(document.getElementById('head_top'));
         rDrag.init(document.getElementById('AlertPrompTitle'));
+        rDrag.init(document.getElementById('findOrReplaceH'));
+        rDrag.init(document.getElementById('changeCreative'));
+        rDrag.init(document.getElementById('excludeIPChange'));
+        rDrag.init(document.getElementById('budgetChange'));
+        rDrag.init(document.getElementById('batchDel'));
     });
     $(function () {
         $("#head_click").click(function () {

@@ -795,22 +795,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bidding.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript">
-    /*智能竞价中的alert提示*/
-    /*var AlertPrompt = {
-        show:function(content){
-
-            $(".TB_overlayBG").css({
-                display: "block", height: $(document).height()
-            });*//*蒙版显示*//*
-            $("#AlertPrompt").css({
-                left: ($("body").width() - $("#download").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#download").height()) / 2 + $(window).scrollTop() + "px",
-                display: "block"
-            });*//*显示提示DIV*//*
-            $("#AlertPrompt_title").html(content);
-        }
-
-    }*/
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
     });
