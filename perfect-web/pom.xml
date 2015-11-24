@@ -132,6 +132,11 @@
             <artifactId>commons-lang</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+
         <!-- Jsoup -->
         <dependency>
             <groupId>org.jsoup</groupId>
