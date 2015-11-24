@@ -40,34 +40,37 @@ echo "update source code"
 git pull
 
 echo "rebuilding, please wait for a moment..."
-cp $base_dir/configuration/jndi/jetty-env-$mode.xml $base_dir/perfect-web/src/main/webapp/WEB-INF/jetty-env.xml
-mvn clean package -P$mode -DskipTests
-cp $base_dir/perfect-web/target/perfect-web.war $base_dir/perfect-web/docker/ROOT.war
-git checkout -- $base_dir/perfect-web/src/main/webapp/WEB-INF/jetty-env.xml
+cp ${base_dir}/configuration/jndi/tomcat-env-${mode}.xml ${base_dir}/perfect-web/src/main/webapp/WEB-INF/tomcat-env.xml
+mvn clean package -P${mode} -DskipTests
+cp ${base_dir}/perfect-web/target/perfect-web.war ${base_dir}/perfect-web/docker/ROOT.war
+cp ${base_dir}/configuration/driver/mysql-connector-java-5.1.37.jar ${base_dir}/perfect-web/docker/
+git checkout -- ${base_dir}/perfect-web/src/main/webapp/WEB-INF/tomcat-env.xml
 
-running=$(docker inspect --format="{{ .State.Running }}" $container 2> /dev/null)
+running=$(docker inspect --format="{{ .State.Running }}" ${container} 2> /dev/null)
 if [ $? -eq 1 ];  then
-    echo "The $container does't exist!"
+    echo "The ${container} does't exist!"
 else
     # Check container running status
-    if [ $running = "true" ];  then
-        docker stop $container
+    if [ ${running} = "true" ];  then
+        docker stop ${container}
     fi
-    docker rm $container
+    docker rm ${container}
 fi
 
 imageName=souke/sem-web
 imageVersion=$(mvn org.apache.maven.plugins:maven-help-plugin:2.2:evaluate -Dexpression=project.version | egrep -v '^\[|Downloading:' | tr -d ' \n')
-imageId=$(docker images -q $imageName:$imageVersion 2> /dev/null)
-if [ ! -z $imageId ];  then
-    docker rmi $imageId
+imageId=$(docker images -q ${imageName}:${imageVersion} 2> /dev/null)
+if [ ! -z ${imageId} ];  then
+    docker rmi ${imageId}
 fi
 
-cd $base_dir/perfect-web/docker
-docker build -t $imageName:$imageVersion .
-rm -f $base_dir/perfect-web/docker/ROOT.war
+cd ${base_dir}/perfect-web/docker
+docker build -t ${imageName}:${imageVersion} .
+rm -f ${base_dir}/perfect-web/docker/ROOT.war
+rm -f ${base_dir}/perfect-web/docker/mysql-connector-java-5.1.37.jar
 
 # Run a container
-docker run --name=$container --net=host -d -e HEAP_MEMORY_SIZE=$heap_memory_size -e HTTP_PORT=$http_port $imageName:$imageVersion
+#docker run --name=${container} --net=host -d -e HEAP_MEMORY_SIZE=${heap_memory_size} -e HTTP_PORT=${http_port} ${imageName}:${imageVersion}
+docker run --name=${container} -p ${http_port}:${http_port} -d ${imageName}:${imageVersion}
 
 echo "redeploy finished."
