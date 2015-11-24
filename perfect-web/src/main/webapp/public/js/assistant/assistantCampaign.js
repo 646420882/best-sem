@@ -110,9 +110,19 @@ function campaignDataToHtml(obj, index) {
         html = html + "<tr class='list2_box1'>";
     }
 
-    html = html + "<input type='hidden' value = " + obj.campaignId + " />";
 
-    html = html + "<td><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/></td>";
+    html = html + "<input type='hidden' value = " + obj.campaignId + " />";
+    if (obj.localStatus != null) {
+        if (obj.localStatus == 3) {
+            html = html + "<td class='table_add'><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/><span class='error' step='3'></span></td>";
+        } else {
+            html = html + "<td class='table_add'><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/><span class='pen' step='" + obj.localStatus + "'></span></td>";
+        }
+    } else {
+        html = html + "<td>&nbsp;</td>";
+    }
+
+    html = html + "<td></td>";
     html = html + "<td>" + obj.campaignName + "</td>";
 
     switch (obj.status) {
@@ -153,16 +163,8 @@ function campaignDataToHtml(obj, index) {
     html = html + "<td>" + (obj.excludeIp != null ? obj.excludeIp.length : 0) + "</td>";
     html = html + (obj.budgetOfflineTime != null ? "<td>" + obj.budgetOfflineTime.length + "</td>" : "<td>-</td>");
     html = html + "<input type='hidden' value=" + obj.priceRatio + " class='hidden'/>";
-    if (obj.localStatus != null) {
-        if (obj.localStatus == 3) {
-            html = html + "<td><span class='error' step='3'></span></td>";
-        } else {
-            html = html + "<td><span class='pen' step='" + obj.localStatus + "'></span></td>";
-        }
-    } else {
-        html = html + "<td>&nbsp;</td>";
-    }
-    html = html + "</tr>";
+
+    html = html + "<td></td></tr>";
 
     return html;
 }

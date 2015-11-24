@@ -148,7 +148,7 @@
                                                               src="../public/img/zs_function5.png"></span><b>快速添加关键词</b></a>
                                                       </li>--%>
                                                     <li onclick="commons.foRShow('keyword',this)"><a href="javascript:;"
-                                                    ><span class="z_function_hover"><img
+                                                            ><span class="z_function_hover"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -194,9 +194,10 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th style="min-width:40px;"><input type="checkbox"
+                                                            <th style="min-width:80px;"><input type="checkbox"
                                                                                                name='keyAllCheck'
-                                                                                               onchange="$.foRCheckAll('keyAllCheck')"/>
+                                                                                               onchange="$.foRCheckAll('keyAllCheck')"
+                                                                                               style="float:left;margin:0 15px;"/>
                                                             </th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Keyword_name',this)">
@@ -356,7 +357,7 @@
                                                        </li>--%>
                                                     <li onclick="commons.foRShow('creative',this)"><a
                                                             href="javascript:;" class="editer"
-                                                    ><span class="zs_top"><img
+                                                            ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -563,7 +564,7 @@
                                                         </li>
                                                         <li onclick="commons.foRShow(this)"><a href="javascript:;"
                                                                                                class="editer"
-                                                        ><span class="zs_top"><img
+                                                                ><span class="zs_top"><img
                                                                 src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                                 src="../public/img/zs_input.png"></a>
                                                         </li>
@@ -784,7 +785,7 @@
                                                         </li>--%>
                                                     <li onclick="commons.foRShow('adgroup',this)"><a href="javascript:;"
                                                                                                      class="editer"
-                                                    ><span class="zs_top"><img
+                                                            ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -869,7 +870,7 @@
                                             <div class="zhanghu_input"></div>
                                             <div id="adgroupPager" class="pagination"></div>
                                             <div class="zs_bottom over" id="aDiv">
-                                                <div class="zs_bottom1 over fl ">
+                                                <div class="zs_bottom1 zs_bottom_campation over fl ">
                                                     <ul>
                                                         <li>
                                                             <div class="t_list01 fl over">名称：</div>
@@ -920,7 +921,7 @@
                                                     </li>
                                                     <li onclick="commons.foRShow('campaign',this)"><a
                                                             href="javascript:;" class="editer"
-                                                    ><span class="zs_top"><img
+                                                            ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -940,7 +941,8 @@
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th><input type="checkbox" name='campaignAllCheck'
-                                                                       onchange="$.foRCheckAll('campaignAllCheck')"/>
+                                                                       onchange="$.foRCheckAll('campaignAllCheck')"
+                                                                       style="float:left; margin:0 15px;"/>
                                                             </th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Campaign_name',this)">
@@ -984,7 +986,7 @@
                                             <div class="zs_bottom over">
                                                 <input type="hidden" id="hiddenCampaignId"/>
 
-                                                <div class="zs_bottom2 over fl "
+                                                <div class="zs_bottom2 zs_bottom_list over fl "
                                                      style="border-right: 1px solid #e7e7e7;">
                                                     <ul>
                                                         <li>
@@ -1022,7 +1024,8 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                <div class="zs_bottom1 over fr" style="border-right:none;">
+                                                <div class="zs_bottom1 zs_bottom_lists  over fr"
+                                                     style="border-right:none;">
                                                     <ul class="z_bottom3 fl">
                                                         <li>
                                                             <div class="t_list01 fl over">推广时段：</div>
