@@ -821,8 +821,8 @@ function reductionKeyword() {
         if (confirm("是否还原选择的数据?") == false) {
             return;
         }
-        var step = choose.find("td:last span").attr("step");
-        var id = $("#tbodyClick").find(".list2_box3").find("input[type=hidden]").val();
+        var step = choose.find("td:eq(0) span").attr("step");
+        var id = $("#tbodyClick").find(".list2_box3").find("input[type=checkbox]").val();
         switch (parseInt(step)) {
             case 1:
                 reducKwd_Add(id);
@@ -1268,25 +1268,6 @@ function countAddKwd() {
         }
     }
     document.getElementById("counterNew").innerHTML = kwd.length;
-}
-
-function countChar(textareaName, spanName) {
-    document.getElementById(spanName).innerHTML = document.getElementById(textareaName).value.length;
-}
-
-function kwdListCheck() {
-    var kwdCheckCount = $("input[name='keywordCheck']").length;
-    var readyCheckCount = 0;
-    for (var i = 0; i < kwdCheckCount; i++) {
-        if ($("input[name='keywordCheck']:eq(" + i + ")").prop("checked")) {
-            readyCheckCount++;
-        }
-    }
-    if (kwdCheckCount == readyCheckCount) {
-        document.getElementsByName("keyAllCheck")[0].checked = true;
-    } else {
-        document.getElementsByName("keyAllCheck")[0].checked = false;
-    }
 }
 
 $(function () {

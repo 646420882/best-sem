@@ -11,14 +11,22 @@ var $rootScope = {
 var commons = {
     foRShow: function (type, _this) {
         var exist_selected = jsonData;
-        var tabMenu = $("#tabMenu").find("li:eq(4)").attr("class");
-        if (!tabMenu) {
-            if (!exist_selected.cid) {
-                //alert("请选择一个推广计划！");
-                AlertPrompt.show("请选择一个推广计划！");
-                return;
-            }
-        }
+        //if (!tabMenu) {
+        //    if (!exist_selected.cid) {
+        //        //alert("请选择一个推广计划！");
+        //        AlertPrompt.show("请选择一个推广计划！");
+        //        return;
+        //    }
+        //}
+        console.log(exist_selected);
+        //checkType
+        var checkType = $("select[name='checkType']");
+        checkType.empty();
+        var opt = "<option value='0'>当前选中</option><option value='1'>所有(计划下所有)</option>"
+        checkType.append(opt);
+
+        //<option value="0">当前选中</option>
+        //<option value="1">所有(计划下所有)</option>
         if ($(".assstant_editor").css("display") == "none") {
             var TabtopFirst = $(_this).offset().top + $(_this).outerHeight() + "px";
             var TableftNext = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
@@ -61,6 +69,7 @@ var commons = {
                     break;
             }
         }
+
     },
     foRClose: function () {
         $("input[name='findText'],input[name='replaceText']").attr("style", "").val('');
@@ -489,6 +498,11 @@ $.extend({
         var form = $(_this).parents("form");
         var step = $(_this).attr("step");
         var checkType = $("select[name='checkType'] :selected");
+        console.log(checkType.val())
+        if (!checkType.val()) {
+            AlertPrompt.show("请选择物料模式");
+            return false;
+        }
         var foR_params = {};
         var forType = $("#forType").val();
         if (checkType.val() == 0) {
@@ -504,9 +518,9 @@ $.extend({
                 AlertPrompt.show("您没有选择要所需物料!");
                 return;
             }
-            foR_params = {type: forType, forType: 0, checkData: checked_data,step:step};
+            foR_params = {type: forType, forType: 0, checkData: checked_data, step: step};
         } else {
-            foR_params = {type: forType, forType: 1, campaignId: jsonData.cid,step:step};
+            foR_params = {type: forType, forType: 1, campaignId: jsonData.cid, step: step};
         }
         form.foRSubmit("../assistantCommons/checkSome", foR_params, function (result) {
             if (result.data) {
