@@ -12,33 +12,26 @@
     <title></title>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/public/themes/flick/font-awesome.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css" type="text/css" media="all" rel="stylesheet"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
+    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
+
 </head>
 <body>
-
-<input type="text" style="width: 400px;display: none" id="reservationtime" name="reservation"
+<input type="text" style="width: 400px; margin: -35px 0 0 40px; " id="reservationtime" name="reservation"
        class="span4 form-control TimingPauseDialog " value="08/01/2013 - 08/01/2013"/>
-<input id="Timing" value="2" style="display: none">
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script>
     function closeDialog() {
         top.dialog.getCurrent().close().remove();
     }
-    $(".calendar-btn_closedialog").on('click', function (){
-        top.dialog.getCurrent().close().remove();
-    });
-    $(function () {
-        $("div.daterangepicker").css({"display": "block", "top": "0px", "right": "auto"});
-        $(".daterangepicker .ranges li:last").css({"display": "none"})
 
-    });
     $('#reservationtime').daterangepicker({
         "showDropdowns": true,
         "timePicker24Hour": true,
-        timePicker: true,
+        timePicker: false,
         timePickerIncrement: 30,
 //        format: 'MM/DD/YYYY h:mm A',
         format: 'DD/MM/YYYY',
@@ -79,6 +72,7 @@
         "endDate": moment()
     }, function (start, end, label) {
         console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+
     });
 
     var pauseFunc = function (period) {
@@ -123,7 +117,33 @@
             }
         });
     }
+    function GetDateStr(AddDayCount) {
+        var dd = new Date();
+        dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
+        var y = dd.getFullYear();
+        var m = (dd.getMonth() + 1) < 10 ? "0" + (dd.getMonth() + 1) : (dd.getMonth() + 1);//获取当前月份的日期
+        var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
+        return y + "-" + m + "-" + d;
 
+    }
+    console.log(123)
+    $(function () {
+        var ab=function(){
+            $('#reservationtime').click();
+        }
+        ab();
+        $(".applyBtn").click(function(){
+            closeDialog();
+        })
+        $(".cancelBtn").on('click', function (){
+            closeDialog();
+        });
+        $(".dropdown-menu ").removeClass("dropdown-menu");
+
+//        $('#reservationtime').daterangepicker.setStartDate(2015-09-01)
+        $('#reservationtime').data('daterangepicker').setStartDate(2015-09-01);
+        $('#reservationtime').data('daterangepicker').setEndDate(2015-09-11);
+    });
 </script>
 </body>
 </html>

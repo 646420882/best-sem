@@ -79,6 +79,11 @@ body{
     overflow: hidden;
 
 }
+.backstage_list_redis ul li{
+   width: auto;
+    float: left;
+    margin-right: 5px;
+}
 .backstage_list ul li span{
     display:block;
     float:left;

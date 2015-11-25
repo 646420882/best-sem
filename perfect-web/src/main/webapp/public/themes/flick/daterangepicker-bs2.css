@@ -216,19 +216,32 @@
 }
 
 .daterangepicker td.in-range {
-    /*background-color: #fef1dc;*/
-    /*border-color: #fef1dc;*/
-    color: #ef9101;
-    border-radius: 100%;
-
+    background: #ebf4f8;
+    border-radius: 0;
+}
+.daterangepicker td.start-date {
+    border-radius: 4px 0 0 4px;
 }
 
-.daterangepicker td.active, .daterangepicker td.active:hover {
-    background-color: #ef9101;
-    border-color: #ef9101;
+.daterangepicker td.end-date {
+    border-radius: 0 4px 4px 0;
+}
+
+.daterangepicker td.start-date.end-date {
     color: #fff;
     border-radius: 100%;
+    background-color: #1fb8f1;
 }
+.daterangepicker td.active, .daterangepicker td.active:hover {
+    background-color: #1fb8f1;
+    border-color: #1fb8f1;
+    color: #fff;
+}
+/*.daterangepicker td.active, .daterangepicker td.active:hover {*/
+    /*background-color: #357ebd;*/
+    /*border-color: #3071a9;*/
+    /*color: #fff;*/
+/*}*/
 
 .daterangepicker td.week, .daterangepicker th.week {
     font-size: 80%;
@@ -269,12 +282,12 @@
 .daterangepicker th.month {
     width: auto;
 }
-.btn-success{
+/*.btn-success{*/
 
-    color: #fff;
-    background-color: #ffbb04;
-    border-color: #ffbb04;
-}
+    /*color: #fff;*/
+    /*background-color: #ffbb04;*/
+    /*border-color: #ffbb04;*/
+/*}*/
 .btn {
     display: inline-block;
     padding: 2px 24px;
@@ -295,16 +308,39 @@
     user-select: none;
     color: #000000;
 }
+/*.btn-success:hover, .btn-success:focus, .btn-success.active, .open .dropdown-toggle.btn-success {*/
+    /*color: #000000;*/
+    /*background-color: #ffbb04;*/
+    /*border-color: #ffbb04;*/
+/*}*/
+ /*.btn-success:active {*/
+    /*color: #fff;*/
+    /*background-color: #ffbb04;*/
+    /*border-color: #ffbb04;*/
+     /*box-shadow: 1px  1px 3px 3px #d39017 inset;*/
+/*}*/
+.calendar-btn {
+    background-color: #1fb8f1;
+    color: #FFFFFF;
+    border-radius: 2px;
+}
+
 .btn-success:hover, .btn-success:focus, .btn-success.active, .open .dropdown-toggle.btn-success {
     color: #000000;
-    background-color: #ffbb04;
-    border-color: #ffbb04;
+    background-color: #1fb8f1;
+    border: none;
+    width: 74px;
+    height: 26px;
 }
- .btn-success:active {
+
+.btn-success:active {
     color: #fff;
-    background-color: #ffbb04;
-    border-color: #ffbb04;
-     box-shadow: 1px  1px 3px 3px #d39017 inset;
+    width: 74px;
+    height: 26px;
+    background-color: #1fb8f1;
+    border-color: #1fb8f1;
+    box-shadow: none;
+    box-shadow: 0 3px 3px #2d9dd5 inset;
 }
 .btn-default{
     background-color: #e4eafa;
@@ -341,3 +377,11 @@ select {
 
 
 }
+.daterangepicker_input{
+    display: none;
+}
+.btn-success[disabled]{
+    background-color: rgba(34, 196, 255, 0.71);
+    border-color: rgba(34, 196, 255, 0.71);
+}
+

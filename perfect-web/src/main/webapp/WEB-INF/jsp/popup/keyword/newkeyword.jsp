@@ -216,7 +216,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        rDrag.init(document.getElementById('newKeyWordAlertPromptTitle'));
+//        rDrag.init(document.getElementById('newKeyWordAlertPromptTitle'));
         var $tab_li = $('.addplan_top ul li');
         $('.addplan_top ul li').click(function () {
             $(this).addClass('current');

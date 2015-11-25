@@ -30,20 +30,16 @@
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>--%>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
-<div class="backstage_concent mid over">
+<div class="backstage_concent mid over" style="height: 106px">
     <div class="backstage_notice over">
         <span>注：此页操作，请谨慎。稍不注意会给系统带来严重的后果！！！</span>
     </div>
-    <div class="backstage_list over">
+    <div class="backstage_list backstage_list_redis  over">
         <ul>
-            <li>
-                <span>输入要删除的key：</span>
-                <input type="text" id="textY">
-                <a id="btnY" class="btn btn-info">确定删除</a>
-            </li>
-            <li>
-                <div id="appendtext"></div>
-            </li>
+            <li>  <span>输入要删除的key：</span></li>
+           <li><input type="text" id="textY" style="float: none"></li>
+          <li><a id="btnY" class="btn btn-info" style="height: 30px;line-height: 18px;">确定删除</a></li>
+            <li><div id="appendtext"></div>  </li>
         </ul>
     </div>
 </div>
@@ -79,12 +75,12 @@
                 },
                 success: function (data) {
                     if(data.rows == 1){
-//                        alert("删除成功！！！");
+                        alert("删除成功！！！");
                         baiduAccountAlertPrompt.show("删除成功！！！");
                         getdata();
                     }else{
-//                        alert("删除失败！！！")
-                        baiduAccountAlertPrompt.show("删除失败！！！")
+                        alert("删除失败！！！")
+//                        baiduAccountAlertPrompt.show("删除失败！！！")
                     }
                 }
             });

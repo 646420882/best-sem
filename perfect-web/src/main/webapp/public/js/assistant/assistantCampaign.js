@@ -102,24 +102,75 @@ function campaignDataToHtml(obj, index) {
         obj.campaignId = obj.id;
     }
 
+    /*    if (index == 0) {
+     html = html + "<tr class='list2_box3 firstCampaign'>";
+     } else if (index % 2 != 0) {
+     html = html + "<tr class='list2_box2'>";
+     } else {
+     html = html + "<tr class='list2_box1'>";
+     }*/
     if (index == 0) {
-        html = html + "<tr class='list2_box3 firstCampaign'>";
+        var _tr = html + "<tr class='list2_box3 firstKeyword'>";
+        if (obj.localStatus) {
+            switch (obj.localStatus) {
+                case -1:
+                case 1:
+                    _tr = html + "<tr class='list2_box3 firstKeyword add'>";
+                    break;
+                case 2:
+                    _tr = html + "<tr class='list2_box3 firstKeyword update'>";
+                    break
+                case 3:
+                    _tr = html + "<tr class='list2_box3 firstKeyword del'>";
+                    break;
+            }
+        }
+        html = _tr;
     } else if (index % 2 != 0) {
-        html = html + "<tr class='list2_box2'>";
+        var _tr = html + "<tr class='list2_box2'>";
+        if (obj.localStatus) {
+            switch (obj.localStatus) {
+                case -1:
+                case 1:
+                    _tr = html + "<tr class='list2_box2 add'>";
+                    break;
+                case 2:
+                    _tr = html + "<tr class='list2_box2 update'>";
+                    break
+                case 3:
+                    _tr = html + "<tr class='list2_box2 del'>";
+                    break;
+            }
+        }
+        html = _tr;
     } else {
-        html = html + "<tr class='list2_box1'>";
+        var _tr = html + "<tr class='list2_box1'>";
+        if (obj.localStatus) {
+            switch (obj.localStatus) {
+                case -1:
+                case 1:
+                    _tr = html + "<tr class='list2_box1 add'>";
+                    break;
+                case 2:
+                    _tr = html + "<tr class='list2_box1 update'>";
+                    break
+                case 3:
+                    _tr = html + "<tr class='list2_box1 del'>";
+                    break;
+            }
+        }
+        html = _tr;
     }
-
 
     html = html + "<input type='hidden' value = " + obj.campaignId + " />";
     if (obj.localStatus != null) {
         if (obj.localStatus == 3) {
-            html = html + "<td class='table_add'><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/><span class='error' step='3'></span></td>";
+            html = html + "<td class='table_add'><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/><span class='table_delete' step='3'></span></td>";
         } else {
             html = html + "<td class='table_add'><input type='checkbox' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/><span class='pen' step='" + obj.localStatus + "'></span></td>";
         }
     } else {
-        html = html + "<td>&nbsp;</td>";
+        html = html + "<td class='table_add'>&nbsp;<input type='checkbox' style='margin-top:9px;' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/></td>";
     }
 
     html = html + "<td></td>";

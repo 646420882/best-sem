@@ -175,7 +175,7 @@
                             <ul>
                                 <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="请选择查询时间,默认昨天"
                                                                readonly>
-                                    <input name="reservation" id="fzk" type="image" cname="dateClick"
+                                    <input name="reservation" value="" type="image" cname="dateClick"
                                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                            src="${pageContext.request.contextPath}/public/img/date.png" value="">
                                     <label class='checkbox-inlines'> <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
@@ -318,12 +318,11 @@
                                            src="${pageContext.request.contextPath}/public/img/date.png" readonly>
                                 </li>
                                 <li id="reportType">选择报告类型：
-                                    <a href="javascript:" onclick="OtherSearch()" class="current"
-                                       cname="1">结构报告</a><span>|</span>
+                                    <a href="javascript:" onclick="OtherSearch()" class="current" cname="1">结构报告</a><span>|</span>
                                     <a href="javascript:" onclick="OtherSearch()" cname="2">关键词报告</a><span>|</span>
                                     <a href="javascript:" onclick="OtherSearch()" cname="3">创意报告</a><span>|</span>
                                     <a href="javascript:" onclick="OtherSearch()" cname="4">分地域报告</a><span>|</span>
-                                    <a href="javascript:" id="SearchReport">搜索词报告</a>
+                                        <a href="javascript:" id="SearchReport">搜索词报告</a>
                                 </li>
                                 <li id="device" class="searchhide">选择推广设备：
                                     <a href="javascript:" class="current" cname="0">全部</a><span>|</span>
@@ -352,7 +351,7 @@
                     </div>
                     <div class="contant searchhide over">
                         <%--<div class="download over fr"><a href="#">下载全部</a></div>--%>
-                        <div class="list01_under3 over">
+                        <div  class="list01_under3 over">
                             <div class="tubiao2 over" style="width: 80%;margin:0 auto; ">
                                 <div id="imprDiv" style="width:100%;height:530px;display: none;"></div>
                                 <div id="pm_data" style="display: none;"></div>
@@ -362,7 +361,7 @@
                                     <thead id="shujuthead">
 
                                     </thead>
-                                    <tbody id="shuju">
+                                       <tbody id="shuju">
 
                                     </tbody>
                                     <tbody id="shujuAll">
@@ -428,8 +427,9 @@
                             <input type="hidden" id="jindut1" value="">
                         </div>
                     </div>
-                    <div class="contant over">
+                    <div class="contant   over">
                         <%--<div class="download over fr"><a href="#">下载全部</a></div>--%>
+                          <div class="report_search"></div>
                         <div class="list01_under3 over">
                             <div class="tubiao2 over" style="width: 80%;margin:0 auto; ">
                                 <div id="imprDiv1" style="width:100%;height:530px;display: none;"></div>
@@ -562,7 +562,9 @@
         $(".number_concent").css("border-bottom", "1px solid #dadadd");
         $(".number_concent").css("padding-bottom", "20px");
     }
-
+//   $("#SearchReport").click(function(){
+//       $(".searh_report").hide();
+//   })
     $(function () {
         var mydate = new Date();
         var str = "" + mydate.getFullYear() + "-";

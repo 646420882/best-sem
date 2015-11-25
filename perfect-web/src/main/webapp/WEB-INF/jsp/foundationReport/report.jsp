@@ -17,7 +17,6 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
 
 
@@ -41,7 +40,7 @@
 <div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
 <div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>--%>
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
-<div class="backstage_concent mid over">
+<div class="backstage_concent mid  over" >
     <div class="backstage_notice over">
         <span>注：如果没有选取时间则默认拉取昨天的数据,拉取时间较长，请勿关闭页面。</span>
     </div>
@@ -181,14 +180,13 @@
                     "endDate": moment()
                 },
                 function (start, end, label,e) {
+                        var _startDate = start.format('YYYY-MM-DD');
+                        var _endDate = end.format('YYYY-MM-DD');
+                        daterangepicker_start_date = _startDate;
+                        daterangepicker_end_date = _endDate;
+                        $("#date").val(daterangepicker_start_date +" 至 "+ daterangepicker_end_date);
                 });
-        $(".btnDone").on('click', function () {
-            var _startDate = daterangepicker_start_date_t;
-            var _endDate = daterangepicker_end_date_t;
-            daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
-            daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
-            $("#date").val(daterangepicker_start_date +" 至 "+ daterangepicker_end_date);
-        });
+
 
         var getTime = setInterval("getPullLog()", heartbeat);
         $("#tijiao").click(function(){

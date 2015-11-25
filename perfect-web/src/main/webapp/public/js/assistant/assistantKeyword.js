@@ -218,6 +218,7 @@ function keywordDataToHtml(obj, index) {
 
     //kwid
     var tmpHtml = "";
+    var TableStatus = "";
     if (obj.object.adgroupId != undefined) {
         tmpHtml = "<input type='hidden' camp='" + obj.campaignId + "' adg='" + obj.object.adgroupId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
     } else {
@@ -225,22 +226,25 @@ function keywordDataToHtml(obj, index) {
     }
     if (obj.object.localStatus != null) {
         if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
-            html = html + "<td class='table_add'><input type='checkbox'  name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span class='error' step='" + obj.object.localStatus + "'></span></td>";
-        } else if (obj.object.localStatus == -1) {
-            html = html + "<td class='table_add'><input type='checkbox'  name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span  class='repeat' step='" + obj.object.localStatus + "'></span></td>";
-        } else {
-
-            html = html + "<td class='table_add'><input type='checkbox'   name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
+            TableStatus = "table_delete";
         }
-
+        else if (obj.object.localStatus == 2) {
+            TableStatus = "pen";
+        }
+        else if (obj.object.localStatus == 1) {
+            TableStatus = "new_add";
+        }
+        else if (obj.object.localStatus == -1) {
+            TableStatus = "repeat";
+        }
+        html = html + "<td class='table_add'><input type='checkbox'   name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span class='" + TableStatus + "' step='" + obj.object.localStatus + "'></span></td>";
     } else {
         var replaceText = $("input[name='replaceText']").val();
-        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td>&nbsp;</td>";
+        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td class='table_add'><input type='checkbox' class='fl' style='margin-top:9px;' name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/>&nbsp;</td>";
         html = html + ls;
     }
-
     /*   if(obj.object.localStatus != -1){*/
-/*    html = html + "<td></td>";*/
+    /*    html = html + "<td></td>";*/
     /* }else{
      html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/repeat.png' /></td>";
      }*/

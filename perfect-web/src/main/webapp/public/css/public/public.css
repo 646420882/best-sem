@@ -7,9 +7,11 @@
 a {
     text-decoration: none;
 }
-h3{
-    margin-top:10px;
+
+h3 {
+    margin-top: 10px;
 }
+
 a:link,
 a:visited,
 a:hover,
@@ -68,9 +70,14 @@ html {
 /*textarea {
     resize: none;
 }*/
-label{
-    font-weight:normal;
+select {
+    height: 30px;
 }
+
+label {
+    font-weight: normal;
+}
+
 table {
     overflow: auto;
 }
@@ -114,7 +121,7 @@ table tr, table tr td {
 .top_mid {
     width: 30%;
     height: 94px;
-    line-height:94px;
+    line-height: 94px;
 }
 
 .logo {
@@ -309,10 +316,11 @@ table tr, table tr td {
 
 .user_text {
     line-height: 22px;
-   letter-spacing: 1px;
+    letter-spacing: 1px;
 
 }
-#time{
+
+#time {
     font-size: 14px;
 
 }
@@ -338,41 +346,45 @@ table tr, table tr td {
     /* For IE 5.5 - 7 */
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
     z-index: 120;
-    box-shadow: 0px  0px 1px 2px #d2daef; 
+    box-shadow: 0px 0px 1px 2px #d2daef;
 }
 
-.switchAccountSerach{
+.switchAccountSerach {
     margin: 10px 10px 0 10px;
     padding: 0 5px;
-    border:1px solid #ccc ;
+    border: 1px solid #ccc;
     box-shadow: none;
-    background: url(/public/img/switchAccountSerach.png) no-repeat right ;
+    background: url(/public/img/switchAccountSerach.png) no-repeat right;
 }
-.switchAccount_ul_pages{
+
+.switchAccount_ul_pages {
     width: 184px;
 }
-.switchAccount_ul_pages ul{
-    margin:auto;
+
+.switchAccount_ul_pages ul {
+    margin: auto;
 
     height: 30px;
 }
 
-.switchAccount_ul_pages li{
-   display: inline;
+.switchAccount_ul_pages li {
+    display: inline;
     width: 8px;
     height: 8px;
     background-color: #e4eafa;
     color: #626262;
     cursor: pointer;
     margin: 0 5px;
- }
+}
 
-.switchAccount_ul_pages span{
+.switchAccount_ul_pages span {
     margin: 5px;
 }
-.user_names ul{
+
+.user_names ul {
     margin-top: 5px;
 }
+
 .user_names .countname ul li {
     cursor: pointer;
     margin-bottom: 10px;
@@ -514,6 +526,7 @@ table tr, table tr td {
 .nav_under ul li .list_5 {
     background: url(/public/img/bg.png) -172px -551px no-repeat;
 }
+
 .nav_under ul li .list_6 {
     background: url(/public/img/bg.png) -172px -551px no-repeat;
 }
