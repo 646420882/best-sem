@@ -71,6 +71,6 @@ rm -f ${base_dir}/perfect-web/docker/mysql-connector-java-5.1.37.jar
 
 # Run a container
 #docker run --name=${container} --net=host -d -e HEAP_MEMORY_SIZE=${heap_memory_size} -e HTTP_PORT=${http_port} ${imageName}:${imageVersion}
-docker run --name=${container} --net=host -d -p ${http_port}:${http_port} ${imageName}:${imageVersion}
+docker run --name=${container} -d -p ${http_port}:8080 ${imageName}:${imageVersion}
 
 echo "redeploy finished."

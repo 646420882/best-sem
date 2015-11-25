@@ -48,15 +48,15 @@
             <properties>
                 <env>prod</env>
 
-                <redis.host>server1</redis.host>
+                <redis.host>114.112.98.68</redis.host>
                 <redis.port>16379</redis.port>
                 <redis.password>3edcxsw2</redis.password>
 
-                <mongo.host>server1:27017,server2:27017</mongo.host>
+                <mongo.host>114.112.98.68:27017,114.112.98.67:27017</mongo.host>
                 <mongo.username>perfect</mongo.username>
                 <mongo.password>perfect</mongo.password>
 
-                <es.host>server1:30101,server1:30102,server2:30103,server2:30104</es.host>
+                <es.host>114.112.98.68:30101,114.112.98.68:30102,114.112.98.67:30103,114.112.98.67:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>
             </properties>
         </profile>
