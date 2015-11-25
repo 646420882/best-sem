@@ -92,7 +92,6 @@ $(function () {
 });
 
 /*******查找重复关键词**************/
-
 $(function () {
     $(".showbox3").click(function () {
         $(".TB_overlayBG").css({
@@ -152,6 +151,21 @@ $(function () {
     $(".close").click(function () {
         $(".TB_overlayBG").css("display", "none");
         $(".box5").css("display", "none");
+    });
+    rDrag.init(document.getElementById('error_prompt_title'));
+    $("#error_prompt_more").click(function () {
+        $(".TB_overlayBG").css({
+            display: "block", height: $(document).height()
+        });
+        $("#error_prompt_box").css({
+            left: ($("body").width() - $(".box").width()) / 2 - 20 + "px",
+            top: ($(window).height() - $(".box").height()) / 2 + $(window).scrollTop() + "px",
+            display: "block"
+        });
+    });
+    $(".close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $(".box").css("display", "none");
     });
 });
 /*******IP排除**************/
@@ -220,9 +234,9 @@ $(document).ready(function () {
         $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
         $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
         var xx = $(this).attr("cname");
-     /*   setTimeout(function () {
-            resizable(xx)
-        }, 400);*/
+        /*   setTimeout(function () {
+         resizable(xx)
+         }, 400);*/
     });
     $('.zh_menuMonitor li').click(function () {
         $("#zTree").height($(".assistant_right")[0].offsetHeight - 230 + "px");
@@ -230,7 +244,7 @@ $(document).ready(function () {
 
 });
 
-$(window).resize(function() {
+$(window).resize(function () {
     $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
     $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
 });
@@ -269,7 +283,7 @@ $(function () {
     //小功能窗口
     $('.editor').on("click", function (e) {
         if ($(".more_list").css("display") == "none") {
-            $(".more_list").css({ top: e.pageY + -70 + "px", left: e.pageX });
+            $(".more_list").css({top: e.pageY + -70 + "px", left: e.pageX});
             $(".more_list").show();
             $(".more_list ").mouseleave(function () {
                 $(".more_list").css("display", "none");
@@ -331,9 +345,9 @@ $(function () {
                         mouseMove(ev || event);
                     },
                     el.onmouseup = mouseUp
-                ) : (
+            ) : (
                 $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
-                );
+            );
             e.preventDefault();
         });
         function mouseMove(e) {
@@ -346,9 +360,9 @@ $(function () {
             el.releaseCapture ? (
                 el.releaseCapture(),
                     el.onmousemove = el.onmouseup = null
-                ) : (
+            ) : (
                 $(document).unbind("mousemove", mouseMove).unbind("mouseup", mouseUp)
-                );
+            );
         }
     }
 });

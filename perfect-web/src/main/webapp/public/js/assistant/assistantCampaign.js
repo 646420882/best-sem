@@ -102,14 +102,6 @@ function campaignDataToHtml(obj, index) {
     if (obj.campaignId == null) {
         obj.campaignId = obj.id;
     }
-
-    /*     if (index == 0) {
-     html = html + "<tr class='list2_box3 firstCampaign'>";
-     } else if (index % 2 != 0) {
-     html = html + "<tr class='list2_box2'>";
-     } else {
-     html = html + "<tr class='list2_box1'>";
-     }*/
     if (index == 0) {
         var _tr = html + "<tr class='list2_box3 firstCampaign'>";
         if (obj.localStatus) {
@@ -173,7 +165,6 @@ function campaignDataToHtml(obj, index) {
         html = html + "<td class='table_add'>&nbsp;<input type='checkbox' style='margin-top:9px;' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/></td>";
     }
 
-    html = html + "<td></td>";
     html = html + "<td>" + obj.campaignName + "</td>";
 
     switch (obj.status) {

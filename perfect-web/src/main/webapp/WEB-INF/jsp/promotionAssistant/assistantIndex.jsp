@@ -244,6 +244,20 @@
                                             </div>
                                             <div class="zhanghu_input"></div>
                                             <div id="pagination_keywordPage" class="pagination"></div>
+                                            <div class="error_prompt over">
+                                                <div class="error_prompt_title over">
+                                                    一项错误
+                                                </div>
+                                                <div class="error_prompt_concent over">
+                                                    <ul>
+                                                        <li>1.此关键词的名称与该推广单元中另一关键词的名称相同</li>
+                                                    </ul>
+                                                    <a class="error_prompt_more" id="error_prompt_more">
+                                                        更多详情
+                                                    </a>
+                                                </div>
+
+                                            </div>
                                             <div class="zs_bottom over">
                                                 <input type="hidden" id="hiddenkwid_1"/>
 
@@ -384,7 +398,7 @@
                                                             <th><input type="checkbox" name='creativeAllCheck'
                                                                        onchange="$.foRCheckAll('creativeAllCheck')"/>
                                                             </th>
-                                                            <th style="width: 40px;">&nbsp;操作</th>
+                                                            <%-- <th style="width: 40px;">&nbsp;操作</th>--%>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_title',this)">
                         创意标题&nbsp;</span></th>

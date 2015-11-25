@@ -233,9 +233,11 @@ function keywordDataToHtml(obj, index) {
         }
         else if (obj.object.localStatus == 1) {
             TableStatus = "new_add";
+
         }
         else if (obj.object.localStatus == -1) {
             TableStatus = "repeat";
+
         }
         html = html + "<td class='table_add'><input type='checkbox'   name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span class='" + TableStatus + "' step='" + obj.object.localStatus + "'></span></td>";
     } else {

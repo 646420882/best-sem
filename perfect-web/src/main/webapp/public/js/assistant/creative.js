@@ -315,9 +315,8 @@ function addOperate(obj) {
                 var i = $("#createTable tbody tr").size();
                 var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + json.data + "'/></td>" +
-                    "<td style='width: 30px;'>&nbsp;<input type='hidden' value='" + json.data + "'/></td>" +
-                    "<td >" + until.substring(10, data["title"]) + "</td>" +
+                    "<td >&nbsp;<input type='hidden' value='" + json.data + "'/><input type='checkbox' name='creativeCheck' value='" + json.data + "'/></td>" +
+                    "<td>" + until.substring(10, data["title"]) + "</td>" +
                     " <td >" + until.substring(10, data["description1"]) + "</td>" +
                     " <td >" + until.substring(10, data["description2"]) + "</td>" +
                     " <td ><a href='" + data["pcDestinationUrl"] + "' target='_blank'>" + until.substring(10, data["pcDestinationUrl"]) + "</a></td>" +
@@ -370,8 +369,7 @@ function loadCreativeData(page_index) {
                 var ls = getLocalStatus(parseInt(_edit));
                 _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/></td>" +
-                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/><input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/></td>" +
                     "<td >" + until.substring(10, json[i].title) + "</td>" +
                     " <td >" + until.substring(10, json[i].description1) + "</td>" +
                     " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -1225,8 +1223,7 @@ function updateOk() {
                     _edit = "<span class='pen' step='2'></span>";
                 }
                 var _tbody =
-                    "<td><input type='checkbox' name='creativeCheck' value='"+formData["oid"]+"'' onchange='creativeListCheck()'/></td>"+
-                    "<td>&nbsp;<input type='hidden' value='" + formData["oid"] + "'/></td>" +
+                    "<td><input type='hidden' value='" + formData["oid"] + "'/><input type='checkbox' name='creativeCheck' value='"+formData["oid"]+"'' onchange='creativeListCheck()'/></td>"+
                     "<td >" + until.substring(10, formData["title"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description1"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description2"]) + "</td>" +
@@ -1300,8 +1297,7 @@ function reBack(oid) {
             var s = until.getCreativeStatus(parseInt(json.data["status"]));
             var d = until.convertDeviceByNum(parseInt(json.data['devicePreference']));
             var _tbody =
-                "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + crid + "' onchange='creativeListCheck()'/></td>" +
-                "<td>&nbsp;<input type='hidden' value='" + crid + "'/></td>" +
+                "<td >&nbsp;<input type='hidden' value='" + crid + "'/><input type='checkbox' name='creativeCheck' value='" + crid + "' onchange='creativeListCheck()'/></td>" +
                 "<td >" + until.substring(10, json.data["title"]) + "</td>" +
                 " <td >" + until.substring(10, json.data["description1"]) + "</td>" +
                 " <td >" + until.substring(10, json.data["description2"]) + "</td>" +

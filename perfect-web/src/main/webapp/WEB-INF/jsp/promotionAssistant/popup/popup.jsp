@@ -10,10 +10,12 @@
 
 <div class="box" style="display:none;*width:400px;" id="download">
     <h2 id="CampaignChange"><span class="fl">账户下载</span><a href="#" class="close">×</a></h2>
+
     <div class="mainlist">
         您希望下载账户的哪个部分？
         <ul class="zs_set">
-            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="no1">&nbsp; 所有推广计划</label>
+            </li>
             <li><label class='checkbox-inlines'><input type="radio" name="no1">&nbsp; 已下载的推广计划</label></li>
             <li><label class='checkbox-inlines'><input type="radio" name="no1">&nbsp; 从最新的推广计划列表中选择</label></li>
         </ul>
@@ -50,7 +52,8 @@
         您希望上传账户的哪个部分？
         <ul class="zs_set">
             <li><label class='checkbox-inlines'><input type="radio" value="all" name="up1">&nbsp; 所有计划</label></li>
-            <li><label class='checkbox-inlines'><input type="radio" value="opreated" name="up1">&nbsp; 从推广计划列表中选择</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" value="opreated" name="up1">&nbsp;
+                从推广计划列表中选择</label></li>
         </ul>
         <div class="zs_sets over">
             <div id="allCamp" class="zs_ses1" style="overflow: auto">
@@ -81,24 +84,30 @@
         <span>请指定重复关键词的标准，已删除的关键词不会被当作重复关键词。</span>
         <ul class="zs_set">
             <li><h3>匹配模式</h3></li>
-            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms" class="ms">&nbsp; 重复的关键词须为相同的匹配模式</label>
+            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms" class="ms">&nbsp;
+                重复的关键词须为相同的匹配模式</label>
+
                 <div class="zs_sets2 over hides">
                     <label class='checkbox-inlines'><input type="checkbox" name="ms2">&nbsp; 所有短语模式视为湘潭</label>
                 </div>
             </li>
             <li></li>
-            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms">&nbsp; 重复的关键词可为不同的匹配模式</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms">&nbsp;
+                重复的关键词可为不同的匹配模式</label></li>
         </ul>
         <ul class="zs_set">
             <li><h3>重复关键词位置</h3></li>
-            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms3">&nbsp; 在同一推广单元内</label></li>
+            <li><label class='checkbox-inlines'><input type="radio" checked="checked" name="ms3">&nbsp; 在同一推广单元内</label>
+            </li>
             <li><label class='checkbox-inlines'><input type="radio" name="ms3">&nbsp; 在同一推广计划内（所有推广单元）</label></li>
             <li><label class='checkbox-inlines'><input type="radio" name="ms3">&nbsp; 整个账户内（所有推广计划）</label></li>
         </ul>
         <ul class="zs_set">
             <li><h3>不显示以下关键词</h3></li>
-            <li><label class='checkbox-inlines'><input type="checkbox" checked="checked" name="ms4">&nbsp; 已删除的推广计划和推广单元内的重复关键词L</label></li>
-            <li><label class='checkbox-inlines'><input type="checkbox" name="ms4">&nbsp; 已暂停推广的推广计划和推广单元内的重复关键词</label></li>
+            <li><label class='checkbox-inlines'><input type="checkbox" checked="checked" name="ms4">&nbsp;
+                已删除的推广计划和推广单元内的重复关键词L</label></li>
+            <li><label class='checkbox-inlines'><input type="checkbox" name="ms4">&nbsp; 已暂停推广的推广计划和推广单元内的重复关键词</label>
+            </li>
 
         </ul>
     </div>
@@ -200,6 +209,7 @@
     <h2 id="excludeIPChange">
         <span class="fl">IP排除</span>
         <a href="#" class="close">×</a></h2>
+
     <div class="mainlist">
         <ul class="zs_set">
             <li><textarea id="excludeIP_ta" style="width: 250px; overflow:auto; resize: none"></textarea></li>
@@ -554,6 +564,30 @@
             <ul>
                 <li>发布更改</li>
                 <li onclick="closeAlert();">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<%--添加监控对象弹出窗口--%>
+<div class="box" style="display:none" id="error_prompt_box">
+    <h2 id="error_prompt_title">
+        <span class="fl">错误</span>
+        <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
+
+    <div class="mainlist">
+        <ul>
+            <li>
+                关键词<span>***</span>与<span>***</span>计划，<span>***</span>单元中的另一关键词名称相同
+            </li>
+            <li>
+                关键词<span>***</span>与<span>***</span>计划，<span>***</span>单元中的另一关键词名称相同
+            </li>
+        </ul>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li class="current">确认</li>
             </ul>
         </div>
     </div>

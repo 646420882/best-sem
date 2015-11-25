@@ -67,9 +67,10 @@ html {
     float: right;
 }
 
-/*textarea {
+textarea {
     resize: none;
-}*/
+}
+
 select {
     height: 30px;
 }
