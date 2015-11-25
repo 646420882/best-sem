@@ -114,6 +114,8 @@ input, select, textarea {
 .region-secondarea-select .whitebg {
     border-bottom: 1px solid #e4e4e4;
     padding-left: 10px;
+	width:100%;
+	float:left;
 }
 
 .region-secondarea-select dd dt label {
@@ -317,7 +319,7 @@ input, select, textarea {
 .region-secondarea-select .leaf .first-area-container {
 	position: absolute;
 	text-align: left;
-	width: 88px;
+	width: 92px;
 	top: 0;
 	height: 27px;
 	padding-left: 10px;

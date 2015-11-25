@@ -223,11 +223,24 @@ function keywordDataToHtml(obj, index) {
     } else {
         tmpHtml = "<input type='hidden'  adg='" + obj.object.adgroupObjId + "' dirCount='" + obj.folderCount + "' value = " + obj.object.keywordId + " />";
     }
+    if (obj.object.localStatus != null) {
+        if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
+            html = html + "<td class='table_add'><input type='checkbox'  name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span class='error' step='" + obj.object.localStatus + "'></span></td>";
+        } else if (obj.object.localStatus == -1) {
+            html = html + "<td class='table_add'><input type='checkbox'  name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span  class='repeat' step='" + obj.object.localStatus + "'></span></td>";
+        } else {
 
-    html = html + tmpHtml;
+            html = html + "<td class='table_add'><input type='checkbox'   name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
+        }
+
+    } else {
+        var replaceText = $("input[name='replaceText']").val();
+        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td>&nbsp;</td>";
+        html = html + ls;
+    }
 
     /*   if(obj.object.localStatus != -1){*/
-    html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/></td>";
+/*    html = html + "<td></td>";*/
     /* }else{
      html = html + "<td><input type='checkbox' name='keywordCheck' value='" + obj.object.keywordId + "'/><img src='../public/img/repeat.png' /></td>";
      }*/
@@ -386,23 +399,7 @@ function keywordDataToHtml(obj, index) {
         html = html + "<td>" + obj.adgroupName + "</td>";
     }
 
-    if (obj.object.localStatus != null) {
-        if (obj.object.localStatus == 3 || obj.object.localStatus == 4) {
-            html = html + "<td><span class='error' step='" + obj.object.localStatus + "'></span></td>";
-        } else if (obj.object.localStatus == -1) {
-            html = html + "<td><span  class='repeat' step='" + obj.object.localStatus + "'></span></td>";
-        } else {
-
-            html = html + "<td><span class='pen' step='" + obj.object.localStatus + "'></span></td>";
-        }
-
-    } else {
-        var replaceText = $("input[name='replaceText']").val();
-        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td>&nbsp;</td>";
-        html = html + ls;
-    }
-
-    html = html + "</tr>";
+    html = html + "<td></td></tr>";
 
     return html;
 }

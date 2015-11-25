@@ -1019,24 +1019,27 @@
 }
 
 .k_top2_text {
-    width: 46%;
+    width: 100%;
     border-right: 1px solid #cdd6ed;
     padding: 20px 2%;
-    height: 340px;
+    background: #e4eafa;
+    /*  height: 340px;*/
 }
 
 .k_top2_text textarea {
-    width: 100%;
-    height: 187px;
-    margin-bottom: 20px;
+    width: 40%;
+    height: 30px;
     line-height: 22px;
     overflow: auto;
+
 }
 
 .k_top2_text select {
-    width: 100%;
+    width: 30%;
     height: 30px;
     display: block;
+    float: left;
+    margin-right: 10px;
     line-height: 30px;
     border: 1px solid #dadadd;
     color: #8d8d8d;
@@ -1046,12 +1049,15 @@
 
 .k_top2_text p {
     color: #ff0000;
-    line-height: 24px;
+    line-height: 22px;
+    float: left;
+    width: 100%;
 }
 
 .k_top2_text1 {
     /* height: 190px;*/
     position: relative;
+    overflow: inherit;
 }
 
 .become2 {
@@ -1801,7 +1807,7 @@ ul.ztree.zTreeDragUL {
 }
 
 /* 弹出层 */
-.box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .box10{
+.box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .box10 {
     min-width: 400px;
     *max-width: 600px;
     position: absolute;
@@ -1906,6 +1912,10 @@ h2 .close {
     margin: 0 10px;
     font-size: 12px;
     font-weight: 400;
+}
+
+#sublinkAddInput ul li span {
+    margin: 0 0 0 3px;
 }
 
 .right_stes {
@@ -2357,20 +2367,27 @@ h2 .close {
     color: #0061fd;
 }
 
-.list2_box3, .add.list2_box3, .update.list2_box3, .del.list2_box3 {
+.list2_box3, .add.list2_box3, .update.list2_box3 {
     background: #c9e0f2;
 }
 
+.del.list2_box3 {
+    background: none;
+    color: #727272;
+}
+
 .add {
-    background: #c3def9;
+    background: #f4e8bc;
 }
 
 .update {
-    background: #cce4fb;
+    background: #f4e8bc;
 }
 
 .del {
-    text-decoration: line-through
+    text-decoration: line-through;
+    background: none;
+    color: #727272;
 }
 
 .editor {
@@ -3595,6 +3612,29 @@ h2 .close {
 
 .Senior ul li {
     width: 100%;
+
+}
+
+.Senior {
+    position: absolute;
+    background: #fff;
+    z-index: 1000;
+    webkit-box-shadow: #666 0px 0px 10px;
+    -moz-box-shadow: #666 0px 0px 10px;
+    box-shadow: #666 0px 0px 10px;
+    padding: 10px;
+}
+
+.wrap_list01 .Senior .w_list02 span {
+    padding: 0 2px !important;
+}
+
+.wrap_list01 .Senior .w_list02 span .checkbox-inlines {
+    margin-right: 2px;
+}
+
+.Senior .w_list01 {
+    width: 60px;
 }
 
 /*数据报告*/
@@ -3855,7 +3895,17 @@ h2 .close {
 .k_r_top2 .k_r_under {
     background: none;
     margin-top: 5px;
+    width: 100%;
+    float: left;
 
+}
+
+.ms-drop {
+    position: relative;
+}
+
+.ms-parent {
+    margin-right: 10px;
 }
 
 .k_r_top2 .k_r_under .download a {
@@ -3864,6 +3914,11 @@ h2 .close {
 
 .k_top2_text1 {
     width: 100%;
+    margin-right: 10px;
+}
+
+.ms-parent {
+    float: left;
 }
 
 /****map*****/
@@ -4619,10 +4674,11 @@ input[type=checkbox]:focus {
 }
 
 .daterangepicker td.in-range {
-     background-color: #01aef0;
-     color: white;
-     border-radius: 100%;
- }
+    background-color: #01aef0;
+    color: white;
+    border-radius: 100%;
+}
+
 .daterangepicker td.in-range:hover {
 
     color: #01aef0;
@@ -4705,8 +4761,9 @@ input[type=checkbox]:focus {
     font-weight: normal;
 }
 
-.tooltip.bottom .tooltip-arrow {
+.tooltip.bottom .tooltip-arrow, .tooltip.top .tooltip-arrow {
     border-bottom-color: #fff;
+    border-top-color: #fff;
     /*border: 1px solid #f6f6f6;*/
 }
 
@@ -4719,4 +4776,18 @@ body .ui-tooltip {
     box-shadow: #666 0px 0px 10px;
     font-weight: normal;
     z-index: 10000;
+}
+
+.table_add {
+    padding: 0 15px;
+}
+
+.table_add input[type=checkbox] {
+    margin-top: 0px;
+    float: left;
+}
+
+.table_add span {
+    margin: 0 10px;
+    float: left;
 }

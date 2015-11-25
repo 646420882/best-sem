@@ -75,18 +75,21 @@ To change this template use File | Settings | File Templates.
                                     <li class="current"><a>词根拓词</a></li>
                                     <li><a>行业拓词</a></li>
                                 </ul>
-                                <div class="table_concent2 over">
-                                    <div class="k_r_top2 over">
-                                        <div class="k_r_middle over">
+                                <div class="table_concent2 ">
+                                    <div class="k_r_top2 over ">
+                                        <div class="k_r_middle">
                                             <div class="k_top2_text fl">
                                                 <div class="k_top2_text1">
                                                     <textarea id="textarea1"
-                                                              style="overflow:auto; resize: none"></textarea>
+                                                              style="overflow:auto; float:left;"></textarea>
+                                                    <a href="javascript: findWordFromBaidu();" class="become2 fl" style="margin-top:0px;margin-left:10px;">开始拓词</a>
+
                                                 </div>
                                                 <p>可输入词根100/100</p>
-                                                <a href="javascript: findWordFromBaidu();" class="become2">开始拓词</a>
+
+
                                             </div>
-                                            <div class="K_top2_detali fl over">
+                                     <%--       <div class="K_top2_detali fl over">
                                                 <div class="k_top2_detali2 over">
                                                     <div class="list01_top2 over">
                                                         <span>拓词来源</span>
@@ -96,7 +99,7 @@ To change this template use File | Settings | File Templates.
                                                         <li>·百思智能词库</li>
                                                     </ul>
                                                 </div>
-                                            </div>
+                                            </div>--%>
                                         </div>
                                         <div class="k_r_under over">
                                             <div class="download over ">
@@ -159,10 +162,11 @@ To change this template use File | Settings | File Templates.
                                                     </select>
                                                     <select id="keyword_group" multiple="multiple">
                                                     </select>
+                                                    <a href="javascript:findWordFromSystem();" class="become2 fl" style="margin-top:0px;">开始拓词</a>
                                                 </div>
-                                                <a href="javascript:findWordFromSystem();" class="become2">开始拓词</a>
+
                                             </div>
-                                            <div class="K_top2_detali fl over">
+                                   <%--         <div class="K_top2_detali fl over">
                                                 <div class="k_top2_detali2 over">
                                                     <div class="list01_top2 over">
                                                         <span>拓词来源</span>
@@ -172,7 +176,7 @@ To change this template use File | Settings | File Templates.
                                                         <li>·百思智能词库</li>
                                                     </ul>
                                                 </div>
-                                            </div>
+                                            </div>--%>
                                         </div>
                                         <div class="k_r_under over">
                                             <div class="download over ">

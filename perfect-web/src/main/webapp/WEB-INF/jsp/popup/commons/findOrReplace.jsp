@@ -71,8 +71,9 @@
         <div class="main_bottom">
             <div class="w_list03">
                 <ul>
-                    <li class="current" onclick="$.foROk(this)">确认</li>
-                    <li class="close" onclick="commons.foRClose()">取消</li>
+                    <li class="current" step="findOrReplace" onclick="$.foROk(this)">查找替换</li>
+                    <li  step="find" onclick="$.foROk(this)">查找</li>
+                   <%-- onclick="commons.foRClose()"--%>
                 </ul>
             </div>
         </div>

@@ -22,7 +22,14 @@ var _filter = null;
 var matchType = null;
 var keywordQuality = null;
 var keywordPrice = null;
+
 $(function () {
+    $("#jingjia_adds").click(function () {
+        $("#jiangjia_add").hide();
+    });
+    $("#jiangjia_chongfu").click(function () {
+        $("#jiangjia_add").fadeIn();
+    })
     $(".tab_menu").on('click', function () {
         var lis = $(".tab_menu").find("li");
         if (lis.eq(0).hasClass("selected")) {
@@ -330,9 +337,32 @@ $(function () {
         $("#checkAll2").prop("checked", $subbox2.length == $("input[name='subbox2']:checked").length ? true : false);
     });
     //高级搜索
-    $(".advanced_search").click(function () {
+    document.onclick = function () {
+        $(".Senior").hide();
+    }
+    $(".Senior").click(function (e) {
+        var ev = e || window.event;
+        if (ev.stopPropagation) {
+            ev.stopPropagation();
+        }
+        else if (window.event) {
+            window.event.cancelBubble = true;//兼容IE
+        }
+    });
+    $(".advanced_search").click(function (e) {
         if ($(".Senior").css("display") == "none") {
+            var tabtop = $(this).offset().top + $(this).outerHeight() + 2 + "px";
+            var tableft = $(this).offset().left + $(this).outerWidth() + -$(".Senior").width();
+            $(".Senior").css("top", tabtop);
+            $(".Senior").css("left", tableft);
             $(".Senior").show();
+            var ev = e || window.event;
+            if (ev.stopPropagation) {
+                ev.stopPropagation();
+            }
+            else if (window.event) {
+                window.event.cancelBubble = true;//兼容IE
+            }
             $(".advanced_search").attr('value', strUp);
         }
         else {
@@ -367,6 +397,7 @@ $(function () {
         sendReq(true);
     });
 
+
     $('#rankBtn').click(function () {
         var keywordIds = getAllCheckedcb();
         if (keywordIds.length == 0) {
@@ -389,6 +420,7 @@ $(function () {
             }
         })
     });
+
 
     var txt = '关键词精准查询，多个关键词用半角逗号隔开';
 
@@ -487,6 +519,12 @@ $(function () {
     });
 
 });
+function SearchCancel() {
+    $(".Senior").hide();
+}
+function SearchOk() {
+    $(".Senior").hide();
+}
 
 //function emptyTable(name) {
 //    var rows = [];
@@ -659,7 +697,7 @@ function sendReq(run) {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             AlertPrompt.show("创建规则成功！");
-            $("#seetingRules").css({"display":"none"});
+            $("#seetingRules").css({"display": "none"});
             //alert('创建规则成功');
             //$('.close').click();
         }

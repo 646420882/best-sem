@@ -487,6 +487,7 @@ $.extend({
     },
     foROk: function (_this) {
         var form = $(_this).parents("form");
+        var step = $(_this).attr("step");
         var checkType = $("select[name='checkType'] :selected");
         var foR_params = {};
         var forType = $("#forType").val();
@@ -503,9 +504,9 @@ $.extend({
                 AlertPrompt.show("您没有选择要所需物料!");
                 return;
             }
-            foR_params = {type: forType, forType: 0, checkData: checked_data};
+            foR_params = {type: forType, forType: 0, checkData: checked_data,step:step};
         } else {
-            foR_params = {type: forType, forType: 1, campaignId: jsonData.cid};
+            foR_params = {type: forType, forType: 1, campaignId: jsonData.cid,step:step};
         }
         form.foRSubmit("../assistantCommons/checkSome", foR_params, function (result) {
             if (result.data) {

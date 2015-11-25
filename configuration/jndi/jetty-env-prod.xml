@@ -5,7 +5,7 @@
         <Arg>
             <Ref refid="mysqlDataSource"/>
         </Arg>
-        <Arg>jdbc/prodDS</Arg>
+        <Arg>jdbc/semDS</Arg>
         <Arg>
             <New class="com.zaxxer.hikari.HikariDataSource">
                 <Arg>
