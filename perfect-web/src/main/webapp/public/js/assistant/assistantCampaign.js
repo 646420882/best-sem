@@ -12,6 +12,7 @@ window.onload = function () {
 /**
  * 得到所有推广计划
  */
+
 function getCampaignList(nowPage) {
     pageType = 2;
 
@@ -102,7 +103,7 @@ function campaignDataToHtml(obj, index) {
         obj.campaignId = obj.id;
     }
 
-    /*    if (index == 0) {
+    /*     if (index == 0) {
      html = html + "<tr class='list2_box3 firstCampaign'>";
      } else if (index % 2 != 0) {
      html = html + "<tr class='list2_box2'>";
@@ -110,18 +111,18 @@ function campaignDataToHtml(obj, index) {
      html = html + "<tr class='list2_box1'>";
      }*/
     if (index == 0) {
-        var _tr = html + "<tr class='list2_box3 firstKeyword'>";
+        var _tr = html + "<tr class='list2_box3 firstCampaign'>";
         if (obj.localStatus) {
             switch (obj.localStatus) {
                 case -1:
                 case 1:
-                    _tr = html + "<tr class='list2_box3 firstKeyword add'>";
+                    _tr = html + "<tr class='list2_box3 firstCampaign add'>";
                     break;
                 case 2:
-                    _tr = html + "<tr class='list2_box3 firstKeyword update'>";
+                    _tr = html + "<tr class='list2_box3 firstCampaign update'>";
                     break
                 case 3:
-                    _tr = html + "<tr class='list2_box3 firstKeyword del'>";
+                    _tr = html + "<tr class='list2_box3 firstCampaign del'>";
                     break;
             }
         }
@@ -161,7 +162,6 @@ function campaignDataToHtml(obj, index) {
         }
         html = _tr;
     }
-
     html = html + "<input type='hidden' value = " + obj.campaignId + " />";
     if (obj.localStatus != null) {
         if (obj.localStatus == 3) {
