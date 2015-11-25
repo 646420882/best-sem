@@ -1,9 +1,9 @@
 #!/bin/bash
 
 ## Usage
-# 开发版本: ./deploy-runner.sh -e dev -c best-sem-web-dev -m 2g
+# 开发版本: ./deploy-runner.sh -e dev -c best-sem-web-dev
 # 测试版本: ./deploy-runner.sh -e prod -c best-sem-web-beta -p 8081
-# 投入生产使用的版本: ./deploy-runner.sh -e prod -c best-sem-web -m 16g
+# 投入生产使用的版本: ./deploy-runner.sh -e prod -c best-sem-web-prod
 
 # 模式(dev, prod)
 mode=dev
@@ -12,10 +12,10 @@ container=best-sem-web-dev
 # 端口
 http_port=8080
 # JVM -Xms -Xmx 设置
-heap_memory_size=8g
+#heap_memory_size=8g
 base_dir=$(pwd)
 
-while getopts "e:c:p:m:" arg
+while getopts "e:c:p:" arg
     do
         case $arg in
             "e")
@@ -27,9 +27,9 @@ while getopts "e:c:p:m:" arg
             "p")
                 http_port=$OPTARG
                 ;;
-            "m")
-                heap_memory_size=$OPTARG
-                ;;
+#            "m")
+#                heap_memory_size=$OPTARG
+#                ;;
             "?")
                 echo "unknow argument"
                 ;;
@@ -40,10 +40,11 @@ echo "update source code"
 git pull
 
 echo "rebuilding, please wait for a moment..."
-cp ${base_dir}/configuration/jndi/jetty-env-${mode}.xml ${base_dir}/perfect-web/src/main/webapp/WEB-INF/jetty-env.xml
+cp ${base_dir}/configuration/jndi/tomcat-env-${mode}.xml ${base_dir}/perfect-web/src/main/webapp/META-INF/context.xml
 mvn clean package -P${mode} -DskipTests
 cp ${base_dir}/perfect-web/target/perfect-web.war ${base_dir}/perfect-web/docker/ROOT.war
-git checkout -- ${base_dir}/perfect-web/src/main/webapp/WEB-INF/jetty-env.xml
+cp ${base_dir}/configuration/driver/mysql-connector-java-5.1.37.jar ${base_dir}/perfect-web/docker/
+git checkout -- ${base_dir}/perfect-web/src/main/webapp/META-INF/context.xml
 
 running=$(docker inspect --format="{{ .State.Running }}" ${container} 2> /dev/null)
 if [ $? -eq 1 ];  then
@@ -66,8 +67,10 @@ fi
 cd ${base_dir}/perfect-web/docker
 docker build -t ${imageName}:${imageVersion} .
 rm -f ${base_dir}/perfect-web/docker/ROOT.war
+rm -f ${base_dir}/perfect-web/docker/mysql-connector-java-5.1.37.jar
 
 # Run a container
-docker run --name=${container} --net=host -d -e HEAP_MEMORY_SIZE=${heap_memory_size} -e HTTP_PORT=${http_port} ${imageName}:${imageVersion}
+#docker run --name=${container} --net=host -d -e HEAP_MEMORY_SIZE=${heap_memory_size} -e HTTP_PORT=${http_port} ${imageName}:${imageVersion}
+docker run --name=${container} --net=host -d -p ${http_port}:${http_port} ${imageName}:${imageVersion}
 
 echo "redeploy finished."
