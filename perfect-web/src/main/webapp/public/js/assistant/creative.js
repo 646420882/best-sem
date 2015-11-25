@@ -399,7 +399,7 @@ function pagerInit(data) {
     if (data.totalCount == 0) {
         return false;
     }
-    $("#creativePager").pagination(data.totalCount, getOptionsFromForm(data.pageNo));
+    $("#creativePager").pagination(data.totalCount, getOptionsFromForm(data.nextPage));
 }
 function skipCreativePage() {
     var pageNo = $("#creativePageNum").val();
@@ -1327,16 +1327,19 @@ function delBack(oid) {
 function getLocalStatus(number) {
     switch (number) {
         case 1:
-            return "<span class='pen' step=" + number + "></span>";
+            return "<span class='newadd' step=" + number + "></span>";
             break;
         case 2:
-            return "<span class='pen' step=" + number + "></span>";
+            return "<span class='update' step=" + number + "></span>";
             break;
         case 3:
-            return "<span class='error' step=" + number + "></span>";
+            return "<span class='delete' step=" + number + "></span>";
             break;
         case 4:
-            return "<span class='error' step=" + number + "></span>";
+            return "<span class='delete' step=" + number + "></span>";
+            break;
+        case -1:
+            return "<span class='repeat' step=" + number + "></span>";
             break;
         default :
             return "";

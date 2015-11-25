@@ -211,9 +211,9 @@ function initNoKwdKeyUp() {
  * @param plans 根据点击树结构的计划id，如果有则根据计划加载，如果没有，查询所有单元
  */
 function loadAdgroupData(page_index) {
-    pageType = 4;
     plans.pageSize = items_per_page;
     plans.nowPage = page_index;
+    pageType = 4;
     initAgReback();
     var _adGroudTable = $("#adGroupTable tbody");
     _adGroudTable.empty().html("加载中....");
@@ -231,7 +231,7 @@ function loadAdgroupData(page_index) {
                     var _maxPrice = json[i].maxPrice != null ? json[i].maxPrice : 0.0;
                     var nn = json[i].negativeWords != null ? json[i].negativeWords : "";
                     var ne = json[i].exactNegativeWords != null ? json[i].exactNegativeWords : "";
-                    var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                    var _edit = json[i].localStatus != null ? json[i].localStatus : -2;
                     var _ls = getLocalStatus(parseInt(_edit));
                     var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
                         "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/></td>" +
@@ -263,7 +263,7 @@ function adgPagerInit(data) {
     if (data.totalCount == 0) {
         return false;
     }
-    $("#adgroupPager").pagination(data.totalCount, getOptionsFromForm(data.pageNo));
+    $("#adgroupPager").pagination(data.totalCount, getOptionsFromForm(data.nextPage));
 }
 //输入数字传入分页
 function skipAdgroupPage() {
