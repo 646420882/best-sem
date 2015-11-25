@@ -29,10 +29,10 @@
     </div>
 </div>
 <%--alert提示类--%>
-<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="baiduAccountAlertPrompt">
+<div class="TB_overlayBG_alert"></div>
+<div class="backAlertBox" style=" width: 230px;display:none;z-index: 10001" id="baiduAccountAlertPrompt">
     <h2 id="baiduAccountAlertPromptTitle">
-        <span class="fl alert_span_title" id="baiduAccountAlertPrompt_title"></span>
-       <%-- <a href="#" onclick="baiduAccountAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a>--%>
+        <span class="alert_span_title" id="baiduAccountAlertPrompt_title" style="float: left"></span>
     </h2>
     <div class="mainlist">
         <div class="w_list03">
@@ -54,7 +54,7 @@
             });/*蒙版显示*/
             $("#baiduAccountAlertPrompt").css({
                 left: ($("body").width() - $("#baiduAccountAlertPrompt").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#baiduAccountAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
+                top: (document.body.clientHeight - $("#baiduAccountAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
                 display: "block"
             });/*显示提示DIV*/
         },
@@ -68,7 +68,7 @@
         }
     }
     $(function () {
-//        rDrag.init(document.getElementById('baiduAccountAlertPromptTitle'));
+        rDrag.init(document.getElementById('baiduAccountAlertPromptTitle'));
         $(".backstage_menu>ul>li>a").each(function () {
             if ($($(this))[0].href == String(window.location)) {
                 $(".backstage_menu>ul>li").removeClass("current");

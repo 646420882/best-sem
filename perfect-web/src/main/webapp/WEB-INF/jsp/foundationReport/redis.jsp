@@ -79,8 +79,8 @@
                         baiduAccountAlertPrompt.show("删除成功！！！");
                         getdata();
                     }else{
-                        alert("删除失败！！！")
-//                        baiduAccountAlertPrompt.show("删除失败！！！")
+//                        alert("删除失败！！！")
+                        baiduAccountAlertPrompt.show("删除失败！！！")
                     }
                 }
             });
