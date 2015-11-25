@@ -4666,52 +4666,16 @@ input[type=checkbox]:focus {
     box-shadow: 1px 1px 1px 2px #e9f0f5;
 }
 
-.daterangepicker td.active, .daterangepicker td.active:hover {
-    background-color: #1fb8f1;
-    border-color: #1fb8f1;
-    color: #fff;
-    border-radius: 100%;
-}
+.daterangepicker_input{
+    display: none;
 
-.daterangepicker td.in-range {
-    background-color: #01aef0;
-    color: white;
-    border-radius: 100%;
-}
-
-.daterangepicker td.in-range:hover {
-
-    color: #01aef0;
-    border-radius: 100%;
 }
 
 .list2 table .list2_top td, th {
     color: #ffffff;
 }
 
-.calendar-btn {
-    background-color: #1fb8f1;
-    color: #FFFFFF;
-    border-radius: 2px;
-}
 
-.btn-success:hover, .btn-success:focus, .btn-success.active, .open .dropdown-toggle.btn-success {
-    color: #000000;
-    background-color: #1fb8f1;
-    border: none;
-    width: 74px;
-    height: 26px;
-}
-
-.btn-success:active {
-    color: #fff;
-    width: 74px;
-    height: 26px;
-    background-color: #1fb8f1;
-    border-color: #1fb8f1;
-    box-shadow: none;
-    box-shadow: 0 3px 3px #2d9dd5 inset;
-}
 
 .ui-dialog .ui-dialog-content {
     overflow: hidden !important;

@@ -8,7 +8,8 @@ var accountBasisReport;
 var curve;
 var pieChart;
 var binFalg;
-
+var daterangepicker_start_date_t;
+var daterangepicker_end_date_t;
 /*初始化数据变量*/
 var dataOne = "";
 var dataTow = "";
@@ -65,8 +66,6 @@ var fieldName = 'date';
 
 var sort = 1;
 var dateclicks = "";
-
-
 
 
 var startDet = 0;
@@ -129,98 +128,99 @@ $(function () {
         var distance = 0;
         //加载日历控件
         $('input[name="reservation"]').daterangepicker({
-            "showDropdowns": true,
-            "timePicker24Hour": true,
-            timePicker: true,
-            timePickerIncrement: 30,
-            format: 'DD/MM/YYYY',
-            ranges: {
-                //'最近1小时': [moment().subtract('hours',1), moment()],
-                '今天': [moment().startOf('day'), moment()],
-                '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
-                '过去7天': [moment().subtract('days', 6), moment()],
-                '过去14天': [moment().subtract('days', 13), moment()],
-                '过去30天': [moment().subtract('days', 29), moment()],
-                '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                "showDropdowns": true,
+                "timePicker24Hour": true,
+                timePicker: false,
+                timePickerIncrement: 30,
+                format: 'DD/MM/YYYY',
+                ranges: {
+                    //'最近1小时': [moment().subtract('hours',1), moment()],
+                    '今天': [moment().startOf('day'), moment()],
+                    '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                    '过去7天': [moment().subtract('days', 6), moment()],
+                    '过去14天': [moment().subtract('days', 13), moment()],
+                    '过去30天': [moment().subtract('days', 29), moment()],
+                    '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                "locale": {
+                    "format": "DD/MM/YYYY",
+                    "separator": " - ",
+                    "applyLabel": "确定",
+                    "cancelLabel": "关闭",
+                    "fromLabel": "From",
+                    "toLabel": "To",
+                    "customRangeLabel": "Custom",
+                    "daysOfWeek": [
+                        "日",
+                        "一",
+                        "二",
+                        "三",
+                        "四",
+                        "五",
+                        "六"
+                    ],
+                    "monthNames": [
+                        "一月",
+                        "二月",
+                        "三月",
+                        "四月",
+                        "五月",
+                        "六月",
+                        "七月",
+                        "八月",
+                        "九月",
+                        "十月",
+                        "十一月",
+                        "十二月"
+                    ],
+                    "firstDay": 1
+                },
+                "startDate": moment(),
+                "endDate": moment()
             },
-            "locale": {
-                "format": "DD/MM/YYYY",
-                "separator": " - ",
-                "applyLabel": "确定",
-                "cancelLabel": "关闭",
-                "fromLabel": "From",
-                "toLabel": "To",
-                "customRangeLabel": "Custom",
-                "daysOfWeek": [
-                    "日",
-                    "一",
-                    "二",
-                    "三",
-                    "四",
-                    "五",
-                    "六"
-                ],
-                "monthNames": [
-                    "一月",
-                    "二月",
-                    "三月",
-                    "四月",
-                    "五月",
-                    "六月",
-                    "七月",
-                    "八月",
-                    "九月",
-                    "十月",
-                    "十一月",
-                    "十二月"
-                ],
-                "firstDay": 1
-            },
-            "startDate": moment(),
-            "endDate": moment()
-        },
-            function (start, end, label,e) {
+            function (start, end, label, e) {
+                var _startDate = start.format('YYYY-MM-DD');
+                var _endDate = end.format('YYYY-MM-DD');
+                daterangepicker_start_date_t =start._d;
+                daterangepicker_end_date_t =end._d;
+                if (_startDate != null && _endDate != null) {
+                    daterangepicker_start_date = _startDate;
+                    daterangepicker_end_date = _endDate;
+                    if ($("#checkboxhidden").val() == 1) {
+                        $("#date3").val(daterangepicker_start_date);
+                    }
+                    //计算两个时间相隔天数
+                    var sDate = new Date(daterangepicker_start_date);
+                    var eDate = new Date(daterangepicker_end_date);
+                    var a = new Date(daterangepicker_start_date.replace(/-/g, '/'));
+                    var b = new Date(daterangepicker_end_date.replace(/-/g, '/'));
+                    var fen = ((b.getTime() - a.getTime()) / 1000) / 60;
+                    if (fen < 0) {
+                        daterangepicker_start_date = null;
+                        daterangepicker_end_date = null;
+                        //alert("请选择正确的时间范围");
+                        AlertPrompt.show("请选择正确的时间范围");
+                        dateclicks.prev().val();
+                        return;
+                    }
+                    distance = parseInt(fen / (24 * 60)) + 1;   //相隔distance天
+                    if ($("#checkboxhidden").val() == 1) {
+                        $("#dataComputing").empty();
+                        $("#dataComputing").append("起 " + distance + " 天");
+                    }
+                    dateclicks.prev().val(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
+                    var types = $("#reportTypes").val();
+                    if (types == "4" || types == "5" || types == "6" || types == "7") {
+                        $("#reportTypes").val(4)
+                    }
+                    dataid = 0;
+                    dataname = "0";
+                    $("#downAccountReport").empty();
+                    $("#downReport").empty();
+                    $("#downReportSearch").empty();
+                }
+
             });
-        $(".btnDone").bind('click', function () {
-            var _startDate = daterangepicker_start_date_t;
-            var _endDate = daterangepicker_end_date_t;
-            if (_startDate != null && _endDate != null) {
-                daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
-                daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
-                if ($("#checkboxhidden").val() == 1) {
-                    $("#date3").val(daterangepicker_start_date);
-                }
-                //计算两个时间相隔天数
-                var sDate = new Date(daterangepicker_start_date);
-                var eDate = new Date(daterangepicker_end_date);
-                var a = new Date(daterangepicker_start_date.replace(/-/g, '/'));
-                var b = new Date(daterangepicker_end_date.replace(/-/g, '/'));
-                var fen = ((b.getTime() - a.getTime()) / 1000) / 60;
-                if (fen < 0) {
-                    daterangepicker_start_date = null;
-                    daterangepicker_end_date = null;
-                    //alert("请选择正确的时间范围");
-                    AlertPrompt.show("请选择正确的时间范围");
-                    dateclicks.prev().val();
-                    return;
-                }
-                distance = parseInt(fen / (24 * 60)) + 1;   //相隔distance天
-                if ($("#checkboxhidden").val() == 1) {
-                    $("#dataComputing").empty();
-                    $("#dataComputing").append("起 " + distance + " 天");
-                }
-                dateclicks.prev().val(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
-                var types = $("#reportTypes").val();
-                if (types == "4" || types == "5" || types == "6" || types == "7") {
-                    $("#reportTypes").val(4)
-                }
-                dataid = 0;
-                dataname = "0";
-                $("#downAccountReport").empty();
-                $("#downReport").empty();
-                $("#downReportSearch").empty();
-            }
-        });
 
         $("#userClick").click(function () {
             judgeVS = 0;
@@ -1894,12 +1894,31 @@ $(function () {
 
     /********************************搜索词报告******************************************/
     $("#createReport").click(function () {
+        $(".list01_under3").hide();
+        $(".report_search").append("<div class='example'><div id='progress2'><div id='percentNumber'></div><div class='pbar'></div><div class='elapsed'></div></div></div>");
+        var isMin = 0;
+        if (judety <= 0) {
+            isMin = 5;
+        } else {
+            $("#shuju").empty();
+            $("#pathImages").show();
+            isMin = 1;
+            judety = 0;
+        }
+        // from second #5 till 15
+        var iNow = new Date().setTime(new Date().getTime() + 1 * 1000); // now plus 1 secs
+        var iEnd = new Date().setTime(new Date().getTime() + isMin * 1000); // now plus 10 secs
+        $('#progress2').anim_progressbar({start: iNow, finish: iEnd, interval: 100});
+        //console.log(111);
+        setTimeout(function(){
+            $(".report_search").empty();
+            $(".list01_under3").show();
+        },6000);
         var _startDate = daterangepicker_start_date_t;
         var _endDate = daterangepicker_end_date_t;
         //var _startDate = $('.range-start').datepicker('getDate');
         //var _endDate = $('.range-end').datepicker('getDate');
         var levelOfDetails = 12;//分析层级
-
         var device = $("#putinInfo").val();//投放设备
         var regions = getRegionNames();//推广地域
         var dateUnit = $("#dateUnit .current").attr("cname");
@@ -1960,9 +1979,9 @@ $(function () {
                     $("#searchWordTbody").html(basisHtml);
                     $("#downReportSearch").empty();
                     var downUrl = "date1=" + daterangepicker_start_date + "&date2=" + daterangepicker_end_date;
-                    var url = "assistantKeyword/downSeachKeyWordReportCSV?levelOfDetails="+levelOfDetails+"&startDate="+(_startDate != null ? _startDate.Format("yyyy-MM-dd hh:mm:ss") : _startDate)+
-                        "&endDate=" + (_endDate != null ? _endDate.Format("yyyy-MM-dd hh:mm:ss") : _endDate) +"&attributes = "+regions+"&device="+device+"&status="+dateUnit;
-                    $("#downReportSearch").append("<a href='"+url+"'  class='become fl'>下载报告</a>")
+                    var url = "assistantKeyword/downSeachKeyWordReportCSV?levelOfDetails=" + levelOfDetails + "&startDate=" + (_startDate != null ? _startDate.Format("yyyy-MM-dd hh:mm:ss") : _startDate) +
+                        "&endDate=" + (_endDate != null ? _endDate.Format("yyyy-MM-dd hh:mm:ss") : _endDate) + "&attributes = " + regions + "&device=" + device + "&status=" + dateUnit;
+                    $("#downReportSearch").append("<a href='" + url + "'  class='become fl'>下载报告</a>")
                 }
             }
         });
@@ -2005,6 +2024,7 @@ $(function () {
     /**搜索词报告*/
     function SearchClass() {
         $(".searh_report").show();
+        $(".list01_under3").hide();
         $(".number_concent").css("border", "none");
         $(".number_concent").css("padding-bottom", "0px");
         $(".searchhide").hide();

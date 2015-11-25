@@ -1328,36 +1328,37 @@
                     "endDate": moment()
                 },
                 function (start, end, label, e) {
+                    var _startDate = start.format('YYYY-MM-DD');
+                    var _endDate = end.format('YYYY-MM-DD');
+//                 console.log(daterangepicker_end_date);
+
+                    if (_startDate != null && _endDate != null) {
+                        if (_startDate > _endDate) {
+                            return false;
+                        }
+                        statDate = 0;
+                        daterangepicker_start_date = _startDate;
+                        daterangepicker_end_date = _endDate;
+                        if (genre == "keywordQualityCustom") {
+                            //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+                            loadKeywordQualityData();
+                        } else if (genre == "importKeywordDefault") {
+                            getImportKeywordDefault(null, 0);
+                        } else if (genre == "accountOverview") {
+                            lisClick();
+                        } else if (genre == "importPerformanceDefault") {
+                            category = "data";
+                            loadPerformance(0);
+                        } else if (genre == "importPerformanceCurveDefault") {
+                            category = "data";
+                            loadPerformanceCurve(0);
+                        }
+                        showDate();
+                    }
                 });
 //        $("input[name=reservation]").daterangepicker();
         $(".btnDone").on('click', function () {
-            var _startDate = daterangepicker_start_date_t;
-            var _endDate = daterangepicker_end_date_t;
-//                 console.log(daterangepicker_end_date);
 
-            if (_startDate != null && _endDate != null) {
-                if (_startDate > _endDate) {
-                    return false;
-                }
-                statDate = 0;
-                daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
-                daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
-                if (genre == "keywordQualityCustom") {
-                    //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-                    loadKeywordQualityData();
-                } else if (genre == "importKeywordDefault") {
-                    getImportKeywordDefault(null, 0);
-                } else if (genre == "accountOverview") {
-                    lisClick();
-                } else if (genre == "importPerformanceDefault") {
-                    category = "data";
-                    loadPerformance(0);
-                } else if (genre == "importPerformanceCurveDefault") {
-                    category = "data";
-                    loadPerformanceCurve(0);
-                }
-                showDate();
-            }
         });
 
 

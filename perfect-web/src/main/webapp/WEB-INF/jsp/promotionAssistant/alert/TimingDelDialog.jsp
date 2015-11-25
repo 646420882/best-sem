@@ -13,86 +13,33 @@
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/public/themes/flick/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
+    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
-</head>
-<style>
-    .ui-dialog-body {
-        padding: 0;
-    }
-</style>
-<body>
-<input type="text" style="width: 400px;display: none" id="reservationtime" name="reservation"
-       class="span4 form-control TimingDelDialog" value="08/01/2013 - 08/01/2013"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 
-<%--alert提示类--%>
-<div class="box alertBox" style=" width: 230px;display:none;z-index: 1005" id="timingDelDialogAlertPrompt">
-    <h2 id="timingDelDialogAlertPromptTitle">
-        <span class="fl alert_span_title" id="timingDelDialogAlertPrompt_title"></span>
-        <%--<a href="#" class="close">×</a></h2>--%>
-    <%--<a href="#" onclick="timingDelDialogAlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a></h2>--%>
-    </h2>
-    <div class="mainlist">
-        <div class="w_list03">
-            <ul class="zs_set">
-                <li class="current" onclick="timingDelDialogAlertPrompt.hide()">确认</li>
-            </ul>
-        </div>
-    </div>
-</div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
-<script type="application/javascript">
-    var timingDelDialogAlertPrompt = {
-        show:function(content){
-            $("#timingDelDialogAlertPrompt_title").html(content);
-            $(".TB_overlayBG_alert").css({
-                display: "block", height: $(document).height()
-            });/*蒙版显示*/
-            $("#timingDelDialogAlertPrompt").css({
-                left: ($("body").width() - $("#timingDelDialogAlertPrompt").width()) / 2 - 20 + "px",
-                top: ($(window).height() - $("#timingDelDialogAlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
-                display: "block"
-            });/*显示提示DIV*/
-        },
-        hide:function(){
-            $(".TB_overlayBG_alert").css({
-                display: "none"
-            });/*蒙版显示*/
-            $("#timingDelDialogAlertPrompt").css({
-                display: "none"
-            });/*显示提示DIV*/
-        }
-    }
+</head>
+<body>
+<input type="text" style="width: 400px; margin: -35px 0 0 40px;border: " id="reservationtime" name="reservation"
+       class="span4 form-control TimingPauseDialog " value="08/01/2013 - 08/01/2013"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
+<script>
+
     function closeDialog() {
         top.dialog.getCurrent().close().remove();
     }
-    $(function () {
-//        rDrag.init(document.getElementById('timingDelDialogAlertPromptTitle'));
-        $("div.daterangepicker").css({"display": "block", "top": "0px", "right": "auto"});
-        $(".daterangepicker .ranges li:last").css({"display": "none"});
-        $(".minuteselect").css({"display": "none"});
-        $(".ui-popup-follow .ui-dialog-arrow-b").css({"display": "none"});
-    });
 
     $('#reservationtime').daterangepicker({
         "showDropdowns": true,
         "timePicker24Hour": true,
-        timePicker: true,
+        timePicker: false,
         timePickerIncrement: 30,
+         minDate:2015-09-01,
+         maxDate:2015-12-01,
+//        format: 'MM/DD/YYYY h:mm A',
         format: 'DD/MM/YYYY',
-//        ranges: {
-//            //'最近1小时': [moment().subtract('hours',1), moment()],
-//            '今天': [moment().startOf('day'), moment()],
-//            '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
-//            '过去7天': [moment().subtract('days', 6), moment()],
-//            '过去14天': [moment().subtract('days', 13), moment()],
-//            '过去30天': [moment().subtract('days', 29), moment()],
-//            '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-//        },
         "locale": {
-            "format": "DD/MM/YYYY",
+            "format": "MM/DD/YYYY",
             "separator": " - ",
             "applyLabel": "确定",
             "cancelLabel": "关闭",
@@ -128,10 +75,7 @@
         "endDate": moment()
     }, function (start, end, label) {
         console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
-//        alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-        timingDelDialogAlertPrompt.show("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
     });
-
     var uploadFunc = function (period) {
         var startArr = (period.split("-")[0]).split("/");
         var endArr = (period.split("-")[1]).split("/");
@@ -174,6 +118,19 @@
             }
         });
     }
+    $(function () {
+        var ab=function(){
+            $('#reservationtime').click();
+        }
+        ab();
+        $(".applyBtn").click(function(){
+            closeDialog();
+        })
+        $(".cancelBtn").on('click', function (){
+            closeDialog();
+        });
+        $(".dropdown-menu ").removeClass("dropdown-menu");
+    });
 
 </script>
 </body>
