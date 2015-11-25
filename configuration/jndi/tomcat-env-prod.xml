@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context path="/" crossContext="true" reloadable="true">
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+    <Resource name="jdbc/semDS"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxTotal="100"
+              maxIdle="30"
+              maxWaitMillis="10000"
+              username="perfect"
+              password="R_2015test"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://192.168.1.11:13206/COMP?characterEncoding=UTF-8"
+              removeAbandonedOnBorrow="true"
+              removeAbandonedOnMaintenance="true"
+              removeAbandonedTimeout="60"
+              logAbandoned="true"/>
+</Context>
