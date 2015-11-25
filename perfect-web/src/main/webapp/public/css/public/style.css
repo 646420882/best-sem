@@ -1019,7 +1019,7 @@
 }
 
 .k_top2_text {
-    width: 100%;
+    width: 55%;
     border-right: 1px solid #cdd6ed;
     padding: 20px 2%;
     background: #e4eafa;
@@ -1027,7 +1027,7 @@
 }
 
 .k_top2_text textarea {
-    width: 40%;
+    width: 80%;
     height: 30px;
     line-height: 22px;
     overflow: auto;
@@ -1080,7 +1080,7 @@
     width: 45%;
     border-left: 1px solid #fff;
     padding: 20px 2%;
-    height: 340px;
+    height:100%;
 }
 
 .list01_top2 span {
@@ -1089,10 +1089,6 @@
     font-size: 14px;
     color: #000000;
     font-weight: bold;
-}
-
-.k_top2_detali2 {
-    margin-bottom: 20px;
 }
 
 .K_top2_detali ul {
@@ -3924,6 +3920,7 @@ h2 .close {
 
 .k_top2_text1 {
     width: 100%;
+    float:left;
     margin-right: 10px;
 }
 

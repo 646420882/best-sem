@@ -77,19 +77,19 @@ To change this template use File | Settings | File Templates.
                                 </ul>
                                 <div class="table_concent2 ">
                                     <div class="k_r_top2 over ">
-                                        <div class="k_r_middle">
+                                        <div class="k_r_middle over">
                                             <div class="k_top2_text fl">
                                                 <div class="k_top2_text1">
                                                     <textarea id="textarea1"
                                                               style="overflow:auto; float:left;"></textarea>
-                                                    <a href="javascript: findWordFromBaidu();" class="become2 fl" style="margin-top:0px;margin-left:10px;">开始拓词</a>
-
                                                 </div>
                                                 <p>可输入词根100/100</p>
+                                                <a href="javascript: findWordFromBaidu();" class="become2 fl"
+                                                   style="margin-top:20px">开始拓词</a>
 
 
                                             </div>
-                                     <%--       <div class="K_top2_detali fl over">
+                                            <div class="K_top2_detali fl over">
                                                 <div class="k_top2_detali2 over">
                                                     <div class="list01_top2 over">
                                                         <span>拓词来源</span>
@@ -99,7 +99,7 @@ To change this template use File | Settings | File Templates.
                                                         <li>·百思智能词库</li>
                                                     </ul>
                                                 </div>
-                                            </div>--%>
+                                            </div>
                                         </div>
                                         <div class="k_r_under over">
                                             <div class="download over ">
@@ -162,11 +162,11 @@ To change this template use File | Settings | File Templates.
                                                     </select>
                                                     <select id="keyword_group" multiple="multiple">
                                                     </select>
-                                                    <a href="javascript:findWordFromSystem();" class="become2 fl" style="margin-top:0px;">开始拓词</a>
                                                 </div>
-
+                                                <a href="javascript:findWordFromSystem();" class="become2 fl"
+                                                   style="margin-top:20px;">开始拓词</a>
                                             </div>
-                                   <%--         <div class="K_top2_detali fl over">
+                                            <div class="K_top2_detali fl over">
                                                 <div class="k_top2_detali2 over">
                                                     <div class="list01_top2 over">
                                                         <span>拓词来源</span>
@@ -176,7 +176,7 @@ To change this template use File | Settings | File Templates.
                                                         <li>·百思智能词库</li>
                                                     </ul>
                                                 </div>
-                                            </div>--%>
+                                            </div>
                                         </div>
                                         <div class="k_r_under over">
                                             <div class="download over ">
@@ -746,6 +746,13 @@ To change this template use File | Settings | File Templates.
             var seedWords = $("#textarea1").val().trims().split("\n");
             $("#textarea1").parent().next().text("可输入词根" + (100 - seedWords.length) + "/100");
         });
+        $("#textarea1").focusin(function () {
+            $("#textarea1").addClass("textarea_height");
+        })
+        $("#textarea1").focusout(function () {
+            $("#textarea1").removeClass("textarea_height")
+            $(this).next().css("margin-left", "10px")
+        })
 
     });
     var downloadCSV = function () {
@@ -791,8 +798,8 @@ To change this template use File | Settings | File Templates.
             }
 
             _url = "/getKRWords/downloadCSV?trade=" + _trade
-                    + "&categories=" + JSON.stringify($("#category").multipleSelect('getSelects'))
-                    + "&groups=" + JSON.stringify($("#keyword_group").multipleSelect('getSelects'));
+            + "&categories=" + JSON.stringify($("#category").multipleSelect('getSelects'))
+            + "&groups=" + JSON.stringify($("#keyword_group").multipleSelect('getSelects'));
 
             if (!!window.ActiveXObject || "ActiveXObject" in window) {
                 document.getElementById("background").style.display = "block";

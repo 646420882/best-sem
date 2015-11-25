@@ -73,6 +73,10 @@ textarea {
 
 select {
     height: 30px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border: 1px solid #dadadd;
 }
 
 label {

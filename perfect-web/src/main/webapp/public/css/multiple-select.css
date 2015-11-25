@@ -10,11 +10,11 @@
 
 .ms-choice {
     display: block;
-    height: 26px;
+    height: 30px;
     padding: 0;
     overflow: hidden;
     cursor: pointer;
-    border: 1px solid #aaa;
+    border: 1px solid #dadadd;
     text-align: left;
     white-space: nowrap;
     line-height: 26px;
