@@ -140,7 +140,7 @@
             $(".nav_input1").attr('title', "点击隐藏导航");
             NavClick()
         });
-         function  ChangeAccountajax(_accountId){
+        function ChangeAccountajax(_accountId) {
             $.ajax({
                 url: '/account/switchAccount',
                 type: 'POST',
@@ -157,10 +157,24 @@
                 }
             })
         }
+
         if (parseInt(baiduAccountId) != -1) {
             loadBaiduAccount();
         }
-        $('.user_name').click(function () {
+        document.onclick = function () {
+            $("#switchAccount").hide();
+        }
+
+        $("#switchAccount").click(function (e) {
+            var ev = e || window.event;
+            if (ev.stopPropagation) {
+                ev.stopPropagation();
+            }
+            else if (window.event) {
+                window.event.cancelBubble = true;//兼容IE
+            }
+        });
+        $('.user_name').click(function (e) {
             if ($("#switchAccount").css("display") == "none") {//隐藏
                 $(this).next('#switchAccount').show();
 
@@ -177,14 +191,21 @@
                     ChangeAccountajax(_accountId);
 
                 });
-                $('#searchCount').keydown(function(e){
-                    if(e.keyCode==13){
-                        $('.user_name span').html( $(this).val());
-                        var _accountId =$('#searchCount').attr("card");
+                $('#searchCount').keydown(function (e) {
+                    if (e.keyCode == 13) {
+                        $('.user_name span').html($(this).val());
+                        var _accountId = $('#searchCount').attr("card");
                         $('#switchAccount').hide();
                         ChangeAccountajax(_accountId);
                     }
                 });
+                var ev = e || window.event;
+                if (ev.stopPropagation) {
+                    ev.stopPropagation();
+                }
+                else if (window.event) {
+                    window.event.cancelBubble = true;//兼容IE
+                }
             }
             else {
                 $("#switchAccount").hide();

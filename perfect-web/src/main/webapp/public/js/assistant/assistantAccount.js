@@ -198,7 +198,7 @@ var mychart = function () {
         yAxis: [
             {
                 type: 'value',
-                name: "impression",
+                name: "",
                 scale: true,
                 axisLabel: {
                     formatter: '{value} ' + unitOne
@@ -212,7 +212,7 @@ var mychart = function () {
             },
             {
                 type: 'value',
-                name: "click",
+                name: "",
                 scale: true,
                 axisLabel: {
                     formatter: '{value} ' + unitTow

@@ -462,7 +462,7 @@
 
         <%--  <div class="progress" style="background:#61d677;height:38px;margin:10px 0">
           </div>--%>
-        <div id="tabs">
+        <div id="tabs" class="check_tab">
             <ul>
                 <li><a href="#tabs-1">可以发布的更改</a></li>
                 <li><a href="#tabs-2">不会发布的更改</a></li>
@@ -556,8 +556,11 @@
                     </tr>
                 </table>
             </div>
+            <p><img src="../public/img/error.png">关键词“test1”验证未通过：此关键词的名称与该推广单元中另一关键词的名称相同</p>
+            <p><img src="../public/img/error.png">关键词“test1”验证未通过：此关键词的名称与该推广单元中另一关键词的名称相同</p>
         </div>
-        <p>请您认真检查要发布的关键词、创意及附加信息，确保其不违法、侵权，且与您的网页信息相关</p>
+     <%--   <p>请您认真检查要发布的关键词、创意及附加信息，确保其不违法、侵权，且与您的网页信息相关</p>--%>
+
     </div>
     <div class="main_bottom">
         <div class="w_list03">

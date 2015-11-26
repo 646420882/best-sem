@@ -334,7 +334,7 @@
 }
 
 .download select {
-    height: 22px;
+    height: 30px;
     border: 1px solid #bdbdbd;
 }
 
@@ -1678,6 +1678,7 @@ ul.ztree.zTreeDragUL {
 
 .list4 {
     width: 100%;
+    min-height:150px;
     overflow: auto;
 }
 
@@ -4066,21 +4067,35 @@ input[type=checkbox]:focus {
 }
 
 #tabs .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-defaultt {
-    background: #d2e9ff;
+   /* background: #d2e9ff;*/
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
     padding-bottom: 0px;
 }
-
+.ui-tabs .ui-tabs-nav{
+    padding:0px;
+}
 #tabs .ui-state-default a, .ui-state-default a:link {
     color: #000;
+}
+.check_tab p{
+    padding: 0 10px 10px 10px;
+    color:#ff0000;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
     background: #fff;
 }
-
+.check_tab.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor{
+    background: #d2e9ff;
+}
+.check_tab.ui-tabs .ui-tabs-nav{
+    padding:0px;
+}
+.check_tab.ui-tabs{
+    border:1px solid #eeeeee;
+}
 .mainlist ul li .replaceleft {
     width: 100px;
     overflow: hidden;
@@ -4307,7 +4322,7 @@ input[type=checkbox]:focus {
     float: left;
     width: 100%;
     background: #FFF;
-    border: 2px solid #4DBF7D;
+    border: 2px solid #61d677;
     height: 30px;
     display: inline-block;
     border-radius: 8px;
@@ -4322,16 +4337,15 @@ input[type=checkbox]:focus {
     right: 0px;
     top: -30px;
     display: inline-block;
-    color: #4DBF7D;
+    color: #61d677;
     font-size: 16px;
 }
 
 .barline #line {
     float: left;
-    height: 30px;
+    height: 26px;
     overflow: hidden;
-    background: #4DBF7D;
-    border-radius: 8px;
+    background: #61d677;
 }
 
 .barline #msg {
@@ -4339,7 +4353,7 @@ input[type=checkbox]:focus {
     left: 80px;
     top: 30px;
     display: inline-block;
-    color: #4DBF7D;
+    color: #61d677;
     font-size: 14px;
 }
 
@@ -4726,6 +4740,7 @@ input[type=checkbox]:focus {
     -moz-box-shadow: #666 0px 0px 10px;
     box-shadow: #666 0px 0px 10px;
     font-weight: normal;
+    text-align: left;
 }
 
 .tooltip.bottom .tooltip-arrow, .tooltip.top .tooltip-arrow {
@@ -4815,4 +4830,7 @@ body .ui-tooltip {
     color: #fe0000;
     margin: 0px;
 
+}
+.daterangepicker td.in-range{
+    background: #D2F1FF;
 }

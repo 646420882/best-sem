@@ -1051,12 +1051,12 @@ $("#reduction_caipamgin").click(function () {
 
 function showReductionCampaignWindow() {
     var choose = $("#tbodyClick5").find(".list2_box3");
-    if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
+    if (choose != undefined && choose.find("td:eq(0) span").html() != "&nbsp;") {
         if (confirm("是否还原选择的数据?") == false) {
             return;
         }
 
-        var step = choose.find("td:last span").attr("step");
+        var step = choose.find("td:eq(0) span").attr("step");
         var id = $("#tbodyClick5").find(".list2_box3").find("input[type=hidden]").val();
         switch (parseInt(step)) {
             case 1:
@@ -1142,7 +1142,7 @@ $("#quickAddplan").click(function () {
 function uploadCampagin() {
     var _list = $("#tbodyClick5").find(".list2_box3");
     var id = _list.find("input[type=hidden]").val();
-    var step = _list.find("td:last span").attr("step");
+    var step = _list.find("td:eq(0) span").attr("step");
     if (step != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;

@@ -733,12 +733,12 @@ $.extend({
             if (checkType.val() == 0 || checkType.val() == undefined) {
                 getMaterials(forType).each(function () {
                     if (this.checked) {
-                        $(this).parent().parent().find(">td:last").html("<span class='error' step='3'></span>")
+                        $(this).parent().parent().find(">td:eq(0) span").html("<span class='error' step='3'></span>")
                     }
                 });
             } else {
                 getMaterials(forType).each(function () {
-                    $(this).parent().parent().find(">td:last").html("<span class='error' step='3'></span>")
+                    $(this).parent().parent().find(">td:eq(0) span").html("<span class='error' step='3'></span>")
                 });
             }
 
