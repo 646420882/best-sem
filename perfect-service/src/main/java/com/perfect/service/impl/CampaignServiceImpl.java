@@ -337,9 +337,9 @@ public class CampaignServiceImpl implements CampaignService {
                         }
                     });
                     List<CreativeDTO> dtos1 = creativeDAO.getAllsByAdgroupIds(longs);
-                    List<KeywordDTO> keydtos1 = keywordDAO.findKeywordByAdgroupIdsLong(longs);
+                    List<KeywordDTO> keydtos1 = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
                     List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
-                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings);
+                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
 
                     if (Objects.nonNull(keydtos1)) keywordDTOs.addAll(keydtos1);
                     if (Objects.nonNull(keydtos)) keywordDTOs.addAll(keydtos);
@@ -358,9 +358,9 @@ public class CampaignServiceImpl implements CampaignService {
                         }
                     });
                     List<CreativeDTO> dtos1 = creativeDAO.getAllsByAdgroupIds(longs);
-                    List<KeywordDTO> keydtos1 = keywordDAO.findKeywordByAdgroupIdsLong(longs);
+                    List<KeywordDTO> keydtos1 = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
                     List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
-                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings);
+                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
 
                     if (Objects.nonNull(keydtos1)) keywordDTOs.addAll(keydtos1);
                     if (Objects.nonNull(keydtos)) keywordDTOs.addAll(keydtos);

@@ -5,6 +5,7 @@ import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordAggsDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.paging.PaginationParam;
@@ -154,9 +155,9 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
      * @param adgroupIds
      * @return
      */
-    List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds);
+    List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds,FindOrReplaceParam forp);
 
-    List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds);
+    List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds,FindOrReplaceParam forp);
 
     void batchDelete(List<String> strings);
 

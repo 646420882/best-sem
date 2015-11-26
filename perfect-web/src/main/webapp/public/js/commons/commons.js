@@ -18,12 +18,19 @@ var commons = {
         //        return;
         //    }
         //}
-        console.log(exist_selected);
         //checkType
         var checkType = $("select[name='checkType']");
         checkType.empty();
-        var opt = "<option value='0'>当前选中</option><option value='1'>所有(计划下所有)</option>"
+        var opt = "<option value='0'>当前选中</option><option value='-1'>所有(全账户)</option>"
         checkType.append(opt);
+        if (exist_selected.cid && !exist_selected.aid) {
+            checkType.empty();
+            checkType.append("<option value='0'>当前选中</option><option value='1'>所有(该计划下)</option>");
+        }
+        if (exist_selected.cid && exist_selected.aid) {
+            checkType.empty();
+            checkType.append("<option value='0'>当前选中</option><option value='1'>所有(单元下)</option>");
+        }
 
         //<option value="0">当前选中</option>
         //<option value="1">所有(计划下所有)</option>
@@ -498,11 +505,11 @@ $.extend({
         var form = $(_this).parents("form");
         var step = $(_this).attr("step");
         var checkType = $("select[name='checkType'] :selected");
-        console.log(checkType.val())
         if (!checkType.val()) {
             AlertPrompt.show("请选择物料模式");
             return false;
         }
+        console.log(checkType.val())
         var foR_params = {};
         var forType = $("#forType").val();
         if (checkType.val() == 0) {
@@ -518,9 +525,12 @@ $.extend({
                 AlertPrompt.show("您没有选择要所需物料!");
                 return;
             }
-            foR_params = {type: forType, forType: 0, checkData: checked_data, step: step};
-        } else {
-            foR_params = {type: forType, forType: 1, campaignId: jsonData.cid, step: step};
+            foR_params = {type: forType, forType: checkType.val(), checkData: checked_data, step: step};
+        } else if (checkType.val() == 1) {
+            foR_params = {type: forType, forType: checkType.val(), campaignId: jsonData.cid, step: step};
+        }
+        else if (checkType.val() == -1) {
+            foR_params = {type: forType, forType: checkType.val(), campaignId: jsonData.cid, step: step};
         }
         form.foRSubmit("../assistantCommons/checkSome", foR_params, function (result) {
             if (result.data) {

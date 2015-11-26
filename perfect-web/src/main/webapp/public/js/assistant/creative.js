@@ -315,7 +315,7 @@ function addOperate(obj) {
                 var i = $("#createTable tbody tr").size();
                 var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td >&nbsp;<input type='hidden' value='" + json.data + "'/><input type='checkbox' name='creativeCheck' value='" + json.data + "'/></td>" +
+                    "<td class='table_add'>&nbsp;<input type='hidden' value='" + json.data + "'/><input type='checkbox' name='creativeCheck' value='" + json.data + "'/><span class='new_add' step='1'></span></td>" +
                     "<td>" + until.substring(10, data["title"]) + "</td>" +
                     " <td >" + until.substring(10, data["description1"]) + "</td>" +
                     " <td >" + until.substring(10, data["description2"]) + "</td>" +
@@ -326,7 +326,6 @@ function addOperate(obj) {
                     " <td >" + p + "</td>" +
                     " <td >" + s + "</td>" +
                     " <td >" + d + "</td>" +
-                    " <td ><span class='pen' step='1'></span></td>" +
                     "</tr>";
                 _createTable.append(_tbody);
             }
@@ -365,11 +364,11 @@ function loadCreativeData(page_index) {
             var _trClass = "";
             for (var i = 0; i < json.length; i++) {
                 var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
-                var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                var _edit = json[i].localStatus != null ? json[i].localStatus : -2;
                 var ls = getLocalStatus(parseInt(_edit));
                 _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                    "<td >&nbsp;<input type='hidden' value='" + _id + "'/><input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/></td>" +
+                    "<td class='table_add'>&nbsp;<input type='hidden' value='" + _id + "'/><input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/>" + ls + "</td>" +
                     "<td >" + until.substring(10, json[i].title) + "</td>" +
                     " <td >" + until.substring(10, json[i].description1) + "</td>" +
                     " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -380,7 +379,6 @@ function loadCreativeData(page_index) {
                     " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                     " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
                     "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>" +
-                    " <td >" + ls + "</td>" +
                     "</tr>";
                 _createTable.append(_tbody);
             }
@@ -425,37 +423,37 @@ function on(obj) {
     preview(obj);
     $("#sDiv input[type='text']").val("");
     var _this = $(obj);
-    var title = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
+    var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title") : _this.find("td:eq(1) input").val();
     if (title == undefined) {
-        title = _this.find("td:eq(2) span").html();
+        title = _this.find("td:eq(1) span").html();
     }
-    var de1 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
+    var de1 = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
     if (de1 == undefined) {
-        de1 = _this.find("td:eq(3) span").html();
+        de1 = _this.find("td:eq(2) span").html();
     }
-    var de2 = _this.find("td:eq(4) a").attr("title") != undefined ? _this.find("td:eq(4) a").attr("title") : _this.find("td:eq(4) input").val();
+    var de2 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
     if (de2 == undefined) {
-        de2 = _this.find("td:eq(4) span").html();
+        de2 = _this.find("td:eq(3) span").html();
     }
-    var pc = _this.find("td:eq(5) a").attr("href") != undefined ? _this.find("td:eq(5) a").attr("href") : _this.find("td:eq(5) input").val();
+    var pc = _this.find("td:eq(4) a").attr("href") != undefined ? _this.find("td:eq(4) a").attr("href") : _this.find("td:eq(4) input").val();
     if (pc == undefined) {
-        pc = _this.find("td:eq(5) span").html();
+        pc = _this.find("td:eq(4) span").html();
     }
-    var pcs = _this.find("td:eq(6) a").attr("title") != undefined ? _this.find("td:eq(6) a").attr("title") : _this.find("td:eq(6) input").val();
+    var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
     if (pcs == undefined) {
-        pcs = _this.find("td:eq(6) span").html();
+        pcs = _this.find("td:eq(5) span").html();
     }
-    var mib = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
+    var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
     if (mib == undefined) {
-        mib = _this.find("td:eq(7) a").attr("title");
+        mib = _this.find("td:eq(6) a").attr("title");
     }
-    var mibs = _this.find("td:eq(8) span:eq(0)").text() != "" ? _this.find("td:eq(8) span:eq(0)").text() : _this.find("td:eq(8) input").val();
+    var mibs = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
     if (mibs == undefined) {
-        mibs = _this.find("td:eq(8) a").attr("title");
+        mibs = _this.find("td:eq(7) a").attr("title");
     }
-    var pause = _this.find("td:eq(9) select") == "" ? _this.find("td:eq(9)").find("select") : _this.find("td:eq(9)").html();
-    var status = _this.find("td:eq(10) select") == "" ? _this.find("td:eq(10)").find("select") : _this.find("td:eq(10)").html();
-    var d = _this.find("td:eq(11) select") == "" ? _this.find("td:eq(11)").find("select") : _this.find("td:eq(11)").html();
+    var pause = _this.find("td:eq(8) select") == "" ? _this.find("td:eq(8)").find("select") : _this.find("td:eq(8)").html();
+    var status = _this.find("td:eq(9) select") == "" ? _this.find("td:eq(9)").find("select") : _this.find("td:eq(9)").html();
+    var d = _this.find("td:eq(10) select") == "" ? _this.find("td:eq(10)").find("select") : _this.find("td:eq(10)").html();
 
     $("#sTitle").val(title);
     initKeyUp($("#sTitle"));
@@ -594,7 +592,6 @@ function addCreative() {
         var _createTable = $("#createTable tbody");
         var _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
         var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-            "<td>&nbsp;</td>"+
             "<td>&nbsp;<span><a href='javascript:void(0)' onclick='removeThe(this);'>删除</a></span><input type='hidden' name='cacheCativeId' value=''/><input type='hidden' name='aid' value='" + getCreativeAId() + "'/></td>" +
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
@@ -606,7 +603,6 @@ function addCreative() {
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
             "<td><select name='d'><option value='0'>全部</option><option value='1'>移动设备优先</option></select></td>" +
-            " <td><span class='pen' step='1'></span></td>" +
             "</tr>";
         _createTable.append(_tbody);
     } else if (sparams.cid != null && sparams.aid == null) {
@@ -980,13 +976,13 @@ function loadAdgroup(rs) {
  */
 function deleteByObjectId() {
     var temp = $(tmp);
-    var oid = temp.find("td:eq(1) input").val() != undefined ? temp.find("td:eq(1) input").val() : temp.find("td:eq(1) span").html();
+    var oid = temp.find("td:eq(0) input").val() != undefined ? temp.find("td:eq(0) input").val() : temp.find("td:eq(0) span").html();
     if (oid != undefined) {
         var con = confirm("是否删除该创意？");
         if (con) {
             $.get("/assistantCreative/del", {oid: oid}, function (rs) {
                 if (rs == "1") {
-                    $(tmp).find("td:eq(12)").html("<span class='error' step='3'></span>");
+                    $(tmp).find("td:eq(0) span").attr("class","table_delete").attr("step",3);
                 }
             });
         }
@@ -1020,16 +1016,16 @@ function updateCreatvie() {
     var dm = $(".doMainS").html();
     var _tr = temp;
     var creativeId = _tr.find("td:eq(1) input").val() != undefined ? _tr.find("td:eq(1) input").val() : _tr.find("td:eq(1) span").html();
-    var title = _tr.find("td:eq(2) a").attr("title") != undefined ? _tr.find("td:eq(2) a").attr("title") : _tr.find("td:eq(2) span").html();
-    var description1 = _tr.find("td:eq(3) a").attr("title") != undefined ? _tr.find("td:eq(3) a").attr("title") : _tr.find("td:eq(3) span").html();
-    var description2 = _tr.find("td:eq(4) a").attr("title") != undefined ? _tr.find("td:eq(4) a").attr("title") : _tr.find("td:eq(4) span").html();
-    var pcDestinationUrl = _tr.find("td:eq(5) a").attr("href") != undefined ? _tr.find("td:eq(5) a").attr("href") : _tr.find("td:eq(5) span").html();
-    var pcDisplayUrl = _tr.find("td:eq(6) a").attr("title") != undefined ? _tr.find("td:eq(6) a").attr("title") : _tr.find("td:eq(6) span").html();
-    var mobileDestinationUrl = _tr.find("td:eq(7) a").attr("title") != undefined ? _tr.find("td:eq(7) a").attr("title") : _tr.find("td:eq(7) span").html();
-    var mobileDisplayUrl = _tr.find("td:eq(8) a").attr("title") != undefined ? _tr.find("td:eq(8) a").attr("title") : _tr.find("td:eq(8) span").html();
-    var status = _tr.find("td:eq(10) input").val();
-    var pause = _tr.find("td:eq(9)").html();
-    var devicePreference = _tr.find("td:eq(11)").html();
+    var title = _tr.find("td:eq(1) a").attr("title") != undefined ? _tr.find("td:eq(1) a").attr("title") : _tr.find("td:eq(1) span").html();
+    var description1 = _tr.find("td:eq(2) a").attr("title") != undefined ? _tr.find("td:eq(2) a").attr("title") : _tr.find("td:eq(2) span").html();
+    var description2 = _tr.find("td:eq(3) a").attr("title") != undefined ? _tr.find("td:eq(3) a").attr("title") : _tr.find("td:eq(3) span").html();
+    var pcDestinationUrl = _tr.find("td:eq(4) a").attr("href") != undefined ? _tr.find("td:eq(4) a").attr("href") : _tr.find("td:eq(4) span").html();
+    var pcDisplayUrl = _tr.find("td:eq(5) a").attr("title") != undefined ? _tr.find("td:eq(5) a").attr("title") : _tr.find("td:eq(5) span").html();
+    var mobileDestinationUrl = _tr.find("td:eq(6) a").attr("title") != undefined ? _tr.find("td:eq(6) a").attr("title") : _tr.find("td:eq(6) span").html();
+    var mobileDisplayUrl = _tr.find("td:eq(7) a").attr("title") != undefined ? _tr.find("td:eq(7) a").attr("title") : _tr.find("td:eq(7) span").html();
+    var status = _tr.find("td:eq(9) input").val();
+    var pause = _tr.find("td:eq(8)").html();
+    var devicePreference = _tr.find("td:eq(10)").html();
     $("#cUpdateForm input[name='oid']").val(creativeId);
     $("#cUpdateForm input[name='title']").val(title);
     $("#cUpdateForm input[name='description1']").val(description1);
@@ -1261,12 +1257,12 @@ function onRbackBtn() {
 function reBakClick() {
     var _this = $(tmp);
     if (_this.html() != undefined) {
-        var _edit = _this.find("td:eq(12)").html();
-        if (_edit != "") {
+        var _edit = _this.find("td:eq(0) span").html();
+        if (_edit=="") {
             var con = confirm("是否还原选中的数据？");
             if (con) {
-                var _localStatus = parseInt(_this.find("td:eq(12) span").attr("step"));
-                var _oid = _this.find("td:eq(1) input").val() != undefined ? _this.find("td:eq(1) input").val() : _this.find("td:eq(1) span").html();
+                var _localStatus = parseInt(_this.find("td:eq(0) span").attr("step"));
+                var _oid = _this.find("td:eq(0) input[type='checkbox']").val()? _this.find("td:eq(0) input[type='checkbox']").val() : _this.find("td:eq(0) input[type='text']").html();
                 switch (_localStatus) {
                     case 1:
                         deleteByObjectId();
@@ -1323,16 +1319,16 @@ function delBack(oid) {
 function getLocalStatus(number) {
     switch (number) {
         case 1:
-            return "<span class='newadd' step=" + number + "></span>";
+            return "<span class='new_add' step=" + number + "></span>";
             break;
         case 2:
-            return "<span class='update' step=" + number + "></span>";
+            return "<span class='pen' step=" + number + "></span>";
             break;
         case 3:
-            return "<span class='delete' step=" + number + "></span>";
+            return "<span class='table_delete' step=" + number + "></span>";
             break;
         case 4:
-            return "<span class='delete' step=" + number + "></span>";
+            return "<span class='table_delete' step=" + number + "></span>";
             break;
         case -1:
             return "<span class='repeat' step=" + number + "></span>";

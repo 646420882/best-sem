@@ -299,7 +299,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     switchCaseKeyword(forp, dto, returnResult);
                 }
             });
-        } else {
+        } else if (forp.getForType() == 1) {
             if (forp.getCampaignId() != null) {
                 if (forp.getCampaignId().length() > OBJ_SIZE) {
                     List<KeywordInfoDTO> keywordInfoDTOLis = assistantKeywordService.getKeywordInfoByCampaignIdStr(forp.getCampaignId());
@@ -313,6 +313,11 @@ public class AssistantCommonsController extends WebContextSupport {
                     });
                 }
             }
+        } else {
+            List<KeywordInfoDTO> keywordInfoDTOs = assistantKeywordService.getAll(forp);
+            keywordInfoDTOs.stream().forEach(s -> {
+                switchCaseKeyword(forp, s, returnResult);
+            });
         }
         return returnResult;
     }

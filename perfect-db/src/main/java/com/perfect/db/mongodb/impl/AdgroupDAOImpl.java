@@ -67,6 +67,13 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
     }
 
     @Override
+    public List<String> getAllAdgroupIdStr() {
+        Query query = new BasicQuery("{}", "{" + SYSTEM_ID + ": 1}");
+        List<AdgroupEntity> list = getMongoTemplate().find(query, getEntityClass());
+        return list.stream().map(AdgroupEntity::getId).collect(Collectors.toList());
+    }
+
+    @Override
     public Map<Long, Long> getAllAdgroupIdByBaiduAccountId(Long baiduAccoutId) {
         Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + ": 1, " + ADGROUP_ID + ": 1}");
         query.addCriteria(Criteria.where(ACCOUNT_ID).is(baiduAccoutId));

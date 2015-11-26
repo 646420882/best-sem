@@ -18,6 +18,7 @@ import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
@@ -787,7 +788,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds) {
+    public List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds,FindOrReplaceParam forp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(adgroupIds));
@@ -797,13 +798,19 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds) {
+    public List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds,FindOrReplaceParam forp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds));
+        if(forp!=null){
+            operateQuery(query,forp);
+        }
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         return dtos;
+    }
+    private void operateQuery(Query query,FindOrReplaceParam forp){
+
     }
 
     @Override

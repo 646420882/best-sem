@@ -429,9 +429,9 @@
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Creative_quipment',this)">
                         设备偏好&nbsp;</span></th>
-                                                            <th class="username-column" data-noresize>
-                                                                <div class="set fr"></div>
-                                                            </th>
+                                                            <%--<th class="username-column" data-noresize>--%>
+                                                                <%--<div class="set fr"></div>--%>
+                                                            <%--</th>--%>
                                                         </tr>
                                                         </thead>
                                                         <tbody id="tbodyClick2" onmousedown="CtrlA()"
