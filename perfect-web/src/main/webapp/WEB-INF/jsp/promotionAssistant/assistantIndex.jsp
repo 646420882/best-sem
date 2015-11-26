@@ -1440,6 +1440,11 @@
      };*/
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
+        rDrag.init(document.getElementById('CampaignChange'));
+        rDrag.init(document.getElementById('uploadHead'));
+        rDrag.init(document.getElementById('setExtensionDiv'));
+        rDrag.init(document.getElementById('setFdKeywordDiv'));
+        rDrag.init(document.getElementById('setExcludeIpDiv'));
     });
     //loading
     var ajaxbg = $("#background,#progressBar");

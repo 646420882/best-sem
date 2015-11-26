@@ -60,13 +60,13 @@ window.onload = function () {
     rDrag.init(document.getElementById('changeCreative'));
     rDrag.init(document.getElementById('excludeIPChange'));
     rDrag.init(document.getElementById('budgetChange'));
-    rDrag.init(document.getElementById('CampaignChange'));
-    rDrag.init(document.getElementById('uploadHead'));
+    //rDrag.init(document.getElementById('CampaignChange'));
+    //rDrag.init(document.getElementById('uploadHead'));
     rDrag.init(document.getElementById('RepeartChange'));
     rDrag.init(document.getElementById('GusuanChange'));
-    rDrag.init(document.getElementById('setFdKeywordDiv'));
-    rDrag.init(document.getElementById('setExtensionDiv'));
-    rDrag.init(document.getElementById('setExcludeIpDiv'));
+    /*rDrag.init(document.getElementById('setFdKeywordDiv'));*/
+    //rDrag.init(document.getElementById('setExtensionDiv'));
+   /* rDrag.init(document.getElementById('setExcludeIpDiv'));*/
     rDrag.init(document.getElementById('plan2'));
     rDrag.init(document.getElementById('findOrReplaceH'));
 
