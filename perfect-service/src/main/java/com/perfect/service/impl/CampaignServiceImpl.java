@@ -11,23 +11,25 @@ import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dao.keyword.KeywordDAO;
-import com.perfect.dto.backup.CampaignBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
+import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
 import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
-import org.elasticsearch.action.update.UpdateResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by SubDong on 2014/11/26.
@@ -48,6 +50,9 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Resource
     private AdgroupDAO adgroupDAO;
+
+    @Resource
+    private AdgroupService adgroupService;
 
     @Override
     public CampaignDTO findOne(Long campaignId) {
@@ -127,8 +132,8 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo,SearchFilterParam sp) {
-        return campaignDAO.findByPageInfo(accountId, pageSize, pageNo,sp);
+    public PagerInfo findByPageInfo(Long accountId, int pageSize, int pageNo, SearchFilterParam sp) {
+        return campaignDAO.findByPageInfo(accountId, pageSize, pageNo, sp);
     }
 
     @Override
@@ -385,5 +390,43 @@ public class CampaignServiceImpl implements CampaignService {
             }
             campaignDAO.batchDelete(asList, adgroupDatas, keywordDatas, creativeDatas);
         }
+    }
+
+    @Override
+    public void enableOrPauseCampaign(EnableOrPauseParam param) {
+        if (param != null) {
+            List<String> strings = Lists.newArrayList();
+            if (param.getEnableOrPauseData() != null) {
+                String[] list = param.getEnableOrPauseData().split(",");
+                Collections.addAll(strings, list);
+            }
+            List<String> objId = Lists.newArrayList();
+            List<Long> baidId = Lists.newArrayList();
+            strings.forEach(e -> {
+                if (e.length() < 24) {
+                    baidId.add(Long.parseLong(e));
+                } else {
+                    objId.add(e);
+                }
+            });
+            List<Long> adgroupLong = adgroupDAO.getAdgroupIdByCampaignIdListLong(baidId);
+            List<String> adgroupString = adgroupDAO.getAdgroupIdByCampaignIdListString(objId);
+
+            List<String> result = Stream.concat(adgroupLong.stream().map(Object::toString), adgroupString.stream()).collect(Collectors.toList());
+
+            EnableOrPauseParam enableOrPauseParam = new EnableOrPauseParam();
+            enableOrPauseParam.setEnableOrPauseData(result.toString().replaceAll("[\\[|\\]| ]", ""));
+            enableOrPauseParam.setEnableOrPauseStatus(param.getEnableOrPauseStatus());
+            enableOrPauseParam.setEnableOrPauseType(param.getEnableOrPauseType());
+
+            adgroupService.enableOrPauseAdgroup(enableOrPauseParam);
+
+            if (param.getEnableOrPauseStatus() == 0) {
+                campaignDAO.enableOrPauseCampaign(strings, false);
+            } else {
+                campaignDAO.enableOrPauseCampaign(strings, true);
+            }
+        }
+
     }
 }

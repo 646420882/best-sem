@@ -11,7 +11,9 @@ import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.entity.backup.CreativeBackUpEntity;
+import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.creative.CreativeEntity;
+import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
@@ -380,6 +382,38 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
                 getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
             }
         });
+    }
+
+    @Override
+    public void enableOrPauseCreative(List<String> strings, boolean status) {
+        if(!strings.isEmpty()){
+            strings.forEach(e -> {
+                Update update = new Update();
+                update.set("p", status);
+                update.set("ls", 2);
+                if (e.length() < 24) {
+                    //查询是否存在备份数据
+                    boolean exists = getMongoTemplate().exists(new Query(Criteria.where(CREATIVE_ID).is(Long.parseLong(e))), CreativeBackUpEntity.class);
+                    if (exists) {
+                        //如果备份表里面存在当前数据则直接修改
+                        getMongoTemplate().updateFirst(new Query(Criteria.where(CREATIVE_ID).is(Long.parseLong(e))), update, getEntityClass());
+                    } else {
+                        //查询创意需要备份的数据
+                        CreativeEntity creative = getMongoTemplate().findOne(new Query(Criteria.where(CREATIVE_ID).is(Long.parseLong(e))), getEntityClass());
+                        CreativeBackUpEntity creativeBackUpEntity = new CreativeBackUpEntity();
+                        BeanUtils.copyProperties(creative, creativeBackUpEntity);
+                        //数据进行备份
+                        getMongoTemplate().save(creativeBackUpEntity);
+                        //修改当前数据
+                        getMongoTemplate().updateFirst(new Query(Criteria.where(CREATIVE_ID).is(Long.parseLong(e))), update, getEntityClass());
+                    }
+                } else {
+                    //如果是本地数据直接修改启用状态
+                    getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(e)), update, getEntityClass());
+                }
+
+            });
+        }
     }
 
     @Override

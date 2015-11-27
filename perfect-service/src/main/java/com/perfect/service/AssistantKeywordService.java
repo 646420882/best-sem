@@ -6,6 +6,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
@@ -128,6 +129,12 @@ public interface AssistantKeywordService {
      * @param param
      */
     void batchDelete(FindOrReplaceParam param);
+
+    /**
+     * 批量暂停/启动 关键词
+     * @param param
+     */
+    void enableOrPauseKeyword(EnableOrPauseParam param);
 
     void cut(KeywordDTO dto,String aid);
 

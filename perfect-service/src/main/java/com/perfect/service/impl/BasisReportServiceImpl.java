@@ -65,7 +65,7 @@ public class BasisReportServiceImpl implements BasisReportService {
                     List<StructureReportDTO> dateMap0 = new ArrayList<>();
                     StructureReportDTO dateObject0 = new StructureReportDTO();
                     //初始化容器
-                    Map<String, StructureReportDTO> map = new HashMap<>();
+                    Map<String, StructureReportDTO> map;
                     List<StructureReportDTO> returnList = new ArrayList<>();
                     Map<String, List<StructureReportDTO>> listMap = new HashMap<>();
                     List<StructureReportDTO> objectsList = new ArrayList<>();

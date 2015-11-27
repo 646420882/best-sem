@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
@@ -105,4 +106,10 @@ public interface CampaignService {
      * @param param
      */
     void batchDelete(FindOrReplaceParam param);
+
+    /**
+     * 通过单元ID批量暂停/启动 创意
+     * @param param
+     */
+    void enableOrPauseCampaign(EnableOrPauseParam param);
 }

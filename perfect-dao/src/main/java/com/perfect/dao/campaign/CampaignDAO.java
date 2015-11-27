@@ -83,4 +83,11 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
      */
     void batchDelete(List<String> asList, List<String> adgroupList, List<String> keywordDatas, List<String> creativeDatas);
 
+    /**
+     * 批量启用/暂停 计划
+     *
+     * @param strings
+     * @param status
+     */
+    void enableOrPauseCampaign(List<String> strings, boolean status);
 }

@@ -395,6 +395,40 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         });
     }
 
+    @Override
+    public void enableOrPauseCampaign(List<String> strings, boolean status) {
+        if (!strings.isEmpty()) {
+            strings.forEach(e -> {
+                Update update = new Update();
+                update.set("p", status);
+                update.set("ls", 2);
+
+                if (e.length() < 24) {
+                    Long id = Long.parseLong(e);
+                    //查询是否存在备份数据
+                    boolean exists = getMongoTemplate().exists(new Query(Criteria.where(CAMPAIGN_ID).is(id)), CampaignBackUpEntity.class);
+                    if(exists){
+                        //如果备份表里面存在当前数据则直接修改
+                        getMongoTemplate().updateFirst(new Query(Criteria.where(CAMPAIGN_ID).is(id)), update, getEntityClass());
+                    }else{
+                        //查询创意需要备份的数据
+                        CampaignEntity campaignEntity = getMongoTemplate().findOne(new Query(Criteria.where(CAMPAIGN_ID).is(id)), getEntityClass());
+                        CampaignBackUpEntity campaignBackUpEntity = new CampaignBackUpEntity();
+                        //将数据复制到备份实体
+                        BeanUtils.copyProperties(campaignEntity, campaignBackUpEntity);
+                        //数据进行备份
+                        getMongoTemplate().save(campaignBackUpEntity);
+                        //修改当前数据
+                        getMongoTemplate().updateFirst(new Query(Criteria.where(CAMPAIGN_ID).is(id)), update, getEntityClass());
+                    }
+                } else {
+                    //如果是本地数据直接修改启用状态
+                    getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(e)), update, getEntityClass());
+                }
+            });
+        }
+    }
+
 
     /**
      * 根据mongoID修改计划

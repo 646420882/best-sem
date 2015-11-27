@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
@@ -123,10 +124,16 @@ public interface CreativeService {
     List<CreativeDTO> getByCampaignIdLong(Long cid);
 
     /**
-     * 批量删除关键字
+     * 批量删除创意
      * @param param
      */
     void batchDelete(FindOrReplaceParam param);
+
+    /**
+     * 批量暂停/启动 创意
+     * @param param
+     */
+    void enableOrPauseCreative(EnableOrPauseParam param);
 
     void cut(CreativeDTO dto,String aid);
 

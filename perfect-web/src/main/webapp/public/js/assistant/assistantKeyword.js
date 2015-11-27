@@ -531,6 +531,56 @@ function getChar(str) {
     var char = str.match(/[^\x00-\xff]/ig);
     return str.length + (char == null ? 0 : char.length);
 }
+/**
+ * 批量暂停/启用
+ */
+function enableOrPause(_this, type) {
+    var option = $(_this).find("option:selected").text();
+    var checkType = $("#checkType option:selected");
+    var foR_params = {};
+    var forType = $("#forType").val();
+    if (checkType.val() == 0 || type == "campaign") {
+        var checked_data = [];
+        var checkChildren = getMaterials(type);
+        for (var i = 0; i < checkChildren.length; i++) {
+            if (checkChildren[i].checked == true) {
+                checked_data.push(checkChildren[i].value);
+            }
+        }
+        if (!checked_data.length) {
+            AlertPrompt.show("您没有选择要所需物料!");
+            return;
+        }
+        console.log(option);
+        foR_params = {enableOrPauseType: type, enableOrPauseData: checked_data.toString(), enableOrPauseStatus: (option == "暂停" ? 0 : 1)};
+        $.ajax({
+            url: "/assistantCommons/enableOrPause",
+            data: JSON.stringify(foR_params),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                switch (type){
+                    case "keyword":
+                        whenClickTreeLoadData("关键词");
+                        $("input[name=keyAllCheck]").attr("checked",false);
+                        break;
+                    case "creative":
+                        whenClickTreeLoadData("普通创意");
+                        $("input[name=creativeAllCheck]").attr("checked",false);
+                        break
+                    case "adgroup":
+                        whenClickTreeLoadData("推广单元");
+                        $("input[name=adgroupAllCheck]").attr("checked",false);
+                        break
+                    case "campaign":
+                        whenClickTreeLoadData("推广计划");
+                        $("input[name=campaignAllCheck]").attr("checked",false);
+                        break
+                }
+            }
+        });
+    }
+}
 
 /**
  * 控件失去焦点时候触发
@@ -911,81 +961,81 @@ function reducKwd_del(id) {
  * @type {{text: string, func: func}}
  */
 var menu_keyword_add = {
-        text: "添加关键词",
-        img: "../public/img/zs_function1.png",
-        func: function () {
-            /* showSearchWord();*/
-            AddKeywords();
-        }
-    }, menu_keyword_del = {
-        text: "删除",
-        img: "../public/img/zs_function2.png",
-        func: function () {
-            deleteKwd();
-        }
-    }, menu_keyword_batchAddOrUpdate = {
-        text: "批量添加/更新",
-        img: "../public/img/zs_function3.png",
-        func: function () {
-            batchAddOrUpdate();
-        }
-    }, menu_keyword_batchDel = {
-        text: "批量删除",
-        img: "../public/img/zs_function2.png",
-        func: function () {
-            batchDelKeyword();
-        }
-    }, menu_keyword_redu = {
-        text: "还原",
-        img: "../public/img/zs_function9.png",
-        func: function () {
-            reductionKeyword();
-        }
-    }, menu_keyword_upload = {
-        text: "更新到凤巢",
-        img: "../public/img/update2.png",
-        func: function () {
-            kUpload();
-        }
-    }, menu_keyword_searchWord = {
-        text: "快速添加关键词",
-        img: "../public/img/zs_function10.png",
-        func: function () {
-            searchword();
-        }
-
+    text: "添加关键词",
+    img: "../public/img/zs_function1.png",
+    func: function () {
+        /* showSearchWord();*/
+        AddKeywords();
     }
+}, menu_keyword_del = {
+    text: "删除",
+    img: "../public/img/zs_function2.png",
+    func: function () {
+        deleteKwd();
+    }
+}, menu_keyword_batchAddOrUpdate = {
+    text: "批量添加/更新",
+    img: "../public/img/zs_function3.png",
+    func: function () {
+        batchAddOrUpdate();
+    }
+}, menu_keyword_batchDel = {
+    text: "批量删除",
+    img: "../public/img/zs_function2.png",
+    func: function () {
+        batchDelKeyword();
+    }
+}, menu_keyword_redu = {
+    text: "还原",
+    img: "../public/img/zs_function9.png",
+    func: function () {
+        reductionKeyword();
+    }
+}, menu_keyword_upload = {
+    text: "更新到凤巢",
+    img: "../public/img/update2.png",
+    func: function () {
+        kUpload();
+    }
+}, menu_keyword_searchWord = {
+    text: "快速添加关键词",
+    img: "../public/img/zs_function10.png",
+    func: function () {
+        searchword();
+    }
+
+}
     , menu_keyword_copy = {
-        text: "复制",
-        img: "../public/img/zs_function13.png",
-        func: function () {
-            editCommons.Copy();
-        }
-
+    text: "复制",
+    img: "../public/img/zs_function13.png",
+    func: function () {
+        editCommons.Copy();
     }
+
+}
     , menu_keyword_shear = {
-        text: "剪切",
-        img: "../public/img/zs_function14.png",
-        func: function () {
-            editCommons.Cut();
-        }
-
+    text: "剪切",
+    img: "../public/img/zs_function14.png",
+    func: function () {
+        editCommons.Cut();
     }
+
+}
     , menu_keyword_paste = {
-        text: "粘贴",
-        img: "../public/img/zs_function15.png",
-        func: function () {
-            editCommons.Parse();
-        }
+    text: "粘贴",
+    img: "../public/img/zs_function15.png",
+    func: function () {
+        editCommons.Parse();
     }
+}
     , menu_keyword_select = {
-        text: "全选",
-        img: "../public/img/zs_function16.png",
-        func: function () {
-            CtrlAll();
-        }
+    text: "全选",
+    img: "../public/img/zs_function16.png",
+    func: function () {
+        CtrlAll();
+    }
 
-    };
+};
 function showSearchWord() {
     $("#adgroup_select").empty();
     $("#phraseTypeDiv").hide();
@@ -1207,12 +1257,12 @@ function AddKeywordsSave() {
         AlertPrompt.show("请选择推广单元!");
         return;
     }
-    var device = $("#device_selectNew option:selected").val();
-    if (device == null || device.length == 0) {
-        AlertPrompt.show("请选择推广设备!");
-        //alert("请选择推广设备!");
-        return;
-    }
+    /* var device = $("#device_selectNew option:selected").val();
+     if (device == null || device.length == 0) {
+     AlertPrompt.show("请选择推广设备!");
+     //alert("请选择推广设备!");
+     return;
+     }*/
     if ($("#statusNew").val() == null || $("#statusNew").val() == "") {
         //alert("关键词不能为空！")
         AlertPrompt.show("关键词不能为空!");
@@ -1278,7 +1328,7 @@ $(function () {
     var campaignId = $("#assistant_campaign_id").val();
 
     if (keywordId != 0 && adgroupId != 0 && campaignId != 0) {
-        var formData={oid:keywordId,aid:adgroupId,cid:campaignId,filterType:"Keyword"};
+        var formData = {oid: keywordId, aid: adgroupId, cid: campaignId, filterType: "Keyword"};
         TabModel.filterSearchSubmit(formData, null, function (res) {
             $.leveComplete("keyword", {data: res.data.list});
         });

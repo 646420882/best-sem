@@ -94,7 +94,7 @@ function getNowChooseCidAndAid() {
 function whenClickTreeLoadData(tabName, param) {
     $("#jiangkong_box3").hide();
     $("#jiangkong_box2").show();
-    param = param != null ? param : {aid: null, cid: null};
+    param = (param != null ? param : {aid: null, cid: null});
     var tabName = $.trim(tabName);
     if (tabName == "关键词") {
         if (param.cid != null) {
