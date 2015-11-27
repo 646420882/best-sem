@@ -165,8 +165,11 @@
                                                     <li><a href="#" id="reduction"><span class="z_function_hover"><img
                                                             src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
                                                     </li>
-                                                    <li><a href="#" class="searchwordReport"><span class="zs_top"><img
+                                                    <li><a href="#"  onclick="showSearchWord()"><span class="zs_top"><img
                                                             src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                    </li>
+                                                    <li><a href="#" class="searchwordReport"><span class="zs_top"><img
+                                                            src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
                                                     </li>
                                                     <li><a href="javascript:void(0)" onclick="addCensus()"><span
                                                             class="zs_top"><img
@@ -823,7 +826,6 @@
                                                             <th><input type="checkbox" name='adgroupAllCheck'
                                                                        onchange="$.foRCheckAll('adgroupAllCheck')"/>
                                                             </th>
-                                                            <th>&nbsp;操作</th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Adgroup_name',this)">
                         推广单元名称&nbsp;</span></th>
@@ -839,9 +841,9 @@
                                                             <th>&nbsp;否定关键词</th>
                                                             <th>&nbsp;<span>
                         推广计划名称&nbsp;</span></th>
-                                                            <th class="username-column" data-noresize>
-                                                                <div class="set fr"></div>
-                                                            </th>
+                                                            <%--<th class="username-column" data-noresize>--%>
+                                                                <%--<div class="set fr"></div>--%>
+                                                            <%--</th>--%>
                                                         </tr>
                                                         </thead>
                                                         <tbody id="tbodyClick_campaign" onmousedown="CtrlA()"

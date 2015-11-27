@@ -130,8 +130,10 @@ public class AssistantCommonsController extends WebContextSupport {
             BeanUtils.copyProperties(dto.getObject(), keywordDTO);
             if (ep.getAid().length() > OBJ_SIZE) {
                 keywordDTO.setAdgroupObjId(ep.getAid());
+                keywordDTO.setAdgroupId(null);
             } else {
                 keywordDTO.setAdgroupId(Long.valueOf(ep.getAid()));
+                keywordDTO.setAdgroupObjId(null);
             }
             keywordDTO.setId(null);
             keywordDTO.setKeywordId(null);
@@ -161,8 +163,10 @@ public class AssistantCommonsController extends WebContextSupport {
             BeanUtils.copyProperties(dto, creativeDTO);
             if (ep.getAid().length() > OBJ_SIZE) {
                 creativeDTO.setAdgroupObjId(ep.getAid());
+                creativeDTO.setAdgroupId(null);
             } else {
                 creativeDTO.setAdgroupId(Long.valueOf(ep.getAid()));
+                creativeDTO.setAdgroupObjId(null);
             }
             creativeDTO.setId(null);
             creativeDTO.setCreativeId(null);

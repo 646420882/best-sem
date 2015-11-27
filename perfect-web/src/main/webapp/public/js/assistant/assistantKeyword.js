@@ -1,7 +1,7 @@
 /*加载列表数据start*/
 /******************pagination*********************/
 var items_per_page = 20;    //默认每页显示20条数据
-var pageIndex = 0;  //当前页码
+var pageIndex = 1;  //当前页码
 var records = 0;//数据的总条数
 var skip = 0;
 var limit = 20;//每一页显示的条数
@@ -19,7 +19,6 @@ var pageSelectCallback = function (page_index, jq) {
     } else if (pageType == 4) {//单元分页
         $("#adgroupPager").append("<span style='margin-right:10px;'>跳转到 <input id='adgroupPageNum' type='text' class='price'/></span>&nbsp;&nbsp;<a href='javascript:skipAdgroupPage();' class='page_go'> GO</a>");
     }
-
     if (pageIndex == page_index) {
         return false;
     }
@@ -109,7 +108,7 @@ function getKwdList(nowPage) {
             if (data != null) {
                 $("#tbodyClick").empty();
                 records = data.totalCount;
-                pageIndex = data.nextPage;
+                pageIndex = data.nowPage;
                 $("#pagination_keywordPage").pagination(records, getOptionsFromForm(pageIndex));
                 if (data.list == null || data.list == undefined || data.list.length == 0) {
                     $("#tbodyClick").html("<tr><td>暂无数据</td></tr>");
