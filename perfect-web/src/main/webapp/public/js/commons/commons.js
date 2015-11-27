@@ -853,11 +853,6 @@ var price =
     + "到"
     + "<input type='number' name='max_points' min='00' max='10' />";
 var errorMsg = $("#filter_msg");
-document.onclick = function () {
-    $("#filterSearchTemplate").hide();
-    $(".remove").remove();
-}
-
 $("#filterSearchTemplate").click(function (e) {
     var ev = e || window.event;
     if (ev.stopPropagation) {
@@ -877,12 +872,12 @@ var TabModel = {
             }
         }
         $(_this).append("<span class='remove'><img src='../public/img/select.png'></span>");
-        if ($(".dropdown-menus").css("display") == "none") {
+        if ($("#filterSearchTemplate").css("display") == "none") {
             var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
             var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
-            $(".dropdown-menus").css("top", tabtop);
-            $(".dropdown-menus").css("left", tableft);
-            $(".dropdown-menus").show();
+            $("#filterSearchTemplate").css("top", tabtop);
+            $("#filterSearchTemplate").css("left", tableft);
+            $("#filterSearchTemplate").show();
             var ev = e || window.event;
             if (ev.stopPropagation) {
                 ev.stopPropagation();
@@ -892,7 +887,8 @@ var TabModel = {
             }
         }
         else {
-            $(".dropdown-menus").hide();
+            $("#filterSearchTemplate").hide();
+            $(".remove").remove();
         }
 
         $("#CheckList").empty();

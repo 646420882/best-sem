@@ -45,10 +45,12 @@
                         </div>
                         <div class="user_select">
                             <div class="user_name">
-                                <span></span><img src="${pageContext.request.contextPath}/public/img/username_select.png">
+                                <span></span><img
+                                    src="${pageContext.request.contextPath}/public/img/username_select.png">
                             </div>
                             <div id="switchAccount" class="user_names over hides">
-                                <input type="text" placeholder="请输入关键词..." id="searchCount" class="switchAccountSerach ">
+                                <input type="text" placeholder="请输入关键词..." id="searchCount"
+                                       class="switchAccountSerach ">
 
                                 <div class="countname">
                                     <ul id="switchAccount_ul" class="switchAccount_ul">
@@ -131,6 +133,23 @@
         </div>
     </div>
 </div>
+<%--内容提示提示类--%>
+<div class="box" style=" width: 230px;display:none;z-index: 10001" id="PromptBox">
+    <h2 id="PrompTitleBox">
+        <span class="fl" id="PrompBoxTitle"></span>
+        <a href="javascript:void(0)" onclick="PromptBox.hide();" class="close">×</a></h2>
+
+    <div class="mainlist">
+        <div id="PrompMain">
+        </div>
+        <div class="w_list03">
+            <ul class="zs_set">
+                <li class="current" onclick="PromptBox.hide()">确认</li>
+                <li onclick="PromptBox.hide()">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
@@ -157,10 +176,10 @@
         var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
                 nodes = zTree.getCheckedNodes(true),
                 v = "";
-        for (var i=0, l=nodes.length; i<l; i++) {
+        for (var i = 0, l = nodes.length; i < l; i++) {
             v += nodes[i].name + ",";
         }
-        if (v.length > 0 ) v = v.substring(0, v.length-1);
+        if (v.length > 0) v = v.substring(0, v.length - 1);
         var cityObj = $("#citySel");
         cityObj.attr("value", v);
     }
@@ -279,7 +298,7 @@
             /*蒙版显示*/
             $("#AlertPrompt").css({
                 top: ($(window).height() - $("#AlertPrompt").height()) / 2 + $(window).scrollTop() + "px",
-                left: ($("body").width() - $("#AlertPrompt").width()) / 2 -20 + "px",
+                left: ($("body").width() - $("#AlertPrompt").width()) / 2 - 20 + "px",
                 display: "block"
             });
             /*显示提示DIV*/
@@ -290,6 +309,33 @@
             });
             /*蒙版显示*/
             $("#AlertPrompt").css({
+                display: "none"
+            });
+            /*显示提示DIV*/
+        }
+    }
+    /*智能竞价中的alert提示*/
+    var PromptBox = {
+        show: function (content) {
+            $("#PrompBoxTitle").html(content);
+            $("#PrompMain").html(content);
+            $(".TB_overlayBG_alert").css({
+                display: "block", height: $(document).height()
+            });
+            /*蒙版显示*/
+            $("#PromptBox").css({
+                top: ($(window).height() - $("#PromptBox").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#PromptBox").width()) / 2 - 20 + "px",
+                display: "block"
+            });
+            /*显示提示DIV*/
+        },
+        hide: function () {
+            $(".TB_overlayBG_alert").css({
+                display: "none"
+            });
+            /*蒙版显示*/
+            $("#PromptBox").css({
                 display: "none"
             });
             /*显示提示DIV*/

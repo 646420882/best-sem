@@ -768,10 +768,90 @@ function batchAddOrUpdate() {
 }
 
 $("#batchDelKwd").livequery('click', function () {
-
     batchDelKeyword();
 });
+$(".daterangepicker").click(function (e) {
+    var ev = e || window.event;
+    if (ev.stopPropagation) {
+        ev.stopPropagation();
+    }
+    else if (window.event) {
+        window.event.cancelBubble = true;//兼容IE
+    }
+});
+$("#timing").click(function () {
+    if ($("#Timings").css("display") == "none") {
+        var tabtop = $(this).offset().top + $(this).outerHeight() + "px";
+        var tableft = $(this).offset().left + $(this).outerWidth() + -$(this).width() - 40 + "px";
+        $("#Timings").css("top", tabtop);
+        $("#Timings").css("left", tableft);
+        $("#Timings").show();
+    }
+    else {
+        $("#Timings").hide();
+    }
+});
+function TimingOk() {
+    $("#Timings").hide();
+}
+function TimingClose() {
+    $("#Timings").hide();
+}
 
+$('#TimingDate').daterangepicker({
+    "showDropdowns": true,
+    "timePicker24Hour": true,
+    timePicker: true,
+    timePickerIncrement: 30,
+    format: 'YYYY-MM-DD',
+    "locale": {
+        "format": "YYYY-MM-DD",
+        "separator": " - ",
+        "applyLabel": "确定",
+        "cancelLabel": "关闭",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "daysOfWeek": [
+            "日",
+            "一",
+            "二",
+            "三",
+            "四",
+            "五",
+            "六"
+        ],
+        "monthNames": [
+            "一月",
+            "二月",
+            "三月",
+            "四月",
+            "五月",
+            "六月",
+            "七月",
+            "八月",
+            "九月",
+            "十月",
+            "十一月",
+            "十二月"
+        ],
+        "firstDay": 1
+    }
+}, function (start, end, label) {
+    var _startDate = start.format('YYYY-MM-DD');
+    var _endDate = end.format('YYYY-MM-DD');
+});
+$("input[value='Enable']").on("click", function () {
+    PromptBox.show('');
+    $("#PrompBoxTitle").html("提醒");
+    $("#PrompMain").html("您选择了启用功能后，会对账户已经暂停的物料启用上线，或者会对保存到搜客本地的物料上传到凤巢账户，确认选择启用功能？");
+
+})
+$("input[value='Pause']").on("click", function () {
+    PromptBox.show('');
+    $("#PrompBoxTitle").html("提醒");
+    $("#PrompMain").html("您选择了暂停功能后，会对账户已经启用的物料暂停推广，确认选择暂停功能？");
+})
 function batchDelKeyword() {
     top.dialog({
         title: "批量删除",

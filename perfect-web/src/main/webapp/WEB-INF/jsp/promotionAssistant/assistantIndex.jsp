@@ -14,6 +14,8 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
@@ -178,18 +180,19 @@
                                                     <li><a id="timing" href="#"><span class="zs_top"><img
                                                             src="../public/img/zs_function20.png"></span><b>定时&nbsp;</b><input
                                                             type="image" src="../public/img/zs_input.png"></a>
-                                                        <ul id="timing1" class="hides">
-                                                            <li id="timediglogUp"><a href="#"><span class="zs_top1"><img
-                                                                    src="../public/img/zs_function21.png"></span><b>定时上传</b></a>
-                                                            </li>
-                                                            <li id="timediglogDown"><a href="#"><span
-                                                                    class="zs_top1"><img
-                                                                    src="../public/img/zs_function22.png"></span><b>定时暂停</b></a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
+
                                             </div>
+                                            <%--         <ul id="timing1" class="hides">
+                                                         <li id="timediglogUp"><a href="#"><span class="zs_top1"><img
+                                                                 src="../public/img/zs_function21.png"></span><b>定时上传</b></a>
+                                                         </li>
+                                                         <li id="timediglogDown"><a href="#"><span
+                                                                 class="zs_top1"><img
+                                                                 src="../public/img/zs_function22.png"></span><b>定时暂停</b></a>
+                                                         </li>
+                                                     </ul>--%>
+                                            </li>
+                                            </ul>
                                             <div class="list4" id="kkeyword" style="height:400px;">
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%"
@@ -433,7 +436,7 @@
                                                                     onclick="TabModel.Show('Creative_quipment',this)">
                         设备偏好&nbsp;</span></th>
                                                             <%--<th class="username-column" data-noresize>--%>
-                                                                <%--<div class="set fr"></div>--%>
+                                                            <%--<div class="set fr"></div>--%>
                                                             <%--</th>--%>
                                                         </tr>
                                                         </thead>
@@ -1382,7 +1385,10 @@
 <jsp:include page="alert/setRegionTarget.jsp"/>
 <%--添加关键词弹出窗口--%>
 <jsp:include page="../promotionAssistant/popup/addkeywordNews.jsp"/>
-<jsp:include page="../promotionAssistant/alert/addkeyword.jsp"/>
+<jsp:include page="../promotionAssistant/popup/timing_popup.jsp"/>
+<%--定时弹窗--%>
+<jsp:include page="alert/setRegionTarget.jsp"/>
+
 <div style="display: none; width: 0; height: 0">
     <input id="assistant_keyword_id" type="text" value="${keywordId}"/>
     <input id="assistant_adgroup_id" type="text" value="${adgroupId}"/>
@@ -1393,6 +1399,9 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/store.js/1.3.14/store.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>

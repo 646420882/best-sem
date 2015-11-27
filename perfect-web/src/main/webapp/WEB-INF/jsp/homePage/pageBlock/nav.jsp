@@ -163,6 +163,8 @@
         }
         document.onclick = function () {
             $("#switchAccount").hide();
+            $("#filterSearchTemplate").hide();
+            $(".remove").remove();
         }
 
         $("#switchAccount").click(function (e) {
