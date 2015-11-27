@@ -1146,13 +1146,14 @@
 
         },
 
-        clickRange: function(e) {
+        clickRange: function (e) {
             var label = e.target.innerHTML;
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
             } else {
                 var dates = this.ranges[label];
+
                 this.startDate = dates[0];
                 this.endDate = dates[1];
 
@@ -1161,9 +1162,17 @@
                     this.endDate.endOf('day');
                 }
 
-                this.hideCalendars();
-                this.clickApply();
+                this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute());
+                this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute());
+                this.updateCalendars();
+
+                //this.updateInputText();
+
+                //this.hideCalendars();
+                //this.hide();
+                this.element.trigger('apply.daterangepicker', this);
             }
+
         },
 
         clickPrev: function(e) {

@@ -10,17 +10,12 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
+    <link rel="stylesheet" type="text/css"  href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/backstage.css">
-
-
-
     <style>
         /*日历*/
         .list2 table .list2_top td, th {
@@ -186,7 +181,6 @@
                         daterangepicker_end_date = _endDate;
                         $("#date").val(daterangepicker_start_date +" 至 "+ daterangepicker_end_date);
                 });
-
 
         var getTime = setInterval("getPullLog()", heartbeat);
         $("#tijiao").click(function(){
