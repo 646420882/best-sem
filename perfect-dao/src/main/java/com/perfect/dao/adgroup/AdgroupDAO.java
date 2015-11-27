@@ -109,6 +109,27 @@ public interface AdgroupDAO extends HeyCrudRepository<AdgroupDTO, Long> {
      */
     void batchDelete(List<String> asList, List<String> keywordDatas, List<String> creativeDatas);
 
+    /**
+     * 批量启用/暂停 单元
+     *
+     * @param strings
+     * @param status
+     */
+    void enableOrPauseAdgroup(List<String> strings, boolean status);
+
+    /**
+     * 通过计划ID查询单元ID  百度ID
+     * @param campaignId
+     * @return
+     */
+    List<Long> getAdgroupIdByCampaignIdListLong(List<Long> campaignId);
+
+    /**
+     * 通过计划ID查询单元ID  本地ID
+     * @param campaignId
+     * @return
+     */
+    List<String> getAdgroupIdByCampaignIdListString(List<String> campaignId);
 
     AdgroupDTO findByAdgroupName(String adgroupName);
 }

@@ -10,6 +10,7 @@ import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.param.EditParam;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.service.*;
 import org.springframework.beans.BeanUtils;
@@ -259,9 +260,40 @@ public class AssistantCommonsController extends WebContextSupport {
         return writeMapObject(DATA, null);
     }
 
+    /**
+     * 批量启用/暂停
+     * @param param
+     * @return
+     */
+    @RequestMapping(value = "/enableOrPause", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView enableOrPause(@RequestBody EnableOrPauseParam param) {
+        if(param != null){
+            switch (param.getEnableOrPauseType()){
+                case "keyword":
+                    assistantKeywordService.enableOrPauseKeyword(param);
+                    break;
+                case "creative":
+                    creativeService.enableOrPauseCreative(param);
+                    break;
+                case "adgroup":
+                    adgroupService.enableOrPauseAdgroup(param);
+                    break;
+                case "campaign":
+                    campaignService.enableOrPauseCampaign(param);
+                    break;
+            }
+        }
+        return writeMapObject(DATA, null);
+    }
+
+    /**
+     * 批量删除
+     * @param batchId
+     * @return
+     */
     @RequestMapping(value = "/batchDel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView batchDel(@RequestBody FindOrReplaceParam batchId) {
-        if (batchId != null || batchId.equals("")) {
+        if (batchId != null) {
             switch (batchId.getType()) {
                 case "keyword":
                     assistantKeywordService.batchDelete(batchId);
@@ -279,7 +311,6 @@ public class AssistantCommonsController extends WebContextSupport {
         }
         return writeMapObject(DATA, null);
     }
-
 
     /**
      * 文字替换参数对象

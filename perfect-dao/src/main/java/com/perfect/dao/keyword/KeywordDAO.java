@@ -159,7 +159,18 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds,FindOrReplaceParam forp);
 
+    /**
+     * 批量删除关键词
+     * @param strings
+     */
     void batchDelete(List<String> strings);
+
+    /**
+     * 批量启用/暂停 创意
+     * @param strings
+     * @param status
+     */
+    void enableOrPause(List<String> strings,boolean status);
 
     /**
      * @param keywordIds mongodb id  集合

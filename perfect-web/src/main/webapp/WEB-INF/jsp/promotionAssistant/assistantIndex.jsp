@@ -148,7 +148,7 @@
                                                               src="../public/img/zs_function5.png"></span><b>快速添加关键词</b></a>
                                                       </li>--%>
                                                     <li onclick="commons.foRShow('keyword',this)"><a href="javascript:;"
-                                                            ><span class="z_function_hover"><img
+                                                    ><span class="z_function_hover"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -338,7 +338,7 @@
                                                         <li>
                                                             <div class="t_list01 fl over">启用/暂停：</div>
                                                             <div class="w_list02 fl over"><select class="pause_1"
-                                                                                                  onchange="whenBlurEditKeyword(7,this.value)">
+                                                                                                  onclick="enableOrPause(this,'keyword')">
                                                             </select></div>
                                                         </li>
                                                         <li>
@@ -374,7 +374,7 @@
                                                        </li>--%>
                                                     <li onclick="commons.foRShow('creative',this)"><a
                                                             href="javascript:;" class="editer"
-                                                            ><span class="zs_top"><img
+                                                    ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -520,7 +520,7 @@
                                                         <li>
                                                             <div class="t_list01 fl over">启用/暂停：</div>
                                                             <div class="w_list02 fl over">
-                                                                <select id="sPause">
+                                                                <select onclick="enableOrPause(this,'creative')">
                                                                     <option value="true">启用</option>
                                                                     <option value="false">暂停</option>
                                                                 </select></div>
@@ -581,7 +581,7 @@
                                                         </li>
                                                         <li onclick="commons.foRShow(this)"><a href="javascript:;"
                                                                                                class="editer"
-                                                                ><span class="zs_top"><img
+                                                        ><span class="zs_top"><img
                                                                 src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                                 src="../public/img/zs_input.png"></a>
                                                         </li>
@@ -802,7 +802,7 @@
                                                         </li>--%>
                                                     <li onclick="commons.foRShow('adgroup',this)"><a href="javascript:;"
                                                                                                      class="editer"
-                                                            ><span class="zs_top"><img
+                                                    ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -913,7 +913,7 @@
                                                         <li>
                                                             <div class="t_list01 fl over">启用/暂停：</div>
                                                             <div class="w_list02 fl over"><select id="apPause"
-                                                                                                  onchange="adgroupdSelectChange(this);">
+                                                                                                  onclick="enableOrPause(this,'adgroup');">
                                                                 <option value="true">启用</option>
                                                                 <option value="false">暂停</option>
                                                             </select></div>
@@ -937,7 +937,7 @@
                                                     </li>
                                                     <li onclick="commons.foRShow('campaign',this)"><a
                                                             href="javascript:;" class="editer"
-                                                            ><span class="zs_top"><img
+                                                    ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -1094,7 +1094,7 @@
                                                             <div class="t_list01 fl over">启用/暂停：</div>
                                                             <div class="w_list02 fl over">
                                                                 <select class="selectPause_5"
-                                                                        onchange="whenBlurEditCampaign(11,this.value);">
+                                                                        onclick="enableOrPause(this,'campaign')">
                                                                 </select>
                                                             </div>
                                                         </li>

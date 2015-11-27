@@ -15,6 +15,7 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
@@ -375,7 +376,6 @@ public class AssistantKeywordController extends WebContextSupport {
         KeywordDTO keywordDTO = assistantKeywordService.updateKeyword(keywordEntity);
         writeJson(keywordDTO, response);
     }
-
 
     /**
      * 得到当前账户的推广计划的树形列表数据

@@ -16,6 +16,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
@@ -460,6 +461,22 @@ public class CreativeServiceImpl implements CreativeService {
                 }
             }
             creativeDAO.batchDelete(asList);
+        }
+    }
+
+    @Override
+    public void enableOrPauseCreative(EnableOrPauseParam param) {
+        if (param != null) {
+            List<String> strings = new ArrayList<>();
+            if (param.getEnableOrPauseData() != null) {
+                String[] list = param.getEnableOrPauseData().split(",");
+                Collections.addAll(strings, list);
+            }
+            if (param.getEnableOrPauseStatus() == 0) {
+                creativeDAO.enableOrPauseCreative(strings, false);
+            } else {
+                creativeDAO.enableOrPauseCreative(strings, true);
+            }
         }
     }
 

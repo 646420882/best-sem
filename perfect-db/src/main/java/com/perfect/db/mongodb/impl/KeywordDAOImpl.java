@@ -254,7 +254,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     @Override
     public Long keywordCount(List<Long> adgroupIds) {
         return getMongoTemplate().count(Query.query(
-                        Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),
+                Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),
                 getEntityClass());
     }
 
@@ -822,6 +822,38 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                 getMongoTemplate().updateFirst(new Query(Criteria.where(MongoEntityConstants.KEYWORD_ID).is(Long.valueOf(e))), update, getEntityClass());
             } else {
                 getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), getEntityClass());
+            }
+        });
+    }
+
+    @Override
+    public void enableOrPause(List<String> strings, boolean status) {
+        strings.forEach(e -> {
+            Update update = new Update();
+            if (e.length() < 24) {
+                update.set("p", status);
+                update.set("ls", 2);
+                //查询备份表里面对应的数据
+                boolean exists = getMongoTemplate().exists(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))), KeywordBackUpEntity.class);
+                //判断备份表里面是否存在当前ID的数据
+                if(!exists){
+                    //查询需要备份的数据
+                    KeywordEntity keywordEntity = getMongoTemplate().findOne(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))), getEntityClass());
+                    KeywordBackUpEntity upEntity = new KeywordBackUpEntity();
+                    BeanUtils.copyProperties(keywordEntity, upEntity);
+                    //数据进行备份
+                    getMongoTemplate().save(upEntity);
+                    //修改当前数据
+                    getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))),update,getEntityClass());
+                }else{
+                    //如果备份表里面存在当前数据则直接修改
+                    getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))),update,getEntityClass());
+                }
+            } else {
+                //如果是本地数据直接修改启用状态
+                update.set("p", status);
+                update.set("ls", 2);
+                getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(e)),update,getEntityClass());
             }
         });
     }

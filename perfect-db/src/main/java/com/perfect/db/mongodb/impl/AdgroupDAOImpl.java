@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -520,6 +521,52 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
                 getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(e)), CreativeEntity.class);
             }
         });
+    }
+
+    @Override
+    public void enableOrPauseAdgroup(List<String> strings, boolean status) {
+        if (!strings.isEmpty()) {
+            strings.forEach(e -> {
+                Update update = new Update();
+                update.set("p", status);
+                update.set("ls", 2);
+                if (e.length() < 24) {
+                    Long id = Long.parseLong(e);
+                    //查询是否存在备份数据
+                    boolean exists = getMongoTemplate().exists(new Query(Criteria.where(ADGROUP_ID).is(id)), AdgroupBackUpEntity.class);
+                    if (exists) {
+                        //如果备份表里面存在当前数据则直接修改
+                        getMongoTemplate().updateFirst(new Query(Criteria.where(ADGROUP_ID).is(id)), update, getEntityClass());
+                    } else {
+                        //查询创意需要备份的数据
+                        AdgroupEntity adgroupEntity = getMongoTemplate().findOne(new Query(Criteria.where(ADGROUP_ID).is(id)), getEntityClass());
+                        AdgroupBackUpEntity adgroupBackUpEntity = new AdgroupBackUpEntity();
+                        BeanUtils.copyProperties(adgroupEntity, adgroupBackUpEntity);
+                        //数据进行备份
+                        getMongoTemplate().save(adgroupBackUpEntity);
+                        //修改当前数据
+                        getMongoTemplate().updateFirst(new Query(Criteria.where(ADGROUP_ID).is(id)), update, getEntityClass());
+                    }
+                } else {
+                    //如果是本地数据直接修改启用状态
+                    getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(e)), update, getEntityClass());
+                }
+            });
+        }
+    }
+
+    @Override
+    public List<Long> getAdgroupIdByCampaignIdListLong(List<Long> campaignId) {
+        return getMongoTemplate().find(new Query(Criteria.where(ADGROUP_ID).in(campaignId)), getEntityClass())
+                .stream().map(AdgroupEntity::getAdgroupId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getAdgroupIdByCampaignIdListString(List<String> campaignId) {
+        return getMongoTemplate().find(new Query(Criteria.where(OBJ_CAMPAIGN_ID).in(campaignId)), getEntityClass())
+                .stream().map(AdgroupEntity::getId)
+                .collect(Collectors.toList());
     }
 
     @Override

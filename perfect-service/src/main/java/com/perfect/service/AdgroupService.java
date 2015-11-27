@@ -3,6 +3,7 @@ package com.perfect.service;
 import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
@@ -128,11 +129,17 @@ public interface AdgroupService {
     double getCampBgt(Long cid);
 
     /**
-     * 批量删除关键字
+     * 通过单元ID批量删除关键字
      *
      * @param param
      */
     void batchDelete(FindOrReplaceParam param);
+
+    /**
+     * 通过单元ID批量暂停/启动 创意
+     * @param param
+     */
+    void enableOrPauseAdgroup(EnableOrPauseParam param);
 
     void cut(AdgroupDTO dto, String cid);
 

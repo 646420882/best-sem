@@ -85,11 +85,19 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
     void updateLs(Long crid, CreativeDTO dto);
 
     /**
-     * 批量删除关键字
+     * 批量删除创意
      *
      * @param param
      */
     void batchDelete(List<String> param);
+
+    /**
+     * 批量启用/暂停 创意
+     *
+     * @param strings
+     * @param status
+     */
+    void enableOrPauseCreative(List<String> strings, boolean status);
 
     CreativeDTO existDTO(Map<String,Object> params);
 }

@@ -22,6 +22,7 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
@@ -248,7 +249,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             list.add(dto.getObject());
         }
         //若isReplace值为true 就将替换该单元下的所有关键词,为false就只添加或者更新
-        if (isReplace == false) {
+        if (!isReplace) {
             keywordDAO.insertAll(list);
 
             for (KeywordInfoDTO dto : updateDtos) {
@@ -265,9 +266,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             List<KeywordDTO> keywordBackups = keywordDAO.findByObjectIds(getKwdObjIdByKeywordList(getKwdListByDTO(updateDtos)));
 
             //根据String id删除该单元的关键词(硬删除)
-            keywordDAO.deleteByObjectAdgroupIds(new ArrayList<String>((Set<String>) adgroupIdMap.get("strSet")));
+            keywordDAO.deleteByObjectAdgroupIds(new ArrayList<>((Set<String>) adgroupIdMap.get("strSet")));
             //根据long id删除该单元的关键词(软删除)
-            keywordDAO.softDeleteByLongAdgroupIds(new ArrayList<Long>((Set<Long>) adgroupIdMap.get("longSet")));
+            keywordDAO.softDeleteByLongAdgroupIds(new ArrayList<>((Set<Long>) adgroupIdMap.get("longSet")));
             keywordDAO.insertAll(list);
 
             //开始备份需要备份的关键词
@@ -1315,6 +1316,22 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 }
             }
             keywordDAO.batchDelete(asList);
+        }
+    }
+
+    @Override
+    public void enableOrPauseKeyword(EnableOrPauseParam param) {
+        if (param != null) {
+            List<String> asList = new ArrayList<>();
+            if (param.getEnableOrPauseData() != null) {
+                String[] list = param.getEnableOrPauseData().split(",");
+                Collections.addAll(asList, list);
+            }
+            if (param.getEnableOrPauseStatus() == 0) {
+                keywordDAO.enableOrPause(asList, false);
+            } else {
+                keywordDAO.enableOrPause(asList, true);
+            }
         }
     }
 

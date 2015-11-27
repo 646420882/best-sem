@@ -99,64 +99,7 @@ public class PerformanceServiceImpl implements PerformanceService {
     public List<AccountReportDTO> performanceUser(Date startDate, Date endDate, String sorted, int limit, int startPer, List<String> date) {
 
         List<AccountReportDTO> listUser = new ArrayList<>(accountAnalyzeDAO.performaneUser(startDate, endDate));
-        DecimalFormat df = new DecimalFormat("#.0000");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (AccountReportDTO list : listUser) {
-            list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));
-            list.setPcConversion(list.getPcConversion() + ((list.getMobileConversion() == null) ? 0 : list.getMobileConversion()));
-            list.setPcClick(list.getPcClick() + ((list.getMobileClick() == null) ? 0 : list.getMobileClick()));
-            list.setPcCost(list.getPcCost().add((list.getMobileCost() == null) ? BigDecimal.valueOf(0) : list.getMobileCost()));
-            //计算点击率
-            if (((list.getPcImpression() == null) ? 0 : list.getPcImpression()) == 0) {
-                list.setPcCtr(0.00);
-            } else {
-                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((list.getPcClick().doubleValue() / list.getPcImpression().doubleValue()))));
-                BigDecimal big = new BigDecimal(100);
-                double divide = ctrBig.multiply(big).doubleValue();
-                list.setPcCtr(divide);
-            }
-            //计算平均点击价格
-            if (((list.getPcClick() == null) ? 0 : list.getPcClick()) == 0) {
-                list.setPcCpc(BigDecimal.valueOf(0));
-            } else {
-                list.setPcCpc(list.getPcCost().divide(BigDecimal.valueOf(list.getPcClick()), 2, BigDecimal.ROUND_UP));
-            }
-            list.setMobileImpression(null);
-            list.setMobileClick(null);
-            list.setMobileConversion(null);
-            list.setMobileCost(null);
-            list.setMobileCpc(null);
-            list.setMobileCpm(null);
-            list.setMobileCtr(null);
-        }
-        int jueds = -1;
-        for (String s : date) {
-            for (AccountReportDTO accountReportDTO : listUser) {
-                String d = dateFormat.format(accountReportDTO.getDate());
-                if (s.equals(d)) {
-                    jueds = 1;
-                    break;
-                } else {
-                    jueds = -1;
-                }
-            }
-            if (jueds == -1) {
-                AccountReportDTO entity = new AccountReportDTO();
-                try {
-                    entity.setDate(dateFormat.parse(s));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                entity.setPcImpression(0);
-                entity.setPcClick(0);
-                entity.setPcConversion(0.00);
-                entity.setPcCpc(BigDecimal.valueOf(0.00));
-                entity.setPcCpm(BigDecimal.valueOf(0.00));
-                entity.setPcCost(BigDecimal.valueOf(0.00));
-                entity.setPcCtr(0.00);
-                listUser.add(entity);
-            }
-        }
+        listUser = check(listUser, date);
         for (AccountReportDTO accountReport : listUser) {
             accountReport.setOrderBy(sorted);
             accountReport.setCount(date.size());
@@ -182,66 +125,7 @@ public class PerformanceServiceImpl implements PerformanceService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         List<String> date = DateUtils.getPeriod(dateFormat.format(startDate), dateFormat.format(endDate));
-
-        DecimalFormat df = new DecimalFormat("#.0000");
-        for (AccountReportDTO list : listUser) {
-            list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));
-            list.setPcConversion(list.getPcConversion() + ((list.getMobileConversion() == null) ? 0 : list.getMobileConversion()));
-            list.setPcClick(list.getPcClick() + ((list.getMobileClick() == null) ? 0 : list.getMobileClick()));
-            list.setPcCost(list.getPcCost().add((list.getMobileCost() == null) ? BigDecimal.valueOf(0) : list.getMobileCost()));
-            //计算点击率
-            if (((list.getPcImpression() == null) ? 0 : list.getPcImpression()) == 0) {
-                list.setPcCtr(0.00);
-            } else {
-                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((list.getPcClick().doubleValue() / list.getPcImpression().doubleValue()))));
-                BigDecimal big = new BigDecimal(100);
-                double divide = ctrBig.multiply(big).doubleValue();
-                list.setPcCtr(divide);
-            }
-
-            //计算平均点击价格
-            if (((list.getPcClick() == null) ? 0 : list.getPcClick()) == 0) {
-                list.setPcCpc(BigDecimal.valueOf(0));
-            } else {
-                list.setPcCpc(list.getPcCost().divide(BigDecimal.valueOf(list.getPcClick()), 2, BigDecimal.ROUND_UP));
-            }
-
-            list.setMobileImpression(null);
-            list.setMobileClick(null);
-            list.setMobileConversion(null);
-            list.setMobileCost(null);
-            list.setMobileCpc(null);
-            list.setMobileCpm(null);
-            list.setMobileCtr(null);
-        }
-        int jueds = -1;
-        for (String s : date) {
-            for (AccountReportDTO accountReportEntity : listUser) {
-                String d = dateFormat.format(accountReportEntity.getDate());
-                if (s.equals(d)) {
-                    jueds = 1;
-                    break;
-                } else {
-                    jueds = -1;
-                }
-            }
-            if (jueds == -1) {
-                AccountReportDTO entity = new AccountReportDTO();
-                try {
-                    entity.setDate(dateFormat.parse(s));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                entity.setPcImpression(0);
-                entity.setPcClick(0);
-                entity.setPcConversion(0.00);
-                entity.setPcCpc(BigDecimal.valueOf(0.00));
-                entity.setPcCpm(BigDecimal.valueOf(0.00));
-                entity.setPcCost(BigDecimal.valueOf(0.00));
-                entity.setPcCtr(0.00);
-                listUser.add(entity);
-            }
-        }
+        listUser = check(listUser, date);
         for (AccountReportDTO accountReport : listUser) {
             accountReport.setOrderBy("1");
             accountReport.setCount(date.size());
@@ -364,6 +248,68 @@ public class PerformanceServiceImpl implements PerformanceService {
         }
     }
 
+
+    private static final List<AccountReportDTO> check(List<AccountReportDTO> listUser, List<String> date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat df = new DecimalFormat("#.0000");
+        for (AccountReportDTO list : listUser) {
+            list.setPcImpression(list.getPcImpression() + ((list.getMobileImpression() == null) ? 0 : list.getMobileImpression()));
+            list.setPcConversion(list.getPcConversion() + ((list.getMobileConversion() == null) ? 0 : list.getMobileConversion()));
+            list.setPcClick(list.getPcClick() + ((list.getMobileClick() == null) ? 0 : list.getMobileClick()));
+            list.setPcCost(list.getPcCost().add((list.getMobileCost() == null) ? BigDecimal.valueOf(0) : list.getMobileCost()));
+            //计算点击率
+            if (((list.getPcImpression() == null) ? 0 : list.getPcImpression()) == 0) {
+                list.setPcCtr(0.00);
+            } else {
+                BigDecimal ctrBig = new BigDecimal(Double.parseDouble(df.format((list.getPcClick().doubleValue() / list.getPcImpression().doubleValue()))));
+                BigDecimal big = new BigDecimal(100);
+                double divide = ctrBig.multiply(big).doubleValue();
+                list.setPcCtr(divide);
+            }
+            //计算平均点击价格
+            if (((list.getPcClick() == null) ? 0 : list.getPcClick()) == 0) {
+                list.setPcCpc(BigDecimal.valueOf(0));
+            } else {
+                list.setPcCpc(list.getPcCost().divide(BigDecimal.valueOf(list.getPcClick()), 2, BigDecimal.ROUND_UP));
+            }
+            list.setMobileImpression(null);
+            list.setMobileClick(null);
+            list.setMobileConversion(null);
+            list.setMobileCost(null);
+            list.setMobileCpc(null);
+            list.setMobileCpm(null);
+            list.setMobileCtr(null);
+        }
+        int jueds = -1;
+        for (String s : date) {
+            for (AccountReportDTO accountReportDTO : listUser) {
+                String d = dateFormat.format(accountReportDTO.getDate());
+                if (s.equals(d)) {
+                    jueds = 1;
+                    break;
+                } else {
+                    jueds = -1;
+                }
+            }
+            if (jueds == -1) {
+                AccountReportDTO entity = new AccountReportDTO();
+                try {
+                    entity.setDate(dateFormat.parse(s));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                entity.setPcImpression(0);
+                entity.setPcClick(0);
+                entity.setPcConversion(0.00);
+                entity.setPcCpc(BigDecimal.valueOf(0.00));
+                entity.setPcCpm(BigDecimal.valueOf(0.00));
+                entity.setPcCost(BigDecimal.valueOf(0.00));
+                entity.setPcCtr(0.00);
+                listUser.add(entity);
+            }
+        }
+        return listUser;
+    }
 }
 
 

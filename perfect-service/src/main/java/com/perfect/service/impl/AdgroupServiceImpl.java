@@ -18,6 +18,8 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
@@ -28,7 +30,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by baizz on 2014-11-26.
@@ -478,6 +483,55 @@ public class AdgroupServiceImpl implements AdgroupService {
 
             }
             adgroupDAO.batchDelete(asList, keywordDatas, creativeDatas);
+        }
+    }
+
+    @Override
+    public void enableOrPauseAdgroup(EnableOrPauseParam param) {
+        if (param != null) {
+            List<String> strings = new ArrayList<>();
+            if (param.getEnableOrPauseData() != null) {
+                String[] list = param.getEnableOrPauseData().split(",");
+                Collections.addAll(strings, list);
+            }
+
+            List<String> objId = new ArrayList<>();
+            List<Long> baidId = new ArrayList<>();
+            strings.forEach(e -> {
+                if (e.length() < 24) {
+                    baidId.add(Long.parseLong(e));
+                } else {
+                    objId.add(e);
+                }
+            });
+            List<KeywordDTO> keywordByAdgroupIdsLong = new ArrayList<>(keywordDAO.findKeywordByAdgroupIdsLong(baidId));
+            List<KeywordDTO> keywordByAdgroupIdsStr = keywordDAO.findKeywordByAdgroupIdsStr(objId);
+
+            List<CreativeDTO> allsByAdgroupIds = new ArrayList<>(creativeDAO.getAllsByAdgroupIds(baidId));
+            List<CreativeDTO> allsByAdgroupIdsForString = creativeDAO.getAllsByAdgroupIdsForString(objId);
+
+            keywordByAdgroupIdsLong.addAll(keywordByAdgroupIdsStr);
+            allsByAdgroupIds.addAll(allsByAdgroupIdsForString);
+            //获取关键词本地及百度ID
+            List<String> keywordId = keywordByAdgroupIdsLong.stream().map(e -> {
+                if (e.getKeyword() != null) return e.getKeywordId().toString();
+                else return e.getId();
+            }).collect(Collectors.toList());
+            //获取创意本地及百度ID
+            List<String> creativeId = allsByAdgroupIds.stream().map(o -> {
+                if (o.getCreativeId() != null) return o.getCreativeId().toString();
+                else return o.getId();
+            }).collect(Collectors.toList());
+
+            if (param.getEnableOrPauseStatus() == 0) {
+                keywordDAO.enableOrPause(keywordId, false);
+                creativeDAO.enableOrPauseCreative(creativeId, false);
+                adgroupDAO.enableOrPauseAdgroup(strings, false);
+            } else {
+                keywordDAO.enableOrPause(keywordId, true);
+                creativeDAO.enableOrPauseCreative(creativeId, true);
+                adgroupDAO.enableOrPauseAdgroup(strings, true);
+            }
         }
     }
 
