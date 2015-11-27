@@ -616,7 +616,10 @@
 
 .time_input, #inputTow {
     border: 1px solid #dadadd;
-    width: 200px;
+    width: 98px;
+    /*text-align: center;*/
+    min-width: 0;
+    max-width: 200px;
     height: 24px;
     line-height: 22px;
     padding: 0 14px;

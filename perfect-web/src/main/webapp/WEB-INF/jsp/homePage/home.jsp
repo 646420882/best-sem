@@ -92,7 +92,7 @@
                                     data-placement="bottom" title="总览大数据指标，查看维度昨天、近七天、近30天及自定义时间范围.
 "></button>
                             <ul id="clickLis">
-                                <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
+                                <li class="current"  ><a href="javascript:"  onclick="lisClick(this,1)">昨天</a></li>
                                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
                                 <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
                                 <li class="date" id="date"><a href="javascript:"
@@ -198,7 +198,7 @@
                                 <li class="date">
                                     <a href="javascript:void(0)">
                                         自定义
-                                        <input name="reservation" class=" fa fa-calendar " type="image"
+                                        <input name="reservation" id="expression" class=" fa fa-calendar " type="image"
                                                onclick="javascript:$('#pageUser').empty();judgeDet = 0;genre = 'importPerformanceDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                                src="${pageContext.request.contextPath}/public/img/date.png">
                                     </a>
@@ -1013,7 +1013,7 @@
                                 <li class="date">
                                     <a href="javascript:void(0)">
                                         自定义
-                                        <input name="reservation" type="image"
+                                        <input name="reservation" id="" type="image"
                                                onclick="javascript:genre = 'importKeywordDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                                src="${pageContext.request.contextPath}/public/img/date.png">
                                     </a>
@@ -1174,16 +1174,16 @@
 </div>
 
 <!-- javascript -->
-<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<%--<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>--%>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<%--<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>--%>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
 <%--<script type="text/javascript"--%>
 <%--src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
+<%--<script type="text/javascript"--%>
+        <%--src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>--%>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>--%>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/map.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
@@ -1242,6 +1242,24 @@
     //日期控件坐标定位
     var _posX = 0, _posY = 0;
     var clickdddd = null;
+    //根据最近几天获取数据
+
+    function lisClick(obj, days) {
+        if (days != null) {
+            getDateParam(days);
+        }
+        setTimeout(function(){
+         $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-days));
+        if(days==1){
+            $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-days));
+        }else{
+            $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(0));
+        }
+        })
+        htmlLoding();
+        getData();
+        changedLiState(obj);
+    }
 
     $(document).ready(function () {
         /////count
@@ -1290,9 +1308,9 @@
                     "timePicker24Hour": true,
                     timePicker: true,
                     timePickerIncrement: 30,
-                    format: 'DD/MM/YYYY',
+                    format: 'YYYY-MM-DD',
                     "locale": {
-                        "format": "DD/MM/YYYY",
+                        "format": "YYYY-MM-DD",
                         "separator": " - ",
                         "applyLabel": "确定",
                         "cancelLabel": "关闭",
@@ -1324,14 +1342,13 @@
                         ],
                         "firstDay": 1
                     },
-                    "startDate": moment(),
-                    "endDate": moment()
+                    "startDate":moment().subtract('days', 1).startOf('day'),
+                    "endDate": moment().subtract('days', 1).startOf('day')
                 },
                 function (start, end, label, e) {
                     var _startDate = start.format('YYYY-MM-DD');
                     var _endDate = end.format('YYYY-MM-DD');
 //                 console.log(daterangepicker_end_date);
-
                     if (_startDate != null && _endDate != null) {
                         if (_startDate > _endDate) {
                             return false;
@@ -1360,8 +1377,16 @@
         $(".btnDone").on('click', function () {
 
         });
-
-
+//        $("#clickLis li").on('click', function () {
+//            var day= $(this).find("a").attr('value');
+//          $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-day));
+//           if(day==1){
+//              $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-day));
+//           }else{
+//           $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(0));
+//           }
+//
+//        });
         document.getElementById("background").style.display = "none";
         document.getElementById("progressBar1").style.display = "none";
 
@@ -1562,9 +1587,12 @@
     var unitTow = "次"
     /**初始化结束**/
     /**
-     * 曲线图数据配置
+     * 曲线图数据配
      * **/
     var loadPerformanceCurve = function (obj, date) {
+        $('input[name="reservation"]:eq(1)').data('daterangepicker').setStartDate(GetDateStr(-date));
+            $('input[name="reservation"]:eq(1)').data('daterangepicker').setEndDate(GetDateStr(0));
+
         if (obj != null) {
             changedLiState(obj);
         }
@@ -2164,9 +2192,18 @@
     };
 
     var getImportKeywordDefault = function (obj, day) {
+        $('input[name="reservation"]:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day));
+        if(day==1){
+            $('input[name="reservation"]:eq(3)').data('daterangepicker').setEndDate(GetDateStr(-day));
+        }else{
+            $('input[name="reservation"]:eq(3)').data('daterangepicker').setEndDate(GetDateStr(0));
+        }
         if (obj != null) {
             changedLiState(obj);
         }
+
+
+
         $("#importTr").empty();
         $("#importTr").append("<td style='color:red;'>加载中....</td>");
         statDate = day;
@@ -2203,16 +2240,15 @@
     }
 
 
-    //根据最近几天获取数据
-    function lisClick(obj, days) {
-        if (days != null) {
-            getDateParam(days);
-        }
-        htmlLoding();
-        getData();
-        changedLiState(obj);
-    }
 
+    function GetDateStr(AddDayCount) {
+        var dd = new Date();
+        dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
+        var y = dd.getFullYear();
+        var m = (dd.getMonth() + 1) < 10 ? "0" + (dd.getMonth() + 1) : (dd.getMonth() + 1);//获取当前月份的日期
+        var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
+        return y + "-" + m + "-" + d;
+    }
     //改变li的样式状态
     function changedLiState(obj) {
         $(obj).parent().parent().find("li").each(function () {

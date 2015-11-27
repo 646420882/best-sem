@@ -173,7 +173,7 @@
                         </div>
                         <div class="shuju_detali over">
                             <ul>
-                                <li class="date">选择时间范围：<input type="text" class="time_input" placeholder="请选择查询时间,默认昨天"
+                                <li class="date">选择时间范围：<input type="text" class="time_input" <%--placeholder="请选择查询时间,默认昨天"--%>
                                                                readonly>
                                     <input name="reservation" value="" type="image" cname="dateClick"
                                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
@@ -313,7 +313,7 @@
                         <div class="shuju_detali over">
                             <ul>
                                 <li>选择时间范围：
-                                    <input type="text" class="time_input" placeholder="请选择查询时间,默认昨天" readonly>
+                                    <input type="text" class="time_input" <%--placeholder="请选择查询时间,默认昨天1"--%> readonly>
                                     <input name="reservation" type="image" cname="dateClick"
                                            src="${pageContext.request.contextPath}/public/img/date.png" readonly>
                                 </li>
@@ -538,8 +538,7 @@
 <%--bootstrap-daterangepicker--%>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap.min.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+
 <%--end--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.cxcalendar.min.js"></script>
 <script type="text/javascript"
@@ -548,6 +547,7 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportProgress.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportContext.js"></script>
 <script type="text/javascript">
@@ -574,6 +574,10 @@
         $("#tacittime").val(time);
         $("#tacittime1").val(time);
         $("#tacittime2").val(time);
+        var Yesterday = "" + mydate.getFullYear() + "-";
+        Yesterday += (mydate.getMonth() + 1) + "-";
+        Yesterday     += (mydate.getDate()-1)+"";
+        $(".time_input").val(Yesterday);
     })
 
 

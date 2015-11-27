@@ -117,6 +117,7 @@ $(function () {
 
     $(function () {
         //数据初始化
+
         judgeVS = 0;
         $("#pagination1").empty();
         reportDataVS();
@@ -175,8 +176,8 @@ $(function () {
                     ],
                     "firstDay": 1
                 },
-                "startDate": moment(),
-                "endDate": moment()
+                "startDate":moment().subtract('days', 1).startOf('day'),
+                "endDate": moment().subtract('days', 1).startOf('day')
             },
             function (start, end, label, e) {
                 var _startDate = start.format('YYYY-MM-DD');
@@ -219,9 +220,8 @@ $(function () {
                     $("#downReport").empty();
                     $("#downReportSearch").empty();
                 }
-
+                $(".time_input").css({width:"200px"})
             });
-
         $("#userClick").click(function () {
             judgeVS = 0;
             $("#pagination1").empty();
@@ -1895,6 +1895,7 @@ $(function () {
     /********************************搜索词报告******************************************/
     $("#createReport").click(function () {
         $(".list01_under3").hide();
+        $(".report_search").empty();
         $(".report_search").append("<div class='example'><div id='progress2'><div id='percentNumber'></div><div class='pbar'></div><div class='elapsed'></div></div></div>");
         var isMin = 0;
         if (judety <= 0) {
