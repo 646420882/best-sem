@@ -178,4 +178,17 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
      */
     List<KeywordDTO> vaildateKeywordByIds(List<String> keywordIds);
 
+    /**
+     * 通过Obj ID查询
+     * @param adgroupIds
+     * @return
+     */
+    List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds);
+
+    /**
+     * 通过Long ID查询
+     * @param adgroupIds
+     * @return
+     */
+    List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds);
 }
