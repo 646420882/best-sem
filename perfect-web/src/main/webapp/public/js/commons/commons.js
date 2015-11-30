@@ -29,7 +29,7 @@ var commons = {
         }
         if (exist_selected.cid && exist_selected.aid) {
             checkType.empty();
-            checkType.append("<option value='0'>当前选中</option><option value='1'>所有(单元下)</option>");
+            checkType.append("<option value='0'>当前选中</option><option value='2'>所有(单元下)</option>");
         }
 
         //<option value="0">当前选中</option>
@@ -504,12 +504,14 @@ $.extend({
     foROk: function (_this) {
         var form = $(_this).parents("form");
         var step = $(_this).attr("step");
+        if(step=="find"){
+            $("input[name='replaceText']").val('');
+        }
         var checkType = $("select[name='checkType'] :selected");
         if (!checkType.val()) {
             AlertPrompt.show("请选择物料模式");
             return false;
         }
-        console.log(checkType.val())
         var foR_params = {};
         var forType = $("#forType").val();
         if (checkType.val() == 0) {
@@ -526,11 +528,14 @@ $.extend({
                 return;
             }
             foR_params = {type: forType, forType: checkType.val(), checkData: checked_data, step: step};
-        } else if (checkType.val() == 1) {
-            foR_params = {type: forType, forType: checkType.val(), campaignId: jsonData.cid, step: step};
-        }
-        else if (checkType.val() == -1) {
-            foR_params = {type: forType, forType: checkType.val(), campaignId: jsonData.cid, step: step};
+        } else {
+            foR_params = {
+                type: forType,
+                forType: checkType.val(),
+                campaignId: jsonData.cid,
+                step: step,
+                adgroupId: jsonData.aid
+            };
         }
         form.foRSubmit("../assistantCommons/checkSome", foR_params, function (result) {
             if (result.data) {

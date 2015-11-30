@@ -1140,7 +1140,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         List<String> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
 
-        List<KeywordDTO> keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(adgroupIds,null);
+        List<KeywordDTO> keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(adgroupIds, null);
 
         keywordDTOs.stream().forEach(s -> {
             KeywordDTO kwd = s;
@@ -1164,7 +1164,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
 
-        List<KeywordDTO> keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(adgroupIds,null);
+        List<KeywordDTO> keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(adgroupIds, null);
 
         keywordDTOs.stream().forEach(s -> {
             KeywordDTO kwd = s;
@@ -1206,10 +1206,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordInfoDTO> getAll(FindOrReplaceParam forp) {
         List<KeywordInfoDTO> keywordInfoDTOs = new ArrayList<>();
         List<Long> adgroupIds = adgroupDAO.getAllAdgroupId();
-        List<KeywordDTO> keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(adgroupIds,forp);
+        List<KeywordDTO> keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(adgroupIds, forp);
 
         List<String> adgroupIdStr = adgroupDAO.getAllAdgroupIdStr();
-        List<KeywordDTO> keywordDTOs1 = keywordDAO.findKeywordByAdgroupIdsStr(adgroupIdStr,forp);
+        List<KeywordDTO> keywordDTOs1 = keywordDAO.findKeywordByAdgroupIdsStr(adgroupIdStr, forp);
 
         keywordDTOs.addAll(keywordDTOs1);
 
@@ -1251,6 +1251,59 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
     @Override
+    public List<KeywordInfoDTO> getKeywordInfoByAdgroup(FindOrReplaceParam forp) {
+        List<KeywordInfoDTO> keywordInfoDTOs = new ArrayList<>();
+        if (forp.getAdgroupId() != null) {
+            List<KeywordDTO> keywordDTOStr = new ArrayList<>();
+            List<KeywordDTO> keywordDTOLong = new ArrayList<>();
+            if (forp.getAdgroupId().length() > OBJ_SIZE) {
+                keywordDTOStr = keywordDAO.findKeywordByAdgroupIdsStr(new ArrayList<String>() {{
+                    add(forp.getAdgroupId());
+                }}, null);
+            } else {
+                keywordDTOLong = keywordDAO.findKeywordByAdgroupIdsLong(new ArrayList<Long>() {{
+                    add(Long.valueOf(forp.getAdgroupId()));
+                }}, null);
+            }
+            keywordDTOStr.addAll(keywordDTOLong);
+            keywordDTOStr.stream().forEach(s -> {
+                KeywordDTO kwd = s;
+
+                KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+                AdgroupDTO ad = adgroupDAO.findOne(kwd.getAdgroupId());
+                CampaignDTO cam = campaignDAO.findOne(ad.getCampaignId());
+
+                keywordInfoDTO.setObject(kwd);//设置keyword对象
+
+                keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
+                keywordInfoDTO.setCampaignName(cam.getCampaignName());
+                keywordInfoDTO.setCampaignId(cam.getCampaignId());
+
+
+                //设置关键词质量度
+                BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+                CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+                BaiduApiService apiService = new BaiduApiService(commonService);
+
+                if (kwd.getKeywordId() != null) {//添加质量度相关数据
+                    List<Long> ids = new ArrayList<>();
+                    ids.add(kwd.getKeywordId());
+                    List<QualityType> qualityList = apiService.getKeywordQuality(ids);
+                    for (QualityType qualityType : qualityList) {
+                        if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
+                            keywordInfoDTO.setQuality(qualityType.getQuality());
+                            keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
+                            break;
+                        }
+                    }
+                }
+                keywordInfoDTOs.add(keywordInfoDTO);
+            });
+        }
+        return keywordInfoDTOs;
+    }
+
+    @Override
     public void batchDelete(FindOrReplaceParam param) {
         if (param != null) {
             List<String> asList = new ArrayList<>();
@@ -1265,10 +1318,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     List<KeywordDTO> keywordDTOs;
                     if (dataId.length() < 24) {
                         List<Long> longs = Lists.newArrayList(Long.valueOf(param.getAdgroupId()));
-                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs, null);
                     } else {
                         List<String> strings = Lists.newArrayList(param.getAdgroupId());
-                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(strings, null);
                     }
                     asList.clear();
                     keywordDTOs.forEach(e -> {
@@ -1288,8 +1341,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                             else strings.add(e.getId());
 
                         });
-                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                        List<KeywordDTO> dtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs, null);
+                        List<KeywordDTO> dtos = keywordDAO.findKeywordByAdgroupIdsStr(strings, null);
                         if (!Objects.isNull(dtos)) keywordDTOs.addAll(dtos);
                     } else {
                         List<String> strings = Lists.newArrayList();
@@ -1301,8 +1354,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                                 strings.add(e.getId());
                             }
                         });
-                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                        List<KeywordDTO> dtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs, null);
+                        List<KeywordDTO> dtos = keywordDAO.findKeywordByAdgroupIdsStr(strings, null);
                         if (!Objects.isNull(dtos)) keywordDTOs.addAll(dtos);
                     }
                     asList.clear();

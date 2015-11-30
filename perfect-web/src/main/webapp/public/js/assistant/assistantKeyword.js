@@ -151,7 +151,6 @@ $("#tbodyClick").delegate("tr", "click", function () {
     }
     var obj = $(this);
     var keywordId = obj.find("input[type='checkbox']").val();
-    console.log(keywordId)
     setKwdValue(obj, keywordId);
 });
 /**

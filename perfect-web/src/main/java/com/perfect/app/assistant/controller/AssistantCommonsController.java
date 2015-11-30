@@ -262,13 +262,14 @@ public class AssistantCommonsController extends WebContextSupport {
 
     /**
      * 批量启用/暂停
+     *
      * @param param
      * @return
      */
     @RequestMapping(value = "/enableOrPause", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView enableOrPause(@RequestBody EnableOrPauseParam param) {
-        if(param != null){
-            switch (param.getEnableOrPauseType()){
+        if (param != null) {
+            switch (param.getEnableOrPauseType()) {
                 case "keyword":
                     assistantKeywordService.enableOrPauseKeyword(param);
                     break;
@@ -288,6 +289,7 @@ public class AssistantCommonsController extends WebContextSupport {
 
     /**
      * 批量删除
+     *
      * @param batchId
      * @return
      */
@@ -348,6 +350,11 @@ public class AssistantCommonsController extends WebContextSupport {
                     });
                 }
             }
+        } else if (forp.getForType() == 2) {
+            List<KeywordInfoDTO> keywordInfoDTOs = assistantKeywordService.getKeywordInfoByAdgroup(forp);
+            keywordInfoDTOs.stream().forEach(s -> {
+                switchCaseKeyword(forp, s, returnResult);
+            });
         } else {
             List<KeywordInfoDTO> keywordInfoDTOs = assistantKeywordService.getAll(forp);
             keywordInfoDTOs.stream().forEach(s -> {
