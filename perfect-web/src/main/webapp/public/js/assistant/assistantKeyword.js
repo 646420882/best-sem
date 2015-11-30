@@ -1059,10 +1059,10 @@ function showSearchWord() {
     //    align:'right bottom',
     //    content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
     //    onclose: function () {
-    //        /* whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());*/
+    //         //whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
     //    }
     //}).showModal(dockObj);
-    //return false;
+    return false;
 }
 /**
  * 右键菜单显示的选项

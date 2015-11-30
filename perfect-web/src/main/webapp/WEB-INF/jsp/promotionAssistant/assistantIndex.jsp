@@ -1401,7 +1401,7 @@
 <%--地域设置--%>
 <jsp:include page="alert/setRegionTarget.jsp"/>
 <%--添加关键词弹出窗口--%>
-<jsp:include page="../promotionAssistant/popup/addkeywordNews.jsp"/>
+<jsp:include page="../promotionAssistant/alert/addkeyword.jsp"/>
 <jsp:include page="../promotionAssistant/popup/timing_popup.jsp"/>
 <%--定时弹窗--%>
 <jsp:include page="alert/setRegionTarget.jsp"/>
