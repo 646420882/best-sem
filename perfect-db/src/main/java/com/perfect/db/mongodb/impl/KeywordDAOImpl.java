@@ -810,7 +810,10 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         return dtos;
     }
     private void operateQuery(Query query,FindOrReplaceParam forp){
-
+        if(forp.getFindText()!=null){
+            query.addCriteria(Criteria.where("name").
+                    regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+        }
     }
 
     @Override

@@ -1015,7 +1015,7 @@ function updateCreatvie() {
     });
     var dm = $(".doMainS").html();
     var _tr = temp;
-    var creativeId = _tr.find("td:eq(1) input").val() != undefined ? _tr.find("td:eq(1) input").val() : _tr.find("td:eq(1) span").html();
+    var creativeId = _tr.find("td:eq(0) input").val() != undefined ? _tr.find("td:eq(0) input").val() : _tr.find("td:eq(0) span").html();
     var title = _tr.find("td:eq(1) a").attr("title") != undefined ? _tr.find("td:eq(1) a").attr("title") : _tr.find("td:eq(1) span").html();
     var description1 = _tr.find("td:eq(2) a").attr("title") != undefined ? _tr.find("td:eq(2) a").attr("title") : _tr.find("td:eq(2) span").html();
     var description2 = _tr.find("td:eq(3) a").attr("title") != undefined ? _tr.find("td:eq(3) a").attr("title") : _tr.find("td:eq(3) span").html();

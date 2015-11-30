@@ -232,7 +232,7 @@ var editCommons = {
                     return;
                 }
             }
-
+            console.log(this.EditTmp.editData);
             if (this.EditTmp.type == type) {
                 $.ajax({
                     url: "../assistantCommons/dataParse",

@@ -523,7 +523,7 @@
                                                         <li>
                                                             <div class="t_list01 fl over">启用/暂停：</div>
                                                             <div class="w_list02 fl over">
-                                                                <select onclick="enableOrPause(this,'creative')">
+                                                                <select onclick="enableOrPause(this,'creative')" id="sPause">
                                                                     <option value="true">启用</option>
                                                                     <option value="false">暂停</option>
                                                                 </select></div>

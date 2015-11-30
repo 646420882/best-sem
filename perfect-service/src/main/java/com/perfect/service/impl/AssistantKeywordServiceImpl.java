@@ -459,19 +459,19 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         }
         //在百度上得到关键词的质量度
-        BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
-        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-        BaiduApiService apiService = new BaiduApiService(commonService);
-        List<QualityType> qualityList = apiService.getKeywordQuality(keywordIds);
-        for (QualityType qualityType : qualityList) {
-            for (KeywordInfoDTO dto : dtoList) {
-                if (dto.getObject().getKeywordId() != null && qualityType.getId().longValue() == dto.getObject().getKeywordId().longValue()) {
-                    dto.setQuality(qualityType.getQuality());
-                    dto.setMobileQuality(qualityType.getMobileQuality());
-                    break;
-                }
-            }
-        }
+//        BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+//        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+//        BaiduApiService apiService = new BaiduApiService(commonService);
+//        List<QualityType> qualityList = apiService.getKeywordQuality(keywordIds);
+//        for (QualityType qualityType : qualityList) {
+//            for (KeywordInfoDTO dto : dtoList) {
+//                if (dto.getObject().getKeywordId() != null && qualityType.getId().longValue() == dto.getObject().getKeywordId().longValue()) {
+//                    dto.setQuality(qualityType.getQuality());
+//                    dto.setMobileQuality(qualityType.getMobileQuality());
+//                    break;
+//                }
+//            }
+//        }
 
         return dtoList;
     }
