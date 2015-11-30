@@ -2009,6 +2009,16 @@ h2 .close {
 
 }
 
+#reportAddSearchWord .main_bottom,#reportAddNoSearchWord .main_bottom {
+    background: #f8f8f8;
+}
+
+#reportAddSearchWord .mainlist,#reportAddNoSearchWord .mainlist {
+    border-bottom: none;
+    overflow: visible;
+    padding-bottom: 0;
+}
+
 .main_bottom .w_list03 {
     width: 100%;
     text-align: center;
@@ -4888,4 +4898,47 @@ body .ui-tooltip {
 
 #PromptBox .w_list03 ul li {
     margin-bottom: 0px !important;
+}
+
+#choicedKeyWord,#choicedNoKeyWord {
+    background: #fff;
+    padding: 20px;
+}
+
+#choicedKeyWord p,#choicedNoKeyWord p {
+    margin: 5px 0;
+}
+
+#choicedKeyWord p .choicedKeyWordCancel {
+    float: right;
+    color: #01aef0;
+    cursor: pointer;
+}
+
+#reportAddSearchWord .mainChoiceList {
+    margin-top: 10px;
+}
+
+#reportAddSearchWord .mainChoiceList select {
+    outline: none;
+    height: 30px;
+    line-height: 30px;
+    width: 180px;
+}
+#reportAddSearchWord .mainChoiceList select option{
+    height: 30px;
+    line-height: 30px;
+}
+#reportAddSearchWord .mainChoiceList label{
+    width: 99px;
+}
+#reportAddSearchWord .mainChoiceList div{
+    margin-top: 15px;
+}
+#reportAddNoSearchWord .mainChoiceList{
+    margin-top: 10px;
+    overflow: hidden;
+}
+#reportAddNoSearchWord .mainChoiceList label,#reportAddNoSearchWord .mainChoiceList input{
+    margin: 0;
 }
