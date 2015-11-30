@@ -557,7 +557,7 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
 
     @Override
     public List<Long> getAdgroupIdByCampaignIdListLong(List<Long> campaignId) {
-        return getMongoTemplate().find(new Query(Criteria.where(ADGROUP_ID).in(campaignId)), getEntityClass())
+        return getMongoTemplate().find(new Query(Criteria.where(CAMPAIGN_ID).in(campaignId)), getEntityClass())
                 .stream().map(AdgroupEntity::getAdgroupId)
                 .collect(Collectors.toList());
     }

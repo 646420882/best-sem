@@ -550,7 +550,6 @@ function enableOrPause(_this, type) {
             AlertPrompt.show("您没有选择要所需物料!");
             return;
         }
-        console.log(option);
         foR_params = {enableOrPauseType: type, enableOrPauseData: checked_data.toString(), enableOrPauseStatus: (option == "暂停" ? 0 : 1)};
         $.ajax({
             url: "/assistantCommons/enableOrPause",

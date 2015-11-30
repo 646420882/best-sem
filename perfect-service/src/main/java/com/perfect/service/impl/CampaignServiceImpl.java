@@ -412,10 +412,15 @@ public class CampaignServiceImpl implements CampaignService {
             List<Long> adgroupLong = adgroupDAO.getAdgroupIdByCampaignIdListLong(baidId);
             List<String> adgroupString = adgroupDAO.getAdgroupIdByCampaignIdListString(objId);
 
-            List<String> result = Stream.concat(adgroupLong.stream().map(Object::toString), adgroupString.stream()).collect(Collectors.toList());
 
             EnableOrPauseParam enableOrPauseParam = new EnableOrPauseParam();
-            enableOrPauseParam.setEnableOrPauseData(result.toString().replaceAll("[\\[|\\]| ]", ""));
+            if(adgroupString.size() == 0){
+                enableOrPauseParam.setEnableOrPauseData(adgroupLong.toString().replaceAll("[\\[|\\]| ]", ""));
+            }else{
+                List<String> result = Stream.concat(adgroupLong.stream().map(Object::toString), adgroupString.stream()).collect(Collectors.toList());
+                enableOrPauseParam.setEnableOrPauseData(result.toString().replaceAll("[\\[|\\]| ]", ""));
+            }
+
             enableOrPauseParam.setEnableOrPauseStatus(param.getEnableOrPauseStatus());
             enableOrPauseParam.setEnableOrPauseType(param.getEnableOrPauseType());
 

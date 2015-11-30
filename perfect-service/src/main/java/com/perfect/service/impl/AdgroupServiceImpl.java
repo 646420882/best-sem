@@ -498,7 +498,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             List<String> objId = new ArrayList<>();
             List<Long> baidId = new ArrayList<>();
             strings.forEach(e -> {
-                if (e.length() < 24) {
+                 if (e.length() < 24) {
                     baidId.add(Long.parseLong(e));
                 } else {
                     objId.add(e);
