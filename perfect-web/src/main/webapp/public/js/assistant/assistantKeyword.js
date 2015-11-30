@@ -551,29 +551,33 @@ function enableOrPause(_this, type) {
             AlertPrompt.show("您没有选择要所需物料!");
             return;
         }
-        foR_params = {enableOrPauseType: type, enableOrPauseData: checked_data.toString(), enableOrPauseStatus: (option == "暂停" ? 0 : 1)};
+        foR_params = {
+            enableOrPauseType: type,
+            enableOrPauseData: checked_data.toString(),
+            enableOrPauseStatus: (option == "暂停" ? 0 : 1)
+        };
         $.ajax({
             url: "/assistantCommons/enableOrPause",
             data: JSON.stringify(foR_params),
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                switch (type){
+                switch (type) {
                     case "keyword":
                         whenClickTreeLoadData("关键词");
-                        $("input[name=keyAllCheck]").attr("checked",false);
+                        $("input[name=keyAllCheck]").attr("checked", false);
                         break;
                     case "creative":
                         whenClickTreeLoadData("普通创意");
-                        $("input[name=creativeAllCheck]").attr("checked",false);
+                        $("input[name=creativeAllCheck]").attr("checked", false);
                         break
                     case "adgroup":
                         whenClickTreeLoadData("推广单元");
-                        $("input[name=adgroupAllCheck]").attr("checked",false);
+                        $("input[name=adgroupAllCheck]").attr("checked", false);
                         break
                     case "campaign":
                         whenClickTreeLoadData("推广计划");
-                        $("input[name=campaignAllCheck]").attr("checked",false);
+                        $("input[name=campaignAllCheck]").attr("checked", false);
                         break
                 }
             }
@@ -779,79 +783,7 @@ $(".daterangepicker").click(function (e) {
         window.event.cancelBubble = true;//兼容IE
     }
 });
-$("#timing").click(function () {
-    if ($("#Timings").css("display") == "none") {
-        var tabtop = $(this).offset().top + $(this).outerHeight() + "px";
-        var tableft = $(this).offset().left + $(this).outerWidth() + -$(this).width() - 40 + "px";
-        $("#Timings").css("top", tabtop);
-        $("#Timings").css("left", tableft);
-        $("#Timings").show();
-    }
-    else {
-        $("#Timings").hide();
-    }
-});
-function TimingOk() {
-    $("#Timings").hide();
-}
-function TimingClose() {
-    $("#Timings").hide();
-}
 
-$('#TimingDate').daterangepicker({
-    "showDropdowns": true,
-    "timePicker24Hour": true,
-    timePicker: true,
-    timePickerIncrement: 30,
-    format: 'YYYY-MM-DD',
-    "locale": {
-        "format": "YYYY-MM-DD",
-        "separator": " - ",
-        "applyLabel": "确定",
-        "cancelLabel": "关闭",
-        "fromLabel": "From",
-        "toLabel": "To",
-        "customRangeLabel": "Custom",
-        "daysOfWeek": [
-            "日",
-            "一",
-            "二",
-            "三",
-            "四",
-            "五",
-            "六"
-        ],
-        "monthNames": [
-            "一月",
-            "二月",
-            "三月",
-            "四月",
-            "五月",
-            "六月",
-            "七月",
-            "八月",
-            "九月",
-            "十月",
-            "十一月",
-            "十二月"
-        ],
-        "firstDay": 1
-    }
-}, function (start, end, label) {
-    var _startDate = start.format('YYYY-MM-DD');
-    var _endDate = end.format('YYYY-MM-DD');
-});
-$("input[value='Enable']").on("click", function () {
-    PromptBox.show('');
-    $("#PrompBoxTitle").html("提醒");
-    $("#PrompMain").html("您选择了启用功能后，会对账户已经暂停的物料启用上线，或者会对保存到搜客本地的物料上传到凤巢账户，确认选择启用功能？");
-
-})
-$("input[value='Pause']").on("click", function () {
-    PromptBox.show('');
-    $("#PrompBoxTitle").html("提醒");
-    $("#PrompMain").html("您选择了暂停功能后，会对账户已经启用的物料暂停推广，确认选择暂停功能？");
-})
 function batchDelKeyword() {
     top.dialog({
         title: "批量删除",
@@ -1040,81 +972,81 @@ function reducKwd_del(id) {
  * @type {{text: string, func: func}}
  */
 var menu_keyword_add = {
-    text: "添加关键词",
-    img: "../public/img/zs_function1.png",
-    func: function () {
-        /* showSearchWord();*/
-        AddKeywords();
-    }
-}, menu_keyword_del = {
-    text: "删除",
-    img: "../public/img/zs_function2.png",
-    func: function () {
-        deleteKwd();
-    }
-}, menu_keyword_batchAddOrUpdate = {
-    text: "批量添加/更新",
-    img: "../public/img/zs_function3.png",
-    func: function () {
-        batchAddOrUpdate();
-    }
-}, menu_keyword_batchDel = {
-    text: "批量删除",
-    img: "../public/img/zs_function2.png",
-    func: function () {
-        batchDelKeyword();
-    }
-}, menu_keyword_redu = {
-    text: "还原",
-    img: "../public/img/zs_function9.png",
-    func: function () {
-        reductionKeyword();
-    }
-}, menu_keyword_upload = {
-    text: "更新到凤巢",
-    img: "../public/img/update2.png",
-    func: function () {
-        kUpload();
-    }
-}, menu_keyword_searchWord = {
-    text: "快速添加关键词",
-    img: "../public/img/zs_function10.png",
-    func: function () {
-        searchword();
-    }
+        text: "添加关键词",
+        img: "../public/img/zs_function1.png",
+        func: function () {
+            /* showSearchWord();*/
+            AddKeywords();
+        }
+    }, menu_keyword_del = {
+        text: "删除",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            deleteKwd();
+        }
+    }, menu_keyword_batchAddOrUpdate = {
+        text: "批量添加/更新",
+        img: "../public/img/zs_function3.png",
+        func: function () {
+            batchAddOrUpdate();
+        }
+    }, menu_keyword_batchDel = {
+        text: "批量删除",
+        img: "../public/img/zs_function2.png",
+        func: function () {
+            batchDelKeyword();
+        }
+    }, menu_keyword_redu = {
+        text: "还原",
+        img: "../public/img/zs_function9.png",
+        func: function () {
+            reductionKeyword();
+        }
+    }, menu_keyword_upload = {
+        text: "更新到凤巢",
+        img: "../public/img/update2.png",
+        func: function () {
+            kUpload();
+        }
+    }, menu_keyword_searchWord = {
+        text: "快速添加关键词",
+        img: "../public/img/zs_function10.png",
+        func: function () {
+            searchword();
+        }
 
-}
+    }
     , menu_keyword_copy = {
-    text: "复制",
-    img: "../public/img/zs_function13.png",
-    func: function () {
-        editCommons.Copy();
-    }
+        text: "复制",
+        img: "../public/img/zs_function13.png",
+        func: function () {
+            editCommons.Copy();
+        }
 
-}
+    }
     , menu_keyword_shear = {
-    text: "剪切",
-    img: "../public/img/zs_function14.png",
-    func: function () {
-        editCommons.Cut();
-    }
+        text: "剪切",
+        img: "../public/img/zs_function14.png",
+        func: function () {
+            editCommons.Cut();
+        }
 
-}
+    }
     , menu_keyword_paste = {
-    text: "粘贴",
-    img: "../public/img/zs_function15.png",
-    func: function () {
-        editCommons.Parse();
+        text: "粘贴",
+        img: "../public/img/zs_function15.png",
+        func: function () {
+            editCommons.Parse();
+        }
     }
-}
     , menu_keyword_select = {
-    text: "全选",
-    img: "../public/img/zs_function16.png",
-    func: function () {
-        CtrlAll();
-    }
+        text: "全选",
+        img: "../public/img/zs_function16.png",
+        func: function () {
+            CtrlAll();
+        }
 
-};
+    };
 function showSearchWord() {
     $("#adgroup_select").empty();
     $("#phraseTypeDiv").hide();
@@ -1127,10 +1059,10 @@ function showSearchWord() {
     //    align:'right bottom',
     //    content: "<iframe src='/toAddPage' width='900' height='500' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
     //    onclose: function () {
-    //        /* whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());*/
+    //         //whenClickTreeLoadData(getCurrentTabName(),getNowChooseCidAndAid());
     //    }
     //}).showModal(dockObj);
-    //return false;
+    return false;
 }
 /**
  * 右键菜单显示的选项

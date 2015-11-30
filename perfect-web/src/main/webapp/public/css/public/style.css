@@ -2009,11 +2009,11 @@ h2 .close {
 
 }
 
-#reportAddSearchWord .main_bottom,#reportAddNoSearchWord .main_bottom {
+#reportAddSearchWord .main_bottom, #reportAddNoSearchWord .main_bottom {
     background: #f8f8f8;
 }
 
-#reportAddSearchWord .mainlist,#reportAddNoSearchWord .mainlist {
+#reportAddSearchWord .mainlist, #reportAddNoSearchWord .mainlist {
     border-bottom: none;
     overflow: visible;
     padding-bottom: 0;
@@ -4565,6 +4565,9 @@ input[type=checkbox]:focus {
 .btn-primary {
     background: #01aef0;
     border: none;
+    height: 30px;
+    border-radius: 4px;
+    color: #fff;
 }
 
 .btn-primary:hover {
@@ -4900,12 +4903,12 @@ body .ui-tooltip {
     margin-bottom: 0px !important;
 }
 
-#choicedKeyWord,#choicedNoKeyWord {
+#choicedKeyWord, #choicedNoKeyWord {
     background: #fff;
     padding: 20px;
 }
 
-#choicedKeyWord p,#choicedNoKeyWord p {
+#choicedKeyWord p, #choicedNoKeyWord p {
     margin: 5px 0;
 }
 
@@ -4925,20 +4928,41 @@ body .ui-tooltip {
     line-height: 30px;
     width: 180px;
 }
-#reportAddSearchWord .mainChoiceList select option{
+
+#reportAddSearchWord .mainChoiceList select option {
     height: 30px;
     line-height: 30px;
 }
-#reportAddSearchWord .mainChoiceList label{
+
+#reportAddSearchWord .mainChoiceList label {
     width: 99px;
 }
-#reportAddSearchWord .mainChoiceList div{
+
+#reportAddSearchWord .mainChoiceList div {
     margin-top: 15px;
 }
-#reportAddNoSearchWord .mainChoiceList{
+
+#reportAddNoSearchWord .mainChoiceList {
     margin-top: 10px;
     overflow: hidden;
 }
-#reportAddNoSearchWord .mainChoiceList label,#reportAddNoSearchWord .mainChoiceList input{
+
+#reportAddNoSearchWord .mainChoiceList label, #reportAddNoSearchWord .mainChoiceList input {
     margin: 0;
+}
+
+.page_number {
+    float: right;
+    margin-top: 10px;
+}
+
+.range_inputs {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.range_inputs button, .btn-success:hover, .btn-success:focus, .btn-success.active, .open .dropdown-toggle.btn-success {
+    height: 30px;
+    border-radius: 4px;
+    padding-top: 0px;
 }
