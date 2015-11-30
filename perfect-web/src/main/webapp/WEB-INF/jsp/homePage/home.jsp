@@ -1174,16 +1174,16 @@
 </div>
 
 <!-- javascript -->
-<%--<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>--%>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<%--<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>--%>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/2.1.10/echarts-all.js"></script>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.jQuery.js"></script>--%>
 <%--<script type="text/javascript"--%>
 <%--src="${pageContext.request.contextPath}/public/js/jquery.ui.datepicker-zh-CN.js"></script>--%>
-<%--<script type="text/javascript"--%>
-        <%--src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>--%>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>--%>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/map.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/keyword/keywordQuality.js"></script>
@@ -2290,6 +2290,9 @@
     };
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
+        console.log($(".off").html())
+        $(".off").removeClass(".active");
+        $(".off").css({color:"white"});
     });
 </script>
 </body>

@@ -205,8 +205,16 @@
 
 .daterangepicker td.off {
     color: #999;
+    cursor: not-allowed;
+    text-decoration: line-through;
 }
-
+.daterangepicker td.off:active, .daterangepicker  td.off:hover{
+    background-color: #FFFFFF;
+}
+.daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
+    color: #999;
+    background: #fff;
+}
 .daterangepicker td.disabled {
     color: #999;
 }

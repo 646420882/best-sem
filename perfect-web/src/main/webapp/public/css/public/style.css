@@ -4844,9 +4844,9 @@ body .ui-tooltip {
 
 }
 
-.daterangepicker td.in-range {
-    background: #D2F1FF;
-}
+/*.daterangepicker td.in-range {*/
+    /*background: #D2F1FF;*/
+/*}*/
 
 /*定时*/
 .timing_content {

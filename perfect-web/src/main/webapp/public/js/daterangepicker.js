@@ -704,10 +704,13 @@
             var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
 
             if (this.showDropdowns) {
+                var M = new Date();
+                var Month = M.getMonth();
+                var Year = M.getFullYear();
                 var currentMonth = calendar[1][1].month();
                 var currentYear = calendar[1][1].year();
-                var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-                var minYear = (minDate && minDate.year()) || (currentYear - 50);
+                var maxYear = (maxDate && maxDate.year()) || (Year + 1);
+                var minYear = (minDate && minDate.year()) || (Year - 5);
                 var inMinYear = currentYear == minYear;
                 var inMaxYear = currentYear == maxYear;
 
