@@ -513,12 +513,13 @@ function editKwdInfo(jsonData) {
         dataType: "json",
         success: function (data) {
             var jsonData = {};
-            jsonData["object"] = data;
+            jsonData["object"] = data.object;
             jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(10)").html();
             jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
             jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(6)").attr("cname");
             jsonData["campaignId"] = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("camp");
             jsonData["folderCount"] = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("dirCount");
+            jsonData["adgroupName"]=data.adgroupName;
 
             var html = keywordDataToHtml(jsonData, 0);
             var tr = $("#tbodyClick").find(".list2_box3");

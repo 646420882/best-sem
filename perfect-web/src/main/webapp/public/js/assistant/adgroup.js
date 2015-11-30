@@ -710,7 +710,7 @@ function adrgoupUpdateOk() {
             if (rs == "1") {
                 adgroupAddAlertClose();
                 var _span = $("#auSpan").html();
-                var _edit = formData["oid"].length > 18 ? "<span class='new_add' step='1'></span>" : "<span class='update' step='2'></span>";
+                var _edit = formData["oid"].length > 18 ? "<span class='new_add' step='1'></span>" : "<span class='pen' step='2'></span>";
                 var _tbody =
                     "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + formData["oid"] + "' onchange='adgroupListCheck()'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/>" + _edit + "</td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
@@ -718,8 +718,7 @@ function adrgoupUpdateOk() {
                     " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
                     "<td>" + parseFloat(formData["maxPrice"]).toFixed(2) + "<span style='display:none;'>"+parseFloat(formData["maxPrice"]).  toFixed(2)+"</span></td>" +
                     "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
-                    "<td>" + formData["cn"] + "</td>" +
-                    "<td></td>";
+                    "<td>" + formData["cn"] + "</td>";
                 $(atmp).html(_tbody);
                 //alert("修改完成");
                 AlertPrompt.show("修改完成");
@@ -812,7 +811,7 @@ function agReBack(oid) {
                 var _maxPrice = json.data.maxPrice != null ? json.data.maxPrice : 0.0;
                 var nn = json.data.negativeWords != null ? json.data.negativeWords : "";
                 var ne = json.data.exactNegativeWords != null ? json.data.exactNegativeWords : "";
-                var _edit = json.data.localStatus != null ? json.data.localStatus : -1;
+                var _edit = json.data.localStatus != null ? json.data.localStatus : null;
                 var _ls = getLocalStatus(parseInt(_edit));
                 var _tbody =
                     "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'>" + _ls + "</td>" +

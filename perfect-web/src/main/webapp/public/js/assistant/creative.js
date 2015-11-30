@@ -1214,12 +1214,12 @@ function updateOk() {
                 var _trClass = i % 2 == 0 ? "list2_box1 list2_box3" : "list2_box2 list2_box3";
                 var _edit = null;
                 if (formData["oid"].length > 18) {
-                    _edit = "<span class='pen' step='1'></span>";
+                    _edit = "<span class='new_add' step='1'></span>";
                 } else {
                     _edit = "<span class='pen' step='2'></span>";
                 }
                 var _tbody =
-                    "<td><input type='hidden' value='" + formData["oid"] + "'/><input type='checkbox' name='creativeCheck' value='"+formData["oid"]+"'' onchange='creativeListCheck()'/></td>"+
+                    "<td class='table_add'><input type='hidden' value='" + formData["oid"] + "'/><input type='checkbox' name='creativeCheck' value='"+formData["oid"]+"'' onchange='creativeListCheck()'/>" + _edit + "</td>"+
                     "<td >" + until.substring(10, formData["title"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description1"]) + "</td>" +
                     " <td >" + until.substring(10, formData["description2"]) + "</td>" +
@@ -1229,8 +1229,7 @@ function updateOk() {
                     " <td >" + until.substring(10, formData["mobileDisplayUrl"]) + "</td>" +
                     " <td >" + p + "</td>" +
                     " <td >" + until.getCreativeStatus(parseInt(formData["status"])) + "</td>" +
-                    " <td >" + until.convertDeviceByNum(parseInt(formData["devicePreference"])) + "</td>" +
-                    " <td >" + _edit + "</td>";
+                    " <td >" + until.convertDeviceByNum(parseInt(formData["devicePreference"])) + "</td>" ;
                 $(tmp).html(_tbody);
                 //alert("修改完成");
                 AlertPrompt.show("修改完成");
