@@ -150,7 +150,8 @@ $("#tbodyClick").delegate("tr", "click", function () {
         $("#reduction").find("span").addClass("z_function_hover");
     }
     var obj = $(this);
-    var keywordId = obj.find("input[type=hidden]").val();
+    var keywordId = obj.find("input[type='checkbox']").val();
+    console.log(keywordId)
     setKwdValue(obj, keywordId);
 });
 /**
