@@ -127,6 +127,8 @@ public interface AssistantKeywordService {
 
     List<KeywordInfoDTO> getAll(FindOrReplaceParam forp);//全账户下
 
+    List<KeywordInfoDTO> getKeywordInfoByAdgroup(FindOrReplaceParam forp);//某单元下
+
     /**
      * 批量删除关键字
      * @param param

@@ -13,7 +13,7 @@ public class FindOrReplaceParam {
     String type;
 
     //确定是选择的某几条数据还是所有数据
-    Integer forType;//0为有选中的数据,1为当前选中计划,-1为全账户(所有计划),
+    Integer forType;//0为有选中的数据,1为当前选中计划,-1为全账户(所有计划),2为当前选择的单元下所有
 
     //查找选中状态的物料，
     String checkData;
