@@ -7,7 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="dropdown-menus tabmodel" id="Timings" style="width:240px;">
-    <div class="tabmodel_title"><span id="TimingTitle">定时</span><span class="fr glyphicon glyphicon-remove" onclick="TimingOk()"></span>
+    <div class="tabmodel_title"><span id="TimingTitle">定时</span><span class="fr glyphicon glyphicon-remove"
+                                                                      onclick="timing.TimingClose()"></span>
     </div>
     <div class="timing_content">
         <div>
@@ -48,8 +49,8 @@
         <span style="color: red;" id="filter_msg"></span>
 
         <div class="fr">
-            <button type="button" class="btn btn-primary btn-sm " onclick="TimingOk()">确认</button>
-            <button type="button" class="btn btn-default btn-sm " onclick="TimingClose()">取消</button>
+            <button type="button" class="btn btn-primary btn-sm " onclick="timing.TimingOk()">确认</button>
+            <button type="button" class="btn btn-default btn-sm " onclick="timing.TimingClose()">取消</button>
         </div>
 
     </div>

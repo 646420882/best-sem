@@ -150,7 +150,7 @@
                                                               src="../public/img/zs_function5.png"></span><b>快速添加关键词</b></a>
                                                       </li>--%>
                                                     <li onclick="commons.foRShow('keyword',this)"><a href="javascript:;"
-                                                    ><span class="z_function_hover"><img
+                                                            ><span class="z_function_hover"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -167,7 +167,7 @@
                                                     <li><a href="#" id="reduction"><span class="z_function_hover"><img
                                                             src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
                                                     </li>
-                                                    <li><a href="#"  onclick="showSearchWord()"><span class="zs_top"><img
+                                                    <li><a href="#" onclick="showSearchWord()"><span class="zs_top"><img
                                                             src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
                                                     <li><a href="#" class="searchwordReport"><span class="zs_top"><img
@@ -177,22 +177,13 @@
                                                             class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>添加统计代码</b></a>
                                                     </li>
-                                                    <li><a id="timing" href="#"><span class="zs_top"><img
+                                                    <li><a onclick="timing.foRShow('keyword',this)" href="#"><span
+                                                            class="zs_top"><img
                                                             src="../public/img/zs_function20.png"></span><b>定时&nbsp;</b><input
                                                             type="image" src="../public/img/zs_input.png"></a>
-
+                                                    </li>
+                                                </ul>
                                             </div>
-                                            <%--         <ul id="timing1" class="hides">
-                                                         <li id="timediglogUp"><a href="#"><span class="zs_top1"><img
-                                                                 src="../public/img/zs_function21.png"></span><b>定时上传</b></a>
-                                                         </li>
-                                                         <li id="timediglogDown"><a href="#"><span
-                                                                 class="zs_top1"><img
-                                                                 src="../public/img/zs_function22.png"></span><b>定时暂停</b></a>
-                                                         </li>
-                                                     </ul>--%>
-                                            </li>
-                                            </ul>
                                             <div class="list4" id="kkeyword" style="height:400px;">
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%"
@@ -377,7 +368,7 @@
                                                        </li>--%>
                                                     <li onclick="commons.foRShow('creative',this)"><a
                                                             href="javascript:;" class="editer"
-                                                    ><span class="zs_top"><img
+                                                            ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -392,6 +383,11 @@
                                                             class="zs_top"><img
                                                             src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
+                                                    <li><a onclick="timing.foRShow('creative',this)" href="#"><span
+                                                            class="zs_top"><img
+                                                            src="../public/img/zs_function20.png"></span><b>定时&nbsp;</b><input
+                                                            type="image" src="../public/img/zs_input.png"></a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <div class="list4" style="height:400px;" id="tcreative">
@@ -401,8 +397,10 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th style="min-width:80px;"><input type="checkbox" name='creativeAllCheck'
-                                                                       onchange="$.foRCheckAll('creativeAllCheck')"  style="float:left;margin:0 15px;"/>
+                                                            <th style="min-width:80px;"><input type="checkbox"
+                                                                                               name='creativeAllCheck'
+                                                                                               onchange="$.foRCheckAll('creativeAllCheck')"
+                                                                                               style="float:left;margin:0 15px;"/>
                                                             </th>
                                                             <%-- <th style="width: 40px;">&nbsp;操作</th>--%>
                                                             <th>&nbsp;<span
@@ -523,7 +521,8 @@
                                                         <li>
                                                             <div class="t_list01 fl over">启用/暂停：</div>
                                                             <div class="w_list02 fl over">
-                                                                <select onclick="enableOrPause(this,'creative')" id="sPause">
+                                                                <select onclick="enableOrPause(this,'creative')"
+                                                                        id="sPause">
                                                                     <option value="true">启用</option>
                                                                     <option value="false">暂停</option>
                                                                 </select></div>
@@ -584,12 +583,17 @@
                                                         </li>
                                                         <li onclick="commons.foRShow(this)"><a href="javascript:;"
                                                                                                class="editer"
-                                                        ><span class="zs_top"><img
+                                                                ><span class="zs_top"><img
                                                                 src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                                 src="../public/img/zs_input.png"></a>
                                                         </li>
                                                         <li><a href="#"><span class="z_function_hover"><img
                                                                 src="../public/img/zs_function9.png"></span><b>还原</b></a>
+                                                        </li>
+                                                        <li><a onclick="timing.foRShow(this)" href="#"><span
+                                                                class="zs_top"><img
+                                                                src="../public/img/zs_function20.png"></span><b>定时&nbsp;</b><input
+                                                                type="image" src="../public/img/zs_input.png"></a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -805,7 +809,7 @@
                                                         </li>--%>
                                                     <li onclick="commons.foRShow('adgroup',this)"><a href="javascript:;"
                                                                                                      class="editer"
-                                                    ><span class="zs_top"><img
+                                                            ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -817,6 +821,11 @@
                                                             class="zs_top"><img
                                                             src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
                                                     </li>
+                                                    <li><a onclick="timing.foRShow('adgroup',this)" href="#"><span
+                                                            class="zs_top"><img
+                                                            src="../public/img/zs_function20.png"></span><b>定时&nbsp;</b><input
+                                                            type="image" src="../public/img/zs_input.png"></a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <div class="list4" style="height:400px;" id="aadgroup">
@@ -826,8 +835,10 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th style="min-width:80px;"><input type="checkbox" name='adgroupAllCheck'
-                                                                       onchange="$.foRCheckAll('adgroupAllCheck')"  style="float:left;margin:0 15px;"/>
+                                                            <th style="min-width:80px;"><input type="checkbox"
+                                                                                               name='adgroupAllCheck'
+                                                                                               onchange="$.foRCheckAll('adgroupAllCheck')"
+                                                                                               style="float:left;margin:0 15px;"/>
                                                             </th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Adgroup_name',this)">
@@ -845,7 +856,7 @@
                                                             <th>&nbsp;<span>
                         推广计划名称&nbsp;</span></th>
                                                             <%--<th class="username-column" data-noresize>--%>
-                                                                <%--<div class="set fr"></div>--%>
+                                                            <%--<div class="set fr"></div>--%>
                                                             <%--</th>--%>
                                                         </tr>
                                                         </thead>
@@ -940,7 +951,7 @@
                                                     </li>
                                                     <li onclick="commons.foRShow('campaign',this)"><a
                                                             href="javascript:;" class="editer"
-                                                    ><span class="zs_top"><img
+                                                            ><span class="zs_top"><img
                                                             src="../public/img/zs_function4.png"></span><b>编辑</b><img
                                                             src="../public/img/zs_input.png"></a>
                                                     </li>
@@ -949,6 +960,11 @@
                                                     </li>
                                                     <li><a href="#" class="searchwordReport"><span class="zs_top"><img
                                                             src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                    </li>
+                                                    <li><a onclick="timing.foRShow('campaign',this)" href="#"><span
+                                                            class="zs_top"><img
+                                                            src="../public/img/zs_function20.png"></span><b>定时&nbsp;</b><input
+                                                            type="image" src="../public/img/zs_input.png"></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -959,9 +975,10 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th style="max-width:80px;"><input type="checkbox" name='campaignAllCheck'
-                                                                       onchange="$.foRCheckAll('campaignAllCheck')"
-                                                                       style="float:left; margin:0 15px;"/>
+                                                            <th style="max-width:80px;"><input type="checkbox"
+                                                                                               name='campaignAllCheck'
+                                                                                               onchange="$.foRCheckAll('campaignAllCheck')"
+                                                                                               style="float:left; margin:0 15px;"/>
                                                             </th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Campaign_name',this)">
