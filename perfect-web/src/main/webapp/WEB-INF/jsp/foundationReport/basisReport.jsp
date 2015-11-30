@@ -123,7 +123,7 @@
                 <a href="#">
                     数据报告
                 </a>
-                &nbsp;&nbsp;>&nbsp;&nbsp;<span>基础报告</span>
+                &nbsp;&nbsp;>&nbsp;&nbsp;<span id="TitleName">账户报告</span>
             </div>
         </div>
         <div id="tab">

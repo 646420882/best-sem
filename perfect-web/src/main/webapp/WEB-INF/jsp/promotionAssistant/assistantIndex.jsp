@@ -401,8 +401,8 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th><input type="checkbox" name='creativeAllCheck'
-                                                                       onchange="$.foRCheckAll('creativeAllCheck')"/>
+                                                            <th style="min-width:80px;"><input type="checkbox" name='creativeAllCheck'
+                                                                       onchange="$.foRCheckAll('creativeAllCheck')"  style="float:left;margin:0 15px;"/>
                                                             </th>
                                                             <%-- <th style="width: 40px;">&nbsp;操作</th>--%>
                                                             <th>&nbsp;<span
@@ -826,8 +826,8 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th><input type="checkbox" name='adgroupAllCheck'
-                                                                       onchange="$.foRCheckAll('adgroupAllCheck')"/>
+                                                            <th style="min-width:80px;"><input type="checkbox" name='adgroupAllCheck'
+                                                                       onchange="$.foRCheckAll('adgroupAllCheck')"  style="float:left;margin:0 15px;"/>
                                                             </th>
                                                             <th>&nbsp;<span
                                                                     onclick="TabModel.Show('Adgroup_name',this)">
@@ -959,7 +959,7 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th><input type="checkbox" name='campaignAllCheck'
+                                                            <th style="max-width:80px;"><input type="checkbox" name='campaignAllCheck'
                                                                        onchange="$.foRCheckAll('campaignAllCheck')"
                                                                        style="float:left; margin:0 15px;"/>
                                                             </th>

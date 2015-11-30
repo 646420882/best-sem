@@ -52,7 +52,7 @@
     <div class="mid over">
         <div class="title_box">
             <div class="on_title over">
-                <a href="#">用户中心</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>关联账户</span>
+                <a href="#">用户中心</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span id="TitleName">关联账户</span>
             </div>
          </div>
         <div id="tab">
@@ -232,6 +232,11 @@
             $(this).addClass('selected').siblings().removeClass('selected');
             var index = $tab_li.index(this);
             $('div.tab_box > div').eq(index).show().siblings().hide();
+            if(index == 0){
+                $("#TitleName").html("关联账户");
+            }else{
+                $("#TitleName").html("修改密码");
+            }
         });
 
     });

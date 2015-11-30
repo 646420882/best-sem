@@ -58,6 +58,11 @@ $(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
+        if (index == 0) {
+            $("#TitleName").html("");
+        } else {
+            $("#TitleName").html("&nbsp;&nbsp;>&nbsp;&nbsp;重点词竞价");
+        }
     });
     //设置规则
     $("#showbox").click(function () {

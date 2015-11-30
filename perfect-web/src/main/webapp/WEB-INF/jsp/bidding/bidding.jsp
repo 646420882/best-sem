@@ -45,6 +45,7 @@
         <div class="title_box">
             <div class="on_title over">
                 <a href="#"> 智能竞价 </a>
+                <span id="TitleName"></span>
             </div>
         </div>
         <div id="tab">

@@ -3545,14 +3545,14 @@ h2 .close {
 }
 
 .progressBar {
-    border: solid 2px #86A5AD;
-    background: white url(/public/img/loaderc.gif) no-repeat 10px 10px;
+    /* border: solid 2px #86A5AD;*/
+    background: white url(/public/img/loaderc.gif) no-repeat 10px 5px;
 }
 
 .loading {
     background: white url(/public/img/loading.gif) no-repeat;
-    width: 24px;
-    height: 24px;
+    width: 36px;
+    height: 36px;
     position: absolute;
 
 }
@@ -4845,7 +4845,7 @@ body .ui-tooltip {
 }
 
 /*.daterangepicker td.in-range {*/
-    /*background: #D2F1FF;*/
+/*background: #D2F1FF;*/
 /*}*/
 
 /*定时*/

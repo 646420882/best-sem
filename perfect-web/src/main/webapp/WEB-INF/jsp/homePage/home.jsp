@@ -64,7 +64,7 @@
                 <a href="#">
                     账户全景
                 </a>
-                &nbsp;&nbsp;>&nbsp;&nbsp;<span>账户分析</span>
+                &nbsp;&nbsp;>&nbsp;&nbsp;<span id="TitleName">账户概览</span>
             </div>
         </div>
 
@@ -1283,18 +1283,24 @@
             $(this).addClass('selected').siblings().removeClass('selected');
             var index = $tab_li.index(this);
             typepage = index + 1;
+            if(index ==0){
+                $("#TitleName").html('账户概览');
+            }
             switch (typepage) {
                 case 2:
                     //曲线图表现-----默认加载7天数据
                     loadPerformanceCurve(null, 7);
+                    $("#TitleName").html('账户表现');
                     break;
                 case 3:
                     //默认加载昨天的数据(质量度)
 //                loadKeywordQualityData(null, 1);
+                    $("#TitleName").html('质量度分析');
                     break;
                 case 4:
                     //重点词加载
                     getImportKeywordDefault(null, 1);
+                    $("#TitleName").html('关键词监控');
                     break;
             }
             $('div.tab_box > div').eq(index).show().siblings().hide();
@@ -2290,7 +2296,6 @@
     };
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
-        console.log($(".off").html())
         $(".off").removeClass(".active");
         $(".off").css({color:"white"});
     });

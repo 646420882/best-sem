@@ -55,7 +55,7 @@
             <div class="on_title over">
                 <a href="#">
                     帮助中心
-                    &nbsp;&nbsp;>&nbsp;&nbsp;<a href="/home" style="color: #8e8e8e;">账户全景</a>
+                    &nbsp;&nbsp;>&nbsp;&nbsp;<a href="/home" style="color: #8e8e8e;">返回首页</a><span>（<b id="TitleName">账户全景</b>）</span>
                 </a>
             </div>
         </div>
@@ -154,8 +154,25 @@
         $('.tab_menu li').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');
             var index = $tab_li.index(this);
-            query(index)
-            typepage = index + 1;
+            query(index);
+            typepage = index;
+            switch (typepage) {
+                case 0:
+                    $("#TitleName").html('账户全景');
+                    break;
+                case 1:
+                    $("#TitleName").html('推广助手');
+                    break;
+                case 2:
+                    $("#TitleName").html('智能结构');
+                    break;
+                case 3:
+                    $("#TitleName").html('智能竞价');
+                    break;
+                case 4:
+                    $("#TitleName").html('数据报告');
+                    break;
+            }
             $('div.tab_box > div').eq(index).show().siblings().hide();
         });
         $("input[name=reservation]").click(function () {

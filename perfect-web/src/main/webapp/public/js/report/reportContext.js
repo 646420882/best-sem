@@ -233,10 +233,17 @@ $(function () {
         $('.tab_menu li').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');
             var index = $tab_li.index(this);
+            console.log(index)
             $('div.tab_box > div').eq(index).show().siblings().hide();
             $("#pageDet").empty();
             if ($("#reportType>a").eq(4).attr("class") == "current") {
                 SearchClass();
+            }
+            if (index == 0) {
+                $("#TitleName").html("账户报告");
+            }
+            else {
+                $("#TitleName").html("明细报告");
             }
         });
         $('.tab_menu li:first').click(function () {
