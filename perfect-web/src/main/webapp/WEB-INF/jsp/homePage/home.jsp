@@ -357,10 +357,10 @@
 
                     </div>
                     <div class="download over ">
-                        <span class="fl" style=" color:#000; font-weight:bold;line-height:26px;">查看完整版数据请点击下载全部→</span>
                         <a href="javascript:downloadKeywordQualityCSV();" class="fr">
                             下载全部
                         </a>
+                        <span class="fr" style=" color:#000; font-weight:bold;line-height:26px;">查看完整版数据请点击下载全部→</span>
                     </div>
                     <div class="list2 zhilianglist wd">
                         <table id="keywordQualityTab" border="0" cellspacing="0" cellspacing="0">
@@ -1318,7 +1318,7 @@
                     timePickerIncrement: 30,
                     "linkedCalendars":false,
                     "format": "YYYY-MM-DD",
-//                    minDate:'2005/1/1',
+                    minDate:'2005/1/1',
                     maxDate:moment().startOf('day'),
                     autoUpdateInput:true,
                     "locale": {
