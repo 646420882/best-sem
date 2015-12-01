@@ -155,6 +155,10 @@ var editCommons = {
                 selectedData.push($(o).val());
             }
         });
+        if (editType == "scheduler") {
+            this.EditTmp["editData"] = selectedData;
+            return;
+        }
         var edtTypeStr = editType != "copy" ? "剪切" : "复制";
         if (selectedData.length) {
             this.EditTmp["type"] = type;
@@ -657,7 +661,7 @@ $.extend({
                                 "<td class='InputTd'>" + "<span>" + parseFloat(_maxPrice).toFixed(2) + "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>" +
                                 "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
                                 "<td >" + json[i].campaignName + "</td>";
-                                "</tr>";
+                            "</tr>";
                             _adGroudTable.append(_tbody);
                         }
                     } else {
@@ -1399,17 +1403,18 @@ var TabModel = {
 //    }
 //    $("#testTable").renderGrid(gridModel, gridConfig);
 //}
-//定时
+
+// 物料定时
 $('#TimingDate').daterangepicker({
     "showDropdowns": true,
     "timePicker24Hour": true,
-    timePicker: false,
-    timePickerIncrement: 30,
-    "linkedCalendars":false,
-    format: 'DD/MM/YYYY',
-    minDate:moment().startOf('day'),
-    maxDate:'2025/01/01',
-    autoUpdateInput:true,
+    "timePicker": false,
+    "timePickerIncrement": 30,
+    "linkedCalendars": false,
+    "minDate": moment().startOf('day'),
+    "maxDate": '2025-01-01',
+    "autoUpdateInput": true,
+    "format": 'YYYY-MM-DD',
     "locale": {
         "format": "YYYY-MM-DD",
         "separator": " - ",
@@ -1447,35 +1452,64 @@ $('#TimingDate').daterangepicker({
     var _startDate = start.format('YYYY-MM-DD');
     var _endDate = end.format('YYYY-MM-DD');
 });
+
 $("input[value='Enable']").on("click", function () {
     PromptBox.show('');
     $("#PrompBoxTitle").html("提醒");
     $("#PrompMain").html("您选择了启用功能后，会对账户已经暂停的物料启用上线，或者会对保存到搜客本地的物料上传到凤巢账户，确认选择启用功能？");
 
-})
+});
+
 $("input[value='Pause']").on("click", function () {
     PromptBox.show('');
     $("#PrompBoxTitle").html("提醒");
     $("#PrompMain").html("您选择了暂停功能后，会对账户已经启用的物料暂停推广，确认选择暂停功能？");
-})
+});
+
 var timing = {
+    elementType: null,
+    elementLength: 0,
+    elements: null,
+    init: function () {
+        this.elementType = null;
+        this.elementLength = 0;
+        this.elements = null;
+    },
     foRShow: function (type, _this) {
-        if ($("#Timings").css("display") == "none") {
+        this.init();
+
+        editCommons.getEditData(type, "scheduler");
+        var localNewAddKeywords = editCommons.EditTmp["editData"].filter(function (keywordId) {
+            return keywordId.length >= 24;
+        });
+        this.elementType = type;
+        this.elementLength = localNewAddKeywords.length;
+        if (this.elementLength > 0) {
+            this.elements = localNewAddKeywords;
+        }
+
+        if ($('#Timings').css("display") == "none") {
             var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
             var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() - 40 + "px";
-            $("#Timings").css("top", tabtop);
-            $("#Timings").css("left", tableft);
-            $("#Timings").show();
-        }
-        else {
+            $('#Timings').css("top", tabtop);
+            $('#Timings').css("left", tableft);
+            $('#Timings').show();
+        } else {
             $("#Timings").hide();
         }
 
     },
     TimingClose: function () {
-        $("#Timings").hide();
+        $('#Timings').hide();
     },
     TimingOk: function () {
-        $("#Timings").hide();
+        if (this.elementLength == 0) {
+            console.log("No local materials need to be uploaded to Baidu!");
+        }
+
+        var startDate = $('#TimingDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var endDate = $('#TimingDate').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+        $('#Timings').hide();
     }
-}
+};
