@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>审核帐号</title>
+    <title>审核账号</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
@@ -31,12 +31,12 @@
 <jsp:include page="../homePage/pageBlock/backstage_nav.jsp"/>
 <div class="backstage_concent mid over">
     <div id="bidding_box">
-            <div style="color: red;font-size: 16px;padding: 10px 0px 20px 20px">注：被停用的系统帐号将不能进行任何操作！请谨慎操作！！</div>
+            <div style="color: red;font-size: 16px;padding: 10px 0px 20px 20px">注：被停用的系统账号将不能进行任何操作！请谨慎操作！！</div>
             <table id="table1" class="table table-striped table-bordered table-hover datatable dataTable"
                    aria-describedby="DataTables_Table_0_info">
                 <thead>
                 <tr>
-                    <td>系统帐号</td>
+                    <td>系统账号</td>
                     <td>审核状态</td>
                     <td>启用状态</td>
                     <td>操作</td>

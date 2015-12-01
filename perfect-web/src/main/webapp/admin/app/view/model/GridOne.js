@@ -96,11 +96,11 @@ Ext.define("Perfect.view.model.GridOne", {
                 {
                     xtype:'displayfield',
                     fieldLabel: '注意',
-                    value:'<span style="color: #ff0000">如果不填写帐号拉取的是全账户的报告数据，填写后则是拉取填写帐号的报告数据</span>'
+                    value:'<span style="color: #ff0000">如果不填写账号拉取的是全账户的报告数据，填写后则是拉取填写账号的报告数据</span>'
                 },
                 {
                     xtype:'textfield',
-                    fieldLabel: '拉取数据帐号',
+                    fieldLabel: '拉取数据账号',
                     name:'userName'
 
                 }

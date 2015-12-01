@@ -61,10 +61,10 @@
                 </select>
             </li>
             <li>
-                <sapn style="color: #ff0000">注：如果不填写帐号拉取的是全账户的报告数据，填写后则是拉取填写帐号的报告数据</sapn>
+                <sapn style="color: #ff0000">注：如果不填写账号拉取的是全账户的报告数据，填写后则是拉取填写账号的报告数据</sapn>
             </li>
             <li>
-                <sapn class="fl">帐号: </sapn>
+                <sapn class="fl">账号: </sapn>
                 <input type="text" id="zhanghao">
             </li>
             <li>
