@@ -1407,8 +1407,6 @@ $('#TimingDate').daterangepicker({
     timePickerIncrement: 30,
     "linkedCalendars":false,
     format: 'DD/MM/YYYY',
-    minDate:moment().startOf('day'),
-    maxDate:'2025/01/01',
     autoUpdateInput:true,
     "locale": {
         "format": "YYYY-MM-DD",

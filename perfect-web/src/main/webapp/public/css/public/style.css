@@ -616,7 +616,7 @@
 
 .time_input, #inputTow {
     border: 1px solid #dadadd;
-    width: 200px;
+    min-width: 100px;
     height: 24px;
     line-height: 22px;
     padding: 0 14px;
@@ -2030,7 +2030,7 @@ h2 .close {
     display: inline-block;
     *float: left;
     *display: block;
-    *max-width: 60px;
+
 }
 
 .main_bottom .w_list03 ul {
@@ -3649,7 +3649,7 @@ h2 .close {
 }
 
 .Senior .w_list01 {
-    width: 60px;
+    width: 130px;
 }
 
 /*数据报告*/
@@ -3910,6 +3910,7 @@ h2 .close {
 .k_r_top2 .k_r_under {
     background: none;
     margin-top: 5px;
+    margin-bottom: 10px;
     width: 100%;
     float: left;
 
@@ -4957,8 +4958,13 @@ body .ui-tooltip {
 }
 
 .range_inputs {
-        /*overflow: hidden;*/
+    width: 100%;
     margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.ranges {
+    overflow: hidden;
 }
 
 .range_inputs button, .btn-success:hover, .btn-success.active, .open .dropdown-toggle.btn-success {
@@ -4966,6 +4972,19 @@ body .ui-tooltip {
     border-radius: 4px;
     /*padding-top: 0px;*/
 }
+
 .daterangepicker {
     width: 480px;
+}
+
+.second-area-leaf .checkbox-inlines {
+    margin-right: 0px;
+}
+
+.bidding_box .wrap_list01 span {
+    padding: 0 5px;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    color: #000;
 }

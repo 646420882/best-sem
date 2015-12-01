@@ -25,10 +25,11 @@ var keywordPrice = null;
 
 $(function () {
     $("#jingjia_adds").click(function () {
-        $("#jiangjia_add").hide();
+        $("#jiangjia_add").fadeIn();
+
     });
     $("#jiangjia_chongfu").click(function () {
-        $("#jiangjia_add").fadeIn();
+        $("#jiangjia_add").hide();
     })
     $(".tab_menu").on('click', function () {
         var lis = $(".tab_menu").find("li");
@@ -858,3 +859,18 @@ window.onload = function () {
 
 
 };
+//高级搜索checkd
+$("#Matching").change(function () {
+    if ($(this).is(":checked")) {
+        $(this).parent().parent().next().find("input").prop("checked", true);
+    } else {
+        $(this).parent().parent().next().find("input").prop("checked", false);
+    }
+});
+$("#keywordQuality").change(function () {
+    if ($(this).is(":checked")) {
+        $(this).parent().parent().next().find("input").prop("checked", true);
+    } else {
+        $(this).parent().parent().next().find("input").prop("checked", false);
+    }
+});
