@@ -56,8 +56,6 @@ window.onload = function () {
    /* rDrag.init(document.getElementById('setExcludeIpDiv'));*/
     rDrag.init(document.getElementById('plan2'));
     rDrag.init(document.getElementById('findOrReplaceH'));
-
-
 };
 $(function () {
     $("#downloadAccountData").click(function () {
