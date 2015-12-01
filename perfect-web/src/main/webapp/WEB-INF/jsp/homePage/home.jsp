@@ -2204,7 +2204,7 @@
     };
 
     var getImportKeywordDefault = function (obj, day) {
-        if(days==1){
+        if(day==1){
             $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-day));
             $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-day));
         }else{
