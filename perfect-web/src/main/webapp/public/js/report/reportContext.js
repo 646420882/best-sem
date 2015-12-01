@@ -133,7 +133,11 @@ $(function () {
                 "timePicker24Hour": true,
                 timePicker: false,
                 timePickerIncrement: 30,
+                "linkedCalendars":false,
                 format: 'DD/MM/YYYY',
+                minDate:'1/1/2005',
+                maxDate:moment().startOf('day'),
+                autoUpdateInput:true,
                 ranges: {
                     //'最近1小时': [moment().subtract('hours',1), moment()],
                     '今天': [moment().startOf('day'), moment()],

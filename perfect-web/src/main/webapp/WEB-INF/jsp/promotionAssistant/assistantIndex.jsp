@@ -57,6 +57,9 @@
         *:before, *:after {
             box-sizing: border-box;
         }
+        .daterangepicker.dropdown-menu{
+            z-index: 3000;
+        }
     </style>
     <script>
         String.prototype.trims = function () {

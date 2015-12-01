@@ -1314,9 +1314,13 @@
         $('input[name="reservation"]').daterangepicker({
                     "showDropdowns": true,
                     "timePicker24Hour": true,
-                    timePicker: true,
+                    timePicker: false,
                     timePickerIncrement: 30,
-                    format: 'YYYY-MM-DD',
+                    "linkedCalendars":false,
+                    "format": "YYYY-MM-DD",
+//                    minDate:'2005/1/1',
+                    maxDate:moment().startOf('day'),
+                    autoUpdateInput:true,
                     "locale": {
                         "format": "YYYY-MM-DD",
                         "separator": " - ",

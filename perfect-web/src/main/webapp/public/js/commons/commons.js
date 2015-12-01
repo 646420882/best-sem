@@ -1403,9 +1403,14 @@ var TabModel = {
 $('#TimingDate').daterangepicker({
     "showDropdowns": true,
     "timePicker24Hour": true,
-    timePicker: true,
+    timePicker: false,
     timePickerIncrement: 30,
-    format: 'YYYY-MM-DD',
+    "linkedCalendars":false,
+    format: 'DD/MM/YYYY',
+    minDate:moment().startOf('day'),
+    maxDate:'2025/01/01',
+    autoUpdateInput:true,
+
     "locale": {
         "format": "YYYY-MM-DD",
         "separator": " - ",
