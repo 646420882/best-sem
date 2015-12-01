@@ -4957,12 +4957,15 @@ body .ui-tooltip {
 }
 
 .range_inputs {
-    overflow: hidden;
+        /*overflow: hidden;*/
     margin-bottom: 10px;
 }
 
-.range_inputs button, .btn-success:hover, .btn-success:focus, .btn-success.active, .open .dropdown-toggle.btn-success {
+.range_inputs button, .btn-success:hover, .btn-success.active, .open .dropdown-toggle.btn-success {
     height: 30px;
     border-radius: 4px;
-    padding-top: 0px;
+    /*padding-top: 0px;*/
+}
+.daterangepicker {
+    width: 480px;
 }

@@ -1249,10 +1249,12 @@
             getDateParam(days);
         }
         setTimeout(function(){
-         $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-days));
+
         if(days==1){
+            $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-days));
             $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-days));
         }else{
+            $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-days+1));
             $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(0));
         }
         })
@@ -1596,7 +1598,7 @@
      * 曲线图数据配
      * **/
     var loadPerformanceCurve = function (obj, date) {
-        $('input[name="reservation"]:eq(1)').data('daterangepicker').setStartDate(GetDateStr(-date));
+        $('input[name="reservation"]:eq(1)').data('daterangepicker').setStartDate(GetDateStr(-date+1));
             $('input[name="reservation"]:eq(1)').data('daterangepicker').setEndDate(GetDateStr(0));
 
         if (obj != null) {
@@ -2198,11 +2200,12 @@
     };
 
     var getImportKeywordDefault = function (obj, day) {
-        $('input[name="reservation"]:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day));
-        if(day==1){
-            $('input[name="reservation"]:eq(3)').data('daterangepicker').setEndDate(GetDateStr(-day));
+        if(days==1){
+            $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-day));
+            $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-day));
         }else{
-            $('input[name="reservation"]:eq(3)').data('daterangepicker').setEndDate(GetDateStr(0));
+            $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-day+1));
+            $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(0));
         }
         if (obj != null) {
             changedLiState(obj);

@@ -19,13 +19,14 @@
     <link rel="stylesheet" type="text/css" media="all"
           href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
+
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/accountCss/media.css">
     <%--<link href="${pageContext.request.contextPath}/public/themes/flick/font-awesome.min.css" rel="stylesheet">--%>
     <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
         /*日历*/
@@ -533,6 +534,7 @@
     <jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
 </div>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -580,11 +582,17 @@
         $("#tacittime").val(time);
         $("#tacittime1").val(time);
         $("#tacittime2").val(time);
-        var Yesterday = "" + mydate.getFullYear() + "-";
-        Yesterday += (mydate.getMonth() + 1) + "-";
-        Yesterday += (mydate.getDate() - 1) + "";
+        var Yesterday =GetDateStr(-1);
         $(".time_input").val(Yesterday);
     })
+    function GetDateStr(AddDayCount) {
+        var dd = new Date();
+        dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+        var y = dd.getFullYear();
+        var m = dd.getMonth()+1;//获取当前月份的日期
+        var d = dd.getDate();
+        return y+"-"+m+"-"+d;
+    }
 
 
     //bootstrap-daterangepicker-setting

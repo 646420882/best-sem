@@ -10,7 +10,7 @@
 
 .daterangepicker.dropdown-menu {
     max-width: none;
-    z-index: 3000;
+    z-index: 110;
 }
 
  .daterangepicker.opensright .calendar {
@@ -211,6 +211,11 @@
 .daterangepicker td.off:active, .daterangepicker  td.off:hover{
     background-color: #FFFFFF;
 }
+.daterangepicker td.start-date.end-date {
+    color: #fff;
+    border-radius: 100%;
+    background-color: #1fb8f1;
+}
 .daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
     color: #999;
     background: #fff;
@@ -235,11 +240,7 @@
     border-radius: 0 4px 4px 0;
 }
 
-.daterangepicker td.start-date.end-date {
-    color: #fff;
-    border-radius: 100%;
-    background-color: #1fb8f1;
-}
+
 .daterangepicker td.active, .daterangepicker td.active:hover {
     background-color: #1fb8f1;
     border-color: #1fb8f1;
