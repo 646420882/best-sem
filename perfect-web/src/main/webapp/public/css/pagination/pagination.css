@@ -1,12 +1,14 @@
-.pagination{
+.pagination {
     display: inherit;
-    margin:10px 0;
-    overflow:hidden;
-    text-align:center;
+    margin: 10px 0;
+    overflow: hidden;
+    text-align: center;
     line-height: 24px;
-    vertical-align:middle ;
+    vertical-align: middle;
+    width: 100%;
 
 }
+
 .pagination a {
     color: #000;
     *height: 24px;
@@ -16,20 +18,21 @@
 }
 
 .pagination a, .pagination span {
-    display:inline-block;
+    display: inline-block;
     margin-right: 8px;
     line-height: 24px;
     padding: 0 8px;
     cursor: pointer;
 
 }
+
 .pagination .current {
     background: #01aef0;
     border: 1px solid #01aef0;
     color: #fff;
 }
 
-.pagination .current.prev, .pagination .current.next{
+.pagination .current.prev, .pagination .current.next {
     background: none;
     border: none;
     color: #000;

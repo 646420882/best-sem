@@ -121,11 +121,13 @@ public interface AssistantKeywordService {
     Map<String, Map<String, List<String>>> getNoKeywords(String aid);
 
 
-    List<KeywordInfoDTO> getKeywordInfoByCampaignIdStr(String cid);//根据选择的关键词
+    List<KeywordInfoDTO> getKeywordInfoByCampaignIdStr(String cid);
 
-    List<KeywordInfoDTO> getKeywordInfoByCampaignIdLong(Long cid);//计划下
+    List<KeywordInfoDTO> getKeywordInfoByCampaignIdLong(Long cid);
 
     List<KeywordInfoDTO> getAll(FindOrReplaceParam forp);//全账户下
+
+    List<KeywordInfoDTO> getKeywordInfoByAdgroup(FindOrReplaceParam forp);//某单元下
 
     /**
      * 批量删除关键字

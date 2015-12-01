@@ -22,7 +22,7 @@
                         <a href="${pageContext.request.contextPath}/home">
                             <span class="list_1"></span>
 
-                            <h3>帐户全景</h3>
+                            <h3>账户全景</h3>
                         </a>
                     </li>
                     <li>

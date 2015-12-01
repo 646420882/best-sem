@@ -2,6 +2,7 @@ package com.perfect.dao.creative;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
@@ -25,9 +26,9 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     List<CreativeDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
 
-    List<CreativeDTO> getAllsByAdgroupIds(List<Long> l);
+    List<CreativeDTO> getAllsByAdgroupIds(List<Long> l,FindOrReplaceParam forp);
 
-    List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l);
+    List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l,FindOrReplaceParam forp);
 
     List<CreativeDTO> findHasLocalStatus();
 

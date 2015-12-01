@@ -27,11 +27,17 @@ var commons = {
             checkType.empty();
             checkType.append("<option value='0'>当前选中</option><option value='1'>所有(该计划下)</option>");
         }
-        if (exist_selected.cid && exist_selected.aid) {
-            checkType.empty();
-            checkType.append("<option value='0'>当前选中</option><option value='1'>所有(单元下)</option>");
+        if (editCommons.EditType != "adgroup") {
+            if (exist_selected.cid && exist_selected.aid) {
+                checkType.empty();
+                checkType.append("<option value='0'>当前选中</option><option value='2'>所有(单元下)</option>");
+            }
+        } else {
+            if (exist_selected.cid) {
+                checkType.empty();
+                checkType.append("<option value='0'>当前选中</option><option value='1'>所有(该计划下)</option>");
+            }
         }
-
         //<option value="0">当前选中</option>
         //<option value="1">所有(计划下所有)</option>
         if ($(".assstant_editor").css("display") == "none") {
@@ -149,6 +155,10 @@ var editCommons = {
                 selectedData.push($(o).val());
             }
         });
+        if (editType == "scheduler") {
+            this.EditTmp["editData"] = selectedData;
+            return;
+        }
         var edtTypeStr = editType != "copy" ? "剪切" : "复制";
         if (selectedData.length) {
             this.EditTmp["type"] = type;
@@ -392,7 +402,7 @@ $.fn.extend({
         });
         formData["type"] = params.type;
         formData["forType"] = params.forType;
-        if (!params.forType) {
+        if (params.forType == 0) {
             formData["checkData"] = params.checkData.toString();
         }
         if (params.campaignId) {
@@ -504,12 +514,14 @@ $.extend({
     foROk: function (_this) {
         var form = $(_this).parents("form");
         var step = $(_this).attr("step");
+        if (step == "find") {
+            $("input[name='replaceText']").val('');
+        }
         var checkType = $("select[name='checkType'] :selected");
         if (!checkType.val()) {
             AlertPrompt.show("请选择物料模式");
             return false;
         }
-        console.log(checkType.val())
         var foR_params = {};
         var forType = $("#forType").val();
         if (checkType.val() == 0) {
@@ -526,11 +538,14 @@ $.extend({
                 return;
             }
             foR_params = {type: forType, forType: checkType.val(), checkData: checked_data, step: step};
-        } else if (checkType.val() == 1) {
-            foR_params = {type: forType, forType: checkType.val(), campaignId: jsonData.cid, step: step};
-        }
-        else if (checkType.val() == -1) {
-            foR_params = {type: forType, forType: checkType.val(), campaignId: jsonData.cid, step: step};
+        } else {
+            foR_params = {
+                type: forType,
+                forType: checkType.val(),
+                campaignId: jsonData.cid,
+                step: step,
+                adgroupId: jsonData.aid
+            };
         }
         form.foRSubmit("../assistantCommons/checkSome", foR_params, function (result) {
             if (result.data) {
@@ -595,12 +610,11 @@ $.extend({
                         var _trClass = "";
                         for (var i = 0; i < json.length; i++) {
                             var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
-                            var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                            var _edit = json[i].localStatus != null ? json[i].localStatus : -2;
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                             var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                                "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/></td>" +
-                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                                "<td class='table_add'>&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/><input type='hidden' value='" + _id + "'/>" + ls + "</td>" +
                                 "<td >" + until.substring(10, json[i].title) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description1) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -610,9 +624,8 @@ $.extend({
                                 " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
                                 " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                                 " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
-                                "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>" +
-                                " <td >" + ls + "</td>" +
-                                "</tr>";
+                                "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>";
+                            "</tr>";
                             _createTable.append(_tbody);
                         }
                     } else {
@@ -638,19 +651,17 @@ $.extend({
                             var _maxPrice = json[i].maxPrice != null ? json[i].maxPrice : 0.0;
                             var nn = json[i].negativeWords != null ? json[i].negativeWords : "";
                             var ne = json[i].exactNegativeWords != null ? json[i].exactNegativeWords : "";
-                            var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                            var _edit = json[i].localStatus != null ? json[i].localStatus : -2;
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                                "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/></td>" +
-                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                                "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/><input type='hidden' value='" + _id + "'/>" + ls + "</td>" +
                                 "<td >" + json[i].adgroupName + "</td>" +
                                 "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                                 "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                                "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
+                                "<td class='InputTd'>" + "<span>" + parseFloat(_maxPrice).toFixed(2) + "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>" +
                                 "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
-                                "<td >" + json[i].campaignName + "</td>" +
-                                "<td >" + ls + "</td>" +
-                                "</tr>";
+                                "<td >" + json[i].campaignName + "</td>";
+                            "</tr>";
                             _adGroudTable.append(_tbody);
                         }
                     } else {
@@ -1392,3 +1403,113 @@ var TabModel = {
 //    }
 //    $("#testTable").renderGrid(gridModel, gridConfig);
 //}
+
+// 物料定时
+$('#TimingDate').daterangepicker({
+    "showDropdowns": true,
+    "timePicker24Hour": true,
+    "timePicker": false,
+    "timePickerIncrement": 30,
+    "linkedCalendars": false,
+    "minDate": moment().startOf('day'),
+    "maxDate": '2025-01-01',
+    "autoUpdateInput": true,
+    "format": 'YYYY-MM-DD',
+    "locale": {
+        "format": "YYYY-MM-DD",
+        "separator": " - ",
+        "applyLabel": "确定",
+        "cancelLabel": "关闭",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "daysOfWeek": [
+            "日",
+            "一",
+            "二",
+            "三",
+            "四",
+            "五",
+            "六"
+        ],
+        "monthNames": [
+            "一月",
+            "二月",
+            "三月",
+            "四月",
+            "五月",
+            "六月",
+            "七月",
+            "八月",
+            "九月",
+            "十月",
+            "十一月",
+            "十二月"
+        ],
+        "firstDay": 1
+    }
+}, function (start, end, label) {
+    var _startDate = start.format('YYYY-MM-DD');
+    var _endDate = end.format('YYYY-MM-DD');
+});
+
+$("input[value='Enable']").on("click", function () {
+    PromptBox.show('');
+    $("#PrompBoxTitle").html("提醒");
+    $("#PrompMain").html("您选择了启用功能后，会对账户已经暂停的物料启用上线，或者会对保存到搜客本地的物料上传到凤巢账户，确认选择启用功能？");
+
+});
+
+$("input[value='Pause']").on("click", function () {
+    PromptBox.show('');
+    $("#PrompBoxTitle").html("提醒");
+    $("#PrompMain").html("您选择了暂停功能后，会对账户已经启用的物料暂停推广，确认选择暂停功能？");
+});
+
+var timing = {
+    elementType: null,
+    elementLength: 0,
+    elements: null,
+    init: function () {
+        this.elementType = null;
+        this.elementLength = 0;
+        this.elements = null;
+    },
+    foRShow: function (type, _this) {
+        this.init();
+
+        editCommons.getEditData(type, "scheduler");
+        var localNewAddKeywords = editCommons.EditTmp["editData"].filter(function (keywordId) {
+            return keywordId.length >= 24;
+        });
+        this.elementType = type;
+        this.elementLength = localNewAddKeywords.length;
+        if (this.elementLength > 0) {
+            this.elements = localNewAddKeywords;
+        }
+
+        if ($('#Timings').css("display") == "none") {
+            var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
+            var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() - 40 + "px";
+            $('#Timings').css("top", tabtop);
+            $('#Timings').css("left", tableft);
+            $('#Timings').show();
+        } else {
+            $("#Timings").hide();
+        }
+
+    },
+    TimingClose: function () {
+        $('#Timings').hide();
+    },
+    TimingOk: function () {
+        if (this.elementLength == 0) {
+            console.log("No local materials need to be uploaded to Baidu!");
+        }
+
+        var startDate = $('#TimingDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var endDate = $('#TimingDate').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+        $('#Timings').hide();
+    }
+};

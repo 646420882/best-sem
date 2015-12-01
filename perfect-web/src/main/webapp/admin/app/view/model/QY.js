@@ -43,7 +43,7 @@ Ext.define("Perfect.view.model.QY", {
     extend: 'Ext.form.Panel',
     alias: 'widget.QY',
     bodyPadding: 10,
-    title: '百度帐号启用/禁用',
+    title: '百度账号启用/禁用',
     items:[
         {
             xtype:'grid',
@@ -53,9 +53,9 @@ Ext.define("Perfect.view.model.QY", {
             store: Ext.data.StoreManager.lookup('QYStore'),
             columns: [
                 { text: 'id',  dataIndex: 'idObj',hidden:true},
-                { text: '系统帐号',  dataIndex: 'userName', flex: 2},
+                { text: '系统账号',  dataIndex: 'userName', flex: 2},
                 { text: '审核状态', dataIndex: 'userState',renderer: convert, flex: 1},
-                { text: '百度帐号', dataIndex: 'baiduUserName', flex: 3},
+                { text: '百度账号', dataIndex: 'baiduUserName', flex: 3},
                 { text: '启用状态', dataIndex: 'baiduState',renderer: geiBaidu,flex: 1 },
                 {text: '操作',renderer:function(value,cellmeta,record,rowIndex,columnIndex,store){
                     var value=record.get("userName");

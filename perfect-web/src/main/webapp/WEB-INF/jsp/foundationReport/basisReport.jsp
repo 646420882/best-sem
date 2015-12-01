@@ -26,6 +26,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.cxcalendar.css">
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
+
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
         /*日历*/
@@ -104,9 +105,10 @@
             color: #fff;
         }
 
-        .list3 {
-            min-height: 100px;
-        }
+        /*
+                .list3 {
+                    min-height: 100px;
+                }*/
 
     </style>
 
@@ -123,7 +125,7 @@
                 <a href="#">
                     数据报告
                 </a>
-                &nbsp;&nbsp;>&nbsp;&nbsp;<span>基础报告</span>
+                &nbsp;&nbsp;>&nbsp;&nbsp;<span id="TitleName">账户报告</span>
             </div>
         </div>
         <div id="tab">
@@ -173,13 +175,15 @@
                         </div>
                         <div class="shuju_detali over">
                             <ul>
-                                <li class="date">选择时间范围：<input type="text" class="time_input" <%--placeholder="请选择查询时间,默认昨天"--%>
+                                <li class="date">选择时间范围：<input type="text"
+                                                               class="time_input" <%--placeholder="请选择查询时间,默认昨天"--%>
                                                                readonly>
                                     <input name="reservation" value="" type="image" cname="dateClick"
                                            onclick="_posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
                                            src="${pageContext.request.contextPath}/public/img/date.png" value="">
-                                    <label class='checkbox-inlines'> <input type="checkbox" id="checkboxInput" style="margin:6px 3px 0px 5px; ">
-                                    比较范围</label>
+                                    <label class='checkbox-inlines'> <input type="checkbox" id="checkboxInput"
+                                                                            style="margin:6px 3px 0px 5px; ">
+                                        比较范围</label>
                                     <input name="mydate" type="text" id="inputTow" cname="dateClick" readonly
                                            style=" display:none;height:24px;width:150px;border:1px solid #dadada; padding:0 12px;background:#fff url('/public/img/date.png') right 0px no-repeat;">
                                     <label id="dataComputing"></label>
@@ -295,7 +299,7 @@
                             </table>
                         </div>
                         <!--<div class="page2 fl" id="pageVS"></div>-->
-                        <div id="pageNumberVSSelect " class="over">
+                        <div id="pageNumberVSSelect " class="page_number">
         <span class='fr'>每页显示<select id='importKeywordSelVS' onchange='selectChangeVs()'>
             <option value='20'>20个</option>
             <option value='50'>50个</option>
@@ -307,8 +311,9 @@
                 </div>
                 <div class="containers hides over">
                     <div class="number_concent over">
-                        <div class="list01_top over"><Span>明细数据</Span> <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                                                               data-placement="bottom" title="按您个性需求，分结构、关键词、创意、地域查看日、周、月的报告。"></button>
+                        <div class="list01_top over"><Span>明细数据</Span>
+                            <button type="button" class="question  btn btn-default" data-toggle="tooltip"
+                                    data-placement="bottom" title="按您个性需求，分结构、关键词、创意、地域查看日、周、月的报告。"></button>
                         </div>
                         <div class="shuju_detali over">
                             <ul>
@@ -318,11 +323,12 @@
                                            src="${pageContext.request.contextPath}/public/img/date.png" readonly>
                                 </li>
                                 <li id="reportType">选择报告类型：
-                                    <a href="javascript:" onclick="OtherSearch()" class="current" cname="1">结构报告</a><span>|</span>
+                                    <a href="javascript:" onclick="OtherSearch()" class="current"
+                                       cname="1">结构报告</a><span>|</span>
                                     <a href="javascript:" onclick="OtherSearch()" cname="2">关键词报告</a><span>|</span>
                                     <a href="javascript:" onclick="OtherSearch()" cname="3">创意报告</a><span>|</span>
                                     <a href="javascript:" onclick="OtherSearch()" cname="4">分地域报告</a><span>|</span>
-                                        <a href="javascript:" id="SearchReport">搜索词报告</a>
+                                    <a href="javascript:" id="SearchReport">搜索词报告</a>
                                 </li>
                                 <li id="device" class="searchhide">选择推广设备：
                                     <a href="javascript:" class="current" cname="0">全部</a><span>|</span>
@@ -351,7 +357,7 @@
                     </div>
                     <div class="contant searchhide over">
                         <%--<div class="download over fr"><a href="#">下载全部</a></div>--%>
-                        <div  class="list01_under3 over">
+                        <div class="list01_under3 over">
                             <div class="tubiao2 over" style="width: 80%;margin:0 auto; ">
                                 <div id="imprDiv" style="width:100%;height:530px;display: none;"></div>
                                 <div id="pm_data" style="display: none;"></div>
@@ -361,7 +367,7 @@
                                     <thead id="shujuthead">
 
                                     </thead>
-                                       <tbody id="shuju">
+                                    <tbody id="shuju">
 
                                     </tbody>
                                     <tbody id="shujuAll">
@@ -372,7 +378,7 @@
                                      src='${pageContext.request.contextPath}/public/img/loading.gif'/>
                             </div>
                             <!--<div class="page2 fl" id="pageDet"></div>-->
-                            <div id="pageNumberDetSelect" class="over">
+                            <div id="pageNumberDetSelect" class="page_number">
                 <span class='fr'>每页显示<select id='importKeywordSelDet' onchange='selectChangeDet()'>
                     <option value='20'>20个</option>
                     <option value='50'>50个</option>
@@ -429,7 +435,7 @@
                     </div>
                     <div class="contant   over">
                         <%--<div class="download over fr"><a href="#">下载全部</a></div>--%>
-                          <div class="report_search"></div>
+                        <div class="report_search"></div>
                         <div class="list01_under3 over">
                             <div class="tubiao2 over" style="width: 80%;margin:0 auto; ">
                                 <div id="imprDiv1" style="width:100%;height:530px;display: none;"></div>
@@ -528,6 +534,7 @@
     <jsp:include page="../homePage/pageBlock/footer.jsp"/>
 </div>
 </div>
+
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -547,7 +554,8 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/json2/20140204/json2.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportProgress.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportContext.js"></script>
 <script type="text/javascript">
@@ -562,9 +570,9 @@
         $(".number_concent").css("border-bottom", "1px solid #dadadd");
         $(".number_concent").css("padding-bottom", "20px");
     }
-//   $("#SearchReport").click(function(){
-//       $(".searh_report").hide();
-//   })
+    //   $("#SearchReport").click(function(){
+    //       $(".searh_report").hide();
+    //   })
     $(function () {
         var mydate = new Date();
         var str = "" + mydate.getFullYear() + "-";
@@ -574,11 +582,17 @@
         $("#tacittime").val(time);
         $("#tacittime1").val(time);
         $("#tacittime2").val(time);
-        var Yesterday = "" + mydate.getFullYear() + "-";
-        Yesterday += (mydate.getMonth() + 1) + "-";
-        Yesterday     += (mydate.getDate()-1)+"";
+        var Yesterday =GetDateStr(-1);
         $(".time_input").val(Yesterday);
     })
+    function GetDateStr(AddDayCount) {
+        var dd = new Date();
+        dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+        var y = dd.getFullYear();
+        var m = dd.getMonth()+1;//获取当前月份的日期
+        var d = dd.getDate();
+        return y+"-"+m+"-"+d;
+    }
 
 
     //bootstrap-daterangepicker-setting

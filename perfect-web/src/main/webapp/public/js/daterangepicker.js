@@ -704,13 +704,31 @@
             var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
 
             if (this.showDropdowns) {
-                var M = new Date();
-                var Month = M.getMonth();
-                var Year = M.getFullYear();
+                //var M = new Date();
+                //var Month = M.getMonth();
+                //var Year = M.getFullYear();
+                //var currentMonth = calendar[1][1].month();
+                //var currentYear = calendar[1][1].year();
+                //var maxYear = (maxDate && maxDate.year()) || (Year + 1);
+                //var minYear = (minDate && minDate.year()) || (Year - 5);
+                //var inMinYear = currentYear == minYear;
+                //var inMaxYear = currentYear == maxYear;
+                //var monthHtml = '<select class="monthselect">';
+                //for (var m = 0; m < 12; m++) {
+                //    if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
+                //        monthHtml += "<option value='" + m + "'" +
+                //        (m === currentMonth ? " selected='selected'" : "") +
+                //        ">" + this.locale.monthNames[m] + "</option>";
+                //    } else {
+                //        monthHtml += "<option value='" + m + "'" +
+                //        (m === currentMonth ? " selected='selected'" : "") +
+                //        " disabled='disabled'>" + this.locale.monthNames[m] + "</option>";
+                //    }
+                //}
                 var currentMonth = calendar[1][1].month();
                 var currentYear = calendar[1][1].year();
-                var maxYear = (maxDate && maxDate.year()) || (Year + 1);
-                var minYear = (minDate && minDate.year()) || (Year - 5);
+                var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
+                var minYear = (minDate && minDate.year()) || (currentYear - 50);
                 var inMinYear = currentYear == minYear;
                 var inMaxYear = currentYear == maxYear;
 
@@ -725,6 +743,14 @@
                         (m === currentMonth ? " selected='selected'" : "") +
                         " disabled='disabled'>" + this.locale.monthNames[m] + "</option>";
                     }
+                }
+                monthHtml += "</select>";
+
+                var yearHtml = '<select class="yearselect">';
+                for (var y = minYear; y <= maxYear; y++) {
+                    yearHtml += '<option value="' + y + '"' +
+                    (y === currentYear ? ' selected="selected"' : '') +
+                    '>' + y + '</option>';
                 }
                 monthHtml += "</select>";
 

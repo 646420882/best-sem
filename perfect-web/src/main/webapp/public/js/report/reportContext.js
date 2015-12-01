@@ -133,7 +133,11 @@ $(function () {
                 "timePicker24Hour": true,
                 timePicker: false,
                 timePickerIncrement: 30,
+                "linkedCalendars":false,
                 format: 'DD/MM/YYYY',
+                minDate:'1/1/2005',
+                maxDate:moment().startOf('day'),
+                autoUpdateInput:true,
                 ranges: {
                     //'最近1小时': [moment().subtract('hours',1), moment()],
                     '今天': [moment().startOf('day'), moment()],
@@ -233,10 +237,17 @@ $(function () {
         $('.tab_menu li').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');
             var index = $tab_li.index(this);
+            console.log(index)
             $('div.tab_box > div').eq(index).show().siblings().hide();
             $("#pageDet").empty();
             if ($("#reportType>a").eq(4).attr("class") == "current") {
                 SearchClass();
+            }
+            if (index == 0) {
+                $("#TitleName").html("账户报告");
+            }
+            else {
+                $("#TitleName").html("明细报告");
             }
         });
         $('.tab_menu li:first').click(function () {

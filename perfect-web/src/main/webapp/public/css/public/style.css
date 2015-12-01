@@ -340,7 +340,7 @@
 
 .download span {
     display: block;
-    margin-top: 10px;
+    margin-right: 16px;
 }
 
 .download a:hover {
@@ -616,7 +616,7 @@
 
 .time_input, #inputTow {
     border: 1px solid #dadadd;
-    width: 200px;
+    min-width: 100px;
     height: 24px;
     line-height: 22px;
     padding: 0 14px;
@@ -2009,6 +2009,16 @@ h2 .close {
 
 }
 
+#reportAddSearchWord .main_bottom, #reportAddNoSearchWord .main_bottom {
+    background: #f8f8f8;
+}
+
+#reportAddSearchWord .mainlist, #reportAddNoSearchWord .mainlist {
+    border-bottom: none;
+    overflow: visible;
+    padding-bottom: 0;
+}
+
 .main_bottom .w_list03 {
     width: 100%;
     text-align: center;
@@ -2020,7 +2030,7 @@ h2 .close {
     display: inline-block;
     *float: left;
     *display: block;
-    *max-width: 60px;
+
 }
 
 .main_bottom .w_list03 ul {
@@ -3545,14 +3555,14 @@ h2 .close {
 }
 
 .progressBar {
-    border: solid 2px #86A5AD;
-    background: white url(/public/img/loaderc.gif) no-repeat 10px 10px;
+    /* border: solid 2px #86A5AD;*/
+    background: white url(/public/img/loaderc.gif) no-repeat 10px 5px;
 }
 
 .loading {
     background: white url(/public/img/loading.gif) no-repeat;
-    width: 24px;
-    height: 24px;
+    width: 36px;
+    height: 36px;
     position: absolute;
 
 }
@@ -3639,7 +3649,7 @@ h2 .close {
 }
 
 .Senior .w_list01 {
-    width: 60px;
+    width: 130px;
 }
 
 /*数据报告*/
@@ -3900,6 +3910,7 @@ h2 .close {
 .k_r_top2 .k_r_under {
     background: none;
     margin-top: 5px;
+    margin-bottom: 10px;
     width: 100%;
     float: left;
 
@@ -4555,6 +4566,9 @@ input[type=checkbox]:focus {
 .btn-primary {
     background: #01aef0;
     border: none;
+    height: 30px;
+    border-radius: 4px;
+    color: #fff;
 }
 
 .btn-primary:hover {
@@ -4845,7 +4859,7 @@ body .ui-tooltip {
 }
 
 /*.daterangepicker td.in-range {*/
-    /*background: #D2F1FF;*/
+/*background: #D2F1FF;*/
 /*}*/
 
 /*定时*/
@@ -4889,8 +4903,95 @@ body .ui-tooltip {
 #PromptBox .w_list03 ul li {
     margin-bottom: 0px !important;
 }
-.add_title input[type=radio]{
+
+.add_title input[type=radio] {
     display: block;
     float: left;
     margin: 8px 2px 0 0;
+}
+
+
+#choicedKeyWord, #choicedNoKeyWord {
+    background: #fff;
+    padding: 20px;
+}
+
+#choicedKeyWord p, #choicedNoKeyWord p {
+    margin: 5px 0;
+}
+
+#choicedKeyWord p .choicedKeyWordCancel {
+    float: right;
+    color: #01aef0;
+    cursor: pointer;
+}
+
+#reportAddSearchWord .mainChoiceList {
+    margin-top: 10px;
+}
+
+#reportAddSearchWord .mainChoiceList select {
+    outline: none;
+    height: 30px;
+    line-height: 30px;
+    width: 180px;
+}
+
+#reportAddSearchWord .mainChoiceList select option {
+    height: 30px;
+    line-height: 30px;
+}
+
+#reportAddSearchWord .mainChoiceList label {
+    width: 99px;
+}
+
+#reportAddSearchWord .mainChoiceList div {
+    margin-top: 15px;
+}
+
+#reportAddNoSearchWord .mainChoiceList {
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+#reportAddNoSearchWord .mainChoiceList label, #reportAddNoSearchWord .mainChoiceList input {
+    margin: 0;
+}
+
+.page_number {
+    float: right;
+    margin-top: 10px;
+}
+
+.range_inputs {
+    width: 100%;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.ranges {
+    overflow: hidden;
+}
+
+.range_inputs button, .btn-success:hover, .btn-success.active, .open .dropdown-toggle.btn-success {
+    height: 30px;
+    border-radius: 4px;
+    /*padding-top: 0px;*/
+}
+
+.daterangepicker {
+    width: 480px;
+}
+
+.second-area-leaf .checkbox-inlines {
+    margin-right: 0px;
+}
+
+.bidding_box .wrap_list01 span {
+    padding: 0 5px;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    color: #000;
 }

@@ -150,6 +150,140 @@
         </div>
     </div>
 </div>
+<%--数据报告中搜索词快速添加--%>
+<div class="box" id="reportAddSearchWord" style="display: none;width: 550px;">
+    <h2 id="reportAddSearchWordTitile">
+        <span class="fl">添加为关键词</span>
+        <a href="javascript:void(0)" class="close">×</a>
+    </h2>
+
+    <div class="mainlist">
+        <label>您要添加的关键词是：</label>
+
+        <div id="choicedKeyWord">
+            <h3><strong>百思克</strong></h3>
+
+            <p>所属推广计划：<span>品牌计划</span></p>
+
+            <p>所属推广单元：<span>百思产品</span><span class="choicedKeyWordCancel" onclick="cancelKeyWord()">取消</span></p>
+        </div>
+
+        <div class="mainChoiceList">
+            <div>
+                <label>添加到推广计划：</label>
+                <select>
+                    <option value="所属推广家户">所属推广家户</option>
+                    <option value="test">test</option>
+                    <option value="通用词">通用词</option>
+                </select>
+            </div>
+            <div>
+                <label>添加到推广单元：</label>
+                <select>
+                    <option value="所属推广单元">所属推广单元</option>
+                    <option value="test">test</option>
+                    <option value="通用词">通用词</option>
+                </select>
+            </div>
+            <div>
+                <label>匹配模式：</label>
+                <select>
+                    <option value="所属推广单元">广泛</option>
+                    <option value="test">test</option>
+                    <option value="通用词">通用词</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <%--<li class="current" id="confirmAddKeyWord">确认</li>--%>
+                <li class="current" style="padding: 0"><input id="confirmAddKeyWord" value="确认" type="button" style="border: none;background: #01aef0;width: 64px;"></li>
+                <li>取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<%--数据报告中添加否定关键词--%>
+<div class="box" id="reportAddNoSearchWord" style="display: none;width: 550px;">
+    <h2 id="reportAddNoSearchWordTitile">
+        <span class="fl">添加为关键词</span>
+        <a href="javascript:void(0)" class="close">×</a>
+    </h2>
+
+    <div class="mainlist">
+        <p>你要添加为否定关键词的有<span style="color: red">1</span>个</p>
+        <p style="margin: 5px 0 15px 0">以下搜索词搜索到后将不触发你的搜索结果</p>
+
+        <div id="choicedNoKeyWord">
+            <h3><strong>百思克</strong></h3>
+
+            <p>所属推广计划：<span>品牌计划</span></p>
+
+            <p>所属推广单元：<span>百思产品</span><span class="choicedKeyWordCancel" onclick="cancelKeyWord()">取消</span></p>
+        </div>
+
+        <div class="mainChoiceList">
+            <div class="fl"><label>添加到：</label></div>
+            <div class="fl">
+                <div>
+                    <input id="promotionPlanLevel" type="radio" name="promotionLevel" onclick="promotionPlanLevel()" checked/>
+                    <label for="promotionPlanLevel" onclick="promotionPlanLevel()">推广计划层级</label>
+                    <div style="margin: 5px 0 0 17px;" id="PlanLevel">
+                        <label>推广计划：</label>
+                        <select style="width: 180px">
+                            <option>所属推广计划</option>
+                            <option>test</option>
+                            <option>通用词</option>
+                            <option>品牌计划</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin: 5px 0 0 0">
+                    <input id="promotionUnitLevel" type="radio" name="promotionLevel"  onclick="promotionUnitLevel()"/>
+                    <label for="promotionUnitLevel" onclick="promotionUnitLevel()">推广单元层级</label>
+                    <div id="UnitLevel" class="hides">
+                        <div style="margin: 5px 0 0 17px;">
+                            <label>推广计划：</label>
+                            <select style="width: 180px">
+                                <option>所属推广计划</option>
+                                <option>test</option>
+                                <option>通用词</option>
+                                <option>品牌计划</option>
+                            </select>
+                        </div>
+                        <div style="margin: 5px 0 0 17px;">
+                            <label>推广单元：</label>
+                            <select style="width: 180px">
+                                <option>所属推广计划</option>
+                                <option>test</option>
+                                <option>通用词</option>
+                                <option>品牌计划</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label>匹配模式：</label>
+            <select style="width: 180px">
+                <option value="精准否定关键词">精准否定关键词</option>
+                <option value="否定关键词">否定关键词</option>
+            </select>
+        </div>
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <%--<li class="current" id="confirmAddKeyWord">确认</li>--%>
+                <li class="current" style="padding: 0"><input id="confirmAddNoKeyWord" value="确认" type="button" style="border: none;background: #01aef0;width: 64px;"></li>
+                <li>取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
@@ -171,7 +305,14 @@
         zTree.checkNode(treeNode, !treeNode.checked, null, true);
         return false;
     }
-
+    function promotionUnitLevel(){
+        $("#UnitLevel").show();
+        $("#PlanLevel").hide();
+    }
+    function promotionPlanLevel() {
+        $("#PlanLevel").show();
+        $("#UnitLevel").hide();
+    }
     function onCheck(e, treeId, treeNode) {
         var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
                 nodes = zTree.getCheckedNodes(true),
@@ -216,6 +357,11 @@
     $("#downloadUser").click(function () {
         downloadUser();
     });
+    function cancelKeyWord() {
+        $("#choicedKeyWord").css({'display':"none"});
+        $("#confirmAddKeyWord").attr({'disabled':'disabled'});
+        $("#confirmAddKeyWord").css({"background":"#ccc","cursor":'not-allowed'})
+    }
     function imageChange(obj) {
         var fileFormat = "jpg,jpeg,png,gif,bmp";
         var path = $(obj).val();
@@ -349,6 +495,8 @@
         rDrag.init(document.getElementById('excludeIPChange'));
         rDrag.init(document.getElementById('budgetChange'));
         rDrag.init(document.getElementById('batchDel'));
+        rDrag.init(document.getElementById('reportAddSearchWordTitile'));
+        rDrag.init(document.getElementById('reportAddNoSearchWordTitile'));
     });
     $(function () {
         $("#head_click").click(function () {

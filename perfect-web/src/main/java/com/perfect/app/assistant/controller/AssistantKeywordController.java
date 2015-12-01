@@ -373,8 +373,12 @@ public class AssistantKeywordController extends WebContextSupport {
         keywordEntity.setMatchType(matchType);
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
-        KeywordDTO keywordDTO = assistantKeywordService.updateKeyword(keywordEntity);
-        writeJson(keywordDTO, response);
+        KeywordDTO kwd = assistantKeywordService.updateKeyword(keywordEntity);
+        KeywordInfoDTO keywordInfoDTO=new KeywordInfoDTO();
+        AdgroupDTO ad=kwd.getAdgroupId() == null ? adgroupService.findByObjId(kwd.getAdgroupObjId()) : adgroupService.findOne(kwd.getAdgroupId());
+        keywordInfoDTO.setObject(kwd);
+        keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
+        writeJson(keywordInfoDTO, response);
     }
 
     /**

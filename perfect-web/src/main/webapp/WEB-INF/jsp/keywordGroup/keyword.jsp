@@ -53,7 +53,7 @@ To change this template use File | Settings | File Templates.
                 <a href="#">
                     智能结构
                 </a>
-                &nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>关键词拓词</span>
+                &nbsp;&nbsp;&gt;&nbsp;&nbsp;<span id="TitleName">关键词拓词</span>
             </div>
         </div>
         <div id="tab">
@@ -668,7 +668,12 @@ To change this template use File | Settings | File Templates.
             $(this).addClass('selected').siblings().removeClass('selected');
             var index = $tab_li.index(this);
             $('.containers').eq(index).show().siblings().hide();
-        });
+            if(index == 0){
+                $("#TitleName").html("关键词拓词");
+            }else{
+                $("#TitleName").html("创意推荐");
+            }
+    });
 
         var $tab_li2 = $('.tab_menu2 li');
         $('.tab_menu2 li').click(function () {

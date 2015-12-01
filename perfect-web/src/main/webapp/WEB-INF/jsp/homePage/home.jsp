@@ -64,7 +64,7 @@
                 <a href="#">
                     账户全景
                 </a>
-                &nbsp;&nbsp;>&nbsp;&nbsp;<span>账户分析</span>
+                &nbsp;&nbsp;>&nbsp;&nbsp;<span id="TitleName">账户概览</span>
             </div>
         </div>
 
@@ -357,10 +357,10 @@
 
                     </div>
                     <div class="download over ">
-                        <span class="fl" style=" color:#000; font-weight:bold;line-height:26px;">查看完整版数据请点击下载全部→</span>
                         <a href="javascript:downloadKeywordQualityCSV();" class="fr">
                             下载全部
                         </a>
+                        <span class="fr" style=" color:#000; font-weight:bold;line-height:26px;">查看完整版数据请点击下载全部→</span>
                     </div>
                     <div class="list2 zhilianglist wd">
                         <table id="keywordQualityTab" border="0" cellspacing="0" cellspacing="0">
@@ -1249,10 +1249,12 @@
             getDateParam(days);
         }
         setTimeout(function(){
-         $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-days));
+
         if(days==1){
+            $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-days));
             $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-days));
         }else{
+            $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-days+1));
             $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(0));
         }
         })
@@ -1283,18 +1285,24 @@
             $(this).addClass('selected').siblings().removeClass('selected');
             var index = $tab_li.index(this);
             typepage = index + 1;
+            if(index ==0){
+                $("#TitleName").html('账户概览');
+            }
             switch (typepage) {
                 case 2:
                     //曲线图表现-----默认加载7天数据
                     loadPerformanceCurve(null, 7);
+                    $("#TitleName").html('账户表现');
                     break;
                 case 3:
                     //默认加载昨天的数据(质量度)
 //                loadKeywordQualityData(null, 1);
+                    $("#TitleName").html('质量度分析');
                     break;
                 case 4:
                     //重点词加载
                     getImportKeywordDefault(null, 1);
+                    $("#TitleName").html('关键词监控');
                     break;
             }
             $('div.tab_box > div').eq(index).show().siblings().hide();
@@ -1306,9 +1314,13 @@
         $('input[name="reservation"]').daterangepicker({
                     "showDropdowns": true,
                     "timePicker24Hour": true,
-                    timePicker: true,
+                    timePicker: false,
                     timePickerIncrement: 30,
-                    format: 'YYYY-MM-DD',
+                    "linkedCalendars":false,
+                    "format": "YYYY-MM-DD",
+                    minDate:'2005/1/1',
+                    maxDate:moment().startOf('day'),
+                    autoUpdateInput:true,
                     "locale": {
                         "format": "YYYY-MM-DD",
                         "separator": " - ",
@@ -1590,7 +1602,7 @@
      * 曲线图数据配
      * **/
     var loadPerformanceCurve = function (obj, date) {
-        $('input[name="reservation"]:eq(1)').data('daterangepicker').setStartDate(GetDateStr(-date));
+        $('input[name="reservation"]:eq(1)').data('daterangepicker').setStartDate(GetDateStr(-date+1));
             $('input[name="reservation"]:eq(1)').data('daterangepicker').setEndDate(GetDateStr(0));
 
         if (obj != null) {
@@ -2192,11 +2204,12 @@
     };
 
     var getImportKeywordDefault = function (obj, day) {
-        $('input[name="reservation"]:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day));
         if(day==1){
-            $('input[name="reservation"]:eq(3)').data('daterangepicker').setEndDate(GetDateStr(-day));
+            $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-day));
+            $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-day));
         }else{
-            $('input[name="reservation"]:eq(3)').data('daterangepicker').setEndDate(GetDateStr(0));
+            $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-day+1));
+            $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(0));
         }
         if (obj != null) {
             changedLiState(obj);
@@ -2290,7 +2303,6 @@
     };
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
-        console.log($(".off").html())
         $(".off").removeClass(".active");
         $(".off").css({color:"white"});
     });

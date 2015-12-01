@@ -25,10 +25,11 @@ var keywordPrice = null;
 
 $(function () {
     $("#jingjia_adds").click(function () {
-        $("#jiangjia_add").hide();
+        $("#jiangjia_add").fadeIn();
+
     });
     $("#jiangjia_chongfu").click(function () {
-        $("#jiangjia_add").fadeIn();
+        $("#jiangjia_add").hide();
     })
     $(".tab_menu").on('click', function () {
         var lis = $(".tab_menu").find("li");
@@ -58,6 +59,11 @@ $(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
+        if (index == 0) {
+            $("#TitleName").html("");
+        } else {
+            $("#TitleName").html("&nbsp;&nbsp;>&nbsp;&nbsp;重点词竞价");
+        }
     });
     //设置规则
     $("#showbox").click(function () {
@@ -853,3 +859,18 @@ window.onload = function () {
 
 
 };
+//高级搜索checkd
+$("#Matching").change(function () {
+    if ($(this).is(":checked")) {
+        $(this).parent().parent().next().find("input").prop("checked", true);
+    } else {
+        $(this).parent().parent().next().find("input").prop("checked", false);
+    }
+});
+$("#keywordQuality").change(function () {
+    if ($(this).is(":checked")) {
+        $(this).parent().parent().next().find("input").prop("checked", true);
+    } else {
+        $(this).parent().parent().next().find("input").prop("checked", false);
+    }
+});

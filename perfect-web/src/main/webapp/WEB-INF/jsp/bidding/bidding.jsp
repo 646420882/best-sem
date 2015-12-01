@@ -45,6 +45,7 @@
         <div class="title_box">
             <div class="on_title over">
                 <a href="#"> 智能竞价 </a>
+                <span id="TitleName"></span>
             </div>
         </div>
         <div id="tab">
@@ -66,26 +67,19 @@
                                             <form class="aline">
                                                 <div class="input_box"><label class='checkbox-inlines'><input
                                                         type="radio" name="in" checked="checked"
-                                                        value="0">&nbsp;<p>全部</p></label>&nbsp;</div>
+                                                        value="0">&nbsp;全部</label>&nbsp;</div>
                                                 <div class="input_box"><label class='checkbox-inlines'><input
-                                                        type="radio" name="in" value="-1">&nbsp;<p>未参与</p></label>
+                                                        type="radio" name="in" value="-1">&nbsp;未参与</label>
                                                     &nbsp;</div>
                                                 <div class="input_box"><label class='checkbox-inlines'><input
-                                                        type="radio" name="in" value="1"> &nbsp;<p>已参加</p></label>&nbsp;
+                                                        type="radio" name="in" value="1"> &nbsp;已参加</label>&nbsp;
                                                 </div>
                                             </form>
                                         </span>
                                         <span>
-                                               <dl>
-                                                   <input type="image"
-                                                          src="${pageContext.request.contextPath}/public/img/search2.png">
-                                               </dl>
                                                <dl class="aline">
-                                                   <label class='checkbox-inlines'><input type="checkbox"
-                                                                                          style=" margin-top:5px;"
-                                                                                          name="fullmatch">
-
-                                                       <p>精确搜索</p></label>
+                                                   <label class='checkbox-inlines'>
+                                                       <input type="checkbox" style=" margin-top:5px;">精确搜索</label>
                                                </dl>
                                                 <dl>
                                                     <input type="text" class="w_text"
@@ -107,70 +101,81 @@
                                     <div id="advancedSearch" class="Senior over hides">
                                         <ul>
                                             <li>
-                                                <div class="w_list01 fl over">匹配模式：</div>
+                                                <div class="w_list01 fl over"><span class="fl">匹配模式：</span>
+                                                    <label class='checkbox-inlines' >
+                                                        <input style=" float: left"  type="checkbox" id="Matching" name="keywordQuality" value="1">&nbsp;
+                                                    全选</label>
+                                                </div>
                                                 <div class="w_list02 fl over aline" id="matchType">
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
                                                             type="checkbox" name="matchType"
-                                                            checked="checked" value="1">&nbsp;<p>精准</p></label></span>
+                                                            checked="checked" value="1">&nbsp;精准</label></span>
                                                     </div>
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
                                                             type="checkbox" name="matchType"
-                                                            value="2">&nbsp;<p>短语-核心</p></label></span>
+                                                            value="2">&nbsp;短语-核心</label></span>
                                                     </div>
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
                                                             type="checkbox" name="matchType"
-                                                            value="3">&nbsp;<p>短语-精准</p></label></span>
+                                                            value="3">&nbsp;短语-精准</label></span>
                                                     </div>
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
                                                             type="checkbox" name="matchType"
-                                                            value="4">&nbsp;<p>短语-同义</p></label></span>
+                                                            value="4">&nbsp;短语-同义</label></span>
                                                     </div>
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
                                                             type="checkbox" name="matchType"
-                                                            value="5">&nbsp;<p>广泛</p></label></span>
+                                                            value="5">&nbsp;广泛</label></span>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="w_list01 fl over">质量度：</div>
+                                                <div class="w_list01 fl over"><span class="fl">质量度：</span><label
+                                                        class='checkbox-inlines'><input style=" float: left"
+                                                                                        type="checkbox"
+                                                                                        name="keywordQuality"
+                                                                                        value="1"
+                                                                                        checked="checked" id="keywordQuality">&nbsp;
+                                                    全选</label></div>
                                                 <div class="w_list02 fl over aline" id="keywordQuality">
                                                     <ul>
                                                         <li>
+
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input style=" float: left"
                                                                                                     type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="1"
                                                                                                     checked="checked">&nbsp;
-                                                                <p> 一分词</p></label></span>
+                                                                一分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="2"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>二分词</p></label></span>
+                                                                二分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="3"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>三分词</p></label></span>
+                                                                三分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="4"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>四分词</p></label></span>
+                                                                四分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="5"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>五分词</p></label></span>
+                                                                五分词</label></span>
                                                             </div>
                                                         </li>
                                                         <li>
@@ -179,35 +184,35 @@
                                                                                                     name="keywordQuality"
                                                                                                     value="6"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>六分词</p></label></span>
+                                                                六分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="7"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>七分词</p></label></span>
+                                                                七分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="8"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>八分词</p></label></span>
+                                                                八分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="9"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>九分词</p></label></span>
+                                                                九分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
                                                                                                     value="10"
                                                                                                     checked="checked">&nbsp;
-                                                                <p>十分词</p></label></span>
+                                                                十分词</label></span>
                                                             </div>
                                                         </li>
                                                     </ul>
@@ -549,11 +554,19 @@
                 <b class="fl">自动竞价模式:</b>
                 <ul class="fl">
                     <li>
-                        <p><label class='checkbox-inlines'><input type="radio" name="auto" value="1"
+                        <p><label class='checkbox-inlines'><input type="radio" name="auto" value="1" checked="checked"
                                                                   id="jingjia_adds"><span>单次竞价</span></label></p>
                     </li>
+                    <li id="jiangjia_add" style="padding-left:10px;">
+                        <label class='checkbox-inlines'><input type="radio" name="sbid"
+                                                               value="everyday"><span>每天执行</span></label>
+                        <label class='checkbox-inlines'> <input type="radio" name="sbid" value="bytime">
+                            <span>竞价次数:</span></label><input class="times"
+                                                             type="text"
+                                                             name="bytimes">
+                    </li>
 
-                    <li><label class='checkbox-inlines'><input type="radio" name="auto" value="2" checked="checked"
+                    <li><label class='checkbox-inlines'><input type="radio" name="auto" value="2"
                                                                id="jiangjia_chongfu"><span>重复竞价速度 每隔</span></label>
                         <select id="interval">
                             <option value="20">20分钟</option>
@@ -562,14 +575,7 @@
                             <option value="120">2小时</option>
                         </select> 竞价一次</span>
                     </li>
-                    <li id="jiangjia_add">
-                        <label class='checkbox-inlines'><input type="radio" name="sbid"
-                                                               value="everyday"><span>每天执行</span></label>
-                        <label class='checkbox-inlines'> <input type="radio" name="sbid" value="bytime">
-                            <span>竞价次数:</span></label><input class="times"
-                                                             type="text"
-                                                             name="bytimes">
-                    </li>
+
                 </ul>
 
             </li>

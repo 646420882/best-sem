@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>审核帐号</title>
+    <title>审核账号</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
@@ -34,7 +34,7 @@
             <table id="table1" class="table table-striped table-bordered table-hover datatable dataTable" aria-describedby="DataTables_Table_0_info">
                 <thead>
                 <tr>
-                    <td>帐号</td>
+                    <td>账号</td>
                     <td>审核状态</td>
                     <td>操作</td>
                 </tr>
@@ -49,10 +49,10 @@
 <%--添加监控对象弹出窗口--%>
 <div class="box" style="display:none" id="auditDiv">
     <h2 id="auditTUO">
-        <span class="fl">审核帐号</span>
+        <span class="fl">审核账号</span>
         <a href="javascript:closeAlert()" class="close">×</a></h2>
     <div class="mainlist">
-        是否确认审核通过，使此帐号在系统中使用！！
+        是否确认审核通过，使此账号在系统中使用！！
     </div>
     <div class="main_bottom">
         <div class="w_list03">

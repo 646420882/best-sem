@@ -87,6 +87,6 @@ public class XSSFReadUtils {
     }
 
     public interface SheetHandler {
-        abstract void rowMap(String sheetName, int rowIndex, List<Object> row);
+        void rowMap(String sheetName, int rowIndex, List<Object> row);
     }
 }

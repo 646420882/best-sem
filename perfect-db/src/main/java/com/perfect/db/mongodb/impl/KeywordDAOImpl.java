@@ -254,7 +254,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     @Override
     public Long keywordCount(List<Long> adgroupIds) {
         return getMongoTemplate().count(Query.query(
-                Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),
+                        Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),
                 getEntityClass());
     }
 
@@ -789,31 +789,51 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     }
 
     @Override
-    public List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds,FindOrReplaceParam forp) {
+    public List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds, FindOrReplaceParam forp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.OBJ_ADGROUP_ID).in(adgroupIds));
+        operateQuery(query, forp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         return dtos;
     }
 
     @Override
-    public List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds,FindOrReplaceParam forp) {
+    public List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds, FindOrReplaceParam forp) {
         Query query = new Query();
         query.addCriteria(Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()));
         query.addCriteria(Criteria.where(MongoEntityConstants.ADGROUP_ID).in(adgroupIds));
-        if(forp!=null){
-            operateQuery(query,forp);
-        }
+        operateQuery(query, forp);
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         return dtos;
     }
-    private void operateQuery(Query query,FindOrReplaceParam forp){
-        if(forp.getFindText()!=null){
-            query.addCriteria(Criteria.where("name").
-                    regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+
+    private void operateQuery(Query query, FindOrReplaceParam forp) {
+        if (forp != null) {
+            if (forp.getFindText() != null) {
+                switch (forp.getForPlace()) {
+                    case "pcUrl":
+                        query.addCriteria(Criteria.where("pc").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "mibUrl":
+                        query.addCriteria(Criteria.where("mobile").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "allUrl":
+                        query.addCriteria(Criteria.where("pc").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)).orOperator(Criteria.where("mobile").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE))));
+                        break;
+                    default:
+                        query.addCriteria(Criteria.where("name").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                }
+
+            }
         }
     }
 
@@ -840,7 +860,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                 //查询备份表里面对应的数据
                 boolean exists = getMongoTemplate().exists(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))), KeywordBackUpEntity.class);
                 //判断备份表里面是否存在当前ID的数据
-                if(!exists){
+                if (!exists) {
                     //查询需要备份的数据
                     KeywordEntity keywordEntity = getMongoTemplate().findOne(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))), getEntityClass());
                     KeywordBackUpEntity upEntity = new KeywordBackUpEntity();
@@ -848,16 +868,16 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                     //数据进行备份
                     getMongoTemplate().save(upEntity);
                     //修改当前数据
-                    getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))),update,getEntityClass());
-                }else{
+                    getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))), update, getEntityClass());
+                } else {
                     //如果备份表里面存在当前数据则直接修改
-                    getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))),update,getEntityClass());
+                    getMongoTemplate().updateFirst(new Query(Criteria.where(KEYWORD_ID).is(Long.parseLong(e))), update, getEntityClass());
                 }
             } else {
                 //如果是本地数据直接修改启用状态
                 update.set("p", status);
                 update.set("ls", 2);
-                getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(e)),update,getEntityClass());
+                getMongoTemplate().updateFirst(new Query(Criteria.where(SYSTEM_ID).is(e)), update, getEntityClass());
             }
         });
     }
