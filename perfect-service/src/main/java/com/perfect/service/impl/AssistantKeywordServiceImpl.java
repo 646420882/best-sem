@@ -1152,6 +1152,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
             keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
             keywordInfoDTO.setCampaignName(cam.getCampaignName());
+            keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
             keywordInfoDTO.setCampaignId(cam.getCampaignId());
             keywordInfoDTOs.add(keywordInfoDTO);
         });
@@ -1177,6 +1178,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
             keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
             keywordInfoDTO.setCampaignName(cam.getCampaignName());
+            keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
             keywordInfoDTO.setCampaignId(cam.getCampaignId());
 
 
@@ -1225,6 +1227,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
             keywordInfoDTO.setCampaignName(cam.getCampaignName());
             keywordInfoDTO.setCampaignId(cam.getCampaignId());
+            keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
 
 
             //设置关键词质量度
@@ -1278,6 +1281,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordInfoDTO.setFolderCount(kwd.getKeywordId() == null ? 0l : monitoringDao.getForlderCountByKwid(kwd.getKeywordId()));//设置监控文件夹个数
                 keywordInfoDTO.setCampaignName(cam.getCampaignName());
                 keywordInfoDTO.setCampaignId(cam.getCampaignId());
+                keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
 
 
                 //设置关键词质量度

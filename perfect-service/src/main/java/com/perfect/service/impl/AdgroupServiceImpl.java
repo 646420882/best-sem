@@ -408,12 +408,12 @@ public class AdgroupServiceImpl implements AdgroupService {
                         List<Long> longs = Lists.newArrayList();
                         longs.add(Long.valueOf(e));
                         keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
                     } else {
                         List<String> strings = Lists.newArrayList();
                         strings.add(e);
                         keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
-                        creativeDTOs = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
                     }
                     keywordDatas.clear();
                     creativeDatas.clear();
@@ -445,9 +445,9 @@ public class AdgroupServiceImpl implements AdgroupService {
                         }
 
                     });
-                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
                     keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
                     List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
                     if (!Objects.isNull(keydtos)) keywordDTOs.addAll(keydtos);
                     if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
@@ -463,9 +463,9 @@ public class AdgroupServiceImpl implements AdgroupService {
                             asList.add(String.valueOf(e.getId()));
                         }
                     });
-                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs);
+                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
                     keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings);
+                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
                     List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
                     if (!Objects.isNull(keydtos)) keywordDTOs.addAll(keydtos);
                     if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
@@ -507,8 +507,8 @@ public class AdgroupServiceImpl implements AdgroupService {
             List<KeywordDTO> keywordByAdgroupIdsLong = new ArrayList<>(keywordDAO.findKeywordByAdgroupIdsLong(baidId));
             List<KeywordDTO> keywordByAdgroupIdsStr = keywordDAO.findKeywordByAdgroupIdsStr(objId);
 
-            List<CreativeDTO> allsByAdgroupIds = new ArrayList<>(creativeDAO.getAllsByAdgroupIds(baidId));
-            List<CreativeDTO> allsByAdgroupIdsForString = creativeDAO.getAllsByAdgroupIdsForString(objId);
+            List<CreativeDTO> allsByAdgroupIds = new ArrayList<>(creativeDAO.getAllsByAdgroupIds(baidId,null));
+            List<CreativeDTO> allsByAdgroupIdsForString = creativeDAO.getAllsByAdgroupIdsForString(objId,null);
 
             keywordByAdgroupIdsLong.addAll(keywordByAdgroupIdsStr);
             allsByAdgroupIds.addAll(allsByAdgroupIdsForString);

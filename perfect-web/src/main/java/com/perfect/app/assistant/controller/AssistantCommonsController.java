@@ -606,7 +606,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     switchCaseCreative(forp, creativeDTO, returnResult);
                 }
             });
-        } else {//操作整个计划下的创意
+        } else if (forp.getForType() == 1) {//操作整个计划下的创意
             if (forp.getCampaignId().length() > OBJ_SIZE) {
                 List<CreativeDTO> creativeDTOs = creativeService.getByCampaignIdStr(forp.getCampaignId());
                 creativeDTOs.stream().forEach(s -> {
@@ -618,6 +618,13 @@ public class AssistantCommonsController extends WebContextSupport {
                     switchCaseCreative(forp, s, returnResult);
                 });
             }
+        } else if (forp.getForType() == 2) {//当前单元
+            System.out.println("单元");
+        } else {//全账户
+            List<CreativeDTO> creativeDTOs = creativeService.getAll(forp);
+            creativeDTOs.stream().forEach(s -> {
+                switchCaseCreative(forp, s, returnResult);
+            });
         }
         return returnResult;
     }
@@ -1283,7 +1290,7 @@ public class AssistantCommonsController extends WebContextSupport {
                     switchCaseAdgroup(forp, adgroupDTO, returnResult);
                 }
             });
-        } else {
+        } else if (forp.getForType() == 1) {//选中的计划下
             if (forp.getCampaignId().length() > OBJ_SIZE) {
                 List<AdgroupDTO> adgroupDTOs = adgroupService.getAdgroupByCampaignObjId(forp.getCampaignId());
                 adgroupDTOs.stream().forEach(s -> {
@@ -1295,6 +1302,11 @@ public class AssistantCommonsController extends WebContextSupport {
                     switchCaseAdgroup(forp, s, returnResult);
                 });
             }
+        } else {//全账户
+            List<AdgroupDTO> adgroupDTOs = (List<AdgroupDTO>) adgroupService.findAll();
+            adgroupDTOs.stream().forEach(s -> {
+                switchCaseAdgroup(forp, s, returnResult);
+            });
         }
 
         return returnResult;

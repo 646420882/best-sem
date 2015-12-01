@@ -123,6 +123,8 @@ public interface CreativeService {
 
     List<CreativeDTO> getByCampaignIdLong(Long cid);
 
+    List<CreativeDTO> getAll(FindOrReplaceParam forp);
+
     /**
      * 批量删除创意
      * @param param

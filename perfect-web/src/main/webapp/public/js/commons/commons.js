@@ -27,11 +27,17 @@ var commons = {
             checkType.empty();
             checkType.append("<option value='0'>当前选中</option><option value='1'>所有(该计划下)</option>");
         }
-        if (exist_selected.cid && exist_selected.aid) {
-            checkType.empty();
-            checkType.append("<option value='0'>当前选中</option><option value='2'>所有(单元下)</option>");
+        if (editCommons.EditType != "adgroup") {
+            if (exist_selected.cid && exist_selected.aid) {
+                checkType.empty();
+                checkType.append("<option value='0'>当前选中</option><option value='2'>所有(单元下)</option>");
+            }
+        } else {
+            if (exist_selected.cid) {
+                checkType.empty();
+                checkType.append("<option value='0'>当前选中</option><option value='1'>所有(该计划下)</option>");
+            }
         }
-
         //<option value="0">当前选中</option>
         //<option value="1">所有(计划下所有)</option>
         if ($(".assstant_editor").css("display") == "none") {
@@ -504,7 +510,7 @@ $.extend({
     foROk: function (_this) {
         var form = $(_this).parents("form");
         var step = $(_this).attr("step");
-        if(step=="find"){
+        if (step == "find") {
             $("input[name='replaceText']").val('');
         }
         var checkType = $("select[name='checkType'] :selected");
@@ -600,12 +606,11 @@ $.extend({
                         var _trClass = "";
                         for (var i = 0; i < json.length; i++) {
                             var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
-                            var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                            var _edit = json[i].localStatus != null ? json[i].localStatus : -2;
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                             var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
-                                "<td >&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/></td>" +
-                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                                "<td class='table_add'>&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/><input type='hidden' value='" + _id + "'/>" + ls + "</td>" +
                                 "<td >" + until.substring(10, json[i].title) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description1) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description2) + "</td>" +
@@ -615,9 +620,8 @@ $.extend({
                                 " <td >" + until.substring(10, json[i].mobileDisplayUrl) + "</td>" +
                                 " <td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                                 " <td >" + until.getCreativeStatus(parseInt(json[i].status)) + "<input type='hidden' value='" + json[i].status + "'/></td>" +
-                                "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>" +
-                                " <td >" + ls + "</td>" +
-                                "</tr>";
+                                "<td>" + until.convertDeviceByNum(parseInt(json[i].devicePreference)) + "</td>";
+                            "</tr>";
                             _createTable.append(_tbody);
                         }
                     } else {
@@ -643,18 +647,16 @@ $.extend({
                             var _maxPrice = json[i].maxPrice != null ? json[i].maxPrice : 0.0;
                             var nn = json[i].negativeWords != null ? json[i].negativeWords : "";
                             var ne = json[i].exactNegativeWords != null ? json[i].exactNegativeWords : "";
-                            var _edit = json[i].localStatus != null ? json[i].localStatus : -1;
+                            var _edit = json[i].localStatus != null ? json[i].localStatus : -2;
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                                "<td ><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/></td>" +
-                                "<td >&nbsp;<input type='hidden' value='" + _id + "'/></td>" +
+                                "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/><input type='hidden' value='" + _id + "'/>" + ls + "</td>" +
                                 "<td >" + json[i].adgroupName + "</td>" +
                                 "<td ><input type='hidden' value='" + json[i].status + "'/>" + until.getAdgroupStatus(json[i].status) + "</td>" +
                                 "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
-                                "<td >" + parseFloat(_maxPrice).toFixed(2) + "</td>" +
+                                "<td class='InputTd'>" + "<span>" + parseFloat(_maxPrice).toFixed(2) + "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>" +
                                 "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
-                                "<td >" + json[i].campaignName + "</td>" +
-                                "<td >" + ls + "</td>" +
+                                "<td >" + json[i].campaignName + "</td>";
                                 "</tr>";
                             _adGroudTable.append(_tbody);
                         }

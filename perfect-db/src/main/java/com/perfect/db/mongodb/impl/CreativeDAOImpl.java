@@ -14,6 +14,7 @@ import com.perfect.entity.backup.CreativeBackUpEntity;
 import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
@@ -105,15 +106,82 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
     }
 
     @Override
-    public List<CreativeDTO> getAllsByAdgroupIds(List<Long> l) {
-        List<CreativeEntity> list = BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(ADGROUP_ID).in(l)), getEntityClass());
+    public List<CreativeDTO> getAllsByAdgroupIds(List<Long> l, FindOrReplaceParam forp) {
+        Query q = new Query();
+        q.addCriteria(Criteria.where(ADGROUP_ID).in(l));
+        operateQuery(q, forp);
+        List<CreativeEntity> list = BaseMongoTemplate.getUserMongo().find(q, getEntityClass());
         return wrapperList(list);
     }
 
     @Override
-    public List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l) {
-        List<CreativeEntity> list = BaseMongoTemplate.getUserMongo().find(new Query(Criteria.where(OBJ_ADGROUP_ID).in(l)), getEntityClass());
+    public List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l, FindOrReplaceParam forp) {
+        Query q = new Query();
+        q.addCriteria(Criteria.where(OBJ_ADGROUP_ID).in(l));
+        operateQuery(q, forp);
+        List<CreativeEntity> list = BaseMongoTemplate.getUserMongo().find(q, getEntityClass());
         return wrapperList(list);
+    }
+
+    private void operateQuery(Query q, FindOrReplaceParam forp) {
+        if (forp != null) {
+            if (forp.getFindText() != null) {
+                switch (forp.getForPlace()) {
+                    case "cTitle":
+                        q.addCriteria(Criteria.where("t").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "cDesc1":
+                        q.addCriteria(Criteria.where("desc1").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "cDesc2":
+                        q.addCriteria(Criteria.where("desc2").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "titleAndDesc":
+                        q.addCriteria(Criteria.where("t").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)).orOperator(Criteria.where("desc1").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE))).orOperator(Criteria.where("desc2").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE))));
+                        break;
+                    case "pcUrl":
+                        q.addCriteria(Criteria.where("pc").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "pcsUrl":
+                        q.addCriteria(Criteria.where("pcd").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "pcAllUrl":
+                        q.addCriteria(Criteria.where("pc").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)).orOperator(Criteria.where("pcd").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE))));
+                        break;
+                    case "mibUrl":
+                        q.addCriteria(Criteria.where("m").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "mibsUrl":
+                        q.addCriteria(Criteria.where("md").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)));
+                        break;
+                    case "mibAllUrl":
+                        q.addCriteria(Criteria.where("m").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)).orOperator(Criteria.where("md").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE))));
+                        break;
+                    case "AllUrl":
+                        q.addCriteria(Criteria.where("pc").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE)).orOperator(Criteria.where("pcd").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE))).orOperator(Criteria.where("m").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE))).orOperator(Criteria.where("md").
+                                regex(Pattern.compile("^.*?" + forp.getFindText() + ".*$", Pattern.CASE_INSENSITIVE))));
+                        break;
+                }
+
+            }
+        }
     }
 
     @Override
@@ -386,7 +454,7 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
 
     @Override
     public void enableOrPauseCreative(List<String> strings, boolean status) {
-        if(!strings.isEmpty()){
+        if (!strings.isEmpty()) {
             strings.forEach(e -> {
                 Update update = new Update();
                 update.set("p", status);
