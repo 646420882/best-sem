@@ -550,29 +550,33 @@ function enableOrPause(_this, type) {
             AlertPrompt.show("您没有选择要所需物料!");
             return;
         }
-        foR_params = {enableOrPauseType: type, enableOrPauseData: checked_data.toString(), enableOrPauseStatus: (option == "暂停" ? 0 : 1)};
+        foR_params = {
+            enableOrPauseType: type,
+            enableOrPauseData: checked_data.toString(),
+            enableOrPauseStatus: (option == "暂停" ? 0 : 1)
+        };
         $.ajax({
             url: "/assistantCommons/enableOrPause",
             data: JSON.stringify(foR_params),
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                switch (type){
+                switch (type) {
                     case "keyword":
                         whenClickTreeLoadData("关键词");
-                        $("input[name=keyAllCheck]").attr("checked",false);
+                        $("input[name=keyAllCheck]").attr("checked", false);
                         break;
                     case "creative":
                         whenClickTreeLoadData("普通创意");
-                        $("input[name=creativeAllCheck]").attr("checked",false);
+                        $("input[name=creativeAllCheck]").attr("checked", false);
                         break
                     case "adgroup":
                         whenClickTreeLoadData("推广单元");
-                        $("input[name=adgroupAllCheck]").attr("checked",false);
+                        $("input[name=adgroupAllCheck]").attr("checked", false);
                         break
                     case "campaign":
                         whenClickTreeLoadData("推广计划");
-                        $("input[name=campaignAllCheck]").attr("checked",false);
+                        $("input[name=campaignAllCheck]").attr("checked", false);
                         break
                 }
             }
@@ -1220,6 +1224,7 @@ function validateNoAllowKeyword(value) {
         $.get("/keyword/getKeywordIdByAdgroupId/" + value, function (data) {
             $("#countkwd").val(data.rows == undefined ? 0 : data.rows == "" ? 0 : data.rows.length);
             $("#countNumber").html(5000 - (data.rows == undefined ? 0 : data.rows == "" ? 0 : data.rows.length));
+            $("#redio2number").html(5000 - (data.rows == undefined ? 0 : data.rows == "" ? 0 : data.rows.length)).attr("style", "color:red");
         })
     } else {
         $("span[id$=Neg]").empty();
@@ -1322,43 +1327,56 @@ function AddKeywords() {
     addKeywordInitCampSelect()
 }
 function AddKeywordsSave() {
+    var redioNumber = $('#inputRedio input[name="entering"]:checked ').val();
+    if (redioNumber == 1) {
+        if ($("#statusNew").val() == null || $("#statusNew").val() == "") {
+            AlertPrompt.show("关键词不能为空!");
+            return
+        }
+
+        /* var device = $("#device_selectNew option:selected").val();
+         if (device == null || device.length == 0) {
+         AlertPrompt.show("请选择推广设备!");
+         return;
+         }*/
+
+
+        var kwds = $("#statusNew").val().trims().split("\n");
+        if (kwds[kwds.length - 1] == "") {
+            kwds.splice(kwds.length - 1, 1);
+        }
+
+        var countkwd = $("#countkwd").val();
+        countkwd = (countkwd == undefined ? 0 : countkwd == "" ? 0 : countkwd);
+        if (kwds.length > 5000 - countkwd) {
+            //alert("关键词个数大于" + (5000 - countkwd));
+            AlertPrompt.show("关键词个数大于" + (5000 - countkwd));
+            return;
+        }
+    } else if (redioNumber == 2) {
+        var uploadFile = $("#uploadFile").val();
+        if (uploadFile == undefined || uploadFile == "") {
+            AlertPrompt.show("请选择需要上传的excel");
+            return;
+        }
+        var point = uploadFile.lastIndexOf(".");
+        var type = uploadFile.substr(point);
+        if (type != ".xlsx" && type != ".XLSX") {
+            AlertPrompt.show("上传关键词只支持 excel 2007之后版本的文件");
+            return;
+        }
+    }
 
     var campaignId = $("#campaign_selectNew option:selected").val();
     if (campaignId == null || campaignId.length == 0) {
-        //alert("请选择推广计划!");
         AlertPrompt.show("请选择推广计划!");
         return;
     }
     var adgroupId = $("#adgroup_selectNew option:selected").val();
     if (adgroupId == null || adgroupId.length == 0) {
-        //alert("请选择推广单元!");
         AlertPrompt.show("请选择推广单元!");
         return;
     }
-    /* var device = $("#device_selectNew option:selected").val();
-     if (device == null || device.length == 0) {
-     AlertPrompt.show("请选择推广设备!");
-     //alert("请选择推广设备!");
-     return;
-     }*/
-    if ($("#statusNew").val() == null || $("#statusNew").val() == "") {
-        //alert("关键词不能为空！")
-        AlertPrompt.show("关键词不能为空!");
-        return
-    }
-
-    var kwds = $("#statusNew").val().trims().split("\n");
-    if (kwds[kwds.length - 1] == "") {
-        kwds.splice(kwds.length - 1, 1);
-    }
-    var countkwd = $("#countkwd").val();
-    countkwd = (countkwd == undefined ? 0 : countkwd == "" ? 0 : countkwd);
-    if (kwds.length > 5000 - countkwd) {
-        //alert("关键词个数大于" + (5000 - countkwd));
-        AlertPrompt.show("关键词个数大于" + (5000 - countkwd));
-        return
-    }
-
 
     $("#AddKeywords").css("display", "none");
     $(".TB_overlayBG").css({

@@ -100,7 +100,7 @@ $(function () {
                             } else {
                                 _adgroupId = datas[i].id;
                             }
-                            adgroups += "<option maxPrice="+ datas[i].maxPrice +" value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
+                            adgroups += "<option maxPrice=" + datas[i].maxPrice + " value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
                         }
                         $("#adgroup_selectNew").empty();
                         $("#adgroup_selectNew").append(adgroups);
@@ -116,7 +116,7 @@ $(function () {
                         var adgroups = "", datas = data.rows;
                         adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
                         for (var i = 0, l = datas.length; i < l; i++) {
-                            adgroups += "<option  maxPrice="+ datas[i].maxPrice +" value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
+                            adgroups += "<option  maxPrice=" + datas[i].maxPrice + " value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
                         }
                         $("#adgroup_selectNew").empty();
                         $("#adgroup_selectNew").append(adgroups);
@@ -311,7 +311,7 @@ var saveKeywordNew = function () {
     var jsonObj = [];
 
     var kwd = $("#statusNew").val().split("\n");
-    kwd.forEach(function(item,i){
+    kwd.forEach(function (item, i) {
         if (item != undefined) {
             var entity1 = {};
             entity1["accountId"] = $("#bdAccountId").html();
@@ -321,7 +321,7 @@ var saveKeywordNew = function () {
                 entity1["adgroupObjId"] = adgroupId;
             }
             entity1["keyword"] = item;
-            entity1["price"] = (price==undefined || price == ""?"0.1":price);
+            entity1["price"] = (price == undefined || price == "" ? "0.1" : price);
             entity1["matchType"] = matchType;
             entity1["pause"] = false;
             entity1["status"] = -1;
@@ -334,32 +334,45 @@ var saveKeywordNew = function () {
             jsonObj.push(entity1);
         }
     });
-    $.ajax({
-        url: "/keyword/add",
-        type: "POST",
-        dataType: "json",
-        data: JSON.stringify(jsonObj),
-        async: false,
-        contentType: "application/json; charset=UTF-8",
-        success: function (data, textStatus, jqXHR) {
-            if (data.rows != undefined || data.rows !="") {
-                var string = "";
-                data.rows.forEach(function(item,i){
-                    string +=item + ","+ (i/5==0?"\n":"");
-                })
-                saveSeccuss(data);
-                $("#context").empty();
-                $("#context").append(string);
-                $("#SaveSet").css("display", "none");
-                reloadGrid();
+    var redioNumber = $('#inputRedio input[name="entering"]:checked ').val();
+    if (redioNumber == 1) {
+        $.ajax({
+            url: "/keyword/add",
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify(jsonObj),
+            async: false,
+            contentType: "application/json; charset=UTF-8",
+            success: function (data, textStatus, jqXHR) {
+                if (data.rows != undefined || data.rows != "") {
+                    var string = "";
+                    data.rows.forEach(function (item, i) {
+                        string += item + "," + (i / 5 == 0 ? "\n" : "");
+                    })
+                    saveSeccuss(data);
+                    $("#context").empty();
+                    $("#context").append(string);
+                    $("#SaveSet").css("display", "none");
+                    reloadGrid();
+                }
             }
+        });
+    } else if (redioNumber == 2) {
+        $("#adgroupIdxls").val(adgroupId);
+        $("#pricexls").val(price);
+        $("#matchTypexls").val(matchType);
+        if (matchType == "2") {
+            $("#phraseTypexls").val(phraseType);
+        } else {
+            $("#phraseTypexls").val(1);
         }
-    });
-
+        var from = $("#frmKeyword");
+        from[0].submit();
+    }
 }
 
-var saveSeccuss = function(data){
-    if(data.rows.length){
+var saveSeccuss = function (data) {
+    if (data.rows.length) {
         $("#SaveSeccuss").css({
             left: ($("body").width() - $("#SaveSeccuss").width()) / 2 - 20 + "px",
             top: ($(window).height() - $("#SaveSeccuss").height()) / 2 + $(window).scrollTop() + "px",
@@ -370,7 +383,7 @@ var saveSeccuss = function(data){
             $("#SaveSet").css("display", "none");
             $("#SaveSeccuss").css("display", "none");
         });
-    }else{
+    } else {
         $(".TB_overlayBG").css("display", "none");
         $("#SaveSet").css("display", "none");
         $("#SaveSeccuss").css("display", "none");
@@ -666,5 +679,26 @@ $(function () {
         return false;
     });
 
+//
+    var $tab_li = $('.add_title li');
+    $tab_li.click(function () {
+        var index = $tab_li.index(this);
+        $('div.add_titles > div').eq(index).show().siblings().hide();
+    });
 
 });
+var callbackKwd = function (data) {
+    data = "{\"rows\":" + data + "}"
+    var jsonData = JSON.parse(data);
+    if (jsonData.rows != undefined || jsonData.rows != "") {
+        var string = "";
+        jsonData.rows.forEach(function (item, i) {
+            string += item + "," + (i / 5 == 0 ? "\n" : "");
+        })
+        saveSeccuss(jsonData);
+        $("#context").empty();
+        $("#context").append(string);
+        $("#SaveSet").css("display", "none");
+        reloadGrid();
+    }
+}

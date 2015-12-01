@@ -13,7 +13,7 @@
         <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
 
     <div class="mainlist">
-        <ul class="add_title">
+        <ul class="add_title" id="inputRedio">
             <%--<li>
                 <span>推广地域：</span><a href="#">使用账户推广地域</a>
             </li>
@@ -26,14 +26,35 @@
                 </select>
             </li>--%>
             <li>
-                <%--<input type="checkbox" checked="checked">--%>输入的关键词已与账户本地库有已有词去重
+                <label class="checkbox-inlines"><input type="radio" name="entering" value="1"
+                                                       checked="checked">输入关键词</label>
+            </li>
+            <li>
+                <label class="checkbox-inlines"><input type="radio" name="entering" value="2">上传关键词</label>
             </li>
         </ul>
-        <div class="add_textarea">
-            <textarea id="statusNew" rows="12" cols="40" oninput="countAddKwd()"></textarea>
-            <span class="fr"><label id="counterNew" style="font-weight:normal"> 0</label>/ <label
-                    id="countNumber">5000</label></span>
+        <div class="add_titles">
+            <div class="add_textarea">
+                <textarea id="statusNew" rows="12" cols="40" oninput="countAddKwd()"></textarea>
+                <span class="fl">输入的关键词已与账户本地库已有词去重</span>
+                <span class="fr"><label id="counterNew" style="font-weight:normal"> 0</label>/ <label
+                        id="countNumber">5000</label></span>
+            </div>
+            <div class="over" style="display:none;">
+                上传excel中的关键词
+                <form method="POST" id="frmKeyword" enctype="multipart/form-data"
+                      action="/keyword/upload" target="fileIframe">
+                    <input type="file" name="file" id="uploadFile">
+                    <input type="hidden" id="adgroupIdxls" name="adgroupId">
+                    <input type="hidden" id="pricexls" name="price">
+                    <input type="hidden" id="matchTypexls" name="matchType">
+                    <input type="hidden" id="phraseTypexls" name="phraseType">
+                </form>
+                <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
+                <span class="fr">还能添加 <label id="redio2number" style="font-weight:normal"> 5000</label> 关键词</span>
+            </div>
         </div>
+
         <input type="hidden" id="countkwd" value="">
     </div>
     <div class="main_bottom add_bottom" style="background-color: #f8f8f8">

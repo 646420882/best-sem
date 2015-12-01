@@ -4889,3 +4889,8 @@ body .ui-tooltip {
 #PromptBox .w_list03 ul li {
     margin-bottom: 0px !important;
 }
+.add_title input[type=radio]{
+    display: block;
+    float: left;
+    margin: 8px 2px 0 0;
+}

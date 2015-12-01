@@ -500,6 +500,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         List<KeywordDTO> dtos = Lists.newArrayList();
         entityList.stream().forEach(s -> {
             if (!getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword()).and(LOCALSTATUS).is(1)), getEntityClass())) {
+                s.setAccountId(AppContext.getAccountId());
                 getMongoTemplate().insert(s);
             } else {
                 KeywordDTO keywordDTO = new KeywordBackUpDTO();
