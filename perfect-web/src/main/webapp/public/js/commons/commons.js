@@ -402,7 +402,7 @@ $.fn.extend({
         });
         formData["type"] = params.type;
         formData["forType"] = params.forType;
-        if (!params.forType) {
+        if (params.forType == 0) {
             formData["checkData"] = params.checkData.toString();
         }
         if (params.campaignId) {

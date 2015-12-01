@@ -759,22 +759,22 @@ function transferCreativePreview(type) {
 }
 
 function getCreativePreviewHtml(_this, type) {
-    var title = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
+    var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title") : _this.find("td:eq(1) input").val();
     if (title == undefined) {
-        title = _this.find("td:eq(2)").html();
+        title = _this.find("td:eq(1)").html();
     }
-    var de1 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
+    var de1 = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
     if (de1 == undefined) {
-        de1 = _this.find("td:eq(3)").html();
+        de1 = _this.find("td:eq(2)").html();
     }
-    var de2 = _this.find("td:eq(4) a").attr("title") != undefined ? _this.find("td:eq(4) a").attr("title") : _this.find("td:eq(4) input").val();
+    var de2 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
     if (de2 == undefined) {
-        de2 = _this.find("td:eq(4)").html();
+        de2 = _this.find("td:eq(3)").html();
     }
-    var pc = _this.find("td:eq(5) a").attr("href") != undefined ? _this.find("td:eq(5) a").attr("href") : _this.find("td:eq(5) input").val();
-    var pcs = _this.find("td:eq(6) a").attr("title") != undefined ? _this.find("td:eq(6) a").attr("title") : _this.find("td:eq(6) input").val();
-    var mib = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
-    var mibs = _this.find("td:eq(8) span:eq(0)").text() != "" ? _this.find("td:eq(8) span:eq(0)").text() : _this.find("td:eq(8) input").val();
+    var pc = _this.find("td:eq(4) a").attr("href") != undefined ? _this.find("td:eq(4) a").attr("href") : _this.find("td:eq(4) input").val();
+    var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
+    var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
+    var mibs = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
     title = title.replace("{", "<span class='red-color'>").replace("}", "</span>").replace("{", "<span class='red-color'>").replace("}", "</span>");
     de1 = de1.replace("{", "<span class='red-color'>").replace("}", "</span>");
     de2 = de2.replace("{", "<span class='red-color'>").replace("}", "</span>");
@@ -825,22 +825,22 @@ function preview(obj) {
     creativeDisRef = _this;
     var previeBody = $("#sPreview");
     previeBody.empty();
-    var title = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
+    var title = _this.find("td:eq(1) a").attr("title") != undefined ? _this.find("td:eq(1) a").attr("title") : _this.find("td:eq(1) input").val();
     if (title == undefined) {
-        title = _this.find("td:eq(2)").html();
+        title = _this.find("td:eq(1)").html();
     }
-    var de1 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
+    var de1 = _this.find("td:eq(2) a").attr("title") != undefined ? _this.find("td:eq(2) a").attr("title") : _this.find("td:eq(2) input").val();
     if (de1 == undefined) {
-        de1 = _this.find("td:eq(3)").html();
+        de1 = _this.find("td:eq(2)").html();
     }
-    var de2 = _this.find("td:eq(4) a").attr("title") != undefined ? _this.find("td:eq(4) a").attr("title") : _this.find("td:eq(4) input").val();
+    var de2 = _this.find("td:eq(3) a").attr("title") != undefined ? _this.find("td:eq(3) a").attr("title") : _this.find("td:eq(3) input").val();
     if (de2 == undefined) {
-        de2 = _this.find("td:eq(4)").html();
+        de2 = _this.find("td:eq(3)").html();
     }
-    var pc = _this.find("td:eq(5) a").attr("href") != undefined ? _this.find("td:eq(5) a").attr("href") : _this.find("td:eq(5) input").val();
-    var pcs = _this.find("td:eq(6) a").attr("title") != undefined ? _this.find("td:eq(6) a").attr("title") : _this.find("td:eq(6) input").val();
-    var mib = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
-    var mibs = _this.find("td:eq(8) span:eq(0)").text() != "" ? _this.find("td:eq(8) span:eq(0)").text() : _this.find("td:eq(8) input").val();
+    var pc = _this.find("td:eq(4) a").attr("href") != undefined ? _this.find("td:eq(4) a").attr("href") : _this.find("td:eq(4) input").val();
+    var pcs = _this.find("td:eq(5) a").attr("title") != undefined ? _this.find("td:eq(5) a").attr("title") : _this.find("td:eq(5) input").val();
+    var mib = _this.find("td:eq(6) span:eq(0)").text() != "" ? _this.find("td:eq(6) span:eq(0)").text() : _this.find("td:eq(6) input").val();
+    var mibs = _this.find("td:eq(7) span:eq(0)").text() != "" ? _this.find("td:eq(7) span:eq(0)").text() : _this.find("td:eq(7) input").val();
     title = title.replace("{", "<span class='red-color'>").replace("}", "</span>").replace("{", "<span class='red-color'>").replace("}", "</span>");
     de1 = de1.replace("{", "<span class='red-color'>").replace("}", "</span>");
     de2 = de2.replace("{", "<span class='red-color'>").replace("}", "</span>");
