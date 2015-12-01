@@ -398,7 +398,7 @@ $.fn.extend({
         });
         formData["type"] = params.type;
         formData["forType"] = params.forType;
-        if (!params.forType) {
+        if (params.forType == 0) {
             formData["checkData"] = params.checkData.toString();
         }
         if (params.campaignId) {
@@ -657,7 +657,7 @@ $.extend({
                                 "<td class='InputTd'>" + "<span>" + parseFloat(_maxPrice).toFixed(2) + "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>" +
                                 "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
                                 "<td >" + json[i].campaignName + "</td>";
-                                "</tr>";
+                            "</tr>";
                             _adGroudTable.append(_tbody);
                         }
                     } else {
