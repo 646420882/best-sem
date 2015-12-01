@@ -755,12 +755,22 @@ $.extend({
             if (checkType.val() == 0 || checkType.val() == undefined) {
                 getMaterials(forType).each(function () {
                     if (this.checked) {
-                        $(this).parent().parent().find(">td:eq(0) span").html("<span class='error' step='3'></span>")
+                        if ($(this).parent().find("span").length > 0) {
+                            $(this).parent().find("span").remove();
+                            $(this).parent().append("<span class='table_delete' step='3'></span>");
+                        }else{
+                            $(this).parent().append("<span class='table_delete' step='3'></span>");
+                        }
                     }
                 });
             } else {
                 getMaterials(forType).each(function () {
-                    $(this).parent().parent().find(">td:eq(0) span").html("<span class='error' step='3'></span>")
+                    if ($(this).parent().find("span").length > 0) {
+                        $(this).parent().find("span").remove();
+                        $(this).parent().append("<span class='table_delete' step='3'></span>");
+                    }else{
+                        $(this).parent().append("<span class='table_delete' step='3'></span>");
+                    }
                 });
             }
 
