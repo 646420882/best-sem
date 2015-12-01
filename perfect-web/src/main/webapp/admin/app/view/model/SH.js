@@ -50,7 +50,7 @@ Ext.define("Perfect.view.model.SH", {
             columnLines:true,
             store: Ext.data.StoreManager.lookup('ShenheStore'),
             columns: [
-                { text: '帐号',  dataIndex: 'userName', flex: 1 },
+                { text: '账号',  dataIndex: 'userName', flex: 1 },
                 { text: '审核状态', dataIndex: 'state',renderer: convert },
                 {text: '操作',renderer:function(value,cellmeta,record,rowIndex,columnIndex,store){
                     var value=record.get("userName");

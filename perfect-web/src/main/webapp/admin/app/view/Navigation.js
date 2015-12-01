@@ -81,7 +81,7 @@ Ext.define("Perfect.view.Navigation", {
                     }
                 },
                 {
-                    text: '百度帐号启用/禁用',
+                    text: '百度账号启用/禁用',
                     handler: function () {
                         var tabs = Ext.getCmp("tabs");
                         if (tabs.getComponent("tab5") == undefined) {

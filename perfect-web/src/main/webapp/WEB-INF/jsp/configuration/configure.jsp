@@ -127,7 +127,7 @@
                                 $('.delBtn').click(function () {
                                     var id = $(this).attr('data-id');
                                     var userName = $(this).attr('data-userName');
-                                    if(confirm("是否确定删除此帐号")){
+                                    if(confirm("是否确定删除此账号")){
                                         $.ajax({
                                             url: "/configuration/acc/deletebdUser",
                                             type: "GET",
@@ -138,8 +138,8 @@
                                             },
                                             success: function (datas) {
                                                 if (datas.status != null && datas.status == true) {
-//                                                    alert("删除成功!请重新登陆你的帐号");
-                                                    AlertPrompt.show("删除成功!请重新登陆你的帐号!")
+//                                                    alert("删除成功!请重新登陆你的账号");
+                                                    AlertPrompt.show("删除成功!请重新登陆你的账号!")
                                                     window.location.reload(true);
                                                 } else {
 //                                                    alert("删除失败!")
@@ -173,14 +173,14 @@
     <div class="mainlist2 over"  style="width:452px;">
         <div class="mainlist">
             <ul>
-                <li><p style="color:red;">注：同步baidu推广帐号密码-如果您更改了推广帐号密码，请立即同步密码。</p></li>
+                <li><p style="color:red;">注：同步baidu推广账号密码-如果您更改了推广账号密码，请立即同步密码。</p></li>
                 <li>
                     <p>请输入CubeSearch密码，以保证账户安全：</p>
 
                     <p><input type="text" class="c_input"></p>
                 </li>
                 <li>
-                    <p>输入推广帐号新密码：</p>
+                    <p>输入推广账号新密码：</p>
 
                     <p><input type="text" class="c_input"></p>
                 </li>

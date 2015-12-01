@@ -19,9 +19,9 @@
                 <li class="current"><a href="${pageContext.request.contextPath}/admin/pullPage">数据拉取</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/biddingConsole">智能竞价</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/lexiconConsole">词库管理</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/getAccountPage">帐号审核</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/getAccountPage">账号审核</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/getRedisPage">redis</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/getAccountAllState">系统帐号启用/禁用</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/getAccountAllState">系统账号启用/禁用</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/addQuestions">问答添加</a></li>
             </ul>
         </div>

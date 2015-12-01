@@ -131,20 +131,20 @@
     <div class="mid over">
         <div class="title_box">
             <div class="on_title over">
-                <a href="../configuration/">用户中心</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="../configuration/">关联账号</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>添加推广帐号</span>
+                <a href="../configuration/">用户中心</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="../configuration/">关联账号</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span>添加推广账号</span>
             </div>
         </div>
         <div id="tab">
             <ul class="tab_menu">
                 <li class="selected">
-                    添加推广帐号
+                    添加推广账号
                 </li>
             </ul>
             <div class="tab_box">
                 <div class="containers">
                  <div class="configure over">
                 <div class="configure_top over">
-                    <h3 class="fl">添加推广帐号</h3>
+                    <h3 class="fl">添加推广账号</h3>
                     <a href="../configuration/"  class="fr"> → 返回管理</a>
                 </div>
                 <div class="configure_under2 over">
@@ -156,7 +156,7 @@
                             </td>
                             <td  id="buzhou2" cname="step2">
                                 <div class="tri">
-                                    <div class="con"><span>2</span>验证推广帐号绑定</div>
+                                    <div class="con"><span>2</span>验证推广账号绑定</div>
                                 </div>
                             </td>
                             <td id="buzhou3" cname="step3">

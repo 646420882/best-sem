@@ -1127,7 +1127,7 @@
                                             <div class="zh_top over">
                                                 <div class="fl">
                                                     <span><b>baidu-bjtthunbohui2134115</b></span>
-                                                    <%--            <span><a href="#">还原帐户</a><input type="checkbox" checked="checkde"/>验证帐户</span>--%>
+                                                    <%--            <span><a href="#">还原账户</a><input type="checkbox" checked="checkde"/>验证账户</span>--%>
                                                 </div>
                                                 <div class="fr"><input type="image" src="../public/img/shuaxin.png">
                                                 </div>
@@ -1135,13 +1135,13 @@
                                             <div class="zh_list02 over">
                                                 <ul>
                                                     <li>
-                                                        <span>帐户余额：<b id="balance" class="blue">￥38678.1</b></span>
+                                                        <span>账户余额：<b id="balance" class="blue">￥38678.1</b></span>
                                                         <span>昨日消费：<b id="cost" class="blue">暂无数据</b></span>
                                                         <span>消费升降：<b id="costStatus" class="blue">暂无数据</b></span>
                                                         <span>动态创意:<a href="#" class="showbox7">开启</a></span>
                                                     </li>
                                                     <li>
-                                                        <span>帐户预算：<b id="accountBudget">不限定</b><a href="#"
+                                                        <span>账户预算：<b id="accountBudget">不限定</b><a href="#"
                                                                                                    class="showbox5">修改</a></span>
                                                         <span>到达预算：<b id="reachBudget" class="blue">-</b></span>
                                                         <span>IP排除：<a href="#" class="showbox6">设置</a></span>

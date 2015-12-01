@@ -29,7 +29,7 @@
             </div>
             <div class="login_click over">
                 <span id="tishi"></span>
-                <a href="/login">→ 已有帐号？登陆</a>
+                <a href="/login">→ 已有账号？登陆</a>
             </div>
             <div class="login_input2">
                 <form id="defaultForm" method="post" class="form-horizontal" action="">
