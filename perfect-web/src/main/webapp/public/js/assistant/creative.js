@@ -602,7 +602,7 @@ function addCreative() {
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='36' ></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
-            "<td><select name='d'><option value='0'>全部</option><option value='1'>移动设备优先</option></select></td>" +
+            "<td><select name='d'><option value='0'>全部设备</option><option value='1'>移动设备优先</option></select></td>" +
             "</tr>";
         _createTable.append(_tbody);
     } else if (sparams.cid != null && sparams.aid == null) {
@@ -1041,7 +1041,7 @@ function updateCreatvie() {
     } else {
         $("#cUpdateForm select[name='pause']").get(0).selectedIndex = 1;
     }
-    if (devicePreference == "全部") {
+    if (devicePreference == "全部设备") {
         $("#cUpdateForm select[name='devicePreference']").get(0).selectedIndex = 0;
     } else {
         $("#cUpdateForm select[name='devicePreference']").get(0).selectedIndex = 1;
