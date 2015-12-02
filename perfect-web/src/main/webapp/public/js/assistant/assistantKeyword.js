@@ -415,12 +415,23 @@ function InputPrice(obj) {
     htmlEm.replaceWith("<input type='text' id='text' style='float:left;width:50px;height:20px;line-height:20px; margin-top:5px;' value='" + htmlValue + "' maxlength='5' />");
     $("#text").focus().val(htmlValue);
 }
-$("body").on("focusout", "#text", function () {
+$("body").bind("keydown", "#text", function (e) {
+    var theEvent = e || window.event;
+    var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
     var PriceVal = $("#text").val();
-    if ($(this).val() == "") {
-        $(this).replaceWith("<span> 0.1</span>");
+    if (code == 13) {
+        if (PriceVal== "") {
+            $("#text").replaceWith("<span> 0.1</span>");
+        }
+        $("#text").replaceWith("<span>" + PriceVal + "</span>");
     }
-    $(this).replaceWith("<span>" + PriceVal + "</span>");
+});
+$("body").on("focusout","#text", function () {
+    var PriceVal = $("#text").val();
+    if (PriceVal  == "") {
+        $("#text").replaceWith("<span> 0.1</span>");
+    }
+    $("#text").replaceWith("<span>" + PriceVal + "</span>");
 });
 
 /*加载列表数据end*/
