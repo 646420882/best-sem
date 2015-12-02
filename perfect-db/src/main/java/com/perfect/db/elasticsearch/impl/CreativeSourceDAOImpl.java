@@ -3,12 +3,13 @@ package com.perfect.db.elasticsearch.impl;
 import com.perfect.dao.RegionalCodeDAO;
 import com.perfect.dao.creative.CreativeSourceDAO;
 import com.perfect.db.elasticsearch.base.BaseEsDaoImpl;
+import com.perfect.db.elasticsearch.core.EsPools;
 import com.perfect.dto.creative.CreativeSourceDTO;
 import com.perfect.dto.creative.EsSearchResultDTO;
 import com.perfect.utils.RegionalCodeUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
@@ -34,8 +35,7 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
     @Resource
     private RegionalCodeDAO regionalCodeDAO;
 
-    @Resource
-    private Client esClient;
+    private final TransportClient esClient = EsPools.getEsClient();
 
     private final String AGG_KEYWORDS = "keywords";
     private final String AGG_HOSTS = "hosts";
@@ -119,13 +119,13 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
             if (aggregation.getName().equals(AGG_KEYWORDS)) {
                 Terms tr = (Terms) aggregation;
                 for (Terms.Bucket bucket : tr.getBuckets()) {
-                    esSearchResultDTO.addKeyword(bucket.getKey(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
+                    esSearchResultDTO.addKeyword(bucket.getKeyAsString(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
                 }
             } else if (aggregation.getName().equals(AGG_HOSTS)) {
                 Terms tr = (Terms) aggregation;
                 for (Terms.Bucket bucket : tr.getBuckets()) {
-                    esSearchResultDTO.addHost(bucket.getKey(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
+                    esSearchResultDTO.addHost(bucket.getKeyAsString(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
                 }
 
@@ -135,10 +135,11 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
                     int region = bucket.getKeyAsNumber().intValue();
                     String name = regionMap.get(region);
                     if (name == null) {
-                        try {
-                            regionMap.putAll(RegionalCodeUtils.regionalCode(Arrays.asList(region)));
+                        Map<Integer, String> regionCodeMap = RegionalCodeUtils.regionalCode(Collections.singletonList(region));
+                        if (Objects.nonNull(regionCodeMap)) {
+                            regionMap.putAll(regionCodeMap);
                             name = regionMap.get(region);
-                        } catch (NullPointerException e) {
+                        } else {
                             name = "-";
                         }
                     }
@@ -148,7 +149,7 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
             } else if (aggregation.getName().equals("all")) {
                 Terms tr = (Terms) aggregation;
                 for (Terms.Bucket bucket : tr.getBuckets()) {
-                    esSearchResultDTO.addTerm(bucket.getKey(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
+                    esSearchResultDTO.addTerm(bucket.getKeyAsString(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
                 }
             }
