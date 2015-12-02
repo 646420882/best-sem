@@ -37,7 +37,6 @@ body {
     font-family: "微软雅黑";
     font-size: 12px;
     min-width: 900px;
-    overflow-y: scroll
 }
 
 img {
@@ -81,6 +80,7 @@ select {
 
 label {
     font-weight: normal;
+    margin: 0px;
 }
 
 table {
@@ -599,3 +599,4 @@ table tr, table tr td {
 .footer p {
     margin: 0px;
 }
+

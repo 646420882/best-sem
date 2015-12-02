@@ -9,7 +9,6 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 /**
  * Created by vbzer_000 on 2014/9/20.
@@ -18,8 +17,6 @@ public class EsIndexUtils {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-es.xml");
-
-        ElasticsearchTemplate elasticsearchTemplate = applicationContext.getBean(ElasticsearchTemplate.class);
 
         if (args.length != 2) {
             System.out.println("missing index name.");

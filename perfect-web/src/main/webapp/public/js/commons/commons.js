@@ -757,9 +757,9 @@ $.extend({
                     if (this.checked) {
                         if ($(this).parent().find("span").length > 0) {
                             $(this).parent().find("span").remove();
-                            $(this).parent().append("<span class='table_delete' step='3'></span>");
+                            $(this).parent().append("<span class='table_delete' step='3'></span>").parent().addClass("del");
                         }else{
-                            $(this).parent().append("<span class='table_delete' step='3'></span>");
+                            $(this).parent().append("<span class='table_delete' step='3'></span>").parent().addClass("del");
                         }
                     }
                 });
@@ -767,9 +767,9 @@ $.extend({
                 getMaterials(forType).each(function () {
                     if ($(this).parent().find("span").length > 0) {
                         $(this).parent().find("span").remove();
-                        $(this).parent().append("<span class='table_delete' step='3'></span>");
+                        $(this).parent().append("<span class='table_delete' step='3'></span>").parent().addClass("del");
                     }else{
-                        $(this).parent().append("<span class='table_delete' step='3'></span>");
+                        $(this).parent().append("<span class='table_delete' step='3'></span>").parent().addClass("del");
                     }
                 });
             }
