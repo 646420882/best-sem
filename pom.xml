@@ -39,7 +39,7 @@
                 <mongo.username>perfect</mongo.username>
                 <mongo.password>perfect</mongo.password>
 
-                <es.host>192.168.100.10:9300</es.host>
+                <es.host>192.168.100.10:29300</es.host>
                 <es.cluster>es-intern-cluster</es.cluster>
             </properties>
         </profile>
@@ -63,22 +63,23 @@
     </profiles>
 
     <properties>
-        <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
-        <springframework-version>4.1.8.RELEASE</springframework-version>
-        <spring-data-mongo-version>1.7.2.RELEASE</spring-data-mongo-version>
-        <spring-security-version>3.2.9.RELEASE</spring-security-version>
-        <cglib-version>3.1</cglib-version>
-        <guava-version>18.0</guava-version>
-        <fasterxml-jackson-version>2.5.4</fasterxml-jackson-version>
-        <httpclient-version>4.5.1</httpclient-version>
-        <jstl-version>1.2</jstl-version>
-        <hamcrest-version>1.3</hamcrest-version>
-        <mockito-version>1.9.5</mockito-version>
-        <log4j-version>1.2.17</log4j-version>
-        <slf4j-api-version>1.7.12</slf4j-api-version>
-        <slf4j-log4j12-version>1.7.12</slf4j-log4j12-version>
-        <perfect-comp-logging-version>0.0.2-SNAPSHOT</perfect-comp-logging-version>
-        <nexus-local-url>http://repo.best-ad.cn/nexus</nexus-local-url>
+        <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+        <spring.version>4.1.8.RELEASE</spring.version>
+        <spring.data.mongo.version>1.7.2.RELEASE</spring.data.mongo.version>
+        <spring.security.version>3.2.9.RELEASE</spring.security.version>
+        <elasticsearch.version>2.1.0</elasticsearch.version>
+        <cglib.version>3.1</cglib.version>
+        <guava.version>18.0</guava.version>
+        <fasterxml.jackson.version>2.5.4</fasterxml.jackson.version>
+        <httpclient.version>4.5.1</httpclient.version>
+        <jstl.version>1.2</jstl.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <mockito.version>1.9.5</mockito.version>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.api.version>1.7.12</slf4j.api.version>
+        <slf4j.log4j12.version>1.7.12</slf4j.log4j12.version>
+        <perfect.comp.logging.version>0.0.2-SNAPSHOT</perfect.comp.logging.version>
+        <nexus.local.url>http://repo.best-ad.cn/nexus</nexus.local.url>
     </properties>
 
     <repositories>
@@ -95,7 +96,7 @@
         <repository>
             <id>perfect-nexus</id>
             <name>Team Nexus Repository</name>
-            <url>${nexus-local-url}/content/groups/public/</url>
+            <url>${nexus.local.url}/content/groups/public/</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
@@ -109,7 +110,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>perfect-nexus</id>
-            <url>${nexus-local-url}/content/groups/public/</url>
+            <url>${nexus.local.url}/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -122,11 +123,11 @@
     <distributionManagement>
         <repository>
             <id>perfect_nexus_releases</id>
-            <url>${nexus-local-url}/content/repositories/releases/</url>
+            <url>${nexus.local.url}/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>perfect_nexus_snapshots</id>
-            <url>${nexus-local-url}/content/repositories/snapshots/</url>
+            <url>${nexus.local.url}/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -183,13 +184,13 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-mongodb</artifactId>
-                <version>${spring-data-mongo-version}</version>
+                <version>${spring.data.mongo.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
-                <version>${cglib-version}</version>
+                <version>${cglib.version}</version>
             </dependency>
 
             <dependency>
@@ -202,97 +203,97 @@
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
-                <version>${log4j-version}</version>
+                <version>${log4j.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4j-api-version}</version>
+                <version>${slf4j.api.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j-log4j12-version}</version>
+                <version>${slf4j.log4j12.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-expression</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-config</artifactId>
-                <version>${spring-security-version}</version>
+                <version>${spring.security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-taglibs</artifactId>
-                <version>${spring-security-version}</version>
+                <version>${spring.security.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>${spring-security-version}</version>
+                <version>${spring.security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>${springframework-version}</version>
+                <version>${spring.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -327,30 +328,30 @@
             <dependency>
                 <groupId>jstl</groupId>
                 <artifactId>jstl</artifactId>
-                <version>${jstl-version}</version>
+                <version>${jstl.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-core</artifactId>
-                <version>${hamcrest-version}</version>
+                <version>${hamcrest.version}</version>
             </dependency>
 
             <!-- JSON -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>${fasterxml-jackson-version}</version>
+                <version>${fasterxml.jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${fasterxml-jackson-version}</version>
+                <version>${fasterxml.jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>${fasterxml-jackson-version}</version>
+                <version>${fasterxml.jackson.version}</version>
             </dependency>
 
             <dependency>
@@ -371,7 +372,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>${guava-version}</version>
+                <version>${guava.version}</version>
             </dependency>
 
             <!-- POI -->
@@ -391,7 +392,7 @@
                 <version>2.11.0</version>
             </dependency>
 
-            <!-- Apache Commons -->
+            <!-- Apache Commons jar -->
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
@@ -427,7 +428,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>${httpclient-version}</version>
+                <version>${httpclient.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -446,13 +447,13 @@
             <dependency>
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
-                <version>1.7.3</version>
+                <version>${elasticsearch.version}</version>
             </dependency>
-            <dependency>
+            <!--<dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-elasticsearch</artifactId>
-                <version>1.2.2.RELEASE</version>
-            </dependency>
+                <version>1.3.1.RELEASE</version>
+            </dependency>-->
 
             <!-- javaMail -->
             <dependency>
@@ -526,7 +527,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>${mockito-version}</version>
+                <version>${mockito.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -543,7 +544,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin-version}</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

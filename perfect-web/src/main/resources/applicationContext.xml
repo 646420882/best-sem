@@ -22,9 +22,9 @@
           class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
 
 
-    <!-- ============================================= -->
-    <import resource="spring-mongodb.xml"/>
-    <import resource="spring-es.xml"/>
+    <!-- ====================== Additional Resources ======================= -->
     <import resource="applicationContext-security.xml"/>
+    <import resource="spring-mongodb.xml"/>
+    <!--<import resource="spring-es.xml"/>-->
 
 </beans>
