@@ -728,70 +728,76 @@
     <h2 id="box6"><span class="fl">自定义列</span><a href="#" class="close">×</a></h2>
 
     <div class="mainlist">
+        <ul id="customColumns">
+            <li>
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,0)" type="checkbox" checked
+                                                                               value="allColumns" name="columns"> 全部添加</label></span>
+            </li>
+        </ul>
         <ul id="customColList">
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="campaignName" name="columns"> 推广计划</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="cpm"
                                                                                name="columns"> 千次展现消费</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="adgroupName" name="columns"> 推广单元</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="impression" name="columns">
                     展现量</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="statusStr"
                                                                                name="columns"> 状态</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="ctr" name="columns">
                     点击率</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="price" name="columns"> 出价</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="cpc"
                                                                                name="columns">平均点击价格</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="pcQuality" name="columns"> PC端质量度</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="mQuality"
                                                                                name="columns">移动端质量度</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="click"
                                                                                name="columns"> 点击量</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="currentRank" name="columns"> 当前排名</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="cost" name="columns">
                     消费</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="pcDestinationUrl" name="columns">
                     Pc&nbsp;URL</label></span>
             </li>
-            <li><span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+            <li><span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="ruleDesc"
                                                                                name="columns"> 竞价规则</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="mobileDestinationUrl"
                                                                                name="columns">
                     Mobile&nbsp;URL</label></span>
             </li>
-            <li><span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+            <li><span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="biddingStatus" name="columns">
                 竞价状态</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="matchType" name="columns">
                     匹配模式</label></span>
             </li>
@@ -1006,6 +1012,35 @@
 
     });
 
+    function customColumns(obj,type){
+        if(type == 0){
+            if($(obj).prop('checked') == false){
+                $("#customColList li input").each(function(){
+                    $(this).prop('checked',false);
+                })
+            }else{
+                $("#customColList li input").each(function(i){
+                    $(this).prop('checked','true');
+                })
+            }
+        }else if(type == 1){
+            if($(obj).prop('checked') == false){
+                $("#customColumns li input").prop('checked',false);
+            }else{
+                var isFlag = true;
+                $("#customColList li input").each(function(i){
+                    if($(this).prop('checked') == false){
+                        isFlag = false;
+                        return;
+                    }
+                })
+                if(isFlag == true){
+                    $("#customColumns li input").prop('checked',true);
+                }
+            }
+        }
+
+    }
     /******************zTree********************/
 
     var setting = {
