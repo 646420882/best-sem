@@ -1,16 +1,13 @@
 package com.perfect.entity.creative;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+import java.io.Serializable;
 
 /**
  * Created by vbzer_000 on 2014/9/16.
  * 创意推荐实体
  */
-@Document(indexName = "data", type = "creative")
-public class CreativeSourceEntity {
+public class CreativeSourceEntity implements Serializable {
 
-    @Id
     private String id;
 
     private String body;    //内容信息
@@ -28,6 +25,7 @@ public class CreativeSourceEntity {
     private String html;        //html信息
 
     private Integer region;     //地域
+
 
     public String getKeyword() {
         return keyword;

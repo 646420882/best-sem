@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.perfect.utils.MD5;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
@@ -18,7 +17,9 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Created by baizz on 2014-12-1.
+ * Created on 2014-12-01.
+ *
+ * @author dolphineor
  */
 public class EsTemplate implements EsRequest {
 
@@ -105,8 +106,8 @@ public class EsTemplate implements EsRequest {
     }
 
     public long count() {
-        CountRequestBuilder countRequestBuilder = getCountRequestBuilder();
-        return countRequestBuilder.get().getCount();
+        SearchRequestBuilder countRequestBuilder = getCountRequestBuilder();
+        return countRequestBuilder.get().getHits().getTotalHits();
     }
 
     public void delete(String id) {
@@ -118,13 +119,14 @@ public class EsTemplate implements EsRequest {
 
     protected String getMD5(Map<String, Object> source) {
         Objects.requireNonNull(md5Fields);
-        String key = "";
-        for (String field : md5Fields) {
-            key += (String) source.get(field);
+
+        StringBuilder keyBuilder = new StringBuilder();
+        for (int i = 0, l = md5Fields.length; i < l; i++) {
+            keyBuilder.append(source.get(md5Fields[i]).toString());
         }
 
         MD5.Builder md5 = new MD5.Builder();
-        md5.password(key);
+        md5.password(keyBuilder.toString());
         md5.salt(SALT);
         return md5.build().getMD5();
     }

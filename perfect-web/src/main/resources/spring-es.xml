@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Deprecated -->
+<!--
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
@@ -21,9 +23,5 @@
         <constructor-arg name="elasticsearchOperations" ref="elasticsearchTemplate"/>
     </bean>
 
-    <!--<bean id="esTemplate" class="com.perfect.db.elasticsearch.core.EsTemplate">
-        <constructor-arg index="0" value="data"/>
-        <constructor-arg index="1" value="creative"/>
-    </bean>-->
-
 </beans>
+-->

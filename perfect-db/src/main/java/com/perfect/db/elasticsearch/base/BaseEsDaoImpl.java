@@ -1,20 +1,17 @@
 package com.perfect.db.elasticsearch.base;
 
 import com.perfect.dao.base.HeyCrudRepository;
+import com.perfect.db.elasticsearch.core.EsPools;
 import com.perfect.dto.BaseDTO;
 import com.perfect.utils.json.JSONUtils;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.count.CountRequestBuilder;
-import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
-import org.elasticsearch.action.deletebyquery.DeleteByQueryRequestBuilder;
-import org.elasticsearch.action.deletebyquery.DeleteByQueryResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
@@ -23,7 +20,6 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +28,13 @@ import java.util.Map;
 /**
  * Created by yousheng on 14/12/4.
  */
+@SuppressWarnings("unchecked")
 public abstract class BaseEsDaoImpl<T extends BaseDTO, ID extends Serializable> implements HeyCrudRepository<T, ID> {
 
-    @Resource
-    private Client esClient;
+//    @Resource
+//    private Client esClient;
+
+    private final TransportClient esClient = EsPools.getEsClient();
 
     public abstract String getIndex();
 
@@ -123,7 +122,6 @@ public abstract class BaseEsDaoImpl<T extends BaseDTO, ID extends Serializable> 
             outputList.add(dto);
         }
 
-
         return outputList;
     }
 
@@ -136,10 +134,8 @@ public abstract class BaseEsDaoImpl<T extends BaseDTO, ID extends Serializable> 
 
         List<String> idList = new ArrayList<>();
 
-        ids.forEach((id) -> {
-            idList.add(id.toString());
-        });
-        builder.queryName("ids").ids(idList.toArray(new String[]{}));
+        ids.forEach((id) -> idList.add(id.toString()));
+        builder.queryName("ids").ids(idList.toArray(new String[idList.size()]));
 
         SearchResponse response = searchRequestBuilder.setQuery(builder).get();
 
@@ -159,9 +155,12 @@ public abstract class BaseEsDaoImpl<T extends BaseDTO, ID extends Serializable> 
 
     @Override
     public long count() {
-        CountRequestBuilder countRequestBuilder = esClient.prepareCount(getIndex()).setTypes(getType());
-        CountResponse response = countRequestBuilder.setQuery(QueryBuilders.matchAllQuery()).get();
-        return response.getCount();
+        SearchRequestBuilder countRequestBuilder = esClient.prepareSearch(getIndex())
+                .setTypes(getType())
+                .setQuery(QueryBuilders.matchAllQuery())
+                .setSize(0);
+
+        return countRequestBuilder.get().getHits().totalHits();
     }
 
     @Override
@@ -201,16 +200,14 @@ public abstract class BaseEsDaoImpl<T extends BaseDTO, ID extends Serializable> 
 
     @Override
     public int deleteByIds(List<ID> ids) {
+        // TODO elasticsearch 2.0 delete-by-query
+//        DeleteByQueryRequestBuilder deleteByQueryRequestBuilder = esClient.prepareDeleteByQuery(getIndex());
+//        IdsQueryBuilder idsQueryBuilder = QueryBuilders.idsQuery(getType()).addIds(ids.toArray(new String[ids.size()]));
+//        DeleteByQueryResponse responses = deleteByQueryRequestBuilder.setQuery(idsQueryBuilder).get();
+//
+//        return responses.getIndex(getIndex()).getSuccessfulShards();
 
-        DeleteByQueryRequestBuilder deleteByQueryRequestBuilder = esClient.prepareDeleteByQuery(getIndex());
-
-
-        IdsQueryBuilder idsQueryBuilder = QueryBuilders.idsQuery(getType()).addIds(ids.toArray(new String[]{}));
-
-
-        DeleteByQueryResponse responses = deleteByQueryRequestBuilder.setQuery(idsQueryBuilder).get();
-
-        return responses.getIndex(getIndex()).getSuccessfulShards();
+        return 0;
     }
 
     @Override
