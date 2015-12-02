@@ -1275,7 +1275,7 @@ $(function () {
                         $.each(data.statist, function (i, items) {
 
                             if (reportTypes == "2" || reportTypes == "3") {
-                                html_GoAll = "<tr><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                                html_GoAll = "";
                                 html_GoAll = html_GoAll + "<tr><td>计算机</td>"
                                 + "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
                                 + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
@@ -1303,7 +1303,6 @@ $(function () {
                                     headTd = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
                                     bodyTd = "<td>&nbsp;</td><td>&nbsp;</td>";
                                 }
-                                html_GoAll = "<tr><td>合计</td>" + headTd + "</tr>"
                                 html_GoAll = html_GoAll + "<tr><td>计算机</td>"
                                 + bodyTd + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
                                 + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
@@ -1405,7 +1404,7 @@ $(function () {
                     var html_UserPro = "";
                     $.each(data.statist, function (i, items) {
 
-                        html_UserPro = "<tr><td>合计</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
+                        html_UserPro = "";
                         html_UserPro = html_UserPro + "<tr><td>计算机</td>"
                         + "<td>" + items.pcImpression + "</td><td>" + items.pcClick + "</td>"
                         + "<td>" + Math.round(items.pcCost * 100) / 100 + "</td>"
