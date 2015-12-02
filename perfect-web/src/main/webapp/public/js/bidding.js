@@ -867,7 +867,7 @@ $("#Matching").change(function () {
         $(this).parent().parent().next().find("input").prop("checked", false);
     }
 });
-$("#keywordQuality").change(function () {
+$("#keywordQualitys").change(function () {
     if ($(this).is(":checked")) {
         $(this).parent().parent().next().find("input").prop("checked", true);
     } else {

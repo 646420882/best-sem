@@ -135,7 +135,7 @@
                                                                                         type="checkbox"
                                                                                         name="keywordQuality"
                                                                                         value="1"
-                                                                                        checked="checked" id="keywordQuality">&nbsp;
+                                                                                        checked="checked" id="keywordQualitys">&nbsp;
                                                     全选</label></div>
                                                 <div class="w_list02 fl over aline" id="keywordQuality">
                                                     <ul>
