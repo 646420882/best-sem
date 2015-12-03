@@ -860,6 +860,7 @@ window.onload = function () {
 
 };
 //高级搜索checkd
+/*
 $("#Matching").change(function () {
     if ($(this).is(":checked")) {
         $(this).parent().parent().next().find("input").prop("checked", true);
@@ -873,4 +874,9 @@ $("#keywordQualitys").change(function () {
     } else {
         $(this).parent().parent().next().find("input").prop("checked", false);
     }
+
 });
+
+
+});*/
+

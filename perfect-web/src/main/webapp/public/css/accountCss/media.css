@@ -78,9 +78,6 @@
         width: 73%;
     }
 
-    .w_list03 ul li {
-        padding: 0 10px;
-    }
 }
 
 /******1500************/
@@ -229,9 +226,6 @@
         font-size: 28px;
     }
 
-    .w_list03 ul li {
-        padding: 0 5px;
-    }
 }
 
 /******1368************/
@@ -311,10 +305,6 @@
         font-size: 28px;
     }
 
-    .w_list03 ul li {
-        padding: 0 5px;
-        margin-right: 10px;
-    }
 }
 
 /******1360************/
@@ -331,10 +321,6 @@
         width: 9.8%;
     }
 
-    .w_list03 ul li {
-        padding: 0 5px;
-        margin-right: 10px;
-    }
 }
 
 /******1280************/
@@ -415,12 +401,6 @@
 
     .list01_under2 ul li span {
         font-size: 26px;
-    }
-
-    .w_list03 ul li {
-
-        padding: 0 4px;
-        margin-right: 5px;
     }
 
     .zs_bottom2.zs_bottom_list {
@@ -516,11 +496,6 @@
         font-size: 20px;
     }
 
-    .w_list03 ul li {
-        padding: 0 5px;
-        margin-right: 10px;
-    }
-
     .ui-daterangepicker .range-start, .ui-daterangepicker .range-end {
         margin-left: 4px;
     }
@@ -537,10 +512,6 @@
     .zhushou_concent .wrap_list01 .w_text {
         width: 170px;
         padding: 0;
-    }
-
-    .w_list03 ul li {
-        margin-right: 5px;
     }
 
     .wrap_list01 {
@@ -660,7 +631,6 @@
     }
 
     .zhushou_concent .wrap_list01 span {
-        margin-top: 5px;
         padding: 0;
     }
 
@@ -732,12 +702,6 @@
     .ui-datepicker td {
         border: 0 none;
         padding: 0.5px;
-    }
-
-    .w_list03 ul li {
-
-        padding: 0 5px;
-        margin-right: 10px;
     }
 
     .zs_concent_top ul li {

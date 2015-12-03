@@ -97,16 +97,15 @@ table tr, table tr td {
 
 /*top*/
 .top_heade {
-    height: 94px;
+    height: 82px;
 }
 
 .head_top {
     width: 100%;
-    height: 94px;
+    height: 82px;
     position: fixed;
     top: 0px;
     left: 0px;
-    background: url(/public/img/top_bgimg.jpg) center repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -114,24 +113,21 @@ table tr, table tr td {
     vertical-align: middle;
     z-index: 998;
     min-width: 700px;
+    padding: 0 20px;
+    background: #ffffff;
 }
 
 .top_middle {
     width: 100%;
-    height: 94px;
+    height: 82px;
     position: relative;
 
 }
 
 .top_mid {
     width: 30%;
-    height: 94px;
-    line-height: 94px;
-}
-
-.logo {
-    padding-left: 2%;
-    padding-left: 20px;
+    height: 82px;
+    line-height: 82px;
 }
 
 .logo img {
@@ -191,16 +187,41 @@ table tr, table tr td {
 .nav {
     height: 100%;
     position: fixed;
-    z-index: 112;
+    z-index: 99;
     left: 0px;
-    top: 94px;
+    top: 82px;
+    background: #334e72;
 }
 
 .nav_left {
     height: 100%;
     position: relative;
-    width: 172px;
+    width: 65px;
     z-index: 111;
+}
+
+.nav_hide .nav_left {
+    width: 155px;
+}
+
+.nav_hide .mid {
+    padding-left: 155px;
+}
+
+.nav_hide .nav_left .nav_under ul li h3 {
+    display: inline-block;
+    float: left;
+    margin: 0 0 0 20px;
+}
+
+.nav_hide .nav_left .nav_under ul li span {
+    float: left;
+    display: inline-block;
+}
+
+.nav_hide .nav_left .nav_under ul li a {
+    text-align: center;
+    padding-left: 26px;
 }
 
 .nav_bg {
@@ -230,7 +251,14 @@ table tr, table tr td {
 
 .user_mid {
     *width: 68%;
-    padding-top: 20px;
+}
+
+.user_mid ul li {
+    display: block;
+    float: left;
+    height: 82px;
+    border-left: 1px solid #ededed;
+    padding: 10px 20px;
 }
 
 .user_img {
@@ -256,10 +284,8 @@ table tr, table tr td {
 }
 
 .user_logo {
-    height: 55px;
-    /* padding:0 2%;*/
+    height: 82px;
     *width: 245px;
-    padding-right: 12px;
     position: relative;
 }
 
@@ -268,6 +294,7 @@ table tr, table tr td {
 }
 
 .user_logo2 {
+    margin-left: 5px;
 
 }
 
@@ -285,7 +312,7 @@ table tr, table tr td {
 
 .user_text b {
     font-weight: normal;
-    color: #fff;
+    color: #777777;
     margin-right: 2px;
 }
 
@@ -304,18 +331,18 @@ table tr, table tr td {
 }
 
 .user_top span {
-    color: #f5b802;
+    color: #1fb8f1;
     font-weight: bold;
 
 }
 
 .user_top input {
     float: left;
-    margin-top: 4px;
+    margin: 4px 0 0 5px;
 }
 
 .user_name {
-    color: #ffffff;
+    color: #777777;
     height: 24px;
     line-height: 24px;
     -moz-border-radius: 5px;
@@ -326,6 +353,8 @@ table tr, table tr td {
     cursor: pointer;
     padding: 0 10px;
     overflow: hidden;
+    background: #f1f1f1;
+    float: right;
 }
 
 .user_text {
@@ -349,7 +378,7 @@ table tr, table tr td {
 .user_names {
     position: absolute;
     top: 27px;
-    left: 4px;
+    left: 0px;
     background: #FFFFFF;
     color: #626262;
     font-weight: bold;
@@ -361,9 +390,11 @@ table tr, table tr td {
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
     z-index: 120;
     box-shadow: 0px 0px 1px 2px #d2daef;
+    width: 100%;
 }
 
 .switchAccountSerach {
+    width: 93%;
     margin: 10px 10px 0 10px;
     padding: 0 5px;
     border: 1px solid #ccc;
@@ -403,6 +434,9 @@ table tr, table tr td {
     cursor: pointer;
     margin-bottom: 10px;
     padding: 0 15px;
+    display: inherit;
+    float: inherit;
+    height: auto;
 }
 
 .user_names ul li:hover {
@@ -416,25 +450,24 @@ table tr, table tr td {
 }
 
 .nav_under ul li {
-    height: 61px;
+    height: 65px;
     position: relative;
-    border-bottom: 1px solid #e4e4e4;
-    overflow: hidden;
 }
 
 .nav_under ul li h3 {
-    line-height: 34px;
+    line-height: 20px;
     font-weight: normal;
-    margin: 0 0 0 10px;
-    font-size: 16px;
+    font-size: 13px;
+    display: none;
 
 }
 
 .nav_under ul li a {
     display: block;
-    padding: 15px 10%;
+    height: 65px;
+    padding-top: 20px;
     font-size: 15px;
-    color: #959cad;
+    color: #a7b1c2;
 }
 
 .nav_under ul li a:hover {
@@ -443,10 +476,9 @@ table tr, table tr td {
 
 .nav_under ul li span {
     display: block;
-    float: left;
-    width: 36px;
-    height: 36px;
-    margin: 0 10% 0 0px;
+    width: 22px;
+    height: 24px;
+    margin: 0 auto;
 }
 
 .user_detali {
@@ -456,8 +488,12 @@ table tr, table tr td {
 .user_detali ul li {
     padding: 0 15px;
     margin-bottom: 15px;
-    color: #ffffff;
+    color: #777777;
     overflow: hidden;
+    display: inherit;
+    float: inherit;
+    height: auto;
+    border: none;
 }
 
 .user_detali ul li span {
@@ -466,11 +502,11 @@ table tr, table tr td {
 
 .user_detali ul li b a {
     font-size: 1.3em;
-    color: #f2ab00;
+    color: #1fb8f1;
 }
 
 .nav_under {
-    width: 172px;
+    width: 100%;
     position: relative;
     height: 100%;
 }
@@ -501,26 +537,30 @@ table tr, table tr td {
 }
 
 .nav_under ul .current {
-    background: #ffffff;
+    background: #01aeef;
 }
 
 .nav_under ul .current a {
-    color: #ffb500;
+    color: #fff;
 }
 
-/*.nav_under ul .current .list_1{
+.nav_under ul .current .list_1 {
     background: url(/public/img/bg.png) -10px -515px no-repeat;
 }
-.nav_under ul .current .list_2{
+
+.nav_under ul .current .list_2 {
     background: url(/public/img/bg.png) -88px -515px no-repeat;
 }
-.nav_under ul .current .list_3{
+
+.nav_under ul .current .list_3 {
 
     background: url(/public/img/bg.png) -50px -515px no-repeat;
 }
-.nav_under ul .current .list_4{
+
+.nav_under ul .current .list_4 {
     background: url(/public/img/bg.png) -126px -515px no-repeat;
-}*/
+}
+
 .nav_under ul .current .list_5 {
     background: url(/public/img/bg.png) -172px -515px no-repeat;
 }
@@ -600,3 +640,6 @@ table tr, table tr td {
     margin: 0px;
 }
 
+input[type=radio], input[type=checkbox] {
+    margin: 4px 0 0;
+}

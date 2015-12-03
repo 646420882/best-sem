@@ -573,12 +573,15 @@ $.extend({
             for (var i = 0; i < children_checks.length; i++) {
                 children_checks[i].checked = true;
             }
+            $(children_checks).parent().parent().addClass("checked_all");
+            console.log(children_checks);
         }
         else {
             var children_checks = document.getElementsByName(checkIdStr);
             for (var i = 0; i < children_checks.length; i++) {
                 children_checks[i].checked = false;
             }
+            $(children_checks).parent().parent().removeClass("checked_all ");
         }
     },
     foRComplete: function (result) {
@@ -758,7 +761,7 @@ $.extend({
                         if ($(this).parent().find("span").length > 0) {
                             $(this).parent().find("span").remove();
                             $(this).parent().append("<span class='table_delete' step='3'></span>").parent().addClass("del");
-                        }else{
+                        } else {
                             $(this).parent().append("<span class='table_delete' step='3'></span>").parent().addClass("del");
                         }
                     }
@@ -768,7 +771,7 @@ $.extend({
                     if ($(this).parent().find("span").length > 0) {
                         $(this).parent().find("span").remove();
                         $(this).parent().append("<span class='table_delete' step='3'></span>").parent().addClass("del");
-                    }else{
+                    } else {
                         $(this).parent().append("<span class='table_delete' step='3'></span>").parent().addClass("del");
                     }
                 });
@@ -883,6 +886,7 @@ $("#filterSearchTemplate").click(function (e) {
         window.event.cancelBubble = true;//兼容IE
     }
 });
+$("#kkeyword").next().next().find("th").mouseover().append("<span class='remove'><img src='../public/img/select.png'></span>");
 var TabModel = {
     Show: function (type, _this, e) {
         if (!jsonData.cid) {
@@ -1517,8 +1521,47 @@ var timing = {
             console.log("No local materials need to be uploaded to Baidu!");
         }
 
-        var startDate = $('#TimingDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
-        var endDate = $('#TimingDate').data('daterangepicker').endDate.format('YYYY-MM-DD');
+        var startDateArr = $('#TimingDate').data('daterangepicker').startDate.format('YYYY-MM-DD').split("-");
+        var endDateArr = $('#TimingDate').data('daterangepicker').endDate.format('YYYY-MM-DD').split("-");
+
+        var hour = $("#timePeriod").find("option:selected").val();
+
+        var day;
+        if (startDateArr[0].trim() == endDateArr[0].trim()) {
+            day = startDateArr[0].trim();
+        } else {
+            day = startDateArr[0].trim() + "-" + endDateArr[0].trim();
+        }
+
+        var month;
+        if (startDateArr[1].trim() == endDateArr[1].trim()) {
+            month = startDateArr[1].trim();
+        } else {
+            month = startDateArr[1].trim() + "-" + endDateArr[1].trim();
+        }
+
+        var year;
+        if (startDateArr[2].trim() == endDateArr[2].trim()) {
+            year = startDateArr[2].trim();
+        } else {
+            year = startDateArr[2].trim() + "-" + endDateArr[2].trim();
+        }
+
+        var cronExpression = "0 0 " + hour + " " + day + " " + month + " ? " + year;
+
+        $.ajax({
+            url: '/material/schedule/upload',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "level": this.elementType,
+                "content": this.elements,
+                "cron": cronExpression
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        });
 
         $('#Timings').hide();
     }

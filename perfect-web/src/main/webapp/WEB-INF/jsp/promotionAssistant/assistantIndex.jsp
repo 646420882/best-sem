@@ -70,7 +70,7 @@
 </head>
 <body>
 <div id="background" class="background"></div>
-<div id="progressBar" class="progressBar">数据加载中，请稍等...</div>
+<div id="progressBar" class="progressBar"><span></span>数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <jsp:include page="../promotionAssistant/alert/adgroupAlert.jsp"/>
 <div class="concent over">

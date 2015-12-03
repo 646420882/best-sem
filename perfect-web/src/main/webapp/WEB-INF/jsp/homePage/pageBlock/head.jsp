@@ -11,68 +11,70 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
 %>
 <%--<div class="top_heade">--%>
-
 <div class="head_top">
-
-    <div class="nav_bg">
-        <img src="${pageContext.request.contextPath}/public/img/top_bgimg.jpg" width="100%" height="100%">
-    </div>
     <div class="top_middle" id="top_middle">
         <div class="user_mid fr">
-            <div class="user_logo fl">
-                <div class="user_logo1">
-                    <div class="user_img fl over">
+            <ul>
+                <li> <div class="user_logo fl">
+                    <div class="user_logo1">
+                        <div class="user_img fl over">
                             <span id="head_click"><img id="user_img"
                                                        src="${pageContext.request.contextPath}/account/getImg"></span>
-                    </div>
-                    <div class="user_text fl">
-                        <div class="user_top over">
-                            <div class="fl"><b id="time"></b><a
-                                    href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
-                            </div>
-                            <input type="image" onclick="downloadUser()"
-                                   src="${pageContext.request.contextPath}/public/img/download.png"
-                                   class="glyphicon-class" style="padding:0 3px;">
-
-                            <div class="user_logo2 fr">
-                                <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
-                                    <button style="border: none;color: #FFFFFF;border:none;background: none;line-height: normal;"
-                                            onclick="$('form[logout]').submit();">退出
-                                    </button>
-
-                                </form>
-                            </div>
                         </div>
-                        <div class="user_select">
-                            <div class="user_name">
-                                <span></span><img
-                                    src="${pageContext.request.contextPath}/public/img/username_select.png">
-                            </div>
-                            <div id="switchAccount" class="user_names over hides">
-                                <input type="text" placeholder="请输入关键词..." id="searchCount"
-                                       class="switchAccountSerach ">
-
-                                <div class="countname">
-                                    <ul id="switchAccount_ul" class="switchAccount_ul">
-
-                                    </ul>
+                        <div class="user_text fl">
+                            <div class="user_top over">
+                                <div class="fl"><b id="time"></b><a
+                                        href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
                                 </div>
-                                <div id="switchAccount_ul_pages" class="switchAccount_ul_pages">
-                                    <div class="page_ul">
+                                <input type="image" onclick="downloadUser()"
+                                       src="${pageContext.request.contextPath}/public/img/download.png"
+                                       class="glyphicon-class" style="padding:0 3px;">
+
+                                <div class="user_logo2 fl">
+                                    <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
+                                        <button style="border: none;color: #777777;border:none;background: none;line-height: normal;"
+                                                onclick="$('form[logout]').submit();">退出
+                                        </button>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="user_select">
+                                <span class="fl">百度账户:</span>
+                                <div class="user_name">
+                                    <span></span><img
+                                        src="${pageContext.request.contextPath}/public/img/username_select.png">
+                                </div>
+                                <div id="switchAccount" class="user_names over hides">
+                                    <input type="text" placeholder="请输入关键词..." id="searchCount"
+                                           class="switchAccountSerach ">
+
+                                    <div class="countname">
+                                        <ul id="switchAccount_ul" class="switchAccount_ul">
+
+                                        </ul>
+                                    </div>
+                                    <div id="switchAccount_ul_pages" class="switchAccount_ul_pages">
+                                        <div class="page_ul">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="user_detali fl over" style="min-width:300px;">
-                <ul>
-                    <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
-                                                                          style="color: white">.</a></li>
-                    <li><span>余额预计可消费：${remainderDays}天</span><span>日预算：${accountBudget}元</span></li>
-                </ul>
-            </div>
+                </div></li>
+                <li>
+                    <div class="user_detali fl over" style="min-width:300px;">
+                        <ul>
+                            <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
+                                                                                  style="color: white">.</a></li>
+                            <li><span>余额预计可消费：${remainderDays}天</span><span>日预算：${accountBudget}元</span></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+
         </div>
 
         <div class="top_mid fl over" <%--id="argDialogDiv"--%>>

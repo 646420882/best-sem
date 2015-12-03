@@ -99,6 +99,26 @@ public interface MaterialsUploadService {
     List<Long> pause(String sysUser);
 
 
+    // ==========================================================
+
+    /**
+     * 上传本地新增物料并启用凤巢中暂停投放的关键词
+     *
+     * @param level 物料层级
+     * @param ids   本地新增物料ID
+     */
+    void uploadAndStartMaterials(int level, String[] ids);
+
+    /**
+     * 暂停指定物料的投放
+     *
+     * @param level 物料层级
+     * @param ids   凤巢物料ID(需要转换成{@code java.lang.Long})
+     */
+    void pauseMaterials(int level, String[] ids);
+    // ==========================================================
+
+
     default boolean isDuplicate(CreativeDTO source, List<CreativeDTO> targets) {
         String sourceMd5 = KeywordDeduplication.MD5
                 .getMD5(source.getTitle() + source.getDescription1() + source.getDescription2());
