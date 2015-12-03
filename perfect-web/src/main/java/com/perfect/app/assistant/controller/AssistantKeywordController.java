@@ -648,7 +648,7 @@ public class AssistantKeywordController extends WebContextSupport {
     public void addSearchwordKeyword(HttpServletResponse response, String agid, String keywords, String matchType) {
         String[] keywordArray = keywords.split("\n");
 
-        List<KeywordDTO> list = new ArrayList<KeywordDTO>();
+        List<KeywordDTO> list = new ArrayList<>();
         for (String kwd : keywordArray) {
             KeywordDTO keywordEntity = new KeywordDTO();
             keywordEntity.setKeyword(kwd);

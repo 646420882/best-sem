@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.utils.MD5;
+import com.perfect.utils.excel.HSSFReadUtils;
 import com.perfect.utils.excel.XSSFReadUtils;
 import com.perfect.utils.excel.XSSFSheetHandler;
 import com.perfect.utils.json.JSONUtils;
@@ -57,7 +58,6 @@ public class KeywordController {
 
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
-    private static final String XLSX = "xlsx";
 
     @RequestMapping(value = "/getKeywordByAdgroupId/{adgroupId}", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView getKeywordByAdgroupId(@PathVariable Long adgroupId,
@@ -111,9 +111,15 @@ public class KeywordController {
             //上传临时文件
             String tmpFile = "";
             String fileName;
+            String XLSX = "xlsx";
             if (!file.isEmpty()) {
                 fileName = file.getOriginalFilename();
+                int point = fileName.lastIndexOf(".");
+                String type = fileName.substring(point);
 
+                if (type.equals(".xls")) {
+                    XLSX = "xls";
+                }
                 MD5.Builder md5Builder = new MD5.Builder();
                 MD5 md5 = md5Builder.password(fileName.replace("." + XLSX, "")).salt(XLSX).build();
                 fileName = md5.getMD5();
@@ -122,46 +128,41 @@ public class KeywordController {
                 FileUtils.copyInputStreamToFile(file.getInputStream(), _file);
                 tmpFile = tmpDirPath + fileName;
 
+            } else {
+                return;
             }
             if (StringUtils.isEmpty(tmpFile)) {
                 return;
             }
 
-            Path tempFile = Paths.get(tmpFile);
             List<KeywordDTO> keyword = new ArrayList<>();
-            XSSFReadUtils.read(tempFile, new XSSFSheetHandler() {
-                @Override
-                protected void rowMap(int sheetIndex, int rowIndex, List<Object> row) {
-                    if (!row.isEmpty()) {
-                        row.forEach(e -> {
-                            KeywordDTO keywordDTO = new KeywordDTO();
-                            if (adgroupId.length() < 24) {
-                                keywordDTO.setAdgroupId(Long.parseLong(adgroupId));
-                            } else {
-                                keywordDTO.setAdgroupObjId(adgroupId);
-                            }
-                            keywordDTO.setKeyword(e.toString());
-                            if (price == null || price.equals("")) {
-                                keywordDTO.setPrice(BigDecimal.valueOf(0.1));
-                            } else {
-                                keywordDTO.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
-                            }
-                            keywordDTO.setMatchType(Integer.parseInt(matchType));
-                            keywordDTO.setPause(false);
-                            keywordDTO.setStatus(-1);
-                            keywordDTO.setPhraseType(Integer.parseInt(phraseType));
-                            keywordDTO.setLocalStatus(1);
-                            keyword.add(keywordDTO);
-                        });
+            if (!XLSX.equals("xls")) {
+                Path tempFile = Paths.get(tmpFile);
+                XSSFReadUtils.read(tempFile, new XSSFSheetHandler() {
+                    @Override
+                    protected void rowMap(int sheetIndex, int rowIndex, List<Object> row) {
+                        if (!row.isEmpty()) {
+                            row.forEach(e -> {
+                                KeywordDTO keywordDTO = restructuring(e.toString(), adgroupId, price, matchType, phraseType);
+                                keyword.add(keywordDTO);
+                            });
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                List<String> read = HSSFReadUtils.read(tmpFile);
+                read.forEach(e -> {
+                    KeywordDTO keywordDTO = restructuring(e, adgroupId, price, matchType, phraseType);
+                    keyword.add(keywordDTO);
+                });
+            }
+
             List<String> stringList = keywordService.insertAll(keyword);
             //delete tmpFile
             Files.delete(Paths.get(tmpFile));
 
             String jsonResult = JSON.toJSONString(stringList);
-            String b = "<script type='text/javascript'>parent.callbackKwd('"+ jsonResult +"')</script>";
+            String b = "<script type='text/javascript'>parent.callbackKwd('" + jsonResult + "')</script>";
             response.getWriter().write(b);
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,5 +221,26 @@ public class KeywordController {
 
         jsonView.setAttributesMap(attributes);
         return jsonView;
+    }
+
+    private KeywordDTO restructuring(String keword, String adgroupId, String price, String matchType, String phraseType) {
+        KeywordDTO keywordDTO = new KeywordDTO();
+        if (adgroupId.length() < 24) {
+            keywordDTO.setAdgroupId(Long.parseLong(adgroupId));
+        } else {
+            keywordDTO.setAdgroupObjId(adgroupId);
+        }
+        keywordDTO.setKeyword(keword);
+        if (price == null || price.equals("")) {
+            keywordDTO.setPrice(BigDecimal.valueOf(0.1));
+        } else {
+            keywordDTO.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
+        }
+        keywordDTO.setMatchType(Integer.parseInt(matchType));
+        keywordDTO.setPause(false);
+        keywordDTO.setStatus(-1);
+        keywordDTO.setPhraseType(Integer.parseInt(phraseType));
+        keywordDTO.setLocalStatus(1);
+        return keywordDTO;
     }
 }
