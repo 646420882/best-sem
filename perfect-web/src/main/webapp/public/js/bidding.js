@@ -874,3 +874,4 @@ $("#keywordQualitys").change(function () {
         $(this).parent().parent().next().find("input").prop("checked", false);
     }
 });
+

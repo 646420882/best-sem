@@ -946,6 +946,7 @@
 
 <%--<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>--%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/index.css">
+<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript"
@@ -967,10 +968,6 @@
     };
     //jqGrid表格宽度自适应
     $(document).ready(function () {
-        var target = document.getElementById("navigator_tips");
-        var myId = document.getElementById("nav_input1");
-        var ztree_minwidth = $(document.body).width() - 452;
-        var ztree_maxwidth = $(document.body).width() - 272;
         $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
         $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
 
@@ -978,9 +975,7 @@
             $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
             $("#table2").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);
         });
-        function Tablewidth() {
-            ztree_minwidth = $(document.body).width() - 452;
-            ztree_maxwidth = $(document.body).width() - 272;
+        /*   function Tablewidth() {
             if ($(".nav_left").css("display") == "none") {
                 $("#table1").jqGrid("setGridWidth", $(document.body).width() - 272, true);
                 $("#table2").jqGrid("setGridWidth", $(document.body).width() - 272, true);
@@ -991,7 +986,7 @@
             }
         }
 
-        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+     if (!!window.ActiveXObject || "ActiveXObject" in window) {
             target.attachEvent('onclick', function (event) {
                 Tablewidth()
             });
@@ -999,7 +994,7 @@
             target.addEventListener('click', function (event) {
                 Tablewidth()
             }, false);
-        }
+        }*
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
             myId.attachEvent('onclick', function (event) {
                 Tablewidth()
@@ -1008,7 +1003,7 @@
             myId.addEventListener('click', function (event) {
                 Tablewidth()
             }, false);
-        }
+        }*/
 
     });
 

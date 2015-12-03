@@ -5,14 +5,14 @@
     float: right;
     width: 100%;
     padding-bottom: 100px;
-    padding-left: 180px;
+    padding-left: 65px;
 
 }
 
 .concent {
     width: 100%;
     min-height: 100%;
-    padding-top: 94px;
+    padding-top: 82px;
     position: relative;
     background: #fff;
     font-family: "微软雅黑";
@@ -32,7 +32,7 @@
 .tab_menu {
     width: 100%;
     float: left;
-    height: 60px;
+    height: 65px;
     border-top: 1px solid #fff;
     background: #f6f6f6;
     margin-bottom: 0px;
@@ -44,7 +44,7 @@
     display: block;
     float: left;
     padding: 0 40px;
-    line-height: 62px;
+    line-height: 66px;
     color: #6f6f6f;
     background: url(/public/img/border.png) right no-repeat;
     font-size: 14px;
@@ -133,13 +133,12 @@
 .list01_top ul {
     display: block;
     float: left;
-    height: 25px;
+    height: 28px;
     margin-left: 25px;
-    border: 1px solid #d6d6d6;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
     background: #fff;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
     position: relative;
     z-index: 3;
     overflow: hidden;
@@ -148,16 +147,17 @@
 .list01_top ul li {
     display: block;
     float: left;
-    height: 25px;
-    line-height: 25px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 20px;
     font-size: 12px;
     font-weight: normal;
     cursor: pointer;
+    border-left: 1px solid #dfdfdf;
 }
 
 .list01_top ul li a {
-    width: 88.5px;
-    line-height: 25px;
+    line-height: 28px;
     text-align: center;
     color: #000000;
     cursor: default;
@@ -174,9 +174,8 @@
 
 .list01_top ul .current a {
     color: #fff;
-    background: url(/public/img/colock.png) 8px 4px no-repeat;
     text-decoration: none;
-    height: 25px;
+    height: 28px;
 }
 
 .list01_top ul .current a:hover {
@@ -189,8 +188,8 @@
 
 .list01_top ul .date input {
     position: absolute;
-    top: 3px;
-    right: 6px;
+    top: 5px;
+    left: 6px;
 }
 
 /***账户诊断***/
@@ -559,25 +558,26 @@
     width: 20px;
     height: 11px;
     background: url(/public/img/bg.png) -50px -10px no-repeat;
-    margin-left: 8px;
     margin: 10px 0 0 8px;
 }
 
 .tips {
-    width: 8px;
-    height: 100%;
-    max-width: 8px;
+    width: 100%;
+    height: 34px;
+    line-height: 34px;
     position: relative;
-    background: url(/public/img/tips_bg_03.png) repeat;
-    cursor: pointer;
     z-index: 120;
     left: 0px;
     top: 0px;
+    text-align: center;
 }
 
 .tips input {
     margin-top: 200px;
     width: 100%;
+}
+.tips span{
+    cursor: pointer;
 }
 
 .page span {
@@ -588,7 +588,6 @@
 /*数据分析*/
 .number_concent {
     background: #f7f9fb;
-    padding-bottom: 20px;
     padding: 20px 2%;
     border-bottom: 1px solid #dadadd;
     border-top: 1px solid #dadadd;
@@ -2988,7 +2987,9 @@ h2 .close {
 .user_select select option {
     font-weight: bold;
 }
-
+.user_selec span{
+    color:#777;
+}
 /**********配置**************/
 .configure {
     padding: 0 1% 80px 1%;
@@ -4764,34 +4765,37 @@ input[type=checkbox]:focus {
     opacity: 1.0;
 }
 
-.tooltip-inner {
-    background: #fff;
-    color: #000;
-    border: 1px solid #f6f6f6;
+.body .ui-tooltip ,.tooltip-inner {
+    background: #334e72;
+    color: #fff;
+    border: 1px solid #334e72;
     -webkit-box-shadow: #666 0px 0px 10px;
     -moz-box-shadow: #666 0px 0px 10px;
     box-shadow: #666 0px 0px 10px;
     font-weight: normal;
-    text-align: left;
+    text-align: center;
+
 }
 
 .tooltip.bottom .tooltip-arrow, .tooltip.top .tooltip-arrow {
-    border-bottom-color: #fff;
-    border-top-color: #fff;
+    border-bottom-color: #334e72;
+    border-top-color: #334e72;
     /*border: 1px solid #f6f6f6;*/
 }
 
-body .ui-tooltip {
-    background: #fff;
-    color: #000;
-    border: 1px solid #f6f6f6;
-    -webkit-box-shadow: #666 0px 0px 10px;
-    -moz-box-shadow: #666 0px 0px 10px;
-    box-shadow: #666 0px 0px 10px;
-    font-weight: normal;
-    z-index: 10000;
+.nav_under .tooltip-inner {
+    padding-top: 0px;
+    height: 34px;
+    line-height: 34px;
+    white-space: nowrap;
+}
+.tooltip.right .tooltip-arrow {
+    border-right-color: #475f80;
 }
 
+.nav_under .tooltip.in {
+    opacity: 0.9;
+}
 .table_add {
     padding: 0 15px;
 }
