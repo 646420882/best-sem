@@ -1301,7 +1301,7 @@ function AddKeywordsSave() {
         }
         var point = uploadFile.lastIndexOf(".");
         var type = uploadFile.substr(point);
-        if (type != ".xlsx" && type != ".XLSX") {
+        if (type != ".xls" && type != ".XLS" && type != ".xlsx" && type != ".XLSX") {
             AlertPrompt.show("上传关键词只支持 excel 2007之后版本的文件");
             return;
         }
