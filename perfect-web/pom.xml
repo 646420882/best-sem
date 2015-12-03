@@ -39,13 +39,6 @@
             <artifactId>perfect-db</artifactId>
         </dependency>
 
-        <!-- 日志组件嵌入 -->
-        <dependency>
-            <groupId>com.perfect</groupId>
-            <artifactId>perfect-comp-logging</artifactId>
-            <version>${perfect.comp.logging.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
