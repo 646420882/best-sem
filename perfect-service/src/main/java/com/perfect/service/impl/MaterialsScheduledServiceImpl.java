@@ -13,9 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.perfect.commons.constants.MaterialsJobEnum.ACTIVE;
+import static com.perfect.commons.deduplication.KeywordDeduplication.MD5.getMD5;
 
 /**
  * Created on 2015-09-29.
@@ -38,45 +41,61 @@ public class MaterialsScheduledServiceImpl implements MaterialsScheduledService 
 
 
     @Override
-    public void configureScheduler(int jobType, String cronExpression) {
+    public void configureScheduler(int jobType, int jobLevel, String[] jobContent, String cronExpression) {
         String userName = AppContext.getUser();
         String userId = systemUserDAO.findByUserName(userName).getId();
+        String jobId = getMD5(userId + ":" + jobType + ":" + jobLevel + ":" + Arrays.asList(jobContent).toString());
 
         logger.info("Configure {}'s Scheduler: {}", userName, cronExpression);
 
         quartzJobManager.addJob(
                 new ScheduledJob.Builder()
-                        .jobId(userId)
+                        .jobId(jobId)
                         .jobName(userName)
                         .jobGroup(MATERIALS_JOB_GROUP)
                         .jobType(jobType)
+                        .jobLevel(jobLevel)
+                        .jobContent(jobContent)
                         .jobStatus(ACTIVE.value())
                         .cronExpression(cronExpression).build());
     }
 
     @Override
-    public boolean isExists(String jobName, String jobGroup, int jobType) {
-        if (Objects.isNull(jobGroup) || jobGroup.isEmpty())
-            jobGroup = MATERIALS_JOB_GROUP;
+    public boolean isExists(int jobType, int jobLevel, String[] jobContent) {
+        String userId = systemUserDAO.findByUserName(AppContext.getUser()).getId();
+        String jobId = getMD5(userId + ":" + jobType + ":" + jobLevel + ":" + Arrays.asList(jobContent).toString());
 
-        return msDAO.isExists(jobName, jobGroup, jobType);
+        return msDAO.isExists(jobId);
     }
 
     @Override
+    @Deprecated
     public void pauseJob(String jobId) {
         quartzJobManager.pauseJob(getScheduledJob(jobId));
     }
 
     @Override
+    @Deprecated
     public void resumeJob(String jobId) {
         quartzJobManager.resumeJob(getScheduledJob(jobId));
     }
 
     @Override
+    @Deprecated
     public void deleteJob(String jobId) {
         quartzJobManager.deleteJob(getScheduledJob(jobId));
     }
 
+
+    @Override
+    public void uploadAndStartMaterials(int level, String[] ids) {
+        ;
+    }
+
+    @Override
+    public void pauseMaterials(int level, String[] ids) {
+        List<Long> materialIds = Arrays.stream(ids).map(Long::parseLong).collect(Collectors.toList());
+    }
 
     private ScheduledJob getScheduledJob(String jobId) {
         return new ScheduledJob.Builder()

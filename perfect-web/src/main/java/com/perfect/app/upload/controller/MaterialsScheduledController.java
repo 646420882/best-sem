@@ -2,7 +2,6 @@ package com.perfect.app.upload.controller;
 
 import com.google.common.collect.Maps;
 import com.perfect.commons.constants.MaterialsJobEnum;
-import com.perfect.core.AppContext;
 import com.perfect.service.MaterialsScheduledService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,18 +39,20 @@ public class MaterialsScheduledController {
 
 
     @RequestMapping(value = "/schedule/upload", method = POST, produces = "application/json")
-    public ModelAndView configureScheduler(@RequestParam(value = "cron") String cronExpression) {
+    public ModelAndView configureScheduler(@RequestParam int level,
+                                           @RequestParam(value = "content") String[] ids,
+                                           @RequestParam(value = "cron") String cronExpression) {
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> attrMap = Maps.newHashMap();
 
         synchronized (this) {
-            if (materialsScheduledService.isExists(AppContext.getUser(), null, MaterialsJobEnum.UPLOAD_MATERIALS.value())) {
+            if (materialsScheduledService.isExists(MaterialsJobEnum.UPLOAD_MATERIALS.value(), level, ids)) {
                 attrMap.put("status", "failed");
 
                 jsonView.setAttributesMap(attrMap);
                 return new ModelAndView(jsonView);
             } else {
-                materialsScheduledService.configureScheduler(MaterialsJobEnum.UPLOAD_MATERIALS.value(), cronExpression);
+                materialsScheduledService.configureScheduler(MaterialsJobEnum.UPLOAD_MATERIALS.value(), level, ids, cronExpression);
                 attrMap.put("status", "success");
 
                 jsonView.setAttributesMap(attrMap);
@@ -66,13 +67,13 @@ public class MaterialsScheduledController {
         Map<String, Object> attrMap = Maps.newHashMap();
 
         synchronized (this) {
-            if (materialsScheduledService.isExists(AppContext.getUser(), null, MaterialsJobEnum.PAUSE_MATERIALS.value())) {
+            if (materialsScheduledService.isExists(MaterialsJobEnum.PAUSE_MATERIALS.value(), 1, null)) {
                 attrMap.put("status", "failed");
 
                 jsonView.setAttributesMap(attrMap);
                 return new ModelAndView(jsonView);
             } else {
-                materialsScheduledService.configureScheduler(MaterialsJobEnum.PAUSE_MATERIALS.value(), cronExpression);
+                materialsScheduledService.configureScheduler(MaterialsJobEnum.PAUSE_MATERIALS.value(), 1, null, cronExpression);
                 attrMap.put("status", "success");
 
                 jsonView.setAttributesMap(attrMap);

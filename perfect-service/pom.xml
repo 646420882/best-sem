@@ -40,6 +40,11 @@
             <artifactId>perfect-utils</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>logApi</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework</groupId>

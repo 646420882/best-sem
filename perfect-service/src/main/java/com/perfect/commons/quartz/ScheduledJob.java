@@ -1,12 +1,14 @@
 package com.perfect.commons.quartz;
 
+import java.io.Serializable;
+
 /**
  * Created on 2015-09-29.
  * <p>定时任务类
  *
  * @author dolphineor
  */
-public class ScheduledJob {
+public class ScheduledJob implements Serializable {
 
     /**
      * 任务id
@@ -25,10 +27,28 @@ public class ScheduledJob {
 
     /**
      * 任务类型
+     *   上传启用
+     *   暂停投放
      *
      * @see com.perfect.commons.constants.MaterialsJobEnum
      */
     private final int jobType;
+
+    /**
+     * 任务的具体层级
+     *   推广计划
+     *   推广单元
+     *   关键词
+     *   创意
+     *
+     * @see com.perfect.commons.constants.MaterialsJobEnum
+     */
+    private final int jobLevel;
+
+    /**
+     * 任务内容(凤巢的物料ID)
+     */
+    private final String[] jobContent;
 
     /**
      * 任务状态
@@ -43,11 +63,13 @@ public class ScheduledJob {
     private final String cronExpression;
 
 
-    private ScheduledJob(String jobId, String jobName, String jobGroup, int jobType, int jobStatus, String cronExpression) {
+    private ScheduledJob(String jobId, String jobName, String jobGroup, int jobType, int jobLevel, String[] jobContent, int jobStatus, String cronExpression) {
         this.jobId = jobId;
         this.jobName = jobName;
         this.jobGroup = jobGroup;
         this.jobType = jobType;
+        this.jobLevel = jobLevel;
+        this.jobContent = jobContent;
         this.jobStatus = jobStatus;
         this.cronExpression = cronExpression;
     }
@@ -57,6 +79,8 @@ public class ScheduledJob {
         private String jobName;
         private String jobGroup;
         private int jobType;
+        private int jobLevel;
+        private String[] jobContent;
         private int jobStatus;
         private String cronExpression;
 
@@ -80,6 +104,16 @@ public class ScheduledJob {
             return this;
         }
 
+        public Builder jobLevel(int jobLevel) {
+            this.jobLevel = jobLevel;
+            return this;
+        }
+
+        public Builder jobContent(String[] jobContent) {
+            this.jobContent = jobContent;
+            return this;
+        }
+
         public Builder jobStatus(int jobStatus) {
             this.jobStatus = jobStatus;
             return this;
@@ -91,7 +125,7 @@ public class ScheduledJob {
         }
 
         public ScheduledJob build() {
-            return new ScheduledJob(jobId, jobName, jobGroup, jobType, jobStatus, cronExpression);
+            return new ScheduledJob(jobId, jobName, jobGroup, jobType, jobLevel, jobContent, jobStatus, cronExpression);
         }
     }
 
@@ -109,6 +143,14 @@ public class ScheduledJob {
 
     public int getJobType() {
         return jobType;
+    }
+
+    public int getJobLevel() {
+        return jobLevel;
+    }
+
+    public String[] getJobContent() {
+        return jobContent;
     }
 
     public int getJobStatus() {

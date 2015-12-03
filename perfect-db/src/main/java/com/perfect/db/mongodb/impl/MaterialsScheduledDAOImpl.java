@@ -61,9 +61,9 @@ public class MaterialsScheduledDAOImpl extends AbstractSysBaseDAOImpl<ScheduledJ
     }
 
     @Override
-    public boolean isExists(String jobName, String jobGroup, int jobType) {
+    public boolean isExists(String jobId) {
         return getSysMongoTemplate().exists(
-                Query.query(Criteria.where(JOB_NAME).is(jobName).and(JOB_GROUP).is(jobGroup).and(JOB_TYPE).is(jobType)),
+                Query.query(Criteria.where(JOB_ID).is(jobId)),
                 getEntityClass());
     }
 
