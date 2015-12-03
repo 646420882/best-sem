@@ -155,7 +155,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
                             .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()))
                             .values()
                             .stream()
-                                    // 1. 找出新增关键词中本身重复的
+                            // 1. 找出新增关键词中本身重复的
                             .map(sourceList -> sourceList
                                     .stream()
                                     .sorted((o1, o2) -> {
@@ -166,7 +166,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
                                     .findFirst()
                                     .orElse(null))
                             .filter(Objects::nonNull)
-                                    // 2. 找出和本单元已经存在的百度关键词重复的
+                            // 2. 找出和本单元已经存在的百度关键词重复的
                             .filter(keywordDTO -> !sameAdgroupKeywordMap.containsKey(keywordDTO.getKeyword().trim().toUpperCase()))
                             .collect(Collectors.toList());
 
@@ -289,7 +289,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
 
                     List<KeywordDTO> _list = entry.getValue()
                             .stream()
-                                    // 找出和本单元已经存在的百度关键词重复的
+                            // 找出和本单元已经存在的百度关键词重复的
                             .filter(keywordDTO -> !sameAdgroupKeywordMap.containsKey(keywordDTO.getKeyword().trim().toUpperCase()))
                             .collect(Collectors.toList());
 
@@ -462,5 +462,16 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     @Override
     public List<Long> pause(String sysUser) {
         return pauseFunc2.apply(sysUser);
+    }
+
+
+    @Override
+    public void uploadAndStartMaterials(int level, String[] ids) {
+        ;
+    }
+
+    @Override
+    public void pauseMaterials(int level, String[] ids) {
+        List<Long> materialIds = Arrays.stream(ids).map(Long::parseLong).collect(Collectors.toList());
     }
 }

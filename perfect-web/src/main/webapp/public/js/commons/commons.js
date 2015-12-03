@@ -1554,6 +1554,8 @@ var timing = {
             type: 'POST',
             dataType: 'json',
             data: {
+                "level": this.elementType,
+                "content": this.elements,
                 "cron": cronExpression
             },
             success: function (data) {

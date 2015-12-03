@@ -58,12 +58,10 @@ public interface MaterialsScheduledDAO extends HeyCrudRepository<ScheduledJobDTO
     /**
      * <p>判断定时任务是否已经存在
      *
-     * @param jobName
-     * @param jobGroup
-     * @param jobType
+     * @param jobId
      * @return
      */
-    boolean isExists(String jobName, String jobGroup, int jobType);
+    boolean isExists(String jobId);
 
     /**
      * <p>获取所有任务.
