@@ -17,7 +17,7 @@
                                                                              value="Enable">启用</label><label
                         class="checkbox-inlines"><input type="radio" name="TimingsRadio" value="Pause">暂停</label></li>
                 <li><span>日期：</span><input type="text" id="TimingDate" class="timing_date"/></li>
-                <li><span>时间：</span><select>
+                <li><span>时间：</span><select id="timePeriod">
                     <option>01:00</option>
                     <option>02:00</option>
                     <option>03:00</option>

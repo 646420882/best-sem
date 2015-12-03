@@ -3562,7 +3562,20 @@ h2 .close {
 
 .progressBar {
     /* border: solid 2px #86A5AD;*/
-    background: white url(/public/img/loaderc.gif) no-repeat 10px 5px;
+    background: transparent url(/public/img/loaderc.gif) no-repeat 10px 5px;
+    color: #fff;
+}
+
+.progressBar span{
+    width: 38px;
+    height: 38px;
+    display: inline-block;
+    position: absolute;
+    left: 9px;
+    top: 4px;
+    border: 2px solid #545454;
+    border-radius: 38px;
+    background: transparent;
 }
 
 .loading {

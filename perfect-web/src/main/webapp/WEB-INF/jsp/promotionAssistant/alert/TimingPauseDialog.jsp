@@ -12,10 +12,12 @@
     <title></title>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/public/themes/flick/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <%--<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery.min.js"></script>--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 
 </head>
@@ -105,18 +107,18 @@
 
         var cronExpression = "0 0 " + hour + " " + day + " " + month + " ? " + year;
 
-        $.ajax({
-            url: '/material/schedule/pause',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                "cron": cronExpression
-            },
-            success: function (data, textStatus, jqXHR) {
-                console.log(data);
-            }
-        });
-    }
+//        $.ajax({
+//            url: '/material/schedule/pause',
+//            type: 'POST',
+//            dataType: 'json',
+//            data: {
+//                "cron": cronExpression
+//            },
+//            success: function (data, textStatus, jqXHR) {
+//                console.log(data);
+//            }
+//        });
+    };
     function GetDateStr(AddDayCount) {
         var dd = new Date();
         dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
@@ -126,23 +128,22 @@
         return y + "-" + m + "-" + d;
 
     }
-    console.log(123)
     $(function () {
-        var ab=function(){
+        var ab = function () {
             $('#reservationtime').click();
-        }
+        };
         ab();
-        $(".applyBtn").click(function(){
+        $(".applyBtn").click(function () {
             closeDialog();
-        })
-        $(".cancelBtn").on('click', function (){
+        });
+        $(".cancelBtn").on('click', function () {
             closeDialog();
         });
         $(".dropdown-menu ").removeClass("dropdown-menu");
 
 //        $('#reservationtime').daterangepicker.setStartDate(2015-09-01)
-        $('#reservationtime').data('daterangepicker').setStartDate(2015-09-01);
-        $('#reservationtime').data('daterangepicker').setEndDate(2015-09-11);
+        $('#reservationtime').data('daterangepicker').setStartDate("2015-09-01");
+        $('#reservationtime').data('daterangepicker').setEndDate("2015-09-11");
     });
 </script>
 </body>

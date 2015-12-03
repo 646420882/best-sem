@@ -37,7 +37,7 @@
 </head>
 <body>
 <div id="background" class="background hides"></div>
-<div id="progressBar" class="progressBar hides">数据加载中，请稍等...</div>
+<div id="progressBar" class="progressBar hides"><span></span>数据加载中，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
     <jsp:include page="../homePage/pageBlock/nav.jsp"/>
@@ -101,39 +101,39 @@
                                     <div id="advancedSearch" class="Senior over hides">
                                         <ul>
                                             <li>
-                                                <div class="w_list01 fl over"><span class="fl">匹配模式：</span>
-                                                    <label class='checkbox-inlines' >
-                                                        <input style=" float: left"  type="checkbox" id="Matching" name="keywordQuality" value="1">&nbsp;
+                                                <div class="w_list01 fl over" id="advanceMathModel"><span class="fl">匹配模式：</span>
+                                                    <label class='checkbox-inlines'>
+                                                        <input style=" float: left"  type="checkbox" id="Matching" onchange="customColumns(this,0,'advanceMathModel','matchType')" name="keywordQuality" value="1">&nbsp;
                                                     全选</label>
                                                 </div>
                                                 <div class="w_list02 fl over aline" id="matchType">
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
-                                                            type="checkbox" name="matchType"
+                                                            type="checkbox" name="matchType" onchange="customColumns(this,1,'advanceMathModel','matchType')"
                                                             checked="checked" value="1">&nbsp;精准</label></span>
                                                     </div>
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
-                                                            type="checkbox" name="matchType"
+                                                            type="checkbox" name="matchType" onchange="customColumns(this,1,'advanceMathModel','matchType')"
                                                             value="2">&nbsp;短语-核心</label></span>
                                                     </div>
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
-                                                            type="checkbox" name="matchType"
+                                                            type="checkbox" name="matchType" onchange="customColumns(this,1,'advanceMathModel','matchType')"
                                                             value="3">&nbsp;短语-精准</label></span>
                                                     </div>
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
-                                                            type="checkbox" name="matchType"
+                                                            type="checkbox" name="matchType" onchange="customColumns(this,1,'advanceMathModel','matchType')"
                                                             value="4">&nbsp;短语-同义</label></span>
                                                     </div>
                                                     <div class="input_box"><span><label class='checkbox-inlines'><input
-                                                            type="checkbox" name="matchType"
+                                                            type="checkbox" name="matchType" onchange="customColumns(this,1,'advanceMathModel','matchType')"
                                                             value="5">&nbsp;广泛</label></span>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="w_list01 fl over"><span class="fl">质量度：</span><label
+                                                <div class="w_list01 fl over" id="advanceQualityModel"><span class="fl">质量度：</span><label
                                                         class='checkbox-inlines'><input style=" float: left"
                                                                                         type="checkbox"
-                                                                                        name="keywordQuality"
+                                                                                        name="keywordQuality" onchange="customColumns(this,0,'advanceQualityModel','keywordQuality')"
                                                                                         value="1"
                                                                                         checked="checked" id="keywordQualitys">&nbsp;
                                                     全选</label></div>
@@ -144,14 +144,14 @@
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input style=" float: left"
                                                                                                     type="checkbox"
-                                                                                                    name="keywordQuality"
+                                                                                                    name="keywordQuality" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     value="1"
                                                                                                     checked="checked">&nbsp;
                                                                 一分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
-                                                                                                    name="keywordQuality"
+                                                                                                    name="keywordQuality" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     value="2"
                                                                                                     checked="checked">&nbsp;
                                                                 二分词</label></span>
@@ -159,21 +159,21 @@
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
-                                                                                                    value="3"
+                                                                                                    value="3" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     checked="checked">&nbsp;
                                                                 三分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
-                                                                                                    value="4"
+                                                                                                    value="4" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     checked="checked">&nbsp;
                                                                 四分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
-                                                                                                    value="5"
+                                                                                                    value="5" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     checked="checked">&nbsp;
                                                                 五分词</label></span>
                                                             </div>
@@ -182,35 +182,35 @@
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
-                                                                                                    value="6"
+                                                                                                    value="6" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     checked="checked">&nbsp;
                                                                 六分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
-                                                                                                    value="7"
+                                                                                                    value="7" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     checked="checked">&nbsp;
                                                                 七分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
-                                                                                                    value="8"
+                                                                                                    value="8" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     checked="checked">&nbsp;
                                                                 八分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
-                                                                                                    value="9"
+                                                                                                    value="9" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     checked="checked">&nbsp;
                                                                 九分词</label></span>
                                                             </div>
                                                             <div class="input_box"><span><label
                                                                     class='checkbox-inlines'><input type="checkbox"
                                                                                                     name="keywordQuality"
-                                                                                                    value="10"
+                                                                                                    value="10" onchange="customColumns(this,1,'advanceQualityModel','keywordQuality')"
                                                                                                     checked="checked">&nbsp;
                                                                 十分词</label></span>
                                                             </div>
@@ -730,74 +730,74 @@
     <div class="mainlist">
         <ul id="customColumns">
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,0)" type="checkbox" checked
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,0,'customColumns','customColList')" type="checkbox" checked
                                                                                value="allColumns" name="columns"> 全部添加</label></span>
             </li>
         </ul>
         <ul id="customColList">
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="campaignName" name="columns"> 推广计划</label></span>
                 <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
                                                                                value="cpm"
                                                                                name="columns"> 千次展现消费</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="adgroupName" name="columns"> 推广单元</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="impression" name="columns">
                     展现量</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="statusStr"
                                                                                name="columns"> 状态</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="ctr" name="columns">
                     点击率</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="price" name="columns"> 出价</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="cpc"
                                                                                name="columns">平均点击价格</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="pcQuality" name="columns"> PC端质量度</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="mQuality"
                                                                                name="columns">移动端质量度</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="click"
                                                                                name="columns"> 点击量</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="currentRank" name="columns"> 当前排名</label></span>
             </li>
             <li>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="cost" name="columns">
                     消费</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="pcDestinationUrl" name="columns">
                     Pc&nbsp;URL</label></span>
             </li>
-            <li><span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+            <li><span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="ruleDesc"
                                                                                name="columns"> 竞价规则</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="mobileDestinationUrl"
                                                                                name="columns">
                     Mobile&nbsp;URL</label></span>
             </li>
-            <li><span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+            <li><span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="biddingStatus" name="columns">
                 竞价状态</label></span>
-                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1)" type="checkbox" checked="checked"
+                <span class="define fl"><label class='checkbox-inlines'><input onchange="customColumns(this,1,'customColumns','customColList')" type="checkbox" checked="checked"
                                                                                value="matchType" name="columns">
                     匹配模式</label></span>
             </li>
@@ -1006,31 +1006,31 @@
         }*/
 
     });
-
-    function customColumns(obj,type){
-        if(type == 0){
+//自定义列checked------全选效果
+    function customColumns(obj,type,allId,listId){
+        if(type == 0){//点击全选
             if($(obj).prop('checked') == false){
-                $("#customColList li input").each(function(){
+                $("#"+listId).find("input").each(function(){
                     $(this).prop('checked',false);
                 })
             }else{
-                $("#customColList li input").each(function(i){
+                $("#"+listId).find("input").each(function(i){
                     $(this).prop('checked','true');
                 })
             }
-        }else if(type == 1){
+        }else if(type == 1){//点击全选下的列表
             if($(obj).prop('checked') == false){
-                $("#customColumns li input").prop('checked',false);
+                $("#"+allId).find("input").prop('checked',false);
             }else{
                 var isFlag = true;
-                $("#customColList li input").each(function(i){
+                $("#"+listId).find("input").each(function(i){
                     if($(this).prop('checked') == false){
                         isFlag = false;
                         return;
                     }
                 })
                 if(isFlag == true){
-                    $("#customColumns li input").prop('checked',true);
+                    $("#"+allId).find("input").prop('checked',true);
                 }
             }
         }
