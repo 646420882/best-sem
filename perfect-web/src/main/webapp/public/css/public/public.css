@@ -600,3 +600,6 @@ table tr, table tr td {
     margin: 0px;
 }
 
+input[type=radio], input[type=checkbox] {
+    margin: 4px 0 0;
+}

@@ -573,12 +573,15 @@ $.extend({
             for (var i = 0; i < children_checks.length; i++) {
                 children_checks[i].checked = true;
             }
+         $(children_checks).parent().parent().addClass("checked_all");
+            console.log(children_checks);
         }
         else {
             var children_checks = document.getElementsByName(checkIdStr);
             for (var i = 0; i < children_checks.length; i++) {
                 children_checks[i].checked = false;
             }
+            $(children_checks).parent().parent().removeClass("checked_all ");
         }
     },
     foRComplete: function (result) {
@@ -883,6 +886,7 @@ $("#filterSearchTemplate").click(function (e) {
         window.event.cancelBubble = true;//兼容IE
     }
 });
+$("#kkeyword").next().next().find("th").mouseover().append("<span class='remove'><img src='../public/img/select.png'></span>");
 var TabModel = {
     Show: function (type, _this, e) {
         if (!jsonData.cid) {

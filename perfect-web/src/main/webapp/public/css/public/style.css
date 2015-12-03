@@ -104,15 +104,19 @@
     margin-bottom: 0px;
 }
 
-.list01_under3 .download {
-    margin: 0px;
+.list01_top .download {
+    margin-top: 0px;
+}
+
+.list2 .download {
+    margin-top: 10px;
 }
 
 .question {
     float: left;
     *display: inline-block;
     *float: none;
-    width: 14px;
+    width: 16px;
     height: 12px;
     margin: 5px 0 0 4px;
     background: url(/public/img/bg.png) -10px -10px no-repeat;
@@ -2373,7 +2377,7 @@ h2 .close {
     color: #0061fd;
 }
 
-.list2_box3, .add.list2_box3, .update.list2_box3 {
+.list2_box3, .add.list2_box3, .update.list2_box3, .checked_all {
     background: #c9e0f2;
 }
 
@@ -3639,7 +3643,7 @@ h2 .close {
     -moz-box-shadow: #666 0px 0px 10px;
     box-shadow: #666 0px 0px 10px;
     padding: 10px;
-    max-width:472px;
+    max-width: 480px;
 }
 
 .wrap_list01 .Senior .w_list02 span {
@@ -4701,7 +4705,7 @@ input[type=checkbox]:focus {
     display: block;
     width: 16px;
     height: 16px;
-    background: url(/public/img/repeat.png) no-repeat;
+    background: url(/public/img/error.png) no-repeat;
 }
 
 /*日历修改样式*/
@@ -4912,7 +4916,6 @@ body .ui-tooltip {
     margin: 8px 2px 0 0;
 }
 
-
 #choicedKeyWord, #choicedNoKeyWord {
     background: #fff;
     padding: 20px;
@@ -4997,6 +5000,7 @@ body .ui-tooltip {
 .ui-jqgrid tr.ui-row-ltr td {
     color: #000;
 }
-.table-bordered > thead > tr > th{
-    color:#fff;
+
+.table-bordered > thead > tr > th {
+    color: #fff;
 }

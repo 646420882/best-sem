@@ -139,7 +139,7 @@
                         <div class="list01_top over"><Span>基础统计</Span>
                             <button type="button" class="question  btn btn-default" data-toggle="tooltip"
                                     data-placement="bottom"
-                                    title="通过对账户数据全方位的科学分析评估， 对账户数据对比、地域数据统计分析、广告系列、广告组、关键词、广告创意数据等进行统计分析。"></button>
+                                    title="快速查看账户昨日、前日基础指标数据，数据变化，一目了然。"></button>
                         </div>
                         <div class="list3 wd">
                             <table border="0" cellspacing="0" cellspacing="0" width="100%">
@@ -172,6 +172,9 @@
                     </div>
                     <div class="number_concent over">
                         <div class="list01_top over"><Span>账户报告</Span>
+                            <button type="button" class="question  btn btn-default" data-toggle="tooltip"
+                                    data-placement="bottom"
+                                    title="默认展现账户昨日基础指标数据，按您需求查看任意时间对比数据，不同推广设备数据，分日、分周、分月展现。"></button>
                         </div>
                         <div class="shuju_detali over">
                             <ul>
@@ -313,7 +316,7 @@
                     <div class="number_concent over">
                         <div class="list01_top over"><Span>明细数据</Span>
                             <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                    data-placement="bottom" title="按您个性需求，分结构、关键词、创意、地域查看日、周、月的报告。"></button>
+                                    data-placement="bottom" title="按您个性需求，分结构、关键词、创意、地域查看日、周、月的报告。搜索词报告帮助您快速锁定高价值关键词，覆盖更多潜在客户。"></button>
                         </div>
                         <div class="shuju_detali over">
                             <ul>

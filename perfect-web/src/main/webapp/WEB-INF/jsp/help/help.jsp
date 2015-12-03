@@ -92,21 +92,21 @@
 
                 </div>
                 <div class="containers help_content hides over" id="qa4">
-                    <li class="question_help">Q：如何找到高质量、效果好的关键词进行推广？</li>
-                    <li>A：需要在数据报告模块中定期获取数据，对其监控并分析，建立衡量的标准，为后期优化提供数据支持。</li>
-                    <li class="question_help">Q：平均点击价格（CPC）过高如何进行优化？</li>
-                    <li>A：在数据报告模块中，直接生成报告。平均点击价格（CPC）受到两个因素的影响，质量度、排名与竞争度。所以降低平均点击价格（CPC）需要在这两个方面考虑。</li>
-                    <li class="question_help">Q：数据报告中的数据指标是什么关系？</li>
-                    <li>
-                        A：假设展现量为1000，其中产生了50个点击，点击率就是50/1000*100%=5%，而其中到达网站并且能够完全打开网页的访问数有40个，在网站上完成转化行为的有2个，那么转化率就是2/50*100%=4%。若平均点击价格（CPC）为1元，那么平均转化价格（CPA）就是1*50/2=25元。
-                    </li>
-                    <li><img
-                            src="${pageContext.request.contextPath}/public/images/help_img.png"/></li>
-                    <li class="question_help">Q：数据报告是否可以下载使用？</li>
-                    <li>A：可以，不仅系统提供CSV格式，同时对于明细数据报告还为您提供可下载的图表格式。为您一站式打造各类数据报告。</li>
-                    <li class="question_help">Q：我能利用数据报告做什么？</li>
-                    <li>A：数据报告可以监控您每天的推广情况，可以针对不同的数据表现进行分析，以提升您的推广效果。</li>
-                    <li></li>
+                    <%--    <li class="question_help">Q：如何找到高质量、效果好的关键词进行推广？</li>
+                        <li>A：需要在数据报告模块中定期获取数据，对其监控并分析，建立衡量的标准，为后期优化提供数据支持。</li>
+                        <li class="question_help">Q：平均点击价格（CPC）过高如何进行优化？</li>
+                        <li>A：在数据报告模块中，直接生成报告。平均点击价格（CPC）受到两个因素的影响，质量度、排名与竞争度。所以降低平均点击价格（CPC）需要在这两个方面考虑。</li>
+                        <li class="question_help">Q：数据报告中的数据指标是什么关系？</li>
+                        <li>
+                            A：假设展现量为1000，其中产生了50个点击，点击率就是50/1000*100%=5%，而其中到达网站并且能够完全打开网页的访问数有40个，在网站上完成转化行为的有2个，那么转化率就是2/50*100%=4%。若平均点击价格（CPC）为1元，那么平均转化价格（CPA）就是1*50/2=25元。
+                        </li>
+                        <li><img
+                                src="${pageContext.request.contextPath}/public/images/help_img.png"/></li>
+                        <li class="question_help">Q：数据报告是否可以下载使用？</li>
+                        <li>A：可以，不仅系统提供CSV格式，同时对于明细数据报告还为您提供可下载的图表格式。为您一站式打造各类数据报告。</li>
+                        <li class="question_help">Q：我能利用数据报告做什么？</li>
+                        <li>A：数据报告可以监控您每天的推广情况，可以针对不同的数据表现进行分析，以提升您的推广效果。</li>
+                        <li></li>--%>
                 </div>
             </div>
         </div>
