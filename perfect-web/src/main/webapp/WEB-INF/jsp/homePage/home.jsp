@@ -993,7 +993,7 @@
                         <div class="list01_top over">
                             <Span>重点关键词监控</Span>
                             <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                    data-placement="bottom" title="凤巢重点关键词同步监控。"></button>
+                                    data-placement="bottom" title="凤巢账户重点关键词同步监控。"></button>
                             <ul>
                                 <li class="current">
                                     <a href="javascript:void(0)" onclick="getImportKeywordDefault(this, 1);">
