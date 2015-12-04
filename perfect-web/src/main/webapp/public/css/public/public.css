@@ -125,7 +125,6 @@ table tr, table tr td {
 }
 
 .top_mid {
-    width: 30%;
     height: 82px;
     line-height: 82px;
 }
@@ -345,8 +344,7 @@ table tr, table tr td {
     color: #777777;
     height: 24px;
     line-height: 24px;
-.user_detali ul li span
-    behavior: url(/public/css/accountCss/iecss3.htc);
+. user_detali ul li span behavior : url(/public/css/accountCss/iecss3.htc);
     border-radius: 3px;
     font-weight: bold;
     cursor: pointer;

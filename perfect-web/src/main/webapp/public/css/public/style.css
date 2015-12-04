@@ -99,9 +99,10 @@
     padding-left: 20px;
     overflow: hidden;
 }
-.list01_top .date_choice span{
+
+.list01_top .date_choice span {
     background: none;
-    padding:0px;
+    padding: 0px;
     margin: 7px 2px 0 0;
 }
 
@@ -166,12 +167,13 @@
 .list01_top ul li a {
     padding: 0 20px;
     line-height: 26px;
-    height:26px;
+    height: 26px;
     text-align: center;
     color: #000000;
-    cursor: default;
+    cursor: pointer;
 }
-.list01_top ul li a b{
+
+.list01_top ul li a b {
     color: #000000;
     line-height: 26px;
 }
@@ -185,7 +187,7 @@
     color: #fff;
 }
 
-.list01_top ul .current a ,.list01_top ul .current b{
+.list01_top ul .current a, .list01_top ul .current b {
     color: #fff;
     text-decoration: none;
     height: 28px;
@@ -592,7 +594,8 @@
     margin-top: 200px;
     width: 100%;
 }
-.tips span{
+
+.tips span {
     cursor: pointer;
 }
 
@@ -2400,9 +2403,9 @@ h2 .close {
     color: #bababa;
 }
 
-.add {
+/*.add {
     background: #f4e8bc;
-}
+}*/
 
 /*.update {
     background: #f4e8bc;
@@ -3003,9 +3006,11 @@ h2 .close {
 .user_select select option {
     font-weight: bold;
 }
-.user_selec span{
-    color:#777;
+
+.user_selec span {
+    color: #777;
 }
+
 /**********配置**************/
 .configure {
     padding: 0 1% 80px 1%;
@@ -3582,7 +3587,7 @@ h2 .close {
     color: #fff;
 }
 
-.progressBar span{
+.progressBar span {
     width: 38px;
     height: 38px;
     display: inline-block;
@@ -4794,7 +4799,7 @@ input[type=checkbox]:focus {
     opacity: 1.0;
 }
 
-.body .ui-tooltip ,.tooltip-inner {
+.body .ui-tooltip, .tooltip-inner {
     background: #334e72;
     color: #fff;
     border: 1px solid #334e72;
@@ -4818,6 +4823,7 @@ input[type=checkbox]:focus {
     line-height: 34px;
     white-space: nowrap;
 }
+
 .tooltip.right .tooltip-arrow {
     border-right-color: #475f80;
 }
@@ -4825,6 +4831,7 @@ input[type=checkbox]:focus {
 .nav_under .tooltip.in {
     opacity: 0.9;
 }
+
 .table_add {
     padding: 0 15px;
 }
