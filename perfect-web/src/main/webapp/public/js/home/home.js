@@ -1,6 +1,26 @@
-/**
- * Created by john on 2015/9/21.
- */
+// 对Date的扩展，将 Date 转化为指定格式的String
+// 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
+// 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
+// 例子：
+// (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2014-07-02 08:09:04.423
+// (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2014-7-2 8:9:4.18
+Date.prototype.Format = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1,                 //月份
+        "d+": this.getDate(),                    //日
+        "h+": this.getHours(),                   //小时
+        "m+": this.getMinutes(),                 //分
+        "s+": this.getSeconds(),                 //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds()             //毫秒
+    };
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
 //默认按照展现进行排名
 var category = "impression";
 
@@ -25,66 +45,165 @@ var genre = "";
 //日期控件坐标定位
 var _posX = 0, _posY = 0;
 var clickdddd = null;
+//根据最近几天获取数据
 
-$(function () {
-    //数据初始化
-    loadPerformanceCurve(this, 7);
-    //
+function lisClick(obj, days) {
+    if (days != null) {
+        getDateParam(days);
+    }
+    setTimeout(function () {
+
+        if (days == 1) {
+            $('.date_choice').data('daterangepicker').setStartDate(GetDateStr(-days));
+            $('.date_choice').data('daterangepicker').setEndDate(GetDateStr(-days));
+            $(".date_choice").children().find("b").html(daterangepicker_start_date);
+        } else {
+            $('.date_choice').data('daterangepicker').setStartDate(GetDateStr(-days + 1));
+            $('.date_choice').data('daterangepicker').setEndDate(GetDateStr(0));
+            $(".date_choice").children().find("b").html(daterangepicker_start_date + "至" + daterangepicker_end_date);
+        }
+    })
+    htmlLoding();
+    getData();
+    changedLiState(obj);
+}
+
+$(document).ready(function () {
+    /////count
+    $.ajax({
+        url: "/account/countAssistant",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $("#countAssisted").empty();
+            var classArray = ["blue", "green", "red", "yellow"];
+            var html = "";
+            data.rows.forEach(function (item, i) {
+                html = html + "<li><div class='" + classArray[i] + "1 fr wd1'></div><div class='" + classArray[i] + "2 fl wd2'><p>" + item.name + "</p><span> " + item.countNumber + " </span><span style='display:none'>修改: " + item.modifiyNumber + " </span></div></li>";
+            });
+            $("#countAssisted").append(html)
+        }
+    });
+
     var $tab_li = $('.tab_menu li');
     $('.tab_menu li').click(function () {
         $(this).addClass('selected').siblings().removeClass('selected');
         var index = $tab_li.index(this);
         typepage = index + 1;
+        if (index == 0) {
+            $("#TitleName").html('账户概览');
+        }
         switch (typepage) {
             case 2:
                 //曲线图表现-----默认加载7天数据
                 loadPerformanceCurve(null, 7);
+                $("#TitleName").html('账户表现');
                 break;
             case 3:
                 //默认加载昨天的数据(质量度)
 //                loadKeywordQualityData(null, 1);
+                $("#TitleName").html('质量度分析');
                 break;
             case 4:
                 //重点词加载
                 getImportKeywordDefault(null, 1);
+                $("#TitleName").html('关键词监控');
                 break;
         }
         $('div.tab_box > div').eq(index).show().siblings().hide();
     });
-    $("input[name=reservation]").click(function () {
+    $(".date_choice").click(function () {
         clickdddd = $(this);
     });
     //加载日历控件
-    //$("input[name=reservation]").daterangepicker();
-    //$(".btnDone").on('click', function () {
-    //    var _startDate = $('.range-start').datepicker('getDate');
-    //    var _endDate = $('.range-end').datepicker('getDate');
-    //    if (_startDate != null && _endDate != null) {
-    //        if (_startDate > _endDate) {
-    //            return false;
-    //        }
-    //        statDate = 0;
-    //        daterangepicker_start_date = _startDate.Format("yyyy-MM-dd");
-    //        daterangepicker_end_date = _endDate.Format("yyyy-MM-dd");
-    //        if (genre == "keywordQualityCustom") {
-    //            //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
-    //            loadKeywordQualityData();
-    //        } else if (genre == "importKeywordDefault") {
-    //            getImportKeywordDefault(null, 0);
-    //        } else if (genre == "accountOverview") {
-    //            lisClick();
-    //        } else if (genre == "importPerformanceDefault") {
-    //            category = "data";
-    //            loadPerformance(0);
-    //        } else if (genre == "importPerformanceCurveDefault") {
-    //            category = "data";
-    //            loadPerformanceCurve(0);
-    //        }
-    //
-    //        showDate();
-    //    }
-    //});
+    $('.date_choice').daterangepicker({
+            "showDropdowns": true,
+            "timePicker24Hour": true,
+            timePicker: false,
+            timePickerIncrement: 30,
+            "linkedCalendars": false,
+            "format": "YYYY-MM-DD",
+            minDate: '2005/1/1',
+            maxDate: moment().startOf('day'),
+            autoUpdateInput: true,
+            "locale": {
+                "format": "YYYY-MM-DD",
+                "separator": " - ",
+                "applyLabel": "确定",
+                "cancelLabel": "关闭",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "daysOfWeek": [
+                    "日",
+                    "一",
+                    "二",
+                    "三",
+                    "四",
+                    "五",
+                    "六"
+                ],
+                "monthNames": [
+                    "一月",
+                    "二月",
+                    "三月",
+                    "四月",
+                    "五月",
+                    "六月",
+                    "七月",
+                    "八月",
+                    "九月",
+                    "十月",
+                    "十一月",
+                    "十二月"
+                ],
+                "firstDay": 1
+            },
+            "startDate": moment().subtract('days', 1).startOf('day'),
+            "endDate": moment().subtract('days', 1).startOf('day')
+        },
+        function (start, end, label, e) {
+            var _startDate = start.format('YYYY-MM-DD');
+            var _endDate = end.format('YYYY-MM-DD');
+            if (_startDate != null && _endDate != null) {
+                if (_startDate > _endDate) {
+                    return false;
+                }
+                statDate = 0;
+                daterangepicker_start_date = _startDate;
+                daterangepicker_end_date = _endDate;
+                if (genre == "keywordQualityCustom") {
+                    //区分当前展示的是昨天(1), 近7天(7), 近30天(30), 还是自定义日期(0)的数据
+                    loadKeywordQualityData();
+                } else if (genre == "importKeywordDefault") {
+                    getImportKeywordDefault(null, 0);
+                } else if (genre == "accountOverview") {
+                    lisClick();
+                } else if (genre == "importPerformanceDefault") {
+                    category = "data";
+                    loadPerformance(0);
+                } else if (genre == "importPerformanceCurveDefault") {
+                    category = "data";
+                    loadPerformanceCurve(0);
+                }
+                $(".date_choice").children().find("b").html(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
+            }
+            console.log(_startDate);
+        });
+//        $("input[name=reservation]").daterangepicker();
+    $(".btnDone").on('click', function () {
 
+    });
+//        $("#clickLis li").on('click', function () {
+//            var day= $(this).find("a").attr('value');
+//          $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-day));
+//           if(day==1){
+//              $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-day));
+//           }else{
+//           $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(0));
+//           }
+//
+//        });
     document.getElementById("background").style.display = "none";
     document.getElementById("progressBar1").style.display = "none";
 
@@ -123,18 +242,21 @@ var getDateParam = function (day) {
         currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
         daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
         daterangepicker_end_date = daterangepicker_start_date;
+        $(".date_choice").children().find("b").html(daterangepicker_start_date);
     } else if (day == 7) {
         currDate = new Date();
         currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
         daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
         currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 6);
         daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
+        $(".date_choice").children().find("b").html(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
     } else if (day == 30) {
         currDate = new Date();
         currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
         daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
         currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 29);
         daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
+        $(".date_choice").children().find("b").html(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
     }
 };
 
@@ -266,7 +388,6 @@ skipPagePer = function () {
     }
 };
 /**********************************************************************************/
-
 /**初始化曲线图共用变量**/
 /*初始化数据变量*/
 var goLi = 0;
@@ -283,9 +404,12 @@ var unitOne = "次";
 var unitTow = "次"
 /**初始化结束**/
 /**
- * 曲线图数据配置
+ * 曲线图数据配
  * **/
 var loadPerformanceCurve = function (obj, date) {
+    $('.date_choice:eq(1)').data('daterangepicker').setStartDate(GetDateStr(-date + 1));
+    $('.date_choice:eq(1)').data('daterangepicker').setEndDate(GetDateStr(0));
+
     if (obj != null) {
         changedLiState(obj);
     }
@@ -298,12 +422,12 @@ var loadPerformanceCurve = function (obj, date) {
     $("#containerLegend").empty();
     /*初始化曲线图所用需求*/
     $("#containerLegend").append("<div class='tu_top over'><ul><li>展示曲线</li>"
-        + "<li><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></li>"
-        + "<li><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></li>"
-        + "<li><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></li>"
-        + "<li><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></li>"
-        + "<li><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></li>"
-        + "<li><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+    + "<li><label class='checkbox-inlines'><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></label></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
     getDateParam(date);
     //展现
@@ -759,8 +883,7 @@ var curve = function () {
                         color: colorOne
                     }
                 }
-            },
-            {
+            }, {
                 type: 'value',
                 name: nameTow,
                 scale: true,
@@ -886,9 +1009,18 @@ var curve = function () {
 };
 
 var getImportKeywordDefault = function (obj, day) {
+    if (day == 1) {
+        $('.date_choice').data('daterangepicker').setStartDate(GetDateStr(-day));
+        $('.date_choice').data('daterangepicker').setEndDate(GetDateStr(-day));
+    } else {
+        $('.date_choice').data('daterangepicker').setStartDate(GetDateStr(-day + 1));
+        $('.date_choice').data('daterangepicker').setEndDate(GetDateStr(0));
+    }
     if (obj != null) {
         changedLiState(obj);
     }
+
+
     $("#importTr").empty();
     $("#importTr").append("<td style='color:red;'>加载中....</td>");
     statDate = day;
@@ -909,7 +1041,7 @@ var getImportKeywordDefault = function (obj, day) {
                 var calssStr = i % 2 != 0 ? "list2_box2" : "list2_box1";
                 var item = gson.list[i];
                 var _div = "<tr class=" + calssStr + "><td><ul><li> &nbsp;" + item.keywordName + "</li><li> &nbsp;" + item.pcImpression + "</li><li> &nbsp;" + item.pcClick + "</li><li> &nbsp;￥" + item.pcCost + "</li><li> &nbsp;￥" + item.pcCpc + "</li>"
-                    + "<li> &nbsp;" + item.pcCtr * 100 + "%</li><li class='home_quality'> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li><li> &nbsp;" + item.quality + "</li><li>&nbsp;" + until.getMatchTypeName(item.matchType) + "</li></ul></td></tr>";
+                    + "<li> &nbsp;" + item.pcCtr + "%</li><li class='home_quality'> &nbsp;" + item.pcConversion + "</li><li> &nbsp;" + item.pcPosition + "</li><li> &nbsp;" + item.quality + "</li><li>&nbsp;" + until.getMatchTypeName(item.matchType) + "</li></ul></td></tr>";
                 $("#importTr").append(_div);
             }
         } else {
@@ -925,16 +1057,14 @@ function importDownload(rs) {
 }
 
 
-//根据最近几天获取数据
-function lisClick(obj, days) {
-    if (days != null) {
-        getDateParam(days);
-    }
-    htmlLoding();
-    getData();
-    changedLiState(obj);
+function GetDateStr(AddDayCount) {
+    var dd = new Date();
+    dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
+    var y = dd.getFullYear();
+    var m = (dd.getMonth() + 1) < 10 ? "0" + (dd.getMonth() + 1) : (dd.getMonth() + 1);//获取当前月份的日期
+    var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
+    return y + "-" + m + "-" + d;
 }
-
 //改变li的样式状态
 function changedLiState(obj) {
     $(obj).parent().parent().find("li").each(function () {
@@ -967,15 +1097,8 @@ function getData() {
 
 //初始化账户概览页面数据
 lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
-
-
-var showDate = function () {
-    $(".datebox").show();
-    clickdddd.parent().parent().parent().parent().next().text("当前时间范围：" + daterangepicker_start_date + " 至 " + daterangepicker_end_date);
-    $(".list01_top ul li").click(function () {
-        $(".datebox").hide();
-    });
-};
 $(function () {
     $("[data-toggle='tooltip']").tooltip();
+    $(".off").removeClass(".active");
+    $(".off").css({color: "white"});
 });

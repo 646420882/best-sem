@@ -15,60 +15,64 @@
     <div class="top_middle" id="top_middle">
         <div class="user_mid fr">
             <ul>
-                <li> <div class="user_logo fl">
-                    <div class="user_logo1">
-                        <div class="user_img fl over">
+                <li>
+                    <div class="user_logo fl">
+                        <div class="user_logo1">
+                            <div class="user_img fl over">
                             <span id="head_click"><img id="user_img"
                                                        src="${pageContext.request.contextPath}/account/getImg"></span>
-                        </div>
-                        <div class="user_text fl">
-                            <div class="user_top over">
-                                <div class="fl"><b id="time"></b><a
-                                        href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
-                                </div>
-                                <input type="image" onclick="downloadUser()"
-                                       src="${pageContext.request.contextPath}/public/img/download.png"
-                                       class="glyphicon-class" style="padding:0 3px;">
-
-                                <div class="user_logo2 fl">
-                                    <form name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
-                                        <button style="border: none;color: #777777;border:none;background: none;line-height: normal;"
-                                                onclick="$('form[logout]').submit();">退出
-                                        </button>
-
-                                    </form>
-                                </div>
                             </div>
-                            <div class="user_select">
-                                <span class="fl">百度账户:</span>
-                                <div class="user_name">
-                                    <span></span><img
-                                        src="${pageContext.request.contextPath}/public/img/username_select.png">
-                                </div>
-                                <div id="switchAccount" class="user_names over hides">
-                                    <input type="text" placeholder="请输入关键词..." id="searchCount"
-                                           class="switchAccountSerach ">
-
-                                    <div class="countname">
-                                        <ul id="switchAccount_ul" class="switchAccount_ul">
-
-                                        </ul>
+                            <div class="user_text fl">
+                                <div class="user_top over">
+                                    <div class="fl"><b id="time"></b><a
+                                            href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
                                     </div>
-                                    <div id="switchAccount_ul_pages" class="switchAccount_ul_pages">
-                                        <div class="page_ul">
+                                    <input type="image" onclick="downloadUser()"
+                                           src="${pageContext.request.contextPath}/public/img/download.png"
+                                           class="glyphicon-class" style="padding:0 3px;">
+
+                                    <div class="user_logo2 fl">
+                                        <form name="logout" method="POST"
+                                              action="${pageContext.request.contextPath}/logout">
+                                            <button style="border: none;color: #777777;border:none;background: none;line-height: normal;"
+                                                    onclick="$('form[logout]').submit();">退出
+                                            </button>
+
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="user_select">
+                                    <span class="fl">百度账户:</span>
+
+                                    <div class="user_name">
+                                        <span></span><img
+                                            src="${pageContext.request.contextPath}/public/img/username_select.png">
+                                    </div>
+                                    <div id="switchAccount" class="user_names over hides">
+                                        <input type="text" placeholder="请输入关键词..." id="searchCount"
+                                               class="switchAccountSerach ">
+
+                                        <div class="countname">
+                                            <ul id="switchAccount_ul" class="switchAccount_ul">
+
+                                            </ul>
+                                        </div>
+                                        <div id="switchAccount_ul_pages" class="switchAccount_ul_pages">
+                                            <div class="page_ul">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div></li>
+                </li>
                 <li>
                     <div class="user_detali fl over" style="min-width:300px;">
                         <ul>
                             <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
                                                                                   style="color: white">.</a></li>
-                            <li><span>余额预计可消费：${remainderDays}天</span><span>日预算：${accountBudget}元</span></li>
+                            <li><span>余额预计可消费：${remainderDays}天</span>|&nbsp;<span>日预算：${accountBudget}元</span></li>
                         </ul>
                     </div>
                 </li>
@@ -201,7 +205,9 @@
         <div class="w_list03">
             <ul>
                 <%--<li class="current" id="confirmAddKeyWord">确认</li>--%>
-                <li class="current" style="padding: 0"><input id="confirmAddKeyWord" value="确认" type="button" style="border: none;background: #01aef0;width: 64px;"></li>
+                <li class="current" style="padding: 0"><input id="confirmAddKeyWord" value="确认" type="button"
+                                                              style="border: none;background: #01aef0;width: 64px;">
+                </li>
                 <li>取消</li>
             </ul>
         </div>
@@ -216,6 +222,7 @@
 
     <div class="mainlist">
         <p>你要添加为否定关键词的有<span style="color: red">1</span>个</p>
+
         <p style="margin: 5px 0 15px 0">以下搜索词搜索到后将不触发你的搜索结果</p>
 
         <div id="choicedNoKeyWord">
@@ -230,8 +237,10 @@
             <div class="fl"><label>添加到：</label></div>
             <div class="fl">
                 <div>
-                    <input id="promotionPlanLevel" type="radio" name="promotionLevel" onclick="promotionPlanLevel()" checked/>
+                    <input id="promotionPlanLevel" type="radio" name="promotionLevel" onclick="promotionPlanLevel()"
+                           checked/>
                     <label for="promotionPlanLevel" onclick="promotionPlanLevel()">推广计划层级</label>
+
                     <div style="margin: 5px 0 0 17px;" id="PlanLevel">
                         <label>推广计划：</label>
                         <select style="width: 180px">
@@ -243,8 +252,9 @@
                     </div>
                 </div>
                 <div style="margin: 5px 0 0 0">
-                    <input id="promotionUnitLevel" type="radio" name="promotionLevel"  onclick="promotionUnitLevel()"/>
+                    <input id="promotionUnitLevel" type="radio" name="promotionLevel" onclick="promotionUnitLevel()"/>
                     <label for="promotionUnitLevel" onclick="promotionUnitLevel()">推广单元层级</label>
+
                     <div id="UnitLevel" class="hides">
                         <div style="margin: 5px 0 0 17px;">
                             <label>推广计划：</label>
@@ -280,7 +290,9 @@
         <div class="w_list03">
             <ul>
                 <%--<li class="current" id="confirmAddKeyWord">确认</li>--%>
-                <li class="current" style="padding: 0"><input id="confirmAddNoKeyWord" value="确认" type="button" style="border: none;background: #01aef0;width: 64px;"></li>
+                <li class="current" style="padding: 0"><input id="confirmAddNoKeyWord" value="确认" type="button"
+                                                              style="border: none;background: #01aef0;width: 64px;">
+                </li>
                 <li>取消</li>
             </ul>
         </div>
@@ -307,7 +319,7 @@
         zTree.checkNode(treeNode, !treeNode.checked, null, true);
         return false;
     }
-    function promotionUnitLevel(){
+    function promotionUnitLevel() {
         $("#UnitLevel").show();
         $("#PlanLevel").hide();
     }
@@ -360,9 +372,9 @@
         downloadUser();
     });
     function cancelKeyWord() {
-        $("#choicedKeyWord").css({'display':"none"});
-        $("#confirmAddKeyWord").attr({'disabled':'disabled'});
-        $("#confirmAddKeyWord").css({"background":"#ccc","cursor":'not-allowed'})
+        $("#choicedKeyWord").css({'display': "none"});
+        $("#confirmAddKeyWord").attr({'disabled': 'disabled'});
+        $("#confirmAddKeyWord").css({"background": "#ccc", "cursor": 'not-allowed'})
     }
     function imageChange(obj) {
         var fileFormat = "jpg,jpeg,png,gif,bmp";

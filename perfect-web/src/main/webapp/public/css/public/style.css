@@ -99,6 +99,11 @@
     padding-left: 20px;
     overflow: hidden;
 }
+.list01_top .date_choice span{
+    background: none;
+    padding:0px;
+    margin: 7px 2px 0 0;
+}
 
 .list01_under3 .list01_top {
     margin-bottom: 0px;
@@ -141,6 +146,9 @@
     background: #fff;
     position: relative;
     z-index: 3;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     overflow: hidden;
 }
 
@@ -149,7 +157,6 @@
     float: left;
     height: 28px;
     line-height: 28px;
-    padding: 0 20px;
     font-size: 12px;
     font-weight: normal;
     cursor: pointer;
@@ -157,10 +164,16 @@
 }
 
 .list01_top ul li a {
-    line-height: 28px;
+    padding: 0 20px;
+    line-height: 26px;
+    height:26px;
     text-align: center;
     color: #000000;
     cursor: default;
+}
+.list01_top ul li a b{
+    color: #000000;
+    line-height: 26px;
 }
 
 .list01_top ul li a:hover {
@@ -172,7 +185,7 @@
     color: #fff;
 }
 
-.list01_top ul .current a {
+.list01_top ul .current a ,.list01_top ul .current b{
     color: #fff;
     text-decoration: none;
     height: 28px;
@@ -258,11 +271,14 @@
     float: left;
     width: 24%;
     *width: 23.9%;
-    height: 100px;
+    height: 114px;
     margin-right: 1%;
     margin-bottom: 10px;
     white-space: nowrap;
     overflow: hidden;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
 
 .list01_under2 ul li span {
