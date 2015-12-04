@@ -53,7 +53,7 @@ function lisClick(obj, days) {
     if (days != null) {
         getDateParam(days);
     }
-
+   setTimeout(function(){
         if (days == 1) {
             flag=true;
             //$('.date_choice:eq(0)').data('daterangepicker').setStartDate(GetDateStr(-days));
@@ -64,7 +64,7 @@ function lisClick(obj, days) {
             $('.date_choice:eq(0)').data('daterangepicker').setEndDate(GetDateStr(0));
             $('.date_choice:eq(0)').children().find("b").html(daterangepicker_start_date + "至" + daterangepicker_end_date);
         }
-
+   })
     htmlLoding();
     getData();
     changedLiState(obj);
