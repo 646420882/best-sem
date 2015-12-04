@@ -1,7 +1,6 @@
 /**
  * Created by john on 2015/12/4.
  */
-
 function onClick(e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     zTree.checkNode(treeNode, !treeNode.checked, null, true);
@@ -28,9 +27,30 @@ function onCheck(e, treeId, treeNode) {
 }
 $(function () {
     window.dialog = dialog;
-
+    rDrag.init(document.getElementById('AccountChange'));
 });
 function downloadUser() {
+    $(".TB_overlayBG").css({
+        display: "block"
+    });
+    $("#open_account").css({
+        left: ($("body").width() - $("#open_account").width()) / 2 - 20 + "px",
+        top: ($(window).height() - $("#open_account").height()) / 2 + $(window).scrollTop() + "px",
+        display: "block"
+    });
+
+    $("#head_close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $("#open_account").css("display", "none");
+    });
+    $("#account_close").click(function () {
+        $(".TB_overlayBG").css("display", "none");
+        $("#open_account").css("display", "none");
+    });
+
+
+}
+/*function downloadUser() {
     var d = top.dialog({
         id: 'my2',
         content: "<iframe src='/homePage/showCountDownload' width='540' height='340' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
@@ -54,7 +74,7 @@ function downloadUser() {
     }).showModal(dockObj);
 
     console.log(top.dialog());
-}
+}*/
 
 var dockObj = document.getElementById('argDialogDiv');
 $("#downloadUser").click(function () {
@@ -318,3 +338,5 @@ $(document).ready(function () {
         })
 });
 
+var ajaxbg = $("#background,#progressBar");
+ajaxbg.hide();

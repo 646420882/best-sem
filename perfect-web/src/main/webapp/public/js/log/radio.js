@@ -4,8 +4,8 @@ $(function () {
     var winH = $(window).height();
     var winW = $(window).width();
     $(".black").css({
-        height: winH,
-        width: winW
+        height: "100%",
+        width: "100%"
     });
     judgeRadio();
 //选择单选按钮

@@ -32,8 +32,8 @@ $(".nav_under>ul>li>a").each(function () {
 
 $(function () {
     //取屏幕宽度
-    var nav = "<img src='${pageContext.request.contextPath}/public/img/nav.png'/>"
-    var nav_open = "<img src='${pageContext.request.contextPath}/public/img/nav_open.png'/>"
+    var nav = "<img src='../public/img/nav.png'/>"
+    var nav_open = "<img src='../public/img/nav_open.png'/>"
     $('[data-toggle="tooltip"]').tooltip()
     $('#navigator_tips').click(function (_this) {
         /*        $('.concent').toggleClass('nav_hide', 1000, "easeOutSine");*/

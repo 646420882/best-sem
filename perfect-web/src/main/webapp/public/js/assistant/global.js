@@ -131,9 +131,11 @@ function whenClickTreeLoadData(tabName, param) {
             loadAdgroupData(0);
         }
     }
-    $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
-    $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
     $(".j_list02").hide();
+    $("#LogPage").hide();
+    $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 136 + "px");
+
 }
 
 /**

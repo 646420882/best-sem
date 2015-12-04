@@ -303,7 +303,7 @@
                                        src="${pageContext.request.contextPath}/public/img/search.png">
                             </div>
                             <div class="j_list01 over">
-                                <ul id="zTree" class="ztree over">
+                                <ul id="zTree" class="ztree over" style="height:570px;">
                                 </ul>
                             </div>
                             <%--<div class="j_l_under over">
@@ -391,7 +391,7 @@
                                        src="${pageContext.request.contextPath}/public/img/search.png">
                             </div>
                             <div class="j_list01 over">
-                                <ul id="zTreeImport" class="ztree over">
+                                <ul id="zTreeImport" class="ztree over" style="height:570px;">
                                 </ul>
                             </div>
                             <%--<div class="j_l_under over">--%>

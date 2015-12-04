@@ -11,6 +11,10 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
 %>
 <%--<div class="top_heade">--%>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/main.css">
 <div class="head_top">
     <div class="top_middle" id="top_middle">
         <div class="user_mid fr">
@@ -298,15 +302,41 @@
         </div>
     </div>
 </div>
+<!-- 账户弹出 -->
+<div class="box" style="display:none;*width:400px;" id="open_account">
+    <h2 id="AccountChange"><span class="fl">多账户下载</span><a href="javascript:void(0)" id="account_close" class="close">×</a></h2>
+
+    <div class="mainlist">
+        您希望下载哪些账户的哪些单元？
+
+        <div class="j_list01 over">
+
+            <ul id="zTrees" class="ztree over" style="height:300px;">
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="main_bottom">
+        <div class="w_list03">
+            <ul>
+                <li id="downloadAccountsTree" class="current">确认</li>
+                <li id="head_close">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- 弹出结束 -->
+
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
+<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/multipleaccountdownloads.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/jquery-ui.css"/>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/main.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/commons/head.js"></script>
 <%--<style> .ui-dialog-body {--%>
 <%--background-color: #f8f8f8;--%>

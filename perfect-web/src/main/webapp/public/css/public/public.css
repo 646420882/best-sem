@@ -113,7 +113,7 @@ table tr, table tr td {
     vertical-align: middle;
     z-index: 998;
     min-width: 700px;
-    padding: 0 20px;
+    padding: 0 0 0  20px;
     background: #ffffff;
 }
 
@@ -320,6 +320,7 @@ table tr, table tr td {
     margin-top: 8px;
     position: relative;
     background: url(/public/img/background_count.png) center repeat;
+    color:#777;
 }
 
 .user_select_bg {
@@ -339,18 +340,15 @@ table tr, table tr td {
     float: left;
     margin: 4px 0 0 5px;
 }
-
 .user_name {
     color: #777777;
     height: 24px;
     line-height: 24px;
-. user_detali ul li span behavior : url(/public/css/accountCss/iecss3.htc);
+
     border-radius: 3px;
-    font-weight: bold;
     cursor: pointer;
     padding: 0 10px;
     overflow: hidden;
-    background: #f1f1f1;
     float: right;
 }
 
@@ -370,6 +368,7 @@ table tr, table tr td {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-weight:600;
 }
 
 .user_names {
@@ -483,7 +482,7 @@ table tr, table tr td {
 }
 
 .user_detali ul li {
-    padding: 0 15px;
+    padding: 0px;
     margin-bottom: 15px;
     color: #777777;
     overflow: hidden;

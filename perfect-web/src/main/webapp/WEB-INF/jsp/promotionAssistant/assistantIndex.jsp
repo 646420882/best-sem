@@ -17,6 +17,8 @@
     <link rel="stylesheet" type="text/css" media="all"
           href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/log/base.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/log/index.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
     <link rel="stylesheet" type="text/css"
@@ -99,7 +101,7 @@
                                             data-placement="bottom" title="对物料进行必要的修改后，需要点击“上传更新”按钮将修改上传至搜索推广账户中。">
                                             <a><span
                                                     class="glyphicon glyphicon-open"></span><span>上传更新</span></a></li>
-                                        <li class="current"><a href="javascript:void(0)"
+                                        <li ><a href="javascript:void(0)"
                                                                onclick="AlertPrompt.show('该功能还在开发中！');"><span
                                                 class="glyphicon glyphicon-search"></span><span>高级搜索</span></a>
                                         </li>
@@ -114,7 +116,7 @@
                                         <li class="showbox4"><a href="javascript:void(0)"
                                                                 onclick="AlertPrompt.show('该功能还在开发中！');"> <span
                                                 class="glyphicon glyphicon-cog"></span><span>估算工具</span></a></li>
-                                        <li class="showbox4"><a href="/assistant/operationLog">
+                                        <li><a onclick="LogPageShow()" >
                                             <span class="glyphicon glyphicon-list-alt"></span><span>操作日志</span></a></li>
                                     </ul>
                                 </div>
@@ -1161,6 +1163,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <jsp:include page="../log/operationlog.jsp"/>
                                 <div class="zhushou_concent over hides" id="jiangkong_box3">
                                     <div class="zs_concent_top over">
                                         <ul class="zh_menu2 zh_menuMonitor fl">
@@ -1376,7 +1379,7 @@
                     <div class="j_list01 over">
                         <div id="loading">
                         </div>
-                        <ul id="zTree" class="ztree over">
+                        <ul id="zTree" class="ztree over" style="height:600px">
                         </ul>
                     </div>
                     <div class="j_l_under over">
