@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by subdong on 15-10-8.
@@ -14,9 +15,12 @@ public class BaiduApiQuota {
 
     private static Map<String, Integer> qutoa = new HashMap<>();
 
-    public static void setQuota(String userName, int tutoa) {
-        if (qutoa.containsKey(userName)) qutoa.put(userName, qutoa.get(userName) + tutoa);
-        else qutoa.put(userName, tutoa);
+    public static void setQuota(String userName, Integer qutoa) {
+        if (Objects.nonNull(qutoa)) {
+            if (BaiduApiQuota.qutoa.containsKey(userName))
+                BaiduApiQuota.qutoa.put(userName, BaiduApiQuota.qutoa.get(userName) + qutoa);
+            else BaiduApiQuota.qutoa.put(userName, qutoa);
+        }
     }
 
     public static void clearQuota() {
