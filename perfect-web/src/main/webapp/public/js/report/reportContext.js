@@ -227,10 +227,12 @@ $(function () {
                 }
                 $(".time_input").css({width:"200px"})
             });
-        $('input[name="reservation"]').click(function(){
-            setTimeout(function(){
-            $(".ranges li:eq(1)").click();
-            },10)
+        //双排日历日期同步
+        $('input[name="reservation"]:eq(0)').click(function(){
+            $(".ranges:eq(0) li:eq(1)").click();
+        })
+        $('input[name="reservation"]:eq(1)').click(function(){
+            $(".ranges:eq(1) li:eq(1)").click();
         })
 
         $("#userClick").click(function () {
@@ -243,8 +245,7 @@ $(function () {
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');
-            var index = $tab_li.index(this);
-            console.log(index)
+            var index = $tab_li.index(this)
             $('div.tab_box > div').eq(index).show().siblings().hide();
             $("#pageDet").empty();
             if ($("#reportType>a").eq(4).attr("class") == "current") {
