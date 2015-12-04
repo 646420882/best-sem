@@ -174,23 +174,24 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
 
 
+        //TODO 请保证配额充足的情况下,解除注释
         //设置关键词质量度
-        BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
-        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-        BaiduApiService apiService = new BaiduApiService(commonService);
-
-        if (kwd.getKeywordId() != null) {//添加质量度相关数据
-            List<Long> ids = new ArrayList<>();
-            ids.add(kwd.getKeywordId());
-            List<QualityType> qualityList = apiService.getKeywordQuality(ids);
-            for (QualityType qualityType : qualityList) {
-                if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
-                    keywordInfoDTO.setQuality(qualityType.getQuality());
-                    keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
-                    break;
-                }
-            }
-        }
+//        BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+//        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+//        BaiduApiService apiService = new BaiduApiService(commonService);
+//
+//        if (kwd.getKeywordId() != null) {//添加质量度相关数据
+//            List<Long> ids = new ArrayList<>();
+//            ids.add(kwd.getKeywordId());
+//            List<QualityType> qualityList = apiService.getKeywordQuality(ids);
+//            for (QualityType qualityType : qualityList) {
+//                if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
+//                    keywordInfoDTO.setQuality(qualityType.getQuality());
+//                    keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
+//                    break;
+//                }
+//            }
+//        }
         return keywordInfoDTO;
     }
 
@@ -1181,24 +1182,24 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
             keywordInfoDTO.setCampaignId(cam.getCampaignId());
 
-
+            //TODO 请保证配额充足的情况下,解除注释
             //设置关键词质量度
-            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-            BaiduApiService apiService = new BaiduApiService(commonService);
-
-            if (kwd.getKeywordId() != null) {//添加质量度相关数据
-                List<Long> ids = new ArrayList<>();
-                ids.add(kwd.getKeywordId());
-                List<QualityType> qualityList = apiService.getKeywordQuality(ids);
-                for (QualityType qualityType : qualityList) {
-                    if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
-                        keywordInfoDTO.setQuality(qualityType.getQuality());
-                        keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
-                        break;
-                    }
-                }
-            }
+//            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+//            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+//            BaiduApiService apiService = new BaiduApiService(commonService);
+//
+//            if (kwd.getKeywordId() != null) {//添加质量度相关数据
+//                List<Long> ids = new ArrayList<>();
+//                ids.add(kwd.getKeywordId());
+//                List<QualityType> qualityList = apiService.getKeywordQuality(ids);
+//                for (QualityType qualityType : qualityList) {
+//                    if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
+//                        keywordInfoDTO.setQuality(qualityType.getQuality());
+//                        keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
+//                        break;
+//                    }
+//                }
+//            }
             keywordInfoDTOs.add(keywordInfoDTO);
         });
         return keywordInfoDTOs;
@@ -1230,23 +1231,24 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
 
 
+            //TODO 请保证配额充足的情况下,解除注释
             //设置关键词质量度
-            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-            BaiduApiService apiService = new BaiduApiService(commonService);
-
-            if (kwd.getKeywordId() != null) {//添加质量度相关数据
-                List<Long> ids = new ArrayList<>();
-                ids.add(kwd.getKeywordId());
-                List<QualityType> qualityList = apiService.getKeywordQuality(ids);
-                for (QualityType qualityType : qualityList) {
-                    if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
-                        keywordInfoDTO.setQuality(qualityType.getQuality());
-                        keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
-                        break;
-                    }
-                }
-            }
+//            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+//            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+//            BaiduApiService apiService = new BaiduApiService(commonService);
+//
+//            if (kwd.getKeywordId() != null) {//添加质量度相关数据
+//                List<Long> ids = new ArrayList<>();
+//                ids.add(kwd.getKeywordId());
+//                List<QualityType> qualityList = apiService.getKeywordQuality(ids);
+//                for (QualityType qualityType : qualityList) {
+//                    if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
+//                        keywordInfoDTO.setQuality(qualityType.getQuality());
+//                        keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
+//                        break;
+//                    }
+//                }
+//            }
             keywordInfoDTOs.add(keywordInfoDTO);
         });
 
@@ -1283,24 +1285,24 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordInfoDTO.setCampaignId(cam.getCampaignId());
                 keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
 
-
+                //TODO 请保证配额充足的情况下,解除注释
                 //设置关键词质量度
-                BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
-                CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-                BaiduApiService apiService = new BaiduApiService(commonService);
-
-                if (kwd.getKeywordId() != null) {//添加质量度相关数据
-                    List<Long> ids = new ArrayList<>();
-                    ids.add(kwd.getKeywordId());
-                    List<QualityType> qualityList = apiService.getKeywordQuality(ids);
-                    for (QualityType qualityType : qualityList) {
-                        if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
-                            keywordInfoDTO.setQuality(qualityType.getQuality());
-                            keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
-                            break;
-                        }
-                    }
-                }
+//                BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+//                CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+//                BaiduApiService apiService = new BaiduApiService(commonService);
+//
+//                if (kwd.getKeywordId() != null) {//添加质量度相关数据
+//                    List<Long> ids = new ArrayList<>();
+//                    ids.add(kwd.getKeywordId());
+//                    List<QualityType> qualityList = apiService.getKeywordQuality(ids);
+//                    for (QualityType qualityType : qualityList) {
+//                        if (keywordInfoDTO.getObject().getKeywordId() != null && qualityType.getId().longValue() == keywordInfoDTO.getObject().getKeywordId().longValue()) {
+//                            keywordInfoDTO.setQuality(qualityType.getQuality());
+//                            keywordInfoDTO.setMobileQuality(qualityType.getMobileQuality());
+//                            break;
+//                        }
+//                    }
+//                }
                 keywordInfoDTOs.add(keywordInfoDTO);
             });
         }
