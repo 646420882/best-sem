@@ -34,7 +34,7 @@
         <li id="Textreplacement"><a href="#"><span class="zs_top"><img
                 src="../public/img/zs_function_text.png"></span><b>文字替换</b></a></li>
         <li onclick="commons.batchDel()"><a href="#"><span class="zs_top"><img
-                src="../public/img/zs_function_text.png"></span><b>批量删除</b></a></li>
+                src="../public/img/zs_function3.png"></span><b>批量删除</b></a></li>
     </ul>
 </div>
 

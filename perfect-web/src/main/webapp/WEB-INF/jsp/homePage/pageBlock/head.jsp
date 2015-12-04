@@ -338,9 +338,5 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/commons/head.js"></script>
-<%--<style> .ui-dialog-body {--%>
-<%--background-color: #f8f8f8;--%>
-<%--}</style>--%>
-
 
 

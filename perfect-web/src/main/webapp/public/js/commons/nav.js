@@ -103,14 +103,14 @@ $(function () {
                 ChangeAccountajax(_accountId);
 
             });
-            $('#searchCount').keydown(function (e) {
-                if (e.keyCode == 13) {
-                    $('.user_name span').html($(this).val());
-                    var _accountId = $('#searchCount').attr("card");
-                    $('#switchAccount').hide();
-                    ChangeAccountajax(_accountId);
-                }
-            });
+            //$('#searchCount').keydown(function (e) {
+            //    if (e.keyCode == 13) {
+            //        $('.user_name span').html($(this).val());
+            //        var _accountId = $('#searchCount').attr("card");
+            //        $('#switchAccount').hide();
+            //        ChangeAccountajax(_accountId);
+            //    }
+            //});
             var ev = e || window.event;
             if (ev.stopPropagation) {
                 ev.stopPropagation();

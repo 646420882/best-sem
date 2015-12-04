@@ -238,10 +238,10 @@ function keywordDataToHtml(obj, index) {
             TableStatus = "repeat";
 
         }
-        html = html + "<td class='table_add'><input type='checkbox'   name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/><span class='" + TableStatus + "' step='" + obj.object.localStatus + "'></span></td>";
+        html = html + "<td class='table_add'><input type='checkbox'   name='keywordCheck' value='" + obj.object.keywordId + "' /><span class='" + TableStatus + "' step='" + obj.object.localStatus + "'></span></td>";
     } else {
         var replaceText = $("input[name='replaceText']").val();
-        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td class='table_add'><input type='checkbox' class='fl' style='margin-top:9px;' name='keywordCheck' value='" + obj.object.keywordId + "' onchange='kwdListCheck()'/>&nbsp;</td>";
+        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td class='table_add'><input type='checkbox' class='fl' style='margin-top:9px;' name='keywordCheck' value='" + obj.object.keywordId + "' />&nbsp;</td>";
         html = html + ls;
     }
     /*   if(obj.object.localStatus != -1){*/
@@ -530,7 +530,7 @@ function editKwdInfo(jsonData) {
             jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(6)").attr("cname");
             jsonData["campaignId"] = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("camp");
             jsonData["folderCount"] = $("#tbodyClick").find(".list2_box3 input[type=hidden]").attr("dirCount");
-            jsonData["adgroupName"]=data.adgroupName;
+            jsonData["adgroupName"] = data.adgroupName;
 
             var html = keywordDataToHtml(jsonData, 0);
             var tr = $("#tbodyClick").find(".list2_box3");
@@ -713,7 +713,7 @@ function whenBlurEditKeyword(num, value) {
 function deleteKwd() {
     var ids = "";
     $("#tbodyClick").find(".list2_box3").each(function () {
-        ids = ids + $(this).find("input[type=hidden]").val() + ",";
+        ids = ids + $(this).find("input[type=checkbox]").val() + ",";
     });
 
     if (ids != "") {
@@ -731,14 +731,14 @@ function deleteKwd() {
     if (isDel == false) {
         return;
     }
-
     $.ajax({
         url: "/assistantKeyword/deleteById",
         type: "post",
         data: {"kwids": ids},
         dataType: "json",
         success: function (data) {
-            $("#tbodyClick").find(".list2_box3 td:last").html("<span class='error' step='3'></span>");
+            ids=ids.slice(0,-1);
+            $("#tbodyClick").find(".list2_box3").addClass("del").find("td:first").html("<input type='checkbox' value='"+ids+"'/><span class='table_delete' step='3'></span>");
         }
     });
 
@@ -971,7 +971,7 @@ function reducKwd_del(id) {
         data: {"id": id},
         dataType: "json",
         success: function (data) {
-            $("#tbodyClick").find(".list2_box3 td:last").html("&nbsp;");
+            $("#tbodyClick").find(".list2_box3").removeClass("del").find("td:first").html("<input type='checkbox' value='" + id + "' />");
         }
     });
 }

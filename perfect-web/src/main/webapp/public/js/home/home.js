@@ -45,24 +45,26 @@ var genre = "";
 //日期控件坐标定位
 var _posX = 0, _posY = 0;
 var clickdddd = null;
-//根据最近几天获取数据
 
+//双排日历初始化日期
+var flag=true;
+var flagt=true;
 function lisClick(obj, days) {
     if (days != null) {
         getDateParam(days);
     }
-    setTimeout(function () {
-
+   setTimeout(function(){
         if (days == 1) {
-            $('.date_choice').data('daterangepicker').setStartDate(GetDateStr(-days));
-            $('.date_choice').data('daterangepicker').setEndDate(GetDateStr(-days));
-            $(".date_choice").children().find("b").html(daterangepicker_start_date);
+            flag=true;
+            //$('.date_choice:eq(0)').data('daterangepicker').setStartDate(GetDateStr(-days));
+            //$('.date_choice:eq(0)').data('daterangepicker').setEndDate(GetDateStr(-days));
+            $('.date_choice:eq(0)').children().find("b").html(daterangepicker_start_date);
         } else {
-            $('.date_choice').data('daterangepicker').setStartDate(GetDateStr(-days + 1));
-            $('.date_choice').data('daterangepicker').setEndDate(GetDateStr(0));
-            $(".date_choice").children().find("b").html(daterangepicker_start_date + "至" + daterangepicker_end_date);
+            $('.date_choice:eq(0)').data('daterangepicker').setStartDate(GetDateStr(-days + 1));
+            $('.date_choice:eq(0)').data('daterangepicker').setEndDate(GetDateStr(0));
+            $('.date_choice:eq(0)').children().find("b").html(daterangepicker_start_date + "至" + daterangepicker_end_date);
         }
-    })
+   })
     htmlLoding();
     getData();
     changedLiState(obj);
@@ -126,6 +128,9 @@ $(document).ready(function () {
             minDate: '2005/1/1',
             maxDate: moment().startOf('day'),
             autoUpdateInput: true,
+            ranges: {
+                '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')]
+            },
             "locale": {
                 "format": "YYYY-MM-DD",
                 "separator": " - ",
@@ -188,22 +193,23 @@ $(document).ready(function () {
                 }
                 $(".date_choice").children().find("b").html(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
             }
-            console.log(_startDate);
+            //console.log(_startDate);
         });
-//        $("input[name=reservation]").daterangepicker();
-    $(".btnDone").on('click', function () {
 
-    });
-//        $("#clickLis li").on('click', function () {
-//            var day= $(this).find("a").attr('value');
-//          $('input[name="reservation').data('daterangepicker').setStartDate(GetDateStr(-day));
-//           if(day==1){
-//              $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(-day));
-//           }else{
-//           $('input[name="reservation').data('daterangepicker').setEndDate(GetDateStr(0));
-//           }
-//
-//        });
+    //双排日历初始化日期
+    $ ('.date_choice:eq(0)').click(function () {
+        if(flag){
+            $(".ranges:eq(0)").find("li").click()
+            flag=false;
+        }
+    })
+    $ ('.date_choice:eq(3)').click(function () {
+        if(flagt){
+            $(".ranges:eq(3)").find("li").click()
+            flagt=false;
+        }
+    })
+    $(".ranges").hide();
     document.getElementById("background").style.display = "none";
     document.getElementById("progressBar1").style.display = "none";
 
@@ -1010,11 +1016,12 @@ var curve = function () {
 
 var getImportKeywordDefault = function (obj, day) {
     if (day == 1) {
-        $('.date_choice').data('daterangepicker').setStartDate(GetDateStr(-day));
-        $('.date_choice').data('daterangepicker').setEndDate(GetDateStr(-day));
+        flagt=true;
+        //$('.date_choice:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day));
+        //$('.date_choice:eq(3)').data('daterangepicker').setEndDate(GetDateStr(-day));
     } else {
-        $('.date_choice').data('daterangepicker').setStartDate(GetDateStr(-day + 1));
-        $('.date_choice').data('daterangepicker').setEndDate(GetDateStr(0));
+        $('.date_choice:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day + 1));
+        $('.date_choice:eq(3)').data('daterangepicker').setEndDate(GetDateStr(0));
     }
     if (obj != null) {
         changedLiState(obj);
