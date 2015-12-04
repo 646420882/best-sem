@@ -1,0 +1,314 @@
+/* ----单选 ------*/
+.historydiv{
+	width: 100%;
+}
+.radioselect-box{
+	height: 38px;
+	line-height: 38px;
+	padding-left: 18px;
+}
+.radioselect-box input[type="radio"] {
+  margin: 3px 3px 0px 5px;
+  display: none;
+}
+.radioselect-box label {
+	font-weight: normal;
+  padding: 0 15px 0 20px;
+  cursor: pointer;
+  background: url(/public/img/radio-bg.png) no-repeat left center;
+}
+.radioselect-box label.checked{
+  background: url(/public/img/r-select-bg.png) no-repeat left center;
+}
+/* ----单选 结束 ------*/
+/* -----弹窗------- */
+.black{
+	background: url(/public/img/black.png) repeat;
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: none;
+	z-index: 1000;
+}
+.tip-box{
+	width: 490px;
+	border-radius: 5px;
+	background-color: #fff;
+	position: absolute;
+	top:50%;
+	left: 50%;
+	height: 190px;
+	margin:-95px 0 0 -245px;
+}
+.tip-box h2{
+	height: 49px;
+	color: #424242;
+	border-bottom: 1px solid #E5E5E5;
+	font-size: 16px;
+	padding-left: 25px;
+	line-height: 50px;
+}
+.tip-box h2 .close-tip{
+	float: right;
+	display: block;
+	width: 49px;
+	height: 49px;
+	background: url(/public/img/close.png) no-repeat center center;
+}
+.tip-box p{
+	padding: 30px 25px 45px;
+}
+.operation{
+	float: right;
+	overflow: hidden;
+}
+.operation a{
+	float: left;
+	display: block;
+	text-align: center;
+	width: 83px;
+	height:30px;
+	line-height: 30px;
+	background-color: #E0E0E0;
+	color: #636363;	
+	border-radius: 5px;
+	margin-right:8px;
+}
+.operation a.submit{
+	background-color: #01AEF0;
+	color: #fff;
+}
+/* -----弹窗 结束------- */
+.line{
+	height: 1px;
+	width: 100%;
+	background-color: #1d99dc;
+	border-top: 1px solid #2ca5e6;
+	border-bottom: 1px solid #2ca5e6;
+}
+.object{
+	margin-top:10px;
+	line-height: 30px;
+	padding-left: 18px;
+}
+.object .num{
+	color: #999;
+}
+.obj-box{
+	width: 100%;
+	padding-left: 18px;
+	position: relative;
+}
+.obj-select{
+	width: 299px;
+	height: 221px;
+	border: 1px solid #D2DAEF;
+	position: relative;
+}
+.obj-select-list{
+	width: 100%;
+	height: 188px;
+	border-bottom: 1px solid #ddd;
+	overflow: hidden;
+	padding-top: 12px;
+}
+.obj-list{
+	padding-left: 11px;
+	overflow: hidden;
+}
+.obj-list:hover{
+	background-color: #f0f7fe;
+}
+.obj-list .obj-list-del{
+	width: 24px;
+	height: 24px;
+	background: url(/public/img/close.png) no-repeat center center;
+	float: right;
+	cursor: pointer;
+	display: none;
+}
+.obj-list a{
+	color: #333;
+}
+.add-obj{
+	line-height: 32px;
+}
+.add-obj a{
+	padding-left: 10px;
+	color: #00ADF2;
+	cursor: pointer;
+}
+.add-obj a.none{
+	cursor: default;
+	color: #9A9A9A;
+}
+.select-time-box{
+	width: 210px;
+	position: absolute;
+	left: 335px;
+	top:0;
+}
+.date-box{
+	width: 238px;
+}
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
+	cursor: pointer;
+}
+.ctrlbuttonoptSelect{
+	cursor: pointer;
+	width: 62px;
+	height: 30px;
+	background: url(/public/img/all.jpg) no-repeat center center ;
+}
+.download-box{
+	overflow: hidden;
+	padding: 7px 10px 15px 18px;
+}
+.query-btn{
+	border: none;
+	cursor: pointer;
+	width: 62px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 3px;
+	color: #fff;
+	text-align: center;
+	background-color: #01AEF0;
+	float: left;
+
+}
+
+/* 计划列表 */
+.plan-box{
+	position: absolute;
+	left: 330px;
+	top:0;
+	width: 330px;
+	height: 350px;
+	border: 1px solid #D2DAEF;
+	background-color: #fff;
+	display: none;
+}
+.plan-box h2{
+	padding: 0 10px;
+	line-height: 32px;
+	font-size: 12px;
+	border-bottom: 1px solid #E5E5E5;
+}
+.plan-box h2 .close-ico{
+	float: right;
+	width: 30px;
+	height: 30px;
+	background: url(/public/img/close.png) no-repeat center center;
+}
+.plan-box form{
+	padding: 10px;
+}
+.plan-box input{
+	border: none;
+	border: 1px solid #E5E5E5;
+	width: 225px;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 5px;
+	border-radius: 3px;
+}
+.plan-box button{
+	border: none;
+	cursor: pointer;
+	width: 62px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 3px;
+	color: #fff;
+	text-align: center;
+	background-color: #01AEF0;
+}
+.plan-box .query-result{
+	padding: 10px;
+}
+.plan-box .query-result li{
+	padding-left: 5px;
+	border-bottom: 1px solid #E5E5E5;
+}
+.plan-box .query-result li a{
+	color: #2a6496;
+	padding-right: 10px;
+}
+.plan-box .query-result li a.default{
+	color: #ccc;
+}
+.plan-box .query-result li:hover{
+	background-color: #f0f7fe;
+}
+/* --------------------------- */
+.download{
+	float: right;
+	color: #01AEF0;
+}
+.download:hover{
+	color: #01AEF0;
+}
+
+/* 选择操作弹窗 */
+.operation-tip .check-all{
+	padding-left: 25px;
+	line-height: 35px;
+}
+.operation-tip .check-all a{
+	padding:0 5px;
+	color:#000;
+}
+.operation-tip .check-all a.check-now{
+	font-weight: bold;
+}
+.operation-tip .tip-box{
+	width: 740px;
+	height: 630px;
+	margin: -315px  0 0 -370px;
+	display: block;
+}
+.operation-tip-list {
+	overflow: hidden;
+	padding:0 25px ;
+}
+.operation-tip-list .list-view-box{
+	overflow: hidden;
+}
+.operation-tip-list .list-view{
+	width: 80px;
+	float: left;
+}
+.operation-tip-list .list-view-r{
+	float: left;
+	width: 605px;
+}
+.operation-tip-list ul{
+	overflow: hidden;
+}
+.operation-tip-list ul li{
+	width: 145px;
+	float: left;
+}
+.operation-tip-list label{
+	margin-left: 3px;
+	font-weight: normal;
+}
+
+.history-list-box thead{
+	background-color: #e5e5e5;
+}
+.history-list-box thead th{
+	font-weight: normal;
+	padding-left: 10px;
+}
+.history-list-box tbody{
+	border-left: 1px solid #ccc;
+}
+.history-list-box tbody tr{
+	border-bottom: 1px solid #ccc;
+}
+.history-list-box tbody td{
+	padding-left: 10px;
+	border-right:1px solid  #ccc;
+}
