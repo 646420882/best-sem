@@ -43,7 +43,7 @@ To change this template use File | Settings | File Templates.
 <body>
 <div id="background" class="background"></div>
 <div id="progressBar" class="progressBar"><span></span>数据加载中，请稍等...</div>
-<div id="progressBar1" class="progressBar">正在生成数据，请稍等...</div>
+<div id="progressBar1" class="progressBar hides">正在生成数据，请稍等...</div>
 <jsp:include page="../homePage/pageBlock/head.jsp"/>
 <div class="concent over">
     <jsp:include page="../homePage/pageBlock/nav.jsp"/>
