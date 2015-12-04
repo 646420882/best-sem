@@ -308,9 +308,5 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui-dialog.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/main.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/commons/head.js"></script>
-<%--<style> .ui-dialog-body {--%>
-<%--background-color: #f8f8f8;--%>
-<%--}</style>--%>
-
 
 

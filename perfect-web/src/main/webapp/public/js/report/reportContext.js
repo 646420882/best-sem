@@ -180,6 +180,7 @@ $(function () {
                     ],
                     "firstDay": 1
                 },
+                //"startDate":'1/1/2015',
                 "startDate":moment().subtract('days', 1).startOf('day'),
                 "endDate": moment().subtract('days', 1).startOf('day')
             },
@@ -226,6 +227,12 @@ $(function () {
                 }
                 $(".time_input").css({width:"200px"})
             });
+        $('input[name="reservation"]').click(function(){
+            setTimeout(function(){
+            $(".ranges li:eq(1)").click();
+            },10)
+        })
+
         $("#userClick").click(function () {
             judgeVS = 0;
             $("#pagination1").empty();

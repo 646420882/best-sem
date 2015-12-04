@@ -391,11 +391,12 @@ table tr, table tr td {
 }
 
 .switchAccountSerach {
-    width: 93%;
+    width: 220px;
     margin: 10px 10px 0 10px;
     padding: 0 5px;
     border: 1px solid #ccc;
     box-shadow: none;
+    height: 24px;
     background: url(/public/img/switchAccountSerach.png) no-repeat right;
 }
 

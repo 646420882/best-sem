@@ -341,12 +341,13 @@
                                             <li id="showbox5_im"><img
                                                     src="${pageContext.request.contextPath}/public/img/fenzu.png">分组(改变分组)
                                             </li>
+
+                                            <li id="showboxD"><img
+                                                    src="${pageContext.request.contextPath}/public/img/zidingyi.png">删除数据
+                                            </li>
                                             <li id="showbox62" data-toggle="tooltip"
                                                 data-placement="bottom" title="自定义设置重点关注的指标，满足个性需求。"><img
                                                     src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列
-                                            </li>
-                                            <li id="showboxD"><img
-                                                    src="${pageContext.request.contextPath}/public/img/zidingyi.png">删除数据
                                             </li>
                                         </ul>
                                         <div class="Screening_concent over" style="display: none;">

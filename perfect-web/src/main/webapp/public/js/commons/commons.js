@@ -886,6 +886,12 @@ $("#filterSearchTemplate").click(function (e) {
     }
 });
 $("#kkeyword").next().next().find("th").mouseover().append("<span class='remove'><img src='../public/img/select.png'></span>");
+//筛选图标加载
+$("#ccampaign tr th").slice(0,7).mouseover(function(){
+    $("#filterSearchTemplate").hide();
+    $(".remove").remove()
+    $(this).append("<span class='remove'><img src='../public/img/select.png'></span>");
+})
 var TabModel = {
     Show: function (type, _this, e) {
         if (!jsonData.cid) {
@@ -895,7 +901,10 @@ var TabModel = {
                 return;
             }
         }
+        if( $(_this).find("span")){
+            $(".remove").remove()
         $(_this).append("<span class='remove'><img src='../public/img/select.png'></span>");
+        }
         if ($("#filterSearchTemplate").css("display") == "none") {
             var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
             var tableft = $(_this).offset().left + $(_this).outerWidth() + -$(_this).width() + "px";
