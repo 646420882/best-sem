@@ -114,6 +114,8 @@
                                         <li class="showbox4"><a href="javascript:void(0)"
                                                                 onclick="AlertPrompt.show('该功能还在开发中！');"> <span
                                                 class="glyphicon glyphicon-cog"></span><span>估算工具</span></a></li>
+                                        <li class="showbox4"><a href="/assistant/operationLog">
+                                            <span class="glyphicon glyphicon-list-alt"></span><span>操作日志</span></a></li>
                                     </ul>
                                 </div>
                                 <div class="zhushou_concent over" id="jiangkong_box2">
