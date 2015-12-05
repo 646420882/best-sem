@@ -195,17 +195,17 @@ $(document).ready(function () {
     });
 
 });
-/*******顶部菜单****/
+/*******顶部菜单***
 $(document).ready(function () {
     $('.zhushou_menu ul li').click(function () {
         $(this).addClass('current').siblings().removeClass('current');
     });
-});
+});*/
 /*******二级菜单****/
 $(document).ready(function () {
     /**推广助手自适应***/
     $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
-    $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 136 + "px");
     var $tab_li = $('.zh_menu2 li');
     $('.zh_menu2 li').click(function () {
         //alert($(".jingjia_right")[0].offsetHeight)
@@ -217,7 +217,7 @@ $(document).ready(function () {
         var index = $tab_li.index(this);
         $('div.zs_box > div').eq(index).show().siblings().hide();
         $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
-        $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
+        $("#zTree").height($(".assistant_right")[0].offsetHeight - 136 + "px");
         var xx = $(this).attr("cname");
         /*   setTimeout(function () {
          resizable(xx)
@@ -231,7 +231,7 @@ $(document).ready(function () {
 
 $(window).resize(function () {
     $(".assistant_left").height($(".assistant_right").offsetHeight - 20 + "px");
-    $("#zTree").height($(".assistant_right")[0].offsetHeight - 130 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 136 + "px");
 });
 /*******表格****/
 $(function () {
@@ -350,4 +350,12 @@ $(function () {
             );
         }
     }
+
 });
+function LogPageShow(){
+    $("#jiangkong_box2").hide();
+    $("#LogPage").show();
+    $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
+    $("#zTree").height($(".assistant_right")[0].offsetHeight - 136 + "px");
+
+}

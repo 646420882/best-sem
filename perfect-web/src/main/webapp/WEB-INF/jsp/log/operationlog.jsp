@@ -1,21 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>历史操作记录</title>
-    <meta name="renderer" content="webkit">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <%-- <link href="css/font-awesome.min.css" rel="stylesheet">--%>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/log/base.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/log/index.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript"
-            src="${pageContext.request.contextPath}/public/js/bootstrap-daterangepicker-moment.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
     <script type="text/javascript">
         //推广账户
 
@@ -133,8 +116,7 @@
 
     </script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/log/radio.js"></script>
-</head>
-<body>
+<div id="LogPage" style="display:none">
 <div class="historydiv">
     <div class="history-sel-box">
         <!-- 选择 -->
@@ -223,7 +205,7 @@
     </table>
 
 </div>
-
+</div>
 <!-- 提示弹出框 -->
 <div class="black tip">
     <div class="tip-box">
@@ -267,5 +249,3 @@
 
     </div>
 </div>
-</body>
-</html>

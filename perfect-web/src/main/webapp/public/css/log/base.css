@@ -1,23 +1,80 @@
 /*CSS reset  css 初始化*/
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote, th, td { margin:0; padding:0; }
-body { font-size:12px; color:#000; font-family: Microsoft YaHei; background:#fff; line-height:24px; min-width: 1280px;}
-fieldset, img { border:0; }  /*在ie6下面，只要给插入图片加了链接，就会出现小边框*/
-img{display:block;}
-s{ text-decoration: none;display: inline-block;}
-i{font-style:normal}
-ol, ul { list-style:none; }
-h1, h2, h3, h4, h5, h6{ font-size:100%; }
-em { font-style:normal; }
-input, button, select, textarea { outline:none!important; font-family: Microsoft YaHei;blr:expression(this.onFocus=this.blur());} 
-textarea { resize:none; }
-a { color:#999c9e; text-decoration:none; cursor: pointer;outline: none;blr:expression(this.onFocus=this.blur());}
-a:hover { text-decoration:none; }
-a:focus{outline: none;text-decoration:none; }
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
 
+body {
+    font-size: 12px;
+    color: #000;
+    font-family: Microsoft YaHei;
+    background: #fff;
+    line-height: 24px;
+    min-width: 1280px;
+}
 
-.clearfix:before,.clearfix:after{
-	display:table;
-	content:"";}
-.clearfix:after{
-	clear:both;}
-.clearfix{zoom:1;}
+fieldset, img {
+    border: 0;
+}
+
+/*在ie6下面，只要给插入图片加了链接，就会出现小边框*/
+s {
+    text-decoration: none;
+    display: inline-block;
+}
+
+i {
+    font-style: normal
+}
+
+ol, ul {
+    list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+}
+
+em {
+    font-style: normal;
+}
+
+input, button, select, textarea {
+    outline: none !important;
+    font-family: Microsoft YaHei;
+    blr: expression(this.onFocus=this.blur());
+}
+
+textarea {
+    resize: none;
+}
+
+a {
+    color: #999c9e;
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+    blr: expression(this.onFocus=this.blur());
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:focus {
+    outline: none;
+    text-decoration: none;
+}
+
+.clearfix:before, .clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1;
+}

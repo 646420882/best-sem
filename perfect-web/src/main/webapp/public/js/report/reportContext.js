@@ -180,6 +180,7 @@ $(function () {
                     ],
                     "firstDay": 1
                 },
+                //"startDate":'1/1/2015',
                 "startDate":moment().subtract('days', 1).startOf('day'),
                 "endDate": moment().subtract('days', 1).startOf('day')
             },
@@ -226,6 +227,14 @@ $(function () {
                 }
                 $(".time_input").css({width:"200px"})
             });
+        //双排日历日期同步
+        $('input[name="reservation"]:eq(0)').click(function(){
+            $(".ranges:eq(0) li:eq(1)").click();
+        })
+        $('input[name="reservation"]:eq(1)').click(function(){
+            $(".ranges:eq(1) li:eq(1)").click();
+        })
+
         $("#userClick").click(function () {
             judgeVS = 0;
             $("#pagination1").empty();
@@ -236,8 +245,7 @@ $(function () {
         var $tab_li = $('.tab_menu li');
         $('.tab_menu li').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');
-            var index = $tab_li.index(this);
-            console.log(index)
+            var index = $tab_li.index(this)
             $('div.tab_box > div').eq(index).show().siblings().hide();
             $("#pageDet").empty();
             if ($("#reportType>a").eq(4).attr("class") == "current") {

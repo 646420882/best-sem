@@ -303,7 +303,7 @@
                                        src="${pageContext.request.contextPath}/public/img/search.png">
                             </div>
                             <div class="j_list01 over">
-                                <ul id="zTree" class="ztree over">
+                                <ul id="zTree" class="ztree over" style="height:570px;">
                                 </ul>
                             </div>
                             <%--<div class="j_l_under over">
@@ -341,12 +341,13 @@
                                             <li id="showbox5_im"><img
                                                     src="${pageContext.request.contextPath}/public/img/fenzu.png">分组(改变分组)
                                             </li>
+
+                                            <li id="showboxD"><img
+                                                    src="${pageContext.request.contextPath}/public/img/zidingyi.png">删除数据
+                                            </li>
                                             <li id="showbox62" data-toggle="tooltip"
                                                 data-placement="bottom" title="自定义设置重点关注的指标，满足个性需求。"><img
                                                     src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列
-                                            </li>
-                                            <li id="showboxD"><img
-                                                    src="${pageContext.request.contextPath}/public/img/zidingyi.png">删除数据
                                             </li>
                                         </ul>
                                         <div class="Screening_concent over" style="display: none;">
@@ -391,7 +392,7 @@
                                        src="${pageContext.request.contextPath}/public/img/search.png">
                             </div>
                             <div class="j_list01 over">
-                                <ul id="zTreeImport" class="ztree over">
+                                <ul id="zTreeImport" class="ztree over" style="height:570px;">
                                 </ul>
                             </div>
                             <%--<div class="j_l_under over">--%>

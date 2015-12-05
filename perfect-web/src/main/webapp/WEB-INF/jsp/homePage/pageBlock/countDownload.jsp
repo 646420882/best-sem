@@ -54,11 +54,11 @@
             view: {
                 showLine: false,
                 showIcon: false
-            },
-            callback: {
-                onClick: onClick,
-                onCheck: onCheck
             }
+//            callback: {
+//                onClick: onClick,
+//                onCheck: onCheck
+//            }
         };
         var zNodes = [
             {id: 11, pId: 1, name: "账户2", open: true,},
