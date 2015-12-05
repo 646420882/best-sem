@@ -1,0 +1,10 @@
+权限管理菜单列表:
+账户全景 sem.best-ad.cn/home
+推广助手 sem.best-ad.cn/assistant/index
+智能结构 sem.best-ad.cn/keyword_group
+智能竞价 sem.best-ad.cn/bidding/index
+数据报告 sem.best-ad.cn/reportIndex
+
+
+附加:
+增加administrator账户， access属性设置为1(普通用户为2)

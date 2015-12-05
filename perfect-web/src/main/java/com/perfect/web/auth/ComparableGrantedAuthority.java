@@ -1,4 +1,4 @@
-package com.perfect.commons;
+package com.perfect.web.auth;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;

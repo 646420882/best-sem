@@ -1,9 +1,9 @@
 package com.perfect.app.index.controller;
 
-import com.perfect.commons.CustomUserDetailsService;
+import com.perfect.web.auth.CustomUserDetailsService;
 import com.perfect.commons.message.mail.SendMail;
-import com.perfect.commons.web.WebContextSupport;
-import com.perfect.commons.web.WebUtils;
+import com.perfect.web.support.WebContextSupport;
+import com.perfect.web.support.WebUtils;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
@@ -98,15 +98,16 @@ public class HomePageManageController extends WebContextSupport {
      */
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
-        String userName = WebUtils.getUserName(request);
-        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-        if (systemUserDTO == null) {
-            return new ModelAndView("redirect:/logout");
-        }
-
-        modelMap.put("currSystemUserName", userName);
-        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
-        return new ModelAndView("homePage/home");
+//        String userName = WebUtils.getUserName(request);
+//        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+//        if (systemUserDTO == null) {
+//            return new ModelAndView("redirect:/logout");
+//        }
+//
+//        modelMap.put("currSystemUserName", userName);
+//        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+//        return new ModelAndView("homePage/home");
+        return new ModelAndView("homePage/login");
     }
 
     /**

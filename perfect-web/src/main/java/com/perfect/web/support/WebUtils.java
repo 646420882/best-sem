@@ -1,4 +1,4 @@
-package com.perfect.commons.web;
+package com.perfect.web.support;
 
 import com.perfect.core.AppContext;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;

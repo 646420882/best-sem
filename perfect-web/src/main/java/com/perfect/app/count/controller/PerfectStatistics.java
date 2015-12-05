@@ -1,6 +1,6 @@
 package com.perfect.app.count.controller;
 
-import com.perfect.commons.web.WebContextSupport;
+import com.perfect.web.support.WebContextSupport;
 import com.perfect.dto.count.ConstantsDTO;
 import com.perfect.service.CensusService;
 import org.springframework.context.annotation.Scope;

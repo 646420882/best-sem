@@ -3,7 +3,7 @@ package com.perfect.app.assistant.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.perfect.commons.web.WebContextSupport;
+import com.perfect.web.support.WebContextSupport;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.service.MonitorSynchronizedService;

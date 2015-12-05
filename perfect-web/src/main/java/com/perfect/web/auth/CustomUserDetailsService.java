@@ -1,4 +1,4 @@
-package com.perfect.commons;
+package com.perfect.web.auth;
 
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.service.SystemUserService;

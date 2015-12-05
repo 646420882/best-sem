@@ -1,4 +1,4 @@
-package com.perfect.commons;
+package com.perfect.web.auth;
 
 import com.perfect.utils.MD5;
 import com.perfect.utils.redis.JRedisUtils;

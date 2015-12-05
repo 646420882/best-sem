@@ -1,7 +1,6 @@
 package com.perfect.app.count.controller;
 
-import com.perfect.commons.web.WebContextSupport;
-import com.perfect.dao.CensusDAO;
+import com.perfect.web.support.WebContextSupport;
 import com.perfect.dao.report.CensusEveryDayReportDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**

@@ -54,11 +54,11 @@
         <property name="userPropertyToUse" value="username"/>
     </bean>
 
-    <bean id="customUserDetailsService" class="com.perfect.commons.CustomUserDetailsService"/>
+    <bean id="customUserDetailsService" class="com.perfect.web.auth.CustomUserDetailsService"/>
 
-    <bean id="customAuthenticationSuccessHandler" class="com.perfect.commons.CustomAuthenticationSuccessHandler"/>
+    <bean id="customAuthenticationSuccessHandler" class="com.perfect.web.auth.CustomAuthenticationSuccessHandler"/>
 
-    <bean id="customAuthenticationFailureHandler" class="com.perfect.commons.CustomAuthenticationFailureHandler">
+    <bean id="customAuthenticationFailureHandler" class="com.perfect.web.auth.CustomAuthenticationFailureHandler">
         <constructor-arg index="0" value="/login?error=true"/>
     </bean>
 

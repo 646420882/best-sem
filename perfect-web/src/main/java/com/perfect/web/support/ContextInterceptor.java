@@ -1,10 +1,11 @@
-package com.perfect.commons.web;
+package com.perfect.web.support;
 
 import com.perfect.core.AppContext;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.SystemUserService;
+import com.perfect.web.auth.AuthConstants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
@@ -15,13 +16,13 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.regex.Pattern;
+import java.util.Objects;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
  * 2014-12-2 refactor
  */
-public class ContextInterceptor implements HandlerInterceptor {
+public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
     private boolean adminFlag;
 
@@ -34,11 +35,21 @@ public class ContextInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        /**
-         * 在经过Spring Security认证之后, Security会把一个SecurityContextImpl对象存储到session中, 这个对象中存有当前用户的信息
-         * ((SecurityContextImpl) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT")).getAuthentication().getName()
-         */
-        if (request.getSession().getAttribute("SPRING_SECURITY_CONTEXT") == null) {//判断session里是否有用户信息
+//        /**
+//         * 在经过Spring Security认证之后, Security会把一个SecurityContextImpl对象存储到session中, 这个对象中存有当前用户的信息
+//         * ((SecurityContextImpl) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT")).getAuthentication().getName()
+//         */
+//        if (request.getSession().getAttribute("SPRING_SECURITY_CONTEXT") == null) {//判断session里是否有用户信息
+//            if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
+//                response.addHeader("sessionStatus", "timeout");
+//                return false;
+//            }
+//
+//        }
+
+        // 判断Session里是否有用户信息
+        if (request.getSession().getAttribute(USER_INFORMATION) == null) {
+            // 用于判断AJAX请求出现的Session超时
             if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
                 response.addHeader("sessionStatus", "timeout");
                 return false;
@@ -46,10 +57,10 @@ public class ContextInterceptor implements HandlerInterceptor {
 
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return true;
-        }
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication == null) {
+//            return true;
+//        }
 
         String userName = WebUtils.getUserName(request);
         if (userName == null) {
@@ -61,7 +72,6 @@ public class ContextInterceptor implements HandlerInterceptor {
             AppContext.setUser(userName, accoundId);
             return true;
         } else {
-
             AppContext.setUser(userName);
             SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
             if (systemUserDTO == null) {
@@ -115,6 +125,12 @@ public class ContextInterceptor implements HandlerInterceptor {
         if (modelAndView == null || (modelAndView.getView() != null && modelAndView.getView() instanceof MappingJackson2JsonView)) {
             return;
         }
+
+        // TODO 在登录成功后或切换账户后需要向百度请求以获取凤巢账号的基础信息
+        if (Objects.equals("/", request.getRequestURI()) || Objects.equals("/account/switchAccount", request.getRequestURI())){
+            //
+        }
+        //
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) return;

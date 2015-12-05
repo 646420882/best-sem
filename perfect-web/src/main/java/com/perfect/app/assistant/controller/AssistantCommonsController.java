@@ -1,12 +1,9 @@
 package com.perfect.app.assistant.controller;
 
-import com.perfect.autosdk.sms.v3.KeywordInfo;
-import com.perfect.commons.web.WebContextSupport;
+import com.perfect.web.support.WebContextSupport;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
-import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.param.EditParam;
@@ -23,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.regex.Matcher;
 
 /**
  * @author xiaowei
