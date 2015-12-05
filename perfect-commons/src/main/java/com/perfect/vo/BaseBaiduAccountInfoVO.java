@@ -7,44 +7,35 @@ package com.perfect.vo;
  */
 public class BaseBaiduAccountInfoVO {
 
-    private String accountName;
+    private final String accountName;
 
-    private String password;
+    private final String password;
 
-    private String token;
+    private final String token;
 
-    private boolean isDefault;
+    private final boolean isDefault;
 
+
+    public BaseBaiduAccountInfoVO(String accountName, String password, String token, boolean isDefault) {
+        this.accountName = accountName;
+        this.password = password;
+        this.token = token;
+        this.isDefault = isDefault;
+    }
 
     public String getAccountName() {
         return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getToken() {
         return token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public boolean isDefault() {
         return isDefault;
-    }
-
-    public void setDefault(boolean aDefault) {
-        isDefault = aDefault;
     }
 }

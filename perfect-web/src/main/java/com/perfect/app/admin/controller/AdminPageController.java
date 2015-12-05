@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @Scope("prototype")
-@RequestMapping("/admin")
+@RequestMapping("/backendManage")
 public class AdminPageController implements Controller {
 
     @Override

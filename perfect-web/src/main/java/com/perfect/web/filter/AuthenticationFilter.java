@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.perfect.api.baidu.BaiduApiService;
-import com.perfect.api.baidu.BaiduServiceSupport;
-import com.perfect.autosdk.sms.v3.AccountInfoType;
-import com.perfect.core.AppContext;
-import com.perfect.web.auth.AuthConstants;
+import com.perfect.vo.BaseBaiduAccountInfoVO;
+import com.perfect.vo.UserInfoVO;
+import com.perfect.web.filter.auth.AuthConstants;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -30,10 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created on 2015-12-04.
@@ -110,7 +105,6 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
                     String userInformation = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                     // 解析JSON数据并将用户信息写入Session
                     parse(userInformation, request, response);
-//                    request.getSession().setAttribute(USER_INFORMATION, userInformation);
                 }
             } catch (IOException ignored) {
 
@@ -128,26 +122,34 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
      * @param request
      * @param response
      */
-    private void parse(String message, HttpServletRequest request, HttpServletResponse response) {
+    private void parse(String message, HttpServletRequest request, HttpServletResponse response) throws IOException {
         JSONObject jsonObject = JSON.parseObject(JSON.parseObject(message).getString("msg"));
         String username = jsonObject.getJSONObject("data").getString("userName");
+        int accessStatus = jsonObject.getJSONObject("data").getInteger("access");
         JSONArray bdAccountArray = jsonObject.getJSONArray("baiduAccounts");
-        AppContext.setUser(username);
 
-        for (int i = 0, s = bdAccountArray.size(); i < s; i++) {
-            if (bdAccountArray.getJSONObject(i).getBoolean("bddefault")) {
-                // 提取默认显示的凤巢账号
-                String bdAccountName = bdAccountArray.getJSONObject(i).getString("bdfcName");
-                String passwd = bdAccountArray.getJSONObject(i).getString("bdfcPwd");
-                String bdToken = bdAccountArray.getJSONObject(i).getString("bdToken");
+        if (Objects.isNull(bdAccountArray) || bdAccountArray.isEmpty()) {
+            if (accessStatus == 1)
+                response.sendRedirect("redirect:/backendManage/index");
+            else
+                throw new IllegalAccessError("Illegal access for " + username);
+        } else {
+            UserInfoVO userInfo = new UserInfoVO();
+            userInfo.setUsername(username);
 
-                BaiduApiService apiService = new BaiduApiService(BaiduServiceSupport.getCommonService(bdAccountName, passwd, bdToken));
-                AccountInfoType accountInfoType = apiService.getAccountInfo();
+            List<BaseBaiduAccountInfoVO> baseBaiduAccountInfoVOs = new ArrayList<>();
 
-                break;
+            for (int i = 0, s = bdAccountArray.size(); i < s; i++) {
+                baseBaiduAccountInfoVOs.add(new BaseBaiduAccountInfoVO(
+                        bdAccountArray.getJSONObject(i).getString("bdfcName"),
+                        bdAccountArray.getJSONObject(i).getString("bdfcPwd"),
+                        bdAccountArray.getJSONObject(i).getString("bdToken"),
+                        bdAccountArray.getJSONObject(i).getBoolean("bddefault")
+                ));
             }
-        }
+            userInfo.setBaiduAccounts(baseBaiduAccountInfoVOs);
 
-        // TODO 调用百度API获取凤巢账号的基础信息
+            request.getSession().setAttribute(USER_INFORMATION, userInfo);
+        }
     }
 }

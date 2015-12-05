@@ -1,17 +1,16 @@
 package com.perfect.web.support;
 
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduServiceSupport;
+import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.core.AppContext;
-import com.perfect.dto.SystemUserDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountManageService;
-import com.perfect.service.SystemUserService;
-import com.perfect.web.auth.AuthConstants;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.perfect.vo.BaseBaiduAccountInfoVO;
+import com.perfect.vo.UserInfoVO;
+import com.perfect.web.filter.auth.AuthConstants;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,22 +23,19 @@ import java.util.Objects;
  */
 public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
-    private boolean adminFlag;
+    private final boolean[] adminFlag = new boolean[1];
 
-    @Resource
-    private SystemUserService systemUserService;
+    private final AccountInfoType[] baiduAccountInfo = new AccountInfoType[1];
 
     @Resource
     private AccountManageService accountManageService;
 
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-//        /**
-//         * 在经过Spring Security认证之后, Security会把一个SecurityContextImpl对象存储到session中, 这个对象中存有当前用户的信息
-//         * ((SecurityContextImpl) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT")).getAuthentication().getName()
-//         */
-//        if (request.getSession().getAttribute("SPRING_SECURITY_CONTEXT") == null) {//判断session里是否有用户信息
+//        // 判断Session里是否有用户信息
+//        if (request.getSession().getAttribute(USER_INFORMATION) == null) {
+//            // 用于判断AJAX请求出现的Session超时
 //            if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
 //                response.addHeader("sessionStatus", "timeout");
 //                return false;
@@ -47,136 +43,28 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 //
 //        }
 
-        // 判断Session里是否有用户信息
-        if (request.getSession().getAttribute(USER_INFORMATION) == null) {
-            // 用于判断AJAX请求出现的Session超时
-            if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
-                response.addHeader("sessionStatus", "timeout");
-                return false;
-            }
-
-        }
-
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null) {
-//            return true;
-//        }
-
-        String userName = WebUtils.getUserName(request);
-        if (userName == null) {
+        String username = WebUtils.getUserName(request);
+        if (username == null) {
             return false;
         }
 
         Long accoundId = WebUtils.getAccountId(request);
         if (accoundId != null && accoundId > 0) {
-            AppContext.setUser(userName, accoundId);
+            AppContext.setUser(username, accoundId);
             return true;
         } else {
-            AppContext.setUser(userName);
-            SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-            if (systemUserDTO == null) {
-                return false;
-            }
-            int size = systemUserDTO.getBaiduAccounts().size();
-            if (systemUserDTO.getAccess() == 1) {
-                adminFlag = true;
-                return true;
-            } else {
-                adminFlag = false;
-            }
-
-//            if (systemUserDTO.getAccess() == 2 && size == 0) {
-////                if ("/configuration/add".equals(request.getServletPath())) {
-////                    return true;
-////                }
-//
-//                if ("/configuration/save".equals(request.getServletPath())) {
-//                    return true;
-//                }
-//
-//
-////                String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-////                response.sendRedirect("redirect:/configuration/add");
-//                return false;
-//            }
-
-            if (systemUserDTO.getBaiduAccounts().size() == 1) {
-                BaiduAccountInfoDTO infoDTO = systemUserDTO.getBaiduAccounts().get(0);
-                WebUtils.setAccountId(request, infoDTO.getId());
-                AppContext.setUser(userName, infoDTO.getId());
-                return true;
-            }
-
-            for (BaiduAccountInfoDTO infoDTO : systemUserDTO.getBaiduAccounts()) {
-                if (infoDTO.isDfault()) {
-                    WebUtils.setAccountId(request, infoDTO.getId());
-                    AppContext.setUser(userName, infoDTO.getId());
-                    break;
-                }
-            }
+            AppContext.setUser(username);
+            handleRequest(request);
         }
-
 
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        if (modelAndView == null || (modelAndView.getView() != null && modelAndView.getView() instanceof MappingJackson2JsonView)) {
-            return;
-        }
-
-        // TODO 在登录成功后或切换账户后需要向百度请求以获取凤巢账号的基础信息
-        if (Objects.equals("/", request.getRequestURI()) || Objects.equals("/account/switchAccount", request.getRequestURI())){
-            //
-        }
-        //
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) return;
-
         if (isAdmin()) return;
 
-
-        Long accountId = WebUtils.getAccountId(request);
-        ModelMap modelMap = modelAndView.getModelMap();
-        modelMap.put("currSystemUserName", WebUtils.getUserName(request));
-        if (accountId == -1) {
-            modelMap.put("accountBalance", 0);
-            modelMap.put("accountBudget", 0);
-            modelMap.put("remainderDays", 0);
-            return;
-        }
-
-        Double datas[] = getBalanceAndBudget(accountId);
-
-        if (datas[0] == null) {
-            if (datas[1] == null) {
-                modelMap.put("accountBalance", 0);
-                modelMap.put("accountBudget", 0);
-                modelMap.put("remainderDays", 0);
-            } else {
-                modelMap.put("accountBalance", 0);
-                modelMap.put("accountBudget", datas[1]);
-                modelMap.put("remainderDays", 0);
-            }
-        }
-        if (datas[0] != null) {
-            if (datas[1] != null) {
-                if (datas[0] == 0 || datas[1] == 0) {
-                    modelMap.put("remainderDays", 0);
-                } else {
-                    String vStr = Double.valueOf(datas[0] / datas[1]).toString();
-                    modelMap.put("remainderDays", vStr.substring(0, vStr.indexOf(".")));
-                }
-                modelMap.put("accountBalance", datas[0]);
-                modelMap.put("accountBudget", datas[1]);
-            } else {
-                modelMap.put("accountBalance", datas[0]);
-                modelMap.put("accountBudget", 0);
-                modelMap.put("remainderDays", 0);
-            }
-        }
+        setAccountOverview(request, modelAndView);
     }
 
     @Override
@@ -184,18 +72,41 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
     }
 
-    //获取账户余额和账户余额
-    private Double[] getBalanceAndBudget(Long accountId) {
-        BaiduAccountInfoDTO accountInfo = accountManageService.getBaiduAccountInfoById(accountId);
-        if (accountInfo == null) {
-            return new Double[]{null, null};
+    private void handleRequest(HttpServletRequest request) {
+        if (Objects.nonNull(request.getSession().getAttribute(USER_INFORMATION))) {
+            adminFlag[0] = false;
+            UserInfoVO userInfo = (UserInfoVO) request.getSession().getAttribute(USER_INFORMATION);
+
+            for (BaseBaiduAccountInfoVO baseBaiduAccountInfoVO : userInfo.getBaiduAccounts()) {
+                if (baseBaiduAccountInfoVO.isDefault()) {
+                    BaiduApiService apiService = new BaiduApiService(BaiduServiceSupport.getCommonService(
+                            baseBaiduAccountInfoVO.getAccountName(),
+                            baseBaiduAccountInfoVO.getPassword(),
+                            baseBaiduAccountInfoVO.getToken())
+                    );
+                    baiduAccountInfo[0] = apiService.getAccountInfo();
+
+                    WebUtils.setAccountId(request, baiduAccountInfo[0].getUserid());
+                    AppContext.setUser(userInfo.getUsername(), baiduAccountInfo[0].getUserid());
+                    break;
+                }
+            }
+        } else {
+            adminFlag[0] = true;
         }
-        Double balance = accountInfo.getBalance();
-        Double yesterdayCost = accountInfo.getBudget();
-        return new Double[]{balance, yesterdayCost};
     }
 
-    boolean isAdmin() {
-        return adminFlag;
+    private void setAccountOverview(HttpServletRequest request, ModelAndView modelAndView) {
+        ModelMap modelMap = modelAndView.getModelMap();
+        modelMap.put("currSystemUserName", WebUtils.getUserName(request));
+        modelMap.put("accountBalance", baiduAccountInfo[0].getBalance());
+        modelMap.put("accountBudget", baiduAccountInfo[0].getBudget());
+
+        String vStr = Double.valueOf(baiduAccountInfo[0].getBalance() / baiduAccountInfo[0].getBudget()).toString();
+        modelMap.put("remainderDays", vStr.substring(0, vStr.indexOf(".")));
+    }
+
+    private boolean isAdmin() {
+        return adminFlag[0];
     }
 }

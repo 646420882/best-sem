@@ -1,4 +1,4 @@
-package com.perfect.web.auth;
+package com.perfect.web.filter.auth;
 
 /**
  * Created on 2015-12-05.
@@ -7,7 +7,7 @@ package com.perfect.web.auth;
  */
 public interface AuthConstants {
 
-    String BASE_VERIFICATION_URL = "http://125.208.1.71:8023%s";
+    String BASE_VERIFICATION_URL = "http://ucapi.best-ad.cn%s";
 
     // 用户认证登录中心
     String AUTHENTICATION_URL = "http://login.best-ad.cn";

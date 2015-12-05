@@ -25,6 +25,5 @@
     <!-- ====================== Additional Resources ======================= -->
     <import resource="spring-mongodb.xml"/>
     <!--<import resource="spring-es.xml"/>-->
-    <!--<import resource="applicationContext-security.xml"/>-->
 
 </beans>

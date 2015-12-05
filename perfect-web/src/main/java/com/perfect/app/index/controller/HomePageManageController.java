@@ -1,15 +1,16 @@
 package com.perfect.app.index.controller;
 
-import com.perfect.web.auth.CustomUserDetailsService;
 import com.perfect.commons.message.mail.SendMail;
-import com.perfect.web.support.WebContextSupport;
-import com.perfect.web.support.WebUtils;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.redis.JRedisUtils;
+import com.perfect.vo.UserInfoVO;
+import com.perfect.web.filter.auth.AuthConstants;
+import com.perfect.web.support.WebContextSupport;
+import com.perfect.web.support.WebUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,51 +33,23 @@ import java.util.UUID;
  */
 @RestController
 @Scope("prototype")
-public class HomePageManageController extends WebContextSupport {
+public class HomePageManageController extends WebContextSupport implements AuthConstants {
 
     @Resource
     private SystemUserService systemUserService;
+
     @Resource
     private AccountRegisterService accountRegisterService;
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView index() {
-        return new ModelAndView("bestPage/bestIndex");
-    }
+    public ModelAndView index(HttpServletRequest request, ModelMap modelMap) {
+        modelMap.put("currSystemUserName", WebUtils.getUserName(request));
+        modelMap.put("accountList",
+                ((UserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getBaiduAccounts()
+        );
 
-    /**
-     * 登陆页面
-     *
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getLoginPage(HttpServletRequest request,
-                                     ModelMap model,
-                                     @RequestParam(value = "url", required = false) String url,
-                                     @RequestParam(value = "error", required = false) boolean error) {
-        if (error) {
-            int badCredentialsNum = CustomUserDetailsService.getPasswdBadCredentialsNum();
-            if (CustomUserDetailsService.isUsernameNotFound()) {
-                if (CustomUserDetailsService.isVerifyNotPass())
-                    model.put("invalidUserName", "正在审核中");
-                else if (CustomUserDetailsService.isForbidden())
-                    model.put("invalidUserName", "帐号已禁用");
-                else
-                    model.put("invalidUserName", "用户名不存在");
-            } else if (badCredentialsNum > 0) {
-                if (badCredentialsNum == 3)
-                    model.put("invalidPassword", "帐号已被锁定");
-                else
-                    model.put("invalidPassword", "密码错误, 剩余" + (3 - badCredentialsNum) + "次");
-            }
-        } else {
-            model.put("error", "");
-        }
-
-        model.put("redirect_url", url);
-        return new ModelAndView("homePage/login", model);
+        return new ModelAndView("homePage/home");
     }
 
     /**
@@ -96,18 +69,18 @@ public class HomePageManageController extends WebContextSupport {
      *
      * @return
      */
+    @Deprecated
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
-//        String userName = WebUtils.getUserName(request);
-//        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-//        if (systemUserDTO == null) {
-//            return new ModelAndView("redirect:/logout");
-//        }
-//
-//        modelMap.put("currSystemUserName", userName);
-//        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
-//        return new ModelAndView("homePage/home");
-        return new ModelAndView("homePage/login");
+        String userName = WebUtils.getUserName(request);
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+        if (systemUserDTO == null) {
+            return new ModelAndView("redirect:/logout");
+        }
+
+        modelMap.put("currSystemUserName", userName);
+        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+        return new ModelAndView("homePage/home");
     }
 
     /**
@@ -115,7 +88,8 @@ public class HomePageManageController extends WebContextSupport {
      *
      * @return
      */
-    @RequestMapping(value = "/index", method = {RequestMethod.GET, RequestMethod.POST})
+    @Deprecated
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView getBestIndexPage(HttpServletRequest request, ModelMap modelMap) {
         String userName = WebUtils.getUserName(request);
         modelMap.put("currSystemUserName", userName);
@@ -123,7 +97,7 @@ public class HomePageManageController extends WebContextSupport {
     }
 
     /**
-     * 智能分组页面
+     * 智能结构页面
      *
      * @return
      */
@@ -147,6 +121,7 @@ public class HomePageManageController extends WebContextSupport {
      *
      * @return
      */
+    @Deprecated
     @RequestMapping(value = "/register/add", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView registerData(ModelMap model, HttpServletResponse response, HttpServletRequest request,
                                      @RequestParam(value = "username", required = false) String account,
@@ -175,7 +150,6 @@ public class HomePageManageController extends WebContextSupport {
         return new ModelAndView("homePage/pageBlock/register", model);
     }
 
-
     /**
      * 忘记密码
      */
@@ -185,7 +159,6 @@ public class HomePageManageController extends WebContextSupport {
         if (systemUserDTO == null) {
             writeJson("userName no Exists!", response);
         } else {
-
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 
@@ -198,9 +171,7 @@ public class HomePageManageController extends WebContextSupport {
                 basePath += "forgetPassword/findPasswordPage?userName=" + userName + "&key=" + key;
 
                 String html = "<a href='" + basePath + "'>" + basePath + "</a>";
-
                 String subject = "找回密码-普菲特安全中心";
-
                 String content = "亲爱的用户 '" + userName + "' , 您好！<br/>" +
                         "<br/>" +
                         "请点击这里，重置您的密码： <br/>" +
@@ -252,7 +223,7 @@ public class HomePageManageController extends WebContextSupport {
             } else {
                 return new ModelAndView("jsp/error/404.jsp", model);
             }
-        } catch (Exception ex) {
+        } catch (Exception e) {
             return new ModelAndView("jsp/error/404.jsp", model);
         } finally {
             if (jedis != null) {
@@ -270,8 +241,7 @@ public class HomePageManageController extends WebContextSupport {
     public void resetPassword(HttpServletResponse response, String key,
                               @RequestParam(value = "baiduAccountName", required = false) String baiduAccountName,
                               @RequestParam(value = "userName", required = false) String userName,
-                              @RequestParam(value = "password", required = false) String pwd
-    ) {
+                              @RequestParam(value = "password", required = false) String pwd) {
         Jedis jedis = JRedisUtils.get();
         try {
             if (jedis.exists(key)) {
@@ -286,7 +256,7 @@ public class HomePageManageController extends WebContextSupport {
                 }
 
                 if (baiduUserName != null) {
-                    //重置密码
+                    // 重置密码
                     MD5.Builder md5Builder = new MD5.Builder();
                     MD5 md5 = md5Builder.password(pwd).salt(userName).build();
                     boolean isSuccess = systemUserService.updatePassword(userName, md5.getMD5());
@@ -297,11 +267,11 @@ public class HomePageManageController extends WebContextSupport {
                         writeJson("updateFail", response);
                     }
                 } else {
-                    //返回结果，没有该子账户，不能重置密码
+                    // 返回结果, 没有该子账户, 不能重置密码
                     writeJson("NoAccount", response);
                 }
             } else {
-                //找回密码的url失效
+                // 找回密码的url失效
                 writeJson("urlInvali", response);
             }
         } finally {
@@ -311,12 +281,9 @@ public class HomePageManageController extends WebContextSupport {
         }
     }
 
-
     @RequestMapping(value = "/forgetPassword/login", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loginPage(ModelMap model, String mes) {
         model.put("invalidUserName", mes);
         return new ModelAndView("homePage/login", model);
     }
-
-
 }
