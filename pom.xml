@@ -66,7 +66,6 @@
         <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
         <spring.version>4.1.8.RELEASE</spring.version>
         <spring.data.mongo.version>1.7.2.RELEASE</spring.data.mongo.version>
-        <spring.security.version>3.2.9.RELEASE</spring.security.version>
         <elasticsearch.version>2.1.0</elasticsearch.version>
         <cglib.version>3.1</cglib.version>
         <guava.version>18.0</guava.version>
@@ -277,23 +276,6 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-taglibs</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${spring.security.version}</version>
             </dependency>
 
             <dependency>

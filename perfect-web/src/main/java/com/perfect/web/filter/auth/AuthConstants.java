@@ -9,16 +9,15 @@ public interface AuthConstants {
 
     String BASE_VERIFICATION_URL = "http://ucapi.best-ad.cn%s";
 
-    // 用户认证登录中心
-    String AUTHENTICATION_URL = "http://login.best-ad.cn";
+    // 登录URL
+    String USER_LOGIN_URL = "http://login.best-ad.cn";
 
-    // 验证URL
-    String USER_VERIFICATION_URL = String.format(BASE_VERIFICATION_URL, "/Users/GetUserByToken");
-
-    // TODO 登出URL
+    // 登出URL
     String USER_LOGINOUT_URL = String.format(BASE_VERIFICATION_URL, "/Users/OutLogin");
 
-    // TODO Token定时刷新URL
+    // 获取用户信息URL
+    String USER_VERIFICATION_URL = String.format(BASE_VERIFICATION_URL, "/Users/GetUserByToken");
+
     String SESSION_HEART_BEAT_URL = String.format(BASE_VERIFICATION_URL, "/Users/CheckToken");
 
 

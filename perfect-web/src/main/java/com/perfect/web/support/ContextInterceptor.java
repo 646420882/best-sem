@@ -4,7 +4,6 @@ import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.core.AppContext;
-import com.perfect.service.AccountManageService;
 import com.perfect.vo.BaseBaiduAccountInfoVO;
 import com.perfect.vo.UserInfoVO;
 import com.perfect.web.filter.auth.AuthConstants;
@@ -12,7 +11,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
@@ -26,9 +24,6 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
     private final boolean[] adminFlag = new boolean[1];
 
     private final AccountInfoType[] baiduAccountInfo = new AccountInfoType[1];
-
-    @Resource
-    private AccountManageService accountManageService;
 
 
     @Override
@@ -53,8 +48,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
             AppContext.setUser(username, accoundId);
             return true;
         } else {
-            AppContext.setUser(username);
-            handleRequest(request);
+            handleRequest(username, request);
         }
 
         return true;
@@ -72,7 +66,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
     }
 
-    private void handleRequest(HttpServletRequest request) {
+    private void handleRequest(String username, HttpServletRequest request) {
         if (Objects.nonNull(request.getSession().getAttribute(USER_INFORMATION))) {
             adminFlag[0] = false;
             UserInfoVO userInfo = (UserInfoVO) request.getSession().getAttribute(USER_INFORMATION);
@@ -91,8 +85,10 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
                     break;
                 }
             }
+            AppContext.setUser(username, baiduAccountInfo[0].getUserid());
         } else {
             adminFlag[0] = true;
+            AppContext.setUser(username);
         }
     }
 

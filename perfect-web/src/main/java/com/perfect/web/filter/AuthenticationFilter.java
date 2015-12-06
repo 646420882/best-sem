@@ -45,22 +45,29 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             // ServletContext Initialize
             servletContext.setAttribute(SERVLET_CONTEXT_INIT_VALUE, 1);
         } else {
-            // 检测Cookie中是否带有token
-            if (Optional.ofNullable(request.getCookies()).isPresent()) {
-                Optional<Cookie> cookieOptional = Arrays
-                        .stream(request.getCookies())
-                        .filter(c -> Objects.equals(TOKEN, c.getName()))
-                        .findFirst();
+            // 检测是否执行登出操作
+            if (Objects.equals("/logout", request.getRequestURI())) {
+                // 重定向至用户认证页面
+                response.setStatus(HttpServletResponse.SC_FOUND);
+                response.setHeader("Location", USER_LOGINOUT_URL);
+            } else {
+                // 检测Cookie中是否带有token
+                if (Optional.ofNullable(request.getCookies()).isPresent()) {
+                    Optional<Cookie> cookieOptional = Arrays
+                            .stream(request.getCookies())
+                            .filter(c -> Objects.equals(TOKEN, c.getName()))
+                            .findFirst();
 
-                if (!cookieOptional.isPresent()) {
-                    // Cookie中没有token
+                    if (!cookieOptional.isPresent()) {
+                        // Cookie中没有token
+                        // 检测request中是否带有token信息
+                        retrieveTokenFromRequest(request, response);
+                    }
+                } else {
+                    // 当前请求中没有任何Cookie信息
                     // 检测request中是否带有token信息
                     retrieveTokenFromRequest(request, response);
                 }
-            } else {
-                // 当前请求中没有任何Cookie信息
-                // 检测request中是否带有token信息
-                retrieveTokenFromRequest(request, response);
             }
         }
 
@@ -83,12 +90,12 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             // 请求信息中也没有token
             // 重定向至用户认证页面
             response.setStatus(HttpServletResponse.SC_FOUND);
-            response.setHeader("Location", AUTHENTICATION_URL);
+            response.setHeader("Location", USER_LOGIN_URL);
         } else {
             // 第一次登录认证
             // 将token写入Cookie
             Cookie tokenCookie = new Cookie(TOKEN, token);
-            tokenCookie.setMaxAge(request.getSession().getMaxInactiveInterval() * 2);
+            tokenCookie.setMaxAge(request.getSession().getMaxInactiveInterval());
             tokenCookie.setPath("/");
             response.addCookie(tokenCookie);
 
