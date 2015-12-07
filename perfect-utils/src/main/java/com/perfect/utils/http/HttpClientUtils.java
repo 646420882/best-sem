@@ -29,7 +29,6 @@ public class HttpClientUtils {
 
     private final HttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
 
-
     private HttpClientUtils() {
     }
 

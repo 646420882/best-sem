@@ -37,7 +37,7 @@ public interface SystemUserInfoService extends AuthConstants {
     SystemUserInfoVO findSystemUserInfoByBaiduAccountId(Long baiduUserId);
 
     /**
-     * <p>在当前登录用户中, 查询指定百度账号的基础信息{@link com.perfect.account.BaseBaiduAccountInfoVO}
+     * <p>在当前登录用户中, 查询指定百度帐号的基础信息{@link com.perfect.account.BaseBaiduAccountInfoVO}.
      *
      * @param baiduUserId 百度账号ID
      * @return
@@ -45,7 +45,7 @@ public interface SystemUserInfoService extends AuthConstants {
     BaseBaiduAccountInfoVO findByBaiduUserId(Long baiduUserId);
 
     /**
-     * <p>根据系统用户名查询该用户下的所有百度账号信息
+     * <p>根据系统用户名查询该用户下的所有百度帐号信息
      *
      * @param username 系统用户名
      * @return
@@ -53,7 +53,7 @@ public interface SystemUserInfoService extends AuthConstants {
     List<BaseBaiduAccountInfoVO> findBaiduAccountsByUserName(String username);
 
     /**
-     * <p>查询系统中所有的百度账号
+     * <p>查询系统中所有的百度帐号
      *
      * @return
      */

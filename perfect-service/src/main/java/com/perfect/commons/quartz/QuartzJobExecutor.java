@@ -59,7 +59,7 @@ public class QuartzJobExecutor implements Job {
                 Map<Integer, Set<Long>> result = materialsUploadService.upload(sysUser);
                 if (!result.isEmpty()) {
                     result.forEach((k, v) -> {
-                        v.forEach(id -> LOGGER.info("ID为 {} 的百度账号物料 {} 上传失败", id, materialsResultMap.get(k)));
+                        v.forEach(id -> LOGGER.info("ID为 {} 的百度帐号物料 {} 上传失败", id, materialsResultMap.get(k)));
                     });
                 }
 
@@ -69,7 +69,7 @@ public class QuartzJobExecutor implements Job {
             case 11: {
                 List<Long> result = materialsUploadService.pause(sysUser);
                 if (!result.isEmpty())
-                    result.forEach(id -> LOGGER.info("系统用户 {} 下, ID为 {} 的百度账号暂停物料投放失败", sysUser, id));
+                    result.forEach(id -> LOGGER.info("系统用户 {} 下, ID为 {} 的百度帐号暂停物料投放失败", sysUser, id));
 
                 break;
             }

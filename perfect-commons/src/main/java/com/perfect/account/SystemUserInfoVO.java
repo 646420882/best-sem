@@ -24,6 +24,9 @@ public class SystemUserInfoVO {
     // 用户权限: 1 -> 管理员, 2 -> 普通用户
     private int access;
 
+    // 菜单权限
+    private List<String> menuPermissions;
+
     private List<BaseBaiduAccountInfoVO> baiduAccounts;
 
 
@@ -65,6 +68,14 @@ public class SystemUserInfoVO {
 
     public void setAccess(int access) {
         this.access = access;
+    }
+
+    public List<String> getMenuPermissions() {
+        return menuPermissions;
+    }
+
+    public void setMenuPermissions(List<String> menuPermissions) {
+        this.menuPermissions = menuPermissions;
     }
 
     public List<BaseBaiduAccountInfoVO> getBaiduAccounts() {

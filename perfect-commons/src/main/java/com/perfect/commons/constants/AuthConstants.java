@@ -18,12 +18,15 @@ public interface AuthConstants {
     // 获取用户信息URL
     String USER_VERIFICATION_URL = String.format(BASE_VERIFICATION_URL, "/Users/GetUserByToken");
 
-    String SESSION_HEART_BEAT_URL = String.format(BASE_VERIFICATION_URL, "/Users/CheckToken");
+    // Token刷新URL
+    String TOKEN_HEART_BEAT_URL = String.format(BASE_VERIFICATION_URL, "/Users/CheckToken");
 
 
     String SERVLET_CONTEXT_INIT_VALUE = "SERVLET_CONTEXT_INIT_VALUE";
 
-    String USER_INFORMATION = "USER_INFORMATION";
+    String USER_INFORMATION = "BEST_SEM_USER_INFORMATION";
+
+    String MENU_PERMISSION = "BEST_SEM_MENU_PERMISSION";
 
     String KEY_CURRENT_BAIDU_ACCOUNT_ID = "BEST_SEM_CURRENT_BAIDU_ACCOUNT_ID";
 

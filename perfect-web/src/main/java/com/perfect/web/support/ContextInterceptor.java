@@ -83,14 +83,25 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
                             baseBaiduAccountInfoVO.getPassword(),
                             baseBaiduAccountInfoVO.getToken())
                     );
-                    baiduAccountInfo[0] = apiService.getAccountInfo();
 
+                    AccountInfoType accountInfoType = apiService.getAccountInfo();
+                    if (Objects.isNull(accountInfoType)) {
+                        AccountInfoType o = new AccountInfoType();
+                        o.setUserid(-1L);
+                        o.setBalance(0D);
+                        o.setBudget(-1D);
+                        baiduAccountInfo[0] = o;
+                        WebUtils.setCurrentBaiduAccount(request, null);
+                    } else {
+                        baiduAccountInfo[0] = accountInfoType;
+                        WebUtils.setCurrentBaiduAccount(request, baseBaiduAccountInfoVO);
+                    }
                     WebUtils.setAccountId(request, baiduAccountInfo[0].getUserid());
-                    WebUtils.setCurrentBaiduAccount(request, baseBaiduAccountInfoVO);
 
                     break;
                 }
             }
+
             AppContext.setUser(username, baiduAccountInfo[0].getUserid(), userInfo.getBaiduAccounts());
         } else {
             adminFlag[0] = true;

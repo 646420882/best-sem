@@ -22,7 +22,7 @@ import java.util.*;
 
 /**
  * Created on 2015-12-04.
- * <p>权限认证过滤, 登录成功后根据token获取用户信息并存入Session, 若Cookie中没有token则重定向至用户认证中心.
+ * <p>权限认证过滤, 登录成功后根据token获取用户信息并存入Session, 若Cookie中没有token则重定向至用户登录页面.
  *
  * @author dolphineor
  */
@@ -37,9 +37,8 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
         } else {
             // 检测是否执行登出操作
             if (Objects.equals("/logout", request.getRequestURI())) {
-                // 重定向至用户认证页面
-                response.setStatus(HttpServletResponse.SC_FOUND);
-                response.setHeader("Location", USER_LOGINOUT_URL);
+                // 重定向至登录页面
+                redirectToLogin(response);
             } else {
                 // 检测Cookie中是否带有token
                 if (Optional.ofNullable(request.getCookies()).isPresent()) {
@@ -63,15 +62,12 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             }
         }
 
-
         filterChain.doFilter(request, response);
     }
 
 
     /**
-     * <p>从HTTP请求中获取token，
-     * 1. 如果存在, 将token写入Cookie, 做token校验获取用户信息
-     * 2. 如果不存在, 重定向至用户认证页面</p>
+     * <p>根据token向用户认证中心发送校验请求以获取用户信息.
      *
      * @param token
      * @param request
@@ -94,9 +90,10 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
 
     /**
      * <p>解析JSON数据, 需要提取的内容有:
-     * 1. 用户名{@code UserName}
-     * 2. 当前用户下的凤巢账号{@code baiduAccounts}
-     * 3. 权限菜单</p>
+     * 1. 用户名{@code username}
+     * 2. 当前用户下的凤巢帐号{@code bdAccounts}
+     * 3. 菜单权限</p>
+     * TODO 菜单权限解析
      *
      * @param message  认证中心返回的JSON数据
      * @param request
@@ -105,11 +102,11 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
     private void parse(String message, HttpServletRequest request, HttpServletResponse response) throws IOException {
         JSONObject jsonObject = JSON.parseObject(JSON.parseObject(message).getString("msg"));
         JSONObject sysUserJsonObj = jsonObject.getJSONObject("data");
-        String username = sysUserJsonObj.getString("un");
-        String imageUrl = sysUserJsonObj.getString("iu");
-        int status = sysUserJsonObj.getInteger("st");
-        int accountStatus = sysUserJsonObj.getInteger("ast");
-        int access = sysUserJsonObj.getInteger("ae");
+        String username = sysUserJsonObj.getString("username");
+        String imageUrl = sysUserJsonObj.getString("imageUrl");
+        int status = sysUserJsonObj.getIntValue("status");
+        int accountStatus = sysUserJsonObj.getIntValue("accountStatus");
+        int access = sysUserJsonObj.getIntValue("access");
         JSONArray bdAccountArray = jsonObject.getJSONArray("bdAccounts");
 
         if (Objects.isNull(bdAccountArray) || bdAccountArray.isEmpty()) {
@@ -129,12 +126,12 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
 
             for (int i = 0, s = bdAccountArray.size(); i < s; i++) {
                 baseBaiduAccountInfoVOs.add(new BaseBaiduAccountInfoVO(
-                        bdAccountArray.getJSONObject(i).getLong("bdid"),
-                        bdAccountArray.getJSONObject(i).getString("bdan"),
-                        bdAccountArray.getJSONObject(i).getString("bdrn"),
-                        bdAccountArray.getJSONObject(i).getString("bdpw"),
-                        bdAccountArray.getJSONObject(i).getString("bdt"),
-                        bdAccountArray.getJSONObject(i).getBoolean("isdft")
+                        bdAccountArray.getJSONObject(i).getLong("accountId"),
+                        bdAccountArray.getJSONObject(i).getString("accountName"),
+                        bdAccountArray.getJSONObject(i).getString("remarkName"),
+                        bdAccountArray.getJSONObject(i).getString("password"),
+                        bdAccountArray.getJSONObject(i).getString("token"),
+                        bdAccountArray.getJSONObject(i).getBoolean("isDefault")
                 ));
             }
             userInfo.setBaiduAccounts(baseBaiduAccountInfoVOs);

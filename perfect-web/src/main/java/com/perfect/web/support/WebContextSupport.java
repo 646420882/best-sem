@@ -14,15 +14,16 @@ import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/7/28.
+ *
  * 2014-11-28 refactor
  */
-public class WebContextSupport   {
-    public static final String SUCCESS = "1";//成功
-    public static final String FAIL = "0";//失败
-    public static final String EXCEPTION = "3";//异常;
-    public static final String NOLOGIN = "4";//未登陆;
-    public static final String DATA="data";
-    public static  final String MSG="msg";
+public class WebContextSupport {
+    protected static final String SUCCESS = "1";    // 成功
+    protected static final String FAIL = "0";       // 失败
+    protected static final String EXCEPTION = "3";  // 异常;
+    protected static final String NOLOGIN = "4";    // 未登陆;
+    protected static final String DATA = "data";
+    protected static final String MSG = "msg";
 
     public void writeHtml(String html, HttpServletResponse response) {
         try {
@@ -36,13 +37,15 @@ public class WebContextSupport   {
             e.printStackTrace();
         }
     }
+
     public void writeObject(Object obj, HttpServletResponse res) {
-        writeHtml(JSONUtils.getJsonString(obj),res);
+        writeHtml(JSONUtils.getJsonString(obj), res);
     }
 
     public void writeJson(Object obj, HttpServletResponse res) {
         writeHtml(JSONUtils.getJsonObject(obj).toString(), res);
     }
+
     public void writeData(Object message, HttpServletResponse response, Object data) {
         writeJson(new MessageResultDTO(message, data), response);
     }
@@ -52,6 +55,7 @@ public class WebContextSupport   {
         Map<String, Object> returnMap = new HashMap<String, Object>() {{
             put(key, JSONUtils.getJsonObject(obj));
         }};
+
         jsonView.setAttributesMap(returnMap);
         return new ModelAndView(jsonView);
     }

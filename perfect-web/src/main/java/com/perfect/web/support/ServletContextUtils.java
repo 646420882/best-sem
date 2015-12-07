@@ -10,14 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by baizz on 2014-9-1.
+ * Created on 2014-09-01.
+ *
+ * @author dolphineor
  */
 public class ServletContextUtils {
 
     public static HttpServletRequest getRequest() {
         RequestAttributes ra = RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = ((ServletRequestAttributes) ra).getRequest();
-        return request;
+        return ((ServletRequestAttributes) ra).getRequest();
     }
 
     public static HttpSession getSession() {
