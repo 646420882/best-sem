@@ -9,11 +9,11 @@ import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
-import com.perfect.web.support.WebUtils;
 import com.perfect.core.AppContext;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.SystemUserService;
+import com.perfect.web.support.WebUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,6 +45,11 @@ public class ConfigurationController {
         if (userName == null)
             return new ModelAndView("configuration/configure", modelMap);
 
+        /**
+         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
+         *
+         * @deprecated
+         */
         SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
 
         List<BaiduAccountInfoDTO> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccounts();

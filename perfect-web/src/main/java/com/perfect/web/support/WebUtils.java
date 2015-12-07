@@ -1,13 +1,11 @@
 package com.perfect.web.support;
 
-import com.perfect.core.AppContext;
 import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.account.SystemUserInfoVO;
-import com.perfect.web.filter.auth.AuthConstants;
+import com.perfect.commons.constants.AuthConstants;
+import com.perfect.core.AppContext;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,11 +23,11 @@ public class WebUtils extends org.springframework.web.util.WebUtils implements A
 
 
     public static void setAccountId(HttpServletRequest request, Long accountId) {
-        request.getSession().setAttribute(KEY_BAIDU_ACCOUNT_ID, accountId);
+        request.getSession().setAttribute(KEY_CURRENT_BAIDU_ACCOUNT_ID, accountId);
     }
 
     public static Long getAccountId(HttpServletRequest request) {
-        Object accountId = request.getSession().getAttribute(KEY_BAIDU_ACCOUNT_ID);
+        Object accountId = request.getSession().getAttribute(KEY_CURRENT_BAIDU_ACCOUNT_ID);
 
         return (Long) ((accountId == null) ? -1L : accountId);
     }
@@ -42,18 +40,17 @@ public class WebUtils extends org.springframework.web.util.WebUtils implements A
         AppContext.setUser(userName, accountId);
     }
 
-    public static void setBaiduAccounts(HttpServletRequest request, List<BaseBaiduAccountInfoVO> baiduAccounts) {
-        request.getSession().setAttribute(KEY_BAIDU_ACCOUNT_LIST, baiduAccounts);
+    public static void setCurrentBaiduAccount(HttpServletRequest request, BaseBaiduAccountInfoVO baiduAccount) {
+        request.getSession().setAttribute(KEY_CURRENT_BAIDU_ACCOUNT, baiduAccount);
     }
 
-    @SuppressWarnings("unchecked")
-    public static List<BaseBaiduAccountInfoVO> getBaiduAccounts(HttpServletRequest request) {
-        Object list = request.getSession().getAttribute(KEY_BAIDU_ACCOUNT_LIST);
+    public static BaseBaiduAccountInfoVO getCurrentBaiduAccount(HttpServletRequest request) {
+        Object obj = request.getSession().getAttribute(KEY_CURRENT_BAIDU_ACCOUNT);
 
-        if (Objects.isNull(list)) {
-            return Collections.<BaseBaiduAccountInfoVO>emptyList();
+        if (Objects.isNull(obj)) {
+            return null;
         } else {
-            return (List<BaseBaiduAccountInfoVO>) list;
+            return (BaseBaiduAccountInfoVO) obj;
         }
     }
 

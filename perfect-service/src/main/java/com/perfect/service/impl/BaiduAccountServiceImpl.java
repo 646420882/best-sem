@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * Created by john on 2014/11/7.
- *
  */
 @Repository("baiduAccountService")
 public class BaiduAccountServiceImpl implements BaiduAccountService {
@@ -21,13 +20,14 @@ public class BaiduAccountServiceImpl implements BaiduAccountService {
     private SystemUserDAO systemUserDAO;
 
     @Override
-    public BaiduAccountInfoDTO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId){
-        BaiduAccountInfoDTO  baiduUser = null;
+    public BaiduAccountInfoDTO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId) {
+        BaiduAccountInfoDTO baiduUser = null;
 
+        // TODO replace with {@code com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
         SystemUserDTO systemUserEntity = systemUserDAO.findByUserName(systemUserName);
         List<BaiduAccountInfoDTO> list = systemUserEntity.getBaiduAccounts();
-        for(BaiduAccountInfoDTO baidu : list){
-            if(baidu.getId().longValue()==accountId.longValue()){
+        for (BaiduAccountInfoDTO baidu : list) {
+            if (baidu.getId().longValue() == accountId.longValue()) {
                 baiduUser = baidu;
                 break;
             }

@@ -5,11 +5,12 @@ import com.perfect.account.SystemUserInfoVO;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.sms.v3.AccountInfoType;
+import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
-import com.perfect.web.filter.auth.AuthConstants;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,6 +57,10 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        if (modelAndView == null || (modelAndView.getView() != null && modelAndView.getView() instanceof MappingJackson2JsonView)) {
+            return;
+        }
+
         if (isAdmin()) return;
 
         setAccountOverview(request, modelAndView);
@@ -81,11 +86,12 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
                     baiduAccountInfo[0] = apiService.getAccountInfo();
 
                     WebUtils.setAccountId(request, baiduAccountInfo[0].getUserid());
-                    AppContext.setUser(userInfo.getUsername(), baiduAccountInfo[0].getUserid());
+                    WebUtils.setCurrentBaiduAccount(request, baseBaiduAccountInfoVO);
+
                     break;
                 }
             }
-            AppContext.setUser(username, baiduAccountInfo[0].getUserid());
+            AppContext.setUser(username, baiduAccountInfo[0].getUserid(), userInfo.getBaiduAccounts());
         } else {
             adminFlag[0] = true;
             AppContext.setUser(username);

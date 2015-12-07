@@ -34,11 +34,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -154,7 +150,13 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
     }
 
-    //获取用户公用方法
+    /**
+     * TODO 获取用户公用方法
+     *
+     * @param userName
+     * @return
+     * @see {@link com.perfect.service.SystemUserInfoService#findBaiduAccountsByUserName(String)}
+     */
     private List<SystemUserDTO> getBaiduUser(String userName) {
         List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {

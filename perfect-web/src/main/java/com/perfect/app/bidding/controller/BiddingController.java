@@ -710,6 +710,11 @@ public class BiddingController {
 
         Long accid = AppContext.getAccountId();
 
+        /**
+         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
+         *
+         * @deprecated
+         */
         SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
         if (systemUserEntity == null) {
             return new ModelAndView(jsonView);

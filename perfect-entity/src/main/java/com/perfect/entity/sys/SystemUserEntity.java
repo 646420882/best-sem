@@ -11,6 +11,9 @@ import java.util.List;
 
 /**
  * Created by vbzer_000 on 2014/6/18.
+ *
+ * @see com.perfect.account.SystemUserInfoVO
+ * @deprecated
  */
 @Document(collection = "sys_user")
 public class SystemUserEntity implements Serializable {

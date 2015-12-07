@@ -3,7 +3,6 @@ package com.perfect.app.assistant.controller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.autosdk.sms.v3.ScheduleType;
-import com.perfect.web.support.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dto.SchedulerDTO;
 import com.perfect.dto.SystemUserDTO;
@@ -15,8 +14,9 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
-import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.RegionalCodeUtils;
+import com.perfect.utils.paging.PagerInfo;
+import com.perfect.web.support.WebContextSupport;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -148,6 +148,11 @@ public class AssistantCampaignController extends WebContextSupport {
      */
     @RequestMapping(value = "assistantCampaign/getRegionByAcid", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountRegion(HttpServletResponse response) {
+        /**
+         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByBaiduAccountId(Long)}
+         *
+         * @deprecated
+         */
         SystemUserDTO currentUser = systemUserService.findByAid(AppContext.getAccountId());
 
         List<BaiduAccountInfoDTO> accounts = currentUser.getBaiduAccounts();

@@ -1,14 +1,14 @@
 package com.perfect.app.index.controller;
 
+import com.perfect.commons.constants.AuthConstants;
 import com.perfect.commons.message.mail.SendMail;
+import com.perfect.core.AppContext;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.redis.JRedisUtils;
-import com.perfect.account.SystemUserInfoVO;
-import com.perfect.web.filter.auth.AuthConstants;
 import com.perfect.web.support.WebContextSupport;
 import com.perfect.web.support.WebUtils;
 import org.springframework.context.annotation.Scope;
@@ -45,9 +45,7 @@ public class HomePageManageController extends WebContextSupport implements AuthC
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(HttpServletRequest request, ModelMap modelMap) {
         modelMap.put("currSystemUserName", WebUtils.getUserName(request));
-        modelMap.put("accountList",
-                ((SystemUserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getBaiduAccounts()
-        );
+        modelMap.put("accountList", AppContext.getBaiduAccounts());
 
         return new ModelAndView("homePage/home");
     }
@@ -73,6 +71,12 @@ public class HomePageManageController extends WebContextSupport implements AuthC
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
         String userName = WebUtils.getUserName(request);
+
+        /**
+         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
+         *
+         * @deprecated
+         */
         SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
         if (systemUserDTO == null) {
             return new ModelAndView("redirect:/logout");
@@ -237,6 +241,7 @@ public class HomePageManageController extends WebContextSupport implements AuthC
      *
      * @return
      */
+    @Deprecated
     @RequestMapping(value = "/forgetPassword/resetPassword", method = {RequestMethod.GET, RequestMethod.POST})
     public void resetPassword(HttpServletResponse response, String key,
                               @RequestParam(value = "baiduAccountName", required = false) String baiduAccountName,

@@ -129,10 +129,12 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     /**
-     * 获取当前登录用户的所有百度账户信息
+     * TODO 获取当前登录用户的所有百度账户信息
      *
      * @param currUserName
      * @return
+     * @see {@code com.perfect.service.SystemUserInfoService#findBaiduAccountsByUserName}
+     * @deprecated
      */
     @Override
     public List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName) {
@@ -143,6 +145,13 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         return Collections.emptyList();
     }
 
+    /**
+     * TODO replace with {@code com.perfect.service.SystemUserInfoService#findAllSystemUserAccount}
+     *
+     * @return
+     * @see {@code com.perfect.service.SystemUserInfoService#findAllSystemUserAccount}
+     * @deprecated
+     */
     @Override
     public List<SystemUserDTO> getAllSysUserAccount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
@@ -353,7 +362,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         Double cost2 = 0d;
         Double costRate;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        Long baiduAccountId = AppContext.get().getAccountId();
+        Long baiduAccountId = AppContext.get().getCurrentAccountId();
         Date date = ((List<Date>) DateUtils.getsLatestAnyDays("MM-dd", 2).get(DateUtils.KEY_DATE)).get(1);
         AccountReportEntity reportEntity = mongoTemplate.
                 findOne(Query.query(Criteria.where("date").is(date).and(ACCOUNT_ID).is(baiduAccountId)), AccountReportEntity.class);

@@ -18,6 +18,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.service.SystemUserInfoService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.ObjectUtils;
@@ -285,7 +286,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateBaiDuName(String name, Long baiduId) {
-        boolean flag = accountManageDAO.updateBaiDuName(name,baiduId);
+        boolean flag = accountManageDAO.updateBaiDuName(name, baiduId);
         return flag;
     }
 
@@ -470,15 +471,28 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public SystemUserDTO getSystemUser(String userName) {
-        //  TODO
+        /**
+         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
+         */
         return systemUserDAO.findByUserName(userName);
     }
 
+    /**
+     * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByBaiduAccountId(Long)}
+     *
+     * @deprecated
+     */
     @Override
     public SystemUserDTO getSystemUser(long aid) {
         return systemUserDAO.findByAid(aid);
     }
 
+    /**
+     * TODO replace with {@link SystemUserInfoService#findAllSystemUserAccount()}
+     *
+     * @return
+     * @deprecated
+     */
     @Override
     public Iterable<SystemUserDTO> getAllUser() {
         return systemUserDAO.findAll();
@@ -495,14 +509,14 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean removeAccount(Long id,String account) {
+    public boolean removeAccount(Long id, String account) {
 
         SystemUserDTO byUserName = systemUserDAO.findByUserName(account);
         boolean Master = false;
-        if(byUserName != null && byUserName.getBaiduAccounts().size()>0){
-            for (int i=0;i<byUserName.getBaiduAccounts().size();i++){
-                if(byUserName.getBaiduAccounts().get(i).getId().compareTo(id)==0){
-                    if(byUserName.getBaiduAccounts().get(i).isDfault()){
+        if (byUserName != null && byUserName.getBaiduAccounts().size() > 0) {
+            for (int i = 0; i < byUserName.getBaiduAccounts().size(); i++) {
+                if (byUserName.getBaiduAccounts().get(i).getId().compareTo(id) == 0) {
+                    if (byUserName.getBaiduAccounts().get(i).isDfault()) {
 
                     }
                     byUserName.getBaiduAccounts().remove(i);
@@ -510,15 +524,15 @@ public class SystemUserServiceImpl implements SystemUserService {
                 }
             }
             List<BaiduAccountInfoDTO> baiduAccountInfoDTOs = byUserName.getBaiduAccounts();
-            if(baiduAccountInfoDTOs.size()>0 && Master){
+            if (baiduAccountInfoDTOs.size() > 0 && Master) {
                 baiduAccountInfoDTOs.get(0).setDfault(true);
             }
-            int falg = systemUserDAO.removeAccountInfo(baiduAccountInfoDTOs,account);
-            if(falg>0){
+            int falg = systemUserDAO.removeAccountInfo(baiduAccountInfoDTOs, account);
+            if (falg > 0) {
                 return true;
             }
         }
-            return false;
+        return false;
     }
 
     @Override

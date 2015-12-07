@@ -2,8 +2,8 @@ package com.perfect.app.ucenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.perfect.web.support.WebContextSupport;
-import com.perfect.web.support.WebUtils;
+import com.perfect.account.SystemUserInfoVO;
+import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.AccountAllStateDTO;
@@ -12,6 +12,8 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
 import com.perfect.utils.json.JSONUtils;
+import com.perfect.web.support.WebContextSupport;
+import com.perfect.web.support.WebUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
@@ -36,7 +38,7 @@ import java.util.Map;
 @RestController
 @Scope("prototype")
 @RequestMapping(value = "/account")
-public class AccountManageController extends WebContextSupport {
+public class AccountManageController extends WebContextSupport implements AuthConstants {
 
     @Resource
     private AccountManageService accountManageService;
@@ -207,10 +209,13 @@ public class AccountManageController extends WebContextSupport {
      */
     @RequestMapping(value = "/getImg", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
-        if (imgBytes != null) {
-            response.getOutputStream().write(imgBytes);
-        }
+        // TODO 获取用户头像URL
+        String imageUrl = ((SystemUserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getImageUrl();
+
+//        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
+//        if (imgBytes != null) {
+//            response.getOutputStream().write(imgBytes);
+//        }
     }
 
     /**

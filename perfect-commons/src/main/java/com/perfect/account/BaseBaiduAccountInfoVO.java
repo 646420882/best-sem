@@ -7,6 +7,9 @@ package com.perfect.account;
  */
 public class BaseBaiduAccountInfoVO {
 
+    // 凤巢账号ID
+    private final Long accountId;
+
     // 凤巢账号名
     private final String accountName;
 
@@ -23,12 +26,18 @@ public class BaseBaiduAccountInfoVO {
     private final boolean isDefault;
 
 
-    public BaseBaiduAccountInfoVO(String accountName, String remarkName, String password, String token, boolean isDefault) {
+    public BaseBaiduAccountInfoVO(Long accountId, String accountName, String remarkName, String password, String token, boolean isDefault) {
+        this.accountId = accountId;
         this.accountName = accountName;
         this.remarkName = remarkName;
         this.password = password;
         this.token = token;
         this.isDefault = isDefault;
+    }
+
+
+    public Long getAccountId() {
+        return accountId;
     }
 
     public String getAccountName() {

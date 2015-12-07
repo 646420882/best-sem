@@ -174,6 +174,11 @@ public class AccountManageServiceImpl implements AccountManageService {
         return JSONUtils.getJsonMapData(list);
     }
 
+    /**
+     * @return
+     * @see {@code com.perfect.service.SystemUserInfoService#findAllBaiduAccounts}
+     * @deprecated
+     */
     @Override
     public List<BaiduAccountInfoDTO> getAllBaiduAccount() {
         List<BaiduAccountInfoDTO> baiduAccountList = new ArrayList<>();

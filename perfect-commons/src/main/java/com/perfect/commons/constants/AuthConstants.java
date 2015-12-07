@@ -1,4 +1,4 @@
-package com.perfect.web.filter.auth;
+package com.perfect.commons.constants;
 
 /**
  * Created on 2015-12-05.
@@ -25,9 +25,9 @@ public interface AuthConstants {
 
     String USER_INFORMATION = "USER_INFORMATION";
 
-    String KEY_BAIDU_ACCOUNT_ID = "BEST_SEM_BAIDU_ACCOUNT_ID";
+    String KEY_CURRENT_BAIDU_ACCOUNT_ID = "BEST_SEM_CURRENT_BAIDU_ACCOUNT_ID";
 
-    String KEY_BAIDU_ACCOUNT_LIST = "BEST_SEM_BAIDU_ACCOUNT_LIST";
+    String KEY_CURRENT_BAIDU_ACCOUNT = "BEST_SEM_CURRENT_BAIDU_ACCOUNT";
 
-    String TOKEN = "token";
+    String TOKEN = "BLT";
 }
