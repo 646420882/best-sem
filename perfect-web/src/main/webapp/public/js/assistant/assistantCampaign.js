@@ -312,7 +312,7 @@ function whenBlurEditCampaign(num, value) {
                 } else {
                     if (parseFloat(value).toFixed(3) < 50.0) {
                         //alert("每日预算必须大于50RMB");
-                        AlertPrompt.show("每日预算必须大于50RMB");
+                        AlertPrompt.show("推广计划每日预算必须大于等于50 小于等于10000000");
                         return;
                     } else {
                         var bgt = $("#acBgt").html();

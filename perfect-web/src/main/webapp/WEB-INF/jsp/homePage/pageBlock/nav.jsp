@@ -14,8 +14,8 @@
     <div class="nav_left fl  ">
         <div class="nav_mid">
             <div class="nav_under">
-                <div class="tips">
-                    <span id="navigator_tips"><img src='${pageContext.request.contextPath}/public/img/nav.png'/></span>
+                <div class="tips" id="navigator_tips">
+                    <span><img src='${pageContext.request.contextPath}/public/img/nav.png'/></span>
                 </div>
                 <ul>
                     <li class="current">
