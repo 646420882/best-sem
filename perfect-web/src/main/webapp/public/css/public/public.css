@@ -220,7 +220,7 @@ table tr, table tr td {
 
 .nav_hide .nav_left .nav_under ul li a {
     text-align: center;
-    padding-left: 26px;
+    padding-left: 24px;
 }
 
 .nav_bg {
@@ -390,13 +390,17 @@ table tr, table tr td {
 }
 
 .switchAccountSerach {
-    width: 220px;
-    margin: 10px 10px 0 10px;
+    width: 94.5%;
+    margin: 7px;
     padding: 0 5px;
     border: 1px solid #ccc;
     box-shadow: none;
-    height: 24px;
+    height: 25px;
     background: url(/public/img/switchAccountSerach.png) no-repeat right;
+}
+#switchAccount_ul
+{
+    margin-bottom: 15px;
 }
 
 .switchAccount_ul_pages {
@@ -423,14 +427,10 @@ table tr, table tr td {
     margin: 5px;
 }
 
-.user_names ul {
-    margin-top: 5px;
-}
-
 .user_names .countname ul li {
     cursor: pointer;
-    margin-bottom: 10px;
-    padding: 0 15px;
+    margin-bottom: 0px;
+    padding: 0 7px;
     display: inherit;
     float: inherit;
     height: auto;
@@ -462,7 +462,7 @@ table tr, table tr td {
 .nav_under ul li a {
     display: block;
     height: 65px;
-    padding-top: 20px;
+    padding-top: 23px;
     font-size: 15px;
     color: #a7b1c2;
 }

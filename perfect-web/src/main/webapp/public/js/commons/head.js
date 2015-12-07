@@ -50,31 +50,44 @@ function downloadUser() {
 
 
 }
+NavCss();
+$(window).resize(function () {
+    NavCss();
+});
+function NavCss() {
+    if ($(document.body).height() < 500) {
+        $(".nav").css("position", "absolute");
+    }
+    else {
+        $(".nav").css("position", "fixed");
+    }
+}
+
 /*function downloadUser() {
-    var d = top.dialog({
-        id: 'my2',
-        content: "<iframe src='/homePage/showCountDownload' width='540' height='340' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-        title: "账户下载",
-        yesClose: "取消",
-        skin: 'downPopup',
-        time: 1000,
-//            className:'succeed noClose',
+ var d = top.dialog({
+ id: 'my2',
+ content: "<iframe src='/homePage/showCountDownload' width='540' height='340' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+ title: "账户下载",
+ yesClose: "取消",
+ skin: 'downPopup',
+ time: 1000,
+ //            className:'succeed noClose',
 
-//            url:'homePage/pageBlock/showcountDownload',
+ //            url:'homePage/pageBlock/showcountDownload',
 
-//            content: "<iframe src='/assistantKeyword/showTimingPauseDialo+g' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-//            content: "<div style='width: 550px; height: 470px;'><span>选择账户</span>  <div class='j_list01 over'><ul id='treeDemo' class='ztree'></ul></div></div>",
-        oniframeload: function () {
-        },
-        onclose: function () {
+ //            content: "<iframe src='/assistantKeyword/showTimingPauseDialo+g' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+ //            content: "<div style='width: 550px; height: 470px;'><span>选择账户</span>  <div class='j_list01 over'><ul id='treeDemo' class='ztree'></ul></div></div>",
+ oniframeload: function () {
+ },
+ onclose: function () {
 
-        },
-        onremove: function () {
-        }
-    }).showModal(dockObj);
+ },
+ onremove: function () {
+ }
+ }).showModal(dockObj);
 
-    console.log(top.dialog());
-}*/
+ console.log(top.dialog());
+ }*/
 
 var dockObj = document.getElementById('argDialogDiv');
 $("#downloadUser").click(function () {

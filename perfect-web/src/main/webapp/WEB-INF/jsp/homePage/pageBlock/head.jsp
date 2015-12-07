@@ -72,7 +72,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="user_detali fl over" style="min-width:300px;">
+                    <div class="user_detali fl over">
                         <ul>
                             <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
                                                                                   style="color: white">.</a></li>

@@ -352,7 +352,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--普通创意-->
+                                        <!--推广单元-->
                                         <div class="containers hides">
                                             <div class="zs_function">
                                                 <ul class="fl">
@@ -404,7 +404,7 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th style="min-width:80px;"><input type="checkbox"
+                                                            <th style="min-width:90px; max-widt:92px;"><input type="checkbox"
                                                                                                name='creativeAllCheck'
                                                                                                onchange="$.foRCheckAll('creativeAllCheck')"
                                                                                                style="float:left;margin:0 15px;"/>
