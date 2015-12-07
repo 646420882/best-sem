@@ -588,6 +588,7 @@
     left: 0px;
     top: 0px;
     text-align: center;
+    background: #283f5b;
 }
 
 .tips input {
@@ -4209,7 +4210,7 @@ input[type=checkbox]:focus {
 
 .mainlist input[type=checkbox] {
     float: left;
-    margin: 2px 2px 0 0;
+    margin: 4px 2px 0 0;
 }
 
 .mainlist .add_title input[type=checkbox] {
@@ -4455,7 +4456,7 @@ input[type=checkbox]:focus {
     -moz-box-shadow: #666 0px 0px 10px;
     box-shadow: #666 0px 0px 10px;
     font-weight: normal;
-    text-align: center;
+    text-align: left;
 
 }
 
@@ -4470,6 +4471,7 @@ input[type=checkbox]:focus {
     height: 34px;
     line-height: 34px;
     white-space: nowrap;
+    text-align: center;
 }
 
 .tooltip.right .tooltip-arrow {
