@@ -3,20 +3,11 @@ package com.perfect.web.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
-import com.perfect.vo.BaseBaiduAccountInfoVO;
-import com.perfect.vo.UserInfoVO;
+import com.google.common.collect.Maps;
+import com.perfect.account.BaseBaiduAccountInfoVO;
+import com.perfect.account.SystemUserInfoVO;
+import com.perfect.utils.http.HttpClientUtils;
 import com.perfect.web.filter.auth.AuthConstants;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,7 +18,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -100,16 +90,11 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             response.addCookie(tokenCookie);
 
             // 获取用户信息
-            try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                HttpPost httpPost = new HttpPost(USER_VERIFICATION_URL);
-
-                List<NameValuePair> params = Lists.<NameValuePair>newArrayList(new BasicNameValuePair(TOKEN, token));
-                httpPost.setEntity(new UrlEncodedFormEntity(params, StandardCharsets.UTF_8));
-                CloseableHttpResponse response1 = httpClient.execute(httpPost);
-
-                if (response1.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    HttpEntity entity = response1.getEntity();
-                    String userInformation = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+            Map<String, Object> params = Maps.newHashMap();
+            params.put(TOKEN, token);
+            try {
+                String userInformation = HttpClientUtils.postRequest(USER_VERIFICATION_URL, params);
+                if (Objects.nonNull(userInformation)) {
                     // 解析JSON数据并将用户信息写入Session
                     parse(userInformation, request, response);
                 }
@@ -141,7 +126,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             else
                 throw new IllegalAccessError("Illegal access for " + username);
         } else {
-            UserInfoVO userInfo = new UserInfoVO();
+            SystemUserInfoVO userInfo = new SystemUserInfoVO();
             userInfo.setUsername(username);
 
             List<BaseBaiduAccountInfoVO> baseBaiduAccountInfoVOs = new ArrayList<>();
@@ -149,6 +134,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             for (int i = 0, s = bdAccountArray.size(); i < s; i++) {
                 baseBaiduAccountInfoVOs.add(new BaseBaiduAccountInfoVO(
                         bdAccountArray.getJSONObject(i).getString("bdfcName"),
+                        bdAccountArray.getJSONObject(i).getString("bdrmName"),
                         bdAccountArray.getJSONObject(i).getString("bdfcPwd"),
                         bdAccountArray.getJSONObject(i).getString("bdToken"),
                         bdAccountArray.getJSONObject(i).getBoolean("bddefault")

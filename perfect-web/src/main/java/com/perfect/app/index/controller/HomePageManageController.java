@@ -7,7 +7,7 @@ import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.redis.JRedisUtils;
-import com.perfect.vo.UserInfoVO;
+import com.perfect.account.SystemUserInfoVO;
 import com.perfect.web.filter.auth.AuthConstants;
 import com.perfect.web.support.WebContextSupport;
 import com.perfect.web.support.WebUtils;
@@ -46,7 +46,7 @@ public class HomePageManageController extends WebContextSupport implements AuthC
     public ModelAndView index(HttpServletRequest request, ModelMap modelMap) {
         modelMap.put("currSystemUserName", WebUtils.getUserName(request));
         modelMap.put("accountList",
-                ((UserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getBaiduAccounts()
+                ((SystemUserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getBaiduAccounts()
         );
 
         return new ModelAndView("homePage/home");

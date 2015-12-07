@@ -25,5 +25,9 @@ public interface AuthConstants {
 
     String USER_INFORMATION = "USER_INFORMATION";
 
+    String KEY_BAIDU_ACCOUNT_ID = "BEST_SEM_BAIDU_ACCOUNT_ID";
+
+    String KEY_BAIDU_ACCOUNT_LIST = "BEST_SEM_BAIDU_ACCOUNT_LIST";
+
     String TOKEN = "token";
 }

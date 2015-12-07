@@ -1,11 +1,11 @@
 package com.perfect.web.support;
 
+import com.perfect.account.BaseBaiduAccountInfoVO;
+import com.perfect.account.SystemUserInfoVO;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.core.AppContext;
-import com.perfect.vo.BaseBaiduAccountInfoVO;
-import com.perfect.vo.UserInfoVO;
 import com.perfect.web.filter.auth.AuthConstants;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -69,7 +69,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
     private void handleRequest(String username, HttpServletRequest request) {
         if (Objects.nonNull(request.getSession().getAttribute(USER_INFORMATION))) {
             adminFlag[0] = false;
-            UserInfoVO userInfo = (UserInfoVO) request.getSession().getAttribute(USER_INFORMATION);
+            SystemUserInfoVO userInfo = (SystemUserInfoVO) request.getSession().getAttribute(USER_INFORMATION);
 
             for (BaseBaiduAccountInfoVO baseBaiduAccountInfoVO : userInfo.getBaiduAccounts()) {
                 if (baseBaiduAccountInfoVO.isDefault()) {

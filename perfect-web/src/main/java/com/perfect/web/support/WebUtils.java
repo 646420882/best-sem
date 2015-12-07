@@ -1,38 +1,37 @@
 package com.perfect.web.support;
 
 import com.perfect.core.AppContext;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import com.perfect.account.BaseBaiduAccountInfoVO;
+import com.perfect.account.SystemUserInfoVO;
+import com.perfect.web.filter.auth.AuthConstants;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
  */
-public class WebUtils extends org.springframework.web.util.WebUtils {
-
-    public static final String KEY_ACCOUNT = "_accountId";
-    public static final String KEY_ACCOUNTLIST = "_acclist";
-
+public class WebUtils extends org.springframework.web.util.WebUtils implements AuthConstants {
 
     public static String getUserName(HttpServletRequest request) {
-        Principal userPrincipal = request.getUserPrincipal();
-        return (userPrincipal != null ? userPrincipal.getName() : null);
+        Object userInfo = request.getSession().getAttribute(USER_INFORMATION);
+        if (Objects.isNull(userInfo))
+            return null;
+
+        return ((SystemUserInfoVO) userInfo).getUsername();
     }
 
 
     public static void setAccountId(HttpServletRequest request, Long accountId) {
-        request.getSession().setAttribute(KEY_ACCOUNT, accountId);
+        request.getSession().setAttribute(KEY_BAIDU_ACCOUNT_ID, accountId);
     }
 
     public static Long getAccountId(HttpServletRequest request) {
+        Object accountId = request.getSession().getAttribute(KEY_BAIDU_ACCOUNT_ID);
 
-        Object accid = request.getSession().getAttribute(KEY_ACCOUNT);
-
-        return (Long) ((accid == null) ? -1l : accid);
+        return (Long) ((accountId == null) ? -1L : accountId);
     }
 
 
@@ -43,22 +42,19 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         AppContext.setUser(userName, accountId);
     }
 
-    public static void setAccountList(HttpServletRequest request, List<BaiduAccountInfoDTO> baiduAccountInfoDTOList) {
-        request.getSession().setAttribute(KEY_ACCOUNTLIST, baiduAccountInfoDTOList);
+    public static void setBaiduAccounts(HttpServletRequest request, List<BaseBaiduAccountInfoVO> baiduAccounts) {
+        request.getSession().setAttribute(KEY_BAIDU_ACCOUNT_LIST, baiduAccounts);
     }
 
-    public static List<BaiduAccountInfoDTO> getAccountList(HttpServletRequest request) {
-        Object list = request.getSession().getAttribute(KEY_ACCOUNTLIST);
+    @SuppressWarnings("unchecked")
+    public static List<BaseBaiduAccountInfoVO> getBaiduAccounts(HttpServletRequest request) {
+        Object list = request.getSession().getAttribute(KEY_BAIDU_ACCOUNT_LIST);
 
-        if (list == null) {
-            return null;
+        if (Objects.isNull(list)) {
+            return Collections.<BaseBaiduAccountInfoVO>emptyList();
         } else {
-            return (List<BaiduAccountInfoDTO>) list;
+            return (List<BaseBaiduAccountInfoVO>) list;
         }
     }
 
-
-    public static ModelAndView getJsonView() {
-        return new ModelAndView(new MappingJackson2JsonView());
-    }
 }
