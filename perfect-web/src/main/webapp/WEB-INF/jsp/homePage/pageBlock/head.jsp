@@ -129,7 +129,7 @@
 </div>
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
 <%--alert提示类--%>
-<div class="box alertBox" style=" width: 230px;display:none;z-index: 10001" id="AlertPrompt">
+<div class="box alertBox" style="width: 230px;display:none;z-index: 10001" id="AlertPrompt">
     <h2 id="AlertPrompTitle">
         <span class="fl alert_span_title" id="AlertPrompt_title"></span>
         <%-- <a href="#" onclick="AlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a>--%>
@@ -144,18 +144,18 @@
     </div>
 </div>
 <%--内容提示提示类--%>
-<div class="box" style=" width: 230px;display:none;z-index: 10001" id="PromptBox">
+<div class="box" style="min-width: 230px;display:none;z-index: 10001" id="PromptBox">
     <h2 id="PrompTitleBox">
         <span class="fl" id="PrompBoxTitle"></span>
-        <a href="javascript:void(0)" onclick="PromptBox.hide();" class="close">×</a></h2>
+        <a href="javascript:void(0)" onclick="PromptBox.hide();"
+           style="color: #cccccc;float: right;font-size: 20px;line-height: 46px;">×</a></h2>
 
     <div class="mainlist">
         <div id="PrompMain">
         </div>
         <div class="w_list03">
-            <ul class="zs_set">
-                <li class="current" onclick="PromptBox.hide()">确认</li>
-                <li onclick="PromptBox.hide()">取消</li>
+            <ul class="zs_set" id="promptBottom">
+
             </ul>
         </div>
     </div>
@@ -304,7 +304,8 @@
 </div>
 <!-- 账户弹出 -->
 <div class="box" style="display:none;*width:400px;" id="open_account">
-    <h2 id="AccountChange"><span class="fl">多账户下载</span><a href="javascript:void(0)" id="account_close" class="close">×</a></h2>
+    <h2 id="AccountChange"><span class="fl">多账户下载</span><a href="javascript:void(0)" id="account_close"
+                                                           class="close">×</a></h2>
 
     <div class="mainlist">
         您希望下载哪些账户的哪些单元？
@@ -329,9 +330,12 @@
 <!-- 弹出结束 -->
 
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
-<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
-<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/multipleaccountdownloads.js"></script>
+<script type="text/javascript" defer
+        src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
+<script type="text/javascript" defer
+        src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" defer
+        src="${pageContext.request.contextPath}/public/js/multipleaccountdownloads.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>

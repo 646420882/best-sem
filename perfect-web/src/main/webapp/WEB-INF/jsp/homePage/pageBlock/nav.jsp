@@ -53,12 +53,11 @@
                     </li>
 
                 </ul>
-                <div style="text-align: center;position: absolute;bottom: 111px;left: 30%">
-                    <a href="${pageContext.request.contextPath}/qa/getPage" data-toggle="tooltip"
-                       data-placement="right" title="帮助中心"><img
+                <div class="help_icon" data-toggle="tooltip" data-placement="right" title="帮助中心">
+                    <a href="${pageContext.request.contextPath}/qa/getPage"><img
                             src="${pageContext.request.contextPath}/public/img/best_img/Question.png" alt=""/>
                         <span class="help_text"
-                              style="display: block;float: right;padding: 2px 0 0 4px;color: #a7b1c2"></span>
+                              style=""></span>
                     </a>
                 </div>
             </div>

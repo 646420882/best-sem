@@ -420,15 +420,15 @@ $("body").bind("keydown", "#text", function (e) {
     var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
     var PriceVal = $("#text").val();
     if (code == 13) {
-        if (PriceVal== "") {
+        if (PriceVal == "") {
             $("#text").replaceWith("<span> 0.1</span>");
         }
         $("#text").replaceWith("<span>" + PriceVal + "</span>");
     }
 });
-$("body").on("focusout","#text", function () {
+$("body").on("focusout", "#text", function () {
     var PriceVal = $("#text").val();
-    if (PriceVal  == "") {
+    if (PriceVal == "") {
         $("#text").replaceWith("<span> 0.1</span>");
     }
     $("#text").replaceWith("<span>" + PriceVal + "</span>");
@@ -737,8 +737,8 @@ function deleteKwd() {
         data: {"kwids": ids},
         dataType: "json",
         success: function (data) {
-            ids=ids.slice(0,-1);
-            $("#tbodyClick").find(".list2_box3").addClass("del").find("td:first").html("<input type='checkbox' value='"+ids+"'/><span class='table_delete' step='3'></span>");
+            ids = ids.slice(0, -1);
+            $("#tbodyClick").find(".list2_box3").addClass("del").find("td:first").html("<input type='checkbox' value='" + ids + "'/><span class='table_delete' step='3'></span>");
         }
     });
 
@@ -1373,3 +1373,4 @@ $(function () {
         getKwdList(0);
     }
 });
+

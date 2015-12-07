@@ -197,8 +197,8 @@ var AlertPrompt = {
 }
 /*智能竞价中的alert提示*/
 var PromptBox = {
-    show: function (content) {
-        $("#PrompBoxTitle").html(content);
+    show: function (title, content, sure) {
+        $("#PrompBoxTitle").html(title);
         $("#PrompMain").html(content);
         $(".TB_overlayBG_alert").css({
             display: "block", height: $(document).height()
@@ -210,6 +210,21 @@ var PromptBox = {
             display: "block"
         });
         /*显示提示DIV*/
+        if (sure == 1) {
+            $("#promptBottom").empty();
+            $("#promptBottom").append("" +
+            "<li class='current' onclick='PromptBox.hide()'>确认</li>")
+        } else if (sure == 2) {
+            $("#promptBottom").empty();
+            $("#promptBottom").append("" +
+            "<li onclick='PromptBox.hide()'>取消</li>")
+        } else {
+            $("#promptBottom").empty();
+            $("#promptBottom").append("" +
+            "<li class='current' onclick='PromptBox.hide()'>确认</li>" +
+            "<li onclick='PromptBox.hide()'>取消</li>")
+        }
+
     },
     hide: function () {
         $(".TB_overlayBG_alert").css({
@@ -232,6 +247,7 @@ $(function () {
     rDrag.init(document.getElementById('batchDel'));
     rDrag.init(document.getElementById('reportAddSearchWordTitile'));
     rDrag.init(document.getElementById('reportAddNoSearchWordTitile'));
+    rDrag.init(document.getElementById('PrompTitleBox'));
 });
 $(function () {
     $("#head_click").click(function () {

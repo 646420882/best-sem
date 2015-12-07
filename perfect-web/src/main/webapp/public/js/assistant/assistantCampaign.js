@@ -775,7 +775,7 @@ function createChooseTimeUIByCampaignData(data) {
     var html = "";
     for (var i = 0; i < weeks.length; i++) {
         if (data.schedule == undefined) {
-            html = html + "<ul>" + "<div><input type='checkbox' checked='checked'' name='" + (i + 1) + "'/>" + weeks[i] + "</div>";
+            html = html + "<ul>" + "<div><label class='checkbox-inlines'><input type='checkbox' checked='checked'' name='" + (i + 1) + "'/>" + weeks[i] + "</label></div>";
         } else {
             for (var s = 0; s < data.schedule.length; s++) {
                 if (data.schedule[s].weekDay == (i + 1)) {
@@ -861,6 +861,7 @@ AreaClick.click(function () {
     });
 });
 
+/**
 /**
  * 弹出添加推广计划的窗口
  */
