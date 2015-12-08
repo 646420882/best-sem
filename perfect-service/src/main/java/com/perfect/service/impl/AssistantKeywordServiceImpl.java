@@ -22,6 +22,10 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.log.filters.field.enums.KeyWordEnum;
+import com.perfect.log.filters.field.enums.OptContentEnum;
+import com.perfect.log.model.OperationRecordModel;
+import com.perfect.log.util.LogOptUtil;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -503,6 +507,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      */
     @Override
     public KeywordDTO updateKeyword(KeywordDTO kwd) {
+        KeywordDTO findKeyword = keywordDAO.findByLongId(kwd.getKeywordId());
 
         KeywordDTO newKeywordDTO;
 
@@ -521,26 +526,65 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             newKeywordDTO.setLocalStatus(2);
         }
 
-        if (kwd.getKeyword() != null) {
+        OperationRecordModel orm = new OperationRecordModel();
+        orm.setOptLevel(5);
+        orm.setOptType(4);
+        orm.setOptContentId(OptContentEnum.Edit);
+        orm.setOptTime(System.currentTimeMillis());
+        orm.setUserId(AppContext.getAccountId());
+        orm.setOptContent("{" + findKeyword.getKeyword() + "}");
+        if (kwd.getKeywordId() != null) {
             newKeywordDTO.setKeyword(kwd.getKeyword());
+            orm.setOptComprehensiveID(kwd.getKeywordId());
+            AdgroupDTO adgroupDTO = adgroupDAO.findOne(findKeyword.getAdgroupId());
+            CampaignDTO campaignDTO = campaignDAO.findByLongId(adgroupDTO.getCampaignId());
+            orm.setPlanId(adgroupDTO.getCampaignId());
+            orm.setUnitId(adgroupDTO.getAdgroupId());
+            orm.setPlanName(campaignDTO.getCampaignName());
+            orm.setUnitName(adgroupDTO.getAdgroupName());
+            orm.setOptObj("asfsadfsadf");
         }
 
         if (kwd.getPrice() != null) {
+            if (kwd.getKeywordId() != null) {
+                orm.setOldValue(newKeywordDTO.getPrice().toString());
+                orm.setNewValue(kwd.getPrice().toString());
+            }
             newKeywordDTO.setPrice(kwd.getPrice());
         }
         if (kwd.getPcDestinationUrl() != null) {
+            if (kwd.getKeywordId() != null) {
+                orm.setOldValue(newKeywordDTO.getPcDestinationUrl());
+                orm.setNewValue(kwd.getPcDestinationUrl());
+            }
             newKeywordDTO.setPcDestinationUrl(kwd.getPcDestinationUrl());
         }
         if (kwd.getMobileDestinationUrl() != null) {
+            if (kwd.getKeywordId() != null) {
+                orm.setOldValue(newKeywordDTO.getMobileDestinationUrl());
+                orm.setNewValue(kwd.getMobileDestinationUrl());
+            }
             newKeywordDTO.setMobileDestinationUrl(kwd.getMobileDestinationUrl());
         }
         if (kwd.getMatchType() != null) {
+            if (kwd.getKeywordId() != null) {
+                orm.setOldValue(newKeywordDTO.getMatchType().toString());
+                orm.setNewValue(kwd.getMatchType().toString());
+            }
             newKeywordDTO.setMatchType(kwd.getMatchType());
         }
         if (kwd.getPhraseType() != null) {
+            if (kwd.getKeywordId() != null) {
+                orm.setOldValue(newKeywordDTO.getPhraseType().toString());
+                orm.setNewValue(kwd.getPhraseType().toString());
+            }
             newKeywordDTO.setPhraseType(kwd.getPhraseType());
         }
         if (kwd.getPause() != null) {
+            if (kwd.getKeywordId() != null) {
+                orm.setOldValue(newKeywordDTO.getPause().toString());
+                orm.setNewValue(kwd.getPause().toString());
+            }
             newKeywordDTO.setPause(kwd.getPause());
         }
 
@@ -550,9 +594,18 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         if (kwd.getAdgroupObjId() != null) {
             newKeywordDTO.setAdgroupObjId(kwd.getAdgroupObjId());
         }
-
-        keywordDAO.update(newKeywordDTO, keywordBackUpDTO);
+        try {
+            keywordDAO.update(newKeywordDTO, keywordBackUpDTO);
+            System.out.println(saveLog(orm));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return newKeywordDTO;
+    }
+
+    private Boolean saveLog(OperationRecordModel orm) {
+        return LogOptUtil.saveLogs(orm).isSuccess();
+//        return null;
     }
 
 
