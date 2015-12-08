@@ -47,7 +47,7 @@ public class HttpClientUtils {
     }
 
     public static String postRequest(String url, Map<String, Object> params) throws IOException {
-        try (CloseableHttpClient httpClient = HttpClients.createMinimal(getInstance().getConnManager())) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
 
             List<NameValuePair> postParams = Lists.<NameValuePair>newArrayList(params

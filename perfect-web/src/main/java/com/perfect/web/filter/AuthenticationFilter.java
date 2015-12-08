@@ -3,16 +3,15 @@ package com.perfect.web.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.account.SystemUserInfoVO;
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.utils.http.HttpClientUtils;
-import org.springframework.web.context.ContextLoader;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -28,36 +27,42 @@ import java.util.*;
  */
 public class AuthenticationFilter extends OncePerRequestFilter implements AuthConstants {
 
+    private static List<String> staticResourcesSuffix = Lists.newArrayList(".ico", ".gif", ".jpg", ".jpeg", ".png", ".swf", ".css", ".js");
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        ServletContext servletContext = ContextLoader.getCurrentWebApplicationContext().getServletContext();
-        if (Objects.isNull(servletContext.getAttribute(SERVLET_CONTEXT_INIT_VALUE))) {
-            // ServletContext Initialize
-            servletContext.setAttribute(SERVLET_CONTEXT_INIT_VALUE, 1);
+        // 检测是否执行登出操作
+        if (Objects.equals("/logout", request.getRequestURI())) {
+            logout(request, response);
         } else {
-            // 检测是否执行登出操作
-            if (Objects.equals("/logout", request.getRequestURI())) {
-                // 重定向至登录页面
-                redirectToLogin(response);
-            } else {
-                // 检测Cookie中是否带有token
-                if (Optional.ofNullable(request.getCookies()).isPresent()) {
-                    Optional<Cookie> cookieOptional = Arrays
-                            .stream(request.getCookies())
-                            .filter(c -> Objects.equals(TOKEN, c.getName()))
-                            .findFirst();
+            // 如果Session中没有用户信息
+            if (Objects.isNull(request.getSession().getAttribute(USER_INFORMATION))) {
+                // 检测请求类型
+                boolean isStaticResourcesRequest = checkStaticResourcesRequest(request);
+                if (isStaticResourcesRequest) {
+                    // 未登录请求静态资源返回至登录页面
+                    redirectToLogin(response);
+                } else {
+                    // 检测Cookie中是否带有token
+                    if (Optional.ofNullable(request.getCookies()).isPresent()) {
+                        Optional<Cookie> cookieOptional = Arrays
+                                .stream(request.getCookies())
+                                .filter(c -> Objects.equals(TOKEN, c.getName()))
+                                .findFirst();
 
-                    if (cookieOptional.isPresent()) {
-                        retrieveUserInfoWithToken(cookieOptional.get().getValue(), request, response);
+                        if (cookieOptional.isPresent()) {
+                            retrieveUserInfoWithToken(cookieOptional.get().getValue(), request, response);
+                        } else {
+                            // Cookie中没有token
+                            // 重定向至登录页面
+                            redirectToLogin(response);
+                        }
                     } else {
-                        // Cookie中没有token
+                        // 当前请求中没有任何Cookie信息
                         // 重定向至登录页面
                         redirectToLogin(response);
                     }
-                } else {
-                    // 当前请求中没有任何Cookie信息
-                    // 重定向至登录页面
-                    redirectToLogin(response);
                 }
             }
         }
@@ -65,9 +70,8 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
         filterChain.doFilter(request, response);
     }
 
-
     /**
-     * <p>根据token向用户认证中心发送校验请求以获取用户信息.
+     * <p>根据token向用户认证中心发送token校验以获取用户信息.
      *
      * @param token
      * @param request
@@ -76,7 +80,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
     private void retrieveUserInfoWithToken(String token, HttpServletRequest request, HttpServletResponse response) {
         // 获取用户信息
         Map<String, Object> params = Maps.newHashMap();
-        params.put(TOKEN, token);
+        params.put("token", token);
         try {
             String userInformation = HttpClientUtils.postRequest(USER_VERIFICATION_URL, params);
             if (Objects.nonNull(userInformation)) {
@@ -93,23 +97,22 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
      * 1. 用户名{@code username}
      * 2. 当前用户下的凤巢帐号{@code bdAccounts}
      * 3. 菜单权限</p>
-     * TODO 菜单权限解析
      *
      * @param message  认证中心返回的JSON数据
      * @param request
      * @param response
      */
     private void parse(String message, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        JSONObject jsonObject = JSON.parseObject(JSON.parseObject(message).getString("msg"));
-        JSONObject sysUserJsonObj = jsonObject.getJSONObject("data");
-        String username = sysUserJsonObj.getString("username");
-        String imageUrl = sysUserJsonObj.getString("imageUrl");
-        int status = sysUserJsonObj.getIntValue("status");
-        int accountStatus = sysUserJsonObj.getIntValue("accountStatus");
-        int access = sysUserJsonObj.getIntValue("access");
-        JSONArray bdAccountArray = jsonObject.getJSONArray("bdAccounts");
+        JSONObject jsonObject = JSON.parseObject(JSON.parseObject(message).getString("msg")).getJSONObject("data");
+        String username = jsonObject.getString("userName");
+        String imageUrl = jsonObject.getString("img");
+        int status = jsonObject.getIntValue("state");
+        int accountStatus = jsonObject.getIntValue("accountState");
+        int access = jsonObject.getIntValue("access");
+        JSONArray bdAccountArr = jsonObject.getJSONArray("baiduAccounts");
+        JSONArray menuPerssionArr = jsonObject.getJSONArray("bestMenu");
 
-        if (Objects.isNull(bdAccountArray) || bdAccountArray.isEmpty()) {
+        if (Objects.isNull(bdAccountArr) || bdAccountArr.isEmpty()) {
             if (access == 1)
                 response.sendRedirect("redirect:/backendManage/index");
             else
@@ -122,22 +125,46 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             userInfo.setAccountStatus(accountStatus);
             userInfo.setAccess(access);
 
-            List<BaseBaiduAccountInfoVO> baseBaiduAccountInfoVOs = new ArrayList<>();
-
-            for (int i = 0, s = bdAccountArray.size(); i < s; i++) {
-                baseBaiduAccountInfoVOs.add(new BaseBaiduAccountInfoVO(
-                        bdAccountArray.getJSONObject(i).getLong("accountId"),
-                        bdAccountArray.getJSONObject(i).getString("accountName"),
-                        bdAccountArray.getJSONObject(i).getString("remarkName"),
-                        bdAccountArray.getJSONObject(i).getString("password"),
-                        bdAccountArray.getJSONObject(i).getString("token"),
-                        bdAccountArray.getJSONObject(i).getBoolean("isDefault")
+            List<BaseBaiduAccountInfoVO> baseBaiduAccounts = new ArrayList<>();
+            // 解析凤巢帐号信息
+            for (int i = 0, s = bdAccountArr.size(); i < s; i++) {
+                baseBaiduAccounts.add(new BaseBaiduAccountInfoVO(
+                        bdAccountArr.getJSONObject(i).getLong("bdAccountID"),
+                        bdAccountArr.getJSONObject(i).getString("bdfcName"),
+                        bdAccountArr.getJSONObject(i).getString("defaultName"),
+                        bdAccountArr.getJSONObject(i).getString("bdfcPwd"),
+                        bdAccountArr.getJSONObject(i).getString("bdToken"),
+                        bdAccountArr.getJSONObject(i).getBoolean("bddefault")
                 ));
             }
-            userInfo.setBaiduAccounts(baseBaiduAccountInfoVOs);
+            userInfo.setBaiduAccounts(baseBaiduAccounts);
+
+            List<String> menuPerssions = new ArrayList<>();
+            // 解析菜单权限信息
+            for (int i = 0, s = menuPerssionArr.size(); i < s; i++) {
+                JSONObject tmpJsonObj = menuPerssionArr.getJSONObject(i);
+                menuPerssions.add(tmpJsonObj.getString("menuName") + "," + tmpJsonObj.getString("menuUrl"));
+            }
+            userInfo.setMenuPermissions(menuPerssions);
 
             request.getSession().setAttribute(USER_INFORMATION, userInfo);
         }
+    }
+
+    /**
+     * <p>是否是加载静态资源的请求.
+     *
+     * @param request
+     * @return
+     */
+    private boolean checkStaticResourcesRequest(HttpServletRequest request) {
+        String requestPath = request.getRequestURI();
+        for (int i = 0, s = staticResourcesSuffix.size(); i < s; i++) {
+            if (requestPath.contains(staticResourcesSuffix.get(i)))
+                return true;
+        }
+
+        return false;
     }
 
     /**
@@ -148,5 +175,35 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
     private void redirectToLogin(HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_FOUND);
         response.setHeader("Location", USER_LOGIN_URL);
+    }
+
+    /**
+     * <p>登出操作
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Optional<Cookie> expiredCookieOptional = Arrays
+                .stream(request.getCookies())
+                .filter(c -> Objects.equals(TOKEN, c.getName()))
+                .findFirst();
+
+        if (expiredCookieOptional.isPresent()) {
+            // 清除关于token的Cookie信息
+            Cookie expiredCookie = new Cookie(TOKEN, expiredCookieOptional.get().getValue());
+            expiredCookie.setMaxAge(0);
+            expiredCookie.setPath("/");
+            response.addCookie(expiredCookie);
+
+            Map<String, Object> params = Maps.newHashMap();
+            params.put("token", expiredCookieOptional.get().getValue());
+            // 发送登出请求
+            HttpClientUtils.postRequest(USER_LOGINOUT_URL, params);
+        }
+
+        // 跳转至登录页面
+        redirectToLogin(response);
     }
 }

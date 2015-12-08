@@ -22,8 +22,6 @@ public interface AuthConstants {
     String TOKEN_HEART_BEAT_URL = String.format(BASE_VERIFICATION_URL, "/Users/CheckToken");
 
 
-    String SERVLET_CONTEXT_INIT_VALUE = "SERVLET_CONTEXT_INIT_VALUE";
-
     String USER_INFORMATION = "BEST_SEM_USER_INFORMATION";
 
     String MENU_PERMISSION = "BEST_SEM_MENU_PERMISSION";
@@ -32,5 +30,5 @@ public interface AuthConstants {
 
     String KEY_CURRENT_BAIDU_ACCOUNT = "BEST_SEM_CURRENT_BAIDU_ACCOUNT";
 
-    String TOKEN = "BLT";
+    String TOKEN = "25fb53fc0s03f407b8c45b399d05e2e";
 }

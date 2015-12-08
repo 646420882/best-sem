@@ -41,6 +41,8 @@
 
                 <es.host>192.168.100.10:29300</es.host>
                 <es.cluster>es-intern-cluster</es.cluster>
+
+                <api.service.token>BD84ECD95310CEB84833D9A2594F887C</api.service.token>
             </properties>
         </profile>
         <profile>
@@ -58,6 +60,8 @@
 
                 <es.host>114.112.98.68:30101,114.112.98.68:30102,114.112.98.67:30103,114.112.98.67:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>
+
+                <api.service.token>BD84ECD95310CEB84833D9A2594F887C</api.service.token>
             </properties>
         </profile>
     </profiles>
