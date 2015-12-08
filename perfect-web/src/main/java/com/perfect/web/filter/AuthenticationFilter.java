@@ -94,8 +94,8 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
 
     /**
      * <p>解析JSON数据, 需要提取的内容有:
-     * 1. 用户名{@code username}
-     * 2. 当前用户下的凤巢帐号{@code bdAccounts}
+     * 1. 用户名{@code userName}
+     * 2. 当前用户下的凤巢帐号{@code baiduAccounts}
      * 3. 菜单权限</p>
      *
      * @param message  认证中心返回的JSON数据

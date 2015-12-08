@@ -50,7 +50,7 @@ public class AccountWarningController extends WebContextSupport {
          * @deprecated
          */
         SystemUserDTO systemUserEntity = systemUserService.findByUserName(AppContext.getUser());
-        model.addAttribute("list", systemUserEntity.getBaiduAccounts());
+        model.addAttribute("list", AppContext.getBaiduAccounts());
         return new ModelAndView("promotionAssistant/setWarning");
     }
 

@@ -62,30 +62,30 @@ public class HomePageManageController extends WebContextSupport implements AuthC
         response.addCookie(cookies);
     }
 
-    /**
-     * 跳转至SEM首页
-     *
-     * @return
-     */
-    @Deprecated
-    @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
-        String userName = WebUtils.getUserName(request);
-
-        /**
-         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
-         *
-         * @deprecated
-         */
-        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-        if (systemUserDTO == null) {
-            return new ModelAndView("redirect:/logout");
-        }
-
-        modelMap.put("currSystemUserName", userName);
-        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
-        return new ModelAndView("homePage/home");
-    }
+//    /**
+//     * 跳转至SEM首页
+//     *
+//     * @return
+//     */
+//    @Deprecated
+//    @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
+//    public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
+//        String userName = WebUtils.getUserName(request);
+//
+//        /**
+//         * replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
+//         *
+//         * @deprecated
+//         */
+//        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+//        if (systemUserDTO == null) {
+//            return new ModelAndView("redirect:/logout");
+//        }
+//
+//        modelMap.put("currSystemUserName", userName);
+//        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+//        return new ModelAndView("homePage/home");
+//    }
 
     /**
      * 登录成功, 跳转至百思首页

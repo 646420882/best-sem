@@ -92,12 +92,13 @@
                                     <tr>
                                         <td>&nbsp;<span class="fl"><img
                                                 src="${pageContext.request.contextPath}/public/images/c_logo.jpg"></span><b
-                                                class="fl">${i.baiduUserName}</b></td>
-                                        <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
+                                                class="fl">${i.accountName}</b></td>
+                                        <%--<td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>--%>
+                                        <td>&nbsp;<a href=""></a></td>
                                         <td>&nbsp;${i.token}</td>
-                                        <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}"
-                                                         style="border: none" remarkName="${i.baiduRemarkName}"
-                                                         value="${i.baiduRemarkName}" width="10px" readonly></td>
+                                        <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.accountId}"
+                                                         style="border: none" remarkName="${i.remarkName}"
+                                                         value="${i.remarkName}" width="10px" readonly></td>
                                         <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}"
                                                                                                  data-userName="${currSystemUserName}"
                                                                                                  class="delBtn"

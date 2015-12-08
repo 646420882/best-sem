@@ -1,9 +1,9 @@
 package com.perfect.service.impl;
 
-import com.perfect.dao.sys.SystemUserDAO;
-import com.perfect.dto.SystemUserDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.account.BaseBaiduAccountInfoVO;
+import com.perfect.account.SystemUserInfoVO;
 import com.perfect.service.BaiduAccountService;
+import com.perfect.service.SystemUserInfoService;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -17,21 +17,20 @@ public class BaiduAccountServiceImpl implements BaiduAccountService {
 
 
     @Resource
-    private SystemUserDAO systemUserDAO;
+    private SystemUserInfoService systemUserInfoService;
 
     @Override
-    public BaiduAccountInfoDTO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId) {
-        BaiduAccountInfoDTO baiduUser = null;
+    public BaseBaiduAccountInfoVO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId) {
+        SystemUserInfoVO systemUserInfoVO = systemUserInfoService.findSystemUserInfoByUserName(systemUserName);
+        if (systemUserInfoVO == null)
+            return null;
 
-        // TODO replace with {@code com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
-        SystemUserDTO systemUserEntity = systemUserDAO.findByUserName(systemUserName);
-        List<BaiduAccountInfoDTO> list = systemUserEntity.getBaiduAccounts();
-        for (BaiduAccountInfoDTO baidu : list) {
-            if (baidu.getId().longValue() == accountId.longValue()) {
-                baiduUser = baidu;
-                break;
-            }
+        List<BaseBaiduAccountInfoVO> list = systemUserInfoVO.getBaiduAccounts();
+        for (BaseBaiduAccountInfoVO baiduAccountInfoVO : list) {
+            if (accountId.longValue() == baiduAccountInfoVO.getAccountId().longValue())
+                return baiduAccountInfoVO;
         }
-        return baiduUser;
+
+        return null;
     }
 }
