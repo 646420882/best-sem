@@ -98,7 +98,7 @@ public class AccountManageServiceImpl implements AccountManageService {
         List<AccountAllStateDTO> allStates = new ArrayList<>();
 
         for (SystemUserDTO systemUserDTO : systemUserDTOs) {
-            if (systemUserDTO.getUserName().equals("administrator")) {
+            if (systemUserDTO.getUserName() == null || systemUserDTO.getUserName().equals("administrator")) {
                 continue;
             }
 

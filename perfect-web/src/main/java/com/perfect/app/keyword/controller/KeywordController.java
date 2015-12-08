@@ -1,6 +1,7 @@
 package com.perfect.app.keyword.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.primitives.Bytes;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.utils.MD5;
@@ -28,7 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -208,6 +211,18 @@ public class KeywordController {
     public ModelAndView deleteByIds(@RequestBody List<Long> keywordIds) {
         keywordService.deleteByIds(keywordIds);
         return new ModelAndView(getJsonView(null));
+    }
+
+    @RequestMapping(value = "/downTemplate", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void downTemplate(HttpServletRequest request,HttpServletResponse response) {
+        try {
+            String filename = "关键词模板.xls";
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("GBK"), "ISO8859-1"));
+            OutputStream os = response.getOutputStream();
+            os.write(Bytes.concat(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}, ("关键词名称(必填)").getBytes(StandardCharsets.UTF_8)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private View getJsonView(Map<String, Object> attributes) {
