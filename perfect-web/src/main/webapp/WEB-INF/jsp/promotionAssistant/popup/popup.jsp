@@ -577,7 +577,7 @@
 <div class="box" style="display:none" id="error_prompt_box">
     <h2 id="error_prompt_title">
         <span class="fl">错误</span>
-        <a href="javascript:void(0)" onclick="closeAlert();" class="close">×</a></h2>
+        <a href="javascript:void(0)" class="close">×</a></h2>
 
     <div class="mainlist">
         <ul>
@@ -592,7 +592,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
-                <li class="current">确认</li>
+                <li class="current close" >确认</li>
             </ul>
         </div>
     </div>

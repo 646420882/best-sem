@@ -1007,36 +1007,7 @@
         }*/
 
     });
-//自定义列checked------全选效果
-    function customColumns(obj,type,allId,listId){
-        if(type == 0){//点击全选
-            if($(obj).prop('checked') == false){
-                $("#"+listId).find("input").each(function(){
-                    $(this).prop('checked',false);
-                })
-            }else{
-                $("#"+listId).find("input").each(function(i){
-                    $(this).prop('checked','true');
-                })
-            }
-        }else if(type == 1){//点击全选下的列表
-            if($(obj).prop('checked') == false){
-                $("#"+allId).find("input").prop('checked',false);
-            }else{
-                var isFlag = true;
-                $("#"+listId).find("input").each(function(i){
-                    if($(this).prop('checked') == false){
-                        isFlag = false;
-                        return;
-                    }
-                })
-                if(isFlag == true){
-                    $("#"+allId).find("input").prop('checked',true);
-                }
-            }
-        }
 
-    }
     /******************zTree********************/
 
     var setting = {

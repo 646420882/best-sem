@@ -339,7 +339,7 @@ To change this template use File | Settings | File Templates.
     </div>
 </div>
 <!------------编辑创意弹窗-------------->
-<div class="TB_overlayBG"></div>
+<%--<div class="TB_overlayBG"></div>--%>
 <div class="TB_overlayBG_alert"></div>
 <div class="box" id="riginality_editor" style="display:none;">
     <h2 id="riginality_editor1">编辑创意<a href="#" class="close">×</a></h2>
@@ -698,7 +698,7 @@ To change this template use File | Settings | File Templates.
                         $("#category").append(category);
                         $("#category").multipleSelect({
                             placeholder: "请选择类别",
-                            selectAll: false,
+                            selectAll: true,
                             minumimCountSelected: 20,
                             multiple: true,
                             onClose: function () {
@@ -717,7 +717,7 @@ To change this template use File | Settings | File Templates.
                                                 $('#keyword_group').append(keywordGroupOfTrade);
                                                 $('#keyword_group').multipleSelect({
                                                     placeholder: "请选择分组",
-                                                    selectAll: false,
+                                                    selectAll: true,
                                                     minumimCountSelected: 20,
                                                     multiple: true
                                                 });

@@ -71,7 +71,7 @@
                     '<li>',
                         '<label>',
                             '<input type="checkbox" ' + this.selectAllName + ' /> ',
-                            '[' + this.options.selectAllText + ']',
+                            '' + this.options.selectAllText + '',
                         '</label>',
                     '</li>'
                 );
@@ -438,7 +438,7 @@
         isOpen: false,
         placeholder: '',
         selectAll: true,
-        selectAllText: 'Select all',
+        selectAllText: '全选',
         //allSelected: 'All selected',
         allSelected: '',
         minumimCountSelected: 3,
