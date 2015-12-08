@@ -308,7 +308,7 @@
                                                            class="close">×</a></h2>
 
     <div class="mainlist">
-        您希望下载哪些账户的哪些单元？
+        选择账户以及推广计划
 
         <div class="j_list01 over">
 

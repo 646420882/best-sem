@@ -499,8 +499,8 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         List<KeywordEntity> entityList = ObjectUtils.convert(dtoList, getEntityClass());
         List<KeywordDTO> dtos = Lists.newArrayList();
         entityList.stream().forEach(s -> {
-            boolean exists = getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword()).and(LOCALSTATUS).is(1)), getEntityClass());
-            boolean exists1 = getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword()).and(LOCALSTATUS).is(-1)), getEntityClass());
+            boolean exists = getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword()).and(LOCALSTATUS).is(1).and(ADGROUP_ID).is(s.getAdgroupId())), getEntityClass());
+            boolean exists1 = getMongoTemplate().exists(new Query(Criteria.where(NAME).is(s.getKeyword()).and(LOCALSTATUS).is(-1).and(ADGROUP_ID).is(s.getAdgroupId())), getEntityClass());
             if (!exists && !exists1) {
                 s.setAccountId(AppContext.getAccountId());
                 getMongoTemplate().insert(s);

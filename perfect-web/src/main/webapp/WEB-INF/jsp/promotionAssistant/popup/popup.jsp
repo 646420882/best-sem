@@ -438,6 +438,7 @@
     <div class="main_bottom">
         <div class="w_list03">
             <ul>
+                <li id="addMonitorQR">确认</li>
                 <li onclick="closeAlert();">取消</li>
             </ul>
         </div>
@@ -557,9 +558,10 @@
                 </table>
             </div>
             <p><img src="../public/img/error.png">关键词“test1”验证未通过：此关键词的名称与该推广单元中另一关键词的名称相同</p>
+
             <p><img src="../public/img/error.png">关键词“test1”验证未通过：此关键词的名称与该推广单元中另一关键词的名称相同</p>
         </div>
-     <%--   <p>请您认真检查要发布的关键词、创意及附加信息，确保其不违法、侵权，且与您的网页信息相关</p>--%>
+        <%--   <p>请您认真检查要发布的关键词、创意及附加信息，确保其不违法、侵权，且与您的网页信息相关</p>--%>
 
     </div>
     <div class="main_bottom">

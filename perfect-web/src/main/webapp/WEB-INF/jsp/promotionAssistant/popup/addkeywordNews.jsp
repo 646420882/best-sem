@@ -50,6 +50,7 @@
                     <input type="hidden" id="matchTypexls" name="matchType">
                     <input type="hidden" id="phraseTypexls" name="phraseType">
                 </form>
+                <span><a href="/keyword/downTemplate">模板下载</a></span>
                 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
                 <span class="fr">还能添加 <label id="redio2number" style="font-weight:normal"> 5000</label> 关键词</span>
             </div>
