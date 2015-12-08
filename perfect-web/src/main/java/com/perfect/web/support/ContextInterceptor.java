@@ -111,6 +111,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
     private void setAccountOverview(HttpServletRequest request, ModelAndView modelAndView) {
         ModelMap modelMap = modelAndView.getModelMap();
+        modelMap.put("userImageUrl", ((SystemUserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getImageUrl());
         modelMap.put("currSystemUserName", WebUtils.getUserName(request));
         modelMap.put("accountBalance", baiduAccountInfo[0].getBalance());
         modelMap.put("accountBudget", baiduAccountInfo[0].getBudget());

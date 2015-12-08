@@ -24,7 +24,7 @@
                         <div class="user_logo1">
                             <div class="user_img fl over">
                             <span id="head_click"><img id="user_img"
-                                                       src="${pageContext.request.contextPath}/account/getImg"></span>
+                                                       src="${userImageUrl}"></span>
                             </div>
                             <div class="user_text fl">
                                 <div class="user_top over">

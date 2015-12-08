@@ -1,5 +1,6 @@
 package com.perfect.app.assistant.controller;
 
+import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
@@ -14,7 +15,6 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
-import com.perfect.web.support.WebContextSupport;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
 import com.perfect.utils.CsvReadUtil;
@@ -22,6 +22,7 @@ import com.perfect.utils.csv.UploadHelper;
 import com.perfect.utils.paging.PagerInfo;
 import com.perfect.vo.CsvImportResponseVO;
 import com.perfect.vo.ValidateCreativeVO;
+import com.perfect.web.support.WebContextSupport;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -53,16 +54,21 @@ public class AssistantCreativeController extends WebContextSupport {
 
     @Resource
     com.perfect.service.CreativeService creativeService;
+
     @Resource
     AdgroupService adgroupService;
+
     @Resource
     CampaignService campaignService;
+
     @Resource
     CreativeBackUpService creativeBackUpService;
+
     @Resource
     AccountManageService accountManageService;
+
     @Resource
-    private BaiduAccountService baiduAccountService;
+    private SystemUserInfoService systemUserInfoService;
 
     @RequestMapping(value = "/getList", method = RequestMethod.POST)
     public ModelAndView getCreativeList(HttpServletRequest request, HttpServletResponse response,
@@ -762,8 +768,10 @@ public class AssistantCreativeController extends WebContextSupport {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
-            CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", accountInfoDTO);
+
+            BaseBaiduAccountInfoVO baiduAccountInfoVO = systemUserInfoService.findByBaiduUserId(AppContext.getAccountId());
+//            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", baiduAccountInfoVO);
             List<CreativeDTO> getList = csvReadUtil.getImportCreativeList();
             targetFile.delete();
 
@@ -786,7 +794,7 @@ public class AssistantCreativeController extends WebContextSupport {
                 dbExistCreative = creativeService.findExistCreative(selfListCreative);
                 vc.setDbExistCreativeDTOList(dbExistCreative);
                 cr.setMsg("Ok");
-            }else{
+            } else {
                 cr.setMsg("没有检测到csv文件有正确的数据");
             }
             cr.setVc(vc);

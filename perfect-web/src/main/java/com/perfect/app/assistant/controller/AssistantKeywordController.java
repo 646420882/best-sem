@@ -1,23 +1,23 @@
 package com.perfect.app.assistant.controller;
 
 import com.google.common.collect.Lists;
+import com.perfect.account.BaseBaiduAccountInfoVO;
+import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.MongoEntityConstants;
-import com.perfect.web.support.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
 import com.perfect.param.SearchFilterParam;
-import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
+import com.perfect.service.*;
 import com.perfect.utils.CsvReadUtil;
 import com.perfect.utils.IdConvertUtils;
 import com.perfect.utils.csv.UploadHelper;
@@ -25,6 +25,7 @@ import com.perfect.utils.paging.PagerInfo;
 import com.perfect.utils.report.AssistantKwdUtil;
 import com.perfect.vo.CsvImportResponseVO;
 import com.perfect.vo.ValidateKeywordVO;
+import com.perfect.web.support.WebContextSupport;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -66,7 +67,7 @@ public class AssistantKeywordController extends WebContextSupport {
     private KeywordBackUpService keywordBackUpService;
 
     @Resource
-    private BaiduAccountService baiduAccountService;
+    private SystemUserInfoService systemUserInfoService;
 
     @Resource
     private SysRegionalService sysRegionalService;
@@ -373,8 +374,8 @@ public class AssistantKeywordController extends WebContextSupport {
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
         KeywordDTO kwd = assistantKeywordService.updateKeyword(keywordEntity);
-        KeywordInfoDTO keywordInfoDTO=new KeywordInfoDTO();
-        AdgroupDTO ad=kwd.getAdgroupId() == null ? adgroupService.findByObjId(kwd.getAdgroupObjId()) : adgroupService.findOne(kwd.getAdgroupId());
+        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+        AdgroupDTO ad = kwd.getAdgroupId() == null ? adgroupService.findByObjId(kwd.getAdgroupObjId()) : adgroupService.findOne(kwd.getAdgroupId());
         keywordInfoDTO.setObject(kwd);
         keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
         writeJson(keywordInfoDTO, response);
@@ -582,8 +583,9 @@ public class AssistantKeywordController extends WebContextSupport {
 
         List<RealTimeQueryResultType> resultList = null;
         try {
-            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
-            resultList = getSearchTermsReprot(accountInfoDTO, levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
+            BaseBaiduAccountInfoVO baiduAccountInfoVO = systemUserInfoService.findByBaiduUserId(AppContext.getAccountId());
+//            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            resultList = getSearchTermsReprot(baiduAccountInfoVO, levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -682,9 +684,9 @@ public class AssistantKeywordController extends WebContextSupport {
         writeJson(RES_SUCCESS, response);
     }
 
-    public List<RealTimeQueryResultType> getSearchTermsReprot(BaiduAccountInfoDTO accountInfoDTO, Integer levelOfDetails, Date startDate, Date endDate, List<AttributeType> attributes, Integer device, Integer searchType) {
+    public List<RealTimeQueryResultType> getSearchTermsReprot(BaseBaiduAccountInfoVO accountInfoDTO, Integer levelOfDetails, Date startDate, Date endDate, List<AttributeType> attributes, Integer device, Integer searchType) {
         DateFormat df = new SimpleDateFormat("hh:mm:ss");
-        CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getBaiduUserName(), accountInfoDTO.getBaiduPassword(), accountInfoDTO.getToken());
+        CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getAccountName(), accountInfoDTO.getPassword(), accountInfoDTO.getToken());
         List<RealTimeQueryResultType> resList = new ArrayList<>();
         try {
             Date baseDate = df.parse("23:59:59");
@@ -816,8 +818,19 @@ public class AssistantKeywordController extends WebContextSupport {
     public ModelAndView addCensus() {
         try {
             Iterable<KeywordDTO> list = assistantKeywordService.findAll();
-            BaiduAccountInfoDTO accountIdDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
-            String domain = accountIdDTO.getRegDomain();
+            BaseBaiduAccountInfoVO baiduAccountInfoVO = systemUserInfoService.findByBaiduUserId(AppContext.getAccountId());
+//            BaiduAccountInfoDTO accountIdDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+
+            BaiduApiService apiService = new BaiduApiService(BaiduServiceSupport.getCommonService(
+                    baiduAccountInfoVO.getAccountName(),
+                    baiduAccountInfoVO.getPassword(),
+                    baiduAccountInfoVO.getToken())
+            );
+
+            AccountInfoType accountInfoType = apiService.getAccountInfo();
+
+
+            String domain = accountInfoType.getRegDomain();
             list.forEach(s -> {
                 String pcUrl = s.getPcDestinationUrl();
                 if (pcUrl == null) {
@@ -878,8 +891,9 @@ public class AssistantKeywordController extends WebContextSupport {
 
         List<RealTimeQueryResultType> resultList = null;
         try {
-            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
-            resultList = getSearchTermsReprot(accountInfoDTO, levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
+            BaseBaiduAccountInfoVO baiduAccountInfoVO = systemUserInfoService.findByBaiduUserId(AppContext.getAccountId());
+//            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            resultList = getSearchTermsReprot(baiduAccountInfoVO, levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -962,8 +976,10 @@ public class AssistantKeywordController extends WebContextSupport {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
-            CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", accountInfoDTO);
+
+            BaseBaiduAccountInfoVO baiduAccountInfoVO = systemUserInfoService.findByBaiduUserId(AppContext.getAccountId());
+//            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", baiduAccountInfoVO);
             List<KeywordInfoDTO> getList = csvReadUtil.getImportKeywordList();
 //            getList.stream().forEach(s -> {
 //                System.out.println(s);

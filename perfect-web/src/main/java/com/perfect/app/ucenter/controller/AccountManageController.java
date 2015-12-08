@@ -200,24 +200,24 @@ public class AccountManageController extends WebContextSupport implements AuthCo
         return new ModelAndView(jsonView);
     }
 
-    /**
-     * 获取用户头像
-     *
-     * @param request
-     * @param response
-     * @throws IOException
-     */
-    @RequestMapping(value = "/getImg", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String imageUrl = ((SystemUserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getImageUrl();
-
-//        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
-//        if (imgBytes != null) {
-//            response.getOutputStream().write(imgBytes);
-//        }
-
-        return imageUrl;
-    }
+//    /**
+//     * 获取用户头像
+//     *
+//     * @param request
+//     * @param response
+//     * @throws IOException
+//     */
+//    @RequestMapping(value = "/getImg", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        String imageUrl = ((SystemUserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getImageUrl();
+//
+////        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
+////        if (imgBytes != null) {
+////            response.getOutputStream().write(imgBytes);
+////        }
+//
+//        return imageUrl;
+//    }
 
     /**
      * 上传用户头像
