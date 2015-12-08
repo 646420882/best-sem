@@ -415,7 +415,7 @@ public class LogServiceImpl {
 //        if (response.getResult() == 1) {
 //            logDAO.deleteByBids(deleteCampaignRequest.getCampaignIds());
 //        } else {
-//            // TODO 删除失败的操作
+//            // 删除失败的操作
 //            targetList.removeAll(getFailedIds());
 //        }
 //        removeFailed(targetList);
