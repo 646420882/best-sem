@@ -7,6 +7,7 @@ import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SubDong on 2014/11/26.
@@ -112,4 +113,11 @@ public interface CampaignService {
      * @param param
      */
     void enableOrPauseCampaign(EnableOrPauseParam param);
+    
+    /**查询所有的百度单元信息
+     * @return
+     */
+
+	List<Map<String, Object>> findAllDownloadCampaignByBaiduAccountId(
+			Integer type, long id);
 }

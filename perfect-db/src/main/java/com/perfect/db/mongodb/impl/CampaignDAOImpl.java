@@ -757,4 +757,10 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         }
     }
 
+	@Override
+	public List<CampaignDTO> findAllDownloadCampaignByBaiduAccountId() {
+		 List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where("ls").is(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
+	        return ObjectUtils.convert(campaignEntityList, CampaignDTO.class);
+	}
+
 }

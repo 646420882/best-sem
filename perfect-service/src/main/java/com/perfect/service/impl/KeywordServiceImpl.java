@@ -14,10 +14,7 @@ import com.perfect.log.filters.field.enums.KeyWordEnum;
 import com.perfect.log.filters.field.enums.OptContentEnum;
 import com.perfect.log.model.OperationRecordModel;
 import com.perfect.log.util.LogOptUtil;
-import com.perfect.service.AccountManageService;
-import com.perfect.service.AssistantKeywordService;
-import com.perfect.service.KeywordService;
-import com.perfect.service.KeywordDeduplicateService;
+import com.perfect.service.*;
 import com.perfect.utils.OperationRecordModelBuilder;
 import org.springframework.stereotype.Service;
 
@@ -40,12 +37,9 @@ public class KeywordServiceImpl implements KeywordService {
     private KeywordDeduplicateService keywordDeduplicateService;
     @Resource
     private AssistantKeywordService assistantKeywordService;
+
     @Resource
-    private AccountManageService accountManageService;
-    @Resource
-    private AdgroupDAO adgroupDAO;
-    @Resource
-    private CampaignDAO campaignDAO;
+    private LogSaveService logSaveService;
 
     @Override
     public List<KeywordDTO> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
@@ -71,17 +65,6 @@ public class KeywordServiceImpl implements KeywordService {
     public List<String> insertAll(List<KeywordDTO> keywordDTOList) {
 
         List<KeywordDTO> dtos = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), keywordDTOList.get(0).getAdgroupId(), keywordDTOList);
-        dtos.stream().forEach(s -> {
-            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-            builder
-                    .setOptLevel(LogLevelConstants.KEYWORD)
-                    .setOptContentId(OptContentEnum.Add)
-                    .setOptContent(s.getKeyword())
-                    .setOptType(OptContentEnum.Add)
-                    .setNewValue(s.getKeyword()).setOptObj(LogObjConstants.NAME);
-            assistantKeywordService.ormByKeyword(s, builder);
-            saveLog(builder.build());
-        });
 
         Iterable<KeywordDTO> keywordDTOs = keywordDAO.save(dtos);
         List<String> strings = new ArrayList<>();

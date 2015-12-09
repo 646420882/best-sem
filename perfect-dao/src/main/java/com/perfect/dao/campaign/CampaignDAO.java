@@ -91,4 +91,7 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
      * @param status
      */
     void enableOrPauseCampaign(List<String> strings, boolean status);
+    
+    
+    List<CampaignDTO> findAllDownloadCampaignByBaiduAccountId();
 }
