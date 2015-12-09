@@ -427,8 +427,7 @@ function adgroupDel() {
 function adgroupUpdate() {
     var _tr = $(atmp);
     var oid = _tr.find("td:eq(0) input[type='checkbox']").val();
-    var td1 = _tr.find("td:eq(2) input").val();
-    if (td1 == undefined) {
+    if (oid) {
         var _adAdd = $("#adUpdate");
         $(".TB_overlayBG").css({
             display: "block", height: $(document).height(),
@@ -709,7 +708,7 @@ function adrgoupUpdateOk() {
                 var _span = $("#auSpan").html();
                 var _edit = formData["oid"].length > 18 ? "<span class='new_add' step='1'></span>" : "<span class='pen' step='2'></span>";
                 var _tbody =
-                    "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + formData["oid"] + "' onchange='adgroupListCheck()'/><input type='hidden' name='cid' value='" + formData["cid"] + "'/>" + _edit + "</td>" +
+                    "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + formData["oid"] + "' onchange='adgroupListCheck()'/><input type='hidden' name='cid' value='" + formData["oid"] + "'/>" + _edit + "</td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
                     "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
                     " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
@@ -864,8 +863,8 @@ function adgroupMutli() {
 }
 function adgroupUpload() {
     var _this = $(atmp);
-    var oid = _this.find("td:eq(1) input").val();
-    var _localStatus = _this.find("td:eq(8) span").attr("step");
+    var oid = _this.find("td:first input[type='checkbox']").val();
+    var _localStatus = _this.find("td:first span").attr("step");
     if (_localStatus != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;
@@ -878,7 +877,9 @@ function adgroupUpload() {
                     break;
                 case "2":
                     if (oid.length < 18 && oid != undefined) {
-                        adgroupUploadOperate(oid, 2);
+                        adgroupUploadOperate(oid, 2,function(){
+                            $(atmp).find("td:first span").remove();
+                        });
                     }
                     break;
                 case "3":
@@ -896,7 +897,7 @@ function adgroupUpload() {
         return;
     }
 }
-function adgroupUploadOperate(aid, ls) {
+function adgroupUploadOperate(aid, ls,func) {
     $.get("/assistantAdgroup/uploadOperate", {aid: aid, ls: ls}, function (str) {
         if (str.msg == "1") {
             //alert("上传成功");
@@ -904,6 +905,9 @@ function adgroupUploadOperate(aid, ls) {
             if (plans.cid != null) {
                 getAdgroupPlan(plans.cid, plans.cn);
                 loadTree();
+            }
+            if(func){
+                func();
             }
         } else if (str.msg == "noUp") {
             var conf = confirm("该单元上级及计划没有上传，是否要一并上传？");

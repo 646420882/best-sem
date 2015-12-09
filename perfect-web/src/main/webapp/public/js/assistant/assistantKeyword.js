@@ -427,11 +427,27 @@ $("body").bind("keydown", "#text", function (e) {
     }
 });
 $("body").on("focusout", "#text", function () {
+    var oldVal = $(this).val();
     var PriceVal = $("#text").val();
     if (PriceVal == "") {
-        $("#text").replaceWith("<span> 0.1</span>");
+        PriceVal = 0.1
     }
-    $("#text").replaceWith("<span>" + PriceVal + "</span>");
+    var kwid = $(this).parents("tr").find("td:eq(0) input[type='checkbox']").val();
+    var jsonData = {price: PriceVal, kwid: kwid};
+    $.ajax({
+        url: "/assistantKeyword/edit",
+        type: "post",
+        data: jsonData,
+        dataType: "json",
+        success: function (data) {
+            $("#text").replaceWith("<span>" + PriceVal + "</span>");
+            if(kwid.length<18){
+               var step= $(this).parents("tr").find("td:eq(0) span").attr("step");
+                console.log(step);
+            }
+        }
+    });
+
 });
 
 /*加载列表数据end*/
@@ -516,7 +532,7 @@ function setSelectSelected(matStr) {
 function editKwdInfo(jsonData) {
     jsonData["kwid"] = $("#hiddenkwid_1").val();
     jsonData[""]
-
+    console.log(jsonData);
     $.ajax({
         url: "/assistantKeyword/edit",
         type: "post",
@@ -1177,14 +1193,13 @@ $("#tbodyClick").on("mousedown", "tr", function () {
 });
 
 function kUpload() {
-    var choose = $("#tbodyClick").find(".list2_box3");
-    if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
+    var choose = $("#tbodyClick").find(".list2_box3").find("span").attr("step");
+    if (choose) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;
         }
-        var step = choose.find("td:last span").attr("step");
-        var id = $("#tbodyClick").find(".list2_box3").find("input[type=hidden]").val();
-        switch (parseInt(step)) {
+        var id = $("#tbodyClick").find(".list2_box3").find("input[type='checkbox']").val();
+        switch (parseInt(choose)) {
             case 1:
                 if (id.length > 18) {
                     kUploadOperate(id, 1);

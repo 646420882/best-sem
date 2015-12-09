@@ -39,35 +39,35 @@
                     <select id="subAdgroup"></select>
                 </li>
                 <li><label>子链一名称：</label>
-                    <input name="linkName1" type="text" maxlength="16"/><span>0/16</span></li>
+                    <input name="linkNameIn1" type="text" maxlength="16"/><span>0/16</span></li>
                 <li>  <label>子链一URL：</label>
-                    <input name="linkURL1" type="text" maxlength="1024"/><span>0/1024</span></li>
+                    <input name="linkURLIn1" type="text" maxlength="1024"/><span>0/1024</span></li>
                 <li>
                     <label>子链二名称：</label>
-                    <input name="linkName2" type="text" maxlength="16"/><span>0/16</span>
+                    <input name="linkNameIn2" type="text" maxlength="16"/><span>0/16</span>
                 </li>
                 <li>      <label>子链二URL：</label>
-                    <input name="linkURL2" type="text" maxlength="1024"/><span>0/1024</span></li>
+                    <input name="linkURLIn2" type="text" maxlength="1024"/><span>0/1024</span></li>
                 <li><label>子链三名称：</label>
-                    <input name="linkName3" type="text" maxlength="16"/><span>0/16</span></li>
+                    <input name="linkNameIn3" type="text" maxlength="16"/><span>0/16</span></li>
                 <li>
                     <label>子链三URL：</label>
-                    <input name="linkURL3" type="text" maxlength="1024"/><span>0/1024</span>
+                    <input name="linkURLIn3" type="text" maxlength="1024"/><span>0/1024</span>
                 </li>
                 <li>
                     <label>子链四名称：</label>
-                    <input name="linkName4" type="text" maxlength="16"/><span>0/16</span>
+                    <input name="linkNameIn4" type="text" maxlength="16"/><span>0/16</span>
                 </li>
                 <li>
                     <label>子链四URL：</label>
-                    <input name="linkURL4" type="text" maxlength="1024"/><span>0/1024</span>
+                    <input name="linkURLIn4" type="text" maxlength="1024"/><span>0/1024</span>
                 </li>
                 <li>
                     <ul id="link5">
                         <li><label>子链五名称：</label>
-                            <input name="linkName5" type="text" maxlength="16"/><span>0/16</span></li>
+                            <input name="linkNameIn5" type="text" maxlength="16"/><span>0/16</span></li>
                         <li> <label>子链五URL：</label>
-                            <input name="linkURL5" type="text" maxlength="1024"/><span>0/1024</span></li>
+                            <input name="linkURLIn5" type="text" maxlength="1024"/><span>0/1024</span></li>
                     </ul>
                 </li>
                 <li>
