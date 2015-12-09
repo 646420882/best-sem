@@ -1,5 +1,8 @@
 package com.perfect.service.impl;
 
+import com.perfect.autosdk.sms.v3.AdgroupType;
+import com.perfect.autosdk.sms.v3.CreativeType;
+import com.perfect.autosdk_v4.sms.service.CampaignType;
 import com.perfect.commons.constants.LogLevelConstants;
 import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.core.AppContext;
@@ -11,8 +14,7 @@ import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.log.filters.field.enums.KeyWordEnum;
-import com.perfect.log.filters.field.enums.OptContentEnum;
+import com.perfect.log.filters.field.enums.*;
 import com.perfect.log.model.OperationRecordModel;
 import com.perfect.log.util.LogOptUtil;
 import com.perfect.service.AdgroupService;
@@ -22,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
 
 /**
  * @author xiaowei
@@ -102,7 +105,7 @@ public class LogSaveServiceImpl implements LogSaveService {
 //        save(builder.build());
 //    }
 
-//    @Override
+    //    @Override
 //    public void moveKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal) {
 //        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
 //        builder.setOptLevel(LogLevelConstants.KEYWORD)
@@ -120,7 +123,138 @@ public class LogSaveServiceImpl implements LogSaveService {
 //        }
 //        save(builder.build());
 //    }
+//------------------------------------计划-----------------------------------------
+    @Override
+    public OperationRecordModel addCampaign(CampaignType campaignType) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.CAMPAIGN)
+                .setOptContentId(CampaignEnum.addPlan)
+                .setOptContent(campaignType.getCampaignName())
+                .setOptType(OptContentEnum.Add)
+                .setUserId(AppContext.getAccountId())
+                .setPlanName(campaignType.getCampaignName())
+                .setNewValue(campaignType.getCampaignName());
+        return builder.build();
+    }
 
+    @Override
+    public OperationRecordModel removeCampaign(CampaignType campaignType) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.CAMPAIGN)
+                .setOptContentId(CampaignEnum.delPlan)
+                .setOptContent(campaignType.getCampaignName())
+                .setOptType(OptContentEnum.delete)
+                .setUserId(AppContext.getAccountId())
+                .setPlanId(campaignType.getCampaignId())
+                .setPlanName(campaignType.getCampaignName())
+                .setOldValue(campaignType.getCampaignName())
+                .setOptComprehensiveID(campaignType.getCampaignId());
+        return builder.build();
+    }
+
+    @Override
+    public OperationRecordModel updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.CAMPAIGN)
+                .setOptType(OptContentEnum.Edit)
+                .setUserId(AppContext.getAccountId())
+                .setPlanId(campaignType.getCampaignId())
+                .setPlanName(campaignType.getCampaignName())
+                .setOptContent(newvalue)
+                .setNewValue(newvalue)
+                .setOldValue(oldvalue)
+                .setOptObj(optObj)
+                .setOptContentId(contentid)
+                .setOptComprehensiveID(campaignType.getCampaignId());
+        return builder.build();
+    }
+
+    //----------------------------------单元------------------------------------------------
+    @Override
+    public OperationRecordModel addAdgroup(AdgroupType adgroupType) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.ADGROUP)
+                .setOptType(OptContentEnum.Add)
+                .setOptContentId(AdGroupEnum.addUnit)
+                .setOptContent(adgroupType.getAdgroupName())
+                .setUserId(AppContext.getAccountId())
+                .setUnitName(adgroupType.getAdgroupName())
+                .setNewValue(adgroupType.getAdgroupName());
+        return builder.build();
+    }
+
+    @Override
+    public OperationRecordModel removeAdgroup(AdgroupType adgroupType) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.ADGROUP)
+                .setOptType(OptContentEnum.delete)
+                .setOptContentId(AdGroupEnum.delUnit)
+                .setOptContent(adgroupType.getAdgroupName())
+                .setUserId(AppContext.getAccountId())
+                .setUnitId(adgroupType.getAdgroupId())
+                .setUnitName(adgroupType.getAdgroupName())
+                .setOldValue(adgroupType.getAdgroupName())
+                .setOptComprehensiveID(adgroupType.getAdgroupId());
+        return builder.build();
+    }
+
+    @Override
+    public OperationRecordModel updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.ADGROUP)
+                .setOptType(OptContentEnum.Edit)
+                .setUserId(AppContext.getAccountId())
+                .setUnitId(adgroupType.getCampaignId())
+                .setUnitName(adgroupType.getAdgroupName())
+                .setOptContent(newvalue)
+                .setNewValue(newvalue)
+                .setOldValue(oldvalue)
+                .setOptObj(optObj)
+                .setOptContentId(contentid)
+                .setOptComprehensiveID(adgroupType.getAdgroupId());
+        return builder.build();
+    }
+
+    //-----------------------------------------创意-----------------------------------------------
+    @Override
+    public OperationRecordModel addCreative(CreativeType creativeType) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.CREATIVE)
+                .setOptType(OptContentEnum.Add)
+                .setOptContentId(CreativeEnum.addIdea)
+                .setOptContent(creativeType.getTitle())
+                .setUserId(AppContext.getAccountId())
+                .setNewValue(creativeType.getTitle());
+        return builder.build();
+    }
+
+    @Override
+    public OperationRecordModel removeCreative(CreativeType creativeType) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.CREATIVE)
+                .setOptType(OptContentEnum.delete)
+                .setOptContentId(CreativeEnum.delIdea)
+                .setOptContent(creativeType.getTitle())
+                .setUserId(AppContext.getAccountId())
+                .setOldValue(creativeType.getTitle())
+                .setOptComprehensiveID(creativeType.getCreativeId());
+        return builder.build();
+    }
+
+    @Override
+    public OperationRecordModel updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid) {
+        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+        builder.setOptLevel(LogLevelConstants.CREATIVE)
+                .setOptType(OptContentEnum.Edit)
+                .setUserId(AppContext.getAccountId())
+                .setOptContent(newvalue)
+                .setNewValue(newvalue)
+                .setOldValue(oldvalue)
+                .setOptObj(optObj)
+                .setOptContentId(contentid)
+                .setOptComprehensiveID(creativeType.getCreativeId());
+        return builder.build();
+    }
 
     @Override
     public void getCamAdgroupInfoByLong(Long adgroupId, OperationRecordModelBuilder builder) {
