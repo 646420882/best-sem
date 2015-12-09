@@ -1,5 +1,6 @@
 package com.perfect.api.baidu;
 
+import com.google.common.collect.Lists;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
@@ -27,6 +28,86 @@ public class BaiduApiService {
         this.commonService = commonService;
     }
 
+
+    public CampaignType getCampaignTypeById(Long campaignId) {
+        try {
+            GetCampaignByCampaignIdRequest request = new GetCampaignByCampaignIdRequest();
+            request.setCampaignIds(Lists.newArrayList(campaignId));
+
+            CampaignService campaignService = commonService.getService(CampaignService.class);
+            GetCampaignByCampaignIdResponse response = campaignService.getCampaignByCampaignId(request);
+
+            if (response == null) {
+                return null;
+            }
+
+            return response.getCampaignType(0);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public AdgroupType getAdgroupTypeById(Long adgroupId) {
+        try {
+            GetAdgroupByAdgroupIdRequest request = new GetAdgroupByAdgroupIdRequest();
+            request.setAdgroupIds(Lists.newArrayList(adgroupId));
+
+            AdgroupService adgroupService = commonService.getService(AdgroupService.class);
+            GetAdgroupByAdgroupIdResponse response = adgroupService.getAdgroupByAdgroupId(request);
+
+            if (response == null) {
+                return null;
+            }
+
+            return response.getAdgroupType(0);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public KeywordType getKeywordTypeById(Long keywordId) {
+        try {
+            GetKeywordByKeywordIdRequest request = new GetKeywordByKeywordIdRequest();
+            request.setKeywordIds(Lists.newArrayList(keywordId));
+
+            KeywordService keywordService = commonService.getService(KeywordService.class);
+            GetKeywordByKeywordIdResponse response = keywordService.getKeywordByKeywordId(request);
+
+            if (response == null) {
+                return null;
+            }
+
+            return response.getKeywordType(0);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public CreativeType getCreativeTypeById(Long creativeId) {
+        try {
+            GetCreativeByCreativeIdRequest request = new GetCreativeByCreativeIdRequest();
+            request.setCreativeIds(Lists.newArrayList(creativeId));
+
+            CreativeService creativeService = commonService.getService(CreativeService.class);
+            GetCreativeByCreativeIdResponse response = creativeService.getCreativeByCreativeId(request);
+
+            if (response == null) {
+                return null;
+            }
+
+            return response.getCreativeType(0);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public AccountInfoType getAccountInfo() {
         try {
