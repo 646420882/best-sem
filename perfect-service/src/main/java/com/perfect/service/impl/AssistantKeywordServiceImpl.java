@@ -6,7 +6,6 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.autosdk.sms.v3.KeywordService;
-import com.perfect.commons.constants.LogLevelConstants;
 import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
@@ -23,10 +22,6 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.log.filters.field.enums.KeyWordEnum;
-import com.perfect.log.filters.field.enums.OptContentEnum;
-import com.perfect.log.model.OperationRecordModel;
-import com.perfect.log.util.LogOptUtil;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -496,14 +491,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             if (id.matches(regex)) {
                 keywordDAO.softDelete(Long.parseLong(id));
                 KeywordDTO keywordDTO = keywordDAO.findByLongId(Long.valueOf(id));
-                OperationRecordModelBuilder builder=OperationRecordModelBuilder.builder();
-                builder.setOptLevel(LogLevelConstants.KEYWORD)
-                        .setOptContentId(OptContentEnum.delete)
-                        .setOptType(KeyWordEnum.delWord)
-                        .setOptComprehensiveID(keywordDTO.getKeywordId())
-                        .setOptContent(keywordDTO.getKeyword());
-                ormByKeyword(keywordDTO,builder);
-                saveLog(builder.build());
+                logSaveService.deleteKeywordLog(keywordDTO);
             } else {
                 keywordDAO.deleteById(id);
             }
@@ -533,57 +521,40 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
         BeanUtils.copyProperties(newKeywordDTO, keywordBackUpDTO);
 
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.KEYWORD).setOptContentId(OptContentEnum.Edit).setOptContent(findKeyword.getKeyword()).setOptType(OptContentEnum.Edit);
-        ormByKeyword(findKeyword, builder);
-        if (kwd.getKeywordId() != null) {
-            builder.setOptComprehensiveID(kwd.getKeywordId());
-        }
+
         if (kwd.getPrice() != null) {
             if (kwd.getKeywordId() != null) {
-                builder.setOldValue(newKeywordDTO.getPrice().toString());
-                builder.setNewValue(kwd.getPrice().toString());
-                builder.setOptObj(LogObjConstants.PRICE);
+                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getPrice().toString(), kwd.getPrice().toString(), LogObjConstants.PRICE);
             }
             newKeywordDTO.setPrice(kwd.getPrice());
         }
         if (kwd.getPcDestinationUrl() != null) {
             if (kwd.getKeywordId() != null) {
-                builder.setOldValue(newKeywordDTO.getPcDestinationUrl());
-                builder.setNewValue(kwd.getPcDestinationUrl());
-                builder.setOptObj(LogObjConstants.PC_DES_URL);
+                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getPcDestinationUrl(), kwd.getPcDestinationUrl(), LogObjConstants.PC_DES_URL);
             }
             newKeywordDTO.setPcDestinationUrl(kwd.getPcDestinationUrl());
         }
         if (kwd.getMobileDestinationUrl() != null) {
             if (kwd.getKeywordId() != null) {
-                builder.setOldValue(newKeywordDTO.getMobileDestinationUrl());
-                builder.setNewValue(kwd.getMobileDestinationUrl());
-                builder.setOptObj(LogObjConstants.MIB_DES_URL);
+                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getMobileDestinationUrl(), kwd.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL);
             }
             newKeywordDTO.setMobileDestinationUrl(kwd.getMobileDestinationUrl());
         }
         if (kwd.getMatchType() != null) {
             if (kwd.getKeywordId() != null) {
-                builder.setOldValue(newKeywordDTO.getMatchType().toString());
-                builder.setNewValue(kwd.getMatchType().toString());
-                builder.setOptObj(LogObjConstants.MATCH_TYPE);
+                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getMatchType().toString(), kwd.getMatchType().toString(), LogObjConstants.MATCH_TYPE);
             }
             newKeywordDTO.setMatchType(kwd.getMatchType());
         }
         if (kwd.getPhraseType() != null) {
             if (kwd.getKeywordId() != null) {
-                builder.setOldValue(newKeywordDTO.getPhraseType().toString());
-                builder.setNewValue(kwd.getPhraseType().toString());
-                builder.setOptObj(LogObjConstants.PRASE_TYPE);
+                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getPhraseType().toString(), kwd.getPhraseType().toString(), LogObjConstants.PRASE_TYPE);
             }
             newKeywordDTO.setPhraseType(kwd.getPhraseType());
         }
         if (kwd.getPause() != null) {
             if (kwd.getKeywordId() != null) {
-                builder.setOldValue(newKeywordDTO.getPause().toString());
-                builder.setNewValue(kwd.getPause().toString());
-                builder.setOptObj(LogObjConstants.PAUSE);
+                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getPause().toString(), kwd.getPause().toString(), LogObjConstants.PAUSE);
             }
             newKeywordDTO.setPause(kwd.getPause());
         }
@@ -595,15 +566,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         }
         try {
             keywordDAO.update(newKeywordDTO, keywordBackUpDTO);
-            saveLog(builder.build());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return newKeywordDTO;
-    }
-
-    private Boolean saveLog(OperationRecordModel orm) {
-        return LogOptUtil.saveLogs(orm).isSuccess();
     }
 
 
@@ -1455,6 +1421,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         } else {
             dto.setAdgroupId(Long.valueOf(aid));
             dto.setLocalStatus(2);
+            AdgroupDTO oldAdgroup=adgroupDAO.findOne(dto.getAdgroupId());
+            AdgroupDTO newAdgroup=adgroupDAO.findOne(Long.valueOf(aid));
+            logSaveService.moveKeywordLog(dto,oldAdgroup.getAdgroupName(),newAdgroup.getAdgroupName());
         }
         keywordDAO.update(dto, backUpDTO);
     }

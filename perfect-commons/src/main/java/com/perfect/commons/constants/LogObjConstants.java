@@ -52,4 +52,9 @@ public class LogObjConstants {
     暂停/启用
      */
     public static final String PAUSE = "pause";
+
+    /*
+    移动单元
+     */
+    public static final String MOVE_ADGROUP="moveAdgroup";
 }
