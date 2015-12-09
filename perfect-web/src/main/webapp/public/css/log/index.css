@@ -1,4 +1,4 @@
-/* ----单选 ------*/
+/* ----鍗曢�� ------*/
 .historydiv {
     width: 100%;
 }
@@ -25,8 +25,8 @@
     background: url(/public/img/r-select-bg.png) no-repeat left center;
 }
 
-/* ----单选 结束 ------*/
-/* -----弹窗------- */
+/* ----鍗曢�� 缁撴潫 ------*/
+/* -----寮圭獥------- */
 .black {
     background: url(/public/img/black.png) repeat;
     position: fixed;
@@ -91,7 +91,7 @@
     color: #fff;
 }
 
-/* -----弹窗 结束------- */
+/* -----寮圭獥 缁撴潫------- */
 .line {
     height: 1px;
     width: 100%;
@@ -129,6 +129,7 @@
     border-bottom: 1px solid #ddd;
     overflow: hidden;
     padding-top: 12px;
+    overflow-y: auto;
 }
 
 .obj-list {
@@ -209,7 +210,7 @@
 
 }
 
-/* 计划列表 */
+/* 璁″垝鍒楄〃 */
 .plan-box {
     position: absolute;
     left: 330px;
@@ -219,6 +220,7 @@
     border: 1px solid #D2DAEF;
     background-color: #fff;
     display: none;
+    z-index: 100;
 }
 
 .plan-box h2 {
@@ -263,6 +265,8 @@
 
 .plan-box .query-result {
     padding: 10px;
+    height:260px;
+    overflow-y: auto;
 }
 
 .plan-box .query-result li {
@@ -293,7 +297,7 @@
     color: #01AEF0;
 }
 
-/* 选择操作弹窗 */
+/* 閫夋嫨鎿嶄綔寮圭獥 */
 .operation-tip .check-all {
     padding-left: 25px;
     line-height: 35px;
@@ -349,10 +353,11 @@
 }
 
 .history-list-box thead {
-    background-color: #e5e5e5;
+    background-color: #cccccc;
 }
 
 .history-list-box thead th {
+	color:#000000;
     font-weight: normal;
     padding-left: 10px;
 }
