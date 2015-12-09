@@ -55,6 +55,7 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
             keywordBackUpDAO.deleteByKwid(Long.parseLong(id));
             KeywordDTO keywordDTO = new KeywordDTO();
             BeanUtils.copyProperties(keywordEntity, keywordDTO);
+
             return keywordDTO;
         } else {
             KeywordDTO keywordEntity = keywordDAO.findByObjectId(id);
@@ -74,7 +75,6 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
         if (id.matches("^\\d+$")) {
             keywordDAO.updateLocalstatu(Long.parseLong(id));
             KeywordDTO keywordDTO = keywordDAO.findByLongId(Long.valueOf(id));
-            logSaveService.reduceKeywordLog(keywordDTO);
         }
     }
 

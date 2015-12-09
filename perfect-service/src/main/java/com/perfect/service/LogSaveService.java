@@ -19,9 +19,9 @@ public interface LogSaveService {
 
     void deleteKeywordLog(KeywordDTO dbFindKeyWord);
 
-    void reduceKeywordLog(KeywordDTO dbFindKeyWord);
+//    void reduceKeywordLog(KeywordDTO dbFindKeyWord);
 
-    void moveKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal);
+//    void moveKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal);
 
 
     void getCamAdgroupInfoByLong(Long adgroupId, OperationRecordModelBuilder builder);

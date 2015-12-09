@@ -490,8 +490,6 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         for (String id : kwids) {
             if (id.matches(regex)) {
                 keywordDAO.softDelete(Long.parseLong(id));
-                KeywordDTO keywordDTO = keywordDAO.findByLongId(Long.valueOf(id));
-                logSaveService.deleteKeywordLog(keywordDTO);
             } else {
                 keywordDAO.deleteById(id);
             }
@@ -523,39 +521,21 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
 
         if (kwd.getPrice() != null) {
-            if (kwd.getKeywordId() != null) {
-                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getPrice().toString(), kwd.getPrice().toString(), LogObjConstants.PRICE);
-            }
             newKeywordDTO.setPrice(kwd.getPrice());
         }
         if (kwd.getPcDestinationUrl() != null) {
-            if (kwd.getKeywordId() != null) {
-                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getPcDestinationUrl(), kwd.getPcDestinationUrl(), LogObjConstants.PC_DES_URL);
-            }
             newKeywordDTO.setPcDestinationUrl(kwd.getPcDestinationUrl());
         }
         if (kwd.getMobileDestinationUrl() != null) {
-            if (kwd.getKeywordId() != null) {
-                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getMobileDestinationUrl(), kwd.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL);
-            }
             newKeywordDTO.setMobileDestinationUrl(kwd.getMobileDestinationUrl());
         }
         if (kwd.getMatchType() != null) {
-            if (kwd.getKeywordId() != null) {
-                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getMatchType().toString(), kwd.getMatchType().toString(), LogObjConstants.MATCH_TYPE);
-            }
             newKeywordDTO.setMatchType(kwd.getMatchType());
         }
         if (kwd.getPhraseType() != null) {
-            if (kwd.getKeywordId() != null) {
-                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getPhraseType().toString(), kwd.getPhraseType().toString(), LogObjConstants.PRASE_TYPE);
-            }
             newKeywordDTO.setPhraseType(kwd.getPhraseType());
         }
         if (kwd.getPause() != null) {
-            if (kwd.getKeywordId() != null) {
-                logSaveService.updateKeywordLog(findKeyword, newKeywordDTO.getPause().toString(), kwd.getPause().toString(), LogObjConstants.PAUSE);
-            }
             newKeywordDTO.setPause(kwd.getPause());
         }
         if (kwd.getAdgroupId() != null) {
@@ -1419,11 +1399,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             dto.setAdgroupObjId(aid);
             dto.setLocalStatus(1);
         } else {
-            dto.setAdgroupId(Long.valueOf(aid));
-            dto.setLocalStatus(2);
             AdgroupDTO oldAdgroup=adgroupDAO.findOne(dto.getAdgroupId());
             AdgroupDTO newAdgroup=adgroupDAO.findOne(Long.valueOf(aid));
-            logSaveService.moveKeywordLog(dto,oldAdgroup.getAdgroupName(),newAdgroup.getAdgroupName());
+            dto.setAdgroupId(Long.valueOf(aid));
+            dto.setLocalStatus(2);
         }
         keywordDAO.update(dto, backUpDTO);
     }
