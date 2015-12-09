@@ -29,37 +29,37 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 过滤静态资源
+        boolean isStaticResourcesRequest = ServletContextUtils.checkStaticResourcesRequest(request);
+        if (isStaticResourcesRequest) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 检测是否执行登出操作
         if (Objects.equals("/logout", request.getRequestURI())) {
             logout(request, response);
         } else {
             // 如果Session中没有用户信息
             if (Objects.isNull(request.getSession().getAttribute(USER_INFORMATION))) {
-                // 检测请求类型
-                boolean isStaticResourcesRequest = ServletContextUtils.checkStaticResourcesRequest(request);
-                if (isStaticResourcesRequest) {
-                    // 未登录请求静态资源返回至登录页面
-                    redirectToLogin(response);
-                } else {
-                    // 检测Cookie中是否带有token
-                    if (Optional.ofNullable(request.getCookies()).isPresent()) {
-                        Optional<Cookie> cookieOptional = Arrays
-                                .stream(request.getCookies())
-                                .filter(c -> Objects.equals(TOKEN, c.getName()))
-                                .findFirst();
+                // 检测Cookie中是否带有token
+                if (Optional.ofNullable(request.getCookies()).isPresent()) {
+                    Optional<Cookie> cookieOptional = Arrays
+                            .stream(request.getCookies())
+                            .filter(c -> Objects.equals(TOKEN, c.getName()))
+                            .findFirst();
 
-                        if (cookieOptional.isPresent()) {
-                            retrieveUserInfoWithToken(cookieOptional.get().getValue(), request, response);
-                        } else {
-                            // Cookie中没有token
-                            // 重定向至登录页面
-                            redirectToLogin(response);
-                        }
+                    if (cookieOptional.isPresent()) {
+                        retrieveUserInfoWithToken(cookieOptional.get().getValue(), request, response);
                     } else {
-                        // 当前请求中没有任何Cookie信息
+                        // Cookie中没有token
                         // 重定向至登录页面
                         redirectToLogin(response);
                     }
+                } else {
+                    // 当前请求中没有任何Cookie信息
+                    // 重定向至登录页面
+                    redirectToLogin(response);
                 }
             }
         }
