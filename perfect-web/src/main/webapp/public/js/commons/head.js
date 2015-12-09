@@ -50,31 +50,44 @@ function downloadUser() {
 
 
 }
+NavCss();
+$(window).resize(function () {
+    NavCss();
+});
+function NavCss() {
+    if ($(document.body).height() < 500) {
+        $(".nav").css("position", "absolute");
+    }
+    else {
+        $(".nav").css("position", "fixed");
+    }
+}
+
 /*function downloadUser() {
-    var d = top.dialog({
-        id: 'my2',
-        content: "<iframe src='/homePage/showCountDownload' width='540' height='340' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-        title: "账户下载",
-        yesClose: "取消",
-        skin: 'downPopup',
-        time: 1000,
-//            className:'succeed noClose',
+ var d = top.dialog({
+ id: 'my2',
+ content: "<iframe src='/homePage/showCountDownload' width='540' height='340' marginwidth='0' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+ title: "账户下载",
+ yesClose: "取消",
+ skin: 'downPopup',
+ time: 1000,
+ //            className:'succeed noClose',
 
-//            url:'homePage/pageBlock/showcountDownload',
+ //            url:'homePage/pageBlock/showcountDownload',
 
-//            content: "<iframe src='/assistantKeyword/showTimingPauseDialo+g' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
-//            content: "<div style='width: 550px; height: 470px;'><span>选择账户</span>  <div class='j_list01 over'><ul id='treeDemo' class='ztree'></ul></div></div>",
-        oniframeload: function () {
-        },
-        onclose: function () {
+ //            content: "<iframe src='/assistantKeyword/showTimingPauseDialo+g' width='550'  height='300' marginwidth='200' marginheight='0' scrolling='no' frameborder='0'></iframe>",
+ //            content: "<div style='width: 550px; height: 470px;'><span>选择账户</span>  <div class='j_list01 over'><ul id='treeDemo' class='ztree'></ul></div></div>",
+ oniframeload: function () {
+ },
+ onclose: function () {
 
-        },
-        onremove: function () {
-        }
-    }).showModal(dockObj);
+ },
+ onremove: function () {
+ }
+ }).showModal(dockObj);
 
-    console.log(top.dialog());
-}*/
+ console.log(top.dialog());
+ }*/
 
 var dockObj = document.getElementById('argDialogDiv');
 $("#downloadUser").click(function () {
@@ -184,8 +197,8 @@ var AlertPrompt = {
 }
 /*智能竞价中的alert提示*/
 var PromptBox = {
-    show: function (content) {
-        $("#PrompBoxTitle").html(content);
+    show: function (title, content, sure) {
+        $("#PrompBoxTitle").html(title);
         $("#PrompMain").html(content);
         $(".TB_overlayBG_alert").css({
             display: "block", height: $(document).height()
@@ -197,6 +210,21 @@ var PromptBox = {
             display: "block"
         });
         /*显示提示DIV*/
+        if (sure == 1) {
+            $("#promptBottom").empty();
+            $("#promptBottom").append("" +
+            "<li class='current' onclick='PromptBox.hide()'>确认</li>")
+        } else if (sure == 2) {
+            $("#promptBottom").empty();
+            $("#promptBottom").append("" +
+            "<li onclick='PromptBox.hide()'>取消</li>")
+        } else {
+            $("#promptBottom").empty();
+            $("#promptBottom").append("" +
+            "<li class='current' onclick='PromptBox.hide()'>确认</li>" +
+            "<li onclick='PromptBox.hide()'>取消</li>")
+        }
+
     },
     hide: function () {
         $(".TB_overlayBG_alert").css({
@@ -219,6 +247,7 @@ $(function () {
     rDrag.init(document.getElementById('batchDel'));
     rDrag.init(document.getElementById('reportAddSearchWordTitile'));
     rDrag.init(document.getElementById('reportAddNoSearchWordTitile'));
+    rDrag.init(document.getElementById('PrompTitleBox'));
 });
 $(function () {
     $("#head_click").click(function () {

@@ -83,45 +83,7 @@ $(function () {
     $("#campaign_selectNew").change(function () {
         var campaignId = $("#campaign_selectNew option:selected").val();
         if (campaignId != "") {
-            if (campaignId.length < 24) {
-                $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
-                    {
-                        campaignId: campaignId,
-                        skip: 0,
-                        limit: 100
-                    },
-                    function (data) {
-                        var adgroups = "", datas = data.rows;
-                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
-                        for (var i = 0, l = datas.length; i < l; i++) {
-                            var _adgroupId = "";
-                            if (datas[i].adgroupId != null) {
-                                _adgroupId = datas[i].adgroupId;
-                            } else {
-                                _adgroupId = datas[i].id;
-                            }
-                            adgroups += "<option maxPrice=" + datas[i].maxPrice + " value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
-                        }
-                        $("#adgroup_selectNew").empty();
-                        $("#adgroup_selectNew").append(adgroups);
-                    });
-            } else {
-                $.getJSON("/adgroup/getAdgroupByCampaignObjId/" + campaignId,
-                    {
-                        campaignId: campaignId,
-                        skip: 0,
-                        limit: 100
-                    },
-                    function (data) {
-                        var adgroups = "", datas = data.rows;
-                        adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
-                        for (var i = 0, l = datas.length; i < l; i++) {
-                            adgroups += "<option  maxPrice=" + datas[i].maxPrice + " value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
-                        }
-                        $("#adgroup_selectNew").empty();
-                        $("#adgroup_selectNew").append(adgroups);
-                    });
-            }
+            changeAdgroup(campaignId);
         }
     });
 
@@ -264,7 +226,12 @@ function addKeywordInitCampSelect() {
     $.getJSON("/campaign/getAllCampaign", null, function (data) {
         if (data.rows.length > 0) {
             var campaigns = "", datas = data.rows;
-            campaigns += "<option value='' selected='selected'>请选择推广计划</option>";
+            if (jsonData.cid != undefined && jsonData.cid != null) {
+                campaigns += "<option value=''>请选择推广计划</option>";
+            } else {
+                campaigns += "<option value='' selected='selected'>请选择推广计划</option>";
+            }
+
             for (var i = 0, l = datas.length; i < l; i++) {
                 var _campaignId = "";
                 if (datas[i].campaignId != null) {
@@ -272,7 +239,16 @@ function addKeywordInitCampSelect() {
                 } else {
                     _campaignId = datas[i].id;
                 }
-                campaigns += "<option value=" + _campaignId + ">" + datas[i].campaignName + "</option>";
+                if (jsonData.cid != undefined && jsonData.cid != null) {
+                    if (jsonData.cid == _campaignId) {
+                        campaigns += "<option value=" + _campaignId + " selected='selected'>" + datas[i].campaignName + "</option>";
+
+                    } else {
+                        campaigns += "<option value=" + _campaignId + ">" + datas[i].campaignName + "</option>";
+                    }
+                } else {
+                    campaigns += "<option value=" + _campaignId + ">" + datas[i].campaignName + "</option>";
+                }
             }
             $("#campaign_select").empty();
             $("#campaign_select").append(campaigns);
@@ -282,6 +258,10 @@ function addKeywordInitCampSelect() {
             $("#campaign_selectNew").append(campaigns);
             $("#adgroup_selectNew").empty();
             $("#adgroup_selectNew").append("<option value=''>请选择推广计划</option>");
+            if (jsonData.cid != undefined && jsonData.cid != null) {
+                console.log(jsonData)
+                changeAdgroup(jsonData.cid);
+            }
         }
     });
 }
@@ -353,6 +333,8 @@ var saveKeywordNew = function () {
                     $("#context").empty();
                     $("#context").append(string);
                     $("#SaveSet").css("display", "none");
+                    $("#uploadFile").val("");
+                    $("#statusNew").val("");
                     reloadGrid();
                 }
             }
@@ -699,6 +681,77 @@ var callbackKwd = function (data) {
         $("#context").empty();
         $("#context").append(string);
         $("#SaveSet").css("display", "none");
+        $("#uploadFile").val("");
+        $("#statusNew").val("");
         reloadGrid();
     }
 }
+var changeAdgroup = function (campaignId) {
+    campaignId = campaignId.toString();
+    if (campaignId.length < 24) {
+        $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
+            {
+                campaignId: campaignId,
+                skip: 0,
+                limit: 100
+            },
+            function (data) {
+                var adgroups = "", datas = data.rows;
+                if (jsonData.aid != undefined && jsonData.aid != null) {
+                    adgroups += "<option value=''>请选择推广单元</option>";
+                } else {
+                    adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
+                }
+                for (var i = 0, l = datas.length; i < l; i++) {
+                    var _adgroupId = "";
+                    if (datas[i].adgroupId != null) {
+                        _adgroupId = datas[i].adgroupId;
+                    } else {
+                        _adgroupId = datas[i].id;
+                    }
+                    if (jsonData.aid != undefined && jsonData.aid != null) {
+                        if (jsonData.aid == _adgroupId) {
+                            adgroups += "<option maxPrice=" + datas[i].maxPrice + " value=" + _adgroupId + " selected='selected'>" + datas[i].adgroupName + "</option>";
+                        } else {
+                            adgroups += "<option maxPrice=" + datas[i].maxPrice + " value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
+                        }
+                    } else {
+                        adgroups += "<option maxPrice=" + datas[i].maxPrice + " value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
+                    }
+                }
+                $("#adgroup_selectNew").empty();
+                $("#adgroup_selectNew").append(adgroups);
+            });
+    } else {
+
+        $.getJSON("/adgroup/getAdgroupByCampaignObjId/" + campaignId,
+            {
+                campaignId: campaignId,
+                skip: 0,
+                limit: 100
+            },
+            function (data) {
+                var adgroups = "", datas = data.rows;
+                if (jsonData.aid != undefined && jsonData.aid != null) {
+                    adgroups += "<option value=''>请选择推广单元</option>";
+                } else {
+                    adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
+                }
+                for (var i = 0, l = datas.length; i < l; i++) {
+                    if (jsonData.aid != undefined && jsonData.aid != null) {
+                        if (jsonData.aid == _adgroupId) {
+                            adgroups += "<option maxPrice=" + datas[i].maxPrice + " value=" + _adgroupId + "selected='selected'>" + datas[i].adgroupName + "</option>";
+
+                        } else {
+                            adgroups += "<option maxPrice=" + datas[i].maxPrice + " value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
+                        }
+                    } else {
+                        adgroups += "<option maxPrice=" + datas[i].maxPrice + " value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
+                    }
+
+                }
+                $("#adgroup_selectNew").empty();
+                $("#adgroup_selectNew").append(adgroups);
+            });
+    }
+};

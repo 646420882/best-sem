@@ -150,7 +150,7 @@ public class LogServiceImpl {
 //    }
 //
 //    private void doUpdate(UpdateKeywordRequest updateKeywordRequest, KeywordService keywordService) {
-//        UpdateKeywordResponse response = keywordService.updateKeyword(updateKeywordRequest);
+//        UpdateKeywordResponse response = keywordService.updateKeywordLog(updateKeywordRequest);
 //        if (response == null) {
 //            return;
 //        }
@@ -164,7 +164,7 @@ public class LogServiceImpl {
 //    }
 //
 //    private void doDelete(DeleteKeywordRequest deleteKeywordRequest, KeywordService keywordService) {
-//        DeleteKeywordResponse response = keywordService.deleteKeyword(deleteKeywordRequest);
+//        DeleteKeywordResponse response = keywordService.deleteKeywordLog(deleteKeywordRequest);
 //        if (response == null) {
 //            return;
 //        }

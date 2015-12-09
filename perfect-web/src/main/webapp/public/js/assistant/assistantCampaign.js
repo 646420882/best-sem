@@ -164,7 +164,6 @@ function campaignDataToHtml(obj, index) {
     } else {
         html = html + "<td class='table_add'>&nbsp;<input type='checkbox' style='margin-top:9px;' name='campaignCheck' value='" + obj.campaignId + "' onchange='campListCheck()'/></td>";
     }
-
     html = html + "<td>" + obj.campaignName + "</td>";
 
     switch (obj.status) {
@@ -202,7 +201,7 @@ function campaignDataToHtml(obj, index) {
     var jqfd = obj.exactNegativeWords != null ? obj.exactNegativeWords.length : 0;
     html = html + until.convert(fd == 0 && jqfd == 0, "<td>未设置</td>:" + "<td>" + fd + "：" + jqfd + "</td>");
 
-    html = html + "<td>" + (obj.excludeIp != null ? obj.excludeIp.length : 0) + "</td>";
+    //html = html + "<td>" + (obj.excludeIp != null ? obj.excludeIp.length : 0) + "</td>";
     html = html + (obj.budgetOfflineTime != null ? "<td>" + obj.budgetOfflineTime.length + "</td>" : "<td>-</td>");
     html = html + "<input type='hidden' value=" + obj.priceRatio + " class='hidden'/>";
 
@@ -312,7 +311,7 @@ function whenBlurEditCampaign(num, value) {
                 } else {
                     if (parseFloat(value).toFixed(3) < 50.0) {
                         //alert("每日预算必须大于50RMB");
-                        AlertPrompt.show("每日预算必须大于50RMB");
+                        AlertPrompt.show("推广计划每日预算必须大于等于50 小于等于10000000");
                         return;
                     } else {
                         var bgt = $("#acBgt").html();
@@ -775,7 +774,7 @@ function createChooseTimeUIByCampaignData(data) {
     var html = "";
     for (var i = 0; i < weeks.length; i++) {
         if (data.schedule == undefined) {
-            html = html + "<ul>" + "<div><input type='checkbox' checked='checked'' name='" + (i + 1) + "'/>" + weeks[i] + "</div>";
+            html = html + "<ul>" + "<div><label class='checkbox-inlines'><input type='checkbox' checked='checked'' name='" + (i + 1) + "'/>" + weeks[i] + "</label></div>";
         } else {
             for (var s = 0; s < data.schedule.length; s++) {
                 if (data.schedule[s].weekDay == (i + 1)) {
@@ -861,6 +860,7 @@ AreaClick.click(function () {
     });
 });
 
+/**
 /**
  * 弹出添加推广计划的窗口
  */

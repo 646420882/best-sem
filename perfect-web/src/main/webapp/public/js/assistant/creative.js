@@ -1086,7 +1086,6 @@ function updateOk() {
     var _pcs = $("#cUpdateForm input[name='pcDisplayUrl']");
     var _mib = $("#cUpdateForm input[name='mobileDestinationUrl']");
     var _mibs = $("#cUpdateForm input[name='mobileDisplayUrl']");
-
     var _thisStr = getChar(_title.val());
     var dm = "." + $(".doMainS").html();
     if (parseInt(_thisStr) > 50 || parseInt(_thisStr) <= 8) {
@@ -1103,18 +1102,18 @@ function updateOk() {
     var _thisStrDesc2 = getChar(_desc2.val());
     if (parseInt(_thisStrDesc2) > 80 || parseInt(_thisStrDesc2) <= 8) {
         //alert("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
-        AlertPrompt.show("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        AlertPrompt.show("\"创意描述2\"长度应大于8个字符小于80个字符，汉子占两个字符!");
         return false;
     }
     var _thisStrpc = getChar(_pc.val());
     if (parseInt(_thisStrpc) > 1024 || parseInt(_thisStrpc) <= 1) {
         //alert("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
-        AlertPrompt.show("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+        AlertPrompt.show("默认\"访问\"Url地址长度应大于2个字符小于1024个字符，汉子占两个字符!");
         return false;
     } else {
         if (_pc.val().indexOf(dm) == -1) {
             //alert("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
-            AlertPrompt.show("\"创意描述1\"长度应大于8个字符小于80个字符，汉子占两个字符!");
+            AlertPrompt.show("默认\"访问\"Url地址必须包含以\"" + dm + "\"的域名！");
             return false;
         }
         //下面注释是判断结尾是否以注册的域名结尾(已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
@@ -1361,8 +1360,8 @@ function creativeMulti() {
 }
 function creativeUpload() {
     var _this = $(tmp);
-    var oid = _this.find("td:eq(1) input").val();
-    var _localStatus = _this.find("td:eq(12) span").attr("step");
+    var oid = _this.find("td:first input[type='checkbox']").val();
+    var _localStatus = _this.find("td:first span").attr("step");
     if (_localStatus != undefined) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;

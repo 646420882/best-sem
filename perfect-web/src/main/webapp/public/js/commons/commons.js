@@ -886,11 +886,14 @@ $("#filterSearchTemplate").click(function (e) {
     }
 });
 $("#kkeyword").next().next().find("th").mouseover().append("<span class='remove'><img src='../public/img/select.png'></span>");
+
 //筛选图标加载
-$("#ccampaign tr th").slice(0,7).mouseover(function(){
-    $("#filterSearchTemplate").hide();
-    $(".remove").remove()
-    $(this).append("<span class='remove'><img src='../public/img/select.png'></span>");
+$('.screenicon').parent().mouseover(function () {
+    if (jsonData.cid) {
+        $("#filterSearchTemplate").hide();
+        $(".remove").remove()
+        $(this).append("<span class='remove'><img src='../public/img/select.png'></span>");
+    }
 })
 var TabModel = {
     Show: function (type, _this, e) {
@@ -901,9 +904,9 @@ var TabModel = {
                 return;
             }
         }
-        if( $(_this).find("span")){
+        if ($(_this).find("span")) {
             $(".remove").remove()
-        $(_this).append("<span class='remove'><img src='../public/img/select.png'></span>");
+            $(_this).append("<span class='remove'><img src='../public/img/select.png'></span>");
         }
         if ($("#filterSearchTemplate").css("display") == "none") {
             var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
@@ -1476,16 +1479,12 @@ $('#TimingDate').daterangepicker({
 });
 
 $("input[value='Enable']").on("click", function () {
-    PromptBox.show('');
-    $("#PrompBoxTitle").html("提醒");
-    $("#PrompMain").html("您选择了启用功能后，会对账户已经暂停的物料启用上线，或者会对保存到搜客本地的物料上传到凤巢账户，确认选择启用功能？");
+    PromptBox.show("提醒", "您选择了启用功能后，会对账户已经暂停的物料启用上线，或者会对保存到搜客本地的物料上传到凤巢账户，确认选择启用功能？");
 
 });
 
 $("input[value='Pause']").on("click", function () {
-    PromptBox.show('');
-    $("#PrompBoxTitle").html("提醒");
-    $("#PrompMain").html("您选择了暂停功能后，会对账户已经启用的物料暂停推广，确认选择暂停功能？");
+    PromptBox.show("提醒", "您选择了暂停功能后，会对账户已经启用的物料暂停推广，确认选择暂停功能？");
 });
 
 var timing = {

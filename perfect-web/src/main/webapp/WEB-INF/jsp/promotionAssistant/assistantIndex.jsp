@@ -59,7 +59,8 @@
         *:before, *:after {
             box-sizing: border-box;
         }
-        .daterangepicker.dropdown-menu{
+
+        .daterangepicker.dropdown-menu {
             z-index: 3000;
         }
     </style>
@@ -101,8 +102,8 @@
                                             data-placement="bottom" title="对物料进行必要的修改后，需要点击“上传更新”按钮将修改上传至搜索推广账户中。">
                                             <a><span
                                                     class="glyphicon glyphicon-open"></span><span>上传更新</span></a></li>
-                                        <li ><a href="javascript:void(0)"
-                                                               onclick="AlertPrompt.show('该功能还在开发中！');"><span
+                                        <li><a href="javascript:void(0)"
+                                               onclick="AlertPrompt.show('该功能还在开发中！');"><span
                                                 class="glyphicon glyphicon-search"></span><span>高级搜索</span></a>
                                         </li>
                                         <li class="nav_menu"><a href="javascript:void(0)"
@@ -116,8 +117,10 @@
                                         <li class="showbox4"><a href="javascript:void(0)"
                                                                 onclick="AlertPrompt.show('该功能还在开发中！');"> <span
                                                 class="glyphicon glyphicon-cog"></span><span>估算工具</span></a></li>
-                                        <li><a onclick="LogPageShow()" >
-                                            <span class="glyphicon glyphicon-list-alt"></span><span>操作日志</span></a></li>
+                                        <li data-toggle="tooltip" data-placement="bottom" title="查看在搜客本地对账户进行操作的历史记录。">
+                                            <a onclick="LogPageShow()">
+                                                <span class="glyphicon glyphicon-list-alt"></span><span>操作日志</span></a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="zhushou_concent over" id="jiangkong_box2">
@@ -147,7 +150,7 @@
                                                             src="../public/img/zs_function3.png"></span><b>批量添加/更新&nbsp;</b></a><img
                                                             id="deletekeywords"
                                                             src="../public/img/zs_input.png">
-                                                        <ul id="deletekeywordes" class="hides">
+                                                        <ul id="deletekeywordes" style="display:none">
                                                             <li id="batchDelKwd"><a href="#"><span class="zs_top"><img
                                                                     src="../public/img/zs_function3.png"></span><b>批量删除</b></a>
                                                             </li>
@@ -203,38 +206,38 @@
                                                                                                onchange="$.foRCheckAll('keyAllCheck')"
                                                                                                style="float:left;margin:0 15px;"/>
                                                             </th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_name',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_name',this)">
                         关键词名称&nbsp;</span>
                                                             </th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_state',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_state',this)">
                         关键词状态&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_pause',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_pause',this)">
                         启动/暂停&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_price',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_price',this)">
                       出价&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_cquality',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_cquality',this)">
                       计算机质量度&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_mquality',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_mquality',this)">
                       移动质量度&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_matchType',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_matchType',this)">
                       匹配模式&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_pcUrl',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_pcUrl',this)">
                       访问URL&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Keyword_mibUrl',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Keyword_mibUrl',this)">
                       移动访问URL&nbsp;</span></th>
-                                                            <th class="username-column" data-noresize>&nbsp;<span>
-                      推广计划名称&nbsp;</span></th>
-                                                            <th class="username-column" data-noresize>&nbsp;<span>
-                      推广单元名称&nbsp;</span></th>
+                                                            <th class="username-column" data-noresize>&nbsp;
+                                                                推广计划名称&nbsp;</th>
+                                                            <th class="username-column" data-noresize>&nbsp;
+                                                                推广单元名称&nbsp;</th>
                                                             <th class="username-column" data-noresize>&nbsp;
                                                                 <div class="set fr"></div>
                                                             </th>
@@ -352,7 +355,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--普通创意-->
+                                        <!--推广单元-->
                                         <div class="containers hides">
                                             <div class="zs_function">
                                                 <ul class="fl">
@@ -404,41 +407,42 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th style="min-width:80px;"><input type="checkbox"
-                                                                                               name='creativeAllCheck'
-                                                                                               onchange="$.foRCheckAll('creativeAllCheck')"
-                                                                                               style="float:left;margin:0 15px;"/>
+                                                            <th style="min-width:90px; max-widt:92px;"><input
+                                                                    type="checkbox"
+                                                                    name='creativeAllCheck'
+                                                                    onchange="$.foRCheckAll('creativeAllCheck')"
+                                                                    style="float:left;margin:0 15px;"/>
                                                             </th>
                                                             <%-- <th style="width: 40px;">&nbsp;操作</th>--%>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_title',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_title',this)">
                         创意标题&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_desc1',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_desc1',this)">
                         创意描述1&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_desc2',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_desc2',this)">
                         创意描述2&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_pcUrl',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_pcUrl',this)">
                         默认访问URL&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_pcsUrl',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_pcsUrl',this)">
                         默认显示URL&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_mibUrl',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_mibUrl',this)">
                         移动访问URL&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_mibsUrl',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_mibsUrl',this)">
                         移动显示URL&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_pause',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_pause',this)">
                         启用/暂停&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_state',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_state',this)">
                         创意状态&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Creative_quipment',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Creative_quipment',this)">
                         设备偏好&nbsp;</span></th>
                                                             <%--<th class="username-column" data-noresize>--%>
                                                             <%--<div class="set fr"></div>--%>
@@ -571,7 +575,7 @@
                                                 <ul id="sublinkMenu">
                                                     <li class="current">蹊径子链</li>
                                                     <li>推广电话</li>
-                                                    <li>商桥移动质询</li>
+                                                    <li>商桥移动咨询</li>
                                                 </ul>
                                             </div>
 
@@ -774,7 +778,7 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th>&nbsp;商桥移动资讯</th>
+                                                            <th>&nbsp;商桥移动咨询</th>
                                                             <th>&nbsp;商桥状态</th>
                                                             <th>&nbsp;暂停/启用</th>
                                                             <th>&nbsp;推广计划名称</th>
@@ -847,17 +851,17 @@
                                                                                                onchange="$.foRCheckAll('adgroupAllCheck')"
                                                                                                style="float:left;margin:0 15px;"/>
                                                             </th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Adgroup_name',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Adgroup_name',this)">
                         推广单元名称&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Adgroup_state',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Adgroup_state',this)">
                         推广单元状态&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Adgroup_pause',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Adgroup_pause',this)">
                         启动/暂停&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Adgroup_price',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Adgroup_price',this)">
                         出价&nbsp;</span></th>
                                                             <th>&nbsp;否定关键词</th>
                                                             <th>&nbsp;<span>
@@ -987,28 +991,28 @@
                                                                                                onchange="$.foRCheckAll('campaignAllCheck')"
                                                                                                style="float:left; margin:0 15px;"/>
                                                             </th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Campaign_name',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Campaign_name',this)">
                         推广计划名称&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Campaign_state',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Campaign_state',this)">
                         推广计划状态&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Campaign_pause',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Campaign_pause',this)">
                         启用/暂停&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Campaign_budget',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Campaign_budget',this)">
                         每日预算&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Campaign_show',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Campaign_show',this)">
                         创意展现方式&nbsp;</span></th>
-                                                            <th>&nbsp;<span
-                                                                    onclick="TabModel.Show('Campaign_dynamic',this)">
+                                                            <th>&nbsp;<span class="screenicon"
+                                                                            onclick="TabModel.Show('Campaign_dynamic',this)">
                         动态创意状态&nbsp;</span></th>
                                                             <th>&nbsp;推广时段</th>
                                                             <th>&nbsp;推广地域</th>
                                                             <th>&nbsp;否定关键词</th>
-                                                            <th>&nbsp;IP排除</th>
+                                                            <%--<th>&nbsp;IP排除</th>--%>
                                                             <th>&nbsp;到预算下线时间</th>
                                                             <th class="username-column" data-noresize
                                                                 style="text-align:left; width:150px;"><span
@@ -1093,10 +1097,18 @@
                                                                     class="negativeWords_5"></em></div>
                                                         </li>
                                                         <li>
+                                                            <div class="t_list01 fl over">启用/暂停：</div>
+                                                            <div class="w_list02 fl over">
+                                                                <select class="selectPause_5"
+                                                                        onclick="enableOrPause(this,'campaign')">
+                                                                </select>
+                                                            </div>
+                                                        </li>
+                                                        <%--<li>
                                                             <div class="t_list01 fl over">IP排除：</div>
                                                             <div class="w_list02 fl over"><em class="excluedIp_5"></em>
                                                             </div>
-                                                        </li>
+                                                        </li>--%>
                                                         <li>
                                                             <div class="t_list01 fl over">创意展现方式：</div>
                                                             <div class="w_list02 fl over">
@@ -1117,14 +1129,7 @@
                                                             <div class="w_list02 fl over"><span
                                                                     class="budgetOfflineTime_5"></span></div>
                                                         </li>
-                                                        <li>
-                                                            <div class="t_list01 fl over">启用/暂停：</div>
-                                                            <div class="w_list02 fl over">
-                                                                <select class="selectPause_5"
-                                                                        onclick="enableOrPause(this,'campaign')">
-                                                                </select>
-                                                            </div>
-                                                        </li>
+
                                                     </ul>
                                                 </div>
                                             </div>

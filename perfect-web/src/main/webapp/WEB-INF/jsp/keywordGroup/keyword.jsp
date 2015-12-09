@@ -210,9 +210,8 @@ To change this template use File | Settings | File Templates.
                     <div class="list01_top over"><span>创意推荐</span>
                         <button type="button" class="question  btn btn-default" data-toggle="tooltip"
                                 data-placement="bottom"
-                                title="系统自动抓取搜索引擎页面信息，进行分析提取与当前创意相关的优秀词根及优秀创意作为新创意的参考，从而提升创意质量。"></button>
-                        <b>输入关键词，系统自动抓取搜索引擎页面信息，进行分析提取与当前创意相关的优秀词根及优秀创意作为新创意的参考，从而提升创意质量。关键词之间的相关性会影响推荐创意的质量。</b><a
-                                href="#">同步账户</a></div>
+                                title="输入关键词，系统自动抓取搜索引擎页面信息，进行分析提取与当前创意相关的优秀词根及优秀创意作为新创意的参考，从而提升创意质量。关键词之间的相关性会影响推荐创意的质量。"></button>
+                   <a  href="#">同步账户</a></div>
                     <div class="originality over">
                         <div class="originality_left fl">
                             <ul>
@@ -340,7 +339,7 @@ To change this template use File | Settings | File Templates.
     </div>
 </div>
 <!------------编辑创意弹窗-------------->
-<div class="TB_overlayBG"></div>
+<%--<div class="TB_overlayBG"></div>--%>
 <div class="TB_overlayBG_alert"></div>
 <div class="box" id="riginality_editor" style="display:none;">
     <h2 id="riginality_editor1">编辑创意<a href="#" class="close">×</a></h2>
@@ -699,7 +698,7 @@ To change this template use File | Settings | File Templates.
                         $("#category").append(category);
                         $("#category").multipleSelect({
                             placeholder: "请选择类别",
-                            selectAll: false,
+                            selectAll: true,
                             minumimCountSelected: 20,
                             multiple: true,
                             onClose: function () {
@@ -718,7 +717,7 @@ To change this template use File | Settings | File Templates.
                                                 $('#keyword_group').append(keywordGroupOfTrade);
                                                 $('#keyword_group').multipleSelect({
                                                     placeholder: "请选择分组",
-                                                    selectAll: false,
+                                                    selectAll: true,
                                                     minumimCountSelected: 20,
                                                     multiple: true
                                                 });

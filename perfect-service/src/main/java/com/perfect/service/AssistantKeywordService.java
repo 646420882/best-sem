@@ -6,9 +6,11 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
+import com.perfect.utils.OperationRecordModelBuilder;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.Set;
  * Created by john on 2014/8/19.
  */
 public interface AssistantKeywordService {
-    PagerInfo getKeyWords(String cid, String aid, Integer nowPage, Integer pageSize,SearchFilterParam sp);
+    PagerInfo getKeyWords(String cid, String aid, Integer nowPage, Integer pageSize, SearchFilterParam sp);
 
     void deleteByKwIds(List<String> kwids);
 
@@ -131,17 +133,36 @@ public interface AssistantKeywordService {
 
     /**
      * 批量删除关键字
+     *
      * @param param
      */
     void batchDelete(FindOrReplaceParam param);
 
     /**
      * 批量暂停/启动 关键词
+     *
      * @param param
      */
     void enableOrPauseKeyword(EnableOrPauseParam param);
 
-    void cut(KeywordDTO dto,String aid);
+    void cut(KeywordDTO dto, String aid);
 
     List<KeywordInfoDTO> vaildateKeywordByIds(List<String> keywordIds);
+
+    /**
+     * 根据关键词对象自动set相关单元,计划等信息
+     *
+     * @param keywordDTO
+     * @param orm
+     */
+    void ormByKeyword(KeywordDTO keywordDTO, OperationRecordModelBuilder orm);
+
+    /**
+     *  关键词日志记录方法
+     * @param keywordDTO 关键词对象
+     * @param optType 操作类型
+     * @param contentId 详细操作类型
+     * @return
+     */
+//    public OperationRecordModel logSaveKeyword(KeywordDTO keywordDTO,Integer optType,Integer contentId);
 }

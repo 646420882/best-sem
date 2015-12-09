@@ -72,7 +72,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="user_detali fl over" style="min-width:300px;">
+                    <div class="user_detali fl over">
                         <ul>
                             <li>推广额度：<b><a href="#">${accountBalance}</a></b> 元<a href="/pftstis/getIndex"
                                                                                   style="color: white">.</a></li>
@@ -129,7 +129,7 @@
 </div>
 <iframe id="fileIframe" name="fileIframe" style="display: none"></iframe>
 <%--alert提示类--%>
-<div class="box alertBox" style=" width: 230px;display:none;z-index: 10001" id="AlertPrompt">
+<div class="box alertBox" style="width: 230px;display:none;z-index: 10001" id="AlertPrompt">
     <h2 id="AlertPrompTitle">
         <span class="fl alert_span_title" id="AlertPrompt_title"></span>
         <%-- <a href="#" onclick="AlertPrompt.hide()" style="color: #cccccc;float: right;font-size: 20px;font-weight: normal;opacity: inherit;text-shadow: none;">×</a>--%>
@@ -144,18 +144,18 @@
     </div>
 </div>
 <%--内容提示提示类--%>
-<div class="box" style=" width: 230px;display:none;z-index: 10001" id="PromptBox">
+<div class="box" style="min-width: 230px;display:none;z-index: 10001" id="PromptBox">
     <h2 id="PrompTitleBox">
         <span class="fl" id="PrompBoxTitle"></span>
-        <a href="javascript:void(0)" onclick="PromptBox.hide();" class="close">×</a></h2>
+        <a href="javascript:void(0)" onclick="PromptBox.hide();"
+           style="color: #cccccc;float: right;font-size: 20px;line-height: 46px;">×</a></h2>
 
     <div class="mainlist">
         <div id="PrompMain">
         </div>
         <div class="w_list03">
-            <ul class="zs_set">
-                <li class="current" onclick="PromptBox.hide()">确认</li>
-                <li onclick="PromptBox.hide()">取消</li>
+            <ul class="zs_set" id="promptBottom">
+
             </ul>
         </div>
     </div>
@@ -304,10 +304,11 @@
 </div>
 <!-- 账户弹出 -->
 <div class="box" style="display:none;*width:400px;" id="open_account">
-    <h2 id="AccountChange"><span class="fl">多账户下载</span><a href="javascript:void(0)" id="account_close" class="close">×</a></h2>
+    <h2 id="AccountChange"><span class="fl">多账户下载</span><a href="javascript:void(0)" id="account_close"
+                                                           class="close">×</a></h2>
 
     <div class="mainlist">
-        您希望下载哪些账户的哪些单元？
+        选择账户以及推广计划
 
         <div class="j_list01 over">
 
@@ -329,14 +330,49 @@
 <!-- 弹出结束 -->
 
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
-<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
-<script type="text/javascript" defer src="${pageContext.request.contextPath}/public/js/multipleaccountdownloads.js"></script>
+<script type="text/javascript" defer
+        src="${pageContext.request.contextPath}/public/js/jquery.ztree.core-3.5.min.js"></script>
+<script type="text/javascript" defer
+        src="${pageContext.request.contextPath}/public/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" defer
+        src="${pageContext.request.contextPath}/public/js/multipleaccountdownloads.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/userimg.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/tc.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/commons/head.js"></script>
+<script>
+    //全选效果
+    function customColumns(obj,type,allId,listId){
+        if(type == 0){//点击全选
+            if($(obj).prop('checked') == false){
+                $("#"+listId).find("input").each(function(){
+                    $(this).prop('checked',false);
+                })
+            }else{
+                $("#"+listId).find("input").each(function(i){
+                    $(this).prop('checked','true');
+                })
+            }
+        }else if(type == 1){//点击全选下的列表
+            if($(obj).prop('checked') == false){
+                $("#"+allId).find("input").prop('checked',false);
+            }else{
+                var isFlag = true;
+                $("#"+listId).find("input").each(function(i){
+                    if($(this).prop('checked') == false){
+                        isFlag = false;
+                        return;
+                    }
+                })
+                if(isFlag == true){
+                    $("#"+allId).find("input").prop('checked',true);
+                }
+            }
+        }
+
+    }
+</script>
 
 
