@@ -65,9 +65,6 @@ public class KeywordServiceImpl implements KeywordService {
     public List<String> insertAll(List<KeywordDTO> keywordDTOList) {
 
         List<KeywordDTO> dtos = keywordDeduplicateService.deduplicate(AppContext.getAccountId(), keywordDTOList.get(0).getAdgroupId(), keywordDTOList);
-        dtos.stream().forEach(s -> {
-            logSaveService.saveKeywordLog(s);
-        });
 
         Iterable<KeywordDTO> keywordDTOs = keywordDAO.save(dtos);
         List<String> strings = new ArrayList<>();
@@ -77,7 +74,6 @@ public class KeywordServiceImpl implements KeywordService {
 
     @Override
     public KeywordDTO save(KeywordDTO keywordDTO) {
-        logSaveService.saveKeywordLog(keywordDTO);
         return keywordDAO.save(keywordDTO);
     }
 

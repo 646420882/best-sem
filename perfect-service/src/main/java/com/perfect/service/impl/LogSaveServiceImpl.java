@@ -43,6 +43,8 @@ public class LogSaveServiceImpl implements LogSaveService {
     private KeywordDAO keywordDAO;
 
 
+    //TODO  .setOptContentId(KeyWordEnum.addWord)
+    //TODO   .setOptType(OptContentEnum.Add)
     @Override
     public void saveKeywordLog(KeywordDTO newKeywordDTO) {
         OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
@@ -88,36 +90,36 @@ public class LogSaveServiceImpl implements LogSaveService {
         save(builder.build());
     }
 
-    @Override
-    public void reduceKeywordLog(KeywordDTO dbFindKeyWord) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.KEYWORD)
-                .setOptContentId(OptContentEnum.reBak)
-                .setOptContent(dbFindKeyWord.getKeyword())
-                .setOptType(OptContentEnum.reBak)
-                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
-        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
-        save(builder.build());
-    }
+//    @Override
+//    public void reduceKeywordLog(KeywordDTO dbFindKeyWord) {
+//        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+//        builder.setOptLevel(LogLevelConstants.KEYWORD)
+//                .setOptContentId(OptContentEnum.reBak)
+//                .setOptContent(dbFindKeyWord.getKeyword())
+//                .setOptType(OptContentEnum.reBak)
+//                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
+//        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
+//        save(builder.build());
+//    }
 
-    @Override
-    public void moveKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.KEYWORD)
-                .setOptContentId(OptContentEnum.KeyMove)
-                .setOptContent(dbFindKeyWord.getKeyword())
-                .setOptType(OptContentEnum.KeyMove)
-                .setOptObj(LogObjConstants.MOVE_ADGROUP)
-                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
-        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
-        if (oldVal != null) {
-            builder.setOldValue(oldVal.toString());
-        }
-        if (newVal != null) {
-            builder.setNewValue(newVal.toString());
-        }
-        save(builder.build());
-    }
+//    @Override
+//    public void moveKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal) {
+//        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+//        builder.setOptLevel(LogLevelConstants.KEYWORD)
+//                .setOptContentId(OptContentEnum.KeyMove)
+//                .setOptContent(dbFindKeyWord.getKeyword())
+//                .setOptType(OptContentEnum.KeyMove)
+//                .setOptObj(LogObjConstants.MOVE_ADGROUP)
+//                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
+//        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
+//        if (oldVal != null) {
+//            builder.setOldValue(oldVal.toString());
+//        }
+//        if (newVal != null) {
+//            builder.setNewValue(newVal.toString());
+//        }
+//        save(builder.build());
+//    }
 
 
     @Override
