@@ -981,9 +981,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordDTO> uploadAdd(List<String> kids) {
         List<KeywordDTO> retrunKeywordDTOs = new ArrayList<>();
         List<KeywordType> keywordTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         kids.stream().forEach(s -> {
             KeywordDTO keywordDTO = keywordDAO.findByObjectId(s);
-//            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
             if (keywordDTO.getAdgroupId() != null) {
                 KeywordType keywordType = new KeywordType();
                 keywordType.setAdgroupId(keywordDTO.getAdgroupId());
@@ -993,6 +993,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(keywordDTO.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(keywordDTO.getMobileDestinationUrl());
                 keywordType.setPause(keywordDTO.getPause());
+                OperationRecordModel orm = logSaveService.saveKeywordLog(keywordType);
+                if (orm != null) {
+                    logs.add(orm);
+                }
                 keywordTypes.add(keywordType);
             }
         });
@@ -1012,6 +1016,11 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     returnKeywordDTO.setKeywordId(s.getKeywordId());
                     returnKeywordDTO.setStatus(s.getStatus());
                     retrunKeywordDTOs.add(returnKeywordDTO);
+                    logs.stream().forEach(f -> {
+                        if (f.getOptContent().equals(s.getKeyword()) && s.getKeywordId() != null) {
+                            logSaveService.saveLog(f);
+                        }
+                    });
                 });
                 return retrunKeywordDTOs;
             } catch (ApiException e) {
@@ -1063,21 +1072,28 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         Integer result = 0;
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-        try {
-            KeywordService keywordService = commonService.getService(KeywordService.class);
-            DeleteKeywordRequest deleteKeywordRequest = new DeleteKeywordRequest();
-            deleteKeywordRequest.setKeywordIds(new ArrayList<Long>() {{
-                add(kid);
-            }});
-            DeleteKeywordResponse deleteKeywordResponse = keywordService.deleteKeyword(deleteKeywordRequest);
-            if (deleteKeywordResponse.getResult() == 1) {//如果全部删除成功，则执行删除本地的关键字
-                keywordDAO.deleteByIds(new ArrayList<Long>() {{
+        KeywordDTO keywordDTO = keywordDAO.findByLongId(kid);
+        if (keywordDTO != null) {
+            OperationRecordModel orm = logSaveService.deleteKeywordLog(keywordDTO);
+            try {
+                KeywordService keywordService = commonService.getService(KeywordService.class);
+                DeleteKeywordRequest deleteKeywordRequest = new DeleteKeywordRequest();
+                deleteKeywordRequest.setKeywordIds(new ArrayList<Long>() {{
                     add(kid);
                 }});
+                DeleteKeywordResponse deleteKeywordResponse = keywordService.deleteKeyword(deleteKeywordRequest);
+                if (deleteKeywordResponse.getResult() == 1) {//如果全部删除成功，则执行删除本地的关键字
+                    keywordDAO.deleteByIds(new ArrayList<Long>() {{
+                        add(kid);
+                    }});
+                    if (orm != null) {
+                        logSaveService.saveLog(orm);
+                    }
+                }
+                return deleteKeywordResponse.getResult();
+            } catch (ApiException e) {
+                e.printStackTrace();
             }
-            return deleteKeywordResponse.getResult();
-        } catch (ApiException e) {
-            e.printStackTrace();
         }
         return result;
     }

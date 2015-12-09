@@ -4,9 +4,9 @@ import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.AdgroupType;
+import com.perfect.autosdk.sms.v3.CampaignType;
 import com.perfect.autosdk.sms.v3.CreativeType;
 import com.perfect.autosdk.sms.v3.KeywordType;
-import com.perfect.autosdk_v4.sms.service.CampaignType;
 import com.perfect.commons.constants.LogLevelConstants;
 import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.core.AppContext;
@@ -58,28 +58,28 @@ public class LogSaveServiceImpl implements LogSaveService {
     //TODO  .setOptContentId(KeyWordEnum.addWord)
     //TODO   .setOptType(OptContentEnum.Add)
     @Override
-    public void saveKeywordLog(KeywordDTO newKeywordDTO) {
+    public OperationRecordModel saveKeywordLog(KeywordType newWord) {
         OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
         builder.setOptLevel(LogLevelConstants.KEYWORD)
                 .setOptContentId(KeyWordEnum.addWord)
-                .setOptContent(newKeywordDTO.getKeyword())
+                .setOptContent(newWord.getKeyword())
                 .setOptType(OptContentEnum.Add)
-                .setNewValue(newKeywordDTO.getKeyword())
+                .setNewValue(newWord.getKeyword())
                 .setOptObj(LogObjConstants.NAME);
-        getCamAdgroupInfoByLong(newKeywordDTO.getAdgroupId(), builder);
-        save(builder.build());
+        getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
+        return builder.build();
     }
 
     @Override
-    public OperationRecordModel updateKeywordLog(KeywordType findKeyWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
+    public OperationRecordModel updateKeywordLog(KeywordType newWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
         OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
         builder.setOptLevel(LogLevelConstants.KEYWORD)
                 .setOptContentId(contentId)
-                .setOptContent(findKeyWord.getKeyword())
+                .setOptContent(newWord.getKeyword())
                 .setOptType(OptContentEnum.Edit)
                 .setOptObj(optObj)
-                .setOptComprehensiveID(findKeyWord.getKeywordId() != null ? findKeyWord.getKeywordId() : null);
-        getCamAdgroupInfoByLong(findKeyWord.getAdgroupId(), builder);
+                .setOptComprehensiveID(newWord.getKeywordId() != null ? newWord.getKeywordId() : null);
+        getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
         if (oldVal != null) {
             builder.setOldValue(oldVal.toString());
         }
@@ -87,20 +87,26 @@ public class LogSaveServiceImpl implements LogSaveService {
             builder.setNewValue(newVal.toString());
         }
         return builder.build();
-//        save(builder.build());
     }
 
     @Override
-    public void deleteKeywordLog(KeywordDTO dbFindKeyWord) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.KEYWORD)
-                .setOptContentId(OptContentEnum.delete)
-                .setOptType(KeyWordEnum.delWord)
-                .setOptContent(dbFindKeyWord.getKeyword())
-                .setOptComprehensiveID(dbFindKeyWord.getKeywordId())
-                .setOptContent(dbFindKeyWord.getKeyword());
-        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
-        save(builder.build());
+    public OperationRecordModel deleteKeywordLog(KeywordDTO newWord) {
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        BaiduApiService baiduApiService = new BaiduApiService(commonService);
+        KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
+        if (baiduType != null) {
+            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+            builder.setOptLevel(LogLevelConstants.KEYWORD)
+                    .setOptContentId(OptContentEnum.delete)
+                    .setOptType(KeyWordEnum.delWord)
+                    .setOptContent(newWord.getKeyword())
+                    .setOptComprehensiveID(newWord.getKeywordId())
+                    .setOptContent(newWord.getKeyword());
+            getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
+            return builder.build();
+        }
+        return null;
     }
 
     @Override
@@ -176,17 +182,24 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public OperationRecordModel removeCampaign(CampaignType campaignType) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.CAMPAIGN)
-                .setOptContentId(CampaignEnum.delPlan)
-                .setOptContent(campaignType.getCampaignName())
-                .setOptType(OptContentEnum.delete)
-                .setPlanId(campaignType.getCampaignId())
-                .setPlanName(campaignType.getCampaignName())
-                .setOldValue(campaignType.getCampaignName())
-                .setOptComprehensiveID(campaignType.getCampaignId());
-        return builder.build();
+    public OperationRecordModel removeCampaign(CampaignDTO campaignType) {
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        BaiduApiService baiduApiService = new BaiduApiService(commonService);
+        CampaignType baiduType = baiduApiService.getCampaignTypeById(campaignType.getCampaignId());
+        if (baiduType != null) {
+            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+            builder.setOptLevel(LogLevelConstants.CAMPAIGN)
+                    .setOptContentId(CampaignEnum.delPlan)
+                    .setOptContent(campaignType.getCampaignName())
+                    .setOptType(OptContentEnum.delete)
+                    .setPlanId(campaignType.getCampaignId())
+                    .setPlanName(campaignType.getCampaignName())
+                    .setOldValue(campaignType.getCampaignName())
+                    .setOptComprehensiveID(campaignType.getCampaignId());
+            return builder.build();
+        }
+        return null;
     }
 
     @Override
@@ -215,21 +228,28 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptContent(adgroupType.getAdgroupName())
                 .setUnitName(adgroupType.getAdgroupName())
                 .setNewValue(adgroupType.getAdgroupName());
+        getCampInfoByLongId(adgroupType.getCampaignId(), builder);
         return builder.build();
     }
 
     @Override
-    public OperationRecordModel removeAdgroup(AdgroupType adgroupType) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.ADGROUP)
-                .setOptType(OptContentEnum.delete)
-                .setOptContentId(AdGroupEnum.delUnit)
-                .setOptContent(adgroupType.getAdgroupName())
-                .setUnitId(adgroupType.getAdgroupId())
-                .setUnitName(adgroupType.getAdgroupName())
-                .setOldValue(adgroupType.getAdgroupName())
-                .setOptComprehensiveID(adgroupType.getAdgroupId());
-        return builder.build();
+    public OperationRecordModel removeAdgroup(AdgroupDTO adgroupType) {
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        BaiduApiService baiduApiService = new BaiduApiService(commonService);
+        AdgroupType baiduType = baiduApiService.getAdgroupTypeById(adgroupType.getAdgroupId());
+        if (baiduType != null) {
+            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+            builder.setOptLevel(LogLevelConstants.ADGROUP)
+                    .setOptType(OptContentEnum.delete)
+                    .setOptContentId(AdGroupEnum.delUnit)
+                    .setOptContent(adgroupType.getAdgroupName())
+                    .setOldValue(adgroupType.getAdgroupName())
+                    .setOptComprehensiveID(adgroupType.getAdgroupId());
+            getCampInfoByLongId(adgroupType.getCampaignId(), builder);
+            return builder.build();
+        }
+        return null;
     }
 
     @Override
@@ -257,19 +277,28 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptContentId(CreativeEnum.addIdea)
                 .setOptContent(creativeType.getTitle())
                 .setNewValue(creativeType.getTitle());
+        getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
         return builder.build();
     }
 
     @Override
-    public OperationRecordModel removeCreative(CreativeType creativeType) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.CREATIVE)
-                .setOptType(OptContentEnum.delete)
-                .setOptContentId(CreativeEnum.delIdea)
-                .setOptContent(creativeType.getTitle())
-                .setOldValue(creativeType.getTitle())
-                .setOptComprehensiveID(creativeType.getCreativeId());
-        return builder.build();
+    public OperationRecordModel removeCreative(CreativeDTO creativeType) {
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        BaiduApiService baiduApiService = new BaiduApiService(commonService);
+        CreativeType baiduType = baiduApiService.getCreativeTypeById(creativeType.getCreativeId());
+        if (baiduType != null) {
+            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
+            builder.setOptLevel(LogLevelConstants.CREATIVE)
+                    .setOptType(OptContentEnum.delete)
+                    .setOptContentId(CreativeEnum.delIdea)
+                    .setOptContent(creativeType.getTitle())
+                    .setOldValue(creativeType.getTitle())
+                    .setOptComprehensiveID(creativeType.getCreativeId());
+            getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
+            return builder.build();
+        }
+        return null;
     }
 
     @Override
@@ -283,6 +312,7 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptObj(optObj)
                 .setOptContentId(contentid)
                 .setOptComprehensiveID(creativeType.getCreativeId());
+        getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
         return builder.build();
     }
 
@@ -292,6 +322,13 @@ public class LogSaveServiceImpl implements LogSaveService {
         CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
         fillCommonData(builder, campaignDTO, adgroupDTO);
     }
+
+    @Override
+    public void getCampInfoByLongId(Long campaignId, OperationRecordModelBuilder builder) {
+        CampaignDTO campaignDTO = campaignDAO.findOne(campaignId);
+        fillCommonData(builder, campaignDTO);
+    }
+
 
     @Override
     public Boolean saveLog(OperationRecordModel orm) {
@@ -306,6 +343,12 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setPlanId(campaignDTO.getCampaignId())
                 .setPlanName(campaignDTO.getCampaignName());
 
+    }
+
+    private OperationRecordModelBuilder fillCommonData(OperationRecordModelBuilder builder, CampaignDTO campaignDTO) {
+        return builder.setUserId(AppContext.getAccountId())
+                .setPlanId(campaignDTO.getCampaignId())
+                .setPlanName(campaignDTO.getCampaignName());
     }
 
 
