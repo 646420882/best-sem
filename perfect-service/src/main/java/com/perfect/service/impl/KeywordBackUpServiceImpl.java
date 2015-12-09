@@ -1,9 +1,11 @@
 package com.perfect.service.impl;
 
+import com.perfect.core.AppContext;
 import com.perfect.dao.keyword.KeywordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.log.model.OperationRecordModel;
 import com.perfect.service.KeywordBackUpService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -68,6 +70,9 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
     public void reducDel(String id){
         if(id.matches("^\\d+$")){
             keywordDAO.updateLocalstatu(Long.parseLong(id));
+            OperationRecordModel orm=new OperationRecordModel();
+            orm.setUserId(AppContext.getAccountId());
+//            orm.set
         }
     }
 

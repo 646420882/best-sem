@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.log.model.OperationRecordModel;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,4 +31,6 @@ public interface KeywordService {
     void delete(Long id);
 
     void deleteByIds(List<Long> ids);
+
+
 }

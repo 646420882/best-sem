@@ -271,9 +271,8 @@ public class AssistantCampaignController extends WebContextSupport {
             if (budget >= 50) {
                 newCampaign.setBudget(budget);
             }
-        } else {
-            newCampaign.setBudget(null);
         }
+
         newCampaign.setPriceRatio(priceRatio == null ? newCampaign.getPriceRatio() : priceRatio);
         newCampaign.setRegionTarget(regionTarget == null ? newCampaign.getRegionTarget() : "".equals(regionTarget) ? new ArrayList<Integer>() : Arrays.asList(regionTarget));
         newCampaign.setIsDynamicCreative(isDynamicCreative == null ? newCampaign.getIsDynamicCreative() : isDynamicCreative);

@@ -1193,14 +1193,13 @@ $("#tbodyClick").on("mousedown", "tr", function () {
 });
 
 function kUpload() {
-    var choose = $("#tbodyClick").find(".list2_box3");
-    if (choose != undefined && choose.find("td:last").html() != "&nbsp;") {
+    var choose = $("#tbodyClick").find(".list2_box3").find("span").attr("step");
+    if (choose) {
         if (confirm("是否上传选择的数据到凤巢?一旦上传将不能还原！") == false) {
             return;
         }
-        var step = choose.find("td:last span").attr("step");
-        var id = $("#tbodyClick").find(".list2_box3").find("input[type=hidden]").val();
-        switch (parseInt(step)) {
+        var id = $("#tbodyClick").find(".list2_box3").find("input[type='checkbox']").val();
+        switch (parseInt(choose)) {
             case 1:
                 if (id.length > 18) {
                     kUploadOperate(id, 1);

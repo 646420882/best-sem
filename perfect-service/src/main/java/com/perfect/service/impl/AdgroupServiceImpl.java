@@ -19,6 +19,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -234,6 +235,17 @@ public class AdgroupServiceImpl implements AdgroupService {
     @Override
     public void save(AdgroupDTO adgroupDTO) {
         adgroupDAO.insert(adgroupDTO);
+    }
+
+    @Override
+    public void ormByCreative(CreativeDTO creativeDTO,OperationRecordModel orm) {
+        AdgroupDTO adgroupDTO = adgroupDAO.findOne(creativeDTO.getAdgroupId());
+        CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
+        orm.setUserId(AppContext.getAccountId());
+        orm.setUnitId(adgroupDTO.getAdgroupId());
+        orm.setUnitName(adgroupDTO.getAdgroupName());
+        orm.setPlanId(campaignDTO.getCampaignId());
+        orm.setPlanName(campaignDTO.getCampaignName());
     }
 
     @Override
