@@ -2,6 +2,7 @@ package com.perfect.app.ucenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.account.SystemUserInfoVO;
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by baizz on 2014-6-25.
@@ -49,7 +51,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
 //
 //
 //    /**
-//     * 修改账户密码
+//     * 修改帐户密码
 //     *
 //     * @return
 //     */
@@ -65,7 +67,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
 //    }
 //
 //    /**
-//     * 验证账户密码
+//     * 验证帐户密码
 //     *
 //     * @return
 //     */
@@ -106,9 +108,15 @@ public class AccountManageController extends WebContextSupport implements AuthCo
      */
     @RequestMapping(value = "/getAccountAll", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountAll(HttpServletResponse response) {
-
-        List<SystemUserInfoVO> userInfoVOs = accountManageService.getAccountAll();
-
+        List<SystemUserInfoVO> userInfoVOs = new ArrayList<>(accountManageService.getAccountAll());
+        for (SystemUserInfoVO userInfoVO : userInfoVOs) {
+            userInfoVO.setBaiduAccounts(userInfoVO
+                    .getBaiduAccounts()
+                    .stream()
+                    .map(u -> new BaseBaiduAccountInfoVO(u.getAccountId(), u.getAccountName(), u.getRemarkName(), "", "", u.isDefault()))
+                    .collect(Collectors.toList())
+            );
+        }
 
         Map<String, List<SystemUserInfoVO>> map = new HashMap<>();
         map.put("rows", userInfoVOs);
@@ -117,7 +125,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
     }
 
 //    /**
-//     * 修改百度账户启用状态
+//     * 修改百度帐户启用状态
 //     *
 //     * @return
 //     */
@@ -156,7 +164,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
 //    }
 
     /**
-     * 获取账户树
+     * 获取帐户树
      *
      * @return
      */
@@ -169,7 +177,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
     }
 
     /**
-     * 获取当前登录的系统用户下的所有百度账号
+     * 获取当前登录的系统用户下的所有百度帐户
      *
      * @return
      */
@@ -183,7 +191,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
     }
 
     /**
-     * 根据百度账户id获取其账户信息
+     * 根据百度帐户ID获取其百度帐户信息
      *
      * @return
      */
@@ -232,7 +240,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
 //    }
 
     /**
-     * 百度账户切换
+     * 百度帐户切换
      *
      * @param request
      * @return
@@ -241,17 +249,18 @@ public class AccountManageController extends WebContextSupport implements AuthCo
     public ModelAndView switchAccount(HttpServletRequest request) {
         Long accountId = Long.valueOf(request.getParameter("accountId"));
         WebUtils.setAccountId(request, accountId);
-        AppContext.setUser(WebUtils.getUserName(request), accountId);
+        AppContext.setUser(WebUtils.getUserName(request), accountId, ((SystemUserInfoVO) request.getSession().getAttribute(USER_INFORMATION)).getBaiduAccounts());
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> result = new HashMap<String, Object>() {{
             put("status", true);
         }};
         jsonView.setAttributesMap(result);
+
         return new ModelAndView(jsonView);
     }
 
     /**
-     * 获取百度账户报告
+     * 获取百度帐户报告
      *
      * @param number
      * @return
@@ -265,7 +274,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
     }
 
 //    /**
-//     * 更新百度账户信息
+//     * 更新百度帐户信息
 //     *
 //     * @param dto
 //     * @return
@@ -280,7 +289,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
 //    }
 
     /**
-     * 下载更新当前百度账户下的所有数据
+     * 下载更新当前百度帐户下的所有数据
      *
      * @param campaignIds
      * @return
@@ -291,7 +300,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
             //下载更新全部推广计划
             accountDataService.updateAccountData(AppContext.getUser(), AppContext.getAccountId());
         } else {
-            //数据预处理
+            // 数据预处理
             List<Long> camIds = new ArrayList<>(campaignIds.split(",").length);
             for (String str : campaignIds.split(",")) {
                 camIds.add(Long.valueOf(str));
@@ -320,7 +329,7 @@ public class AccountManageController extends WebContextSupport implements AuthCo
     }
 
     /**
-     * 添加百度账户
+     * 添加百度帐户
      *
      * @param name
      * @param passwd

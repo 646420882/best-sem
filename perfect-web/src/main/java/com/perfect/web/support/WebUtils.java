@@ -36,8 +36,13 @@ public class WebUtils extends org.springframework.web.util.WebUtils implements A
     public static void setContext(HttpServletRequest request) {
         String userName = getUserName(request);
         Long accountId = getAccountId(request);
+        Object systemUser = request.getSession().getAttribute(USER_INFORMATION);
 
-        AppContext.setUser(userName, accountId);
+        if (Objects.nonNull(systemUser)) {
+            AppContext.setUser(userName, accountId, ((SystemUserInfoVO) systemUser).getBaiduAccounts());
+        } else {
+            AppContext.setUser(userName, accountId);
+        }
     }
 
     public static void setCurrentBaiduAccount(HttpServletRequest request, BaseBaiduAccountInfoVO baiduAccount) {

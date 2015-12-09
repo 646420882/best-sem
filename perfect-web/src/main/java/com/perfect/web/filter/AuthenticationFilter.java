@@ -3,12 +3,12 @@ package com.perfect.web.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.account.SystemUserInfoVO;
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.utils.http.HttpClientUtils;
+import com.perfect.web.support.ServletContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -27,9 +27,6 @@ import java.util.*;
  */
 public class AuthenticationFilter extends OncePerRequestFilter implements AuthConstants {
 
-    private static List<String> staticResourcesSuffix = Lists.newArrayList(".ico", ".gif", ".jpg", ".jpeg", ".png", ".swf", ".css", ".js");
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 检测是否执行登出操作
@@ -39,7 +36,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             // 如果Session中没有用户信息
             if (Objects.isNull(request.getSession().getAttribute(USER_INFORMATION))) {
                 // 检测请求类型
-                boolean isStaticResourcesRequest = checkStaticResourcesRequest(request);
+                boolean isStaticResourcesRequest = ServletContextUtils.checkStaticResourcesRequest(request);
                 if (isStaticResourcesRequest) {
                     // 未登录请求静态资源返回至登录页面
                     redirectToLogin(response);
@@ -149,22 +146,6 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
 
             request.getSession().setAttribute(USER_INFORMATION, userInfo);
         }
-    }
-
-    /**
-     * <p>是否是加载静态资源的请求.
-     *
-     * @param request
-     * @return
-     */
-    private boolean checkStaticResourcesRequest(HttpServletRequest request) {
-        String requestPath = request.getRequestURI();
-        for (int i = 0, s = staticResourcesSuffix.size(); i < s; i++) {
-            if (requestPath.contains(staticResourcesSuffix.get(i)))
-                return true;
-        }
-
-        return false;
     }
 
     /**

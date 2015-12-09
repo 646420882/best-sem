@@ -90,10 +90,11 @@
                                 <tbody>
                                 <c:forEach var="i" items="${accountList}">
                                     <tr>
-                                        <td>&nbsp;<span class="fl"><img
-                                                src="${pageContext.request.contextPath}/public/images/c_logo.jpg"></span><b
-                                                class="fl">${i.accountName}</b></td>
-                                        <%--<td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>--%>
+                                        <td>&nbsp;<span class="fl">
+                                            <img src="${pageContext.request.contextPath}/public/images/c_logo.jpg"></span>
+                                            <b class="fl">${i.accountName}</b>
+                                        </td>
+                                            <%--<td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>--%>
                                         <td>&nbsp;<a href=""></a></td>
                                         <td>&nbsp;${i.token}</td>
                                         <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.accountId}"

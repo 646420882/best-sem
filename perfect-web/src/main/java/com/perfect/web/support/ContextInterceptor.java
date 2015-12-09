@@ -7,6 +7,7 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
+import com.perfect.web.auth.TokenHeartBeat;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +16,8 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
+
+import static com.perfect.web.support.ServletContextUtils.checkStaticResourcesRequest;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
@@ -44,12 +47,22 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
             return false;
         }
 
-        Long accoundId = WebUtils.getAccountId(request);
-        if (accoundId != null && accoundId > 0) {
-            AppContext.setUser(username, accoundId);
+        Long accountId = WebUtils.getAccountId(request);
+        if (accountId != null && accountId > 0) {
+            Object systemUser = request.getSession().getAttribute(USER_INFORMATION);
+
+            if (Objects.nonNull(systemUser))
+                AppContext.setUser(username, accountId, ((SystemUserInfoVO) systemUser).getBaiduAccounts());
+            else
+                AppContext.setUser(username, accountId);
+
             return true;
         } else {
             handleRequest(username, request);
+        }
+
+        if (!checkStaticResourcesRequest(request)) {
+            TokenHeartBeat.refreshToken(request);
         }
 
         return true;

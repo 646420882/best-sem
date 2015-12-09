@@ -46,5 +46,5 @@ public interface BiddingRuleDAO extends HeyCrudRepository<BiddingRuleDTO, Long> 
 
     BiddingRuleDTO takeOneById(String username, String objectId);
 
-    BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO);
+    BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO, String username);
 }

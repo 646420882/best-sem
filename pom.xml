@@ -61,7 +61,7 @@
                 <es.host>114.112.98.68:30101,114.112.98.68:30102,114.112.98.67:30103,114.112.98.67:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>
 
-                <api.service.token>BD84ECD95310CEB84833D9A2594F887C</api.service.token>
+                <api.service.token>10564084B750AA291A5FC0DBA7F4112B</api.service.token>
             </properties>
         </profile>
     </profiles>

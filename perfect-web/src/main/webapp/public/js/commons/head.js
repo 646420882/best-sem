@@ -213,16 +213,16 @@ var PromptBox = {
         if (sure == 1) {
             $("#promptBottom").empty();
             $("#promptBottom").append("" +
-            "<li class='current' onclick='PromptBox.hide()'>确认</li>")
+                "<li class='current' onclick='PromptBox.hide()'>确认</li>")
         } else if (sure == 2) {
             $("#promptBottom").empty();
             $("#promptBottom").append("" +
-            "<li onclick='PromptBox.hide()'>取消</li>")
+                "<li onclick='PromptBox.hide()'>取消</li>")
         } else {
             $("#promptBottom").empty();
             $("#promptBottom").append("" +
-            "<li class='current' onclick='PromptBox.hide()'>确认</li>" +
-            "<li onclick='PromptBox.hide()'>取消</li>")
+                "<li class='current' onclick='PromptBox.hide()'>确认</li>" +
+                "<li onclick='PromptBox.hide()'>取消</li>")
         }
 
     },
@@ -301,17 +301,22 @@ $(document).ready(function () {
                 $(this).addClass("page_li_hover");
                 var e = $(this).text() * b;
                 g.slice(e - b, e).show();
-            })
+            });
 
             //搜索
             var results = data.rows;
             var tags = [];
             if (results != null && results.length > 0) {
-                var index = results[0].baiduUserName.length;
+                var index = results[0].accountName.length;
                 $.each(results, function (i, item) {
-                    var _item = item.baiduRemarkName;
-                    if (_item == undefined) _item = item.baiduUserName.substring(0, (i > 0 ? index - 3 : index)) + (item.baiduUserName.length > index ? "..." : "");
-                    tags.push({label: _item, id: item.id});
+                    var _item = item.remarkName;
+                    if (_item == undefined) _item = item.accountName.substring(0, (i > 0 ? index - 3 : index)) + (item.accountName.length > index ? "..." : "");
+                    tags.push(
+                        {
+                            label: _item,
+                            id: item.accountId
+                        }
+                    );
 
                 });
             }

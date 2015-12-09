@@ -44,7 +44,6 @@ public class HomePageManageController extends WebContextSupport implements AuthC
     @RequestMapping(value = "/")
     public ModelAndView index(HttpServletRequest request, ModelMap modelMap) {
         modelMap.put("currSystemUserName", WebUtils.getUserName(request));
-//        modelMap.put("accountList", AppContext.getBaiduAccounts());
 
         return new ModelAndView("homePage/home");
     }

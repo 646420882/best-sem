@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.account.SystemUserInfoVO;
+import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
@@ -30,8 +31,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by baizz on 2014-8-21.
- * 2014-12-2 refactor
+ * Created on 2014-08-21.
+ *
+ * @author dolphineor
+ * @update 2015-12-09
  */
 @Service("accountManageService")
 public class AccountManageServiceImpl implements AccountManageService {
@@ -207,19 +210,23 @@ public class AccountManageServiceImpl implements AccountManageService {
                     baiduAccountInfoVO.getPassword(),
                     baiduAccountInfoVO.getToken(),
                     null);
-            AccountService accountService = service.getService(AccountService.class);
-            GetAccountInfoRequest request = new GetAccountInfoRequest();
-            GetAccountInfoResponse response = accountService.getAccountInfo(request);
-            AccountInfoType accountInfo = response.getAccountInfoType();
-            List<OfflineTimeType> list = accountInfo.getBudgetOfflineTime();
-            if (list.size() == 0) {
+            BaiduApiService apiService = new BaiduApiService(service);
+            AccountInfoType accountInfo = apiService.getAccountInfo();
+
+            if (Objects.isNull(accountInfo)) {
                 results.put("budgetOfflineTime", "");
             } else {
-                results.put("budgetOfflineTime", getJson(list));
+                List<OfflineTimeType> list = accountInfo.getBudgetOfflineTime();
+                if (list.size() == 0) {
+                    results.put("budgetOfflineTime", "");
+                } else {
+                    results.put("budgetOfflineTime", getJson(list));
+                }
             }
         } catch (ApiException e) {
             e.printStackTrace();
         }
+
         return results;
     }
 
