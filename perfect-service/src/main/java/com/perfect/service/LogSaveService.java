@@ -3,7 +3,7 @@ package com.perfect.service;
 import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.autosdk.sms.v3.CreativeType;
 import com.perfect.autosdk_v4.sms.service.CampaignType;
-import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.log.model.OperationRecordModel;
 import com.perfect.utils.OperationRecordModelBuilder;
@@ -20,13 +20,12 @@ public interface LogSaveService {
 
     void saveKeywordLog(KeywordDTO newKeywordDTO);
 
-    void updateKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal, String optObj);
+    OperationRecordModel updateKeywordLog(KeywordType findKeyWord,Object newVal, Object oldVal, String optObj,Integer contentId);
 
     void deleteKeywordLog(KeywordDTO dbFindKeyWord);
 
-//    void reduceKeywordLog(KeywordDTO dbFindKeyWord);
+    OperationRecordModel uploadLogWordUpdate(KeywordType keywordType);
 
-//    void moveKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal);
 
     /**
      * <p> 添加 计划 操作日志保存</p>
@@ -70,7 +69,6 @@ public interface LogSaveService {
      */
     OperationRecordModel updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid);
 
-
     /**
      * <p> 添加 创意 操作日志保存</p>
      * @param creativeType
@@ -94,5 +92,8 @@ public interface LogSaveService {
 
 
     void getCamAdgroupInfoByLong(Long adgroupId, OperationRecordModelBuilder builder);
+
+    Boolean saveLog(OperationRecordModel orm);
+
 
 }

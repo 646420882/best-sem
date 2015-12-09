@@ -22,6 +22,8 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.log.model.OperationRecordModel;
+import com.perfect.log.util.LogOptUtil;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -1084,6 +1086,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordDTO> uploadUpdate(List<Long> kid) {
         List<KeywordDTO> returnKeywordDTOs = new ArrayList<>();
         List<KeywordType> keywordTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         kid.stream().forEach(s -> {
             KeywordDTO dtoFind = keywordDAO.findOne(s);
             if (dtoFind != null) {
@@ -1096,9 +1099,15 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
                 keywordType.setPause(dtoFind.getPause());
+                OperationRecordModel orm = logSaveService.uploadLogWordUpdate(keywordType);
+                if (orm != null) {
+                    logs.add(orm);
+                }
                 keywordTypes.add(keywordType);
             }
         });
+
+
         if (keywordTypes.size() > 0) {
             BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
@@ -1114,7 +1123,13 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     keywordDTO.setStatus(s.getStatus());
                     keywordDAO.updateLs(keywordDTO);
                     returnKeywordDTOs.add(keywordDTO);
+                    logs.stream().forEach(f -> {
+                        if (f.getOptComprehensiveID() == s.getKeywordId()) {
+                            logSaveService.saveLog(f);
+                        }
+                    });
                 });
+
             } catch (ApiException e) {
                 e.printStackTrace();
             }
@@ -1399,8 +1414,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             dto.setAdgroupObjId(aid);
             dto.setLocalStatus(1);
         } else {
-            AdgroupDTO oldAdgroup=adgroupDAO.findOne(dto.getAdgroupId());
-            AdgroupDTO newAdgroup=adgroupDAO.findOne(Long.valueOf(aid));
+            AdgroupDTO oldAdgroup = adgroupDAO.findOne(dto.getAdgroupId());
+            AdgroupDTO newAdgroup = adgroupDAO.findOne(Long.valueOf(aid));
             dto.setAdgroupId(Long.valueOf(aid));
             dto.setLocalStatus(2);
         }

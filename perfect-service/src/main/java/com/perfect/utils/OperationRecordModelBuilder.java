@@ -1,5 +1,6 @@
 package com.perfect.utils;
 
+import com.perfect.core.AppContext;
 import com.perfect.log.model.OperationRecordModel;
 
 /**
@@ -20,7 +21,7 @@ public class OperationRecordModelBuilder {
     private int optType;
 
     public static OperationRecordModelBuilder builder() {
-        return new OperationRecordModelBuilder().setOptTime(System.currentTimeMillis());
+        return new OperationRecordModelBuilder().setOptTime(System.currentTimeMillis()).setUserId(AppContext.getAccountId());
     }
 
     /**

@@ -1,16 +1,22 @@
 package com.perfect.service.impl;
 
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduServiceSupport;
+import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.autosdk.sms.v3.CreativeType;
+import com.perfect.autosdk.sms.v3.KeywordType;
 import com.perfect.autosdk_v4.sms.service.CampaignType;
 import com.perfect.commons.constants.LogLevelConstants;
 import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.core.AppContext;
+import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
@@ -45,6 +51,9 @@ public class LogSaveServiceImpl implements LogSaveService {
     @Resource
     private KeywordDAO keywordDAO;
 
+    @Resource
+    private AccountManageDAO accountManageDAO;
+
 
     //TODO  .setOptContentId(KeyWordEnum.addWord)
     //TODO   .setOptType(OptContentEnum.Add)
@@ -62,10 +71,10 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public void updateKeywordLog(KeywordDTO findKeyWord, Object oldVal, Object newVal, String optObj) {
+    public OperationRecordModel updateKeywordLog(KeywordType findKeyWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
         OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
         builder.setOptLevel(LogLevelConstants.KEYWORD)
-                .setOptContentId(OptContentEnum.Edit)
+                .setOptContentId(contentId)
                 .setOptContent(findKeyWord.getKeyword())
                 .setOptType(OptContentEnum.Edit)
                 .setOptObj(optObj)
@@ -77,7 +86,8 @@ public class LogSaveServiceImpl implements LogSaveService {
         if (newVal != null) {
             builder.setNewValue(newVal.toString());
         }
-        save(builder.build());
+        return builder.build();
+//        save(builder.build());
     }
 
     @Override
@@ -91,6 +101,35 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptContent(dbFindKeyWord.getKeyword());
         getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
         save(builder.build());
+    }
+
+    @Override
+    public OperationRecordModel uploadLogWordUpdate(KeywordType newWord) {
+        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        BaiduApiService baiduApiService = new BaiduApiService(commonService);
+        KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
+        if (baiduType.getPrice() != newWord.getPrice()) {
+            return updateKeywordLog(newWord, newWord.getPrice(), baiduType.getPrice(), LogObjConstants.PRICE, KeyWordEnum.updIdea);
+        }
+        if (baiduType.getPause() != newWord.getPause()) {
+            return updateKeywordLog(newWord, newWord.getPause(), baiduType.getPause(), LogObjConstants.PAUSE, KeyWordEnum.shelve);
+        }
+        if (baiduType.getMatchType() != newWord.getMatchType()) {
+            return updateKeywordLog(newWord, newWord.getMatchType(), baiduType.getMatchType(), LogObjConstants.MATCH_TYPE, KeyWordEnum.updWordMatch);
+        }
+        if (!baiduType.getPcDestinationUrl().equals(newWord.getPcDestinationUrl())) {
+            return updateKeywordLog(newWord, newWord.getPcDestinationUrl(), baiduType.getPcDestinationUrl(), LogObjConstants.PC_DES_URL, KeyWordEnum.updWordUrl);
+        }
+        if (!baiduType.getMobileDestinationUrl().equals(newWord.getMobileDestinationUrl())) {
+            return updateKeywordLog(newWord, newWord.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL, KeyWordEnum.updWordMobileUrl);
+        }
+        if (baiduType.getAdgroupId() != newWord.getAdgroupId()) {
+            AdgroupDTO newAdgroup = adgroupDAO.findOne(newWord.getAdgroupId());
+            AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
+            return updateKeywordLog(newWord, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName(), LogObjConstants.MOVE_ADGROUP, KeyWordEnum.wordTransfer);
+        }
+        return null;
     }
 
 //    @Override
@@ -131,7 +170,6 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptContentId(CampaignEnum.addPlan)
                 .setOptContent(campaignType.getCampaignName())
                 .setOptType(OptContentEnum.Add)
-                .setUserId(AppContext.getAccountId())
                 .setPlanName(campaignType.getCampaignName())
                 .setNewValue(campaignType.getCampaignName());
         return builder.build();
@@ -144,7 +182,6 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptContentId(CampaignEnum.delPlan)
                 .setOptContent(campaignType.getCampaignName())
                 .setOptType(OptContentEnum.delete)
-                .setUserId(AppContext.getAccountId())
                 .setPlanId(campaignType.getCampaignId())
                 .setPlanName(campaignType.getCampaignName())
                 .setOldValue(campaignType.getCampaignName())
@@ -157,7 +194,6 @@ public class LogSaveServiceImpl implements LogSaveService {
         OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
         builder.setOptLevel(LogLevelConstants.CAMPAIGN)
                 .setOptType(OptContentEnum.Edit)
-                .setUserId(AppContext.getAccountId())
                 .setPlanId(campaignType.getCampaignId())
                 .setPlanName(campaignType.getCampaignName())
                 .setOptContent(newvalue)
@@ -177,7 +213,6 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptType(OptContentEnum.Add)
                 .setOptContentId(AdGroupEnum.addUnit)
                 .setOptContent(adgroupType.getAdgroupName())
-                .setUserId(AppContext.getAccountId())
                 .setUnitName(adgroupType.getAdgroupName())
                 .setNewValue(adgroupType.getAdgroupName());
         return builder.build();
@@ -190,7 +225,6 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptType(OptContentEnum.delete)
                 .setOptContentId(AdGroupEnum.delUnit)
                 .setOptContent(adgroupType.getAdgroupName())
-                .setUserId(AppContext.getAccountId())
                 .setUnitId(adgroupType.getAdgroupId())
                 .setUnitName(adgroupType.getAdgroupName())
                 .setOldValue(adgroupType.getAdgroupName())
@@ -203,7 +237,6 @@ public class LogSaveServiceImpl implements LogSaveService {
         OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
         builder.setOptLevel(LogLevelConstants.ADGROUP)
                 .setOptType(OptContentEnum.Edit)
-                .setUserId(AppContext.getAccountId())
                 .setUnitId(adgroupType.getCampaignId())
                 .setUnitName(adgroupType.getAdgroupName())
                 .setOptContent(newvalue)
@@ -223,7 +256,6 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptType(OptContentEnum.Add)
                 .setOptContentId(CreativeEnum.addIdea)
                 .setOptContent(creativeType.getTitle())
-                .setUserId(AppContext.getAccountId())
                 .setNewValue(creativeType.getTitle());
         return builder.build();
     }
@@ -235,7 +267,6 @@ public class LogSaveServiceImpl implements LogSaveService {
                 .setOptType(OptContentEnum.delete)
                 .setOptContentId(CreativeEnum.delIdea)
                 .setOptContent(creativeType.getTitle())
-                .setUserId(AppContext.getAccountId())
                 .setOldValue(creativeType.getTitle())
                 .setOptComprehensiveID(creativeType.getCreativeId());
         return builder.build();
@@ -246,7 +277,6 @@ public class LogSaveServiceImpl implements LogSaveService {
         OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
         builder.setOptLevel(LogLevelConstants.CREATIVE)
                 .setOptType(OptContentEnum.Edit)
-                .setUserId(AppContext.getAccountId())
                 .setOptContent(newvalue)
                 .setNewValue(newvalue)
                 .setOldValue(oldvalue)
@@ -261,6 +291,11 @@ public class LogSaveServiceImpl implements LogSaveService {
         AdgroupDTO adgroupDTO = adgroupDAO.findOne(adgroupId);
         CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
         fillCommonData(builder, campaignDTO, adgroupDTO);
+    }
+
+    @Override
+    public Boolean saveLog(OperationRecordModel orm) {
+        return LogOptUtil.saveLogs(orm).isSuccess();
     }
 
 
