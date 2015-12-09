@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.perfect.account.SystemUserInfoVO;
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
-import com.perfect.dto.SystemUserDTO;
-import com.perfect.dto.baidu.AccountAllStateDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
@@ -16,9 +13,10 @@ import com.perfect.web.support.WebContextSupport;
 import com.perfect.web.support.WebUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -26,7 +24,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,58 +46,58 @@ public class AccountManageController extends WebContextSupport implements AuthCo
 
 //    @Resource
 //    private LogService logService;
-
-
-    /**
-     * 修改账户密码
-     *
-     * @return
-     */
-    @RequestMapping(value = "/updatePwd", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView updatePwd(ModelMap modelMap,
-                                  @RequestParam(value = "chenPwd", required = false) String oldpassword,
-                                  @RequestParam(value = "newPWD", required = false) String newPWD) {
-
-        int flag = accountManageService.updatePwd(oldpassword, newPWD);
-
-        modelMap.addAttribute("flag", flag);
-        return new ModelAndView("configuration/configure", modelMap);
-    }
-
-    /**
-     * 验证账户密码
-     *
-     * @return
-     */
-    @RequestMapping(value = "/judgePwd", method = {RequestMethod.GET, RequestMethod.POST})
-    public void judgePwd(HttpServletResponse response,
-                         @RequestParam(value = "password", required = false) String password) {
-
-        int flag = accountManageService.JudgePwd(password);
-
-        Map<String, Integer> map = new HashMap<>();
-        map.put("sturts", flag);
-
-        writeJson(map, response);
-
-    }
-
-    /**
-     * 得到所有未审核的帐号
-     *
-     * @return
-     */
-    @RequestMapping(value = "/getAccount", method = {RequestMethod.GET, RequestMethod.POST})
-    public void getAccount(HttpServletResponse response) {
-
-        List<SystemUserDTO> entities = accountManageService.getAccount();
-
-        Map<String, List<SystemUserDTO>> map = new HashMap<>();
-        map.put("rows", entities);
-
-        writeJson(map, response);
-
-    }
+//
+//
+//    /**
+//     * 修改账户密码
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/updatePwd", method = {RequestMethod.GET, RequestMethod.POST})
+//    public ModelAndView updatePwd(ModelMap modelMap,
+//                                  @RequestParam(value = "chenPwd", required = false) String oldpassword,
+//                                  @RequestParam(value = "newPWD", required = false) String newPWD) {
+//
+//        int flag = accountManageService.updatePwd(oldpassword, newPWD);
+//
+//        modelMap.addAttribute("flag", flag);
+//        return new ModelAndView("configuration/configure", modelMap);
+//    }
+//
+//    /**
+//     * 验证账户密码
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/judgePwd", method = {RequestMethod.GET, RequestMethod.POST})
+//    public void judgePwd(HttpServletResponse response,
+//                         @RequestParam(value = "password", required = false) String password) {
+//
+//        int flag = accountManageService.JudgePwd(password);
+//
+//        Map<String, Integer> map = new HashMap<>();
+//        map.put("sturts", flag);
+//
+//        writeJson(map, response);
+//
+//    }
+//
+//    /**
+//     * 得到所有未审核的帐号
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/getAccount", method = {RequestMethod.GET, RequestMethod.POST})
+//    public void getAccount(HttpServletResponse response) {
+//
+//        List<SystemUserDTO> entities = accountManageService.getAccount();
+//
+//        Map<String, List<SystemUserDTO>> map = new HashMap<>();
+//        map.put("rows", entities);
+//
+//        writeJson(map, response);
+//
+//    }
 
     /**
      * 获得所有帐号信息
@@ -110,54 +107,53 @@ public class AccountManageController extends WebContextSupport implements AuthCo
     @RequestMapping(value = "/getAccountAll", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountAll(HttpServletResponse response) {
 
-        List<AccountAllStateDTO> entities = accountManageService.getAccountAll();
+        List<SystemUserInfoVO> userInfoVOs = accountManageService.getAccountAll();
 
 
-        Map<String, List<AccountAllStateDTO>> map = new HashMap<>();
-        map.put("rows", entities);
-
-        writeJson(map, response);
-
-    }
-
-    /**
-     * 修改百度账户启用状态
-     *
-     * @return
-     */
-    @RequestMapping(value = "/updateAccountAllState", method = {RequestMethod.GET, RequestMethod.POST})
-    public void updateAccountAllState(HttpServletResponse response,
-                                      @RequestParam(value = "userName") String userName,
-                                      @RequestParam(value = "baiduId") Long baiduId,
-                                      @RequestParam(value = "state") Long state) {
-
-        int entities = accountManageService.updateSystemAccount(userName, state);
-
-        Map<String, Integer> map = new HashMap<>();
-        map.put("rows", entities);
+        Map<String, List<SystemUserInfoVO>> map = new HashMap<>();
+        map.put("rows", userInfoVOs);
 
         writeJson(map, response);
-
     }
 
-
-    /**
-     * 审核帐号
-     *
-     * @return
-     */
-    @RequestMapping(value = "/auditAccount", method = {RequestMethod.GET, RequestMethod.POST})
-    public void auditAccount(HttpServletResponse response,
-                             @RequestParam(value = "userName", required = false) String userName) {
-
-        int entities = accountManageService.auditAccount(userName);
-
-        Map<String, Integer> map = new HashMap<>();
-        map.put("struts", 1);
-
-        writeJson(map, response);
-
-    }
+//    /**
+//     * 修改百度账户启用状态
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/updateAccountAllState", method = {RequestMethod.GET, RequestMethod.POST})
+//    public void updateAccountAllState(HttpServletResponse response,
+//                                      @RequestParam(value = "userName") String userName,
+//                                      @RequestParam(value = "baiduId") Long baiduId,
+//                                      @RequestParam(value = "state") Long state) {
+//
+//        int entities = accountManageService.updateSystemAccount(userName, state);
+//
+//        Map<String, Integer> map = new HashMap<>();
+//        map.put("rows", entities);
+//
+//        writeJson(map, response);
+//
+//    }
+//
+//
+//    /**
+//     * 审核帐号
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/auditAccount", method = {RequestMethod.GET, RequestMethod.POST})
+//    public void auditAccount(HttpServletResponse response,
+//                             @RequestParam(value = "userName", required = false) String userName) {
+//
+//        int entities = accountManageService.auditAccount(userName);
+//
+//        Map<String, Integer> map = new HashMap<>();
+//        map.put("struts", 1);
+//
+//        writeJson(map, response);
+//
+//    }
 
     /**
      * 获取账户树
@@ -219,21 +215,21 @@ public class AccountManageController extends WebContextSupport implements AuthCo
 //        return imageUrl;
 //    }
 
-    /**
-     * 上传用户头像
-     *
-     * @param request
-     * @param response
-     * @return
-     * @throws IOException
-     */
-    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        byte[] bytes = multipartRequest.getFile("userImgFile").getBytes();
-        accountManageService.uploadImg(bytes);
-        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
-    }
+//    /**
+//     * 上传用户头像
+//     *
+//     * @param request
+//     * @param response
+//     * @return
+//     * @throws IOException
+//     */
+//    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//    public void uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+//        byte[] bytes = multipartRequest.getFile("userImgFile").getBytes();
+//        accountManageService.uploadImg(bytes);
+//        response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
+//    }
 
     /**
      * 百度账户切换
@@ -268,20 +264,20 @@ public class AccountManageController extends WebContextSupport implements AuthCo
         return new ModelAndView(jsonView);
     }
 
-    /**
-     * 更新百度账户信息
-     *
-     * @param dto
-     * @return
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String updateBaiduAccount(@RequestBody BaiduAccountInfoDTO dto) {
-        dto.setId(AppContext.getAccountId());
-        accountManageService.updateBaiduAccount(dto);
-        ObjectNode json_string = new ObjectMapper().createObjectNode();
-        json_string.put("status", true);
-        return json_string.toString();
-    }
+//    /**
+//     * 更新百度账户信息
+//     *
+//     * @param dto
+//     * @return
+//     */
+//    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String updateBaiduAccount(@RequestBody BaiduAccountInfoDTO dto) {
+//        dto.setId(AppContext.getAccountId());
+//        accountManageService.updateBaiduAccount(dto);
+//        ObjectNode json_string = new ObjectMapper().createObjectNode();
+//        json_string.put("status", true);
+//        return json_string.toString();
+//    }
 
     /**
      * 下载更新当前百度账户下的所有数据
