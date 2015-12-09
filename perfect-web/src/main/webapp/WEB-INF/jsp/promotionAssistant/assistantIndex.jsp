@@ -575,7 +575,7 @@
                                                 <ul id="sublinkMenu">
                                                     <li class="current">蹊径子链</li>
                                                     <li>推广电话</li>
-                                                    <li>商桥移动质询</li>
+                                                    <li>商桥移动咨询</li>
                                                 </ul>
                                             </div>
 
@@ -778,7 +778,7 @@
                                                            data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
-                                                            <th>&nbsp;商桥移动资讯</th>
+                                                            <th>&nbsp;商桥移动咨询</th>
                                                             <th>&nbsp;商桥状态</th>
                                                             <th>&nbsp;暂停/启用</th>
                                                             <th>&nbsp;推广计划名称</th>
@@ -1012,7 +1012,7 @@
                                                             <th>&nbsp;推广时段</th>
                                                             <th>&nbsp;推广地域</th>
                                                             <th>&nbsp;否定关键词</th>
-                                                            <th>&nbsp;IP排除</th>
+                                                            <%--<th>&nbsp;IP排除</th>--%>
                                                             <th>&nbsp;到预算下线时间</th>
                                                             <th class="username-column" data-noresize
                                                                 style="text-align:left; width:150px;"><span
@@ -1097,10 +1097,18 @@
                                                                     class="negativeWords_5"></em></div>
                                                         </li>
                                                         <li>
+                                                            <div class="t_list01 fl over">启用/暂停：</div>
+                                                            <div class="w_list02 fl over">
+                                                                <select class="selectPause_5"
+                                                                        onclick="enableOrPause(this,'campaign')">
+                                                                </select>
+                                                            </div>
+                                                        </li>
+                                                        <%--<li>
                                                             <div class="t_list01 fl over">IP排除：</div>
                                                             <div class="w_list02 fl over"><em class="excluedIp_5"></em>
                                                             </div>
-                                                        </li>
+                                                        </li>--%>
                                                         <li>
                                                             <div class="t_list01 fl over">创意展现方式：</div>
                                                             <div class="w_list02 fl over">
@@ -1121,14 +1129,7 @@
                                                             <div class="w_list02 fl over"><span
                                                                     class="budgetOfflineTime_5"></span></div>
                                                         </li>
-                                                        <li>
-                                                            <div class="t_list01 fl over">启用/暂停：</div>
-                                                            <div class="w_list02 fl over">
-                                                                <select class="selectPause_5"
-                                                                        onclick="enableOrPause(this,'campaign')">
-                                                                </select>
-                                                            </div>
-                                                        </li>
+
                                                     </ul>
                                                 </div>
                                             </div>
