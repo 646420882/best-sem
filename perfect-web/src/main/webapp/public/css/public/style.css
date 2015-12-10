@@ -4717,3 +4717,7 @@ input[type=checkbox]:focus {
 .chooseTime>ul .tfsjd span,.chooseTime>ul .ztsjd span{
     margin-top:5px;
 }
+.ztree{
+    max-height:734px;
+    overflow-y: auto;
+}
