@@ -76,7 +76,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
      */
     private void retrieveUserInfoWithToken(String token, HttpServletRequest request, HttpServletResponse response) {
         // 获取用户信息
-        Map<String, Object> params = Maps.newHashMap();
+        Map<String, Object> params = Maps.newHashMapWithExpectedSize(1);
         params.put("token", token);
         try {
             String userInformation = HttpClientUtils.postRequest(USER_VERIFICATION_URL, params);
@@ -172,23 +172,20 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
      * @throws IOException
      */
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Optional<Cookie> expiredCookieOptional = Arrays
-                .stream(request.getCookies())
-                .filter(c -> Objects.equals(TOKEN, c.getName()))
-                .findFirst();
+        // 清除Session中的用户信息
+        request.getSession().setAttribute(USER_INFORMATION, null);
 
-        if (expiredCookieOptional.isPresent()) {
-            // 清除关于token的Cookie信息
-            Cookie expiredCookie = new Cookie(TOKEN, expiredCookieOptional.get().getValue());
-            expiredCookie.setMaxAge(0);
-            expiredCookie.setPath("/");
-            response.addCookie(expiredCookie);
-
-            Map<String, Object> params = Maps.newHashMap();
-            params.put("token", expiredCookieOptional.get().getValue());
-            // 发送登出请求
-            HttpClientUtils.postRequest(USER_LOGINOUT_URL, params);
-        }
+//        Optional<Cookie> expiredCookieOptional = Arrays
+//                .stream(request.getCookies())
+//                .filter(c -> Objects.equals(TOKEN, c.getName()))
+//                .findFirst();
+//
+//        if (expiredCookieOptional.isPresent()) {
+//            Map<String, Object> params = Maps.newHashMapWithExpectedSize(1);
+//            params.put("token", expiredCookieOptional.get().getValue());
+//            // 发送登出请求
+//            HttpClientUtils.postRequest(USER_LOGINOUT_URL, params);
+//        }
 
         // 跳转至登录页面
         redirectToLogin(response);
