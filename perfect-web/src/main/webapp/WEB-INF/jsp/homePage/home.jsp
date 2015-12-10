@@ -210,7 +210,7 @@
                                 </li>
                             </ul>
                             <div class="download fr over">
-                                <a href="/account/downAccountCSV">下载全部 </a>
+                                <a href="javascript:downAccount();">下载全部 </a>
                             </div>
                         </div>
                         <div class="datebox hides"></div>

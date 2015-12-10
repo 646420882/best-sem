@@ -318,6 +318,13 @@ var loadPerformance = function (obj, date) {
         }
     });
 };
+
+
+var downAccount = function () {
+    window.location.href = "/account/downAccountCSV?startDate=" + daterangepicker_start_date + "&endDate=" + daterangepicker_end_date
+};
+
+
 /******************pagination*********************/
 var items_per_page = 10;    //默认每页显示20条数据
 var limitPer = 10;
@@ -432,12 +439,12 @@ var loadPerformanceCurve = function (obj, date) {
     $("#containerLegend").empty();
     /*初始化曲线图所用需求*/
     $("#containerLegend").append("<div class='tu_top over'><ul><li>展示曲线</li>"
-    + "<li><label class='checkbox-inlines'><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></label></li>"
-    + "<li><label class='checkbox-inlines'><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></label></li>"
-    + "<li><label class='checkbox-inlines'><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></label></li>"
-    + "<li><label class='checkbox-inlines'><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></label></li>"
-    + "<li><label class='checkbox-inlines'><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></label></li>"
-    + "<li><label class='checkbox-inlines'><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></label></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
+        + "<li><label class='checkbox-inlines'><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></label></li>"
+        + "<li><label class='checkbox-inlines'><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></label></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
 
     getDateParam(date);
     //展现

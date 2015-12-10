@@ -33,7 +33,7 @@ public interface AccountAnalyzeDAO extends HeyCrudRepository<AccountReportDTO, L
     /**
      * csv文件数据获取
      */
-    List<AccountReportDTO> downAccountCSV();
+    List<AccountReportDTO> downAccountCSV(Date start, Date end);
 
     /**
      * 统计推广助手关键字
