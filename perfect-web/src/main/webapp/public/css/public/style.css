@@ -623,11 +623,13 @@
 
 .shuju_detali ul li a {
     padding: 0 10px;
-    color: #0033cc;
+    color: #01aef0
+;
 }
 
 .shuju_detali ul li a:hover {
-    color: #ffb904;
+    color: #01aef0
+;
 }
 
 .shuju_detali ul li span {

@@ -16,6 +16,7 @@
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
     <%--<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">--%>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
     <link rel="stylesheet" type="text/css" media="all"
           href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
