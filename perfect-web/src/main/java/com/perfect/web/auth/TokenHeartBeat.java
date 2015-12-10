@@ -42,8 +42,8 @@ public class TokenHeartBeat implements Runnable, AuthConstants {
                     HttpClientUtils.postRequest(TOKEN_HEART_BEAT_URL, params);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | NullPointerException ignored) {
+
         }
 
         t.start();
