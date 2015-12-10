@@ -47,15 +47,18 @@ var _posX = 0, _posY = 0;
 var clickdddd = null;
 
 //双排日历初始化日期
-var flag=true;
-var flagt=true;
+var flag = true;
+var flagt = true;
 function lisClick(obj, days) {
+    //$('.date_choice:eq(0)').daterangepicker({
+    //    "linkedCalendars": true
+    //})
     if (days != null) {
         getDateParam(days);
     }
-   setTimeout(function(){
+    setTimeout(function () {
         if (days == 1) {
-            flag=true;
+            flag = true;
             //$('.date_choice:eq(0)').data('daterangepicker').setStartDate(GetDateStr(-days));
             //$('.date_choice:eq(0)').data('daterangepicker').setEndDate(GetDateStr(-days));
             $('.date_choice:eq(0)').children().find("b").html(daterangepicker_start_date);
@@ -64,7 +67,7 @@ function lisClick(obj, days) {
             $('.date_choice:eq(0)').data('daterangepicker').setEndDate(GetDateStr(0));
             $('.date_choice:eq(0)').children().find("b").html(daterangepicker_start_date + "至" + daterangepicker_end_date);
         }
-   })
+    })
     htmlLoding();
     getData();
     changedLiState(obj);
@@ -195,18 +198,17 @@ $(document).ready(function () {
             }
             //console.log(_startDate);
         });
-
     //双排日历初始化日期
-    $ ('.date_choice:eq(0)').click(function () {
-        if(flag){
+    $('.date_choice:eq(0)').click(function () {
+        if (flag) {
             $(".ranges:eq(0)").find("li").click()
-            flag=false;
+            flag = false;
         }
     })
-    $ ('.date_choice:eq(3)').click(function () {
-        if(flagt){
+    $('.date_choice:eq(3)').click(function () {
+        if (flagt) {
             $(".ranges:eq(3)").find("li").click()
-            flagt=false;
+            flagt = false;
         }
     })
     $(".ranges").hide();
@@ -277,6 +279,8 @@ var skipPagePer;
  * 分日表现数据加载
  * */
 var loadPerformance = function (obj, date) {
+    $('.date_choice:eq(2)').data('daterangepicker').setStartDate(GetDateStr(-date + 1));
+    $('.date_choice:eq(2)').data('daterangepicker').setEndDate(GetDateStr(0));
     if (obj != null) {
         changedLiState(obj);
     }
@@ -1016,7 +1020,7 @@ var curve = function () {
 
 var getImportKeywordDefault = function (obj, day) {
     if (day == 1) {
-        flagt=true;
+        flagt = true;
         //$('.date_choice:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day));
         //$('.date_choice:eq(3)').data('daterangepicker').setEndDate(GetDateStr(-day));
     } else {
