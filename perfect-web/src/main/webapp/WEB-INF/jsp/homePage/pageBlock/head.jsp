@@ -29,7 +29,7 @@
                             <div class="user_text fl">
                                 <div class="user_top over">
                                     <div class="fl"><b id="time"></b><a
-                                            href="${pageContext.request.contextPath}/configuration/"><span>${currSystemUserName}</span></a>
+                                            href="#"><span>${currSystemUserName}</span></a>
                                     </div>
                                     <input type="image" onclick="downloadUser()"
                                            src="${pageContext.request.contextPath}/public/img/download.png"
@@ -344,30 +344,30 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/commons/head.js"></script>
 <script>
     //全选效果
-    function customColumns(obj,type,allId,listId){
-        if(type == 0){//点击全选
-            if($(obj).prop('checked') == false){
-                $("#"+listId).find("input").each(function(){
-                    $(this).prop('checked',false);
+    function customColumns(obj, type, allId, listId) {
+        if (type == 0) {//点击全选
+            if ($(obj).prop('checked') == false) {
+                $("#" + listId).find("input").each(function () {
+                    $(this).prop('checked', false);
                 })
-            }else{
-                $("#"+listId).find("input").each(function(i){
-                    $(this).prop('checked','true');
+            } else {
+                $("#" + listId).find("input").each(function (i) {
+                    $(this).prop('checked', 'true');
                 })
             }
-        }else if(type == 1){//点击全选下的列表
-            if($(obj).prop('checked') == false){
-                $("#"+allId).find("input").prop('checked',false);
-            }else{
+        } else if (type == 1) {//点击全选下的列表
+            if ($(obj).prop('checked') == false) {
+                $("#" + allId).find("input").prop('checked', false);
+            } else {
                 var isFlag = true;
-                $("#"+listId).find("input").each(function(i){
-                    if($(this).prop('checked') == false){
+                $("#" + listId).find("input").each(function (i) {
+                    if ($(this).prop('checked') == false) {
                         isFlag = false;
                         return;
                     }
                 })
-                if(isFlag == true){
-                    $("#"+allId).find("input").prop('checked',true);
+                if (isFlag == true) {
+                    $("#" + allId).find("input").prop('checked', true);
                 }
             }
         }

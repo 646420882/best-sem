@@ -81,7 +81,6 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
         try {
             String userInformation = HttpClientUtils.postRequest(USER_VERIFICATION_URL, params);
             if (Objects.nonNull(userInformation)) {
-                // 解析JSON数据并将用户信息写入Session
                 parse(userInformation, request, response);
             }
         } catch (IOException ignored) {
@@ -100,6 +99,13 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
      * @param response
      */
     private void parse(String message, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        boolean isSuccess = JSON.parseObject(JSON.parseObject(message).getString("msg")).getBooleanValue("success");
+        if (!isSuccess) {
+            redirectToLogin(response);
+            return;
+        }
+
+        // 解析JSON数据并将用户信息写入Session
         JSONObject jsonObject = JSON.parseObject(JSON.parseObject(message).getString("msg")).getJSONObject("data");
         String username = jsonObject.getString("userName");
         String imageUrl = jsonObject.getString("img");
