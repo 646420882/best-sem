@@ -68,7 +68,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public OperationRecordModel updateKeywordLogAll(KeywordType newWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
+    public OperationRecordModel updateKeyword(KeywordType newWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
         OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
         builder.setOptLevel(LogLevelConstants.KEYWORD)
                 .setOptContentId(contentId)
@@ -107,31 +107,31 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public OperationRecordModel uploadLogWordUpdate(KeywordType newWord) {
+    public OperationRecordModel updateKeywordAll(KeywordType newWord) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
         if (baiduType != null && newWord != null) {
             if (baiduType.getPrice() != newWord.getPrice()) {
-                return updateKeywordLogAll(newWord, newWord.getPrice(), baiduType.getPrice(), LogObjConstants.PRICE, KeyWordEnum.updIdea);
+                return updateKeyword(newWord, newWord.getPrice(), baiduType.getPrice(), LogObjConstants.PRICE, KeyWordEnum.updIdea);
             }
             if (baiduType.getPause() != newWord.getPause()) {
-                return updateKeywordLogAll(newWord, newWord.getPause(), baiduType.getPause(), LogObjConstants.PAUSE, KeyWordEnum.shelve);
+                return updateKeyword(newWord, newWord.getPause(), baiduType.getPause(), LogObjConstants.PAUSE, KeyWordEnum.shelve);
             }
             if (baiduType.getMatchType() != newWord.getMatchType()) {
-                return updateKeywordLogAll(newWord, newWord.getMatchType(), baiduType.getMatchType(), LogObjConstants.MATCH_TYPE, KeyWordEnum.updWordMatch);
+                return updateKeyword(newWord, newWord.getMatchType(), baiduType.getMatchType(), LogObjConstants.MATCH_TYPE, KeyWordEnum.updWordMatch);
             }
             if (!baiduType.getPcDestinationUrl().equals(newWord.getPcDestinationUrl())) {
-                return updateKeywordLogAll(newWord, newWord.getPcDestinationUrl(), baiduType.getPcDestinationUrl(), LogObjConstants.PC_DES_URL, KeyWordEnum.updWordUrl);
+                return updateKeyword(newWord, newWord.getPcDestinationUrl(), baiduType.getPcDestinationUrl(), LogObjConstants.PC_DES_URL, KeyWordEnum.updWordUrl);
             }
             if (!baiduType.getMobileDestinationUrl().equals(newWord.getMobileDestinationUrl())) {
-                return updateKeywordLogAll(newWord, newWord.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL, KeyWordEnum.updWordMobileUrl);
+                return updateKeyword(newWord, newWord.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL, KeyWordEnum.updWordMobileUrl);
             }
             if (baiduType.getAdgroupId() != newWord.getAdgroupId()) {
                 AdgroupDTO newAdgroup = adgroupDAO.findOne(newWord.getAdgroupId());
                 AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
-                return updateKeywordLogAll(newWord, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName(), LogObjConstants.MOVE_ADGROUP, KeyWordEnum.wordTransfer);
+                return updateKeyword(newWord, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName(), LogObjConstants.MOVE_ADGROUP, KeyWordEnum.wordTransfer);
             }
         }
         return null;
@@ -227,7 +227,7 @@ public class LogSaveServiceImpl implements LogSaveService {
         if (baiduType != null && newCampaign != null) {
             if (!Objects.equals(baiduType.getCampaignName(), newCampaign.getCampaignName())) {
                 //TODO 计划名称修改的枚举需要重新添加 暂定用创意的修改表示
-                return updateCampaign(newCampaign, newCampaign.getCampaignName(), baiduType.getCampaignName(), LogObjConstants.NAME, CreativeEnum.updIdea);
+                return updateCampaign(newCampaign, newCampaign.getCampaignName(), baiduType.getCampaignName(), LogObjConstants.NAME, CampaignEnum.editCampaignName);
             }
             if (!Objects.equals(baiduType.getPause(), newCampaign.getPause())) {
                 return updateCampaign(newCampaign, newCampaign.getPause().toString(), baiduType.getPause().toString(), LogObjConstants.PAUSE, CampaignEnum.shelve);
@@ -371,7 +371,7 @@ public class LogSaveServiceImpl implements LogSaveService {
             if (!Objects.equals(baiduType.getCampaignId(), newAdgroup.getCampaignId())) {
                 CampaignDTO oldCampaignDTO = campaignDAO.findOne(baiduType.getCampaignId());
                 CampaignDTO newCampaignDTO = campaignDAO.findOne(newAdgroup.getCampaignId());
-                return updateAdgroup(newAdgroup, newCampaignDTO.getCampaignName(), oldCampaignDTO.getCampaignName(), LogObjConstants.MOVE_CAMPAIGN, AdGroupEnum.updUnitName);
+                return updateAdgroup(newAdgroup, newCampaignDTO.getCampaignName(), oldCampaignDTO.getCampaignName(), LogObjConstants.MOVE_CAMPAIGN, AdGroupEnum.ydCampaignName);
             }
             if (!Objects.equals(baiduType.getPause(), newAdgroup.getPause())) {
                 return updateAdgroup(newAdgroup, newAdgroup.getPause().toString(), baiduType.getPause().toString(), LogObjConstants.PAUSE, AdGroupEnum.shelve);
