@@ -150,7 +150,7 @@
                         <div class="list01_top over">
                             <Span>账户趋势图</Span>
                             <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                    data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势便于用户对关键数据信息一目了然。
+                                    data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势,便于用户对关键数据信息一目了然。
 "></button>
 
                             <ul id="clickqushi">
@@ -548,7 +548,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -594,7 +594,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -640,7 +640,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -686,7 +686,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -732,7 +732,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -778,7 +778,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -824,7 +824,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -870,7 +870,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -916,7 +916,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -962,7 +962,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
