@@ -733,7 +733,7 @@ To change this template use File | Settings | File Templates.
                         $('#keyword_group').append("");
                         $('#keyword_group').multipleSelect({
                             placeholder: "请选择分组",
-                            selectAll: false,
+                            selectAll: true,
                             minumimCountSelected: 20,
                             multiple: true
                         });
