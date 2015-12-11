@@ -150,7 +150,7 @@ public class LogServiceImpl {
 //    }
 //
 //    private void doUpdate(UpdateKeywordRequest updateKeywordRequest, KeywordService keywordService) {
-//        UpdateKeywordResponse response = keywordService.updateKeywordLog(updateKeywordRequest);
+//        UpdateKeywordResponse response = keywordService.updateKeywordLogAll(updateKeywordRequest);
 //        if (response == null) {
 //            return;
 //        }

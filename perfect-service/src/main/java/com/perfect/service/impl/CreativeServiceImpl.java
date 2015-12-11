@@ -364,6 +364,7 @@ public class CreativeServiceImpl implements CreativeService {
     public List<CreativeDTO> uploadUpdate(List<Long> crids) {
         List<CreativeDTO> returnCreativeDTOs = new ArrayList<>();
         List<CreativeType> creativeTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         crids.stream().forEach(s -> {
             CreativeDTO creativeDTOFind = creativeDAO.findOne(s);
             if (creativeDTOFind.getAdgroupId() != null) {
@@ -378,6 +379,10 @@ public class CreativeServiceImpl implements CreativeService {
                 creativeType.setMobileDisplayUrl(creativeDTOFind.getMobileDisplayUrl());
                 creativeType.setPause(creativeDTOFind.getPause());
                 creativeType.setDevicePreference(creativeDTOFind.getDevicePreference());
+                OperationRecordModel orm = logSaveService.updateCreativeLogAll(creativeType);
+                if (orm != null) {
+                    logs.add(orm);
+                }
                 creativeTypes.add(creativeType);
             }
         });
@@ -395,6 +400,13 @@ public class CreativeServiceImpl implements CreativeService {
                     returnCreativeDTO.setCreativeId(s.getCreativeId());
                     returnCreativeDTO.setStatus(s.getStatus());
                     returnCreativeDTOs.add(returnCreativeDTO);
+                    if (logs.size() > 0) {
+                        logs.stream().forEach(l -> {
+                            if (l.getOptComprehensiveID() == s.getCreativeId()) {
+                                logSaveService.saveLog(l);
+                            }
+                        });
+                    }
                 });
                 return returnCreativeDTOs;
             } catch (ApiException e) {

@@ -321,9 +321,9 @@ public class AdgroupServiceImpl implements AdgroupService {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         AdgroupDTO adgroupDTO = adgroupDAO.findOne(aid);
-        OperationRecordModel orm=null;
-        if(adgroupDTO!=null){
-            orm= logSaveService.removeAdgroup(adgroupDTO);
+        OperationRecordModel orm = null;
+        if (adgroupDTO != null) {
+            orm = logSaveService.removeAdgroup(adgroupDTO);
         }
         try {
             com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
@@ -347,6 +347,7 @@ public class AdgroupServiceImpl implements AdgroupService {
     public List<AdgroupDTO> uploadUpdate(List<Long> aid) {
         List<AdgroupDTO> returnAdgroupDTO = new ArrayList<>();
         List<AdgroupType> adgroupTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         aid.stream().forEach(s -> {
             AdgroupDTO adgroupDTOFind = adgroupDAO.findOne(s);
             AdgroupType adgroupType = new AdgroupType();
@@ -357,6 +358,10 @@ public class AdgroupServiceImpl implements AdgroupService {
             adgroupType.setExactNegativeWords(adgroupDTOFind.getExactNegativeWords());
             adgroupType.setPause(adgroupDTOFind.getPause());
             adgroupType.setStatus(adgroupDTOFind.getStatus());
+            OperationRecordModel orm = logSaveService.updateAdgroupAll(adgroupType);
+            if (orm != null) {
+                logs.add(orm);
+            }
             adgroupTypes.add(adgroupType);
         });
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
@@ -372,6 +377,13 @@ public class AdgroupServiceImpl implements AdgroupService {
                 adgroupDTO.setStatus(s.getStatus());
                 adgroupDTO.setPause(s.getPause());
                 returnAdgroupDTO.add(adgroupDTO);
+                if (logs.size() > 0) {
+                    logs.stream().forEach(l -> {
+                        if (l.getOptComprehensiveID() == s.getAdgroupId()) {
+                            logSaveService.saveLog(l);
+                        }
+                    });
+                }
             });
             return returnAdgroupDTO;
         } catch (ApiException e) {
