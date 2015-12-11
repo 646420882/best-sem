@@ -1115,7 +1115,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
                 keywordType.setPause(dtoFind.getPause());
-                OperationRecordModel orm = logSaveService.uploadLogWordUpdate(keywordType);
+                OperationRecordModel orm = logSaveService.updateKeywordAll(keywordType);
                 if (orm != null) {
                     logs.add(orm);
                 }

@@ -39,7 +39,7 @@ public interface LogSaveService {
      * @param contentId
      * @return
      */
-    OperationRecordModel updateKeywordLogAll(KeywordType findKeyWord, Object newVal, Object oldVal, String optObj, Integer contentId);
+    OperationRecordModel updateKeyword(KeywordType findKeyWord, Object newVal, Object oldVal, String optObj, Integer contentId);
 
     /**
      * <p>删除 关键词 操作日志保存</p>
@@ -55,7 +55,7 @@ public interface LogSaveService {
      * @param newWord
      * @return
      */
-    OperationRecordModel uploadLogWordUpdate(KeywordType newWord);
+    OperationRecordModel updateKeywordAll(KeywordType newWord);
 
 
     /**
