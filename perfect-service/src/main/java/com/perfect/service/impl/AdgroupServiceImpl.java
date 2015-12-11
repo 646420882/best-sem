@@ -19,6 +19,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.entity.keyword.KeywordEntity;
+import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -59,6 +60,9 @@ public class AdgroupServiceImpl implements AdgroupService {
 
     @Resource
     private CampaignService campaignService;
+
+    @Resource
+    private LogSaveService logSaveService;
 
     @Override
     public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit) {
@@ -237,6 +241,17 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
+    public void ormByCreative(CreativeDTO creativeDTO, OperationRecordModel orm) {
+        AdgroupDTO adgroupDTO = adgroupDAO.findOne(creativeDTO.getAdgroupId());
+        CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
+        orm.setUserId(AppContext.getAccountId());
+        orm.setUnitId(adgroupDTO.getAdgroupId());
+        orm.setUnitName(adgroupDTO.getAdgroupName());
+        orm.setPlanId(campaignDTO.getCampaignId());
+        orm.setPlanName(campaignDTO.getCampaignName());
+    }
+
+    @Override
     public double findPriceRatio(Long cid) {
         return adgroupDAO.findPriceRatio(cid);
     }
@@ -245,6 +260,7 @@ public class AdgroupServiceImpl implements AdgroupService {
     public List<AdgroupDTO> uploadAdd(List<String> aids) {
         List<AdgroupDTO> returnDto = new ArrayList<>();
         List<AdgroupType> adgroupTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         aids.stream().forEach(s -> {
             AdgroupDTO dto = adgroupDAO.findByObjId(s);
             CampaignDTO campaignDTO = campaignDAO.findByLongId(dto.getCampaignId());
@@ -256,6 +272,10 @@ public class AdgroupServiceImpl implements AdgroupService {
                 adgroupType.setPause(dto.getPause());
                 adgroupType.setNegativeWords(dto.getNegativeWords());
                 adgroupType.setExactNegativeWords(dto.getExactNegativeWords());
+                OperationRecordModel orm = logSaveService.addAdgroup(adgroupType);
+                if (orm != null) {
+                    logs.add(orm);
+                }
                 adgroupTypes.add(adgroupType);
             }
         });
@@ -274,6 +294,13 @@ public class AdgroupServiceImpl implements AdgroupService {
                     dto.setStatus(s.getStatus());
                     dto.setPause(s.getPause());
                     returnDto.add(dto);
+                    if (logs.size() > 0) {
+                        logs.stream().forEach(l -> {
+                            if (l.getOptContent().equals(s.getAdgroupName()) && s.getAdgroupId() != null) {
+                                logSaveService.saveLog(l);
+                            }
+                        });
+                    }
                 });
                 return returnDto;
             } catch (ApiException e) {
@@ -293,7 +320,11 @@ public class AdgroupServiceImpl implements AdgroupService {
         String result = null;
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-
+        AdgroupDTO adgroupDTO = adgroupDAO.findOne(aid);
+        OperationRecordModel orm=null;
+        if(adgroupDTO!=null){
+            orm= logSaveService.removeAdgroup(adgroupDTO);
+        }
         try {
             com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
             DeleteAdgroupRequest adgroupRequest = new DeleteAdgroupRequest();
@@ -302,6 +333,9 @@ public class AdgroupServiceImpl implements AdgroupService {
             }});
             DeleteAdgroupResponse adgroupResponse = adgroupService.deleteAdgroup(adgroupRequest);
             result = adgroupResponse.getResponse();
+            if (orm != null) {
+                logSaveService.saveLog(orm);
+            }
             return result;
         } catch (ApiException e) {
             e.printStackTrace();
@@ -407,13 +441,13 @@ public class AdgroupServiceImpl implements AdgroupService {
                     if (e.length() < 24) {
                         List<Long> longs = Lists.newArrayList();
                         longs.add(Long.valueOf(e));
-                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs, null);
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs, null);
                     } else {
                         List<String> strings = Lists.newArrayList();
                         strings.add(e);
-                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
-                        creativeDTOs = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
+                        keywordDTOs = keywordDAO.findKeywordByAdgroupIdsStr(strings, null);
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIdsForString(strings, null);
                     }
                     keywordDatas.clear();
                     creativeDatas.clear();
@@ -445,10 +479,10 @@ public class AdgroupServiceImpl implements AdgroupService {
                         }
 
                     });
-                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
-                    keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
-                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
+                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs, null);
+                    keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs, null);
+                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings, null);
+                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings, null);
                     if (!Objects.isNull(keydtos)) keywordDTOs.addAll(keydtos);
                     if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
                 } else {
@@ -463,10 +497,10 @@ public class AdgroupServiceImpl implements AdgroupService {
                             asList.add(String.valueOf(e.getId()));
                         }
                     });
-                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
-                    keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
-                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
+                    creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs, null);
+                    keywordDTOs = keywordDAO.findKeywordByAdgroupIdsLong(longs, null);
+                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings, null);
+                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings, null);
                     if (!Objects.isNull(keydtos)) keywordDTOs.addAll(keydtos);
                     if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
                 }
@@ -498,7 +532,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             List<String> objId = new ArrayList<>();
             List<Long> baidId = new ArrayList<>();
             strings.forEach(e -> {
-                 if (e.length() < 24) {
+                if (e.length() < 24) {
                     baidId.add(Long.parseLong(e));
                 } else {
                     objId.add(e);
@@ -507,8 +541,8 @@ public class AdgroupServiceImpl implements AdgroupService {
             List<KeywordDTO> keywordByAdgroupIdsLong = new ArrayList<>(keywordDAO.findKeywordByAdgroupIdsLong(baidId));
             List<KeywordDTO> keywordByAdgroupIdsStr = keywordDAO.findKeywordByAdgroupIdsStr(objId);
 
-            List<CreativeDTO> allsByAdgroupIds = new ArrayList<>(creativeDAO.getAllsByAdgroupIds(baidId,null));
-            List<CreativeDTO> allsByAdgroupIdsForString = creativeDAO.getAllsByAdgroupIdsForString(objId,null);
+            List<CreativeDTO> allsByAdgroupIds = new ArrayList<>(creativeDAO.getAllsByAdgroupIds(baidId, null));
+            List<CreativeDTO> allsByAdgroupIdsForString = creativeDAO.getAllsByAdgroupIdsForString(objId, null);
 
             keywordByAdgroupIdsLong.addAll(keywordByAdgroupIdsStr);
             allsByAdgroupIds.addAll(allsByAdgroupIdsForString);

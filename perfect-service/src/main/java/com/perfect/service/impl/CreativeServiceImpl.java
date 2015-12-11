@@ -16,6 +16,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -48,6 +49,9 @@ public class CreativeServiceImpl implements CreativeService {
     private CampaignService campaignService;
     @Resource
     private AdgroupService adgroupService;
+
+    @Resource
+    private LogSaveService logSaveService;
 
     @Override
     public List<Long> getCreativeIdByAdgroupId(Long adgroupId) {
@@ -240,6 +244,7 @@ public class CreativeServiceImpl implements CreativeService {
     public List<CreativeDTO> uploadAdd(List<String> crid) {
         List<CreativeDTO> returnCreativeDTOs = new ArrayList<>();
         List<CreativeType> creativeTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         crid.stream().forEach(s -> {
             CreativeDTO creativeDTOFind = creativeDAO.findByObjId(s);
 //            AdgroupDTO adgroupDTO = adgroupDAO.findOne(creativeDTOFind.getAdgroupId());
@@ -254,6 +259,10 @@ public class CreativeServiceImpl implements CreativeService {
                 creativeType.setMobileDisplayUrl(creativeDTOFind.getMobileDisplayUrl());
                 creativeType.setMobileDestinationUrl(creativeDTOFind.getMobileDestinationUrl());
                 creativeType.setDevicePreference(creativeDTOFind.getDevicePreference());
+                OperationRecordModel orm = logSaveService.addCreative(creativeType);
+                if (orm != null) {
+                    logs.add(orm);
+                }
                 creativeTypes.add(creativeType);
             }
         });
@@ -271,6 +280,11 @@ public class CreativeServiceImpl implements CreativeService {
                     creativeDTO.setCreativeId(s.getCreativeId());
                     creativeDTO.setStatus(s.getStatus());
                     returnCreativeDTOs.add(creativeDTO);
+                    logs.stream().forEach(c -> {
+                        if (c.getOptContent().equals(s.getTitle()) && s.getCreativeId() != null) {
+                            logSaveService.saveLog(c);
+                        }
+                    });
                 });
                 return returnCreativeDTOs;
             } catch (ApiException e) {
@@ -322,12 +336,17 @@ public class CreativeServiceImpl implements CreativeService {
     public Integer uploadDel(Long crid) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        CreativeDTO creativeDTO = creativeDAO.findOne(crid);
+        OperationRecordModel orm = logSaveService.removeCreative(creativeDTO);
         try {
             com.perfect.autosdk.sms.v3.CreativeService creativeService = commonService.getService(com.perfect.autosdk.sms.v3.CreativeService.class);
             DeleteCreativeRequest deleteCreativeRequest = new DeleteCreativeRequest();
             deleteCreativeRequest.setCreativeIds(new ArrayList<Long>() {{
                 add(crid);
             }});
+            if (orm != null) {
+                logSaveService.saveLog(orm);
+            }
             DeleteCreativeResponse deleteCreativeResponse = creativeService.deleteCreative(deleteCreativeRequest);
             return deleteCreativeResponse.getResult();
         } catch (ApiException e) {
@@ -393,14 +412,14 @@ public class CreativeServiceImpl implements CreativeService {
     @Override
     public List<CreativeDTO> getByCampaignIdStr(String cid) {
         List<String> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
-        List<CreativeDTO> creativeDTOs = creativeDAO.getAllsByAdgroupIdsForString(adgroupIds,null);
+        List<CreativeDTO> creativeDTOs = creativeDAO.getAllsByAdgroupIdsForString(adgroupIds, null);
         return creativeDTOs;
     }
 
     @Override
     public List<CreativeDTO> getByCampaignIdLong(Long cid) {
         List<Long> adgroupIds = adgroupDAO.getAdgroupIdByCampaignId(cid);
-        List<CreativeDTO> creativeDTOs = creativeDAO.getAllsByAdgroupIds(adgroupIds,null);
+        List<CreativeDTO> creativeDTOs = creativeDAO.getAllsByAdgroupIds(adgroupIds, null);
         return creativeDTOs;
     }
 
@@ -409,8 +428,8 @@ public class CreativeServiceImpl implements CreativeService {
         List<Long> adgroupLongIds = adgroupDAO.getAllAdgroupId();
         List<String> adgroupStringIds = adgroupDAO.getAllAdgroupIdStr();
 
-        List<CreativeDTO> creativeLongs = creativeDAO.getAllsByAdgroupIds(adgroupLongIds,forp);
-        List<CreativeDTO> creativeStrings = creativeDAO.getAllsByAdgroupIdsForString(adgroupStringIds,forp);
+        List<CreativeDTO> creativeLongs = creativeDAO.getAllsByAdgroupIds(adgroupLongIds, forp);
+        List<CreativeDTO> creativeStrings = creativeDAO.getAllsByAdgroupIdsForString(adgroupStringIds, forp);
 
         creativeLongs.addAll(creativeStrings);
         return creativeLongs;
@@ -431,10 +450,10 @@ public class CreativeServiceImpl implements CreativeService {
                     List<CreativeDTO> keywordDTOs;
                     if (dataId.length() < 24) {
                         List<Long> longs = Lists.newArrayList(Long.valueOf(param.getAdgroupId()));
-                        keywordDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
+                        keywordDTOs = creativeDAO.getAllsByAdgroupIds(longs, null);
                     } else {
                         List<String> strings = Lists.newArrayList(param.getAdgroupId());
-                        keywordDTOs = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
+                        keywordDTOs = creativeDAO.getAllsByAdgroupIdsForString(strings, null);
                     }
                     asList.clear();
                     keywordDTOs.forEach(e -> {
@@ -451,8 +470,8 @@ public class CreativeServiceImpl implements CreativeService {
                             else strings.add(e.getId());
 
                         });
-                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
-                        List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs, null);
+                        List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings, null);
                         if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
                     } else {
                         List<String> strings = Lists.newArrayList();
@@ -461,8 +480,8 @@ public class CreativeServiceImpl implements CreativeService {
                             if (e.getAdgroupId() != null) longs.add(e.getAdgroupId());
                             else strings.add(e.getId());
                         });
-                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs,null);
-                        List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
+                        creativeDTOs = creativeDAO.getAllsByAdgroupIds(longs, null);
+                        List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings, null);
                         if (!Objects.isNull(dtos)) creativeDTOs.addAll(dtos);
                     }
                     asList.clear();

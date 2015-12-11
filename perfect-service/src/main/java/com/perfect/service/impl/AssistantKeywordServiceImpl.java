@@ -1,12 +1,12 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
-import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.autosdk.sms.v3.KeywordService;
+import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
@@ -22,17 +22,19 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.log.model.OperationRecordModel;
+import com.perfect.log.util.LogOptUtil;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
+import com.perfect.utils.OperationRecordModelBuilder;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -73,7 +75,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     @Resource
     private MonitoringDao monitoringDao;
 
-
+    @Resource
+    private LogSaveService logSaveService;
     //推广计划名称
     private Map<String, CampaignDTO> campaignMap = new HashMap<>();
 
@@ -503,27 +506,21 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      */
     @Override
     public KeywordDTO updateKeyword(KeywordDTO kwd) {
+        KeywordDTO findKeyword = keywordDAO.findByLongId(kwd.getKeywordId());
 
         KeywordDTO newKeywordDTO;
 
         if (kwd.getKeywordId() == null) {
             newKeywordDTO = keywordDAO.findByObjectId(kwd.getId());
-        } else {
-            newKeywordDTO = keywordDAO.findOne(kwd.getKeywordId());
-        }
-        KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
-        BeanUtils.copyProperties(newKeywordDTO, keywordBackUpDTO);
-
-
-        if (newKeywordDTO.getKeywordId() == null) {
             newKeywordDTO.setLocalStatus(1);
         } else {
+            newKeywordDTO = keywordDAO.findOne(kwd.getKeywordId());
             newKeywordDTO.setLocalStatus(2);
         }
 
-        if (kwd.getKeyword() != null) {
-            newKeywordDTO.setKeyword(kwd.getKeyword());
-        }
+        KeywordBackUpDTO keywordBackUpDTO = new KeywordBackUpDTO();
+        BeanUtils.copyProperties(newKeywordDTO, keywordBackUpDTO);
+
 
         if (kwd.getPrice() != null) {
             newKeywordDTO.setPrice(kwd.getPrice());
@@ -543,15 +540,17 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         if (kwd.getPause() != null) {
             newKeywordDTO.setPause(kwd.getPause());
         }
-
         if (kwd.getAdgroupId() != null) {
             newKeywordDTO.setAdgroupId(kwd.getAdgroupId());
         }
         if (kwd.getAdgroupObjId() != null) {
             newKeywordDTO.setAdgroupObjId(kwd.getAdgroupObjId());
         }
-
-        keywordDAO.update(newKeywordDTO, keywordBackUpDTO);
+        try {
+            keywordDAO.update(newKeywordDTO, keywordBackUpDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return newKeywordDTO;
     }
 
@@ -982,9 +981,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordDTO> uploadAdd(List<String> kids) {
         List<KeywordDTO> retrunKeywordDTOs = new ArrayList<>();
         List<KeywordType> keywordTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         kids.stream().forEach(s -> {
             KeywordDTO keywordDTO = keywordDAO.findByObjectId(s);
-//            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
             if (keywordDTO.getAdgroupId() != null) {
                 KeywordType keywordType = new KeywordType();
                 keywordType.setAdgroupId(keywordDTO.getAdgroupId());
@@ -994,6 +993,10 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(keywordDTO.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(keywordDTO.getMobileDestinationUrl());
                 keywordType.setPause(keywordDTO.getPause());
+                OperationRecordModel orm = logSaveService.saveKeywordLog(keywordType);
+                if (orm != null) {
+                    logs.add(orm);
+                }
                 keywordTypes.add(keywordType);
             }
         });
@@ -1013,6 +1016,11 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     returnKeywordDTO.setKeywordId(s.getKeywordId());
                     returnKeywordDTO.setStatus(s.getStatus());
                     retrunKeywordDTOs.add(returnKeywordDTO);
+                    logs.stream().forEach(f -> {
+                        if (f.getOptContent().equals(s.getKeyword()) && s.getKeywordId() != null) {
+                            logSaveService.saveLog(f);
+                        }
+                    });
                 });
                 return retrunKeywordDTOs;
             } catch (ApiException e) {
@@ -1064,21 +1072,28 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         Integer result = 0;
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-        try {
-            KeywordService keywordService = commonService.getService(KeywordService.class);
-            DeleteKeywordRequest deleteKeywordRequest = new DeleteKeywordRequest();
-            deleteKeywordRequest.setKeywordIds(new ArrayList<Long>() {{
-                add(kid);
-            }});
-            DeleteKeywordResponse deleteKeywordResponse = keywordService.deleteKeyword(deleteKeywordRequest);
-            if (deleteKeywordResponse.getResult() == 1) {//如果全部删除成功，则执行删除本地的关键字
-                keywordDAO.deleteByIds(new ArrayList<Long>() {{
+        KeywordDTO keywordDTO = keywordDAO.findByLongId(kid);
+        if (keywordDTO != null) {
+            OperationRecordModel orm = logSaveService.deleteKeywordLog(keywordDTO);
+            try {
+                KeywordService keywordService = commonService.getService(KeywordService.class);
+                DeleteKeywordRequest deleteKeywordRequest = new DeleteKeywordRequest();
+                deleteKeywordRequest.setKeywordIds(new ArrayList<Long>() {{
                     add(kid);
                 }});
+                DeleteKeywordResponse deleteKeywordResponse = keywordService.deleteKeyword(deleteKeywordRequest);
+                if (deleteKeywordResponse.getResult() == 1) {//如果全部删除成功，则执行删除本地的关键字
+                    keywordDAO.deleteByIds(new ArrayList<Long>() {{
+                        add(kid);
+                    }});
+                    if (orm != null) {
+                        logSaveService.saveLog(orm);
+                    }
+                }
+                return deleteKeywordResponse.getResult();
+            } catch (ApiException e) {
+                e.printStackTrace();
             }
-            return deleteKeywordResponse.getResult();
-        } catch (ApiException e) {
-            e.printStackTrace();
         }
         return result;
     }
@@ -1087,6 +1102,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordDTO> uploadUpdate(List<Long> kid) {
         List<KeywordDTO> returnKeywordDTOs = new ArrayList<>();
         List<KeywordType> keywordTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         kid.stream().forEach(s -> {
             KeywordDTO dtoFind = keywordDAO.findOne(s);
             if (dtoFind != null) {
@@ -1099,9 +1115,15 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
                 keywordType.setPause(dtoFind.getPause());
+                OperationRecordModel orm = logSaveService.uploadLogWordUpdate(keywordType);
+                if (orm != null) {
+                    logs.add(orm);
+                }
                 keywordTypes.add(keywordType);
             }
         });
+
+
         if (keywordTypes.size() > 0) {
             BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
@@ -1117,7 +1139,13 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     keywordDTO.setStatus(s.getStatus());
                     keywordDAO.updateLs(keywordDTO);
                     returnKeywordDTOs.add(keywordDTO);
+                    logs.stream().forEach(f -> {
+                        if (f.getOptComprehensiveID() == s.getKeywordId()) {
+                            logSaveService.saveLog(f);
+                        }
+                    });
                 });
+
             } catch (ApiException e) {
                 e.printStackTrace();
             }
@@ -1402,6 +1430,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             dto.setAdgroupObjId(aid);
             dto.setLocalStatus(1);
         } else {
+            AdgroupDTO oldAdgroup = adgroupDAO.findOne(dto.getAdgroupId());
+            AdgroupDTO newAdgroup = adgroupDAO.findOne(Long.valueOf(aid));
             dto.setAdgroupId(Long.valueOf(aid));
             dto.setLocalStatus(2);
         }
@@ -1430,5 +1460,16 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         return null;
     }
 
+    @Override
+    public void ormByKeyword(KeywordDTO keywordDTO, OperationRecordModelBuilder builder) {
+        AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
+        CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
+        fillCommonData(builder, campaignDTO, adgroupDTO);
+    }
 
+    private OperationRecordModelBuilder fillCommonData(OperationRecordModelBuilder builder, CampaignDTO campaignDTO, AdgroupDTO adgroupDTO) {
+        return builder.setUserId(AppContext.getAccountId()).setUnitId(adgroupDTO.getAdgroupId()).setUnitName(adgroupDTO.getAdgroupName())
+                .setPlanId(campaignDTO.getCampaignId()).setPlanName(campaignDTO.getCampaignName());
+
+    }
 }

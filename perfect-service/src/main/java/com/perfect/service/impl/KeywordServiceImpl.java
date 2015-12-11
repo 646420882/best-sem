@@ -1,12 +1,21 @@
 package com.perfect.service.impl;
 
+import com.perfect.commons.constants.LogLevelConstants;
+import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.core.AppContext;
+import com.perfect.dao.adgroup.AdgroupDAO;
+import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.service.AccountManageService;
-import com.perfect.service.KeywordService;
-import com.perfect.service.KeywordDeduplicateService;
+import com.perfect.log.filters.field.enums.KeyWordEnum;
+import com.perfect.log.filters.field.enums.OptContentEnum;
+import com.perfect.log.model.OperationRecordModel;
+import com.perfect.log.util.LogOptUtil;
+import com.perfect.service.*;
+import com.perfect.utils.OperationRecordModelBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,7 +36,10 @@ public class KeywordServiceImpl implements KeywordService {
     @Resource
     private KeywordDeduplicateService keywordDeduplicateService;
     @Resource
-    private AccountManageService accountManageService;
+    private AssistantKeywordService assistantKeywordService;
+
+    @Resource
+    private LogSaveService logSaveService;
 
     @Override
     public List<KeywordDTO> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {
@@ -83,5 +95,9 @@ public class KeywordServiceImpl implements KeywordService {
     @Override
     public void deleteByIds(List<Long> ids) {
         keywordDAO.deleteByIds(ids);
+    }
+
+    private Boolean saveLog(OperationRecordModel orm) {
+        return LogOptUtil.saveLogs(orm).isSuccess();
     }
 }

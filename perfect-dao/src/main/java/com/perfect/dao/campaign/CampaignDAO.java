@@ -22,6 +22,7 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
 
     List<CampaignDTO> findHasLocalStatus();
 
+
     /**
      * <p>获取指定百度账号下在本地新增 修改 删除的推广计划
      * type: 1 -> 新增, 2 -> 修改, 3 -> 删除</p>
@@ -90,4 +91,7 @@ public interface CampaignDAO extends HeyCrudRepository<CampaignDTO, Long> {
      * @param status
      */
     void enableOrPauseCampaign(List<String> strings, boolean status);
+    
+    
+    List<CampaignDTO> findAllDownloadCampaignByBaiduAccountId();
 }

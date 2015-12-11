@@ -11,22 +11,27 @@ import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dao.keyword.KeywordDAO;
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
+import com.perfect.service.LogSaveService;
 import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,6 +58,9 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Resource
     private AdgroupService adgroupService;
+
+    @Resource
+    private LogSaveService logSaveService;
 
     @Override
     public CampaignDTO findOne(Long campaignId) {
@@ -213,6 +221,7 @@ public class CampaignServiceImpl implements CampaignService {
         }
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        OperationRecordModel orm = logSaveService.addCampaign(campaignType);
         try {
             com.perfect.autosdk.sms.v3.CampaignService campaignService = commonService.getService(com.perfect.autosdk.sms.v3.CampaignService.class);
             AddCampaignRequest addCampaignRequest = new AddCampaignRequest();
@@ -225,6 +234,11 @@ public class CampaignServiceImpl implements CampaignService {
                 campaignDTO.setStatus(s.getStatus());
                 campaignDTO.setPause(s.getPause());
                 returnDtos.add(campaignDTO);
+                if (orm != null) {
+                    if (orm.getOptContent().equals(s.getCampaignName()) && s.getCampaignId() != null) {
+                        logSaveService.saveLog(orm);
+                    }
+                }
             });
             return returnDtos;
         } catch (ApiException e) {
@@ -238,6 +252,16 @@ public class CampaignServiceImpl implements CampaignService {
     public int uploadDel(List<Long> campaignIds) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
+        List<OperationRecordModel> logs = Lists.newArrayList();
+        campaignIds.stream().forEach(c -> {
+            CampaignDTO campaignDTO = campaignDAO.findByLongId(c);
+            if (campaignDTO != null) {
+                OperationRecordModel orm = logSaveService.removeCampaign(campaignDTO);
+                if (orm != null) {
+                    logs.add(orm);
+                }
+            }
+        });
         try {
             com.perfect.autosdk.sms.v3.CampaignService campaignService = commonService.getService(com.perfect.autosdk.sms.v3.CampaignService.class);
             DeleteCampaignRequest deleteCampaignRequest = new DeleteCampaignRequest();
@@ -245,7 +269,14 @@ public class CampaignServiceImpl implements CampaignService {
             DeleteCampaignResponse deleteCampaignResponse = campaignService.deleteCampaign(deleteCampaignRequest);
             int result = deleteCampaignResponse.getResult();
             if (result != 0) {
-                campaignIds.stream().forEach(s -> campaignDAO.deleteByCampaignId(s));
+                campaignIds.stream().forEach(s -> {
+                    campaignDAO.deleteByCampaignId(s);
+                    if (logs.size() > 0) {
+                        logs.stream().forEach(l -> {
+                            logSaveService.saveLog(l);
+                        });
+                    }
+                });
                 return result;
             }
         } catch (ApiException e) {
@@ -341,10 +372,10 @@ public class CampaignServiceImpl implements CampaignService {
                             adgroupDatas.add(e.getId());
                         }
                     });
-                    List<CreativeDTO> dtos1 = creativeDAO.getAllsByAdgroupIds(longs,null);
-                    List<KeywordDTO> keydtos1 = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
-                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
+                    List<CreativeDTO> dtos1 = creativeDAO.getAllsByAdgroupIds(longs, null);
+                    List<KeywordDTO> keydtos1 = keywordDAO.findKeywordByAdgroupIdsLong(longs, null);
+                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings, null);
+                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings, null);
 
                     if (Objects.nonNull(keydtos1)) keywordDTOs.addAll(keydtos1);
                     if (Objects.nonNull(keydtos)) keywordDTOs.addAll(keydtos);
@@ -362,10 +393,10 @@ public class CampaignServiceImpl implements CampaignService {
                             adgroupDatas.add(String.valueOf(e.getId()));
                         }
                     });
-                    List<CreativeDTO> dtos1 = creativeDAO.getAllsByAdgroupIds(longs,null);
-                    List<KeywordDTO> keydtos1 = keywordDAO.findKeywordByAdgroupIdsLong(longs,null);
-                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings,null);
-                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings,null);
+                    List<CreativeDTO> dtos1 = creativeDAO.getAllsByAdgroupIds(longs, null);
+                    List<KeywordDTO> keydtos1 = keywordDAO.findKeywordByAdgroupIdsLong(longs, null);
+                    List<CreativeDTO> dtos = creativeDAO.getAllsByAdgroupIdsForString(strings, null);
+                    List<KeywordDTO> keydtos = keywordDAO.findKeywordByAdgroupIdsStr(strings, null);
 
                     if (Objects.nonNull(keydtos1)) keywordDTOs.addAll(keydtos1);
                     if (Objects.nonNull(keydtos)) keywordDTOs.addAll(keydtos);
@@ -414,9 +445,9 @@ public class CampaignServiceImpl implements CampaignService {
 
 
             EnableOrPauseParam enableOrPauseParam = new EnableOrPauseParam();
-            if(adgroupString.size() == 0){
+            if (adgroupString.size() == 0) {
                 enableOrPauseParam.setEnableOrPauseData(adgroupLong.toString().replaceAll("[\\[|\\]| ]", ""));
-            }else{
+            } else {
                 List<String> result = Stream.concat(adgroupLong.stream().map(Object::toString), adgroupString.stream()).collect(Collectors.toList());
                 enableOrPauseParam.setEnableOrPauseData(result.toString().replaceAll("[\\[|\\]| ]", ""));
             }
@@ -432,6 +463,71 @@ public class CampaignServiceImpl implements CampaignService {
                 campaignDAO.enableOrPauseCampaign(strings, true);
             }
         }
+
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllDownloadCampaignByBaiduAccountId(Integer type, long id) {
+
+        List<Map<String, Object>> temp_list = new ArrayList<Map<String, Object>>();
+        if (type.intValue() == 8) {
+            List<CampaignDTO> list = this.campaignDAO.findAllDownloadCampaignByBaiduAccountId();
+
+
+            if (list != null && list.size() > 0) {
+                for (CampaignDTO dto : list) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("account_id", dto.getAccountId());
+                    map.put("id", dto.getCampaignId());
+                    map.put("name", dto.getCampaignName());
+                    temp_list.add(map);
+                }
+            }
+        }
+
+
+        if (type.intValue() == 7) {
+            List<AdgroupDTO> list = this.adgroupService.getAdgroupByCampaignId(id);
+
+            if (list != null && list.size() > 0) {
+                for (AdgroupDTO dto : list) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("account_id", dto.getAccountId());
+                    map.put("id", dto.getAdgroupId());
+                    map.put("name", dto.getAdgroupName());
+                    temp_list.add(map);
+                }
+            }
+        }
+
+        if (type.intValue() == 5) {
+            List<KeywordDTO> list = this.keywordDAO.findByAdgroupId(AppContext.getAccountId(), id);
+            if (list != null && list.size() > 0) {
+                for (KeywordDTO dto : list) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("account_id", dto.getAccountId());
+                    map.put("id", dto.getKeywordId());
+                    map.put("name", dto.getKeyword());
+                    temp_list.add(map);
+                }
+            }
+        }
+
+        if (type.intValue() == 2) {
+            List<CreativeDTO> list = this.creativeDAO.findByAdgroupId(AppContext.getAccountId(), id);
+            if (list != null && list.size() > 0) {
+                for (CreativeDTO dto : list) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("account_id", dto.getAccountId());
+                    map.put("id", dto.getCreativeId());
+                    map.put("name", dto.getTitle());
+                    temp_list.add(map);
+                }
+            }
+        }
+
+
+        return temp_list;
 
     }
 }

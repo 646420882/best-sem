@@ -294,11 +294,11 @@ function addSubLinkOk() {
     var math = new RegExp("(http://|https://){1}.*" + domain + "+.*");
     var subPause = $("#subPause :selected").val();
     var mType = $("#subMtype :selected").val();
-    var linkName1 = $("input[name='linkName1']").val();
-    var linkUrl1 = $("input[name='linkURL1']").val();
     var subCamp = $("#subCampaign :selected").val();
     var subAdgroup = $("#subAdgroup :selected").val();
     if(mType==0){
+        var linkName1 = $("input[name='linkNameIn1']").val();
+        var linkUrl1 = $("input[name='linkURLIn1']").val();
         names="";
         links="";
         if (parseInt(getChar(linkName1)) > 16 || linkName1 == "") {
@@ -320,8 +320,8 @@ function addSubLinkOk() {
         names += linkName1 + "\n";
         links += linkUrl1 + "\n";
         array.push(1);
-        var linkName2 = $("input[name='linkName2']").val();
-        var linkUrl2 = $("input[name='linkURL2']").val();
+        var linkName2 = $("input[name='linkNameIn2']").val();
+        var linkUrl2 = $("input[name='linkURLIn2']").val();
         if (parseInt(getChar(linkName2)) > 16 || linkName2 == "") {
             //alert("蹊径子链二名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
             AlertPrompt.show("蹊径子链二名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
@@ -341,8 +341,8 @@ function addSubLinkOk() {
         names += linkName2 + "\n";
         links += linkUrl2 + "\n";
         array.push(1);
-        var linkName3 = $("input[name='linkName3']").val();
-        var linkUrl3 = $("input[name='linkURL3']").val();
+        var linkName3 = $("input[name='linkNameIn3']").val();
+        var linkUrl3 = $("input[name='linkURLIn3']").val();
         if (parseInt(getChar(linkName3)) > 16 || linkName3 == "") {
             //alert("蹊径子链三名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
             AlertPrompt.show("蹊径子链三名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
@@ -362,8 +362,8 @@ function addSubLinkOk() {
         names += linkName3 + "\n";
         links += linkUrl3 + "\n";
         array.push(1);
-        var linkName4 = $("input[name='linkName4']").val();
-        var linkUrl4 = $("input[name='linkURL4']").val();
+        var linkName4 = $("input[name='linkNameIn4']").val();
+        var linkUrl4 = $("input[name='linkURLIn4']").val();
         if (linkName4 != "" && linkUrl4 != "") {
             if (parseInt(getChar(linkName4)) > 16) {
                 //alert("蹊径子链四名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
@@ -386,8 +386,8 @@ function addSubLinkOk() {
                 }
             }
         }
-        var linkName5 = $("input[name='linkName5']").val();
-        var linkUrl5 = $("input[name='linkURL5']").val();
+        var linkName5 = $("input[name='linkNameIn5']").val();
+        var linkUrl5 = $("input[name='linkURLIn5']").val();
         if (linkName5 != "" && linkUrl5 != "") {
             if (parseInt(getChar(linkName5)) > 16) {
                 //alert("蹊径子链五名称不能为空，并且不能大于16个字节，一个汉字占两个字节!");
@@ -453,6 +453,8 @@ function addSubLinkOk() {
             AlertPrompt.show("计算机蹊径子链必须大于3条!");
         }
     }else{
+        var linkName1 = $("input[name='linkName1']").val();
+        var linkUrl1 = $("input[name='linkURL1']").val();
         names="";
         links="";
         if (parseInt(getChar(linkName1)) > 16 || linkName1 == "") {
