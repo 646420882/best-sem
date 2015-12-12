@@ -8,8 +8,10 @@ import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.log.model.OperationRecordModel;
-import com.perfect.utils.OperationRecordModelBuilder;
+import com.perfect.dto.log.SystemLogDTO;
+import com.perfect.utils.SystemLogDTOBuilder;
+
+import java.util.List;
 
 
 /**
@@ -21,84 +23,92 @@ import com.perfect.utils.OperationRecordModelBuilder;
  */
 public interface LogSaveService {
 
-    OperationRecordModel saveKeywordLog(KeywordType newWord);
+    SystemLogDTO saveKeywordLog(KeywordType newWord);
 
-    OperationRecordModel updateKeywordLog(KeywordType findKeyWord,Object newVal, Object oldVal, String optObj,Integer contentId);
+    SystemLogDTO updateKeywordLog(KeywordType findKeyWord, Object newVal, Object oldVal, String optObj, Integer contentId);
 
-    OperationRecordModel deleteKeywordLog(KeywordDTO newWord);
+    SystemLogDTO deleteKeywordLog(KeywordDTO newWord);
 
-    OperationRecordModel uploadLogWordUpdate(KeywordType newWord);
+    SystemLogDTO uploadLogWordUpdate(KeywordType newWord);
 
 
     /**
      * <p> 添加 计划 操作日志保存</p>
+     *
      * @param campaignType
      * @return 操作日志数据
      */
-    OperationRecordModel addCampaign(CampaignType campaignType);
+    SystemLogDTO addCampaign(CampaignType campaignType);
 
     /**
      * <p> 删除 计划 操作日志</p>
+     *
      * @param campaignType
      * @return 操作日志数据
      */
-    OperationRecordModel removeCampaign(CampaignDTO campaignType);
+    SystemLogDTO removeCampaign(CampaignDTO campaignType);
 
     /**
      * <p> 更新 计划 操作日志</p>
+     *
      * @param campaignType
      * @return 操作日志数据
      */
-    OperationRecordModel updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid);
+    SystemLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid);
 
     /**
      * <p> 添加 单元 操作日志保存</p>
+     *
      * @param adgroupType
      * @return 操作日志数据
      */
-    OperationRecordModel addAdgroup(AdgroupType adgroupType);
+    SystemLogDTO addAdgroup(AdgroupType adgroupType);
 
     /**
      * <p> 删除 单元 操作日志</p>
+     *
      * @param adgroupType
      * @return 操作日志数据
      */
-    OperationRecordModel removeAdgroup(AdgroupDTO adgroupType);
+    SystemLogDTO removeAdgroup(AdgroupDTO adgroupType);
 
     /**
      * <p> 更新 单元 操作日志</p>
+     *
      * @param adgroupType
      * @return 操作日志数据
      */
-    OperationRecordModel updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid);
+    SystemLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid);
 
     /**
      * <p> 添加 创意 操作日志保存</p>
+     *
      * @param creativeType
      * @return 操作日志数据
      */
-    OperationRecordModel addCreative(CreativeType creativeType);
+    SystemLogDTO addCreative(CreativeType creativeType);
 
     /**
      * <p> 删除 创意  操作日志</p>
+     *
      * @param creativeType
      * @return 操作日志数据
      */
-    OperationRecordModel removeCreative(CreativeDTO creativeType);
+    SystemLogDTO removeCreative(CreativeDTO creativeType);
 
     /**
      * <p> 更新 创意 操作日志</p>
+     *
      * @param creativeType
      * @return 操作日志数据
      */
-    OperationRecordModel updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid);
+    SystemLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid);
 
 
-    void getCamAdgroupInfoByLong(Long adgroupId, OperationRecordModelBuilder builder);
+    void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder);
 
-    void getCampInfoByLongId(Long campaignId,OperationRecordModelBuilder builder);
+    void getCampInfoByLongId(Long campaignId, SystemLogDTOBuilder builder);
 
-    Boolean saveLog(OperationRecordModel orm);
-
+    void save(List<SystemLogDTO> systemLogDTOs);
 
 }

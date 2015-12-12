@@ -6,7 +6,6 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.autosdk.sms.v3.KeywordService;
-import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
@@ -23,13 +22,12 @@ import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.log.model.OperationRecordModel;
-import com.perfect.log.util.LogOptUtil;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
-import com.perfect.utils.OperationRecordModelBuilder;
+import com.perfect.utils.SystemLogDTOBuilder;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -1461,13 +1459,13 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
     @Override
-    public void ormByKeyword(KeywordDTO keywordDTO, OperationRecordModelBuilder builder) {
+    public void ormByKeyword(KeywordDTO keywordDTO, SystemLogDTOBuilder builder) {
         AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
         CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
         fillCommonData(builder, campaignDTO, adgroupDTO);
     }
 
-    private OperationRecordModelBuilder fillCommonData(OperationRecordModelBuilder builder, CampaignDTO campaignDTO, AdgroupDTO adgroupDTO) {
+    private SystemLogDTOBuilder fillCommonData(SystemLogDTOBuilder builder, CampaignDTO campaignDTO, AdgroupDTO adgroupDTO) {
         return builder.setUserId(AppContext.getAccountId()).setUnitId(adgroupDTO.getAdgroupId()).setUnitName(adgroupDTO.getAdgroupName())
                 .setPlanId(campaignDTO.getCampaignId()).setPlanName(campaignDTO.getCampaignName());
 

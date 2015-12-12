@@ -1,21 +1,18 @@
 package com.perfect.service;
 
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
-import com.perfect.utils.OperationRecordModelBuilder;
+import com.perfect.utils.SystemLogDTOBuilder;
 import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by john on 2014/8/19.
@@ -155,7 +152,7 @@ public interface AssistantKeywordService {
      * @param keywordDTO
      * @param orm
      */
-    void ormByKeyword(KeywordDTO keywordDTO, OperationRecordModelBuilder orm);
+    void ormByKeyword(KeywordDTO keywordDTO, SystemLogDTOBuilder orm);
 
     /**
      *  关键词日志记录方法

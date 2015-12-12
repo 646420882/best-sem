@@ -14,23 +14,22 @@ import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
+import com.perfect.dao.log.SystemLogDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.log.SystemLogDTO;
 import com.perfect.log.filters.field.enums.*;
-import com.perfect.log.model.OperationRecordModel;
+import com.perfect.log.model.SystemLogDTO;
 import com.perfect.log.util.LogOptUtil;
-import com.perfect.service.AdgroupService;
 import com.perfect.service.LogSaveService;
-import com.perfect.utils.OperationRecordModelBuilder;
-import org.springframework.beans.BeanUtils;
+import com.perfect.utils.SystemLogDTOBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * @author xiaowei
@@ -54,51 +53,54 @@ public class LogSaveServiceImpl implements LogSaveService {
     @Resource
     private AccountManageDAO accountManageDAO;
 
+    @Resource
+    private SystemLogDAO systemLogDAO;
 
-    //TODO  .setOptContentId(KeyWordEnum.addWord)
+
+    //TODO  .setOid(KeyWordEnum.addWord)
     //TODO   .setOptType(OptContentEnum.Add)
     @Override
-    public OperationRecordModel saveKeywordLog(KeywordType newWord) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.KEYWORD)
-                .setOptContentId(KeyWordEnum.addWord)
+    public SystemLogDTO saveKeywordLog(KeywordType newWord) {
+        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+        builder.setType(LogLevelConstants.KEYWORD)
+                .setOid(KeyWordEnum.addWord)
                 .setOptContent(newWord.getKeyword())
                 .setOptType(OptContentEnum.Add)
-                .setNewValue(newWord.getKeyword())
+                .setAfter(newWord.getKeyword())
                 .setOptObj(LogObjConstants.NAME);
         getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
         return builder.build();
     }
 
     @Override
-    public OperationRecordModel updateKeywordLog(KeywordType newWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.KEYWORD)
-                .setOptContentId(contentId)
+    public SystemLogDTO updateKeywordLog(KeywordType newWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
+        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+        builder.setType(LogLevelConstants.KEYWORD)
+                .setOid(contentId)
                 .setOptContent(newWord.getKeyword())
                 .setOptType(OptContentEnum.Edit)
                 .setOptObj(optObj)
                 .setOptComprehensiveID(newWord.getKeywordId() != null ? newWord.getKeywordId() : null);
         getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
         if (oldVal != null) {
-            builder.setOldValue(oldVal.toString());
+            builder.setBefore(oldVal.toString());
         }
         if (newVal != null) {
-            builder.setNewValue(newVal.toString());
+            builder.setAfter(newVal.toString());
         }
         return builder.build();
     }
 
     @Override
-    public OperationRecordModel deleteKeywordLog(KeywordDTO newWord) {
+    public SystemLogDTO deleteKeywordLog(KeywordDTO newWord) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
         if (baiduType != null) {
-            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-            builder.setOptLevel(LogLevelConstants.KEYWORD)
-                    .setOptContentId(OptContentEnum.delete)
+            SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+            builder.setType(LogLevelConstants.KEYWORD)
+                    .setOid(OptContentEnum.delete)
                     .setOptType(KeyWordEnum.delWord)
                     .setOptContent(newWord.getKeyword())
                     .setOptComprehensiveID(newWord.getKeywordId())
@@ -110,7 +112,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public OperationRecordModel uploadLogWordUpdate(KeywordType newWord) {
+    public SystemLogDTO uploadLogWordUpdate(KeywordType newWord) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
@@ -140,9 +142,9 @@ public class LogSaveServiceImpl implements LogSaveService {
 
 //    @Override
 //    public void reduceKeywordLog(KeywordDTO dbFindKeyWord) {
-//        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-//        builder.setOptLevel(LogLevelConstants.KEYWORD)
-//                .setOptContentId(OptContentEnum.reBak)
+//        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+//        builder.setType(LogLevelConstants.KEYWORD)
+//                .setOid(OptContentEnum.reBak)
 //                .setOptContent(dbFindKeyWord.getKeyword())
 //                .setOptType(OptContentEnum.reBak)
 //                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
@@ -152,50 +154,50 @@ public class LogSaveServiceImpl implements LogSaveService {
 
     //    @Override
 //    public void moveKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal) {
-//        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-//        builder.setOptLevel(LogLevelConstants.KEYWORD)
-//                .setOptContentId(OptContentEnum.KeyMove)
+//        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+//        builder.setType(LogLevelConstants.KEYWORD)
+//                .setOid(OptContentEnum.KeyMove)
 //                .setOptContent(dbFindKeyWord.getKeyword())
 //                .setOptType(OptContentEnum.KeyMove)
 //                .setOptObj(LogObjConstants.MOVE_ADGROUP)
 //                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
 //        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
 //        if (oldVal != null) {
-//            builder.setOldValue(oldVal.toString());
+//            builder.setBefore(oldVal.toString());
 //        }
 //        if (newVal != null) {
-//            builder.setNewValue(newVal.toString());
+//            builder.setAfter(newVal.toString());
 //        }
 //        save(builder.build());
 //    }
 //------------------------------------计划-----------------------------------------
     @Override
-    public OperationRecordModel addCampaign(CampaignType campaignType) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.CAMPAIGN)
-                .setOptContentId(CampaignEnum.addPlan)
+    public SystemLogDTO addCampaign(CampaignType campaignType) {
+        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+        builder.setType(LogLevelConstants.CAMPAIGN)
+                .setOid(CampaignEnum.addPlan)
                 .setOptContent(campaignType.getCampaignName())
                 .setOptType(OptContentEnum.Add)
-                .setPlanName(campaignType.getCampaignName())
-                .setNewValue(campaignType.getCampaignName());
+                .setCampaignName(campaignType.getCampaignName())
+                .setAfter(campaignType.getCampaignName());
         return builder.build();
     }
 
     @Override
-    public OperationRecordModel removeCampaign(CampaignDTO campaignType) {
+    public SystemLogDTO removeCampaign(CampaignDTO campaignType) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         CampaignType baiduType = baiduApiService.getCampaignTypeById(campaignType.getCampaignId());
         if (baiduType != null) {
-            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-            builder.setOptLevel(LogLevelConstants.CAMPAIGN)
-                    .setOptContentId(CampaignEnum.delPlan)
+            SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+            builder.setType(LogLevelConstants.CAMPAIGN)
+                    .setOid(CampaignEnum.delPlan)
                     .setOptContent(campaignType.getCampaignName())
                     .setOptType(OptContentEnum.delete)
-                    .setPlanId(campaignType.getCampaignId())
-                    .setPlanName(campaignType.getCampaignName())
-                    .setOldValue(campaignType.getCampaignName())
+                    .setCampaignId(campaignType.getCampaignId())
+                    .setCampaignName(campaignType.getCampaignName())
+                    .setBefore(campaignType.getCampaignName())
                     .setOptComprehensiveID(campaignType.getCampaignId());
             return builder.build();
         }
@@ -203,48 +205,48 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public OperationRecordModel updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.CAMPAIGN)
+    public SystemLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid) {
+        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+        builder.setType(LogLevelConstants.CAMPAIGN)
                 .setOptType(OptContentEnum.Edit)
-                .setPlanId(campaignType.getCampaignId())
-                .setPlanName(campaignType.getCampaignName())
+                .setCampaignId(campaignType.getCampaignId())
+                .setCampaignName(campaignType.getCampaignName())
                 .setOptContent(newvalue)
-                .setNewValue(newvalue)
-                .setOldValue(oldvalue)
+                .setAfter(newvalue)
+                .setBefore(oldvalue)
                 .setOptObj(optObj)
-                .setOptContentId(contentid)
+                .setOid(contentid)
                 .setOptComprehensiveID(campaignType.getCampaignId());
         return builder.build();
     }
 
     //----------------------------------单元------------------------------------------------
     @Override
-    public OperationRecordModel addAdgroup(AdgroupType adgroupType) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.ADGROUP)
+    public SystemLogDTO addAdgroup(AdgroupType adgroupType) {
+        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+        builder.setType(LogLevelConstants.ADGROUP)
                 .setOptType(OptContentEnum.Add)
-                .setOptContentId(AdGroupEnum.addUnit)
+                .setOid(AdGroupEnum.addUnit)
                 .setOptContent(adgroupType.getAdgroupName())
-                .setUnitName(adgroupType.getAdgroupName())
-                .setNewValue(adgroupType.getAdgroupName());
+                .setAdgroupName(adgroupType.getAdgroupName())
+                .setAfter(adgroupType.getAdgroupName());
         getCampInfoByLongId(adgroupType.getCampaignId(), builder);
         return builder.build();
     }
 
     @Override
-    public OperationRecordModel removeAdgroup(AdgroupDTO adgroupType) {
+    public SystemLogDTO removeAdgroup(AdgroupDTO adgroupType) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         AdgroupType baiduType = baiduApiService.getAdgroupTypeById(adgroupType.getAdgroupId());
         if (baiduType != null) {
-            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-            builder.setOptLevel(LogLevelConstants.ADGROUP)
+            SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+            builder.setType(LogLevelConstants.ADGROUP)
                     .setOptType(OptContentEnum.delete)
-                    .setOptContentId(AdGroupEnum.delUnit)
+                    .setOid(AdGroupEnum.delUnit)
                     .setOptContent(adgroupType.getAdgroupName())
-                    .setOldValue(adgroupType.getAdgroupName())
+                    .setBefore(adgroupType.getAdgroupName())
                     .setOptComprehensiveID(adgroupType.getAdgroupId());
             getCampInfoByLongId(adgroupType.getCampaignId(), builder);
             return builder.build();
@@ -253,15 +255,15 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public OperationRecordModel updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.ADGROUP)
+    public SystemLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid) {
+        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+        builder.setType(LogLevelConstants.ADGROUP)
                 .setOptType(OptContentEnum.Edit)
-                .setUnitId(adgroupType.getCampaignId())
-                .setUnitName(adgroupType.getAdgroupName())
+                .setAdgroupId(adgroupType.getCampaignId())
+                .setAdgroupName(adgroupType.getAdgroupName())
                 .setOptContent(newvalue)
-                .setNewValue(newvalue)
-                .setOldValue(oldvalue)
+                .setAfter(newvalue)
+                .setBefore(oldvalue)
                 .setOptObj(optObj)
                 .setOptContentId(contentid)
                 .setOptComprehensiveID(adgroupType.getAdgroupId());
@@ -270,30 +272,30 @@ public class LogSaveServiceImpl implements LogSaveService {
 
     //-----------------------------------------创意-----------------------------------------------
     @Override
-    public OperationRecordModel addCreative(CreativeType creativeType) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.CREATIVE)
+    public SystemLogDTO addCreative(CreativeType creativeType) {
+        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+        builder.setType(LogLevelConstants.CREATIVE)
                 .setOptType(OptContentEnum.Add)
-                .setOptContentId(CreativeEnum.addIdea)
+                .setOid(CreativeEnum.addIdea)
                 .setOptContent(creativeType.getTitle())
-                .setNewValue(creativeType.getTitle());
+                .setAfter(creativeType.getTitle());
         getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
         return builder.build();
     }
 
     @Override
-    public OperationRecordModel removeCreative(CreativeDTO creativeType) {
+    public SystemLogDTO removeCreative(CreativeDTO creativeType) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         CreativeType baiduType = baiduApiService.getCreativeTypeById(creativeType.getCreativeId());
         if (baiduType != null) {
-            OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-            builder.setOptLevel(LogLevelConstants.CREATIVE)
+            SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+            builder.setType(LogLevelConstants.CREATIVE)
                     .setOptType(OptContentEnum.delete)
-                    .setOptContentId(CreativeEnum.delIdea)
+                    .setOid(CreativeEnum.delIdea)
                     .setOptContent(creativeType.getTitle())
-                    .setOldValue(creativeType.getTitle())
+                    .setBefore(creativeType.getTitle())
                     .setOptComprehensiveID(creativeType.getCreativeId());
             getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
             return builder.build();
@@ -302,57 +304,51 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public OperationRecordModel updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid) {
-        OperationRecordModelBuilder builder = OperationRecordModelBuilder.builder();
-        builder.setOptLevel(LogLevelConstants.CREATIVE)
+    public SystemLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid) {
+        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
+        builder.setType(LogLevelConstants.CREATIVE)
                 .setOptType(OptContentEnum.Edit)
                 .setOptContent(newvalue)
-                .setNewValue(newvalue)
-                .setOldValue(oldvalue)
+                .setAfter(newvalue)
+                .setBefore(oldvalue)
                 .setOptObj(optObj)
-                .setOptContentId(contentid)
+                .setOid(contentid)
                 .setOptComprehensiveID(creativeType.getCreativeId());
         getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
         return builder.build();
     }
 
     @Override
-    public void getCamAdgroupInfoByLong(Long adgroupId, OperationRecordModelBuilder builder) {
+    public void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder) {
         AdgroupDTO adgroupDTO = adgroupDAO.findOne(adgroupId);
         CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
         fillCommonData(builder, campaignDTO, adgroupDTO);
     }
 
     @Override
-    public void getCampInfoByLongId(Long campaignId, OperationRecordModelBuilder builder) {
+    public void getCampInfoByLongId(Long campaignId, SystemLogDTOBuilder builder) {
         CampaignDTO campaignDTO = campaignDAO.findOne(campaignId);
         fillCommonData(builder, campaignDTO);
     }
 
-
-    @Override
-    public Boolean saveLog(OperationRecordModel orm) {
-        return LogOptUtil.saveLogs(orm).isSuccess();
-    }
-
-
-    private OperationRecordModelBuilder fillCommonData(OperationRecordModelBuilder builder, CampaignDTO campaignDTO, AdgroupDTO adgroupDTO) {
+    private SystemLogDTOBuilder fillCommonData(SystemLogDTOBuilder builder, CampaignDTO campaignDTO, AdgroupDTO adgroupDTO) {
         return builder.setUserId(AppContext.getAccountId())
-                .setUnitId(adgroupDTO.getAdgroupId())
-                .setUnitName(adgroupDTO.getAdgroupName())
-                .setPlanId(campaignDTO.getCampaignId())
-                .setPlanName(campaignDTO.getCampaignName());
+                .setAdgroupId(adgroupDTO.getAdgroupId())
+                .setAdgroupName(adgroupDTO.getAdgroupName())
+                .setCampaignId(campaignDTO.getCampaignId())
+                .setCampaignName(campaignDTO.getCampaignName());
 
     }
 
-    private OperationRecordModelBuilder fillCommonData(OperationRecordModelBuilder builder, CampaignDTO campaignDTO) {
+    private SystemLogDTOBuilder fillCommonData(SystemLogDTOBuilder builder, CampaignDTO campaignDTO) {
         return builder.setUserId(AppContext.getAccountId())
-                .setPlanId(campaignDTO.getCampaignId())
-                .setPlanName(campaignDTO.getCampaignName());
+                .setCampaignId(campaignDTO.getCampaignId())
+                .setCampaignName(campaignDTO.getCampaignName());
     }
 
 
-    private void save(OperationRecordModel model) {
-        LogOptUtil.saveLogs(model);
+    public void save(List<SystemLogDTO> systemLogDTOs) {
+        systemLogDAO.save(systemLogDTOs);
     }
+
 }
