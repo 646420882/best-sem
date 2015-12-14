@@ -195,6 +195,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 .setType(UserOperationTypeEnum.MODIFY_CAMPAIGN.getValue())
                 .setCampaignId(campaignType.getCampaignId())
                 .setCampaignName(campaignType.getCampaignName())
+                .setProperty(property)
                 .setName(newvalue)
                 .setAfter(newvalue)
                 .setBefore(oldvalue)
@@ -413,44 +414,6 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     }
 
     @Override
-    public void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder) {
-        AdgroupDTO adgroupDTO = adgroupDAO.findOne(adgroupId);
-        CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
-        fillCommonData(builder, campaignDTO, adgroupDTO);
-    }
-
-    @Override
-    public void getCampInfoByLongId(Long campaignId, SystemLogDTOBuilder builder) {
-        CampaignDTO campaignDTO = campaignDAO.findOne(campaignId);
-        fillCommonData(builder, campaignDTO);
-    }
-
-    private SystemLogDTOBuilder fillCommonData(SystemLogDTOBuilder builder, CampaignDTO campaignDTO, AdgroupDTO adgroupDTO) {
-        return builder.setUserId(AppContext.getAccountId())
-                .setAdgroupId(adgroupDTO.getAdgroupId())
-                .setAdgroupName(adgroupDTO.getAdgroupName())
-                .setCampaignId(campaignDTO.getCampaignId())
-                .setCampaignName(campaignDTO.getCampaignName());
-
-    }
-
-    private SystemLogDTOBuilder fillCommonData(SystemLogDTOBuilder builder, CampaignDTO campaignDTO) {
-        return builder.setUserId(AppContext.getAccountId())
-                .setCampaignId(campaignDTO.getCampaignId())
-                .setCampaignName(campaignDTO.getCampaignName());
-    }
-
-
-    public void save(List<UserOperationLogDTO> userOperationLogDTOs) {
-        systemLogDAO.save(userOperationLogDTOs);
-    }
-
-    @Override
-    public void saveLog(UserOperationLogDTO userOperationLogDTO) {
-
-    }
-
-    @Override
     public UserOperationLogDTO updateCreativeAll(CreativeType newCreative) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
@@ -492,4 +455,44 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         }
         return null;
     }
+
+    @Override
+    public void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder) {
+        AdgroupDTO adgroupDTO = adgroupDAO.findOne(adgroupId);
+        CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
+        fillCommonData(builder, campaignDTO, adgroupDTO);
+    }
+
+    @Override
+    public void getCampInfoByLongId(Long campaignId, SystemLogDTOBuilder builder) {
+        CampaignDTO campaignDTO = campaignDAO.findOne(campaignId);
+        fillCommonData(builder, campaignDTO);
+    }
+
+    private SystemLogDTOBuilder fillCommonData(SystemLogDTOBuilder builder, CampaignDTO campaignDTO, AdgroupDTO adgroupDTO) {
+        return builder.setUserId(AppContext.getAccountId())
+                .setAdgroupId(adgroupDTO.getAdgroupId())
+                .setAdgroupName(adgroupDTO.getAdgroupName())
+                .setCampaignId(campaignDTO.getCampaignId())
+                .setCampaignName(campaignDTO.getCampaignName());
+
+    }
+
+    private SystemLogDTOBuilder fillCommonData(SystemLogDTOBuilder builder, CampaignDTO campaignDTO) {
+        return builder.setUserId(AppContext.getAccountId())
+                .setCampaignId(campaignDTO.getCampaignId())
+                .setCampaignName(campaignDTO.getCampaignName());
+    }
+
+
+    public void save(List<UserOperationLogDTO> userOperationLogDTOs) {
+        systemLogDAO.save(userOperationLogDTOs);
+    }
+
+    @Override
+    public void saveLog(UserOperationLogDTO userOperationLogDTO) {
+
+    }
+
+
 }

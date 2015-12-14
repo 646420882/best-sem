@@ -116,5 +116,5 @@ public interface UserOperationLogService {
 
     void saveLog(UserOperationLogDTO userOperationLogDTO);
 
-    UserOperationLogDTO updateCreativeAll(CreativeType creativeType);
+
 }
