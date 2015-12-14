@@ -119,13 +119,13 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
             if (aggregation.getName().equals(AGG_KEYWORDS)) {
                 Terms tr = (Terms) aggregation;
                 for (Terms.Bucket bucket : tr.getBuckets()) {
-                    esSearchResultDTO.addKeyword(bucket.getKey(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
+                    esSearchResultDTO.addKeyword(bucket.getKeyAsString(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
                 }
             } else if (aggregation.getName().equals(AGG_HOSTS)) {
                 Terms tr = (Terms) aggregation;
                 for (Terms.Bucket bucket : tr.getBuckets()) {
-                    esSearchResultDTO.addHost(bucket.getKey(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
+                    esSearchResultDTO.addHost(bucket.getKeyAsString(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
                 }
 
@@ -149,7 +149,7 @@ public class CreativeSourceDAOImpl extends BaseEsDaoImpl<CreativeSourceDTO, Stri
             } else if (aggregation.getName().equals("all")) {
                 Terms tr = (Terms) aggregation;
                 for (Terms.Bucket bucket : tr.getBuckets()) {
-                    esSearchResultDTO.addTerm(bucket.getKey(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
+                    esSearchResultDTO.addTerm(bucket.getKeyAsString(), new BigDecimal(bucket.getDocCount()).divide(total, 4,
                             BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN.multiply(BigDecimal.TEN)));
                 }
             }
