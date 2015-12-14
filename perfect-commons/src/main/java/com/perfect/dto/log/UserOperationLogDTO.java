@@ -149,4 +149,23 @@ public class UserOperationLogDTO extends BaseDTO {
         this.userId = userId;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "UserOperationLogDTO{" +
+                "oid=" + oid +
+                ", userId=" + userId +
+                ", campgainId=" + campgainId +
+                ", campaignName='" + campaignName + '\'' +
+                ", adgroupdId=" + adgroupdId +
+                ", adgroupName='" + adgroupName + '\'' +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", property='" + property + '\'' +
+                ", before=" + before +
+                ", after=" + after +
+                ", time=" + time +
+                ", uploaded=" + uploaded +
+                '}';
+    }
 }

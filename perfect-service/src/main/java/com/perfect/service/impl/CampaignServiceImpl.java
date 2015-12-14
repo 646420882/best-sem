@@ -309,9 +309,9 @@ public class CampaignServiceImpl implements CampaignService {
             campaignType.setPause(dto.getPause());
             campaignType.setStatus(dto.getStatus());
             campaignType.setIsDynamicCreative(dto.getIsDynamicCreative());
-            UserOperationLogDTO orm = userOperationLogService.updateCampaignAll(campaignType);
-            if (orm != null) {
-                logs.add(orm);
+            List<UserOperationLogDTO> orm = userOperationLogService.updateCampaignAll(campaignType);
+            if (orm.size()>0) {
+                logs.addAll(orm);
             }
             campaignTypeList.add(campaignType);
         }

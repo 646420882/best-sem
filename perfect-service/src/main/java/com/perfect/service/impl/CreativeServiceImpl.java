@@ -383,9 +383,9 @@ public class CreativeServiceImpl implements CreativeService {
                 creativeType.setMobileDisplayUrl(creativeDTOFind.getMobileDisplayUrl());
                 creativeType.setPause(creativeDTOFind.getPause());
                 creativeType.setDevicePreference(creativeDTOFind.getDevicePreference());
-                UserOperationLogDTO orm = userOperationLogService.updateCreativeAll(creativeType);
-                if (orm != null) {
-                    logs.add(orm);
+                List<UserOperationLogDTO> orm = userOperationLogService.updateCreativeAll(creativeType);
+                if (orm.size() > 0) {
+                    logs.addAll(orm);
                 }
                 creativeTypes.add(creativeType);
             }

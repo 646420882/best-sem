@@ -355,9 +355,9 @@ public class AdgroupServiceImpl implements AdgroupService {
             adgroupType.setExactNegativeWords(adgroupDTOFind.getExactNegativeWords());
             adgroupType.setPause(adgroupDTOFind.getPause());
             adgroupType.setStatus(adgroupDTOFind.getStatus());
-            UserOperationLogDTO orm = userOperationLogService.updateAdgroupAll(adgroupType);
-            if (orm != null) {
-                logs.add(orm);
+            List<UserOperationLogDTO> orm = userOperationLogService.updateAdgroupAll(adgroupType);
+            if (orm.size()>0) {
+                logs.addAll(orm);
             }
             adgroupTypes.add(adgroupType);
         });
