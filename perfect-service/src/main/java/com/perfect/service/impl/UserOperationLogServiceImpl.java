@@ -1,13 +1,13 @@
 package com.perfect.service.impl;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
-import com.perfect.autosdk.sms.v3.AdgroupType;
-import com.perfect.autosdk.sms.v3.CampaignType;
-import com.perfect.autosdk.sms.v3.CreativeType;
-import com.perfect.autosdk.sms.v3.KeywordType;
+import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.LogObjConstants;
+import com.perfect.commons.constants.UserOperationLogLevelEnum;
 import com.perfect.commons.constants.UserOperationTypeEnum;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
@@ -23,10 +23,17 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.SystemLogDTOBuilder;
+import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
 
 /**
  * Created by XiaoWei on 2015/12/14.
@@ -45,8 +52,10 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     private AccountManageDAO accountManageDAO;
 
     @Resource
-    private UserOperationLogDAO systemLogDAO;
+    private UserOperationLogDAO userOperationLogDAO;
 
+
+    private static Map<String, Field> fieldCacheMap = Maps.newTreeMap();
 
     //TODO  .setOid(KeyWordEnum.addWord)
     //TODO   .setOptType(OptContentEnum.Add)
@@ -486,7 +495,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
 
     public void save(List<UserOperationLogDTO> userOperationLogDTOs) {
-        systemLogDAO.save(userOperationLogDTOs);
+        userOperationLogDAO.save(userOperationLogDTOs);
     }
 
     @Override
@@ -494,5 +503,228 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     }
 
+
+    private final String KEYWORD_ID = "keywordId";
+    private final String CAMPAIGN_ID = "campaignId";
+    private final String ADGROUP_ID = "adgroupId";
+    private final String CREATIVE_ID = "creativeId";
+
+    @Override
+    public void update(Object object, UserOperationLogLevelEnum level, String property, UserOperationTypeEnum userOperationTypeEnum, Object
+            oldVal, Object newVal) {
+
+        UserOperationLogDTO userOperationLogDTO = new UserOperationLogDTO();
+        userOperationLogDTO.setTime(System.currentTimeMillis());
+        userOperationLogDTO.setType(userOperationTypeEnum.getValue());
+        userOperationLogDTO.setBefore(oldVal);
+        userOperationLogDTO.setAfter(newVal);
+        userOperationLogDTO.setProperty(property);
+        userOperationLogDTO.setUserId(AppContext.getAccountId());
+        userOperationLogDTO.setUserName(AppContext.getUser());
+
+        fillObjectInfo(object, userOperationLogDTO);
+        fillLayout(userOperationTypeEnum, oldVal, newVal, userOperationLogDTO);
+        switch (level) {
+            case CAMPAIGN:
+                fillCampaignInfo(object, userOperationLogDTO);
+                break;
+
+            case ADGROUP:
+                fillCampaignInfo(object, userOperationLogDTO);
+                fillAdgroupInfo(object, userOperationLogDTO);
+                break;
+            default:
+                break;
+        }
+
+
+        userOperationLogDAO.save(userOperationLogDTO);
+    }
+
+    private final String VALUE_EMPTY = "空";
+
+    private void fillLayout(UserOperationTypeEnum userOperationTypeEnum, Object oldVal, Object newVal,
+                            UserOperationLogDTO userOperationLogDTO) {
+        String layout = UserOperationTypeEnum.layout(userOperationTypeEnum);
+
+        layout = replaceValue(layout, "%old%", oldVal);
+        layout = replaceValue(layout, "%new%", newVal);
+        userOperationLogDTO.setText(layout);
+    }
+
+
+    private String replaceValue(String layout, String pattern, Object value) {
+        String innerLayout = layout;
+        if (value instanceof Date) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            innerLayout = innerLayout.replace(pattern, dateFormat.format(value));
+        } else {
+            if (value == null) {
+                innerLayout = layout.replace("%old%", VALUE_EMPTY);
+            } else {
+                innerLayout = layout.replace("%old%", value.toString());
+            }
+        }
+
+        return innerLayout;
+    }
+
+    private void fillObjectInfo(Object object, UserOperationLogDTO userOperationLogDTO) {
+        if (object == null) {
+            return;
+        }
+
+        if (object instanceof CampaignType) {
+            CampaignType campaignType = (CampaignType) object;
+            userOperationLogDTO.setOid(campaignType.getCampaignId());
+            userOperationLogDTO.setName(campaignType.getCampaignName());
+        } else if (object instanceof AdgroupType) {
+            AdgroupType adgroupType = (AdgroupType) object;
+            userOperationLogDTO.setOid(adgroupType.getAdgroupId());
+            userOperationLogDTO.setName(adgroupType.getAdgroupName());
+        } else if (object instanceof CreativeType) {
+            CreativeType creativeType = (CreativeType) object;
+            userOperationLogDTO.setOid(creativeType.getCreativeId());
+            userOperationLogDTO.setName(creativeType.getTitle());
+        } else if (object instanceof KeywordType) {
+            KeywordType keywordType = (KeywordType) object;
+            userOperationLogDTO.setOid(keywordType.getKeywordId());
+            userOperationLogDTO.setName(keywordType.getKeyword());
+        } else if (object instanceof SublinkType) {
+            SublinkType sublinkType = (SublinkType) object;
+            userOperationLogDTO.setOid(sublinkType.getSublinkId());
+            userOperationLogDTO.setName(sublinkType.toString());
+        } else if (object instanceof SublinkInfo) {
+            SublinkInfo sublinkInfo = (SublinkInfo) object;
+            userOperationLogDTO.setOid(-1l);
+            userOperationLogDTO.setName(sublinkInfo.getDescription());
+        }
+    }
+
+    private void fillCampaignInfo(Object object, UserOperationLogDTO userOperationLogDTO) {
+        Long campaignId = getCampaignId(object);
+        if (campaignId == null)
+            return;
+        userOperationLogDTO.setCampgainId(campaignId);
+
+        userOperationLogDTO.setCampaignName(getCampaignName(campaignId));
+    }
+
+    private void fillAdgroupInfo(Object object, UserOperationLogDTO userOperationLogDTO) {
+        Long adgroupId = getAdgroupId(object);
+        if (adgroupId == null)
+            return;
+        userOperationLogDTO.setAdgroupdId(adgroupId);
+
+        userOperationLogDTO.setAdgroupName(getAdgroupName(adgroupId));
+    }
+
+
+    private String getCampaignName(Long id) {
+        CampaignDTO campaignDTO = campaignDAO.findByLongId(id);
+
+        if (campaignDTO == null) {
+            return StringUtils.EMPTY;
+        }
+
+        return campaignDTO.getCampaignName();
+    }
+
+    private String getAdgroupName(Long id) {
+        AdgroupDTO adgroupDTO = adgroupDAO.findOne(id);
+        if (adgroupDTO == null) {
+            return StringUtils.EMPTY;
+        }
+
+        return adgroupDTO.getAdgroupName();
+    }
+
+    private Long getCampaignId(Object object) {
+        return getId(object, CAMPAIGN_ID);
+    }
+
+    private Long getAdgroupId(Object object) {
+        return getId(object, ADGROUP_ID);
+    }
+
+    private Long getKeywordId(Object object) {
+        return getId(object, KEYWORD_ID);
+    }
+
+    private Long getCreativeId(Object object) {
+        return getId(object, CREATIVE_ID);
+    }
+
+    private Long getId(Object object, String property) {
+        if (object == null || Strings.isNullOrEmpty(property)) {
+            return -1l;
+        }
+
+        Class clz = object.getClass();
+
+        String cacheKey = clz.getSimpleName() + "." + property;
+        Field field = fieldCacheMap.get(cacheKey);
+
+        if (field != null) {
+            try {
+                field = clz.getDeclaredField(property);
+            } catch (NoSuchFieldException e) {
+                try {
+                    field = clz.getField(property);
+                } catch (NoSuchFieldException e1) {
+                    return -1l;
+                }
+            }
+
+            if (field == null)
+                return -1l;
+
+            fieldCacheMap.put(cacheKey, field);
+        }
+
+        try {
+            return field.getLong(object);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return -1l;
+    }
+
+    @Override
+    public void newdel(Object object, UserOperationLogLevelEnum level, UserOperationTypeEnum
+            userOperationTypeEnum) {
+        UserOperationLogDTO userOperationLogDTO = new UserOperationLogDTO();
+        userOperationLogDTO.setTime(System.currentTimeMillis());
+        userOperationLogDTO.setType(userOperationTypeEnum.getValue());
+        userOperationLogDTO.setUserId(AppContext.getAccountId());
+        userOperationLogDTO.setUserName(AppContext.getUser());
+
+        fillObjectInfo(object, userOperationLogDTO);
+        fillLayout(userOperationTypeEnum, userOperationLogDTO);
+        switch (level) {
+            case CAMPAIGN:
+                fillCampaignInfo(object, userOperationLogDTO);
+                break;
+
+            case ADGROUP:
+                fillCampaignInfo(object, userOperationLogDTO);
+                fillAdgroupInfo(object, userOperationLogDTO);
+                break;
+            default:
+                break;
+        }
+
+        userOperationLogDAO.save(userOperationLogDTO);
+    }
+
+    private void fillLayout(UserOperationTypeEnum userOperationTypeEnum, UserOperationLogDTO
+            userOperationLogDTO) {
+
+        String layout = UserOperationTypeEnum.layout(userOperationTypeEnum);
+
+        layout = replaceValue(layout, "%target%", userOperationLogDTO.getName());
+        userOperationLogDTO.setText(layout);
+    }
 
 }

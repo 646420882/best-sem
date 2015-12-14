@@ -28,7 +28,7 @@ public enum UserOperationTypeEnum {
         logTypeMap.put(ACCOUNT_ID, "{%type% %name%} %prop% 从%before%到%after%");
     }
 
-    public String layout(UserOperationTypeEnum userOperationTypeEnum) {
+    public static String layout(UserOperationTypeEnum userOperationTypeEnum) {
         return logTypeMap.getOrDefault(userOperationTypeEnum, "{%type% %name%} %prop% 从%before%到%after%");
     }
 
@@ -38,12 +38,13 @@ public enum UserOperationTypeEnum {
         this.value = value;
     }
 
+    public int getValue() {
+        return this.value;
+    }
+
     @Override
     public String toString() {
         return Integer.toString(value);
     }
 
-    public int getValue() {
-        return value;
-    }
 }

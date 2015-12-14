@@ -1,7 +1,7 @@
 package com.perfect.db.elasticsearch.core;
 
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import java.net.InetSocketAddress;
@@ -46,15 +46,15 @@ public class EsPools {
         String clusterName = bundle.getString("es.cluster");
 
         //设置client.transport.sniff为true来使客户端去嗅探整个集群的状态, 把集群中其它机器的ip地址加到客户端中
-        Settings settings = Settings.settingsBuilder()
+
+        ImmutableSettings.Builder settings = ImmutableSettings.builder()
                 .put("cluster.name", clusterName)
                 .put("client.transport.sniff", true)
                 .put("client.transport.ignore_cluster_name", false)
                 .put("client.transport.ping_timeout", "10s")
-                .put("client.transport.nodes_sampler_interval", "15s")
-                .build();
+                .put("client.transport.nodes_sampler_interval", "15s");
 
-        TransportClient client = TransportClient.builder().settings(settings).build();
+        TransportClient client = new TransportClient(settings);
         client.addTransportAddresses(addressList.toArray(new InetSocketTransportAddress[addressList.size()]));
 
         return client;
