@@ -6,10 +6,10 @@
     <parent>
         <groupId>com.perfect</groupId>
         <artifactId>perfect-parent</artifactId>
-        <version>1.3-SNAPSHOT</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>perfect-service</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -39,12 +39,6 @@
             <groupId>com.perfect</groupId>
             <artifactId>perfect-utils</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.perfect</groupId>
-            <artifactId>logApi</artifactId>
-        </dependency>
-
 
         <dependency>
             <groupId>org.springframework</groupId>

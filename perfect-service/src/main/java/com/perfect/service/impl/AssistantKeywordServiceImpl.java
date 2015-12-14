@@ -81,6 +81,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     //推广单元名称
     private Map<String, AdgroupDTO> adgroupMap = new HashMap<>();
 
+    @Resource
+    private KeywordDeduplicateService keywordDeduplicateService;
+
     public Iterable<CampaignDTO> getCampaignByAccountId() {
         return campaignDAO.findAll();
     }
@@ -412,10 +415,20 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         }
 
         page.setList(setCampaignNameByKeywordEntitys((List<KeywordDTO>) page.getList(), campaignDTO));
-
+        page.setErrorList(getErrorList());
         return page;
     }
 
+    private Map<String, Map<Integer, List<String>>> getErrorList() {
+        Map<String, Map<Integer, List<String>>> maps = keywordDeduplicateService.deduplicate(AppContext.getAccountId());
+        List<String> str=Lists.newArrayList();
+        for(Map.Entry<String,Map<Integer,List<String>>> m:maps.entrySet()){
+            for(Map.Entry<Integer,List<String>> mi:m.getValue().entrySet()){
+//                str.add(mi.getValue());
+            }
+        }
+        return maps;
+    }
 
     private List<KeywordInfoDTO> setCampaignNameByKeywordEntitys(List<KeywordDTO> list, CampaignDTO camp) {
         List<KeywordInfoDTO> dtoList = new ArrayList<>();

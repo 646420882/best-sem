@@ -252,14 +252,13 @@
                                             <div class="zhanghu_input"></div>
                                             <div id="pagination_keywordPage" class="pagination"></div>
                                             <div class="error_prompt over">
-                                                <div class="error_prompt_title over">
+                                                <div class="error_prompt_title over" id="kwdErrorCount" style="display: none;">
                                                     一项错误
                                                 </div>
-                                                <div class="error_prompt_concent over">
+                                                <div class="error_prompt_concent over" id="kwdError">
                                                     <ul>
-                                                        <li>1.此关键词的名称与该推广单元中另一关键词的名称相同</li>
                                                     </ul>
-                                                    <a class="error_prompt_more" id="error_prompt_more">
+                                                    <a class="error_prompt_more" id="error_prompt_more" style="display:none;">
                                                         更多详情
                                                     </a>
                                                 </div>

@@ -2,6 +2,7 @@ package com.perfect.utils.paging;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 
 @SuppressWarnings("serial")
@@ -32,5 +33,11 @@ public class PagerInfo extends AbstractPager implements Serializable {
     @SuppressWarnings("unchecked")
     public void setList(List list) {
         this.list = list;
+    }
+
+    private Map<String, Map<Integer, List<String>>> error;
+
+    public void setErrorList(Map<String, Map<Integer, List<String>>> maps) {
+        this.error = maps;
     }
 }
