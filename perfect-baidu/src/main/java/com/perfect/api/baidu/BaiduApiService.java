@@ -116,12 +116,19 @@ public class BaiduApiService {
             GetAccountInfoResponse response = accountService.getAccountInfo(request);
 
             if (response == null) {
-                return null;
+                try {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
+            if (response == null)
+                return null;
+
             return response.getAccountInfoType();
-        } catch (ApiException e) {
-            logger.error("ERROR", e);
+        } catch (ApiException ignored) {
+
         }
 
         return null;

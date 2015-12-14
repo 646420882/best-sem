@@ -12,7 +12,7 @@ public class UserOperationLogEntity {
     @Id
     private String id;
 
-    private String oid;
+    private Long oid;
 
     private long userId;
 
@@ -38,11 +38,19 @@ public class UserOperationLogEntity {
 
     private boolean uploaded;
 
-    public String getOid() {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Long getOid() {
         return oid;
     }
 
-    public UserOperationLogEntity setOid(String oid) {
+    public UserOperationLogEntity setOid(Long oid) {
         this.oid = oid;
         return this;
     }

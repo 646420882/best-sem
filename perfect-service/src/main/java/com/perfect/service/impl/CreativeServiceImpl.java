@@ -15,13 +15,14 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
-import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
 import com.perfect.service.CreativeService;
+import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,20 @@ import java.util.*;
  */
 @Service("creativeService")
 public class CreativeServiceImpl implements CreativeService {
-    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
+    private static Integer OBJ_SIZE = 18;   //  判断百度id跟本地id长度大小
+
     @Autowired
     private CreativeDAO creativeDAO;
+
     @Resource
     private AccountManageDAO accountManageDAO;
+
     @Resource
     private AdgroupDAO adgroupDAO;
 
     @Resource
     private CampaignService campaignService;
+
     @Resource
     private AdgroupService adgroupService;
 
@@ -242,7 +247,7 @@ public class CreativeServiceImpl implements CreativeService {
     public List<CreativeDTO> uploadAdd(List<String> crid) {
         List<CreativeDTO> returnCreativeDTOs = new ArrayList<>();
         List<CreativeType> creativeTypes = new ArrayList<>();
-        List<OperationRecordModel> logs = Lists.newArrayList();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         crid.stream().forEach(s -> {
             CreativeDTO creativeDTOFind = creativeDAO.findByObjId(s);
 //            AdgroupDTO adgroupDTO = adgroupDAO.findOne(creativeDTOFind.getAdgroupId());
@@ -257,7 +262,7 @@ public class CreativeServiceImpl implements CreativeService {
                 creativeType.setMobileDisplayUrl(creativeDTOFind.getMobileDisplayUrl());
                 creativeType.setMobileDestinationUrl(creativeDTOFind.getMobileDestinationUrl());
                 creativeType.setDevicePreference(creativeDTOFind.getDevicePreference());
-                OperationRecordModel orm = userOperationLogService.addCreative(creativeType);
+                UserOperationLogDTO orm = userOperationLogService.addCreative(creativeType);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -279,7 +284,7 @@ public class CreativeServiceImpl implements CreativeService {
                     creativeDTO.setStatus(s.getStatus());
                     returnCreativeDTOs.add(creativeDTO);
                     logs.stream().forEach(c -> {
-                        if (c.getOptContent().equals(s.getTitle()) && s.getCreativeId() != null) {
+                        if (c.getName().equals(s.getTitle()) && s.getCreativeId() != null) {
                             userOperationLogService.saveLog(c);
                         }
                     });
@@ -335,7 +340,7 @@ public class CreativeServiceImpl implements CreativeService {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         CreativeDTO creativeDTO = creativeDAO.findOne(crid);
-        OperationRecordModel orm = userOperationLogService.removeCreative(creativeDTO);
+        UserOperationLogDTO orm = userOperationLogService.removeCreative(creativeDTO);
         try {
             com.perfect.autosdk.sms.v3.CreativeService creativeService = commonService.getService(com.perfect.autosdk.sms.v3.CreativeService.class);
             DeleteCreativeRequest deleteCreativeRequest = new DeleteCreativeRequest();
@@ -343,7 +348,7 @@ public class CreativeServiceImpl implements CreativeService {
                 add(crid);
             }});
             if (orm != null) {
-                userOperationLogService.saveLog(orm);
+//                userOperationLogService.saveLog(orm);
             }
             DeleteCreativeResponse deleteCreativeResponse = creativeService.deleteCreative(deleteCreativeRequest);
             return deleteCreativeResponse.getResult();
@@ -362,6 +367,7 @@ public class CreativeServiceImpl implements CreativeService {
     public List<CreativeDTO> uploadUpdate(List<Long> crids) {
         List<CreativeDTO> returnCreativeDTOs = new ArrayList<>();
         List<CreativeType> creativeTypes = new ArrayList<>();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         crids.stream().forEach(s -> {
             CreativeDTO creativeDTOFind = creativeDAO.findOne(s);
             if (creativeDTOFind.getAdgroupId() != null) {
@@ -376,6 +382,10 @@ public class CreativeServiceImpl implements CreativeService {
                 creativeType.setMobileDisplayUrl(creativeDTOFind.getMobileDisplayUrl());
                 creativeType.setPause(creativeDTOFind.getPause());
                 creativeType.setDevicePreference(creativeDTOFind.getDevicePreference());
+                List<UserOperationLogDTO> orm = userOperationLogService.updateCreativeAll(creativeType);
+                if (orm.size() > 0) {
+                    logs.addAll(orm);
+                }
                 creativeTypes.add(creativeType);
             }
         });
@@ -393,6 +403,13 @@ public class CreativeServiceImpl implements CreativeService {
                     returnCreativeDTO.setCreativeId(s.getCreativeId());
                     returnCreativeDTO.setStatus(s.getStatus());
                     returnCreativeDTOs.add(returnCreativeDTO);
+                    if (logs.size() > 0) {
+                        logs.stream().forEach(l -> {
+                            if (l.getOid().equals(Long.toString(s.getCreativeId()))) {
+                                userOperationLogService.saveLog(l);
+                            }
+                        });
+                    }
                 });
                 return returnCreativeDTOs;
             } catch (ApiException e) {

@@ -33,10 +33,11 @@ public interface AccountAnalyzeDAO extends HeyCrudRepository<AccountReportDTO, L
     /**
      * csv文件数据获取
      */
-    List<AccountReportDTO> downAccountCSV();
+    List<AccountReportDTO> downAccountCSV(Date start, Date end);
 
     /**
      * 统计推广助手关键字
+     *
      * @param number 0 为查询所有.不为0为查询修改后的数据
      * @return
      */
@@ -44,6 +45,7 @@ public interface AccountAnalyzeDAO extends HeyCrudRepository<AccountReportDTO, L
 
     /**
      * 统计推广助手计划
+     *
      * @param number 0 为查询所有.不为0为查询修改后的数据
      * @return
      */
@@ -51,6 +53,7 @@ public interface AccountAnalyzeDAO extends HeyCrudRepository<AccountReportDTO, L
 
     /**
      * 统计推广助手创意
+     *
      * @param number 0 为查询所有.不为0为查询修改后的数据
      * @return
      */
@@ -58,6 +61,7 @@ public interface AccountAnalyzeDAO extends HeyCrudRepository<AccountReportDTO, L
 
     /**
      * 统计推广助手单元
+     *
      * @param number 0 为查询所有.不为0为查询修改后的数据
      * @return
      */

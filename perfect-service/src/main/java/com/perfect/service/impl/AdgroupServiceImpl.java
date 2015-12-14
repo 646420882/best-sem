@@ -18,6 +18,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -237,14 +238,14 @@ public class AdgroupServiceImpl implements AdgroupService {
     }
 
     @Override
-    public void ormByCreative(CreativeDTO creativeDTO, OperationRecordModel orm) {
-        AdgroupDTO adgroupDTO = adgroupDAO.findOne(creativeDTO.getAdgroupId());
-        CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
-        orm.setUserId(AppContext.getAccountId());
-        orm.setUnitId(adgroupDTO.getAdgroupId());
-        orm.setUnitName(adgroupDTO.getAdgroupName());
-        orm.setPlanId(campaignDTO.getCampaignId());
-        orm.setPlanName(campaignDTO.getCampaignName());
+    public void ormByCreative(CreativeDTO creativeDTO, UserOperationLogDTO orm) {
+//        AdgroupDTO adgroupDTO = adgroupDAO.findOne(creativeDTO.getAdgroupId());
+//        CampaignDTO campaignDTO = campaignDAO.findOne(adgroupDTO.getCampaignId());
+//        orm.setUserId(AppContext.getAccountId());
+//        orm.setUnitId(adgroupDTO.getAdgroupId());
+//        orm.setUnitName(adgroupDTO.getAdgroupName());
+//        orm.setPlanId(campaignDTO.getCampaignId());
+//        orm.setPlanName(campaignDTO.getCampaignName());
     }
 
     @Override
@@ -256,7 +257,7 @@ public class AdgroupServiceImpl implements AdgroupService {
     public List<AdgroupDTO> uploadAdd(List<String> aids) {
         List<AdgroupDTO> returnDto = new ArrayList<>();
         List<AdgroupType> adgroupTypes = new ArrayList<>();
-        List<OperationRecordModel> logs = Lists.newArrayList();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         aids.stream().forEach(s -> {
             AdgroupDTO dto = adgroupDAO.findByObjId(s);
             CampaignDTO campaignDTO = campaignDAO.findByLongId(dto.getCampaignId());
@@ -268,7 +269,7 @@ public class AdgroupServiceImpl implements AdgroupService {
                 adgroupType.setPause(dto.getPause());
                 adgroupType.setNegativeWords(dto.getNegativeWords());
                 adgroupType.setExactNegativeWords(dto.getExactNegativeWords());
-                OperationRecordModel orm = userOperationLogService.addAdgroup(adgroupType);
+                UserOperationLogDTO orm = userOperationLogService.addAdgroup(adgroupType);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -292,7 +293,7 @@ public class AdgroupServiceImpl implements AdgroupService {
                     returnDto.add(dto);
                     if (logs.size() > 0) {
                         logs.stream().forEach(l -> {
-                            if (l.getOptContent().equals(s.getAdgroupName()) && s.getAdgroupId() != null) {
+                            if (l.getName().equals(s.getAdgroupName()) && s.getAdgroupId() != null) {
                                 userOperationLogService.saveLog(l);
                             }
                         });
@@ -317,7 +318,7 @@ public class AdgroupServiceImpl implements AdgroupService {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         AdgroupDTO adgroupDTO = adgroupDAO.findOne(aid);
-        OperationRecordModel orm=null;
+        UserOperationLogDTO orm=null;
         if(adgroupDTO!=null){
             orm= userOperationLogService.removeAdgroup(adgroupDTO);
         }
@@ -330,7 +331,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             DeleteAdgroupResponse adgroupResponse = adgroupService.deleteAdgroup(adgroupRequest);
             result = adgroupResponse.getResponse();
             if (orm != null) {
-                userOperationLogService.saveLog(orm);
+//                userOperationLogService.saveLog(orm);
             }
             return result;
         } catch (ApiException e) {
@@ -343,6 +344,7 @@ public class AdgroupServiceImpl implements AdgroupService {
     public List<AdgroupDTO> uploadUpdate(List<Long> aid) {
         List<AdgroupDTO> returnAdgroupDTO = new ArrayList<>();
         List<AdgroupType> adgroupTypes = new ArrayList<>();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         aid.stream().forEach(s -> {
             AdgroupDTO adgroupDTOFind = adgroupDAO.findOne(s);
             AdgroupType adgroupType = new AdgroupType();
@@ -353,6 +355,10 @@ public class AdgroupServiceImpl implements AdgroupService {
             adgroupType.setExactNegativeWords(adgroupDTOFind.getExactNegativeWords());
             adgroupType.setPause(adgroupDTOFind.getPause());
             adgroupType.setStatus(adgroupDTOFind.getStatus());
+            List<UserOperationLogDTO> orm = userOperationLogService.updateAdgroupAll(adgroupType);
+            if (orm.size()>0) {
+                logs.addAll(orm);
+            }
             adgroupTypes.add(adgroupType);
         });
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
@@ -368,6 +374,13 @@ public class AdgroupServiceImpl implements AdgroupService {
                 adgroupDTO.setStatus(s.getStatus());
                 adgroupDTO.setPause(s.getPause());
                 returnAdgroupDTO.add(adgroupDTO);
+                if (logs.size() > 0) {
+                    logs.stream().forEach(l -> {
+                        if (l.getOid().equals(Long.toString(s.getAdgroupId()))) {
+                            userOperationLogService.saveLog(l);
+                        }
+                    });
+                }
             });
             return returnAdgroupDTO;
         } catch (ApiException e) {

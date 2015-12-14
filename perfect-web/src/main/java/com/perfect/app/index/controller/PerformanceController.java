@@ -86,7 +86,6 @@ public class PerformanceController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date startDates = null;
         Date endDates = null;
-        List<String> date = null;
         try {
             if (startDate == null || "".equals(startDate)) {
                 startDates = dateFormat.parse(dateFormat.format(new Date()));
@@ -112,13 +111,36 @@ public class PerformanceController {
     }
 
     @RequestMapping(value = "/account/downAccountCSV", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ModelAndView downAccountCSV(HttpServletResponse response) {
+    public ModelAndView downAccountCSV(HttpServletResponse response,
+                                       @RequestParam(value = "startDate", required = false) String startDates,
+                                       @RequestParam(value = "endDate", required = false) String endDates) {
+        Date start = null;
+        Date end = null;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            if (startDates == null || "".equals(startDates)) {
+
+                start = dateFormat.parse(dateFormat.format(new Date()));
+
+            } else {
+                start = dateFormat.parse(startDates);
+            }
+            if (endDates == null || "".equals(endDates)) {
+                end = dateFormat.parse(dateFormat.format(new Date()));
+            } else {
+                end = dateFormat.parse(endDates);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        List<String> dates = DateUtils.getPeriod(startDates, endDates);
         String filename = UUID.randomUUID().toString().replace("-", "") + ".csv";
         OutputStream os = null;
         try {
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("UTF-8"), "ISO8859-1"));
             os = response.getOutputStream();
-            performanceService.downAccountCSV(os);
+            performanceService.downAccountCSV(os, start, end, dates);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

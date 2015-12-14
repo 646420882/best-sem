@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by XiaoWei on 2015/1/19.
@@ -24,28 +23,35 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/uploadMerge")
 public class AssistantUploadMerge extends WebContextSupport {
-    @Resource
-    private AdgroupService adgroupService;
-    @Resource
-    private AssistantKeywordService assistantKeywordService;
-    @Resource
-    private CreativeService creativeService;
-    @Resource
-    private CampaignService campaignService;
-    @Resource
-    private CampaignBackUpService campaignBackUpService;
+
     public static final int OBJ_SIZE = 18;
 
-    @RequestMapping(value = "/upload")
-    public ModelAndView uploadMerge(){
+    @Resource
+    private AdgroupService adgroupService;
 
-        return writeMapObject(MSG,SUCCESS);
+    @Resource
+    private AssistantKeywordService assistantKeywordService;
+
+    @Resource
+    private CreativeService creativeService;
+
+    @Resource
+    private CampaignService campaignService;
+
+    @Resource
+    private CampaignBackUpService campaignBackUpService;
+
+
+    @RequestMapping(value = "/upload")
+    public ModelAndView uploadMerge() {
+
+        return writeMapObject(MSG, SUCCESS);
     }
 
     @RequestMapping(value = "/getCampList")
-    public ModelAndView getUploadOperate(){
-       List<CampaignDTO> campaignDTOs= campaignService.getOperateCamp();
-        return writeMapObject(DATA,campaignDTOs);
+    public ModelAndView getUploadOperate() {
+        List<CampaignDTO> campaignDTOs = campaignService.getOperateCamp();
+        return writeMapObject(DATA, campaignDTOs);
     }
 
     /**
@@ -56,7 +62,7 @@ public class AssistantUploadMerge extends WebContextSupport {
     @RequestMapping(value = "/uploadByAll")
     public ModelAndView uploadByAll() {
         try {
-              //1,计划
+            //1,计划
             uploadCampaign();
             //2,单元
             uploadAdgroup();
@@ -75,7 +81,7 @@ public class AssistantUploadMerge extends WebContextSupport {
     public ModelAndView uploadBySomeCamp(@RequestParam(value = "cids") String cids) {
         List<String> cidStr = new ArrayList<>();
         List<Long> cidLong = new ArrayList<>();
-        if (cids.indexOf(",")>-1) {
+        if (cids.indexOf(",") > -1) {
             for (String s : cids.split(",")) {
                 if (s.length() > OBJ_SIZE) {
                     cidStr.add(s);
@@ -83,7 +89,7 @@ public class AssistantUploadMerge extends WebContextSupport {
                     cidLong.add(Long.valueOf(s));
                 }
             }
-        }else{
+        } else {
             if (cids.length() > OBJ_SIZE) {
                 cidStr.add(cids);
             } else {
@@ -98,26 +104,26 @@ public class AssistantUploadMerge extends WebContextSupport {
             onlyUploadCampaign(campaignDTOLong);
 
             //2.执行上传单元
-            List<AdgroupDTO> adgroupDTOStr=adgroupService.findHasLocalStatusStr(campaignDTOStr);
-            List<AdgroupDTO> adgroupDTOLong=adgroupService.findHasLocalStatusLong(campaignDTOLong);
+            List<AdgroupDTO> adgroupDTOStr = adgroupService.findHasLocalStatusStr(campaignDTOStr);
+            List<AdgroupDTO> adgroupDTOLong = adgroupService.findHasLocalStatusLong(campaignDTOLong);
             onlyUploadAdgroup(adgroupDTOStr);
             onlyUploadAdgroup(adgroupDTOLong);
 
             //3,执行上传关键字
-            List<KeywordDTO> keywordDTOStr=assistantKeywordService.findHasLocalStatusStr(adgroupDTOStr);
-            List<KeywordDTO> keywordDTOLong=assistantKeywordService.findHasLocalStatusLong(adgroupDTOLong);
+            List<KeywordDTO> keywordDTOStr = assistantKeywordService.findHasLocalStatusStr(adgroupDTOStr);
+            List<KeywordDTO> keywordDTOLong = assistantKeywordService.findHasLocalStatusLong(adgroupDTOLong);
             onlyUploadKeyword(keywordDTOStr);
             onlyUploadKeyword(keywordDTOLong);
 
             //4,执行上传创意
-            List<CreativeDTO> creativeDTOStr=creativeService.findHasLocalStatusStr(adgroupDTOStr);
-            List<CreativeDTO> creativeDTOLong=creativeService.findHasLocalStatusLong(adgroupDTOLong);
+            List<CreativeDTO> creativeDTOStr = creativeService.findHasLocalStatusStr(adgroupDTOStr);
+            List<CreativeDTO> creativeDTOLong = creativeService.findHasLocalStatusLong(adgroupDTOLong);
             onlyUploadCreative(creativeDTOStr);
             onlyUploadCreative(creativeDTOLong);
-            return  writeMapObject(MSG, SUCCESS);
-        }catch (Exception e){
+            return writeMapObject(MSG, SUCCESS);
+        } catch (Exception e) {
             e.printStackTrace();
-            return  writeMapObject(MSG, "批量上传部分失败");
+            return writeMapObject(MSG, "批量上传部分失败");
         }
     }
 

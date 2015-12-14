@@ -1,0 +1,84 @@
+/*公共部分*/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+h3 {
+    margin-top: 10px;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+}
+
+ul, li, h1, h2, h3, h4, h5, h6, p {
+    list-style: none;
+}
+
+/** 清除内外边距 **/
+p {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: "微软雅黑";
+    font-size: 12px;
+    min-width: 900px;
+}
+
+img {
+    border: none;
+}
+
+/*html5*/
+article, aside, dialog, footer, header, section, footer, nav, figure, menu {
+    display: block;
+}
+
+/*设置居中*/
+.over {
+    overflow: hidden;
+}
+
+html {
+    -webkit-text-size-adjust: none;
+}
+
+/*浮动*/
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+textarea {
+    resize: none;
+}
+
+select {
+    height: 30px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border: 1px solid #dadadd;
+}
+
+label {
+    font-weight: normal;
+    margin: 0px;
+}

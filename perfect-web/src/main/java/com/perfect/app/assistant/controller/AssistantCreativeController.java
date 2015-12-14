@@ -55,14 +55,19 @@ public class AssistantCreativeController extends WebContextSupport {
 
     @Resource
     com.perfect.service.CreativeService creativeService;
+
     @Resource
     AdgroupService adgroupService;
+
     @Resource
     CampaignService campaignService;
+
     @Resource
     CreativeBackUpService creativeBackUpService;
+
     @Resource
     AccountManageService accountManageService;
+
     @Resource
     private BaiduAccountService baiduAccountService;
 
@@ -788,7 +793,7 @@ public class AssistantCreativeController extends WebContextSupport {
                 dbExistCreative = creativeService.findExistCreative(selfListCreative);
                 vc.setDbExistCreativeDTOList(dbExistCreative);
                 cr.setMsg("Ok");
-            }else{
+            } else {
                 cr.setMsg("没有检测到csv文件有正确的数据");
             }
             cr.setVc(vc);

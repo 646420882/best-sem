@@ -135,9 +135,10 @@ public class PerformanceServiceImpl implements PerformanceService {
     }
 
     @Override
-    public void downAccountCSV(OutputStream os) {
-
-        List<AccountReportDTO> listUser = accountAnalyzeDAO.downAccountCSV();
+    public void downAccountCSV(OutputStream os, Date start, Date end, List<String> dates) {
+        //DateUtils.getPeriod()
+        List<AccountReportDTO> listUser = accountAnalyzeDAO.downAccountCSV(start, end);
+        listUser = check(listUser, dates);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat df = new DecimalFormat("#.0000");
         List<Date> date = new ArrayList<>();
@@ -221,7 +222,7 @@ public class PerformanceServiceImpl implements PerformanceService {
             }
         }
         for (AccountReportDTO reportEntity : listUser) {
-            reportEntity.setOrderBy("1");
+            reportEntity.setOrderBy("0");
         }
         Collections.sort(listUser);
         try {
@@ -305,6 +306,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                 entity.setPcCpm(BigDecimal.valueOf(0.00));
                 entity.setPcCost(BigDecimal.valueOf(0.00));
                 entity.setPcCtr(0.00);
+                if(listUser.size() == 0) listUser = new ArrayList<>();
                 listUser.add(entity);
             }
         }

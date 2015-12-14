@@ -7,9 +7,11 @@ import com.perfect.dto.BaseDTO;
  */
 public class UserOperationLogDTO extends BaseDTO {
 
-    private String oid;
+    private Long oid;
 
     private long userId;
+
+    private String userName;
 
     private long campgainId;
 
@@ -32,12 +34,14 @@ public class UserOperationLogDTO extends BaseDTO {
     private long time;
 
     private boolean uploaded;
+    private String text;
 
-    public String getOid() {
+    public Long getOid() {
+
         return oid;
     }
 
-    public UserOperationLogDTO setOid(String oid) {
+    public UserOperationLogDTO setOid(Long oid) {
         this.oid = oid;
         return this;
     }
@@ -148,5 +152,40 @@ public class UserOperationLogDTO extends BaseDTO {
     public UserOperationLogDTO setUserId(long userId) {
         this.userId = userId;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "UserOperationLogDTO{" +
+                "oid=" + oid +
+                ", userId=" + userId +
+                ", campgainId=" + campgainId +
+                ", campaignName='" + campaignName + '\'' +
+                ", adgroupdId=" + adgroupdId +
+                ", adgroupName='" + adgroupName + '\'' +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", property='" + property + '\'' +
+                ", before=" + before +
+                ", after=" + after +
+                ", time=" + time +
+                ", uploaded=" + uploaded +
+                '}';
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

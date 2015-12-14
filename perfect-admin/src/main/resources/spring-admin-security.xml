@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+    <!-- 配置不过滤的资源(静态资源及登录相关) -->
+    <security:http pattern="/**/*.css" security="none"/>
+    <security:http pattern="/**/*.jpg" security="none"/>
+    <security:http pattern="/**/*.jpeg" security="none"/>
+    <security:http pattern="/**/*.gif" security="none"/>
+    <security:http pattern="/**/*.png" security="none"/>
+    <security:http pattern="/**/*.swf" security="none"/>
+    <security:http pattern="/**/*.js" security="none"/>
+    <security:http pattern="/login" security="none"/>
+    <security:http pattern="/register/*" security="none"/>
+    <security:http pattern="/validate/*" security="none"/>
+    <security:http pattern="/forgetPassword/*" security="none"/>
+    <!--<security:http pattern="/admin/getPullNmsDatas" security="none"/>-->
+    <!--<security:http pattern="/upload/uploadFile" security="none"/>-->
+    <!--<security:http pattern="/upload/upTotal" security="none"/>-->
+    <security:http pattern="/pftstis/*" security="none"/>
+
+    <security:http auto-config="true">
+        <security:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
+        <security:intercept-url pattern="/**" access="ROLE_USER"/>
+        <security:form-login login-page="/login"
+                             authentication-success-handler-ref="customAuthenticationSuccessHandler"
+                             authentication-failure-handler-ref="customAuthenticationFailureHandler"
+                             authentication-failure-url="/login?error=true"/>
+
+        <security:logout invalidate-session="true" logout-url="/logout" logout-success-url="/login"/>
+        <security:session-management invalid-session-url="/login"/>
+    </security:http>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="authenticationProvider"/>
+    </security:authentication-manager>
+
+    <bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="hideUserNotFoundExceptions" value="false"/>
+        <property name="userDetailsService" ref="adminUserDetailsService"/>
+        <property name="passwordEncoder" ref="passwordEncode"/>
+        <property name="saltSource" ref="saltSource"/>
+    </bean>
+
+    <bean id="passwordEncode" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
+
+    <bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+        <property name="userPropertyToUse" value="username"/>
+    </bean>
+</beans>

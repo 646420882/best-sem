@@ -20,6 +20,7 @@ public class SystemLogDTOBuilder {
 
     /**
      * 单元id
+     *
      * @param adgroupId
      * @return
      */
@@ -34,6 +35,7 @@ public class SystemLogDTOBuilder {
 
     /**
      * 日志记录时间
+     *
      * @param time
      * @return
      */
@@ -44,6 +46,7 @@ public class SystemLogDTOBuilder {
 
     /**
      * 用户id
+     *
      * @param userId
      * @return
      */
@@ -54,6 +57,7 @@ public class SystemLogDTOBuilder {
 
     /**
      * 单元名称
+     *
      * @param adgroupName
      * @return
      */
@@ -64,6 +68,7 @@ public class SystemLogDTOBuilder {
 
     /**
      * 计划id
+     *
      * @param campaignId
      * @return
      */
@@ -74,6 +79,7 @@ public class SystemLogDTOBuilder {
 
     /**
      * 计划名称
+     *
      * @param campaignName
      * @return
      */
@@ -84,6 +90,7 @@ public class SystemLogDTOBuilder {
 
     /**
      * 层级
+     *
      * @param type
      * @return
      */
@@ -94,36 +101,23 @@ public class SystemLogDTOBuilder {
 
     /**
      * 大操作类型
+     *
      * @param oid
      * @return
      */
-    public SystemLogDTOBuilder setOid(int oid) {
-        this.model.setOid(Integer.toString(oid));
+    public SystemLogDTOBuilder setOid(Long oid) {
+        this.model.setOid(oid);
+        return this;
+    }
+    public SystemLogDTOBuilder setName(String name) {
+        this.model.setName(name);
         return this;
     }
 
-    /**
-     * 操作对象文本
-     * @param optContent
-     * @return
-     */
-    public SystemLogDTOBuilder setOptContent(String optContent) {
-        this.model.setOptContent(optContent);
-        return this;
-    }
-
-    /**
-     * 操作层级数据id
-     * @param optComprehensiveID
-     * @return
-     */
-    public SystemLogDTOBuilder setOptComprehensiveID(Long optComprehensiveID) {
-        this.model.setOptComprehensiveID(optComprehensiveID);
-        return this;
-    }
 
     /**
      * 老值
+     *
      * @param oldValue
      * @return
      */
@@ -134,6 +128,7 @@ public class SystemLogDTOBuilder {
 
     /**
      * 新值
+     *
      * @param newValue
      * @return
      */
@@ -142,24 +137,15 @@ public class SystemLogDTOBuilder {
         return this;
     }
 
+
     /**
-     * 小操作类型
-     * @param optType
+     * 字段属性
+     * @param property
      * @return
      */
-    public SystemLogDTOBuilder setOptType(int optType) {
-        this.model.setOptType(optType);
+    public SystemLogDTOBuilder setProperty(String property) {
+        this.model.setProperty(property);
         return this;
     }
 
-
-    /**
-     * 操作字段属性
-     * @param optObj
-     * @return
-     */
-    public SystemLogDTOBuilder setOptObj(String optObj) {
-        this.model.setOptObj(optObj);
-        return this;
-    }
 }

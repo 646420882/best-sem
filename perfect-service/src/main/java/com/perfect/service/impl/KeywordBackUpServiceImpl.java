@@ -4,7 +4,6 @@ import com.perfect.dao.keyword.KeywordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.log.model.OperationRecordModel;
 import com.perfect.service.KeywordBackUpService;
 import com.perfect.service.UserOperationLogService;
 import org.springframework.beans.BeanUtils;
@@ -78,11 +77,6 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
         }
     }
 
-    private Boolean saveLog(OperationRecordModel orm) {
-//        return LogOptUtil.saveLogs(orm).isSuccess();
-        System.out.println(orm);
-        return null;
-    }
 
     @Override
     public void myInsertAll(List<KeywordBackUpDTO> list) {
