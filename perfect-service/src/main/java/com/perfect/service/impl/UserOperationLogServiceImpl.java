@@ -23,6 +23,7 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.SystemLogDTOBuilder;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.Objects;
 /**
  * Created by XiaoWei on 2015/12/14.
  */
+@Service
 public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Resource
     private AdgroupDAO adgroupDAO;
