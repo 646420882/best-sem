@@ -11,6 +11,8 @@ public class UserOperationLogDTO extends BaseDTO {
 
     private long userId;
 
+    private String userName;
+
     private long campgainId;
 
     private String campaignName;
@@ -32,8 +34,10 @@ public class UserOperationLogDTO extends BaseDTO {
     private long time;
 
     private boolean uploaded;
+    private String text;
 
     public Long getOid() {
+
         return oid;
     }
 
@@ -167,5 +171,21 @@ public class UserOperationLogDTO extends BaseDTO {
                 ", time=" + time +
                 ", uploaded=" + uploaded +
                 '}';
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

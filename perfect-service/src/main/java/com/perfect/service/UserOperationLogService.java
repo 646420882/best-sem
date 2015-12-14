@@ -4,6 +4,8 @@ import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.autosdk.sms.v3.CampaignType;
 import com.perfect.autosdk.sms.v3.CreativeType;
 import com.perfect.autosdk.sms.v3.KeywordType;
+import com.perfect.commons.constants.UserOperationLogLevelEnum;
+import com.perfect.commons.constants.UserOperationTypeEnum;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
@@ -90,6 +92,7 @@ public interface UserOperationLogService {
      * @return
      */
      List<UserOperationLogDTO> updateCampaignAll(CampaignType newCampaign);
+
     /**
      * <p> 添加 单元 操作日志保存</p>
      *
@@ -181,4 +184,12 @@ public interface UserOperationLogService {
     void saveLog(UserOperationLogDTO userOperationLogDTO);
 
 
+    void update(Object object, UserOperationLogLevelEnum level, String property, UserOperationTypeEnum
+            userOperationTypeEnum, Object
+                        oldVal,
+                Object
+                        newVal);
+
+    void newdel(Object object, UserOperationLogLevelEnum level, UserOperationTypeEnum
+            userOperationTypeEnum);
 }
