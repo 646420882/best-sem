@@ -106,6 +106,7 @@ function getKwdList(nowPage) {
         dataType: "json",
         success: function (data) {
             if (data != null) {
+                console.log(data);
                 $("#tbodyClick").empty();
                 records = data.totalCount;
                 pageIndex = data.nextPage;
