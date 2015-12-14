@@ -18,6 +18,8 @@
         <module>perfect-entity</module>
         <module>perfect-utils</module>
         <module>perfect-db</module>
+        <module>perfect-admin</module>
+        <module>perfect-usercenter</module>
     </modules>
 
     <scm>
