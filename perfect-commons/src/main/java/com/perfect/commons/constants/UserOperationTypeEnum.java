@@ -24,16 +24,17 @@ public enum UserOperationTypeEnum {
 
     private static EnumMap<UserOperationTypeEnum, String> logTypeMap = new EnumMap<UserOperationTypeEnum, String>(UserOperationTypeEnum.class);
 
-    static{
-        logTypeMap.put(ACCOUNT_ID,"{%type% %name%} %prop% 从%before%到%after%");
+    static {
+        logTypeMap.put(ACCOUNT_ID, "{%type% %name%} %prop% 从%before%到%after%");
     }
-    public String layout(UserOperationTypeEnum userOperationTypeEnum){
-        return logTypeMap.getOrDefault(userOperationTypeEnum,"{%type% %name%} %prop% 从%before%到%after%");
+
+    public String layout(UserOperationTypeEnum userOperationTypeEnum) {
+        return logTypeMap.getOrDefault(userOperationTypeEnum, "{%type% %name%} %prop% 从%before%到%after%");
     }
 
     private int value;
 
-    UserOperationTypeEnum(int value){
+    UserOperationTypeEnum(int value) {
         this.value = value;
     }
 

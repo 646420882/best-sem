@@ -7,7 +7,6 @@ import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.autosdk.sms.v3.CampaignType;
 import com.perfect.autosdk.sms.v3.CreativeType;
 import com.perfect.autosdk.sms.v3.KeywordType;
-import com.perfect.commons.constants.LogLevelConstants;
 import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.commons.constants.UserOperationTypeEnum;
 import com.perfect.core.AppContext;
@@ -24,22 +23,15 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.SystemLogDTOBuilder;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * @author xiaowei
- * @title LogSaveServiceImpl
- * @package com.perfect.service.impl
- * @description
- * @update 2015年12月08日. 下午6:46
+ * Created by XiaoWei on 2015/12/14.
  */
-@Service
 public class UserOperationLogServiceImpl implements UserOperationLogService {
-
     @Resource
     private AdgroupDAO adgroupDAO;
 
@@ -61,12 +53,11 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO saveKeywordLog(KeywordType newWord) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(LogLevelConstants.KEYWORD)
-                .setOid(newWord.getKeywordId())
-                .setOptContent(newWord.getKeyword())
-                .setOptType(UserOperationTypeEnum.ADD_KEYWORD.getValue())
+        builder.setOid(newWord.getKeywordId())
+                .setName(newWord.getKeyword())
+                .setType(UserOperationTypeEnum.ADD_KEYWORD.getValue())
                 .setAfter(newWord.getKeyword())
-                .setOptObj(LogObjConstants.NAME);
+                .setName(LogObjConstants.NAME);
         getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
         return builder.build();
     }
@@ -74,12 +65,10 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO updateKeywordLog(KeywordType newWord, Object newVal, Object oldVal, String property) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(LogLevelConstants.KEYWORD)
-//                .setOid(contentId)
-                .setOptContent(newWord.getKeyword())
-                .setOptType(UserOperationTypeEnum.MODIFY_KEYWORD.getValue())
-//                .setOptObj(optObj)
-                .setOptComprehensiveID(newWord.getKeywordId() != null ? newWord.getKeywordId() : null);
+        builder.setType(UserOperationTypeEnum.MODIFY_KEYWORD.getValue())
+                .setProperty(property)
+                .setOid(newWord.getKeywordId() != null ? newWord.getKeywordId() : null)
+                .setName(newWord.getKeyword());
         getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
         if (oldVal != null) {
             builder.setBefore(oldVal.toString());
@@ -98,12 +87,9 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
         if (baiduType != null) {
             SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-            builder.setType(LogLevelConstants.KEYWORD)
+            builder.setType(UserOperationTypeEnum.DEL_KEYWORD.getValue())
                     .setOid(newWord.getKeywordId())
-                    .setOptType(UserOperationTypeEnum.DEL_KEYWORD.getValue())
-                    .setOptContent(newWord.getKeyword())
-                    .setOptComprehensiveID(newWord.getKeywordId())
-                    .setOptContent(newWord.getKeyword());
+                    .setName(newWord.getKeyword());
             getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
             return builder.build();
         }
@@ -116,27 +102,25 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
-        if (baiduType != null && newWord != null) {
-            if (baiduType.getPrice() != newWord.getPrice()) {
-                return updateKeywordLog(newWord, newWord.getPrice(), baiduType.getPrice(), LogObjConstants.PRICE);
-            }
-            if (baiduType.getPause() != newWord.getPause()) {
-                return updateKeywordLog(newWord, newWord.getPause(), baiduType.getPause(), LogObjConstants.PAUSE);
-            }
-            if (baiduType.getMatchType() != newWord.getMatchType()) {
-                return updateKeywordLog(newWord, newWord.getMatchType(), baiduType.getMatchType(), LogObjConstants.MATCH_TYPE);
-            }
-            if (!baiduType.getPcDestinationUrl().equals(newWord.getPcDestinationUrl())) {
-                return updateKeywordLog(newWord, newWord.getPcDestinationUrl(), baiduType.getPcDestinationUrl(), LogObjConstants.PC_DES_URL);
-            }
-            if (!baiduType.getMobileDestinationUrl().equals(newWord.getMobileDestinationUrl())) {
-                return updateKeywordLog(newWord, newWord.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL);
-            }
-            if (baiduType.getAdgroupId() != newWord.getAdgroupId()) {
-                AdgroupDTO newAdgroup = adgroupDAO.findOne(newWord.getAdgroupId());
-                AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
-                return updateKeywordLog(newWord, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName(), LogObjConstants.MOVE_ADGROUP);
-            }
+        if (baiduType.getPrice() != newWord.getPrice()) {
+            return updateKeywordLog(newWord, newWord.getPrice(), baiduType.getPrice(), LogObjConstants.PRICE);
+        }
+        if (baiduType.getPause() != newWord.getPause()) {
+            return updateKeywordLog(newWord, newWord.getPause(), baiduType.getPause(), LogObjConstants.PAUSE);
+        }
+        if (baiduType.getMatchType() != newWord.getMatchType()) {
+            return updateKeywordLog(newWord, newWord.getMatchType(), baiduType.getMatchType(), LogObjConstants.MATCH_TYPE);
+        }
+        if (!baiduType.getPcDestinationUrl().equals(newWord.getPcDestinationUrl())) {
+            return updateKeywordLog(newWord, newWord.getPcDestinationUrl(), baiduType.getPcDestinationUrl(), LogObjConstants.PC_DES_URL);
+        }
+        if (!baiduType.getMobileDestinationUrl().equals(newWord.getMobileDestinationUrl())) {
+            return updateKeywordLog(newWord, newWord.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL);
+        }
+        if (baiduType.getAdgroupId() != newWord.getAdgroupId()) {
+            AdgroupDTO newAdgroup = adgroupDAO.findOne(newWord.getAdgroupId());
+            AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
+            return updateKeywordLog(newWord, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName(), LogObjConstants.MOVE_ADGROUP);
         }
         return null;
     }
@@ -146,7 +130,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 //        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
 //        builder.setType(LogLevelConstants.KEYWORD)
 //                .setOid(OptContentEnum.reBak)
-//                .setOptContent(dbFindKeyWord.getKeyword())
+//                .setName(dbFindKeyWord.getKeyword())
 //                .setOptType(OptContentEnum.reBak)
 //                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
 //        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
@@ -158,7 +142,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 //        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
 //        builder.setType(LogLevelConstants.KEYWORD)
 //                .setOid(OptContentEnum.KeyMove)
-//                .setOptContent(dbFindKeyWord.getKeyword())
+//                .setName(dbFindKeyWord.getKeyword())
 //                .setOptType(OptContentEnum.KeyMove)
 //                .setOptObj(LogObjConstants.MOVE_ADGROUP)
 //                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
@@ -175,10 +159,10 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO addCampaign(CampaignType campaignType) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(LogLevelConstants.CAMPAIGN)
+        builder.setUserId(AppContext.getAccountId())
+                .setName(campaignType.getCampaignName())
                 .setOid(campaignType.getCampaignId())
-                .setOptContent(campaignType.getCampaignName())
-                .setOptType(UserOperationTypeEnum.ADD_CAMPAIGN.getValue())
+                .setType(UserOperationTypeEnum.ADD_CAMPAIGN.getValue())
                 .setCampaignName(campaignType.getCampaignName())
                 .setAfter(campaignType.getCampaignName());
         return builder.build();
@@ -192,14 +176,13 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         CampaignType baiduType = baiduApiService.getCampaignTypeById(campaignType.getCampaignId());
         if (baiduType != null) {
             SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-            builder.setType(LogLevelConstants.CAMPAIGN)
+            builder.setUserId(AppContext.getAccountId())
                     .setOid(campaignType.getCampaignId())
-                    .setOptContent(campaignType.getCampaignName())
-                    .setOptType(UserOperationTypeEnum.DEL_CAMPAIGN.getValue())
+                    .setName(campaignType.getCampaignName())
+                    .setType(UserOperationTypeEnum.DEL_CAMPAIGN.getValue())
                     .setCampaignId(campaignType.getCampaignId())
                     .setCampaignName(campaignType.getCampaignName())
-                    .setBefore(campaignType.getCampaignName())
-                    .setOptComprehensiveID(campaignType.getCampaignId());
+                    .setBefore(campaignType.getCampaignName());
             return builder.build();
         }
         return null;
@@ -208,17 +191,14 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String property) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(LogLevelConstants.CAMPAIGN)
-                .setOptType(UserOperationTypeEnum.MODIFY_CAMPAIGN.getValue())
+        builder.setUserId(AppContext.getAccountId())
+                .setType(UserOperationTypeEnum.MODIFY_CAMPAIGN.getValue())
                 .setCampaignId(campaignType.getCampaignId())
                 .setCampaignName(campaignType.getCampaignName())
-                .setOptContent(newvalue)
+                .setName(newvalue)
                 .setAfter(newvalue)
                 .setBefore(oldvalue)
-//                .setOptObj(optObj)
-//                .setOid(contentid)
-                .setOptComprehensiveID(campaignType.getCampaignId());
-        getCampInfoByLongId(campaignType.getCampaignId(), builder);
+                .setOid(campaignType.getCampaignId());
         return builder.build();
     }
 
@@ -292,10 +272,10 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO addAdgroup(AdgroupType adgroupType) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(LogLevelConstants.ADGROUP)
-                .setOptType(UserOperationTypeEnum.ADD_ADGROUP.getValue())
+        builder
+                .setType(UserOperationTypeEnum.ADD_ADGROUP.getValue())
                 .setOid(adgroupType.getAdgroupId())
-                .setOptContent(adgroupType.getAdgroupName())
+                .setName(adgroupType.getAdgroupName())
                 .setAdgroupName(adgroupType.getAdgroupName())
                 .setAfter(adgroupType.getAdgroupName());
         getCampInfoByLongId(adgroupType.getCampaignId(), builder);
@@ -310,12 +290,10 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         AdgroupType baiduType = baiduApiService.getAdgroupTypeById(adgroupType.getAdgroupId());
         if (baiduType != null) {
             SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-            builder.setType(LogLevelConstants.ADGROUP)
-                    .setOptType(UserOperationTypeEnum.DEL_ADGROUP.getValue())
+            builder.setType(UserOperationTypeEnum.DEL_ADGROUP.getValue())
                     .setOid(adgroupType.getAdgroupId())
-                    .setOptContent(adgroupType.getAdgroupName())
-                    .setBefore(adgroupType.getAdgroupName())
-                    .setOptComprehensiveID(adgroupType.getAdgroupId());
+                    .setName(adgroupType.getAdgroupName())
+                    .setBefore(adgroupType.getAdgroupName());
             getCampInfoByLongId(adgroupType.getCampaignId(), builder);
             return builder.build();
         }
@@ -325,16 +303,14 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String property) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(LogLevelConstants.ADGROUP)
-                .setOptType(UserOperationTypeEnum.MODIFY_ADGROUP.getValue())
+        builder.setType(UserOperationTypeEnum.MODIFY_ADGROUP.getValue())
                 .setAdgroupId(adgroupType.getCampaignId())
                 .setAdgroupName(adgroupType.getAdgroupName())
-                .setOptContent(newvalue)
+                .setName(newvalue)
                 .setAfter(newvalue)
                 .setBefore(oldvalue)
-//                .setOptContentId(contentid)
-                .setOptComprehensiveID(adgroupType.getAdgroupId());
-        getCamAdgroupInfoByLong(adgroupType.getAdgroupId(), builder);
+                .setOid(adgroupType.getAdgroupId())
+                .setUserId(AppContext.getAccountId());
         return builder.build();
     }
 
@@ -393,10 +369,9 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO addCreative(CreativeType creativeType) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(LogLevelConstants.CREATIVE)
-                .setOptType(UserOperationTypeEnum.ADD_CREATIVE.getValue())
-                .setOid(0L)
-                .setOptContent(creativeType.getTitle())
+        builder.setType(UserOperationTypeEnum.ADD_CREATIVE.getValue())
+                .setOid(creativeType.getCreativeId())
+                .setName(creativeType.getTitle())
                 .setAfter(creativeType.getTitle());
         getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
         return builder.build();
@@ -410,12 +385,10 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         CreativeType baiduType = baiduApiService.getCreativeTypeById(creativeType.getCreativeId());
         if (baiduType != null) {
             SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-            builder.setType(LogLevelConstants.CREATIVE)
-                    .setOptType(UserOperationTypeEnum.DEL_CREATIVE.getValue())
-                    .setOid(0L)
-                    .setOptContent(creativeType.getTitle())
-                    .setBefore(creativeType.getTitle())
-                    .setOptComprehensiveID(creativeType.getCreativeId());
+            builder.setType(UserOperationTypeEnum.DEL_CREATIVE.getValue())
+                    .setOid(creativeType.getCreativeId())
+                    .setName(creativeType.getTitle())
+                    .setBefore(creativeType.getTitle());
             getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
             return builder.build();
         }
@@ -425,14 +398,17 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String property) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(LogLevelConstants.CREATIVE)
-                .setOptType(UserOperationTypeEnum.MODIFY_CREATIVE.getValue())
-                .setOptContent(newvalue)
-                .setAfter(newvalue)
-                .setBefore(oldvalue)
-                .setOid(creativeType.getCreativeId())
-                .setOptComprehensiveID(creativeType.getCreativeId());
+        builder.setType(UserOperationTypeEnum.MODIFY_CREATIVE.getValue())
+                .setName(newvalue)
+                .setProperty(property)
+                .setOid(creativeType.getCreativeId());
         getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
+        if (newvalue != null) {
+            builder.setAfter(newvalue.toString());
+        }
+        if (oldvalue != null) {
+            builder.setBefore(oldvalue.toString());
+        }
         return builder.build();
     }
 
@@ -516,5 +492,4 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         }
         return null;
     }
-
 }

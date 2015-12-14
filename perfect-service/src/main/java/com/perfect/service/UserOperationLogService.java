@@ -105,7 +105,7 @@ public interface UserOperationLogService {
      * @param creativeType
      * @return 操作日志数据
      */
-    public UserOperationLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String property);
+    UserOperationLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String property);
 
 
     void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder);

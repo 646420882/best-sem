@@ -331,7 +331,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             DeleteAdgroupResponse adgroupResponse = adgroupService.deleteAdgroup(adgroupRequest);
             result = adgroupResponse.getResponse();
             if (orm != null) {
-                userOperationLogService.saveLog(orm);
+//                userOperationLogService.saveLog(orm);
             }
             return result;
         } catch (ApiException e) {

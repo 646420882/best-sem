@@ -258,7 +258,7 @@ public class CampaignServiceImpl implements CampaignService {
             if (campaignDTO != null) {
                 UserOperationLogDTO orm = userOperationLogService.removeCampaign(campaignDTO);
                 if (orm != null) {
-                    logs.add(orm);
+//                    logs.add(orm);
                 }
             }
         });
@@ -273,7 +273,7 @@ public class CampaignServiceImpl implements CampaignService {
                     campaignDAO.deleteByCampaignId(s);
                     if (logs.size() > 0) {
                         logs.stream().forEach(l -> {
-                            userOperationLogService.saveLog(l);
+//                            userOperationLogService.saveLog(l);
                         });
                     }
                 });

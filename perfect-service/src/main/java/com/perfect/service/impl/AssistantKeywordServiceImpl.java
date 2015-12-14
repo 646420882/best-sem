@@ -36,11 +36,6 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
-//import com.perfect.entity.adgroup.AdgroupEntity;
-//import com.perfect.entity.campaign.CampaignEntity;
-//import org.springframework.data.mongodb.core.query.Criteria;
-//import org.springframework.data.mongodb.core.query.Query;
-
 /**
  * Created by john on 2014/8/19.
  * 2014-12-2 refactor XiaoWei
@@ -1006,7 +1001,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPause(keywordDTO.getPause());
                 UserOperationLogDTO orm = userOperationLogService.saveKeywordLog(keywordType);
                 if (orm != null) {
-                    logs.add(orm);
+//                    logs.add(orm);
                 }
                 keywordTypes.add(keywordType);
             }
@@ -1098,7 +1093,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                         add(kid);
                     }});
                     if (orm != null) {
-                        userOperationLogService.saveLog(orm);
+//                        userOperationLogService.saveLog(orm);
                     }
                 }
                 return deleteKeywordResponse.getResult();

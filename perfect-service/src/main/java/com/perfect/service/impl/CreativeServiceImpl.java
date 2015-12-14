@@ -344,7 +344,7 @@ public class CreativeServiceImpl implements CreativeService {
                 add(crid);
             }});
             if (orm != null) {
-                userOperationLogService.saveLog(orm);
+//                userOperationLogService.saveLog(orm);
             }
             DeleteCreativeResponse deleteCreativeResponse = creativeService.deleteCreative(deleteCreativeRequest);
             return deleteCreativeResponse.getResult();
