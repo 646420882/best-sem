@@ -41,4 +41,8 @@ public enum UserOperationTypeEnum {
     public String toString() {
         return Integer.toString(value);
     }
+
+    public int getValue() {
+        return value;
+    }
 }

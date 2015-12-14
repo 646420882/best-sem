@@ -79,7 +79,7 @@ public interface UserOperationLogService {
      * @param adgroupType
      * @return 操作日志数据
      */
-    UserOperationLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid);
+    public UserOperationLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String property);
 
 
     public UserOperationLogDTO updateAdgroupAll(AdgroupType newAdgroup);
@@ -105,7 +105,7 @@ public interface UserOperationLogService {
      * @param creativeType
      * @return 操作日志数据
      */
-    UserOperationLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid);
+    public UserOperationLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String property);
 
 
     void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder);

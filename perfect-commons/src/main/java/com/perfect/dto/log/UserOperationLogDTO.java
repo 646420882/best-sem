@@ -7,7 +7,7 @@ import com.perfect.dto.BaseDTO;
  */
 public class UserOperationLogDTO extends BaseDTO {
 
-    private String oid;
+    private Long oid;
 
     private long userId;
 
@@ -33,11 +33,11 @@ public class UserOperationLogDTO extends BaseDTO {
 
     private boolean uploaded;
 
-    public String getOid() {
+    public Long getOid() {
         return oid;
     }
 
-    public UserOperationLogDTO setOid(String oid) {
+    public UserOperationLogDTO setOid(Long oid) {
         this.oid = oid;
         return this;
     }

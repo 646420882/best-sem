@@ -97,8 +97,8 @@ public class SystemLogDTOBuilder {
      * @param oid
      * @return
      */
-    public SystemLogDTOBuilder setOid(int oid) {
-        this.model.setOid(Integer.toString(oid));
+    public SystemLogDTOBuilder setOid(Long oid) {
+        this.model.setOid(oid);
         return this;
     }
 

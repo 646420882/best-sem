@@ -2,9 +2,7 @@ package com.perfect.app.assistant.controller;
 
 import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.core.AppContext;
-import com.perfect.log.param.LogQueryResult;
 import com.perfect.service.CampaignService;
-import com.perfect.service.OperationLogService;
 import com.perfect.service.SystemUserInfoService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,8 +30,6 @@ public class AssistantOperationLogController {
     @Resource
     private SystemUserInfoService systemUserInfoService;
 
-    @Resource
-    private OperationLogService operationLogService;
 
     /**
      * 获取日志添加对象层级计划、单元、关键字
@@ -79,45 +75,45 @@ public class AssistantOperationLogController {
      *
      * @return
      */
-    @RequestMapping("/queryLog")
-    @ResponseBody
-    public LogQueryResult queryLog(Integer level, String opt_id,
-                                   String opt_obj, long start_time, long end_time, Integer page_index, Integer page_size) {
+//    @RequestMapping("/queryLog")
+//    @ResponseBody
+//    public LogQueryResult queryLog(Integer level, String opt_id,
+//                                   String opt_obj, long start_time, long end_time, Integer page_index, Integer page_size) {
+//
+//        return operationLogService.queryLog(level, opt_id, opt_obj, start_time, end_time, page_index, page_size);
+//
+//    }
 
-        return operationLogService.queryLog(level, opt_id, opt_obj, start_time, end_time, page_index, page_size);
-
-    }
-
-    @RequestMapping("/download")
-    public void download(Integer level, String opt_id,
-                         String opt_obj, long start_time, long end_time, HttpServletResponse response) {
-
-        LogQueryResult result = operationLogService.queryLog(level, opt_id, opt_obj, start_time, end_time, 1, 10000);
-        String content = operationLogService.download(result.getLists());
-        try {
-            // 设置文件后缀
-            String fileName = "操作日志-";
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhh24mmss");
-            String fn = fileName.concat(sdf.format(new Date()) + ".csv");
-
-            // 读取字符编码
-            String csvEncoding = "UTF-8";
-
-            // 设置响应
-            response.setContentType("application/octet-stream; charset=" + csvEncoding);
-            response.setHeader("Content-Disposition", "attachment; filename="
-                    + new String(fn.getBytes(), "iso8859-1"));
-
-            // 写出响应
-            OutputStream os = response.getOutputStream();
-            os.write(content.getBytes("GBK"));
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
+//    @RequestMapping("/download")
+//    public void download(Integer level, String opt_id,
+//                         String opt_obj, long start_time, long end_time, HttpServletResponse response) {
+//
+//        LogQueryResult result = operationLogService.queryLog(level, opt_id, opt_obj, start_time, end_time, 1, 10000);
+//        String content = operationLogService.download(result.getLists());
+//        try {
+//            // 设置文件后缀
+//            String fileName = "操作日志-";
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhh24mmss");
+//            String fn = fileName.concat(sdf.format(new Date()) + ".csv");
+//
+//            // 读取字符编码
+//            String csvEncoding = "UTF-8";
+//
+//            // 设置响应
+//            response.setContentType("application/octet-stream; charset=" + csvEncoding);
+//            response.setHeader("Content-Disposition", "attachment; filename="
+//                    + new String(fn.getBytes(), "iso8859-1"));
+//
+//            // 写出响应
+//            OutputStream os = response.getOutputStream();
+//            os.write(content.getBytes("GBK"));
+//            os.flush();
+//            os.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 
 }

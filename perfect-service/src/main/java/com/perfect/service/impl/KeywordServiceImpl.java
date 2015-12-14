@@ -3,8 +3,6 @@ package com.perfect.service.impl;
 import com.perfect.core.AppContext;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.log.model.OperationRecordModel;
-import com.perfect.log.util.LogOptUtil;
 import com.perfect.service.*;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +85,7 @@ public class KeywordServiceImpl implements KeywordService {
         keywordDAO.deleteByIds(ids);
     }
 
-    private Boolean saveLog(OperationRecordModel orm) {
-        return LogOptUtil.saveLogs(orm).isSuccess();
-    }
+//    private Boolean saveLog(OperationRecordModel orm) {
+//        return LogOptUtil.saveLogs(orm).isSuccess();
+//    }
 }
