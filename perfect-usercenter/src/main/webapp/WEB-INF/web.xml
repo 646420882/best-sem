@@ -4,11 +4,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <!--
-      This listener loads a class in the default package called com.github.dolphineor.ScalatraBootstrap.
-      That class should implement org.scalatra.LifeCycle.  Your app can be
-      configured in Scala code there.
-    -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -42,7 +37,7 @@
 
     <!-- SpringMVC前端控制器配置 -->
     <servlet>
-        <servlet-name>spring-MVC</servlet-name>
+        <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -51,7 +46,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>spring-MVC</servlet-name>
+        <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
@@ -61,7 +56,7 @@
     </filter>
     <filter-mapping>
         <filter-name>hiddenHttpMethodFilter</filter-name>
-        <servlet-name>spring-MVC</servlet-name>
+        <servlet-name>dispatcher</servlet-name>
     </filter-mapping>
 
     <!-- Spring刷新Introspector防止内存泄露 -->
@@ -83,4 +78,8 @@
         <url-pattern>*.jpg</url-pattern>
         <url-pattern>*.jpeg</url-pattern>
     </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>dispatcher</welcome-file>
+    </welcome-file-list>
 </web-app>
