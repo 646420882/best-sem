@@ -21,8 +21,6 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
-import com.perfect.log.filters.field.enums.*;
-import com.perfect.log.model.SystemLogDTO;
 import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.SystemLogDTOBuilder;
 import org.springframework.stereotype.Service;
