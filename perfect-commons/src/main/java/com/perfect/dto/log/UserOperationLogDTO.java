@@ -1,16 +1,11 @@
-package com.perfect.entity.log;
+package com.perfect.dto.log;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.perfect.dto.BaseDTO;
 
 /**
  * Created by yousheng on 2015/12/13.
  */
-@Document(collection = "system_log")
-public class SystemLogEntity {
-
-    @Id
-    private String id;
+public class UserOperationLogDTO extends BaseDTO {
 
     private String oid;
 
@@ -42,7 +37,7 @@ public class SystemLogEntity {
         return oid;
     }
 
-    public SystemLogEntity setOid(String oid) {
+    public UserOperationLogDTO setOid(String oid) {
         this.oid = oid;
         return this;
     }
@@ -51,7 +46,7 @@ public class SystemLogEntity {
         return campgainId;
     }
 
-    public SystemLogEntity setCampgainId(long campgainId) {
+    public UserOperationLogDTO setCampgainId(long campgainId) {
         this.campgainId = campgainId;
         return this;
     }
@@ -60,7 +55,7 @@ public class SystemLogEntity {
         return campaignName;
     }
 
-    public SystemLogEntity setCampaignName(String campaignName) {
+    public UserOperationLogDTO setCampaignName(String campaignName) {
         this.campaignName = campaignName;
         return this;
     }
@@ -69,7 +64,7 @@ public class SystemLogEntity {
         return adgroupdId;
     }
 
-    public SystemLogEntity setAdgroupdId(long adgroupdId) {
+    public UserOperationLogDTO setAdgroupdId(long adgroupdId) {
         this.adgroupdId = adgroupdId;
         return this;
     }
@@ -78,7 +73,7 @@ public class SystemLogEntity {
         return adgroupName;
     }
 
-    public SystemLogEntity setAdgroupName(String adgroupName) {
+    public UserOperationLogDTO setAdgroupName(String adgroupName) {
         this.adgroupName = adgroupName;
         return this;
     }
@@ -87,7 +82,7 @@ public class SystemLogEntity {
         return name;
     }
 
-    public SystemLogEntity setName(String name) {
+    public UserOperationLogDTO setName(String name) {
         this.name = name;
         return this;
     }
@@ -96,7 +91,7 @@ public class SystemLogEntity {
         return type;
     }
 
-    public SystemLogEntity setType(int type) {
+    public UserOperationLogDTO setType(int type) {
         this.type = type;
         return this;
     }
@@ -105,7 +100,7 @@ public class SystemLogEntity {
         return property;
     }
 
-    public SystemLogEntity setProperty(String property) {
+    public UserOperationLogDTO setProperty(String property) {
         this.property = property;
         return this;
     }
@@ -114,7 +109,7 @@ public class SystemLogEntity {
         return before;
     }
 
-    public SystemLogEntity setBefore(Object before) {
+    public UserOperationLogDTO setBefore(Object before) {
         this.before = before;
         return this;
     }
@@ -123,7 +118,7 @@ public class SystemLogEntity {
         return after;
     }
 
-    public SystemLogEntity setAfter(Object after) {
+    public UserOperationLogDTO setAfter(Object after) {
         this.after = after;
         return this;
     }
@@ -132,7 +127,7 @@ public class SystemLogEntity {
         return time;
     }
 
-    public SystemLogEntity setTime(long time) {
+    public UserOperationLogDTO setTime(long time) {
         this.time = time;
         return this;
     }
@@ -141,7 +136,7 @@ public class SystemLogEntity {
         return uploaded;
     }
 
-    public SystemLogEntity setUploaded(boolean uploaded) {
+    public UserOperationLogDTO setUploaded(boolean uploaded) {
         this.uploaded = uploaded;
         return this;
     }
@@ -150,7 +145,7 @@ public class SystemLogEntity {
         return userId;
     }
 
-    public SystemLogEntity setUserId(long userId) {
+    public UserOperationLogDTO setUserId(long userId) {
         this.userId = userId;
         return this;
     }

@@ -22,7 +22,7 @@ import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
-import com.perfect.service.LogSaveService;
+import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
@@ -60,7 +60,7 @@ public class CampaignServiceImpl implements CampaignService {
     private AdgroupService adgroupService;
 
     @Resource
-    private LogSaveService logSaveService;
+    private UserOperationLogService userOperationLogService;
 
     @Override
     public CampaignDTO findOne(Long campaignId) {
@@ -221,7 +221,7 @@ public class CampaignServiceImpl implements CampaignService {
         }
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-        OperationRecordModel orm = logSaveService.addCampaign(campaignType);
+        OperationRecordModel orm = userOperationLogService.addCampaign(campaignType);
         try {
             com.perfect.autosdk.sms.v3.CampaignService campaignService = commonService.getService(com.perfect.autosdk.sms.v3.CampaignService.class);
             AddCampaignRequest addCampaignRequest = new AddCampaignRequest();
@@ -236,7 +236,7 @@ public class CampaignServiceImpl implements CampaignService {
                 returnDtos.add(campaignDTO);
                 if (orm != null) {
                     if (orm.getOptContent().equals(s.getCampaignName()) && s.getCampaignId() != null) {
-                        logSaveService.saveLog(orm);
+                        userOperationLogService.saveLog(orm);
                     }
                 }
             });
@@ -256,7 +256,7 @@ public class CampaignServiceImpl implements CampaignService {
         campaignIds.stream().forEach(c -> {
             CampaignDTO campaignDTO = campaignDAO.findByLongId(c);
             if (campaignDTO != null) {
-                OperationRecordModel orm = logSaveService.removeCampaign(campaignDTO);
+                OperationRecordModel orm = userOperationLogService.removeCampaign(campaignDTO);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -273,7 +273,7 @@ public class CampaignServiceImpl implements CampaignService {
                     campaignDAO.deleteByCampaignId(s);
                     if (logs.size() > 0) {
                         logs.stream().forEach(l -> {
-                            logSaveService.saveLog(l);
+                            userOperationLogService.saveLog(l);
                         });
                     }
                 });

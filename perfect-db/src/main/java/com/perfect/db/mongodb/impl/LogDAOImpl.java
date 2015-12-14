@@ -3,7 +3,7 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.commons.constants.LogStatusConstant;
 import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
-import com.perfect.dto.LogDTO;
+import com.perfect.dto.OperationLogDTO;
 import com.perfect.entity.sys.LogEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -15,14 +15,14 @@ import java.util.List;
  * Created by vbzer_000 on 2014/9/2.
  */
 @Component
-public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogDTO, String> implements LogDAO {
+public class LogDAOImpl extends AbstractUserBaseDAOImpl<OperationLogDTO, String> implements LogDAO {
     @Override
     public Class<LogEntity> getEntityClass() {
         return LogEntity.class;
     }
 
     @Override
-    public Iterable<LogDTO> findAll(Long accountId) {
+    public Iterable<OperationLogDTO> findAll(Long accountId) {
         return convert(getMongoTemplate().find(Query.query(Criteria.where(ACCOUNT_ID).is(accountId)), getEntityClass()));
     }
 
@@ -46,7 +46,7 @@ public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogDTO, String> implemen
         if (existsByOid(oid)) {
             return;
         }
-        LogDTO logEntity = new LogDTO();
+        OperationLogDTO logEntity = new OperationLogDTO();
         logEntity.setOid(oid);
         logEntity.setType(entity.toLowerCase().replaceAll("entity", ""));
 
@@ -70,7 +70,7 @@ public class LogDAOImpl extends AbstractUserBaseDAOImpl<LogDTO, String> implemen
     }
 
     @Override
-    public Class<LogDTO> getDTOClass() {
-        return LogDTO.class;
+    public Class<OperationLogDTO> getDTOClass() {
+        return OperationLogDTO.class;
     }
 }

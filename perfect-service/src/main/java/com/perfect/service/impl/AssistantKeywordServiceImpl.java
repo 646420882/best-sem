@@ -74,7 +74,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     private MonitoringDao monitoringDao;
 
     @Resource
-    private LogSaveService logSaveService;
+    private UserOperationLogService userOperationLogService;
     //推广计划名称
     private Map<String, CampaignDTO> campaignMap = new HashMap<>();
 
@@ -991,7 +991,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(keywordDTO.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(keywordDTO.getMobileDestinationUrl());
                 keywordType.setPause(keywordDTO.getPause());
-                OperationRecordModel orm = logSaveService.saveKeywordLog(keywordType);
+                OperationRecordModel orm = userOperationLogService.saveKeywordLog(keywordType);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -1016,7 +1016,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     retrunKeywordDTOs.add(returnKeywordDTO);
                     logs.stream().forEach(f -> {
                         if (f.getOptContent().equals(s.getKeyword()) && s.getKeywordId() != null) {
-                            logSaveService.saveLog(f);
+                            userOperationLogService.saveLog(f);
                         }
                     });
                 });
@@ -1072,7 +1072,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         KeywordDTO keywordDTO = keywordDAO.findByLongId(kid);
         if (keywordDTO != null) {
-            OperationRecordModel orm = logSaveService.deleteKeywordLog(keywordDTO);
+            OperationRecordModel orm = userOperationLogService.deleteKeywordLog(keywordDTO);
             try {
                 KeywordService keywordService = commonService.getService(KeywordService.class);
                 DeleteKeywordRequest deleteKeywordRequest = new DeleteKeywordRequest();
@@ -1085,7 +1085,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                         add(kid);
                     }});
                     if (orm != null) {
-                        logSaveService.saveLog(orm);
+                        userOperationLogService.saveLog(orm);
                     }
                 }
                 return deleteKeywordResponse.getResult();
@@ -1113,7 +1113,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
                 keywordType.setPause(dtoFind.getPause());
-                OperationRecordModel orm = logSaveService.uploadLogWordUpdate(keywordType);
+                OperationRecordModel orm = userOperationLogService.uploadLogWordUpdate(keywordType);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -1139,7 +1139,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     returnKeywordDTOs.add(keywordDTO);
                     logs.stream().forEach(f -> {
                         if (f.getOptComprehensiveID() == s.getKeywordId()) {
-                            logSaveService.saveLog(f);
+                            userOperationLogService.saveLog(f);
                         }
                     });
                 });

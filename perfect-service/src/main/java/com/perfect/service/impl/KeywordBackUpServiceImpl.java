@@ -6,7 +6,7 @@ import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.log.model.OperationRecordModel;
 import com.perfect.service.KeywordBackUpService;
-import com.perfect.service.LogSaveService;
+import com.perfect.service.UserOperationLogService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
     private KeywordDAO keywordDAO;
 
     @Resource
-    private LogSaveService logSaveService;
+    private UserOperationLogService userOperationLogService;
 
 
     public void insertAll(List<KeywordBackUpDTO> entities) {

@@ -18,7 +18,6 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
@@ -31,9 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +59,7 @@ public class AdgroupServiceImpl implements AdgroupService {
     private CampaignService campaignService;
 
     @Resource
-    private LogSaveService logSaveService;
+    private UserOperationLogService userOperationLogService;
 
     @Override
     public List<AdgroupDTO> getAdgroupByCampaignId(Long campaignId, Map<String, Object> params, int skip, int limit) {
@@ -272,7 +269,7 @@ public class AdgroupServiceImpl implements AdgroupService {
                 adgroupType.setPause(dto.getPause());
                 adgroupType.setNegativeWords(dto.getNegativeWords());
                 adgroupType.setExactNegativeWords(dto.getExactNegativeWords());
-                OperationRecordModel orm = logSaveService.addAdgroup(adgroupType);
+                OperationRecordModel orm = userOperationLogService.addAdgroup(adgroupType);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -297,7 +294,7 @@ public class AdgroupServiceImpl implements AdgroupService {
                     if (logs.size() > 0) {
                         logs.stream().forEach(l -> {
                             if (l.getOptContent().equals(s.getAdgroupName()) && s.getAdgroupId() != null) {
-                                logSaveService.saveLog(l);
+                                userOperationLogService.saveLog(l);
                             }
                         });
                     }
@@ -323,7 +320,7 @@ public class AdgroupServiceImpl implements AdgroupService {
         AdgroupDTO adgroupDTO = adgroupDAO.findOne(aid);
         OperationRecordModel orm=null;
         if(adgroupDTO!=null){
-            orm= logSaveService.removeAdgroup(adgroupDTO);
+            orm= userOperationLogService.removeAdgroup(adgroupDTO);
         }
         try {
             com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
@@ -334,7 +331,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             DeleteAdgroupResponse adgroupResponse = adgroupService.deleteAdgroup(adgroupRequest);
             result = adgroupResponse.getResponse();
             if (orm != null) {
-                logSaveService.saveLog(orm);
+                userOperationLogService.saveLog(orm);
             }
             return result;
         } catch (ApiException e) {

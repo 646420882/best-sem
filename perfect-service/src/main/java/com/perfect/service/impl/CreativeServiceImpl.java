@@ -15,7 +15,6 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
-import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
@@ -51,7 +50,7 @@ public class CreativeServiceImpl implements CreativeService {
     private AdgroupService adgroupService;
 
     @Resource
-    private LogSaveService logSaveService;
+    private UserOperationLogService userOperationLogService;
 
     @Override
     public List<Long> getCreativeIdByAdgroupId(Long adgroupId) {
@@ -259,7 +258,7 @@ public class CreativeServiceImpl implements CreativeService {
                 creativeType.setMobileDisplayUrl(creativeDTOFind.getMobileDisplayUrl());
                 creativeType.setMobileDestinationUrl(creativeDTOFind.getMobileDestinationUrl());
                 creativeType.setDevicePreference(creativeDTOFind.getDevicePreference());
-                OperationRecordModel orm = logSaveService.addCreative(creativeType);
+                OperationRecordModel orm = userOperationLogService.addCreative(creativeType);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -282,7 +281,7 @@ public class CreativeServiceImpl implements CreativeService {
                     returnCreativeDTOs.add(creativeDTO);
                     logs.stream().forEach(c -> {
                         if (c.getOptContent().equals(s.getTitle()) && s.getCreativeId() != null) {
-                            logSaveService.saveLog(c);
+                            userOperationLogService.saveLog(c);
                         }
                     });
                 });
@@ -337,7 +336,7 @@ public class CreativeServiceImpl implements CreativeService {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         CreativeDTO creativeDTO = creativeDAO.findOne(crid);
-        OperationRecordModel orm = logSaveService.removeCreative(creativeDTO);
+        OperationRecordModel orm = userOperationLogService.removeCreative(creativeDTO);
         try {
             com.perfect.autosdk.sms.v3.CreativeService creativeService = commonService.getService(com.perfect.autosdk.sms.v3.CreativeService.class);
             DeleteCreativeRequest deleteCreativeRequest = new DeleteCreativeRequest();
@@ -345,7 +344,7 @@ public class CreativeServiceImpl implements CreativeService {
                 add(crid);
             }});
             if (orm != null) {
-                logSaveService.saveLog(orm);
+                userOperationLogService.saveLog(orm);
             }
             DeleteCreativeResponse deleteCreativeResponse = creativeService.deleteCreative(deleteCreativeRequest);
             return deleteCreativeResponse.getResult();

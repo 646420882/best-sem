@@ -3,7 +3,7 @@ package com.perfect.dto;
 /**
  * Created by yousheng on 14/12/1.
  */
-public class LogDTO extends BaseDTO {
+public class OperationLogDTO extends BaseDTO {
 
 
     private Long bid;

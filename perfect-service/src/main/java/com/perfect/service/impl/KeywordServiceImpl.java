@@ -29,7 +29,7 @@ public class KeywordServiceImpl implements KeywordService {
     private AssistantKeywordService assistantKeywordService;
 
     @Resource
-    private LogSaveService logSaveService;
+    private UserOperationLogService userOperationLogService;
 
     @Override
     public List<KeywordDTO> getKeywordByAdgroupId(Long adgroupId, Map<String, Object> params, int skip, int limit) {

@@ -1,11 +1,16 @@
-package com.perfect.dto.log;
+package com.perfect.entity.log;
 
-import com.perfect.dto.BaseDTO;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Created by yousheng on 2015/12/13.
  */
-public class SystemLogDTO extends BaseDTO {
+@Document(collection = "system_log")
+public class UserOperationLogEntity {
+
+    @Id
+    private String id;
 
     private String oid;
 
@@ -37,7 +42,7 @@ public class SystemLogDTO extends BaseDTO {
         return oid;
     }
 
-    public SystemLogDTO setOid(String oid) {
+    public UserOperationLogEntity setOid(String oid) {
         this.oid = oid;
         return this;
     }
@@ -46,7 +51,7 @@ public class SystemLogDTO extends BaseDTO {
         return campgainId;
     }
 
-    public SystemLogDTO setCampgainId(long campgainId) {
+    public UserOperationLogEntity setCampgainId(long campgainId) {
         this.campgainId = campgainId;
         return this;
     }
@@ -55,7 +60,7 @@ public class SystemLogDTO extends BaseDTO {
         return campaignName;
     }
 
-    public SystemLogDTO setCampaignName(String campaignName) {
+    public UserOperationLogEntity setCampaignName(String campaignName) {
         this.campaignName = campaignName;
         return this;
     }
@@ -64,7 +69,7 @@ public class SystemLogDTO extends BaseDTO {
         return adgroupdId;
     }
 
-    public SystemLogDTO setAdgroupdId(long adgroupdId) {
+    public UserOperationLogEntity setAdgroupdId(long adgroupdId) {
         this.adgroupdId = adgroupdId;
         return this;
     }
@@ -73,7 +78,7 @@ public class SystemLogDTO extends BaseDTO {
         return adgroupName;
     }
 
-    public SystemLogDTO setAdgroupName(String adgroupName) {
+    public UserOperationLogEntity setAdgroupName(String adgroupName) {
         this.adgroupName = adgroupName;
         return this;
     }
@@ -82,7 +87,7 @@ public class SystemLogDTO extends BaseDTO {
         return name;
     }
 
-    public SystemLogDTO setName(String name) {
+    public UserOperationLogEntity setName(String name) {
         this.name = name;
         return this;
     }
@@ -91,7 +96,7 @@ public class SystemLogDTO extends BaseDTO {
         return type;
     }
 
-    public SystemLogDTO setType(int type) {
+    public UserOperationLogEntity setType(int type) {
         this.type = type;
         return this;
     }
@@ -100,7 +105,7 @@ public class SystemLogDTO extends BaseDTO {
         return property;
     }
 
-    public SystemLogDTO setProperty(String property) {
+    public UserOperationLogEntity setProperty(String property) {
         this.property = property;
         return this;
     }
@@ -109,7 +114,7 @@ public class SystemLogDTO extends BaseDTO {
         return before;
     }
 
-    public SystemLogDTO setBefore(Object before) {
+    public UserOperationLogEntity setBefore(Object before) {
         this.before = before;
         return this;
     }
@@ -118,7 +123,7 @@ public class SystemLogDTO extends BaseDTO {
         return after;
     }
 
-    public SystemLogDTO setAfter(Object after) {
+    public UserOperationLogEntity setAfter(Object after) {
         this.after = after;
         return this;
     }
@@ -127,7 +132,7 @@ public class SystemLogDTO extends BaseDTO {
         return time;
     }
 
-    public SystemLogDTO setTime(long time) {
+    public UserOperationLogEntity setTime(long time) {
         this.time = time;
         return this;
     }
@@ -136,7 +141,7 @@ public class SystemLogDTO extends BaseDTO {
         return uploaded;
     }
 
-    public SystemLogDTO setUploaded(boolean uploaded) {
+    public UserOperationLogEntity setUploaded(boolean uploaded) {
         this.uploaded = uploaded;
         return this;
     }
@@ -145,7 +150,7 @@ public class SystemLogDTO extends BaseDTO {
         return userId;
     }
 
-    public SystemLogDTO setUserId(long userId) {
+    public UserOperationLogEntity setUserId(long userId) {
         this.userId = userId;
         return this;
     }

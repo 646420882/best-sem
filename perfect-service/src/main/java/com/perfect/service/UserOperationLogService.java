@@ -8,7 +8,7 @@ import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.dto.log.SystemLogDTO;
+import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.utils.SystemLogDTOBuilder;
 
 import java.util.List;
@@ -16,20 +16,20 @@ import java.util.List;
 
 /**
  * @author xiaowei
- * @title LogSaveService
+ * @title UserOperationLogService
  * @package com.perfect.service
  * @description
  * @update 2015年12月08日. 下午6:44
  */
-public interface LogSaveService {
+public interface UserOperationLogService {
 
-    SystemLogDTO saveKeywordLog(KeywordType newWord);
+    UserOperationLogDTO saveKeywordLog(KeywordType newWord);
 
-    SystemLogDTO updateKeywordLog(KeywordType findKeyWord, Object newVal, Object oldVal, String optObj, Integer contentId);
+    UserOperationLogDTO updateKeywordLog(KeywordType findKeyWord, Object newVal, Object oldVal, String optObj, Integer contentId);
 
-    SystemLogDTO deleteKeywordLog(KeywordDTO newWord);
+    UserOperationLogDTO deleteKeywordLog(KeywordDTO newWord);
 
-    SystemLogDTO uploadLogWordUpdate(KeywordType newWord);
+    UserOperationLogDTO uploadLogWordUpdate(KeywordType newWord);
 
 
     /**
@@ -38,7 +38,7 @@ public interface LogSaveService {
      * @param campaignType
      * @return 操作日志数据
      */
-    SystemLogDTO addCampaign(CampaignType campaignType);
+    UserOperationLogDTO addCampaign(CampaignType campaignType);
 
     /**
      * <p> 删除 计划 操作日志</p>
@@ -46,7 +46,7 @@ public interface LogSaveService {
      * @param campaignType
      * @return 操作日志数据
      */
-    SystemLogDTO removeCampaign(CampaignDTO campaignType);
+    UserOperationLogDTO removeCampaign(CampaignDTO campaignType);
 
     /**
      * <p> 更新 计划 操作日志</p>
@@ -54,7 +54,7 @@ public interface LogSaveService {
      * @param campaignType
      * @return 操作日志数据
      */
-    SystemLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid);
+    UserOperationLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid);
 
     /**
      * <p> 添加 单元 操作日志保存</p>
@@ -62,7 +62,7 @@ public interface LogSaveService {
      * @param adgroupType
      * @return 操作日志数据
      */
-    SystemLogDTO addAdgroup(AdgroupType adgroupType);
+    UserOperationLogDTO addAdgroup(AdgroupType adgroupType);
 
     /**
      * <p> 删除 单元 操作日志</p>
@@ -70,7 +70,7 @@ public interface LogSaveService {
      * @param adgroupType
      * @return 操作日志数据
      */
-    SystemLogDTO removeAdgroup(AdgroupDTO adgroupType);
+    UserOperationLogDTO removeAdgroup(AdgroupDTO adgroupType);
 
     /**
      * <p> 更新 单元 操作日志</p>
@@ -78,7 +78,7 @@ public interface LogSaveService {
      * @param adgroupType
      * @return 操作日志数据
      */
-    SystemLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid);
+    UserOperationLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid);
 
     /**
      * <p> 添加 创意 操作日志保存</p>
@@ -86,7 +86,7 @@ public interface LogSaveService {
      * @param creativeType
      * @return 操作日志数据
      */
-    SystemLogDTO addCreative(CreativeType creativeType);
+    UserOperationLogDTO addCreative(CreativeType creativeType);
 
     /**
      * <p> 删除 创意  操作日志</p>
@@ -94,7 +94,7 @@ public interface LogSaveService {
      * @param creativeType
      * @return 操作日志数据
      */
-    SystemLogDTO removeCreative(CreativeDTO creativeType);
+    UserOperationLogDTO removeCreative(CreativeDTO creativeType);
 
     /**
      * <p> 更新 创意 操作日志</p>
@@ -102,13 +102,13 @@ public interface LogSaveService {
      * @param creativeType
      * @return 操作日志数据
      */
-    SystemLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid);
+    UserOperationLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid);
 
 
     void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder);
 
     void getCampInfoByLongId(Long campaignId, SystemLogDTOBuilder builder);
 
-    void save(List<SystemLogDTO> systemLogDTOs);
+    void save(List<UserOperationLogDTO> userOperationLogDTOs);
 
 }

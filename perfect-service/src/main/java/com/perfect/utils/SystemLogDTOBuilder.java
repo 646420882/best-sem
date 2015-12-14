@@ -1,7 +1,7 @@
 package com.perfect.utils;
 
 import com.perfect.core.AppContext;
-import com.perfect.dto.log.SystemLogDTO;
+import com.perfect.dto.log.UserOperationLogDTO;
 
 /**
  * @author xiaowei
@@ -12,7 +12,7 @@ import com.perfect.dto.log.SystemLogDTO;
  */
 public class SystemLogDTOBuilder {
 
-    private SystemLogDTO model = new SystemLogDTO();
+    private UserOperationLogDTO model = new UserOperationLogDTO();
 
     public static SystemLogDTOBuilder builder() {
         return new SystemLogDTOBuilder().setTime(System.currentTimeMillis()).setUserId(AppContext.getAccountId());
@@ -28,7 +28,7 @@ public class SystemLogDTOBuilder {
         return this;
     }
 
-    public SystemLogDTO build() {
+    public UserOperationLogDTO build() {
         return this.model;
     }
 

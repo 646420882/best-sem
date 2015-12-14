@@ -14,17 +14,16 @@ import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
-import com.perfect.dao.log.SystemLogDAO;
+import com.perfect.dao.log.UserOperationLogDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.dto.log.SystemLogDTO;
+import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.log.filters.field.enums.*;
 import com.perfect.log.model.SystemLogDTO;
-import com.perfect.log.util.LogOptUtil;
-import com.perfect.service.LogSaveService;
+import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.SystemLogDTOBuilder;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,7 @@ import java.util.List;
  * @update 2015年12月08日. 下午6:46
  */
 @Service
-public class LogSaveServiceImpl implements LogSaveService {
+public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Resource
     private AdgroupDAO adgroupDAO;
@@ -54,13 +53,13 @@ public class LogSaveServiceImpl implements LogSaveService {
     private AccountManageDAO accountManageDAO;
 
     @Resource
-    private SystemLogDAO systemLogDAO;
+    private UserOperationLogDAO systemLogDAO;
 
 
     //TODO  .setOid(KeyWordEnum.addWord)
     //TODO   .setOptType(OptContentEnum.Add)
     @Override
-    public SystemLogDTO saveKeywordLog(KeywordType newWord) {
+    public UserOperationLogDTO saveKeywordLog(KeywordType newWord) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder.setType(LogLevelConstants.KEYWORD)
                 .setOid(KeyWordEnum.addWord)
@@ -73,7 +72,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO updateKeywordLog(KeywordType newWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
+    public UserOperationLogDTO updateKeywordLog(KeywordType newWord, Object newVal, Object oldVal, String optObj, Integer contentId) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder.setType(LogLevelConstants.KEYWORD)
                 .setOid(contentId)
@@ -92,7 +91,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO deleteKeywordLog(KeywordDTO newWord) {
+    public UserOperationLogDTO deleteKeywordLog(KeywordDTO newWord) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
@@ -112,7 +111,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO uploadLogWordUpdate(KeywordType newWord) {
+    public UserOperationLogDTO uploadLogWordUpdate(KeywordType newWord) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
@@ -172,7 +171,7 @@ public class LogSaveServiceImpl implements LogSaveService {
 //    }
 //------------------------------------计划-----------------------------------------
     @Override
-    public SystemLogDTO addCampaign(CampaignType campaignType) {
+    public UserOperationLogDTO addCampaign(CampaignType campaignType) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder.setType(LogLevelConstants.CAMPAIGN)
                 .setOid(CampaignEnum.addPlan)
@@ -184,7 +183,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO removeCampaign(CampaignDTO campaignType) {
+    public UserOperationLogDTO removeCampaign(CampaignDTO campaignType) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
@@ -205,7 +204,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid) {
+    public UserOperationLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder.setType(LogLevelConstants.CAMPAIGN)
                 .setOptType(OptContentEnum.Edit)
@@ -222,7 +221,7 @@ public class LogSaveServiceImpl implements LogSaveService {
 
     //----------------------------------单元------------------------------------------------
     @Override
-    public SystemLogDTO addAdgroup(AdgroupType adgroupType) {
+    public UserOperationLogDTO addAdgroup(AdgroupType adgroupType) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder.setType(LogLevelConstants.ADGROUP)
                 .setOptType(OptContentEnum.Add)
@@ -235,7 +234,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO removeAdgroup(AdgroupDTO adgroupType) {
+    public UserOperationLogDTO removeAdgroup(AdgroupDTO adgroupType) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
@@ -255,7 +254,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid) {
+    public UserOperationLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder.setType(LogLevelConstants.ADGROUP)
                 .setOptType(OptContentEnum.Edit)
@@ -272,7 +271,7 @@ public class LogSaveServiceImpl implements LogSaveService {
 
     //-----------------------------------------创意-----------------------------------------------
     @Override
-    public SystemLogDTO addCreative(CreativeType creativeType) {
+    public UserOperationLogDTO addCreative(CreativeType creativeType) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder.setType(LogLevelConstants.CREATIVE)
                 .setOptType(OptContentEnum.Add)
@@ -284,7 +283,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO removeCreative(CreativeDTO creativeType) {
+    public UserOperationLogDTO removeCreative(CreativeDTO creativeType) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
@@ -304,7 +303,7 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
     @Override
-    public SystemLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid) {
+    public UserOperationLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String optObj, int contentid) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder.setType(LogLevelConstants.CREATIVE)
                 .setOptType(OptContentEnum.Edit)
@@ -347,8 +346,8 @@ public class LogSaveServiceImpl implements LogSaveService {
     }
 
 
-    public void save(List<SystemLogDTO> systemLogDTOs) {
-        systemLogDAO.save(systemLogDTOs);
+    public void save(List<UserOperationLogDTO> userOperationLogDTOs) {
+        systemLogDAO.save(userOperationLogDTOs);
     }
 
 }
