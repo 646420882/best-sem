@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.account.BaseBaiduAccountInfoVO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 /**
  * Created by john on 2014/11/7.
@@ -15,5 +15,5 @@ public interface BaiduAccountService {
      * @param accountId
      * @return
      */
-    BaseBaiduAccountInfoVO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId);
+    BaiduAccountInfoDTO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId);
 }

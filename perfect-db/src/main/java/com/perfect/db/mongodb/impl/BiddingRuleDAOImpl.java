@@ -8,6 +8,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.BaseDTO;
+import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.dto.bidding.StrategyDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
@@ -22,6 +23,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import javax.annotation.Resources;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,8 +40,8 @@ import java.util.stream.Collectors;
 public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, Long> implements BiddingRuleDAO {
 
 
-//    @Resource
-//    private SystemUserDAO systemUserDAO;
+    @Resource
+    private SystemUserDAO systemUserDAO;
 
     @Override
     public Class<BiddingRuleDTO> getDTOClass() {
@@ -283,6 +285,7 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
 
     /**
      * 由中央调度器获取可以执行的竞价任务, 并更改"r"的状态.
+     * <p>
      *
      * @param username
      * @param time
@@ -310,7 +313,9 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     /**
-     * 竞价器根据objectId来获取相应的竞价规则, 并标示为运行状态.
+     * 竞价器根据objectId来获取相应的竞价规则,
+     * 并标示为运行状态.
+     * <p>
      *
      * @param username
      * @param objectId
@@ -332,8 +337,10 @@ public class BiddingRuleDAOImpl extends AbstractUserBaseDAOImpl<BiddingRuleDTO, 
     }
 
     @Override
-    public BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO, String username) {
-        AppContext.setUser(username);
+    public BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO) {
+        long accId = biddingRuleDTO.getAccountId();
+        SystemUserDTO systemUserDTO = systemUserDAO.findByAid(accId);
+        AppContext.setUser(systemUserDTO.getUserName());
         save(biddingRuleDTO);
 
         return biddingRuleDTO;

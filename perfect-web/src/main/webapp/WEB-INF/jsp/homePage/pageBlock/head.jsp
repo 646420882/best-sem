@@ -302,21 +302,18 @@
         </div>
     </div>
 </div>
-<!-- 账户弹出 -->
+<!-- 帐户弹出 -->
 <div class="box" style="display:none;*width:400px;" id="open_account">
     <h2 id="AccountChange"><span class="fl">多账户下载</span><a href="javascript:void(0)" id="account_close"
                                                            class="close">×</a></h2>
 
     <div class="mainlist">
         选择账户以及推广计划
-
         <div class="j_list01 over">
 
             <ul id="zTrees" class="ztree over" style="height:300px;">
             </ul>
         </div>
-
-
     </div>
     <div class="main_bottom">
         <div class="w_list03">
@@ -342,10 +339,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/dialog-plus.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/commons/head.js"></script>
-<script>
+<script type="text/javascript">
     //全选效果
     function customColumns(obj, type, allId, listId) {
-        if (type == 0) {//点击全选
+        if (type == 0) {    // 点击全选
             if ($(obj).prop('checked') == false) {
                 $("#" + listId).find("input").each(function () {
                     $(this).prop('checked', false);
@@ -355,7 +352,7 @@
                     $(this).prop('checked', 'true');
                 })
             }
-        } else if (type == 1) {//点击全选下的列表
+        } else if (type == 1) { //  点击全选下的列表
             if ($(obj).prop('checked') == false) {
                 $("#" + allId).find("input").prop('checked', false);
             } else {
@@ -365,7 +362,8 @@
                         isFlag = false;
                         return;
                     }
-                })
+                });
+
                 if (isFlag == true) {
                     $("#" + allId).find("input").prop('checked', true);
                 }
@@ -374,5 +372,3 @@
 
     }
 </script>
-
-

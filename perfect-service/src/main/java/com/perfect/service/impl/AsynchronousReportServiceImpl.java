@@ -3,8 +3,6 @@ package com.perfect.service.impl;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.perfect.account.BaseBaiduAccountInfoVO;
-import com.perfect.account.SystemUserInfoVO;
 import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.dao.report.AsynchronousReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
@@ -13,7 +11,6 @@ import com.perfect.dto.account.*;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.service.AsynchronousReportService;
-import com.perfect.service.SystemUserInfoService;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import org.apache.http.HttpEntity;
@@ -51,7 +48,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
     private AsynchronousReportDAO asynchronousReportDAO;
 
     @Resource
-    private SystemUserInfoService systemUserInfoService;
+    private SystemUserDAO systemUserDAO;
 
     private List<AccountReportDTO> acrmList;
 
@@ -73,20 +70,32 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
     public void getAccountReportData(String dateStr, String userName) {
 
-        List<SystemUserInfoVO> entityList = getUserInfo(userName);
+        List<SystemUserDTO> entityList = new ArrayList<>();
+        if (userName == null) {
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
+        } else {
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
 
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserInfoVO> newEntityList = filterEentity(entityList,dateStr,jc,"--用户");
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--用户");
+            }
+            return judge;
+        }).collect(Collectors.toList());
 
+        for (SystemUserDTO systemUser : newEntityList) {
 
-        for (SystemUserInfoVO systemUser : newEntityList) {
-
-            for (BaseBaiduAccountInfoVO entity : systemUser.getBaiduAccounts()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
 
                 getStartPull(systemUser, entity, dateStr + "--用户");
 
-                AsynchronousReport report = new AsynchronousReport(entity.getAccountName(), entity.getPassword(), entity.getToken());
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
                 String pcFilePath = report.getAccountReportDataPC(null, dateStr, dateStr);
                 String mobileFilePath = report.getAccountReportDataMobile(null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
@@ -109,7 +118,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                 List<AccountReportDTO> list;
                 try {
                     list = voResult.get();
-                    asynchronousReportDAO.getAccountReportData(list, systemUser, dateStr, entity.getAccountName());
+                    asynchronousReportDAO.getAccountReportData(list, systemUser, dateStr, entity.getBaiduUserName());
                     getEndPull(systemUser, entity, dateStr + "--用户");
 
                 } catch (InterruptedException | ExecutionException e) {
@@ -127,17 +136,29 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
     public void getCampaignReportData(String dateStr, String userName) {
 
-        List<SystemUserInfoVO> entityList = getUserInfo(userName);
-
+        List<SystemUserDTO> entityList = new ArrayList<>();
+        if (userName == null) {
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
+        } else {
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserInfoVO> newEntityList = filterEentity(entityList,dateStr,jc,"--计划");
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--计划");
+            }
+            return judge;
+        }).collect(Collectors.toList());
 
-        for (SystemUserInfoVO systemUser : newEntityList) {
+        for (SystemUserDTO systemUser : newEntityList) {
             int i = 1;
-            for (BaseBaiduAccountInfoVO entity : systemUser.getBaiduAccounts()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--计划");
-                AsynchronousReport report = new AsynchronousReport(entity.getAccountName(), entity.getPassword(), entity.getToken());
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
                 String pcFilePath = report.getCampaignReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCampaignReportDataMobile(null, null, dateStr, dateStr);
                 if (pcFilePath == null && mobileFilePath == null) {
@@ -177,17 +198,29 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
     public void getAdgroupReportData(String dateStr, String userName) {
 
-        List<SystemUserInfoVO> entityList = getUserInfo(userName);
-
+        List<SystemUserDTO> entityList = new ArrayList<>();
+        if (userName == null) {
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
+        } else {
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserInfoVO> newEntityList = filterEentity(entityList,dateStr,jc,"--单元");
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--单元");
+            }
+            return judge;
+        }).collect(Collectors.toList());
 
-        for (SystemUserInfoVO systemUser : newEntityList) {
+        for (SystemUserDTO systemUser : newEntityList) {
             int i = 1;
-            for (BaseBaiduAccountInfoVO entity : systemUser.getBaiduAccounts()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--单元");
-                AsynchronousReport report = new AsynchronousReport(entity.getAccountName(), entity.getPassword(), entity.getToken());
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getUnitReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getUnitReportDataMobile(null, null, dateStr, dateStr);
@@ -228,17 +261,29 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
     public void getCreativeReportData(String dateStr, String userName) {
 
-        List<SystemUserInfoVO> entityList = getUserInfo(userName);
-
+        List<SystemUserDTO> entityList = new ArrayList<>();
+        if (userName == null) {
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
+        } else {
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserInfoVO> newEntityList = filterEentity(entityList,dateStr,jc,"--创意");
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--创意");
+            }
+            return judge;
+        }).collect(Collectors.toList());
 
-        for (SystemUserInfoVO systemUser : newEntityList) {
+        for (SystemUserDTO systemUser : newEntityList) {
             int i = 1;
-            for (BaseBaiduAccountInfoVO entity : systemUser.getBaiduAccounts()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--创意");
-                AsynchronousReport report = new AsynchronousReport(entity.getAccountName(), entity.getPassword(), entity.getToken());
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getCreativeReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getCreativeReportDataMobile(null, null, dateStr, dateStr);
@@ -278,17 +323,29 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
     }
 
     public void getKeywordReportData(String dateStr, String userName) {
-        List<SystemUserInfoVO> entityList = getUserInfo(userName);
-
+        List<SystemUserDTO> entityList = new ArrayList<>();
+        if (userName == null) {
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
+        } else {
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserInfoVO> newEntityList = filterEentity(entityList,dateStr,jc,"--关键字");
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--关键字");
+            }
+            return judge;
+        }).collect(Collectors.toList());
 
-        for (SystemUserInfoVO systemUser : newEntityList) {
+        for (SystemUserDTO systemUser : newEntityList) {
             int i = 1;
-            for (BaseBaiduAccountInfoVO entity : systemUser.getBaiduAccounts()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--关键字");
-                AsynchronousReport report = new AsynchronousReport(entity.getAccountName(), entity.getPassword(), entity.getToken());
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getKeyWordidReportDataPC(null, null, dateStr, dateStr);
                 String mobileFilePath = report.getKeyWordidReportDataMobile(null, null, dateStr, dateStr);
@@ -328,21 +385,33 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
     }
 
     public void getRegionReportData(String dateStr, String userName) {
-        List<SystemUserInfoVO> entityList = getUserInfo(userName);
-
+        List<SystemUserDTO> entityList = new ArrayList<>();
+        if (userName == null) {
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
+        } else {
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
+            entityList.add(userEntity);
+        }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserInfoVO> newEntityList = filterEentity(entityList,dateStr,jc,"--地域");
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            boolean judge = (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
+            if (!judge) {
+                getSkipPull(jc, e, dateStr + "--地狱");
+            }
+            return judge;
+        }).collect(Collectors.toList());
 
-        for (SystemUserInfoVO systemUser : newEntityList) {
-            if (systemUser.getStatus() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountStatus() == 0) {
+        for (SystemUserDTO systemUser : newEntityList) {
+            if (systemUser.getState() == 0 || systemUser.getBaiduAccounts() == null || systemUser.getBaiduAccounts().size() <= 0 || systemUser.getAccess() == 1 || systemUser.getAccountState() == 0) {
                 getSkipPull(jc, systemUser, dateStr + "--地域");
                 continue;
             }
             int i = 1;
-            for (BaseBaiduAccountInfoVO entity : systemUser.getBaiduAccounts()) {
+            for (BaiduAccountInfoDTO entity : systemUser.getBaiduAccounts()) {
                 getStartPull(systemUser, entity, dateStr + "--地域");
-                AsynchronousReport report = new AsynchronousReport(entity.getAccountName(), entity.getPassword(), entity.getToken());
+                AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
 
                 String pcFilePath = report.getRegionalReportDataPC(null, null, dateStr, dateStr);
                 /*String mobileFilePath = report.getRegionalReportDataMobile(null, null, dateStr, dateStr); */
@@ -383,7 +452,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
     }
 
     //跳过日志；
-    private void getSkipPull(Jedis jc, SystemUserInfoVO systemUser, String report) {
+    private void getSkipPull(Jedis jc, SystemUserDTO systemUser, String report) {
         boolean jedisKey = jc.exists(ADMIN_KEY_STRING);
         if (jedisKey) {
             List<String> strings = new ArrayList<>();
@@ -391,13 +460,13 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             List<String> list = new Gson().fromJson(data, new TypeToken<List<String>>() {
             }.getType());
             strings.addAll(list);
-            strings.add(systemUser.getUsername() + "账户根据权限规则已跳过：" + report + " :报告拉取！");
+            strings.add(systemUser.getUserName() + "账户根据权限规则已跳过：" + report + " :报告拉取！");
             String jsonData = new Gson().toJson(strings);
             jc.set(ADMIN_KEY_STRING, jsonData);
             jc.expire(ADMIN_KEY_STRING, 3600);
         } else {
             List<String> strings = new ArrayList<>();
-            strings.add(systemUser.getUsername() + "账户根据权限规则已跳过：" + report + " :报告拉取！");
+            strings.add(systemUser.getUserName() + "账户根据权限规则已跳过：" + report + " :报告拉取！");
             String jsonData = new Gson().toJson(strings);
             jc.set(ADMIN_KEY_STRING, jsonData);
             jc.expire(ADMIN_KEY_STRING, 3600);
@@ -405,7 +474,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
     }
 
     //开始日志
-    private void getStartPull(SystemUserInfoVO systemUser, BaseBaiduAccountInfoVO entity, String report) {
+    private void getStartPull(SystemUserDTO systemUser, BaiduAccountInfoDTO entity, String report) {
         Jedis jc = JRedisUtils.get();
         boolean jedisKey = jc.exists(ADMIN_KEY_STRING);
         if (jedisKey) {
@@ -414,13 +483,13 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             List<String> list = new Gson().fromJson(data, new TypeToken<List<String>>() {
             }.getType());
             strings.addAll(list);
-            strings.add(ADMIN_PROMPT_HEAD + systemUser.getUsername() + ADMIN_PROMPT_CENTRAL + entity.getAccountName() + ":子账户：" + report + " :报告数据");
+            strings.add(ADMIN_PROMPT_HEAD + systemUser.getUserName() + ADMIN_PROMPT_CENTRAL + entity.getBaiduUserName() + ":子账户：" + report + " :报告数据");
             String jsonData = new Gson().toJson(strings);
             jc.set(ADMIN_KEY_STRING, jsonData);
             jc.expire(ADMIN_KEY_STRING, 3600);
         } else {
             List<String> strings = new ArrayList<>();
-            strings.add(ADMIN_PROMPT_HEAD + systemUser.getUsername() + ADMIN_PROMPT_CENTRAL + entity.getAccountName() + ":子账户：" + report + " :报告数据");
+            strings.add(ADMIN_PROMPT_HEAD + systemUser.getUserName() + ADMIN_PROMPT_CENTRAL + entity.getBaiduUserName() + ":子账户：" + report + " :报告数据");
             String jsonData = new Gson().toJson(strings);
             jc.set(ADMIN_KEY_STRING, jsonData);
             jc.expire(ADMIN_KEY_STRING, 3600);
@@ -431,7 +500,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
     }
 
     //结束日志
-    private void getEndPull(SystemUserInfoVO systemUser, BaseBaiduAccountInfoVO entity, String report) {
+    private void getEndPull(SystemUserDTO systemUser, BaiduAccountInfoDTO entity, String report) {
         Jedis jc = JRedisUtils.get();
         boolean jedisKey1 = jc.exists(ADMIN_KEY_STRING);
         if (jedisKey1) {
@@ -440,14 +509,14 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             List<String> lists = new Gson().fromJson(data, new TypeToken<List<String>>() {
             }.getType());
             strings.addAll(lists);
-            strings.add(systemUser.getUsername() + ADMIN_PROMPT_CENTRAL + entity.getAccountName() + ":子账户：" + report + " :报告数据拉取结束！");
+            strings.add(systemUser.getUserName() + ADMIN_PROMPT_CENTRAL + entity.getBaiduUserName() + ":子账户：" + report + " :报告数据拉取结束！");
             String jsonData = new Gson().toJson(strings);
             jc.set(ADMIN_KEY_STRING, jsonData);
             jc.expire(ADMIN_KEY_STRING, 3600);
 
         } else {
             List<String> strings = new ArrayList<>();
-            strings.add(systemUser.getUsername() + ADMIN_PROMPT_CENTRAL + entity.getAccountName() + ":子账户：" + report + " :报告数据拉取结束！");
+            strings.add(systemUser.getUserName() + ADMIN_PROMPT_CENTRAL + entity.getBaiduUserName() + ":子账户：" + report + " :报告数据拉取结束！");
             String jsonData = new Gson().toJson(strings);
             jc.set(ADMIN_KEY_STRING, jsonData);
             jc.expire(ADMIN_KEY_STRING, 3600);
@@ -818,7 +887,6 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             }
             return list;
         }
-
     }
 
     class AccountReportHandler extends RecursiveTask<List<AccountReportDTO>> {
@@ -1547,28 +1615,4 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             return list;
         }
     }
-
-    private List<SystemUserInfoVO> getUserInfo(String userName) {
-        List<SystemUserInfoVO> entityList = new ArrayList<>();
-        if (userName == null) {
-            Iterable<SystemUserInfoVO> entities = systemUserInfoService.findAllSystemUserAccount();
-            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserInfoVO.class);
-        } else {
-            SystemUserInfoVO userEntity = systemUserInfoService.findSystemUserInfoByUserName(userName);
-            entityList.add(userEntity);
-        }
-        return entityList;
-    }
-
-    private List<SystemUserInfoVO> filterEentity(List<SystemUserInfoVO> entityList, String dateStr, Jedis jc, String promptString) {
-        List<SystemUserInfoVO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
-            boolean judge = (e.getStatus() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountStatus() > 0);
-            if (!judge) {
-                getSkipPull(jc, e, dateStr + promptString);
-            }
-            return judge;
-        }).collect(Collectors.toList());
-        return newEntityList;
-    }
-
 }

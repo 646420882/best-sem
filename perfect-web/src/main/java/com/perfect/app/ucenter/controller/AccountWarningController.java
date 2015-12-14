@@ -1,11 +1,13 @@
 package com.perfect.app.ucenter.controller;
 
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.core.AppContext;
+import com.perfect.dao.account.AccountWarningDAO;
+import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.WarningRuleDTO;
 import com.perfect.service.AccountWarningService;
 import com.perfect.service.SystemUserService;
-import com.perfect.web.support.WebContextSupport;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,40 +41,33 @@ public class AccountWarningController extends WebContextSupport {
 
     /**
      * 设置提醒页面
-     *
      * @return
      */
-    @RequestMapping(value = "assistant/accountWarning", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView setWarningPage(ModelMap model) {
-        /**
-         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
-         *
-         * @deprecated
-         */
+    @RequestMapping(value = "assistant/accountWarning" , method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView setWarningPage(ModelMap model){
         SystemUserDTO systemUserEntity = systemUserService.findByUserName(AppContext.getUser());
-        model.addAttribute("list", AppContext.getBaiduAccounts());
+        model.addAttribute("list",systemUserEntity.getBaiduAccounts());
         return new ModelAndView("promotionAssistant/setWarning");
     }
 
 
     /**
      * 保存账户提醒信息
-     *
      * @param budgetType 预算类型
-     * @param budget     预算金额
-     * @param mails      以分号隔开的的多个邮箱地址
-     * @param tels       以分号隔开的多个手机号码
-     * @param isEnable   是否启用 @RequestParam(value = "startDate", required = false) String startDate,
+     * @param budget 预算金额
+     * @param mails 以分号隔开的的多个邮箱地址
+     * @param tels  以分号隔开的多个手机号码
+     * @param isEnable  是否启用 @RequestParam(value = "startDate", required = false) String startDate,
      * @return
      */
-    @RequestMapping(value = "assistant/saveWarningRule", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView saveWarningInfo(@RequestParam(value = "budgetType", required = false) Integer budgetType,
-                                        @RequestParam(value = "accountId", required = false) Long accountId,
-                                        @RequestParam(value = "budget", required = false) Double budget,
-                                        @RequestParam(value = "warningPercent", required = false) Double warningPercent,
-                                        @RequestParam(value = "mails", required = false) String mails,
-                                        @RequestParam(value = "tels", required = false) String tels,
-                                        @RequestParam(value = "isEnable", required = false) Integer isEnable) {
+    @RequestMapping(value = "assistant/saveWarningRule" , method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView saveWarningInfo(@RequestParam(value = "budgetType",required = false) Integer budgetType,
+                                        @RequestParam(value = "accountId",required = false) Long accountId,
+                                        @RequestParam(value = "budget",required = false) Double budget,
+                                        @RequestParam(value = "warningPercent",required = false) Double warningPercent,
+                                        @RequestParam(value = "mails",required = false) String mails,
+                                        @RequestParam(value = "tels",required = false) String tels,
+                                        @RequestParam(value = "isEnable",required = false)Integer isEnable){
 
         WarningRuleDTO warningRuleEntity = new WarningRuleDTO();
         warningRuleEntity.setSystemUserName(AppContext.getUser());
@@ -94,36 +89,33 @@ public class AccountWarningController extends WebContextSupport {
 
     /**
      * 显示预警规则的页面
-     *
      * @return
      */
-    @RequestMapping(value = "assistant/showWarningRulePage", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView showWarningRulePage() {
+    @RequestMapping(value = "assistant/showWarningRulePage",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView showWarningRulePage(){
         return new ModelAndView("promotionAssistant/showWarningRule");
     }
 
     /**
      * 显示已经设置了的预警规则
-     *
      * @return
      */
-    @RequestMapping(value = "assistant/getAllWarningRule", method = {RequestMethod.GET, RequestMethod.POST})
-    public void showAllWarningRule(HttpServletResponse response) {
-        Iterable<WarningRuleDTO> list = accountWarningService.findByUserName(AppContext.getUser());
+    @RequestMapping(value = "assistant/getAllWarningRule",method = {RequestMethod.GET,RequestMethod.POST})
+    public void showAllWarningRule(HttpServletResponse response){
+       Iterable<WarningRuleDTO> list = accountWarningService.findByUserName(AppContext.getUser());
         writeJson(list, response);
     }
 
 
     /**
      * 根据id修改是否启用
-     *
      * @param id
      * @param isEnbled
      * @return
      */
-    @RequestMapping(value = "assistant/updateWarningRuleOfIsEnbled", method = {RequestMethod.GET, RequestMethod.POST})
-    public void updateWarningRuleOfIsEnbled(@RequestParam(value = "id", required = false) String id,
-                                            @RequestParam(value = "isEnbled", required = false) Integer isEnbled) {
+    @RequestMapping(value = "assistant/updateWarningRuleOfIsEnbled",method = {RequestMethod.GET,RequestMethod.POST})
+    public void updateWarningRuleOfIsEnbled(@RequestParam(value = "id",required = false)String id,
+                                                    @RequestParam(value = "isEnbled",required = false)Integer isEnbled){
         WarningRuleDTO warningRuleEntity = new WarningRuleDTO();
         warningRuleEntity.setId(id);
         warningRuleEntity.setIsEnable(isEnbled);

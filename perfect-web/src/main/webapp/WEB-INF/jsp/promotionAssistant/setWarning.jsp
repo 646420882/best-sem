@@ -52,12 +52,11 @@
 
         <div class="title"><span>消费提醒设置</span></div>
         <div><br/>
-
             <form action="/assistant/saveWarningRule" method="get">
                 <span>百度账户</span>
                 <select name="accountId">
                     <c:forEach items="${list}" var="va">
-                        <option value="<c:out value="${va.accountId}"/>"><c:out value="${va.accountName}"/></option>
+                        <option value="<c:out value="${va.id}"/>"><c:out value="${va.baiduUserName}"/></option>
                     </c:forEach>
                 </select><br/><br/>
 

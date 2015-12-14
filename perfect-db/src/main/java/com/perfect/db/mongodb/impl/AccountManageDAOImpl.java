@@ -41,7 +41,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  * Created by baizz on 2014-6-25.
  * 2014-12-2 refactor
  */
-@SuppressWarnings({"unchecked", "deprecated"})
+@SuppressWarnings("unchecked")
 @Repository(value = "accountManageDAO")
 public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO, String> implements AccountManageDAO {
 
@@ -81,7 +81,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
                 project(CAMPAIGN_ID, NAME, SYSTEM_ID),
                 sort(Sort.Direction.ASC, CAMPAIGN_ID)
         );
-        // 推广计划树
+        //推广计划树
         AggregationResults<CampaignVO> results1 = mongoTemplate.aggregate(aggregation1, TBL_CAMPAIGN, CampaignVO.class);
         for (CampaignVO vo : results1) {
             objectNode = mapper.createObjectNode();
@@ -129,10 +129,10 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     /**
+     * 获取当前登录用户的所有百度账户信息
+     *
      * @param currUserName
      * @return
-     * @see {@code com.perfect.service.SystemUserInfoService#findBaiduAccountsByUserName}
-     * @deprecated
      */
     @Override
     public List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName) {
@@ -143,11 +143,6 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         return Collections.emptyList();
     }
 
-    /**
-     * @return
-     * @see {@code com.perfect.service.SystemUserInfoService#findAllSystemUserAccount}
-     * @deprecated
-     */
     @Override
     public List<SystemUserDTO> getAllSysUserAccount() {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
@@ -358,7 +353,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         Double cost2 = 0d;
         Double costRate;
         MongoTemplate mongoTemplate = BaseMongoTemplate.getUserReportMongo();
-        Long baiduAccountId = AppContext.get().getCurrentAccountId();
+        Long baiduAccountId = AppContext.get().getAccountId();
         Date date = ((List<Date>) DateUtils.getsLatestAnyDays("MM-dd", 2).get(DateUtils.KEY_DATE)).get(1);
         AccountReportEntity reportEntity = mongoTemplate.
                 findOne(Query.query(Criteria.where("date").is(date).and(ACCOUNT_ID).is(baiduAccountId)), AccountReportEntity.class);

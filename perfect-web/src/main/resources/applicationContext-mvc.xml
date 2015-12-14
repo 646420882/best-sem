@@ -28,7 +28,7 @@
     </mvc:annotation-driven>
 
     <mvc:interceptors>
-        <bean class="com.perfect.web.support.ContextInterceptor"/>
+        <bean class="com.perfect.commons.web.ContextInterceptor"/>
     </mvc:interceptors>
 
     <!-- 扫描注册处理器实现类 -->

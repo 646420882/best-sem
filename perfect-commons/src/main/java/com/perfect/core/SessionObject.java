@@ -1,9 +1,5 @@
 package com.perfect.core;
 
-import com.perfect.account.BaseBaiduAccountInfoVO;
-
-import java.util.List;
-
 /**
  * Created by yousheng on 2014/8/23.
  *
@@ -11,34 +7,23 @@ import java.util.List;
  */
 public class SessionObject {
 
-    private String username;
+    private String userName;
 
-    private Long currentAccountId;
-
-    private List<BaseBaiduAccountInfoVO> baiduAccounts;
-
+    private long accountId;
 
     public String getUserName() {
-        return username;
+        return userName;
     }
 
-    public void setUserName(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public Long getCurrentAccountId() {
-        return currentAccountId;
+    public long getAccountId() {
+        return accountId;
     }
 
-    public void setCurrentAccountId(Long currentAccountId) {
-        this.currentAccountId = currentAccountId;
-    }
-
-    public List<BaseBaiduAccountInfoVO> getBaiduAccounts() {
-        return baiduAccounts;
-    }
-
-    public void setBaiduAccounts(List<BaseBaiduAccountInfoVO> baiduAccounts) {
-        this.baiduAccounts = baiduAccounts;
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
     }
 }

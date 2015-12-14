@@ -1,10 +1,6 @@
 package com.perfect.core;
 
-import com.perfect.account.BaseBaiduAccountInfoVO;
-
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,8 +10,8 @@ import java.util.Map;
  */
 public class AppContext {
 
-    private static final String CTX_USER = "CTX_USER";
-    private static final String CTX_ACCOUNT = "CTX_ACCOUNT";
+    public static final String CTX_USER = "CTX_USER";
+    public static final String CTX_ACCOUNT = "CTX_ACC";
 
     private static Map<String, SessionObject> sessionMap = new HashMap<>();
 
@@ -55,32 +51,23 @@ public class AppContext {
 //        contextMap.set(so);
 //    }
 
-    public static void setUser(String username) {
+    public static void setUser(String userName) {
         SessionObject so = new SessionObject();
-        so.setUserName(username);
+        so.setUserName(userName);
         contextMap.set(so);
     }
 
 
-    public static void setUser(String username, Long accountId) {
+    public static void setUser(String userName, Long accountId) {
         SessionObject so = new SessionObject();
-        so.setUserName(username);
-        so.setCurrentAccountId(accountId);
-        contextMap.set(so);
-    }
-
-    public static void setUser(String username, Long accountId, List<BaseBaiduAccountInfoVO> baiduAccounts) {
-        SessionObject so = new SessionObject();
-        so.setUserName(username);
-        so.setCurrentAccountId(accountId);
-        so.setBaiduAccounts(baiduAccounts);
+        so.setUserName(userName);
+        so.setAccountId(accountId);
         contextMap.set(so);
     }
 
     public static String getUser() {
         if (contextMap.get() == null)
             return null;
-
         return contextMap.get().getUserName();
     }
 
@@ -88,22 +75,9 @@ public class AppContext {
         SessionObject sessionObject = contextMap.get();
 
         if (sessionObject != null) {
-            return sessionObject.getCurrentAccountId();
+            return sessionObject.getAccountId();
         } else {
-            return -1L;
-        }
-    }
-
-    public static List<BaseBaiduAccountInfoVO> getBaiduAccounts() {
-        SessionObject sessionObject = contextMap.get();
-
-        if (sessionObject != null) {
-            if (sessionObject.getBaiduAccounts() == null)
-                return Collections.emptyList();
-
-            return sessionObject.getBaiduAccounts();
-        } else {
-            return Collections.emptyList();
+            return -1l;
         }
     }
 }

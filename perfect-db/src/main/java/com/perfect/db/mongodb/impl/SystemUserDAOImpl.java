@@ -30,11 +30,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 /**
  * Created by vbzer_000 on 2014-6-19.
  * 2014-12-2 refactor
- *
- * @see {@code com.perfect.service.SystemUserInfoService}
- * @deprecated
  */
-@SuppressWarnings("deprecated")
 @Repository("systemUserDAO")
 public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, String> implements SystemUserDAO {
 
@@ -91,13 +87,13 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
-    public int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs, String account) {
+    public int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs,String account) {
 
         List<BaiduAccountInfoEntity> baiduAccountInfoEntities = ObjectUtils.convert(baiduAccountInfoDTOs, BaiduAccountInfoEntity.class);
 
 
         WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(account)),
-                Update.update("bdAccounts", baiduAccountInfoEntities), getEntityClass());
+                                                                Update.update("bdAccounts", baiduAccountInfoEntities), getEntityClass());
         return writeResult.getN();
     }
 

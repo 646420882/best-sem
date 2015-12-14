@@ -42,9 +42,6 @@ public class GetAccountReportServiceImpl implements GetAccountReportService {
     @Override
     public List<RealTimeResultDTO> getAccountRealTimeTypeByDate(String systemUserName, Long accountId, String startDate, String endDate) {
 
-        /**
-         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByBaiduAccountId(Long)}
-         */
         SystemUserDTO systemUserDTO = systemUserDAO.findByAid(accountId);
         List<BaiduAccountInfoDTO> accountInfoDTO = systemUserDTO.getBaiduAccounts();
         BaiduAccountInfoDTO baiduAccountInfoDTO = new BaiduAccountInfoDTO();

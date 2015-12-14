@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>大数据智能营销</title>
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
@@ -36,16 +36,6 @@
             *width: 210px;
             *padding: 0px;
             *line-height: 30px;
-        }
-
-        .help-block {
-            width: 150px;
-        }
-
-        .col-lg-5 {
-            width: 150px;
-            height: 34px;
-            padding: 0px;
         }
 
     </style>
@@ -90,16 +80,14 @@
                                 <tbody>
                                 <c:forEach var="i" items="${accountList}">
                                     <tr>
-                                        <td>&nbsp;<span class="fl">
-                                            <img src="${pageContext.request.contextPath}/public/images/c_logo.jpg"></span>
-                                            <b class="fl">${i.accountName}</b>
-                                        </td>
-                                            <%--<td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>--%>
-                                        <td>&nbsp;<a href=""></a></td>
+                                        <td>&nbsp;<span class="fl"><img
+                                                src="${pageContext.request.contextPath}/public/images/c_logo.jpg"></span><b
+                                                class="fl">${i.baiduUserName}</b></td>
+                                        <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
                                         <td>&nbsp;${i.token}</td>
-                                        <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.accountId}"
-                                                         style="border: none" remarkName="${i.remarkName}"
-                                                         value="${i.remarkName}" width="10px" readonly></td>
+                                        <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}"
+                                                         style="border: none" remarkName="${i.baiduRemarkName}"
+                                                         value="${i.baiduRemarkName}" width="10px" readonly></td>
                                         <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}"
                                                                                                  data-userName="${currSystemUserName}"
                                                                                                  class="delBtn"
@@ -183,7 +171,6 @@
 <div class="TB_overlayBG_alert"></div>
 <div class="box" id="new_riginality" style="display:none; width:452px;">
     <h2 id="new_riginality2">同步密码<a href="#" class="close">×</a></h2>
-
     <div class="mainlist2 over" style="width:452px;">
         <div class="mainlist">
             <ul>

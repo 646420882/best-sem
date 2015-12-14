@@ -2,11 +2,11 @@ package com.perfect.app.assistant.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.perfect.commons.web.WebContextSupport;
+import com.perfect.commons.web.WebUtils;
 import com.perfect.core.AppContext;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.MultipleAccountManageService;
-import com.perfect.web.support.WebContextSupport;
-import com.perfect.web.support.WebUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +46,7 @@ public class MultipleAccountsManageController extends WebContextSupport {
         MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
         Map<String, Object> trees = multipleAccountManageService.getAccountDownloadstree(currSystemUserName);
         jsonView.setAttributesMap(trees);
+
         return new ModelAndView(jsonView);
     }
 

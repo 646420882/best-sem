@@ -1,9 +1,9 @@
 package com.perfect.app.assistant.controller;
 
-import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.core.AppContext;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.service.AccountManageService;
 import com.perfect.service.CampaignService;
-import com.perfect.service.SystemUserInfoService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +28,7 @@ public class AssistantOperationLogController {
     private CampaignService campaignService;
 
     @Resource
-    private SystemUserInfoService systemUserInfoService;
+    private AccountManageService accountManageService;
 
 
     /**
@@ -53,22 +53,12 @@ public class AssistantOperationLogController {
     @RequestMapping("/account")
     @ResponseBody
     public Map<String, String> account() {
-
-        BaseBaiduAccountInfoVO dto = systemUserInfoService.findByBaiduUserId(AppContext.getAccountId());
-
+        BaiduAccountInfoDTO dto = accountManageService.findByBaiduUserId(AppContext.getAccountId());
         Map<String, String> accountMap = new HashMap<String, String>();
-        accountMap.put("accountName", dto.getAccountName());
+        accountMap.put("accountName", dto.getBaiduUserName());
         accountMap.put("accountId", String.valueOf(AppContext.getAccountId()));
-
         return accountMap;
     }
-
-
-//    level:RadiocheckedId,
-//		opt_id:optContent.join(","),
-//		opt_obj:getCheckBoxsValue(),
-//		start_time:$("#start_time").val(),
-//		end_time:$("#end_time").val()
 
     /**
      * 获取当前百度帐户信息

@@ -107,6 +107,7 @@ public interface UserOperationLogService {
      */
     UserOperationLogDTO updateCreative(CreativeType creativeType, String newvalue, String oldvalue, String property);
 
+    UserOperationLogDTO updateCreativeAll(CreativeType newCreative);
 
     void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder);
 

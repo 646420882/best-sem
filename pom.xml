@@ -43,8 +43,6 @@
 
                 <es.host>192.168.100.10:29300</es.host>
                 <es.cluster>es-intern-cluster</es.cluster>
-
-                <api.service.token>BD84ECD95310CEB84833D9A2594F887C</api.service.token>
             </properties>
         </profile>
         <profile>
@@ -62,8 +60,6 @@
 
                 <es.host>114.112.98.68:30101,114.112.98.68:30102,114.112.98.67:30103,114.112.98.67:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>
-
-                <api.service.token>78797B868E1B6F0C590AB745325FF32B</api.service.token>
             </properties>
         </profile>
     </profiles>
@@ -72,10 +68,11 @@
         <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
         <spring.version>4.1.8.RELEASE</spring.version>
         <spring.data.mongo.version>1.7.2.RELEASE</spring.data.mongo.version>
+        <spring.security.version>3.2.9.RELEASE</spring.security.version>
         <elasticsearch.version>2.1.0</elasticsearch.version>
         <cglib.version>3.1</cglib.version>
-        <guava.version>18.0</guava.version>
-        <fasterxml.jackson.version>2.5.4</fasterxml.jackson.version>
+        <guava.version>19.0</guava.version>
+        <fasterxml.jackson.version>2.5.5</fasterxml.jackson.version>
         <httpclient.version>4.5.1</httpclient.version>
         <jstl.version>1.2</jstl.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -106,7 +103,7 @@
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
     </repositories>
@@ -119,7 +116,7 @@
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
@@ -278,13 +275,29 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-taglibs</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
                 <scope>test</scope>
             </dependency>
 
-            <!-- for msm -->
             <dependency>
                 <groupId>de.javakaffee.msm</groupId>
                 <artifactId>msm-kryo-serializer</artifactId>
@@ -311,7 +324,6 @@
                 <version>1.8.7</version>
             </dependency>
 
-
             <dependency>
                 <groupId>jstl</groupId>
                 <artifactId>jstl</artifactId>
@@ -324,7 +336,7 @@
                 <version>${hamcrest.version}</version>
             </dependency>
 
-            <!-- Jackson -->
+            <!-- Fasterxml Jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
@@ -362,7 +374,7 @@
                 <version>${guava.version}</version>
             </dependency>
 
-            <!-- POI -->
+            <!-- Apache POI -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
@@ -467,7 +479,7 @@
                 <version>1.2.7</version>
             </dependency>
 
-            <!-- Test -->
+            <!-- Test jar -->
             <dependency>
                 <groupId>org.unitils</groupId>
                 <artifactId>unitils</artifactId>

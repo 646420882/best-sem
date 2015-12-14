@@ -1,6 +1,5 @@
 package com.perfect.dao.report;
 
-import com.perfect.account.SystemUserInfoVO;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.*;
@@ -13,16 +12,16 @@ import java.util.List;
  */
 public interface AsynchronousReportDAO extends HeyCrudRepository<AccountReportDTO, Long> {
 
-    void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserInfoVO systemUser, String dateStr, String baiduUserName);
+    void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr, String baiduUserName);
 
-    void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i);
+    void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserDTO systemUser, String dateStr, int i);
 
-    void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i);
+    void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserDTO systemUser, String dateStr, int i);
 
-    void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i);
+    void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserDTO systemUser, String dateStr, int i);
 
-    void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i);
+    void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserDTO systemUser, String dateStr, int i);
 
-    void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i);
+    void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserDTO systemUser, String dateStr, int i);
 
 }

@@ -1,6 +1,5 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.account.SystemUserInfoVO;
 import com.perfect.dao.report.AsynchronousReportDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
@@ -23,16 +22,16 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by subDong on 2014-08-07.
+ * Created by baizz on 2014-08-07.
  * 2014-11-26 refactor
  */
 @Repository("asynchronousReportDAO")
 public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountReportDTO, Long> implements AsynchronousReportDAO {
 
     @Override
-    public void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserInfoVO systemUser, String dateStr, String baiduUserName) {
+    public void getAccountReportData(List<AccountReportDTO> accountReportDTOs, SystemUserDTO systemUser, String dateStr, String baiduUserName) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<AccountReportEntity> accountReportEntities = ObjectUtils.convert(accountReportDTOs, AccountReportEntity.class);
         Date date = new Date();
@@ -54,9 +53,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i) {
+    public void getCampaignReportData(List<CampaignReportDTO> campaignReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<CampaignReportEntity> campaignReportEntities = new ArrayList<>(ObjectUtils.convert(campaignReportDTOs, CampaignReportEntity.class));
         List<CampaignReportEntity> campaignReportEntities1;
@@ -72,9 +71,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i) {
+    public void getAdgroupReportData(List<AdgroupReportDTO> adgroupReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<AdgroupReportEntity> adgroupReportEntities = new ArrayList<>(ObjectUtils.convert(adgroupReportDTOs, AdgroupReportEntity.class));
         List<AdgroupReportEntity> adgroupReportEntities1;
@@ -90,9 +89,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i) {
+    public void getCreativeReportData(List<CreativeReportDTO> creativeReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<CreativeReportEntity> creativeReportEntities = new ArrayList<>(ObjectUtils.convert(creativeReportDTOs, CreativeReportEntity.class));
         List<CreativeReportEntity> creativeReportEntities1;
@@ -108,9 +107,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i) {
+    public void getKeywordReportData(List<KeywordReportDTO> keywordReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<KeywordReportEntity> keywordReportEntities = new ArrayList<>(ObjectUtils.convert(keywordReportDTOs, KeywordReportEntity.class));
         List<KeywordReportEntity> keywordReportEntities1;
@@ -126,9 +125,9 @@ public class AsynchronousReportDAOImpl extends AbstractUserBaseDAOImpl<AccountRe
     }
 
     @Override
-    public void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserInfoVO systemUser, String dateStr, int i) {
+    public void getRegionReportData(List<RegionReportDTO> regionReportDTOs, SystemUserDTO systemUser, String dateStr, int i) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
 
         List<RegionReportEntity> regionReportEntities = new ArrayList<>(ObjectUtils.convert(regionReportDTOs, RegionReportEntity.class));
         List<RegionReportEntity> regionReportEntities1;

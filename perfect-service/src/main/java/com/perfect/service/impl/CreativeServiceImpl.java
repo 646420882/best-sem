@@ -16,6 +16,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
+import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -36,16 +37,20 @@ import java.util.*;
  */
 @Service("creativeService")
 public class CreativeServiceImpl implements CreativeService {
-    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
+    private static Integer OBJ_SIZE = 18;   //  判断百度id跟本地id长度大小
+
     @Autowired
     private CreativeDAO creativeDAO;
+
     @Resource
     private AccountManageDAO accountManageDAO;
+
     @Resource
     private AdgroupDAO adgroupDAO;
 
     @Resource
     private CampaignService campaignService;
+
     @Resource
     private AdgroupService adgroupService;
 

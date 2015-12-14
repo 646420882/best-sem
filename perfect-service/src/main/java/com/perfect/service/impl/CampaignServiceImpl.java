@@ -26,12 +26,10 @@ import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

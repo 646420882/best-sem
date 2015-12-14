@@ -112,13 +112,12 @@ public class LogObjConstants {
     /**
      * 计划ip排除
      */
-    public static final String CAMPAIGN_EXCLUDEIP="excludeIp";
+    public static final String CAMPAIGN_EXCLUDEIP = "excludeIp";
 
     /**
      * 计划推广地域
      */
-    public static final String CAMPAIGN_REGION="region";
-
+    public static final String CAMPAIGN_REGION = "region";
 
 
 }

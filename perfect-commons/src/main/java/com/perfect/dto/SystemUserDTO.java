@@ -8,9 +8,6 @@ import java.util.List;
 
 /**
  * Created by baizz on 2014-11-26.
- *
- * @see com.perfect.account.SystemUserInfoVO
- * @deprecated
  */
 public class SystemUserDTO extends BaseDTO implements Serializable {
 

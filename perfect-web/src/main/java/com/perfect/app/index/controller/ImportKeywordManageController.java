@@ -1,17 +1,18 @@
 package com.perfect.app.index.controller;
 
 
-import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.api.baidu.PromotionMonitoring;
 import com.perfect.autosdk.sms.v3.FolderMonitor;
 import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.core.AppContext;
+import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
+import com.perfect.service.AccountManageService;
 import com.perfect.service.KeywordReportService;
-import com.perfect.service.SystemUserInfoService;
+import com.perfect.commons.web.WebContextSupport;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.paging.PagerInfo;
-import com.perfect.web.support.WebContextSupport;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/7/29.
@@ -39,8 +37,7 @@ public class ImportKeywordManageController extends WebContextSupport {
     private KeywordReportService keywordReportService;
 
     @Resource
-    private SystemUserInfoService systemUserInfoService;
-
+    private AccountManageService accountManageService;
 
     @RequestMapping(value = "/import/getImportKeywordList")
     public void getImportKeywordList(HttpServletResponse response,
@@ -71,11 +68,9 @@ public class ImportKeywordManageController extends WebContextSupport {
      * @return
      */
     public PromotionMonitoring getUserInfo() {
-        BaseBaiduAccountInfoVO baiduAccountInfoVO = systemUserInfoService.findByBaiduUserId(AppContext.getAccountId());
-        PromotionMonitoring Monitoring = new PromotionMonitoring(baiduAccountInfoVO.getAccountName(),
-                baiduAccountInfoVO.getPassword(),
-                baiduAccountInfoVO.getToken());
-
+        Long accid = AppContext.getAccountId();
+        BaiduAccountInfoDTO entity = accountManageService.findByBaiduUserId(accid);
+        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken());;
         return Monitoring;
     }
 

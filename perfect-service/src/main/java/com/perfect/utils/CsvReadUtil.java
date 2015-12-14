@@ -1,10 +1,10 @@
 package com.perfect.utils;
 
 
-import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.sms.v3.AccountInfoType;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
@@ -28,15 +28,15 @@ public class CsvReadUtil implements Iterator<List<String>> {
     private String csvFile;
     private AccountInfoType baiduAccountInfoDTO;
 
-    public CsvReadUtil(String csvFile, String encoding, BaseBaiduAccountInfoVO baiduAccountInfoDTO) {
+    public CsvReadUtil(String csvFile, String encoding, BaiduAccountInfoDTO baiduAccountInfoDTO) {
         super();
         try {
             this.encoding = encoding;
             this.csvFile = csvFile;
 
             BaiduApiService apiService = new BaiduApiService(BaiduServiceSupport.getCommonService(
-                    baiduAccountInfoDTO.getAccountName(),
-                    baiduAccountInfoDTO.getPassword(),
+                    baiduAccountInfoDTO.getBaiduUserName(),
+                    baiduAccountInfoDTO.getBaiduPassword(),
                     baiduAccountInfoDTO.getToken())
             );
 

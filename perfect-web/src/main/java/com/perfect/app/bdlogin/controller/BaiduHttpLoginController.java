@@ -1,14 +1,14 @@
 package com.perfect.app.bdlogin.controller;
 
-import com.perfect.account.BaseBaiduAccountInfoVO;
 import com.perfect.commons.bdlogin.BaiduHttpLoginHandler;
 import com.perfect.commons.bdlogin.BaiduSearchPageUtils;
 import com.perfect.commons.bdlogin.CaptchaHandler;
+import com.perfect.commons.web.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.service.AccountManageService;
 import com.perfect.service.CookieService;
-import com.perfect.service.SystemUserInfoService;
 import com.perfect.utils.json.JSONUtils;
-import com.perfect.web.support.ServletContextUtils;
 import org.apache.http.client.CookieStore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -47,7 +47,7 @@ import static com.perfect.commons.bdlogin.BaiduHttpLoginHandler.getBaiduLoginJSP
 public class BaiduHttpLoginController implements Controller {
 
     @Resource
-    private SystemUserInfoService systemUserInfoService;
+    private AccountManageService accountManageService;
 
     @Resource
     private CookieService cookieService;
@@ -69,15 +69,15 @@ public class BaiduHttpLoginController implements Controller {
         Map<String, Object> map = new HashMap<>();
         if (number > 0) {
             HttpSession session = ServletContextUtils.getSession();
-            BaseBaiduAccountInfoVO dto;
+            BaiduAccountInfoDTO dto;
             if (session.getAttribute(session.getId() + "-baiduAccountInfo") == null) {
-                List<BaseBaiduAccountInfoVO> list = systemUserInfoService.findAllBaiduAccounts();
+                List<BaiduAccountInfoDTO> list = accountManageService.getAllBaiduAccount();
                 int index = list.size() - 1;
                 dto = list.get(index);
                 list.remove(index);
                 session.setAttribute(session.getId() + "-baiduAccountInfo", list);
             } else {
-                List<BaseBaiduAccountInfoVO> list = (List<BaseBaiduAccountInfoVO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
+                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
                 if (list.isEmpty()) {
                     map.put("number", number);
                     map.put("status", "fail");
@@ -91,7 +91,7 @@ public class BaiduHttpLoginController implements Controller {
             }
 
             String cookies = session.getAttribute(session.getId() + "-bdLogin").toString();
-            boolean isSuccess = baiduLoginHandler.execute(dto.getAccountName(), dto.getPassword(), imageCode, cookies);
+            boolean isSuccess = baiduLoginHandler.execute(dto.getBaiduUserName(), dto.getBaiduPassword(), imageCode, cookies);
             if (isSuccess) {
                 number--;
                 session.setAttribute(session.getId() + "-number", number);
@@ -107,7 +107,7 @@ public class BaiduHttpLoginController implements Controller {
 
                 session.removeAttribute(session.getId() + "-bdLogin");
             } else {
-                List<BaseBaiduAccountInfoVO> list = (List<BaseBaiduAccountInfoVO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
+                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
                 list.add(dto);
                 session.setAttribute(session.getId() + "-baiduAccountInfo", list);
                 map.put("status", "fail");

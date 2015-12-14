@@ -1,8 +1,9 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
-import com.perfect.account.SystemUserInfoVO;
 import com.perfect.dao.report.AsynchronousNmsReportDAO;
+import com.perfect.dao.sys.SystemUserDAO;
+import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.NmsAccountReportDTO;
 import com.perfect.dto.account.NmsAdReportDTO;
 import com.perfect.dto.account.NmsCampaignReportDTO;
@@ -10,7 +11,6 @@ import com.perfect.dto.account.NmsGroupReportDTO;
 import com.perfect.nms.NmsReportIdAPI;
 import com.perfect.nms.ReportFileUrlTask;
 import com.perfect.service.AsynchronousNmsReportService;
-import com.perfect.service.SystemUserInfoService;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +34,11 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -52,7 +56,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
     private AsynchronousNmsReportDAO asynchronousNmsReportDAO;
 
     @Resource
-    private SystemUserInfoService systemUserInfoService;
+    private SystemUserDAO systemUserDAO;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AsynchronousNmsReportServiceImpl.class);
 
@@ -150,28 +154,20 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
     }
 
-    /**
-     * TODO 获取用户公用方法
-     *
-     * @param userName
-     * @return
-     * @see {@link com.perfect.service.SystemUserInfoService#findBaiduAccountsByUserName(String)}
-     */
-    private List<SystemUserInfoVO> getBaiduUser(String userName) {
-        List<SystemUserInfoVO> entityList = new ArrayList<>();
+    //获取用户公用方法
+    private List<SystemUserDTO> getBaiduUser(String userName) {
+        List<SystemUserDTO> entityList = new ArrayList<>();
         if (userName == null) {
-            Iterable<SystemUserInfoVO> entities = systemUserInfoService.findAllSystemUserAccount();
-            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserInfoVO.class);
+            Iterable<SystemUserDTO> entities = systemUserDAO.findAll();
+            entityList = ObjectUtils.convertToList(Lists.newArrayList(entities), SystemUserDTO.class);
         } else {
-            SystemUserInfoVO userEntity = systemUserInfoService.findSystemUserInfoByUserName(userName);
+            SystemUserDTO userEntity = systemUserDAO.findByUserName(userName);
             entityList.add(userEntity);
         }
 
-        List<SystemUserInfoVO> newEntityList = entityList.stream()
-                .filter(e -> e != null)
-                .filter(e -> e.getBaiduAccounts() != null)
-                .filter(e -> (e.getStatus() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountStatus() > 0))
-                .collect(Collectors.toList());
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null).filter(e -> e.getBaiduAccounts() != null).filter(e -> {
+            return (e.getState() != 0 && e.getBaiduAccounts().size() > 0 && e.getAccess() == 2 && e.getAccountState() > 0);
+        }).collect(Collectors.toList());
         return newEntityList;
     }
 
@@ -388,7 +384,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                         lines.stream().map(accountFunc).filter(o -> o != null).collect(Collectors.toList());
                 // save to mongodb
                 if (!accountReportList.isEmpty()) {
-                    SystemUserInfoVO systemUserDTO = systemUserInfoService.findSystemUserInfoByBaiduAccountId(accountReportList.get(0).getAccountId());
+                    SystemUserDTO systemUserDTO = systemUserDAO.findByAid(accountReportList.get(0).getAccountId());
                     asynchronousNmsReportDAO.getNmsAccountReportData(accountReportList, systemUserDTO, dateStr, accountReportList.get(0).getAccountName());
                 }
 
@@ -413,7 +409,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                         lines.stream().map(campaignFunc).collect(Collectors.toList());
                 // save to mongodb
                 if (!campaignReportList.isEmpty()) {
-                    SystemUserInfoVO systemUserDTO = systemUserInfoService.findSystemUserInfoByBaiduAccountId(campaignReportList.get(0).getAccountId());
+                    SystemUserDTO systemUserDTO = systemUserDAO.findByAid(campaignReportList.get(0).getAccountId());
                     asynchronousNmsReportDAO.getNmsCampaignReportData(campaignReportList, systemUserDTO, dateStr);
                 }
             }
@@ -437,7 +433,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                         lines.stream().map(groupFunc).collect(Collectors.toList());
                 // save to mongodb
                 if (!groupReportList.isEmpty()) {
-                    SystemUserInfoVO systemUserDTO = systemUserInfoService.findSystemUserInfoByBaiduAccountId(groupReportList.get(0).getAccountId());
+                    SystemUserDTO systemUserDTO = systemUserDAO.findByAid(groupReportList.get(0).getAccountId());
                     asynchronousNmsReportDAO.getNmsGroupReportData(groupReportList, systemUserDTO, dateStr);
                 }
             }
@@ -461,7 +457,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                         lines.stream().map(adFunc).collect(Collectors.toList());
                 // save to mongodb
                 if (!adReportList.isEmpty()) {
-                    SystemUserInfoVO systemUserDTO = systemUserInfoService.findSystemUserInfoByBaiduAccountId(adReportList.get(0).getAccountId());
+                    SystemUserDTO systemUserDTO = systemUserDAO.findByAid(adReportList.get(0).getAccountId());
                     asynchronousNmsReportDAO.getNmsAdReportData(adReportList, systemUserDTO, dateStr);
                 }
             }
@@ -489,7 +485,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         @Override
         public Boolean call() throws Exception {
             NmsReportIdAPI nmsApi = new NmsReportIdAPI(fileUrlTask);
-            List<SystemUserInfoVO> systemUserList;
+            List<SystemUserDTO> systemUserList;
 
             int l = args.length;
             if (l == 0) {
@@ -498,7 +494,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 if (systemUserList != null && !systemUserList.isEmpty()) {
                     systemUserList.forEach(sysUser -> {
                         sysUser.getBaiduAccounts().forEach(ba -> {
-                            nmsApi.getAllApi(ba.getAccountName(), ba.getPassword(), ba.getToken(), dates);
+                            nmsApi.getAllApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates);
                         });
                     });
                 }
@@ -506,9 +502,9 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 // 拉取指定用户的报告
                 systemUserList = getBaiduUser(args[0]);
                 if (systemUserList != null && !systemUserList.isEmpty()) {
-                    SystemUserInfoVO systemUser = systemUserList.get(0);
+                    SystemUserDTO systemUser = systemUserList.get(0);
                     systemUser.getBaiduAccounts()
-                            .forEach(ba -> nmsApi.getAllApi(ba.getAccountName(), ba.getPassword(), ba.getToken(), dates));
+                            .forEach(ba -> nmsApi.getAllApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
                 }
             } else if (l == 2) {
                 // 拉取指定用户的某一类型报告
@@ -516,24 +512,24 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 int type = Integer.parseInt(args[1]);   // 1 -> account, 2 -> campaign, 3 -> group, 4 -> ad
 
                 if (systemUserList != null && !systemUserList.isEmpty()) {
-                    SystemUserInfoVO systemUser = systemUserList.get(0);
+                    SystemUserDTO systemUser = systemUserList.get(0);
 
                     switch (type) {
                         case 1:
                             systemUser.getBaiduAccounts()
-                                    .forEach(ba -> nmsApi.getAccountApi(ba.getAccountName(), ba.getPassword(), ba.getToken(), dates));
+                                    .forEach(ba -> nmsApi.getAccountApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
                             break;
                         case 2:
                             systemUser.getBaiduAccounts()
-                                    .forEach(ba -> nmsApi.getCampaignApi(ba.getAccountName(), ba.getPassword(), ba.getToken(), dates));
+                                    .forEach(ba -> nmsApi.getCampaignApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
                             break;
                         case 3:
                             systemUser.getBaiduAccounts()
-                                    .forEach(ba -> nmsApi.getGroupApi(ba.getAccountName(), ba.getPassword(), ba.getToken(), dates));
+                                    .forEach(ba -> nmsApi.getGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
                             break;
                         case 4:
                             systemUser.getBaiduAccounts()
-                                    .forEach(ba -> nmsApi.getAdbyGroupApi(ba.getAccountName(), ba.getPassword(), ba.getToken(), dates));
+                                    .forEach(ba -> nmsApi.getAdbyGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates));
                             break;
                         default:
                             break;

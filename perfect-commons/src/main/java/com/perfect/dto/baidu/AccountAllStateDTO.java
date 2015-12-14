@@ -7,19 +7,14 @@ public class AccountAllStateDTO {
 
     //百度帐号ID
     private Long idObj;
-
     //系统帐号
     private String userName;
-
     //系统帐号审核状态
     private Integer userState;
-
     //百度帐号
     private String baiduUserName;
-
     //百度帐号状态
     private Long baiduState;
-
     //系统帐号禁用状态
     private Integer accountState;
 

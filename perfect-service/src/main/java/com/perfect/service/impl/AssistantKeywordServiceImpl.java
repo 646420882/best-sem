@@ -25,9 +25,9 @@ import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
-import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.utils.SystemLogDTOBuilder;
+import com.perfect.service.*;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ import java.util.*;
  */
 @Service("assistantKeywordService")
 public class AssistantKeywordServiceImpl implements AssistantKeywordService {
-    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
+    private static Integer OBJ_SIZE = 18;   // 判断百度id跟本地id长度大小
 
     @Resource
     private AccountManageDAO accountManageDAO;

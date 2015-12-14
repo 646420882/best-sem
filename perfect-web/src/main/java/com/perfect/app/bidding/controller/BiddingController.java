@@ -1,21 +1,18 @@
 package com.perfect.app.bidding.controller;
 
 import com.google.common.collect.Lists;
-import com.perfect.account.BaseBaiduAccountInfoVO;
-import com.perfect.account.SystemUserInfoVO;
-import com.perfect.api.baidu.BaiduApiService;
-import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
-import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.commons.bdlogin.BaiduSearchPageUtils;
 import com.perfect.commons.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CookieDTO;
 import com.perfect.dto.StructureReportDTO;
+import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.dto.bidding.KeywordBiddingInfoDTO;
 import com.perfect.dto.bidding.StrategyDTO;
@@ -62,7 +59,7 @@ public class BiddingController {
     private static Logger log = LoggerFactory.getLogger(BiddingController.class);
 
     @Resource
-    private SystemUserInfoService systemUserInfoService;
+    private SystemUserService systemUserService;
 
     @Resource
     private BiddingRuleService biddingRuleService;
@@ -707,41 +704,27 @@ public class BiddingController {
             return new ModelAndView(jsonView);
         }
 
-        // 只允许指定一个推广地域, 如果未指定则按照推广计划->推广账户
+        // 只允许指定一个推广地域,如果未指定则按照推广计划->推广账户
 
         String userName = AppContext.getUser();
 
         Long accid = AppContext.getAccountId();
 
-        SystemUserInfoVO systemUserInfoVO = systemUserInfoService.findSystemUserInfoByUserName(userName);
-        if (systemUserInfoVO == null)
+        SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
+        if (systemUserEntity == null) {
             return new ModelAndView(jsonView);
-
-//        SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
-//        if (systemUserEntity == null) {
-//            return new ModelAndView(jsonView);
-//        }
+        }
 
         List<Integer> accountRegionList = new ArrayList<>();
         CommonService commonService = null;
         String host = null;
-        for (BaseBaiduAccountInfoVO baiduAccountInfo : systemUserInfoVO.getBaiduAccounts()) {
-            if (baiduAccountInfo.getAccountId().longValue() == accid) {
+        for (BaiduAccountInfoDTO infoEntity : systemUserEntity.getBaiduAccounts()) {
+            if (infoEntity.getId().longValue() == accid) {
                 try {
                     // 如果竞价规则和推广计划都未设置推广地域,则通过账户获取
-
-                    // 发送API请求获取帐户具体信息
-                    BaiduApiService apiService = new BaiduApiService(BaiduServiceSupport.getCommonService(
-                            baiduAccountInfo.getAccountName(),
-                            baiduAccountInfo.getPassword(),
-                            baiduAccountInfo.getToken())
-                    );
-
-                    AccountInfoType accountInfoType = apiService.getAccountInfo();
-
-                    accountRegionList.addAll(accountInfoType.getRegionTarget());
-                    host = accountInfoType.getRegDomain();
-                    commonService = ServiceFactory.getInstance(baiduAccountInfo.getAccountName(), baiduAccountInfo.getPassword(), baiduAccountInfo.getToken(), null);
+                    accountRegionList.addAll(infoEntity.getRegionTarget());
+                    host = infoEntity.getRegDomain();
+                    commonService = ServiceFactory.getInstance(infoEntity.getBaiduUserName(), infoEntity.getBaiduPassword(), infoEntity.getToken(), null);
                     break;
                 } catch (ApiException e) {
                     e.printStackTrace();

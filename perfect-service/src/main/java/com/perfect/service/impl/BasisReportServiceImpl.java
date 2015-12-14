@@ -50,7 +50,7 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @return
      */
     public Map<String, List<StructureReportDTO>> getReportDate(String[] date, int terminal, int categoryTime, int reportType, int start, int limit, String sort, Long dataId, String dateName) {
-        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getAccountName();
+        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
         switch (categoryTime) {
             //默认时间生成报告
             case 0:
@@ -985,7 +985,7 @@ public class BasisReportServiceImpl implements BasisReportService {
      */
     @Override
     public Map<String, List<StructureReportDTO>> getKeywordReport(Long[] id, String startDate, String endDate, int devices) {
-        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getAccountName();
+        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
         List<String> newDate = DateUtils.getPeriod(startDate, endDate);
         Map<String, List<StructureReportDTO>> listMap = new HashMap<>();
         if (newDate.size() > 0) {
@@ -1017,7 +1017,7 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @return
      */
     private Map<String, List<StructureReportDTO>> terminalAll(Map<String, List<StructureReportDTO>> entitiesMap, int reportType) {
-        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getAccountName();
+        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
         List<StructureReportDTO> entities = new ArrayList<>();
         Map<String, List<StructureReportDTO>> listMapDay = new HashMap<>();
         for (Iterator<Map.Entry<String, List<StructureReportDTO>>> entry1 = entitiesMap.entrySet().iterator(); entry1.hasNext(); ) {
