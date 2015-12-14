@@ -26,12 +26,10 @@ import com.perfect.service.LogSaveService;
 import com.perfect.utils.CharsetUtils;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -290,6 +288,7 @@ public class CampaignServiceImpl implements CampaignService {
         List<CampaignType> campaignTypeList = new ArrayList<>();
         List<Long> returnCampaignIds = new ArrayList<>();
         List<CampaignDTO> dtos = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         campaignIds.stream().forEach(s -> dtos.add(campaignDAO.findByLongId(s)));
         for (CampaignDTO dto : dtos) {
             CampaignType campaignType = new CampaignType();
@@ -310,6 +309,10 @@ public class CampaignServiceImpl implements CampaignService {
             campaignType.setPause(dto.getPause());
             campaignType.setStatus(dto.getStatus());
             campaignType.setIsDynamicCreative(dto.getIsDynamicCreative());
+            OperationRecordModel orm = logSaveService.updateCampaignAll(campaignType);
+            if (orm != null) {
+                logs.add(orm);
+            }
             campaignTypeList.add(campaignType);
         }
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
@@ -320,7 +323,16 @@ public class CampaignServiceImpl implements CampaignService {
             updateCampaignRequest.setCampaignTypes(campaignTypeList);
             UpdateCampaignResponse updateCampaignResponse = campaignService.updateCampaign(updateCampaignRequest);
             List<CampaignType> campaignTypes = updateCampaignResponse.getCampaignTypes();
-            campaignTypes.stream().forEach(s -> returnCampaignIds.add(s.getCampaignId()));
+            campaignTypes.stream().forEach(s -> {
+                returnCampaignIds.add(s.getCampaignId());
+                if (logs.size() > 0) {
+                    logs.stream().forEach(l -> {
+                        if (l.getOptComprehensiveID() == s.getCampaignId()) {
+                            logSaveService.saveLog(l);
+                        }
+                    });
+                }
+            });
             return returnCampaignIds;
         } catch (ApiException e) {
             e.printStackTrace();

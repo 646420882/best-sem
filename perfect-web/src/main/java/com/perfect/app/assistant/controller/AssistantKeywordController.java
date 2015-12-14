@@ -1,6 +1,7 @@
 package com.perfect.app.assistant.controller;
 
 import com.google.common.collect.Lists;
+import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
@@ -15,11 +16,9 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.keyword.SearchwordReportDTO;
-import com.perfect.log.model.OperationRecordModel;
-import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.SearchFilterParam;
-import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
+import com.perfect.service.*;
 import com.perfect.utils.CsvReadUtil;
 import com.perfect.utils.IdConvertUtils;
 import com.perfect.utils.csv.UploadHelper;
@@ -375,8 +374,8 @@ public class AssistantKeywordController extends WebContextSupport {
         keywordEntity.setPhraseType(phraseType);
         keywordEntity.setPause(pause);
         KeywordDTO kwd = assistantKeywordService.updateKeyword(keywordEntity);
-        KeywordInfoDTO keywordInfoDTO=new KeywordInfoDTO();
-        AdgroupDTO ad=kwd.getAdgroupId() == null ? adgroupService.findByObjId(kwd.getAdgroupObjId()) : adgroupService.findOne(kwd.getAdgroupId());
+        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
+        AdgroupDTO ad = kwd.getAdgroupId() == null ? adgroupService.findByObjId(kwd.getAdgroupObjId()) : adgroupService.findOne(kwd.getAdgroupId());
         keywordInfoDTO.setObject(kwd);
         keywordInfoDTO.setAdgroupName(ad.getAdgroupName());
         writeJson(keywordInfoDTO, response);
@@ -819,7 +818,17 @@ public class AssistantKeywordController extends WebContextSupport {
         try {
             Iterable<KeywordDTO> list = assistantKeywordService.findAll();
             BaiduAccountInfoDTO accountIdDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
-            String domain = accountIdDTO.getRegDomain();
+
+            BaiduApiService apiService = new BaiduApiService(BaiduServiceSupport.getCommonService(
+                    accountIdDTO.getBaiduUserName(),
+                    accountIdDTO.getBaiduPassword(),
+                    accountIdDTO.getToken())
+            );
+
+            AccountInfoType accountInfoType = apiService.getAccountInfo();
+
+
+            String domain = accountInfoType.getRegDomain();
             list.forEach(s -> {
                 String pcUrl = s.getPcDestinationUrl();
                 if (pcUrl == null) {
@@ -964,6 +973,7 @@ public class AssistantKeywordController extends WebContextSupport {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
             CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", accountInfoDTO);
             List<KeywordInfoDTO> getList = csvReadUtil.getImportKeywordList();

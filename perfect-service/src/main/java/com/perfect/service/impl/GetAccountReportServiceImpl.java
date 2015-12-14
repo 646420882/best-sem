@@ -36,24 +36,25 @@ public class GetAccountReportServiceImpl implements GetAccountReportService {
 
     @Override
     public AccountReportDTO getLocalAccountRealData(String userName, long accountId, Date startDate, Date endDate) {
-        return getAccountReportDAO.getLocalAccountRealData(userName,accountId,startDate,endDate);
+        return getAccountReportDAO.getLocalAccountRealData(userName, accountId, startDate, endDate);
     }
 
     @Override
     public List<RealTimeResultDTO> getAccountRealTimeTypeByDate(String systemUserName, Long accountId, String startDate, String endDate) {
 
-        SystemUserDTO systemUserDTO=systemUserDAO.findByAid(accountId);
+        SystemUserDTO systemUserDTO = systemUserDAO.findByAid(accountId);
         List<BaiduAccountInfoDTO> accountInfoDTO = systemUserDTO.getBaiduAccounts();
         BaiduAccountInfoDTO baiduAccountInfoDTO = new BaiduAccountInfoDTO();
         for (BaiduAccountInfoDTO infoDTO : accountInfoDTO) {
-            if(infoDTO.getId() == accountId){
+            if (infoDTO.getId() == accountId) {
                 baiduAccountInfoDTO = infoDTO;
             }
         }
-        List<RealTimeResultDTO> realTimeDataList = getAccountRealTimeData(systemUserName,baiduAccountInfoDTO.getBaiduPassword(),baiduAccountInfoDTO.getToken(), startDate, endDate);
+        List<RealTimeResultDTO> realTimeDataList = getAccountRealTimeData(systemUserName, baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken(), startDate, endDate);
         return ObjectUtils.convert(realTimeDataList, RealTimeResultDTO.class);
     }
-      private List<RealTimeResultDTO> getAccountRealTimeData(String username, String passwd, String token, String _startDate, String _endDate) {
+
+    private List<RealTimeResultDTO> getAccountRealTimeData(String username, String passwd, String token, String _startDate, String _endDate) {
         Date startDate = null, endDate = null;
         if (_startDate == null && _endDate == null) {
             startDate = DateUtils.getYesterday();
@@ -101,7 +102,7 @@ public class GetAccountReportServiceImpl implements GetAccountReportService {
         if (response == null) {
             return new ArrayList<>();
         }
-        List<RealTimeResultType> realTimeResultTypes= response.getRealTimeResultTypes();
-          return ObjectUtils.convert(realTimeResultTypes,RealTimeResultDTO.class);
+        List<RealTimeResultType> realTimeResultTypes = response.getRealTimeResultTypes();
+        return ObjectUtils.convert(realTimeResultTypes, RealTimeResultDTO.class);
     }
 }

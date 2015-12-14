@@ -14,14 +14,11 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/themes/flick/jquery-ui-1.11.0.min.css">
-    <%--<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">--%>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="all"
           href="${pageContext.request.contextPath}/public/themes/flick/daterangepicker-bs2.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
-
-    <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/zTreeStyle/Normalize.css">--%>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/public/css/pagination/pagination.css">
     <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/ui.daterangepicker.css">--%>
@@ -92,11 +89,14 @@
                                     data-placement="bottom" title="总览大数据指标，查看维度昨天、近七天、近30天及自定义时间范围.
 "></button>
                             <ul id="clickLis">
-                                <li class="current"  ><a href="javascript:"  onclick="lisClick(this,1)">昨天</a></li>
+                                <li class="current"><a href="javascript:" onclick="lisClick(this,1)">昨天</a></li>
                                 <li><a href="javascript:" onclick="lisClick(this,7)">近7天</a></li>
                                 <li><a href="javascript:" onclick="lisClick(this,30)">近30天</a></li>
-                                <li class="date date_choice" onclick="javascript:genre = 'accountOverview';$(this).addClass('current');" id="date"><a href="javascript:"
-                                                              onclick="lisClick(this,null);"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><b>自定义</b><%--<input
+                                <li class="date date_choice"
+                                    onclick="javascript:genre = 'accountOverview';$(this).addClass('current');"
+                                    id="date"><a href="javascript:"
+                                                 onclick="lisClick(this,null);"><span
+                                        class="glyphicon glyphicon-calendar" aria-hidden="true"></span><b>自定义</b><%--<input
                                         name="reservation"
                                         type="image"
                                         onclick="javascript:genre = 'accountOverview';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
@@ -149,7 +149,7 @@
                         <div class="list01_top over">
                             <Span>账户趋势图</Span>
                             <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                    data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势便于用户对关键数据信息一目了然。
+                                    data-placement="bottom" title="分色标注了波动最大的指标及其升降趋势,便于用户对关键数据信息一目了然。
 "></button>
 
                             <ul id="clickqushi">
@@ -163,15 +163,18 @@
                                         近30天
                                     </a>
                                 </li>
-                         <%--       <li class="date">
-                                    <a href="javascript:void(0)">
-                                        自定义
-                                        <input name="reservation" class=" fa fa-calendar " type="image"
-                                               onclick="javascript:genre = 'importPerformanceCurveDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                                               src="${pageContext.request.contextPath}/public/img/date.png">
-                                    </a>
-                                </li>--%>
-                                <li class="date date_choice" onclick="javascript:genre = 'importPerformanceCurveDefault';$(this).addClass('current');$(this).prevAll().removeClass('current');changedLiState()" ><a href="javascript:void(0)"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><b>自定义</b></a>
+                                <%--       <li class="date">
+                                           <a href="javascript:void(0)">
+                                               自定义
+                                               <input name="reservation" class=" fa fa-calendar " type="image"
+                                                      onclick="javascript:genre = 'importPerformanceCurveDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                                                      src="${pageContext.request.contextPath}/public/img/date.png">
+                                           </a>
+                                       </li>--%>
+                                <li class="date date_choice"
+                                    onclick="javascript:genre = 'importPerformanceCurveDefault';$(this).addClass('current');$(this).prevAll().removeClass('current');changedLiState()">
+                                    <a href="javascript:void(0)"><span class="glyphicon glyphicon-calendar"
+                                                                       aria-hidden="true"></span><b>自定义</b></a>
                                 </li>
                             </ul>
                         </div>
@@ -197,19 +200,22 @@
                                         近30天
                                     </a>
                                 </li>
-                       <%--         <li class="date">
-                                    <a href="javascript:void(0)">
-                                        自定义
-                                        <input name="reservation" id="expression" class=" fa fa-calendar " type="image"
-                                               onclick="javascript:$('#pageUser').empty();judgeDet = 0;genre = 'importPerformanceDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                                               src="${pageContext.request.contextPath}/public/img/date.png">
-                                    </a>
-                                </li>--%>
-                                <li class="date date_choice" onclick="javascript:$('#pageUser').empty();judgeDet = 0;genre = 'importPerformanceDefault';$(this).addClass('current');$(this).prevAll().removeClass('current')" ><a href="javascript:void(0)"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><b>自定义</b></a>
+                                <%--         <li class="date">
+                                             <a href="javascript:void(0)">
+                                                 自定义
+                                                 <input name="reservation" id="expression" class=" fa fa-calendar " type="image"
+                                                        onclick="javascript:$('#pageUser').empty();judgeDet = 0;genre = 'importPerformanceDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                                                        src="${pageContext.request.contextPath}/public/img/date.png">
+                                             </a>
+                                         </li>--%>
+                                <li class="date date_choice"
+                                    onclick="javascript:$('#pageUser').empty();judgeDet = 0;genre = 'importPerformanceDefault';$(this).addClass('current');$(this).prevAll().removeClass('current')">
+                                    <a href="javascript:void(0)"><span class="glyphicon glyphicon-calendar"
+                                                                       aria-hidden="true"></span><b>自定义</b></a>
                                 </li>
                             </ul>
                             <div class="download fr over">
-                                <a href="/account/downAccountCSV">下载全部 </a>
+                                <a href="javascript:downAccount();">下载全部 </a>
                             </div>
                         </div>
                         <div class="datebox hides"></div>
@@ -547,7 +553,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -593,7 +599,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -639,7 +645,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -685,7 +691,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -731,7 +737,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -777,7 +783,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -823,7 +829,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -869,7 +875,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -915,7 +921,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -961,7 +967,7 @@
                                     <div class="list2_top2">
                                         <ul>
                                             <li class="home_quality"></li>
-                                            <li><span>关键词</span><a href="#" class="question"></a></li>
+                                            <li><span>关键词</span></li>
                                             <li><span>展现</span></li>
                                             <li><span>点击</span></li>
                                             <li><span>点击率</span></li>
@@ -1014,15 +1020,18 @@
                                         近30天
                                     </a>
                                 </li>
-                           <%--     <li class="date">
-                                    <a href="javascript:void(0)">
-                                        自定义
-                                        <input name="reservation" id="" type="image"
-                                               onclick="javascript:genre = 'importKeywordDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
-                                               src="${pageContext.request.contextPath}/public/img/date.png">
-                                    </a>
-                                </li>--%>
-                                <li class="date date_choice" onclick="javascript:genre = 'importKeywordDefault';$(this).addClass('current');$(this).prevAll().removeClass('current')" ><a href="javascript:"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><b>自定义</b></a></li>
+                                <%--     <li class="date">
+                                         <a href="javascript:void(0)">
+                                             自定义
+                                             <input name="reservation" id="" type="image"
+                                                    onclick="javascript:genre = 'importKeywordDefault';$(this).parent().parent().addClass('current');changedLiState($(this).parent()); _posX = $(this).offset().left; _posY = ($(this).offset().top + $(this).outerHeight());"
+                                                    src="${pageContext.request.contextPath}/public/img/date.png">
+                                         </a>
+                                     </li>--%>
+                                <li class="date date_choice"
+                                    onclick="javascript:genre = 'importKeywordDefault';$(this).addClass('current');$(this).prevAll().removeClass('current')">
+                                    <a href="javascript:"><span class="glyphicon glyphicon-calendar"
+                                                                aria-hidden="true"></span><b>自定义</b></a></li>
                             </ul>
                             <div class="download fr over">
                                 <a href="javascript:void(0)" onclick="importDownload(this);">下载全部 </a>

@@ -15,15 +15,14 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
-import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.log.model.OperationRecordModel;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
-import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
 import com.perfect.service.CampaignService;
 import com.perfect.service.CreativeService;
+import com.perfect.service.LogSaveService;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +36,20 @@ import java.util.*;
  */
 @Service("creativeService")
 public class CreativeServiceImpl implements CreativeService {
-    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
+    private static Integer OBJ_SIZE = 18;   //  判断百度id跟本地id长度大小
+
     @Autowired
     private CreativeDAO creativeDAO;
+
     @Resource
     private AccountManageDAO accountManageDAO;
+
     @Resource
     private AdgroupDAO adgroupDAO;
 
     @Resource
     private CampaignService campaignService;
+
     @Resource
     private AdgroupService adgroupService;
 
@@ -364,6 +367,7 @@ public class CreativeServiceImpl implements CreativeService {
     public List<CreativeDTO> uploadUpdate(List<Long> crids) {
         List<CreativeDTO> returnCreativeDTOs = new ArrayList<>();
         List<CreativeType> creativeTypes = new ArrayList<>();
+        List<OperationRecordModel> logs = Lists.newArrayList();
         crids.stream().forEach(s -> {
             CreativeDTO creativeDTOFind = creativeDAO.findOne(s);
             if (creativeDTOFind.getAdgroupId() != null) {
@@ -378,6 +382,10 @@ public class CreativeServiceImpl implements CreativeService {
                 creativeType.setMobileDisplayUrl(creativeDTOFind.getMobileDisplayUrl());
                 creativeType.setPause(creativeDTOFind.getPause());
                 creativeType.setDevicePreference(creativeDTOFind.getDevicePreference());
+                OperationRecordModel orm = logSaveService.updateCreativeLogAll(creativeType);
+                if (orm != null) {
+                    logs.add(orm);
+                }
                 creativeTypes.add(creativeType);
             }
         });
@@ -395,6 +403,13 @@ public class CreativeServiceImpl implements CreativeService {
                     returnCreativeDTO.setCreativeId(s.getCreativeId());
                     returnCreativeDTO.setStatus(s.getStatus());
                     returnCreativeDTOs.add(returnCreativeDTO);
+                    if (logs.size() > 0) {
+                        logs.stream().forEach(l -> {
+                            if (l.getOptComprehensiveID() == s.getCreativeId()) {
+                                logSaveService.saveLog(l);
+                            }
+                        });
+                    }
                 });
                 return returnCreativeDTOs;
             } catch (ApiException e) {

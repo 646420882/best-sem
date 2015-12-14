@@ -27,9 +27,11 @@ import java.util.Map;
  */
 @RestController
 @Scope("prototype")
-public class AssistantMonitorController extends WebContextSupport{
+public class AssistantMonitorController extends WebContextSupport {
+
     @Resource
     private MonitoringService monitoringService;
+
     @Resource
     private MonitorSynchronizedService synchronizedService;
 
@@ -57,7 +59,7 @@ public class AssistantMonitorController extends WebContextSupport{
         ObjectNode jsonNodes = null;
         if (folder.size() > 0) {
             for (FolderDTO entity : folder) {
-                if(entity.getLocalStatus() != 4){
+                if (entity.getLocalStatus() != 4) {
                     jsonNodes = mapper.createObjectNode();
                     jsonNodes.put("id", entity.getFolderId());
                     jsonNodes.put("pid", 0);
@@ -124,7 +126,7 @@ public class AssistantMonitorController extends WebContextSupport{
                                  @RequestParam(value = "forlderId", required = false) Long forlderId,
                                  @RequestParam(value = "forlderName", required = false) String forlderName) {
         boolean writeResult = monitoringService.updateFolderName(forlderId, forlderName);
-        setJson(response,writeResult);
+        setJson(response, writeResult);
     }
 
     /**
@@ -136,7 +138,7 @@ public class AssistantMonitorController extends WebContextSupport{
     public void updateFolderName(HttpServletResponse response,
                                  @RequestParam(value = "forlderName", required = false) String forlderName) {
         int folder = monitoringService.addFolder(forlderName);
-        setJson(response,folder);
+        setJson(response, folder);
     }
 
     /**
@@ -149,7 +151,7 @@ public class AssistantMonitorController extends WebContextSupport{
                              @RequestParam(value = "forlderId", required = false) Long forlderId) {
 
         boolean folder = monitoringService.deleteFolder(forlderId);
-        setJson(response,folder);
+        setJson(response, folder);
     }
 
     /**
@@ -162,7 +164,7 @@ public class AssistantMonitorController extends WebContextSupport{
                               @RequestParam(value = "monitorId", required = false) Long monitorId) {
 
         boolean folder = monitoringService.deleteMonitorId(monitorId);
-        setJson(response,folder);
+        setJson(response, folder);
     }
 
 
@@ -179,7 +181,7 @@ public class AssistantMonitorController extends WebContextSupport{
                            @RequestParam(value = "acliId", required = false) Long acliId) {
 
         int folder = monitoringService.addMonitorId(folderID, campaignId, adgroupId, acliId);
-        setJson(response,folder);
+        setJson(response, folder);
     }
 
     /**
@@ -190,10 +192,10 @@ public class AssistantMonitorController extends WebContextSupport{
     @RequestMapping(value = "/monitoring/upMonitor", method = {RequestMethod.GET, RequestMethod.POST})
     public void addMonitor(HttpServletResponse response) {
         int i = monitoringService.upMonitor();
-        setJson(response,i);
+        setJson(response, i);
     }
 
-    private void setJson(HttpServletResponse response,Object data){
+    private void setJson(HttpServletResponse response, Object data) {
         try {
             response.setContentType("text/html;charset=UTF-8");
             response.setHeader("Pragma", "No-cache");

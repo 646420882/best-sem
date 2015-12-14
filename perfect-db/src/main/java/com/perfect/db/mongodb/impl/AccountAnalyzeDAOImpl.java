@@ -64,13 +64,25 @@ public class AccountAnalyzeDAOImpl extends AbstractUserBaseDAOImpl<AccountReport
 
     @Override
     public List<AccountReportDTO> performaneCurve(Date startDate, Date endDate) {
-        List<AccountReportEntity> list = BaseMongoTemplate.getUserReportMongo().find(Query.query(Criteria.where("date").gte(startDate).lte(endDate).and(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort(Sort.Direction.ASC, "date")), getEntityClass(), TBL_ACCOUNT_REPORT);
+        List<AccountReportEntity> list = BaseMongoTemplate.getUserReportMongo()
+                .find(Query.query(Criteria.where("date")
+                        .gte(startDate)
+                        .lte(endDate)
+                        .and(ACCOUNT_ID)
+                        .is(AppContext.getAccountId()))
+                        .with(new Sort(Sort.Direction.ASC, "date")), getEntityClass(), TBL_ACCOUNT_REPORT);
         return ObjectUtils.convert(list, getDTOClass());
     }
 
     @Override
-    public List<AccountReportDTO> downAccountCSV() {
-        List<AccountReportEntity> list = BaseMongoTemplate.getUserReportMongo().find(Query.query(Criteria.where(ACCOUNT_ID).is(AppContext.getAccountId())).with(new Sort("date")), getEntityClass(), TBL_ACCOUNT_REPORT);
+    public List<AccountReportDTO> downAccountCSV(Date start, Date end) {
+        List<AccountReportEntity> list = BaseMongoTemplate.getUserReportMongo()
+                .find(Query.query(Criteria.where("date")
+                        .gte(start)
+                        .lte(end)
+                        .and(ACCOUNT_ID)
+                        .is(AppContext.getAccountId()))
+                        .with(new Sort("date")), getEntityClass(), TBL_ACCOUNT_REPORT);
         return ObjectUtils.convert(list, getDTOClass());
     }
 

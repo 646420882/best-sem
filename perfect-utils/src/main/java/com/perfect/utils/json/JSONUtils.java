@@ -13,7 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by baizz on 2014-08-05.
+ * Created on 2014-08-05.
+ * JSON转换工具类
+ *
+ * @author dolphineor
  */
 public class JSONUtils {
     private static ObjectMapper mapper;
@@ -26,6 +29,10 @@ public class JSONUtils {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
+
+    private JSONUtils() {
+    }
+
 
     public static ObjectMapper getMapper() {
         return mapper;
@@ -71,6 +78,7 @@ public class JSONUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return arrayNode;
     }
 
@@ -81,14 +89,15 @@ public class JSONUtils {
      * @return
      */
     public static JsonNode getJsonObject(String content) {
-        JsonNode jsonObj = null;
+        JsonNode jsonObj;
         try {
             jsonObj = mapper.readTree(content);
             return jsonObj;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return jsonObj;
+
+        return null;
     }
 
     /**
@@ -104,6 +113,7 @@ public class JSONUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return jsonObj;
     }
 
@@ -122,6 +132,7 @@ public class JSONUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return t;
     }
 
@@ -141,6 +152,7 @@ public class JSONUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return tList;
     }
 
@@ -160,6 +172,7 @@ public class JSONUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return tMap;
     }
 

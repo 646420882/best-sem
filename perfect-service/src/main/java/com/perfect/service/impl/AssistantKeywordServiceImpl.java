@@ -6,7 +6,6 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.autosdk.sms.v3.KeywordService;
-import com.perfect.commons.constants.LogObjConstants;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
@@ -23,12 +22,11 @@ import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.log.model.OperationRecordModel;
-import com.perfect.log.util.LogOptUtil;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
-import com.perfect.service.*;
 import com.perfect.service.AdgroupService;
+import com.perfect.service.*;
 import com.perfect.utils.OperationRecordModelBuilder;
 import com.perfect.utils.paging.PagerInfo;
 import org.springframework.beans.BeanUtils;
@@ -38,18 +36,13 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
-//import com.perfect.entity.adgroup.AdgroupEntity;
-//import com.perfect.entity.campaign.CampaignEntity;
-//import org.springframework.data.mongodb.core.query.Criteria;
-//import org.springframework.data.mongodb.core.query.Query;
-
 /**
  * Created by john on 2014/8/19.
  * 2014-12-2 refactor XiaoWei
  */
 @Service("assistantKeywordService")
 public class AssistantKeywordServiceImpl implements AssistantKeywordService {
-    private static Integer OBJ_SIZE = 18;//判断百度id跟本地id长度大小
+    private static Integer OBJ_SIZE = 18;   // 判断百度id跟本地id长度大小
 
     @Resource
     private AccountManageDAO accountManageDAO;
@@ -423,9 +416,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     private Map<String, Map<Integer, List<String>>> getErrorList() {
         Map<String, Map<Integer, List<String>>> maps = keywordDeduplicateService.deduplicate(AppContext.getAccountId());
-        List<String> str=Lists.newArrayList();
-        for(Map.Entry<String,Map<Integer,List<String>>> m:maps.entrySet()){
-            for(Map.Entry<Integer,List<String>> mi:m.getValue().entrySet()){
+        List<String> str = Lists.newArrayList();
+        for (Map.Entry<String, Map<Integer, List<String>>> m : maps.entrySet()) {
+            for (Map.Entry<Integer, List<String>> mi : m.getValue().entrySet()) {
 //                str.add(mi.getValue());
             }
         }
@@ -1128,7 +1121,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
                 keywordType.setPause(dtoFind.getPause());
-                OperationRecordModel orm = logSaveService.uploadLogWordUpdate(keywordType);
+                OperationRecordModel orm = logSaveService.updateKeywordAll(keywordType);
                 if (orm != null) {
                     logs.add(orm);
                 }
