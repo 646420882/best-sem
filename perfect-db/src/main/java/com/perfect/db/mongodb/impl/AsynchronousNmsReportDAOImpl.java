@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.perfect.account.SystemUserInfoVO;
 import com.perfect.dao.report.AsynchronousNmsReportDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
@@ -31,9 +32,9 @@ import java.util.List;
 @Repository("asynchronousNmsReportDAO")
 public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAccountReportDTO, Long> implements AsynchronousNmsReportDAO {
     @Override
-    public void getNmsAccountReportData(List<NmsAccountReportDTO> nmsAccountReportDtos, SystemUserDTO systemUser, String dateStr, String baiduUserName) {
+    public void getNmsAccountReportData(List<NmsAccountReportDTO> nmsAccountReportDtos, SystemUserInfoVO systemUser, String dateStr, String baiduUserName) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
 
         List<NmsAccountReportEntity> accountReportEntities = ObjectUtils.convert(nmsAccountReportDtos, NmsAccountReportEntity.class);
         Date date = new Date();
@@ -55,9 +56,9 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
     }
 
     @Override
-    public void getNmsCampaignReportData(List<NmsCampaignReportDTO> nmsCampaignReportDTOs, SystemUserDTO systemUser, String dateStr) {
+    public void getNmsCampaignReportData(List<NmsCampaignReportDTO> nmsCampaignReportDTOs, SystemUserInfoVO systemUser, String dateStr) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
 
         List<NmsCampaignReportEntity> campaignReportEntities = new ArrayList<>(ObjectUtils.convert(nmsCampaignReportDTOs, NmsCampaignReportEntity.class));
         List<NmsCampaignReportEntity> campaignReportEntities1;
@@ -72,9 +73,9 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
     }
 
     @Override
-    public void getNmsGroupReportData(List<NmsGroupReportDTO> nmsGroupReportDtos, SystemUserDTO systemUser, String dateStr) {
+    public void getNmsGroupReportData(List<NmsGroupReportDTO> nmsGroupReportDtos, SystemUserInfoVO systemUser, String dateStr) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
 
         List<NmsGroupReportEntity> adgroupReportEntities = new ArrayList<>(ObjectUtils.convert(nmsGroupReportDtos, NmsGroupReportEntity.class));
         List<NmsGroupReportEntity> adgroupReportEntities1;
@@ -88,9 +89,9 @@ public class AsynchronousNmsReportDAOImpl extends AbstractUserBaseDAOImpl<NmsAcc
     }
 
     @Override
-    public void getNmsAdReportData(List<NmsAdReportDTO> nmsAdReportDTOs, SystemUserDTO systemUser, String dateStr) {
+    public void getNmsAdReportData(List<NmsAdReportDTO> nmsAdReportDTOs, SystemUserInfoVO systemUser, String dateStr) {
         MongoTemplate mongoTemplate;
-        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUserName()));
+        mongoTemplate = BaseMongoTemplate.getMongoTemplate(DBNameUtils.getReportDBName(systemUser.getUsername()));
 
         List<NmsAdReportEntity> adReportEntities = new ArrayList<>(ObjectUtils.convert(nmsAdReportDTOs, NmsAdReportEntity.class));
         List<NmsAdReportEntity> adReportEntities1;

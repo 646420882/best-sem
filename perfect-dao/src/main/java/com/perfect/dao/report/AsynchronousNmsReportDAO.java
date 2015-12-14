@@ -1,5 +1,6 @@
 package com.perfect.dao.report;
 
+import com.perfect.account.SystemUserInfoVO;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.NmsAccountReportDTO;
@@ -18,14 +19,14 @@ public interface AsynchronousNmsReportDAO extends HeyCrudRepository<NmsAccountRe
      * 网盟推广
      */
     //网盟账户报告
-    void getNmsAccountReportData(List<NmsAccountReportDTO> nmsAccountReportDtos, SystemUserDTO systemUser, String dateStr, String baiduUserName);
+    void getNmsAccountReportData(List<NmsAccountReportDTO> nmsAccountReportDtos, SystemUserInfoVO systemUser, String dateStr, String baiduUserName);
 
     //网盟计划报告
-    void getNmsCampaignReportData(List<NmsCampaignReportDTO> nmsCampaignReportDTOs, SystemUserDTO systemUser, String dateStr);
+    void getNmsCampaignReportData(List<NmsCampaignReportDTO> nmsCampaignReportDTOs, SystemUserInfoVO systemUser, String dateStr);
 
     //网盟组报告
-    void getNmsGroupReportData(List<NmsGroupReportDTO> nmsGroupReportDtos, SystemUserDTO systemUser, String dateStr);
+    void getNmsGroupReportData(List<NmsGroupReportDTO> nmsGroupReportDtos, SystemUserInfoVO systemUser, String dateStr);
 
     //网盟创意报告
-    void getNmsAdReportData(List<NmsAdReportDTO> nmsAdReportDTOs, SystemUserDTO systemUser, String dateStr);
+    void getNmsAdReportData(List<NmsAdReportDTO> nmsAdReportDTOs, SystemUserInfoVO systemUser, String dateStr);
 }

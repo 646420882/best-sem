@@ -25,7 +25,7 @@ public interface UserOperationLogService {
 
     UserOperationLogDTO saveKeywordLog(KeywordType newWord);
 
-    UserOperationLogDTO updateKeywordLog(KeywordType findKeyWord, Object newVal, Object oldVal, String optObj, Integer contentId);
+     UserOperationLogDTO updateKeywordLog(KeywordType newWord, Object newVal, Object oldVal, String property);
 
     UserOperationLogDTO deleteKeywordLog(KeywordDTO newWord);
 
@@ -54,8 +54,9 @@ public interface UserOperationLogService {
      * @param campaignType
      * @return 操作日志数据
      */
-    UserOperationLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String optObj, int contentid);
+    UserOperationLogDTO updateCampaign(CampaignType campaignType, String newvalue, String oldvalue, String property);
 
+    public UserOperationLogDTO updateCampaignAll(CampaignType newCampaign);
     /**
      * <p> 添加 单元 操作日志保存</p>
      *
@@ -80,6 +81,8 @@ public interface UserOperationLogService {
      */
     UserOperationLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String optObj, int contentid);
 
+
+    public UserOperationLogDTO updateAdgroupAll(AdgroupType newAdgroup);
     /**
      * <p> 添加 创意 操作日志保存</p>
      *
@@ -111,4 +114,7 @@ public interface UserOperationLogService {
 
     void save(List<UserOperationLogDTO> userOperationLogDTOs);
 
+    void saveLog(UserOperationLogDTO userOperationLogDTO);
+
+    UserOperationLogDTO updateCreativeAll(CreativeType creativeType);
 }

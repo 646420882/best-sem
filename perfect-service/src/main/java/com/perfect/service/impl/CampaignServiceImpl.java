@@ -16,7 +16,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.log.model.OperationRecordModel;
+import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -221,7 +221,7 @@ public class CampaignServiceImpl implements CampaignService {
         }
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-        OperationRecordModel orm = userOperationLogService.addCampaign(campaignType);
+        UserOperationLogDTO orm = userOperationLogService.addCampaign(campaignType);
         try {
             com.perfect.autosdk.sms.v3.CampaignService campaignService = commonService.getService(com.perfect.autosdk.sms.v3.CampaignService.class);
             AddCampaignRequest addCampaignRequest = new AddCampaignRequest();
@@ -235,7 +235,7 @@ public class CampaignServiceImpl implements CampaignService {
                 campaignDTO.setPause(s.getPause());
                 returnDtos.add(campaignDTO);
                 if (orm != null) {
-                    if (orm.getOptContent().equals(s.getCampaignName()) && s.getCampaignId() != null) {
+                    if (orm.getName().equals(s.getCampaignName()) && s.getCampaignId() != null) {
                         userOperationLogService.saveLog(orm);
                     }
                 }
@@ -252,11 +252,11 @@ public class CampaignServiceImpl implements CampaignService {
     public int uploadDel(List<Long> campaignIds) {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-        List<OperationRecordModel> logs = Lists.newArrayList();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         campaignIds.stream().forEach(c -> {
             CampaignDTO campaignDTO = campaignDAO.findByLongId(c);
             if (campaignDTO != null) {
-                OperationRecordModel orm = userOperationLogService.removeCampaign(campaignDTO);
+                UserOperationLogDTO orm = userOperationLogService.removeCampaign(campaignDTO);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -290,6 +290,7 @@ public class CampaignServiceImpl implements CampaignService {
         List<CampaignType> campaignTypeList = new ArrayList<>();
         List<Long> returnCampaignIds = new ArrayList<>();
         List<CampaignDTO> dtos = new ArrayList<>();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         campaignIds.stream().forEach(s -> dtos.add(campaignDAO.findByLongId(s)));
         for (CampaignDTO dto : dtos) {
             CampaignType campaignType = new CampaignType();
@@ -310,6 +311,10 @@ public class CampaignServiceImpl implements CampaignService {
             campaignType.setPause(dto.getPause());
             campaignType.setStatus(dto.getStatus());
             campaignType.setIsDynamicCreative(dto.getIsDynamicCreative());
+            UserOperationLogDTO orm = userOperationLogService.updateCampaignAll(campaignType);
+            if (orm != null) {
+                logs.add(orm);
+            }
             campaignTypeList.add(campaignType);
         }
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
@@ -320,7 +325,16 @@ public class CampaignServiceImpl implements CampaignService {
             updateCampaignRequest.setCampaignTypes(campaignTypeList);
             UpdateCampaignResponse updateCampaignResponse = campaignService.updateCampaign(updateCampaignRequest);
             List<CampaignType> campaignTypes = updateCampaignResponse.getCampaignTypes();
-            campaignTypes.stream().forEach(s -> returnCampaignIds.add(s.getCampaignId()));
+            campaignTypes.stream().forEach(s -> {
+                returnCampaignIds.add(s.getCampaignId());
+                if (logs.size() > 0) {
+                    logs.stream().forEach(l -> {
+                        if (l.getOid().equals(Long.toString(s.getCampaignId()))) {
+                            userOperationLogService.saveLog(l);
+                        }
+                    });
+                }
+            });
             return returnCampaignIds;
         } catch (ApiException e) {
             e.printStackTrace();

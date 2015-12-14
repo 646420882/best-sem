@@ -1,16 +1,16 @@
 package com.perfect.utils;
 
 
-import com.perfect.core.AppContext;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.account.BaseBaiduAccountInfoVO;
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduServiceSupport;
+import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.service.BaiduAccountService;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
-import javax.annotation.Resource;
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
@@ -26,14 +26,21 @@ public class CsvReadUtil implements Iterator<List<String>> {
     private List<String> row = null;
     private String encoding;
     private String csvFile;
-    private BaiduAccountInfoDTO baiduAccountInfoDTO;
+    private AccountInfoType baiduAccountInfoDTO;
 
-    public CsvReadUtil(String csvFile, String encoding, BaiduAccountInfoDTO baiduAccountInfoDTO) {
+    public CsvReadUtil(String csvFile, String encoding, BaseBaiduAccountInfoVO baiduAccountInfoDTO) {
         super();
         try {
             this.encoding = encoding;
             this.csvFile = csvFile;
-            this.baiduAccountInfoDTO = baiduAccountInfoDTO;
+
+            BaiduApiService apiService = new BaiduApiService(BaiduServiceSupport.getCommonService(
+                    baiduAccountInfoDTO.getAccountName(),
+                    baiduAccountInfoDTO.getPassword(),
+                    baiduAccountInfoDTO.getToken())
+            );
+
+            this.baiduAccountInfoDTO = apiService.getAccountInfo();
             reader = new CsvListReader(new InputStreamReader(new FileInputStream(csvFile), encoding), CsvPreference.EXCEL_PREFERENCE);
         } catch (UnsupportedEncodingException | FileNotFoundException e) {
             e.printStackTrace();
@@ -50,6 +57,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return row != null;
     }
 
@@ -293,7 +301,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
                     crea.setDevicePreference(getCreativeDevice(next().get(10)));
                 }
                 creativeDTOs.add(crea);
-            }else{
+            } else {
                 break;
             }
             i++;

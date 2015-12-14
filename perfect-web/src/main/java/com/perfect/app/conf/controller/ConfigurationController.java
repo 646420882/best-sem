@@ -9,11 +9,10 @@ import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
-import com.perfect.commons.web.WebUtils;
 import com.perfect.core.AppContext;
-import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.SystemUserService;
+import com.perfect.web.support.WebUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,7 +25,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +32,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/configuration")
+@SuppressWarnings("deprecated")
 public class ConfigurationController {
 
     @Resource
@@ -45,11 +44,7 @@ public class ConfigurationController {
         if (userName == null)
             return new ModelAndView("configuration/configure", modelMap);
 
-        SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
-
-        List<BaiduAccountInfoDTO> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccounts();
-
-        modelMap.addAttribute("accountList", baiduAccountInfoEntityList);
+        modelMap.addAttribute("accountList", AppContext.getBaiduAccounts());
         return new ModelAndView("configuration/configure", modelMap);
     }
 

@@ -1,6 +1,5 @@
 package com.perfect.service.impl;
 
-import com.google.common.primitives.Bytes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.core.AppContext;
@@ -16,10 +15,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,7 +50,7 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @return
      */
     public Map<String, List<StructureReportDTO>> getReportDate(String[] date, int terminal, int categoryTime, int reportType, int start, int limit, String sort, Long dataId, String dateName) {
-        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
+        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getAccountName();
         switch (categoryTime) {
             //默认时间生成报告
             case 0:
@@ -989,7 +985,7 @@ public class BasisReportServiceImpl implements BasisReportService {
      */
     @Override
     public Map<String, List<StructureReportDTO>> getKeywordReport(Long[] id, String startDate, String endDate, int devices) {
-        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
+        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getAccountName();
         List<String> newDate = DateUtils.getPeriod(startDate, endDate);
         Map<String, List<StructureReportDTO>> listMap = new HashMap<>();
         if (newDate.size() > 0) {
@@ -1021,7 +1017,7 @@ public class BasisReportServiceImpl implements BasisReportService {
      * @return
      */
     private Map<String, List<StructureReportDTO>> terminalAll(Map<String, List<StructureReportDTO>> entitiesMap, int reportType) {
-        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getBaiduUserName();
+        String userName = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId()).getAccountName();
         List<StructureReportDTO> entities = new ArrayList<>();
         Map<String, List<StructureReportDTO>> listMapDay = new HashMap<>();
         for (Iterator<Map.Entry<String, List<StructureReportDTO>>> entry1 = entitiesMap.entrySet().iterator(); entry1.hasNext(); ) {

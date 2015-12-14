@@ -4,7 +4,7 @@ import com.perfect.autosdk.sms.v3.AdgroupType;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
-import com.perfect.log.model.OperationRecordModel;
+import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -151,5 +151,5 @@ public interface AdgroupService {
      * 根据单元对象自动set计划,单元id或者名称等信息
      * @param creativeDTO
      */
-     void ormByCreative(CreativeDTO creativeDTO,OperationRecordModel orm);
+     void ormByCreative(CreativeDTO creativeDTO,UserOperationLogDTO orm);
 }

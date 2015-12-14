@@ -5,6 +5,7 @@ import com.perfect.dao.bidding.BiddingRuleDAO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.param.BiddingRuleParam;
 import com.perfect.service.BiddingRuleService;
+import com.perfect.service.SystemUserInfoService;
 import com.perfect.utils.paging.PaginationParam;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,11 @@ import java.util.Map;
 public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Resource
-    BiddingRuleDAO biddingRuleDAO;
+    private BiddingRuleDAO biddingRuleDAO;
+
+    @Resource
+    private SystemUserInfoService systemUserInfoService;
+
 
     @Override
     public void createBiddingRule(BiddingRuleDTO biddingRuleDTO) {
@@ -150,11 +155,12 @@ public class BiddingRuleServiceImpl implements BiddingRuleService {
 
     @Override
     public BiddingRuleDTO saveWithAccountId(BiddingRuleDTO biddingRuleDTO) {
-        return biddingRuleDAO.saveWithAccountId(biddingRuleDTO);
+        String username = systemUserInfoService.findSystemUserInfoByBaiduAccountId(biddingRuleDTO.getAccountId()).getUsername();
+        return biddingRuleDAO.saveWithAccountId(biddingRuleDTO, username);
     }
 
 
-    public long countRule(String userName) {
+    public long countRule(String username) {
         return biddingRuleDAO.count();
     }
 }

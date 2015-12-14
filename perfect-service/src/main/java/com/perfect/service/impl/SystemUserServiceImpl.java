@@ -18,6 +18,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.service.SystemUserInfoService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.ObjectUtils;
@@ -57,13 +58,14 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Resource
     private CreativeDAO creativeDAO;
 
+
     @Override
     public void initAccount(String userName, Long accountId) {
-        logger.info("开始导入数据: 用户名=" + userName + ", 账号= " + accountId);
+        logger.info("开始导入数据: 用户名=" + userName + ", 帐号= " + accountId);
 
         SystemUserDTO systemUserDTO = getSystemUser(userName);
         if (systemUserDTO == null) {
-            logger.warn("没有此账号: " + userName);
+            logger.warn("没有此帐号: " + userName);
             return;
         }
 
@@ -80,11 +82,11 @@ public class SystemUserServiceImpl implements SystemUserService {
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
 
-            logger.info("查询账户信息...");
-            // 初始化账户数据
+            logger.info("查询帐号信息...");
+            // 初始化帐号数据
             AccountInfoType accountInfoType = apiService.getAccountInfo();
             if (accountInfoType == null) {
-                logger.error("获取账户信息错误: " + ResHeaderUtil.getJsonResHeader(false).toString());
+                logger.error("获取帐号信息错误: " + ResHeaderUtil.getJsonResHeader(false).toString());
                 continue;
             }
             boolean isDefault = baiduAccountInfoDTO.isDfault();
@@ -95,10 +97,10 @@ public class SystemUserServiceImpl implements SystemUserService {
             baiduAccountInfoDTO.setToken(baiduAccountInfoDTO.getToken());
             baiduAccountInfoDTO.setDfault(isDefault);
 
-            //新增百度账户
+            // 新增百度账户
             systemUserDAO.insertAccountInfo(userName, baiduAccountInfoDTO);
 
-            logger.info("查询账户推广计划...");
+            logger.info("查询帐号推广计划...");
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
             logger.info("查询结束: 计划数=" + campaignTypes.size());
 
@@ -112,7 +114,7 @@ public class SystemUserServiceImpl implements SystemUserService {
                 ids.add(campaignEntity.getCampaignId());
             }
 
-            logger.info("查询账户推广单元...");
+            logger.info("查询帐号推广单元...");
             List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(ids);
 
             logger.info("查询结束: 单元数=" + adgroupTypeList.size());
@@ -124,7 +126,7 @@ public class SystemUserServiceImpl implements SystemUserService {
                 ids.add(adgroupEntity.getAdgroupId());
             }
 
-            logger.info("查询账户推广关键词...");
+            logger.info("查询帐号推广关键词...");
 
 //            List<KeywordType> keywordTypes = apiService.getAllKeyword(ids);
 //            logger.info("查询结束: 关键词数=" + keywordTypes.size());
@@ -135,7 +137,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 //                keywordEntity.setAccountId(aid);
 //            }
 
-            //分批次请求关键词数据
+            // 分批次请求关键词数据
             List<Long> subList = new ArrayList<>(4);
             for (int i = 1; i <= ids.size(); i++) {
                 Long adgroupId = ids.get(i - 1);
@@ -165,7 +167,7 @@ public class SystemUserServiceImpl implements SystemUserService {
                 subList.clear();
             }
 
-            logger.info("查询账户推广创意...");
+            logger.info("查询帐号推广创意...");
             List<CreativeType> creativeTypes = apiService.getAllCreative(ids);
             logger.info("查询结束: 普通创意数=" + creativeTypes.size());
 
@@ -195,7 +197,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             return;
         }
 
-        //清除当前账户所有数据
+        // 清除当前帐号所有数据
         clearAccountData(accountId);
 
         BaiduAccountInfoDTO _dto;
@@ -208,7 +210,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
 
-            // 初始化账户数据
+            // 初始化帐号数据
             AccountInfoType accountInfoType = apiService.getAccountInfo();
             boolean isDefault = baiduAccountInfoDTO.isDfault();
             _dto = ObjectUtils.convert(accountInfoType, BaiduAccountInfoDTO.class);
@@ -218,13 +220,13 @@ public class SystemUserServiceImpl implements SystemUserService {
             _dto.setToken(baiduAccountInfoDTO.getToken());
             _dto.setDfault(isDefault);
 
-            //更新账户数据
+            // 更新帐号数据
             updateBaiduAccountInfo(userName, accountId, _dto);
 
-            //更新推广计划数据
+            // 更新推广计划数据
             List<CampaignType> campaignTypes = apiService.getAllCampaign();
             List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-            //查询推广单元
+            // 查询推广单元
             List<Long> camIds = new ArrayList<>(campaignEntities.size());
             for (CampaignDTO campaignEntity : campaignEntities) {
                 campaignEntity.setAccountId(aid);
@@ -232,7 +234,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             }
             campaignDAO.save(campaignEntities);
 
-            //更新推广单元数据
+            // 更新推广单元数据
             List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(camIds);
             List<AdgroupDTO> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
             List<Long> adgroupIds = new ArrayList<>();
@@ -242,7 +244,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             }
             adgroupDAO.save(adgroupEntities);
 
-            //分批次请求关键词数据
+            // 分批次请求关键词数据
             List<Long> subList = new ArrayList<>(4);
             for (int i = 1; i <= adgroupIds.size(); i++) {
                 Long adgroupId = adgroupIds.get(i - 1);
@@ -285,8 +287,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateBaiDuName(String name, Long baiduId) {
-        boolean flag = accountManageDAO.updateBaiDuName(name,baiduId);
-        return flag;
+        return accountManageDAO.updateBaiDuName(name, baiduId);
     }
 
     @Override
@@ -316,17 +317,17 @@ public class SystemUserServiceImpl implements SystemUserService {
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
         BaiduApiService apiService = new BaiduApiService(commonService);
 
-        //获取账户总数据
+        // 获取帐号总数据
         AccountInfoType accountInfoType = apiService.getAccountInfo();
         BeanUtils.copyProperties(accountInfoType, baiduAccountInfoDTO);
 
-        //update account data
+        // 更新帐户数据
         updateBaiduAccountInfo(userName, accountId, baiduAccountInfoDTO);
 
-        //获取指定id的推广计划
+        // 获取指定id的推广计划
         List<CampaignType> campaignTypes = apiService.getCampaignById(camIds);
 
-        //转换成本地系统的实体
+        // 转换成本地系统的实体
         List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
 
         List<Long> localAdgroupIds = getLocalAdgroupIds(accountId, camIds);
@@ -339,7 +340,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         clearKeywordData(accountId, localKeywordIds);
         clearCreativeData(accountId, localCreativeIds);
 
-        //凤巢返回回来的计划实体id
+        // 凤巢返回回来的计划实体id
         List<Long> campaignIds = new ArrayList<>(campaignEntities.size());
 
         for (CampaignDTO campaignEntity : campaignEntities) {
@@ -360,7 +361,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         adgroupDAO.save(adgroupEntities);
 
 
-        //分批次请求关键词数据
+        // 分批次请求关键词数据
         List<Long> subList = new ArrayList<>(4);
         for (int i = 1; i <= adgroupIds.size(); i++) {
             Long adgroupId = adgroupIds.get(i - 1);
@@ -432,11 +433,11 @@ public class SystemUserServiceImpl implements SystemUserService {
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
         BaiduApiService apiService = new BaiduApiService(commonService);
 
-        //本地的推广单元
+        // 本地的推广单元
         List<CampaignDTO> campaignEntityList = Lists.newArrayList(campaignDAO.findAll());
         List<CampaignType> campaignTypes = apiService.getAllCampaign();
         List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-        //凤巢中的推广单元
+        // 凤巢中的推广单元
         Map<Long, CampaignDTO> campaignEntityMap = new LinkedHashMap<>();
         for (CampaignDTO campaignEntity : campaignEntities) {
             campaignEntity.setAccountId(acid);
@@ -470,14 +471,30 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public SystemUserDTO getSystemUser(String userName) {
+        /**
+         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
+         *
+         * @deprecated
+         */
         return systemUserDAO.findByUserName(userName);
     }
 
+    /**
+     * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByBaiduAccountId(Long)}
+     *
+     * @deprecated
+     */
     @Override
     public SystemUserDTO getSystemUser(long aid) {
         return systemUserDAO.findByAid(aid);
     }
 
+    /**
+     * TODO replace with {@link SystemUserInfoService#findAllSystemUserAccount()}
+     *
+     * @return
+     * @deprecated
+     */
     @Override
     public Iterable<SystemUserDTO> getAllUser() {
         return systemUserDAO.findAll();
@@ -494,14 +511,13 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean removeAccount(Long id,String account) {
-
+    public boolean removeAccount(Long id, String account) {
         SystemUserDTO byUserName = systemUserDAO.findByUserName(account);
         boolean Master = false;
-        if(byUserName != null && byUserName.getBaiduAccounts().size()>0){
-            for (int i=0;i<byUserName.getBaiduAccounts().size();i++){
-                if(byUserName.getBaiduAccounts().get(i).getId().compareTo(id)==0){
-                    if(byUserName.getBaiduAccounts().get(i).isDfault()){
+        if (byUserName != null && byUserName.getBaiduAccounts().size() > 0) {
+            for (int i = 0; i < byUserName.getBaiduAccounts().size(); i++) {
+                if (byUserName.getBaiduAccounts().get(i).getId().compareTo(id) == 0) {
+                    if (byUserName.getBaiduAccounts().get(i).isDfault()) {
 
                     }
                     byUserName.getBaiduAccounts().remove(i);
@@ -509,15 +525,15 @@ public class SystemUserServiceImpl implements SystemUserService {
                 }
             }
             List<BaiduAccountInfoDTO> baiduAccountInfoDTOs = byUserName.getBaiduAccounts();
-            if(baiduAccountInfoDTOs.size()>0 && Master){
+            if (baiduAccountInfoDTOs.size() > 0 && Master) {
                 baiduAccountInfoDTOs.get(0).setDfault(true);
             }
-            int falg = systemUserDAO.removeAccountInfo(baiduAccountInfoDTOs,account);
-            if(falg>0){
+            int falg = systemUserDAO.removeAccountInfo(baiduAccountInfoDTOs, account);
+            if (falg > 0) {
                 return true;
             }
         }
-            return false;
+        return false;
     }
 
     @Override
@@ -575,11 +591,21 @@ public class SystemUserServiceImpl implements SystemUserService {
         return systemUserDAO.getLocalCreativeIds(accountId, adgroupIds);
     }
 
+    /**
+     * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByUserName(String)}
+     *
+     * @deprecated
+     */
     @Override
     public SystemUserDTO findByUserName(String userName) {
         return systemUserDAO.findByUserName(userName);
     }
 
+    /**
+     * TODO replace with {@link SystemUserInfoService#findAllSystemUserAccount()}
+     *
+     * @deprecated
+     */
     @Override
     public Iterable<SystemUserDTO> findAll() {
         return systemUserDAO.findAll();

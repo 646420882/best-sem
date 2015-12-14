@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>perfect-parent</artifactId>
         <groupId>com.perfect</groupId>
@@ -12,12 +13,11 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-commons</artifactId>
         </dependency>
-        <!-- Redis -->
+
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
@@ -40,7 +40,7 @@
             <version>${fasterxml.jackson.version}</version>
         </dependency>
 
-        <!-- POI -->
+        <!-- Apache POI -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -60,7 +60,7 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
-        <!-- guava -->
+        <!-- Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -78,7 +78,7 @@
             <artifactId>super-csv</artifactId>
         </dependency>
 
-        <!-- quartz -->
+        <!-- Quartz -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>

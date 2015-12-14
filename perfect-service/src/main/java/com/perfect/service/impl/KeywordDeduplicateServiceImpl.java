@@ -119,7 +119,7 @@ public class KeywordDeduplicateServiceImpl implements KeywordDeduplicateService 
                                 .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()))
                                 .values()
                                 .stream()
-                                        // 1. 去除新增关键词中本身重复的
+                                // 1. 去除新增关键词中本身重复的
                                 .map(sourceList -> sourceList
                                         .stream()
                                         .sorted((o1, o2) -> {
@@ -130,7 +130,7 @@ public class KeywordDeduplicateServiceImpl implements KeywordDeduplicateService 
                                         .findFirst()
                                         .orElse(null))
                                 .filter(Objects::nonNull)
-                                        // 2. 找出和本单元已经存在的百度关键词重复的
+                                // 2. 找出和本单元已经存在的百度关键词重复的
                                 .filter(keywordDTO -> sameAdgroupKeywordMap.containsKey(keywordDTO.getKeyword().trim().toUpperCase()))
                                 .map(KeywordDTO::getKeyword)
                                 .collect(Collectors.toList()));
@@ -159,23 +159,25 @@ public class KeywordDeduplicateServiceImpl implements KeywordDeduplicateService 
 
     @Override
     public List<String> deduplicate(final Long baiduUserId, final List<String> newKeywords) {
-        return ((BiFunction<Long, List<String>, List<String>>) (bId, stringList) -> {
-            final List<KeywordDTO> list = keywordDAO.findAllByBaiduAccountId(bId);
+//        return ((BiFunction<Long, List<String>, List<String>>) (bId, stringList) -> {
+//            final List<KeywordDTO> list = keywordDAO.findAllByBaiduAccountId(bId);
+//
+//            final Map<String, List<KeywordDTO>> allKeywordGroupedMap = list.stream()
+//                    .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()));
+//
+//            final List<String> deduplicateKeywordIds = Lists.newArrayList();
+//
+//            stringList.stream()
+//                    .map(kn -> kn.trim().toUpperCase())
+//                    .filter(allKeywordGroupedMap::containsKey)
+//                    .forEach(k -> {
+//                        allKeywordGroupedMap.get(k).forEach(keywordDTO -> deduplicateKeywordIds.add(keywordDTO.getId()));
+//                    });
+//
+//            return deduplicateKeywordIds;
+//        }).apply(baiduUserId, newKeywords);
 
-            final Map<String, List<KeywordDTO>> allKeywordGroupedMap = list.stream()
-                    .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()));
-
-            final List<String> deduplicateKeywordIds = Lists.newArrayList();
-
-            stringList.stream()
-                    .map(kn -> kn.trim().toUpperCase())
-                    .filter(allKeywordGroupedMap::containsKey)
-                    .forEach(k -> {
-                        allKeywordGroupedMap.get(k).forEach(keywordDTO -> deduplicateKeywordIds.add(keywordDTO.getId()));
-                    });
-
-            return deduplicateKeywordIds;
-        }).apply(baiduUserId, newKeywords);
+        return findOverlaps(AppContext.getUser(), baiduUserId, newKeywords);
     }
 
     @Override
@@ -227,7 +229,7 @@ public class KeywordDeduplicateServiceImpl implements KeywordDeduplicateService 
                     .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()))
                     .values()
                     .stream()
-                            // 1). 去除新增关键词中本身重复的
+                    // 1). 去除新增关键词中本身重复的
                     .map(sourceList -> sourceList
                             .stream()
                             .sorted((o1, o2) -> {

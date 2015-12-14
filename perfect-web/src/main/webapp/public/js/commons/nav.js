@@ -7,22 +7,23 @@ var loadBaiduAccount = function () {
         function (data) {
             var results = data.rows;
             if (results != null && results.length > 0) {
-                var lis = "";
-                var index = results[0].baiduUserName.length;
+                var str = "";
+                var index = results[0].accountName.length;
                 $.each(results, function (i, item) {
-                    var _item = item.baiduRemarkName;
-                    if (_item == undefined) _item = item.baiduUserName.substring(0, (i > 0 ? index - 3 : index)) + (item.baiduUserName.length > index ? "..." : "");
-                    if (baiduAccountId == item.id) {
+                    var _item = item.remarkName;
+                    if (_item == undefined || _item == null || _item == "") _item = item.accountName.substring(0, (i > 0 ? index - 3 : index)) + (item.accountName.length > index ? "..." : "");
+                    if (baiduAccountId == item.accountId) {
                         $('.user_name span').html(_item);
                     }
-                    lis += "<li  title='" + item.baiduUserName + "' value='" + item.id + "'>" + _item + "</li>";
+                    str += "<li  title='" + item.accountName + "' value='" + item.accountId + "'>" + _item + "</li>";
                 });
-                $("#switchAccount_ul").empty();
-                $("#switchAccount_ul").append(lis);
 
+                $("#switchAccount_ul").empty();
+                $("#switchAccount_ul").append(str);
             }
         });
 };
+
 $(".nav_under>ul>li>a").each(function () {
     if ($($(this))[0].href == String(window.location)) {
         $(".nav_under>ul>li").removeClass("current");
@@ -31,12 +32,11 @@ $(".nav_under>ul>li>a").each(function () {
 });
 
 $(function () {
-    //取屏幕宽度
+    // 取屏幕宽度
     var nav = "<img src='../public/img/nav.png'/>";
     var nav_open = "<img src='../public/img/nav_open.png'/>";
     $('[data-toggle="tooltip"]').tooltip();
     $('#navigator_tips').click(function (_this) {
-        /*        $('.concent').toggleClass('nav_hide', 1000, "easeOutSine");*/
         if ($(".concent").hasClass("nav_hide")) {
             $(".concent").removeClass("nav_hide");
             $('[data-toggle="tooltip"]').tooltip();
@@ -71,11 +71,12 @@ $(function () {
     if (parseInt(baiduAccountId) != -1) {
         loadBaiduAccount();
     }
+
     document.onclick = function () {
         $("#switchAccount").hide();
         $("#filterSearchTemplate").hide();
         $(".remove").remove();
-    }
+    };
 
     $("#switchAccount").click(function (e) {
         var ev = e || window.event;
@@ -86,6 +87,7 @@ $(function () {
             window.event.cancelBubble = true;//兼容IE
         }
     });
+
     $('.user_name').click(function (e) {
         if ($("#switchAccount").css("display") == "none") {//隐藏
             $(this).next('#switchAccount').show();
@@ -118,8 +120,7 @@ $(function () {
             else if (window.event) {
                 window.event.cancelBubble = true;//兼容IE
             }
-        }
-        else {
+        } else {
             $("#switchAccount").hide();
         }
     });
@@ -131,7 +132,3 @@ $(function () {
     });
 
 });
-/*    $(document).ready(function () {
- $(".on_title").pin();
- });*/
-

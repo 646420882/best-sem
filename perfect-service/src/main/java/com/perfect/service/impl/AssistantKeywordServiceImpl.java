@@ -21,7 +21,7 @@ import com.perfect.dto.campaign.CampaignTreeDTO;
 import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
-import com.perfect.log.model.OperationRecordModel;
+import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -421,9 +421,9 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
     private Map<String, Map<Integer, List<String>>> getErrorList() {
         Map<String, Map<Integer, List<String>>> maps = keywordDeduplicateService.deduplicate(AppContext.getAccountId());
-        List<String> str=Lists.newArrayList();
-        for(Map.Entry<String,Map<Integer,List<String>>> m:maps.entrySet()){
-            for(Map.Entry<Integer,List<String>> mi:m.getValue().entrySet()){
+        List<String> str = Lists.newArrayList();
+        for (Map.Entry<String, Map<Integer, List<String>>> m : maps.entrySet()) {
+            for (Map.Entry<Integer, List<String>> mi : m.getValue().entrySet()) {
 //                str.add(mi.getValue());
             }
         }
@@ -992,7 +992,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordDTO> uploadAdd(List<String> kids) {
         List<KeywordDTO> retrunKeywordDTOs = new ArrayList<>();
         List<KeywordType> keywordTypes = new ArrayList<>();
-        List<OperationRecordModel> logs = Lists.newArrayList();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         kids.stream().forEach(s -> {
             KeywordDTO keywordDTO = keywordDAO.findByObjectId(s);
             if (keywordDTO.getAdgroupId() != null) {
@@ -1004,7 +1004,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(keywordDTO.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(keywordDTO.getMobileDestinationUrl());
                 keywordType.setPause(keywordDTO.getPause());
-                OperationRecordModel orm = userOperationLogService.saveKeywordLog(keywordType);
+                UserOperationLogDTO orm = userOperationLogService.saveKeywordLog(keywordType);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -1028,7 +1028,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     returnKeywordDTO.setStatus(s.getStatus());
                     retrunKeywordDTOs.add(returnKeywordDTO);
                     logs.stream().forEach(f -> {
-                        if (f.getOptContent().equals(s.getKeyword()) && s.getKeywordId() != null) {
+                        if (f.getName().equals(s.getKeyword()) && s.getKeywordId() != null) {
                             userOperationLogService.saveLog(f);
                         }
                     });
@@ -1085,7 +1085,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         KeywordDTO keywordDTO = keywordDAO.findByLongId(kid);
         if (keywordDTO != null) {
-            OperationRecordModel orm = userOperationLogService.deleteKeywordLog(keywordDTO);
+            UserOperationLogDTO orm = userOperationLogService.deleteKeywordLog(keywordDTO);
             try {
                 KeywordService keywordService = commonService.getService(KeywordService.class);
                 DeleteKeywordRequest deleteKeywordRequest = new DeleteKeywordRequest();
@@ -1113,7 +1113,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     public List<KeywordDTO> uploadUpdate(List<Long> kid) {
         List<KeywordDTO> returnKeywordDTOs = new ArrayList<>();
         List<KeywordType> keywordTypes = new ArrayList<>();
-        List<OperationRecordModel> logs = Lists.newArrayList();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         kid.stream().forEach(s -> {
             KeywordDTO dtoFind = keywordDAO.findOne(s);
             if (dtoFind != null) {
@@ -1126,7 +1126,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPcDestinationUrl(dtoFind.getPcDestinationUrl());
                 keywordType.setMobileDestinationUrl(dtoFind.getMobileDestinationUrl());
                 keywordType.setPause(dtoFind.getPause());
-                OperationRecordModel orm = userOperationLogService.uploadLogWordUpdate(keywordType);
+                UserOperationLogDTO orm = userOperationLogService.uploadLogWordUpdate(keywordType);
                 if (orm != null) {
                     logs.add(orm);
                 }
@@ -1151,7 +1151,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     keywordDAO.updateLs(keywordDTO);
                     returnKeywordDTOs.add(keywordDTO);
                     logs.stream().forEach(f -> {
-                        if (f.getOptComprehensiveID() == s.getKeywordId()) {
+                        if (f.getOid().equals(Long.toString(s.getKeywordId()))) {
                             userOperationLogService.saveLog(f);
                         }
                     });
@@ -1479,8 +1479,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     }
 
     private SystemLogDTOBuilder fillCommonData(SystemLogDTOBuilder builder, CampaignDTO campaignDTO, AdgroupDTO adgroupDTO) {
-        return builder.setUserId(AppContext.getAccountId()).setUnitId(adgroupDTO.getAdgroupId()).setUnitName(adgroupDTO.getAdgroupName())
-                .setPlanId(campaignDTO.getCampaignId()).setPlanName(campaignDTO.getCampaignName());
+        return builder.setUserId(AppContext.getAccountId()).setAdgroupId(adgroupDTO.getAdgroupId()).setAdgroupName(adgroupDTO.getAdgroupName())
+                .setCampaignId(campaignDTO.getCampaignId()).setCampaignName(campaignDTO.getCampaignName());
 
     }
 }

@@ -108,7 +108,7 @@ public class SystemLogDTOBuilder {
      * @return
      */
     public SystemLogDTOBuilder setOptContent(String optContent) {
-        this.model.setOptContent(optContent);
+//        this.model.setOptContent(optContent);
         return this;
     }
 
@@ -118,7 +118,7 @@ public class SystemLogDTOBuilder {
      * @return
      */
     public SystemLogDTOBuilder setOptComprehensiveID(Long optComprehensiveID) {
-        this.model.setOptComprehensiveID(optComprehensiveID);
+//        this.model.setOptComprehensiveID(optComprehensiveID);
         return this;
     }
 
@@ -148,7 +148,7 @@ public class SystemLogDTOBuilder {
      * @return
      */
     public SystemLogDTOBuilder setOptType(int optType) {
-        this.model.setOptType(optType);
+//        this.model.setOptType(optType);
         return this;
     }
 
@@ -159,7 +159,7 @@ public class SystemLogDTOBuilder {
      * @return
      */
     public SystemLogDTOBuilder setOptObj(String optObj) {
-        this.model.setOptObj(optObj);
+//        this.model.setOptObj(optObj);
         return this;
     }
 }
