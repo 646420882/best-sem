@@ -4,7 +4,7 @@ import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.commons.message.mail.SendMail;
 import com.perfect.commons.web.WebContextSupport;
 import com.perfect.commons.web.WebUtils;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;

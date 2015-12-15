@@ -1,6 +1,7 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
@@ -12,15 +13,17 @@ import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dao.sys.SystemUserDAO;
-import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.ObjectUtils;
+import org.elasticsearch.common.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -285,7 +288,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateBaiDuName(String name, Long baiduId) {
-        boolean flag = accountManageDAO.updateBaiDuName(name,baiduId);
+        boolean flag = accountManageDAO.updateBaiDuName(name, baiduId);
         return flag;
     }
 
@@ -494,14 +497,14 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean removeAccount(Long id,String account) {
+    public boolean removeAccount(Long id, String account) {
 
         SystemUserDTO byUserName = systemUserDAO.findByUserName(account);
         boolean Master = false;
-        if(byUserName != null && byUserName.getBaiduAccounts().size()>0){
-            for (int i=0;i<byUserName.getBaiduAccounts().size();i++){
-                if(byUserName.getBaiduAccounts().get(i).getId().compareTo(id)==0){
-                    if(byUserName.getBaiduAccounts().get(i).isDfault()){
+        if (byUserName != null && byUserName.getBaiduAccounts().size() > 0) {
+            for (int i = 0; i < byUserName.getBaiduAccounts().size(); i++) {
+                if (byUserName.getBaiduAccounts().get(i).getId().compareTo(id) == 0) {
+                    if (byUserName.getBaiduAccounts().get(i).isDfault()) {
 
                     }
                     byUserName.getBaiduAccounts().remove(i);
@@ -509,15 +512,15 @@ public class SystemUserServiceImpl implements SystemUserService {
                 }
             }
             List<BaiduAccountInfoDTO> baiduAccountInfoDTOs = byUserName.getBaiduAccounts();
-            if(baiduAccountInfoDTOs.size()>0 && Master){
+            if (baiduAccountInfoDTOs.size() > 0 && Master) {
                 baiduAccountInfoDTOs.get(0).setDfault(true);
             }
-            int falg = systemUserDAO.removeAccountInfo(baiduAccountInfoDTOs,account);
-            if(falg>0){
+            int falg = systemUserDAO.removeAccountInfo(baiduAccountInfoDTOs, account);
+            if (falg > 0) {
                 return true;
             }
         }
-            return false;
+        return false;
     }
 
     @Override
@@ -583,5 +586,53 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public Iterable<SystemUserDTO> findAll() {
         return systemUserDAO.findAll();
+    }
+
+    @Override
+    public List<SystemUserDTO> findUsers(String companyName, String userName, Boolean accountStatus, int skip, int
+            limit, String order, boolean asc) {
+        Map<String, Object> paramMap = Maps.newHashMap();
+
+        if (!Strings.isNullOrEmpty(companyName)) {
+            paramMap.put("companyName", companyName);
+        }
+
+        if (!Strings.isNullOrEmpty(userName)) {
+            paramMap.put("userName", userName);
+        }
+
+        if (accountStatus != null) {
+            paramMap.put("acstate", accountStatus);
+        }
+
+        if (paramMap.isEmpty()) {
+            return systemUserDAO.findAll(skip, limit, order, asc);
+        }
+        return systemUserDAO.find(paramMap, skip, limit, order, asc);
+    }
+
+    @Override
+    public boolean updateAccountStatus(String id, Boolean accountStatus) {
+        return systemUserDAO.updateAccountStatus(id, accountStatus);
+    }
+
+    @Override
+    public boolean updateAccountTime(String id, Date startDate, Date endDate) {
+        return systemUserDAO.updateAccountTime(id, startDate, endDate);
+    }
+
+    @Override
+    public boolean updateAccountPayed(String id, Boolean payed) {
+        return systemUserDAO.updateAccountPayed(id, payed);
+    }
+
+    @Override
+    public List<SystemUserModuleDTO> getUserModules(String name) {
+        return systemUserDAO.getUserModules(name);
+    }
+
+    @Override
+    public boolean updateModuleMenus(String id, String modulename, String[] menus) {
+        return systemUserDAO.updateModuleMenus(id, modulename, menus);
     }
 }

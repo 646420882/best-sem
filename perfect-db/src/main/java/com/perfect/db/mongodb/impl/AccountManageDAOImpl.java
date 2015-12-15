@@ -9,11 +9,11 @@ import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.account.AccountReportEntity;
-import com.perfect.entity.sys.BaiduAccountInfoEntity;
+import com.perfect.entity.sys.ModuleAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
@@ -308,7 +308,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         getSysMongoTemplate().updateFirst(
                 Query.query(
                         Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
-                Update.update("bdAccounts.$", ObjectUtils.convert(dto, BaiduAccountInfoEntity.class)),
+                Update.update("bdAccounts.$", ObjectUtils.convert(dto, ModuleAccountInfoEntity.class)),
                 getEntityClass());
     }
 

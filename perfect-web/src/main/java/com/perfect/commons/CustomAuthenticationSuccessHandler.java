@@ -1,6 +1,6 @@
 package com.perfect.commons;
 
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.json.JSONUtils;

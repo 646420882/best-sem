@@ -1,7 +1,7 @@
 package com.perfect.commons.web;
 
 import com.perfect.core.AppContext;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.SystemUserService;
@@ -15,7 +15,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.regex.Pattern;
 
 /**
  * Created by vbzer_000 on 2014/8/27.

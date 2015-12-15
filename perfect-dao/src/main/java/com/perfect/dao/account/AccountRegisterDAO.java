@@ -1,7 +1,7 @@
 package com.perfect.dao.account;
 
 import com.perfect.dao.base.HeyCrudRepository;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 
 /**
  * Created by SubDong on 2014/9/30.

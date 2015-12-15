@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.perfect.api.baidu.AsynchronousReport;
 import com.perfect.dao.report.AsynchronousReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.*;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;

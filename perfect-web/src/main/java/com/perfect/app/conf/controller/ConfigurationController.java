@@ -11,7 +11,7 @@ import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
 import com.perfect.commons.web.WebUtils;
 import com.perfect.core.AppContext;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.SystemUserService;
 import org.springframework.beans.BeanUtils;

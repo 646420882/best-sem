@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.dao.base.HeyCrudRepository;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 public interface MultipleAccountManageDAO extends HeyCrudRepository<SystemUserDTO, String> {

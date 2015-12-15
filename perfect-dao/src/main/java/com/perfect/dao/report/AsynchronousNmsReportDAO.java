@@ -1,7 +1,7 @@
 package com.perfect.dao.report;
 
 import com.perfect.dao.base.HeyCrudRepository;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.NmsAccountReportDTO;
 import com.perfect.dto.account.NmsAdReportDTO;
 import com.perfect.dto.account.NmsCampaignReportDTO;

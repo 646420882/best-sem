@@ -1,5 +1,6 @@
 package com.perfect.admin.filter;
 
+import com.perfect.core.AppContext;
 import com.perfect.dto.admin.AdminUserDTO;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +17,9 @@ public class AdminPriviledgeHandler implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        AppContext.setUser("sys");
+
         HttpServletRequest httpRequestServlet = (HttpServletRequest) request;
         Object obj = httpRequestServlet.getSession().getAttribute(SESSION_KEY);
         if (obj == null) {

@@ -1,24 +1,16 @@
 package com.perfect.app.ucenter.controller;
 
-import com.perfect.core.AppContext;
-import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.account.QuestionAnswersDTO;
-import com.perfect.entity.account.QuestionAnswersEntity;
 import com.perfect.service.QuestionAnswersService;
 import com.perfect.utils.json.JSONUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by subdong on 15-9-25.

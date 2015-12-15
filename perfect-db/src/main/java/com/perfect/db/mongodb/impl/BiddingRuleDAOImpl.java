@@ -8,7 +8,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
 import com.perfect.dto.BaseDTO;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.dto.bidding.StrategyDTO;
 import com.perfect.entity.bidding.BiddingRuleEntity;
@@ -23,7 +23,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import javax.annotation.Resources;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;

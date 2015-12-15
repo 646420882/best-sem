@@ -1,7 +1,7 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.account.AccountRegisterDAO;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.utils.MD5;

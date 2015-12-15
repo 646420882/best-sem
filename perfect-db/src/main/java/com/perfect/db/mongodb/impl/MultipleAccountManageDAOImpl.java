@@ -8,7 +8,7 @@ import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.impl.AccountManageDAOImpl.CampaignVO;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.entity.sys.SystemUserEntity;
 import org.springframework.data.domain.Sort;

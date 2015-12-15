@@ -1,9 +1,11 @@
 package com.perfect.dto.admin;
 
+import com.perfect.dto.BaseDTO;
+
 /**
  * Created by yousheng on 15/12/14.
  */
-public class AdminUserDTO {
+public class AdminUserDTO extends BaseDTO {
     private String id;
 
     private long userid;

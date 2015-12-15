@@ -2,7 +2,7 @@ package com.perfect.db.mongodb.impl;
 
 import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;

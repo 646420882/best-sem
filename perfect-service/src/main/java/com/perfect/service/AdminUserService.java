@@ -1,6 +1,5 @@
 package com.perfect.service;
 
-import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.admin.AdminUserDTO;
 
 /**

@@ -23,7 +23,6 @@ public class AdminUserDetailsService implements UserDetailsService {
 
 
     private final AdminUserDTO DEFAULT = new AdminUserDTO();
-
     {
         DEFAULT.setName("默认超级管理员");
         DEFAULT.setLoginName("ROOT");

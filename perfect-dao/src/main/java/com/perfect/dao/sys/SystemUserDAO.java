@@ -1,9 +1,11 @@
 package com.perfect.dao.sys;
 
 import com.perfect.dao.base.HeyCrudRepository;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +36,7 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     void insertAccountInfo(String userName, BaiduAccountInfoDTO baiduAccountInfoDTO);
 
-    int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs,String account);
+    int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs, String account);
 
     void clearAccountData(Long accountId);
 
@@ -51,4 +53,18 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
     List<Long> getLocalKeywordIds(Long accountId, List<Long> adgroupIds);
 
     List<Long> getLocalCreativeIds(Long accountId, List<Long> adgroupIds);
+
+    List<SystemUserDTO> findAll(int skip, int limit, String order, boolean asc);
+
+    boolean updateAccountStatus(String id, Boolean accountStatus);
+
+    boolean updateAccountTime(String id, Date startDate, Date endDate);
+
+    boolean updateAccountPayed(String id, Boolean payed);
+
+    List<SystemUserModuleDTO> getUserModules(String name);
+
+    SystemUserDTO findByUserId(String id);
+
+    boolean updateModuleMenus(String id, String modulename, String[] menus);
 }

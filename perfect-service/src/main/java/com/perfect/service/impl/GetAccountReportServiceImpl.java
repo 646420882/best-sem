@@ -7,7 +7,7 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.dao.report.GetAccountReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.RealTimeResultDTO;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.GetAccountReportService;

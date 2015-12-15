@@ -3,7 +3,7 @@ package com.perfect.service.impl;
 import com.google.common.collect.Lists;
 import com.perfect.dao.report.AsynchronousNmsReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.NmsAccountReportDTO;
 import com.perfect.dto.account.NmsAdReportDTO;
 import com.perfect.dto.account.NmsCampaignReportDTO;

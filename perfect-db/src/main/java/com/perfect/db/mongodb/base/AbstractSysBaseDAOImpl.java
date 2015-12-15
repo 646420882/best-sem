@@ -2,10 +2,13 @@ package com.perfect.db.mongodb.base;
 
 import com.perfect.dto.BaseDTO;
 import com.perfect.utils.ObjectUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yousheng on 2014/8/19.
@@ -74,6 +77,34 @@ public abstract class AbstractSysBaseDAOImpl<T extends BaseDTO, ID extends Seria
     @Override
     public long count() {
         return getSysMongoTemplate().count(null, getEntityClass());
+    }
+
+
+    @Override
+    public List<T> find(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        Query query = new Query();
+        Criteria criteria = null;
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            if (criteria == null) {
+                criteria = new Criteria(param.getKey());
+                criteria.is(param.getValue());
+                continue;
+            }
+
+            criteria.and(param.getKey()).is(param.getValue());
+        }
+
+        if (criteria == null) {
+            query.skip(skip).limit(limit);
+        } else {
+            query.addCriteria(criteria).skip(skip).limit(limit);
+        }
+
+        if (sort != null) {
+            query.with(new Sort((asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
+        }
+
+        return convert(getMongoTemplate().find(query, getEntityClass()));
     }
 
 }

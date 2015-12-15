@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 public class AdminLoginController {
 
 
+    public AdminLoginController() {
+        System.out.println("true = " + true);
+    }
+
     /**
      * 登陆页面
      *
@@ -45,7 +49,6 @@ public class AdminLoginController {
         } else {
             model.put("error", "");
         }
-
         model.put("redirect_url", url);
         return new ModelAndView("/login", model);
     }

@@ -1,9 +1,11 @@
 package com.perfect.service;
 
-import com.perfect.dto.SystemUserDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ public interface SystemUserService {
 
     void updateAccountData(String userName, long accountId);
 
-    boolean updateBaiDuName(String name,Long baiduId);
+    boolean updateBaiDuName(String name, Long baiduId);
 
     void updateAccountData(String userName, long accountId, List<Long> camIds);
 
@@ -35,7 +37,7 @@ public interface SystemUserService {
 
     void save(SystemUserDTO systemUserDTO);
 
-    boolean removeAccount(Long id,String account);
+    boolean removeAccount(Long id, String account);
 
     void addAccount(String user, BaiduAccountInfoDTO baiduAccountInfoDTO);
 
@@ -63,4 +65,16 @@ public interface SystemUserService {
 
     Iterable<SystemUserDTO> findAll();
 
+    List<SystemUserDTO> findUsers(String companyName, String userName, Boolean accountStatus, int skip, int
+            limit, String order, boolean asc);
+
+    boolean updateAccountStatus(String id, Boolean accountStatus);
+
+    boolean updateAccountTime(String id, Date startDate, Date endDate);
+
+    boolean updateAccountPayed(String id, Boolean payed);
+
+    List<SystemUserModuleDTO> getUserModules(String id);
+
+    boolean updateModuleMenus(String id, String modulename, String[] menus);
 }

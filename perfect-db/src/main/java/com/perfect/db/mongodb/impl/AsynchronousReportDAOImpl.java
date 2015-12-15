@@ -3,7 +3,7 @@ package com.perfect.db.mongodb.impl;
 import com.perfect.dao.report.AsynchronousReportDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.*;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.entity.account.AccountReportEntity;

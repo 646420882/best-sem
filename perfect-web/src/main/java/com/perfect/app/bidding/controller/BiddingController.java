@@ -10,7 +10,7 @@ import com.perfect.commons.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CookieDTO;
 import com.perfect.dto.StructureReportDTO;
-import com.perfect.dto.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.bidding.BiddingRuleDTO;

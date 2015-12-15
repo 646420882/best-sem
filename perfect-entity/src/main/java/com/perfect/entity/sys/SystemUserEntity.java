@@ -21,9 +21,19 @@ public class SystemUserEntity implements Serializable {
     @Indexed(unique = true)
     private String userName;//用户名
 
+    private boolean payed;
+
     private String password;//密码
 
     private String companyName;//公司名
+
+    private String contactName; //联系人
+
+    private String telephone;
+
+    private String mobilephone;
+
+    private String address;
 
     private Integer state;      //审核状态: 1审核通过, 0审核未通过
 
@@ -33,8 +43,16 @@ public class SystemUserEntity implements Serializable {
 
     private String email;//邮箱
 
+    private long ctime; //注册时间
+
+    @Field("modules")
+    private List<SystemUserModuleEntity> systemUserModuleEntities;
+
+
+    // 请参考SystemUserModuleEntity
+    @Deprecated
     @Field(value = "bdAccounts")
-    private List<BaiduAccountInfoEntity> baiduAccounts;//百度账号列表
+    private List<ModuleAccountInfoEntity> baiduAccounts;//百度账号列表
 
     //系统帐号状态: 1.启用  0.禁用
     @Field(value = "acstate")
@@ -45,7 +63,7 @@ public class SystemUserEntity implements Serializable {
 
     @PersistenceConstructor
     public SystemUserEntity(String userName, String password,
-                            List<BaiduAccountInfoEntity> baiduAccounts) {
+                            List<ModuleAccountInfoEntity> baiduAccounts) {
         this.userName = userName;
         this.password = password;
         this.baiduAccounts = baiduAccounts;
@@ -115,11 +133,11 @@ public class SystemUserEntity implements Serializable {
         this.companyName = companyName;
     }
 
-    public List<BaiduAccountInfoEntity> getBaiduAccounts() {
+    public List<ModuleAccountInfoEntity> getBaiduAccounts() {
         return baiduAccounts;
     }
 
-    public void setBaiduAccounts(List<BaiduAccountInfoEntity> baiduAccounts) {
+    public void setBaiduAccounts(List<ModuleAccountInfoEntity> baiduAccounts) {
         this.baiduAccounts = baiduAccounts;
     }
 
@@ -139,4 +157,59 @@ public class SystemUserEntity implements Serializable {
         this.accountState = accountState;
     }
 
+    public boolean isPayed() {
+        return payed;
+    }
+
+    public void setPayed(boolean payed) {
+        this.payed = payed;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getMobilephone() {
+        return mobilephone;
+    }
+
+    public void setMobilephone(String mobilephone) {
+        this.mobilephone = mobilephone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public long getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(long ctime) {
+        this.ctime = ctime;
+    }
+
+    public List<SystemUserModuleEntity> getSystemUserModuleEntities() {
+        return systemUserModuleEntities;
+    }
+
+    public void setSystemUserModuleEntities(List<SystemUserModuleEntity> systemUserModuleEntities) {
+        this.systemUserModuleEntities = systemUserModuleEntities;
+    }
 }

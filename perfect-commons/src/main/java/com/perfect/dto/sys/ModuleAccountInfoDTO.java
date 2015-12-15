@@ -1,16 +1,14 @@
-package com.perfect.entity.sys;
+package com.perfect.dto.sys;
 
-import com.perfect.entity.baidu.OfflineTimeEntity;
-import com.perfect.entity.baidu.OptTypeEntity;
-import org.springframework.data.mongodb.core.mapping.Field;
+import com.perfect.dto.baidu.OfflineTimeDTO;
+import com.perfect.dto.baidu.OptTypeDTO;
 
 import java.util.List;
 
 /**
- * Created by vbzer_000 on 2014/6/18.
+ * Created by yousheng on 15/12/15.
  */
-public class BaiduAccountInfoEntity {
-
+public class ModuleAccountInfoDTO {
     private Long id;
 
     private String baiduUserName;//百度账号
@@ -21,53 +19,39 @@ public class BaiduAccountInfoEntity {
 
     private String token;//百度的代码标识
 
-    @Field("dft")
+    private String hyToken;
+
     private Boolean dfault = false;//是否是默认加载账号
 
-    @Field("b")
     private Double balance;//账户余额
 
-    @Field("c")
     private Double cost;//账户积累消费
 
-    @Field("pay")
     private Double payment;//账户投资
 
-    @Field("bgtt")
     private Integer budgetType;//账户预算类型，0不设预算，1日预算，2周预算
 
-    @Field("bgt")
     private Double budget;//账户预算
 
-    @Field("rt")
     private List<Integer> regionTarget;//推广地域列表
 
-    @Field("exIp")
     private List<String> excludeIp;//ip排除列表
 
-    @Field("od")
     private List<String> openDomains;//账户开放域名列表
 
-    @Field("rd")
     private String regDomain;//账户注册域名
 
-    @Field("bot")
-    private List<OfflineTimeEntity> budgetOfflineTime;//到达预算下线时段
+    private List<OfflineTimeDTO> budgetOfflineTime;//到达预算下线时段
 
-    @Field("wb")
     private List<Double> weeklyBudget;//返回本周的每日预算值
 
-    @Field("us")
     private Integer userStat;//账户状态
 
-    @Field("dc")
     private Boolean isDynamicCreative;//是否开启动态创意 
 
-    @Field("dcp")
     private String dynamicCreativeParam;//动态创意统计参数
 
-    @Field("o")
-    private OptTypeEntity opt;
+    private OptTypeDTO opt;
 
     //该账户下的百度帐号是否启用   启用：1  停用：0
     private Long state;
@@ -176,11 +160,11 @@ public class BaiduAccountInfoEntity {
         this.regDomain = regDomain;
     }
 
-    public List<OfflineTimeEntity> getBudgetOfflineTime() {
+    public List<OfflineTimeDTO> getBudgetOfflineTime() {
         return budgetOfflineTime;
     }
 
-    public void setBudgetOfflineTime(List<OfflineTimeEntity> budgetOfflineTime) {
+    public void setBudgetOfflineTime(List<OfflineTimeDTO> budgetOfflineTime) {
         this.budgetOfflineTime = budgetOfflineTime;
     }
 
@@ -216,11 +200,11 @@ public class BaiduAccountInfoEntity {
         this.dynamicCreativeParam = dynamicCreativeParam;
     }
 
-    public OptTypeEntity getOpt() {
+    public OptTypeDTO getOpt() {
         return opt;
     }
 
-    public void setOpt(OptTypeEntity opt) {
+    public void setOpt(OptTypeDTO opt) {
         this.opt = opt;
     }
 
@@ -246,5 +230,13 @@ public class BaiduAccountInfoEntity {
 
     public void setBaiduRemarkName(String baiduRemarkName) {
         this.baiduRemarkName = baiduRemarkName;
+    }
+
+    public String getHyToken() {
+        return hyToken;
+    }
+
+    public void setHyToken(String hyToken) {
+        this.hyToken = hyToken;
     }
 }
