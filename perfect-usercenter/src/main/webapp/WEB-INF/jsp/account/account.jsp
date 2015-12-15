@@ -22,62 +22,47 @@
             <div class="page_title">
                 当前位置：账户绑定
             </div>
-            <div class="user_box">
-                <div class="user_title">
-                    <span aria-hidden="true" ng-class="icon"
-                          class="glyphicon glyphicon-user"></span>账户：<b>perfect2015</b>
-                    <button type="button" class="btn btn-default">试用账户</button>
-                </div>
-                <div class="user_content password_box">
+            <div class="user_box" style="background: #f0f0f0">
+                <div class="user_content account_box">
+                    <h3>百思搜客绑定</h3>
+
                     <p>关联推广账户</p>
+                    <table id="account_table" data-height="300">
+                        <thead>
+                        <tr>
+                            <th data-field="name">关联推广账户</th>
+                            <th data-field="stargazers_count">密码</th>
+                            <th data-field="url">URL地址</th>
+                            <th data-field="platform">账户所属平台</th>
+                            <th data-field="time">绑定时间</th>
+                            <th data-field="action" data-formatter="operateFormatter" data-events="operateEvents">操作
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
 
-                    <div class="bs-example" data-example-id="hoverable-table">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>关联推广账户</th>
-                                <th>密码</th>
-                                <th>URL地址</th>
-                                <th>账户所属平台</th>
-                                <th>绑定时间</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
+                <div class="user_content account_box">
+                    <h3>百思慧眼绑定</h3>
 
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <p>关联推广账户</p>
+                    <table id="AccountTable" data-height="300">
+                        <thead>
+                        <tr>
+                            <th data-field="name">网站名称</th>
+                            <th data-field="stargazers_count">网站URL</th>
+                            <th data-field="url">统计代码</th>
+                            <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents">操作</th>
+                        </tr>
+                        </thead>
+                    </table>
 
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/public/js/account/account.js"></script>
 </body>
 </html>
 
