@@ -19,4 +19,22 @@ public class IndexController {
     public ModelAndView index() {
         return new ModelAndView("index");
     }
+
+
+    @RequestMapping(value = "/userCenter/account", method = RequestMethod.GET)
+    public ModelAndView account() {
+        return new ModelAndView("/account/account");
+    }
+
+    @RequestMapping(value = "/userCenter/password", method = RequestMethod.GET)
+    public ModelAndView password() {
+        return new ModelAndView("/password/password");
+    }
+
+    @RequestMapping(value = "/userCenter/safetyTool", method = RequestMethod.GET)
+    public ModelAndView safetyTool() {
+        return new ModelAndView("/safe/safetool");
+    }
 }
+
+

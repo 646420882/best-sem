@@ -34,8 +34,7 @@
                         <li><span>开通平台：</span>北百思搜客、百思慧眼</li>
                         <li><span>网站名称：</span>北京普菲特广告有限公司</li>
                         <li><span>网址：</span>http：//www.perfect-cn.cn</li>
-                        <li><span>开通日期：</span>2015-10-10</li>
-                        <li><span>结束日期：</span>2015-12-31</li>
+                        <li><span>注册时间：</span>2015-10-10</li>
                         <li><span>联系人：</span>北京某某</li>
                         <li><span>办公电话：</span>12315464</li>
                         <li><span>移动电话：</span>1555555552</li>
