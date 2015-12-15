@@ -342,3 +342,23 @@
     color: #5a5a5a;
     margin-right: 17px;
 }
+
+.account_box h3 {
+    color: #01aeef;
+    font-size: 18px;
+    padding: 0 0 25px 0;
+    margin: 0px;
+
+}
+
+.account_box p {
+    color: #5a5a5a;
+    margin: 10px 0;
+}
+
+.account_box {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 25px;
+
+}
