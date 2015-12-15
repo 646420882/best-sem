@@ -106,7 +106,6 @@ function getKwdList(nowPage) {
         dataType: "json",
         success: function (data) {
             if (data != null) {
-                console.log(data);
                 $("#tbodyClick").empty();
                 records = data.totalCount;
                 pageIndex = data.nextPage;
@@ -434,6 +433,7 @@ $("body").on("focusout", "#text", function () {
         PriceVal = 0.1
     }
     var kwid = $(this).parents("tr").find("td:eq(0) input[type='checkbox']").val();
+    var _thisTr = $(this).parents("tr").find("td:eq(0)");
     var jsonData = {price: PriceVal, kwid: kwid};
     $.ajax({
         url: "/assistantKeyword/edit",
@@ -442,9 +442,12 @@ $("body").on("focusout", "#text", function () {
         dataType: "json",
         success: function (data) {
             $("#text").replaceWith("<span>" + PriceVal + "</span>");
-            if(kwid.length<18){
-               var step= $(this).parents("tr").find("td:eq(0) span").attr("step");
-                console.log(step);
+            if (kwid.length < 18) {
+                var step = _thisTr.find("span").attr("step");
+                if (!step) {
+                    _thisTr.parents("tr").addClass("table_add");
+                    _thisTr.append("<span class='pen' step='2'></span>")
+                }
             }
         }
     });
@@ -532,8 +535,6 @@ function setSelectSelected(matStr) {
  */
 function editKwdInfo(jsonData) {
     jsonData["kwid"] = $("#hiddenkwid_1").val();
-    jsonData[""]
-    console.log(jsonData);
     $.ajax({
         url: "/assistantKeyword/edit",
         type: "post",
@@ -961,7 +962,7 @@ function reducKwd_update(id) {
         dataType: "json",
         success: function (data) {
             var jsonData = {};
-            jsonData["object"] = data;
+            jsonData = data;
             jsonData["campaignName"] = $("#tbodyClick").find(".list2_box3 td:eq(10)").html();
             jsonData["quality"] = $("#tbodyClick").find(".list2_box3 td:eq(5)").attr("cname");
             jsonData["mobileQuality"] = $("#tbodyClick").find(".list2_box3 td:eq(6)").attr("cname");

@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface KeywordBackUpService {
 
-    KeywordDTO reducUpdate(String id);
+    KeywordInfoDTO reducUpdate(String id);
 
     void reducDel(String id);
     void myInsertAll(List<KeywordBackUpDTO> list);

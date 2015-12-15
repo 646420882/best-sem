@@ -1,12 +1,10 @@
 package com.perfect.db.mongodb.impl;
 
 import com.google.common.collect.Lists;
-import com.perfect.commons.constants.LogStatusConstant;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.keyword.KeywordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
-import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.db.mongodb.utils.PageParamUtils;
@@ -54,8 +52,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 @Repository("keywordDAO")
 public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> implements KeywordDAO {
 
-    @Resource
-    private LogDAO logDao;
 
     @Resource
     private KeywordBackUpDAO keywordBackUpDAO;
@@ -583,7 +579,6 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
             KeywordBackUpEntity backUpEntity = ObjectUtils.convert(keywordBackUpDTO, KeywordBackUpEntity.class);
             getMongoTemplate().insert(backUpEntity);
         }
-        logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD, LogStatusConstant.OPT_UPDATE);
     }
 
     @Override
@@ -944,7 +939,6 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                 Object after = method.invoke(keywordDTO);
                 if (after != null) {
                     update.set(field.getName(), after);
-                    logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD);
                     break;
                 }
             }
@@ -1002,7 +996,6 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
      */
     public void deleteById(String id) {
         getMongoTemplate().remove(new Query(Criteria.where(MongoEntityConstants.SYSTEM_ID).is(id)), getEntityClass(), MongoEntityConstants.TBL_KEYWORD);
-        logDao.insertLog(id, LogStatusConstant.ENTITY_KEYWORD);
     }
 
     /**

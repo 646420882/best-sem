@@ -250,7 +250,6 @@ public class CreativeServiceImpl implements CreativeService {
         List<UserOperationLogDTO> logs = Lists.newArrayList();
         crid.stream().forEach(s -> {
             CreativeDTO creativeDTOFind = creativeDAO.findByObjId(s);
-//            AdgroupDTO adgroupDTO = adgroupDAO.findOne(creativeDTOFind.getAdgroupId());
             if (creativeDTOFind.getAdgroupId() != null) {
                 CreativeType creativeType = new CreativeType();
                 creativeType.setAdgroupId(creativeDTOFind.getAdgroupId());
@@ -285,6 +284,7 @@ public class CreativeServiceImpl implements CreativeService {
                     returnCreativeDTOs.add(creativeDTO);
                     logs.stream().forEach(c -> {
                         if (c.getName().equals(s.getTitle()) && s.getCreativeId() != null) {
+                            c.setUploaded(true);
                             userOperationLogService.saveLog(c);
                         }
                     });
@@ -348,7 +348,8 @@ public class CreativeServiceImpl implements CreativeService {
                 add(crid);
             }});
             if (orm != null) {
-//                userOperationLogService.saveLog(orm);
+                orm.setUploaded(true);
+                userOperationLogService.saveLog(orm);
             }
             DeleteCreativeResponse deleteCreativeResponse = creativeService.deleteCreative(deleteCreativeRequest);
             return deleteCreativeResponse.getResult();
@@ -405,7 +406,8 @@ public class CreativeServiceImpl implements CreativeService {
                     returnCreativeDTOs.add(returnCreativeDTO);
                     if (logs.size() > 0) {
                         logs.stream().forEach(l -> {
-                            if (l.getOid().equals(Long.toString(s.getCreativeId()))) {
+                            if (l.getOid().equals(s.getCreativeId())) {
+                                l.setUploaded(true);
                                 userOperationLogService.saveLog(l);
                             }
                         });

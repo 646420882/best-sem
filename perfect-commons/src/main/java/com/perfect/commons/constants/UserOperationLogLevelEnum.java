@@ -5,5 +5,7 @@ package com.perfect.commons.constants;
  */
 public enum UserOperationLogLevelEnum {
     CAMPAIGN,
-    ADGROUP
+    ADGROUP,
+    KEYWORD,
+    CREATIVE
 }

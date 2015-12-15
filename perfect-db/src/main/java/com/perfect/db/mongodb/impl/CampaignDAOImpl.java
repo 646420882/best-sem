@@ -6,7 +6,6 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignBackUpDAO;
 import com.perfect.dao.campaign.CampaignDAO;
-import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.CampaignBackUpDTO;
@@ -57,8 +56,6 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
     @Resource
     private AdgroupDAO adgroupDAO;
 
-    @Resource
-    private LogDAO logDAO;
 
     public List<Long> getAllCampaignId() {
         Query query = new BasicQuery("{}", "{" + CAMPAIGN_ID + " : 1}");

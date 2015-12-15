@@ -1,9 +1,12 @@
 package com.perfect.service.impl;
 
+import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.keyword.KeywordBackUpDAO;
 import com.perfect.dao.keyword.KeywordDAO;
+import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.backup.KeywordBackUpDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.service.KeywordBackUpService;
 import com.perfect.service.UserOperationLogService;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +29,9 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
     private KeywordDAO keywordDAO;
 
     @Resource
+    private AdgroupDAO adgroupDAO;
+
+    @Resource
     private UserOperationLogService userOperationLogService;
 
 
@@ -43,7 +49,8 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
      *
      * @param id
      */
-    public KeywordDTO reducUpdate(String id) {
+    public KeywordInfoDTO reducUpdate(String id) {
+        KeywordInfoDTO keywordInfoDTO = new KeywordInfoDTO();
 
         if (id.matches("^\\d+$") == true) {
             KeywordDTO keywordEntity = new KeywordDTO();
@@ -54,12 +61,21 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
             keywordBackUpDAO.deleteByKwid(Long.parseLong(id));
             KeywordDTO keywordDTO = new KeywordDTO();
             BeanUtils.copyProperties(keywordEntity, keywordDTO);
-
-            return keywordDTO;
+            keywordInfoDTO.setObject(keywordDTO);
+            AdgroupDTO adgroupDTO = adgroupDAO.findOne(keywordDTO.getAdgroupId());
+            if (adgroupDTO != null) {
+                keywordInfoDTO.setAdgroupName(adgroupDTO.getAdgroupName());
+            }
+            return keywordInfoDTO;
         } else {
-            KeywordDTO keywordEntity = keywordDAO.findByObjectId(id);
+            KeywordDTO keywordDTO = keywordDAO.findByObjectId(id);
             keywordDAO.deleteById(id);
-            return keywordEntity;
+            AdgroupDTO adgroupDTO = adgroupDAO.findByObjId(keywordDTO.getId());
+            if (adgroupDTO != null) {
+                keywordInfoDTO.setAdgroupName(adgroupDTO.getAdgroupName());
+            }
+            keywordInfoDTO.setObject(keywordDTO);
+            return keywordInfoDTO;
         }
     }
 

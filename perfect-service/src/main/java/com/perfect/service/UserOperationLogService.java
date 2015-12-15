@@ -36,13 +36,13 @@ public interface UserOperationLogService {
     /**
      * <p>修改关键词日志操作</p>
      *
-     * @param newWord 修改后关键词对象
-     * @param newVal 新值
-     * @param oldVal 旧值
+     * @param newWord  修改后关键词对象
+     * @param newVal   新值
+     * @param oldVal   旧值
      * @param property 字段
      * @return
      */
-     UserOperationLogDTO updateKeyword(KeywordType newWord, Object newVal, Object oldVal, String property);
+    UserOperationLogDTO updateKeyword(KeywordType newWord, Object newVal, Object oldVal, String property);
 
     /**
      * <p>删除关键词日志操作</p>
@@ -91,7 +91,7 @@ public interface UserOperationLogService {
      * @param newCampaign
      * @return
      */
-     List<UserOperationLogDTO> updateCampaignAll(CampaignType newCampaign);
+    List<UserOperationLogDTO> updateCampaignAll(CampaignType newCampaign);
 
     /**
      * <p> 添加 单元 操作日志保存</p>
@@ -115,14 +115,16 @@ public interface UserOperationLogService {
      * @param adgroupType
      * @return 操作日志数据
      */
-     UserOperationLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String property);
+    UserOperationLogDTO updateAdgroup(AdgroupType adgroupType, String newvalue, String oldvalue, String property);
 
     /**
      * <p>修改单元总方法</p>
+     *
      * @param newAdgroup 修改后的关键词
      * @return
      */
     List<UserOperationLogDTO> updateAdgroupAll(AdgroupType newAdgroup);
+
     /**
      * <p> 添加 创意 操作日志保存</p>
      *
@@ -157,8 +159,9 @@ public interface UserOperationLogService {
 
     /**
      * <p>自动查询本地计划，单元id跟名称并set到日志对象中</p>
+     *
      * @param adgroupId 单元百度Id
-     * @param builder 日志对象
+     * @param builder   日志对象
      */
     void getCamAdgroupInfoByLong(Long adgroupId, SystemLogDTOBuilder builder);
 
@@ -166,12 +169,13 @@ public interface UserOperationLogService {
      * <p>自动查询本地计划id跟名称并set到日志对象中</p>
      *
      * @param campaignId 计划百度id
-     * @param builder 日志对象
+     * @param builder    日志对象
      */
     void getCampInfoByLongId(Long campaignId, SystemLogDTOBuilder builder);
 
     /**
      * <p>保存日志方法(批量)</p>
+     *
      * @param userOperationLogDTOs
      */
     void save(List<UserOperationLogDTO> userOperationLogDTOs);
@@ -184,12 +188,26 @@ public interface UserOperationLogService {
     void saveLog(UserOperationLogDTO userOperationLogDTO);
 
 
-    void update(Object object, UserOperationLogLevelEnum level, String property, UserOperationTypeEnum
-            userOperationTypeEnum, Object
-                        oldVal,
-                Object
-                        newVal);
+    /**
+     * <p>所有层级修改基层方法</p>
+     *
+     * @param object                层级对象
+     * @param level                 层级等级
+     * @param property              修改的属性
+     * @param userOperationTypeEnum 修改操作枚举值
+     * @param oldVal                旧值
+     * @param newVal                新值
+     */
+    UserOperationLogDTO update(Object object, UserOperationLogLevelEnum level, String property, UserOperationTypeEnum
+            userOperationTypeEnum, Object newVal, Object oldVal);
 
-    void newdel(Object object, UserOperationLogLevelEnum level, UserOperationTypeEnum
+    /**
+     * <p>删除操作日志记录基层方法</p>
+     *
+     * @param object                要删除的基层对象
+     * @param level                 层级等级
+     * @param userOperationTypeEnum 操作日志类型枚举值
+     */
+    UserOperationLogDTO newdel(Object object, UserOperationLogLevelEnum level, UserOperationTypeEnum
             userOperationTypeEnum);
 }

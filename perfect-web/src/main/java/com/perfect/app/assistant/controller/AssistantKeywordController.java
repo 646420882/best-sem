@@ -511,7 +511,7 @@ public class AssistantKeywordController extends WebContextSupport {
      */
     @RequestMapping(value = "assistantKeyword/reducUpdate", method = {RequestMethod.GET, RequestMethod.POST})
     public void reducUpdate(HttpServletResponse response, String id) {
-        KeywordDTO keywordDTO = keywordBackUpService.reducUpdate(id);
+        KeywordInfoDTO keywordDTO = keywordBackUpService.reducUpdate(id);
         writeJson(keywordDTO, response);
     }
 

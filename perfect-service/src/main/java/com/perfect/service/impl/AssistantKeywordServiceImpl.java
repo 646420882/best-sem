@@ -518,7 +518,11 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
         if (kwd.getKeywordId() == null) {
             newKeywordDTO = keywordDAO.findByObjectId(kwd.getId());
-            newKeywordDTO.setLocalStatus(1);
+            if(newKeywordDTO!=null){
+                if(newKeywordDTO.getLocalStatus()!=3||newKeywordDTO.getLocalStatus()!=4){
+                    newKeywordDTO.setLocalStatus(1);
+                }
+            }
         } else {
             newKeywordDTO = keywordDAO.findOne(kwd.getKeywordId());
             newKeywordDTO.setLocalStatus(2);
@@ -1001,7 +1005,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 keywordType.setPause(keywordDTO.getPause());
                 UserOperationLogDTO orm = userOperationLogService.saveKeywordLog(keywordType);
                 if (orm != null) {
-//                    logs.add(orm);
+                    logs.add(orm);
                 }
                 keywordTypes.add(keywordType);
             }
@@ -1024,6 +1028,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     retrunKeywordDTOs.add(returnKeywordDTO);
                     logs.stream().forEach(f -> {
                         if (f.getName().equals(s.getKeyword()) && s.getKeywordId() != null) {
+                            f.setUploaded(true);
                             userOperationLogService.saveLog(f);
                         }
                     });
@@ -1093,7 +1098,8 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                         add(kid);
                     }});
                     if (orm != null) {
-//                        userOperationLogService.saveLog(orm);
+                        orm.setUploaded(true);
+                        userOperationLogService.saveLog(orm);
                     }
                 }
                 return deleteKeywordResponse.getResult();
@@ -1115,6 +1121,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                 KeywordType keywordType = new KeywordType();
                 keywordType.setKeywordId(dtoFind.getKeywordId());
                 keywordType.setAdgroupId(dtoFind.getAdgroupId());
+                keywordType.setKeyword(dtoFind.getKeyword());
                 keywordType.setMatchType(dtoFind.getMatchType());
                 keywordType.setPrice(Double.parseDouble(dtoFind.getPrice() + ""));
                 keywordType.setPhraseType(dtoFind.getPhraseType());
@@ -1146,12 +1153,12 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
                     keywordDAO.updateLs(keywordDTO);
                     returnKeywordDTOs.add(keywordDTO);
                     logs.stream().forEach(f -> {
-                        if (f.getOid().equals(Long.toString(s.getKeywordId()))) {
+                        if (f.getOid().equals(s.getKeywordId())) {
+                            f.setUploaded(true);
                             userOperationLogService.saveLog(f);
                         }
                     });
                 });
-
             } catch (ApiException e) {
                 e.printStackTrace();
             }

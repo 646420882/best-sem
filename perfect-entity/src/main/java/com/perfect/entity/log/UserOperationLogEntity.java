@@ -16,6 +16,8 @@ public class UserOperationLogEntity {
 
     private long userId;
 
+    private String userName;
+
     private long campgainId;
 
     private String campaignName;
@@ -37,6 +39,8 @@ public class UserOperationLogEntity {
     private long time;
 
     private boolean uploaded;
+
+    private String text;
 
     public String getId() {
         return id;
@@ -161,5 +165,21 @@ public class UserOperationLogEntity {
     public UserOperationLogEntity setUserId(long userId) {
         this.userId = userId;
         return this;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

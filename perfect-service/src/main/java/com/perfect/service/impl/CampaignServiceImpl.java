@@ -217,9 +217,9 @@ public class CampaignServiceImpl implements CampaignService {
             campaignType.setStatus(dto.getStatus());
             campaignType.setIsDynamicCreative(dto.getIsDynamicCreative());
         }
+        UserOperationLogDTO orm = userOperationLogService.addCampaign(campaignType);
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
-        UserOperationLogDTO orm = userOperationLogService.addCampaign(campaignType);
         try {
             com.perfect.autosdk.sms.v3.CampaignService campaignService = commonService.getService(com.perfect.autosdk.sms.v3.CampaignService.class);
             AddCampaignRequest addCampaignRequest = new AddCampaignRequest();
@@ -234,6 +234,7 @@ public class CampaignServiceImpl implements CampaignService {
                 returnDtos.add(campaignDTO);
                 if (orm != null) {
                     if (orm.getName().equals(s.getCampaignName()) && s.getCampaignId() != null) {
+                        orm.setUploaded(true);
                         userOperationLogService.saveLog(orm);
                     }
                 }
@@ -256,7 +257,7 @@ public class CampaignServiceImpl implements CampaignService {
             if (campaignDTO != null) {
                 UserOperationLogDTO orm = userOperationLogService.removeCampaign(campaignDTO);
                 if (orm != null) {
-//                    logs.add(orm);
+                    logs.add(orm);
                 }
             }
         });
@@ -271,7 +272,8 @@ public class CampaignServiceImpl implements CampaignService {
                     campaignDAO.deleteByCampaignId(s);
                     if (logs.size() > 0) {
                         logs.stream().forEach(l -> {
-//                            userOperationLogService.saveLog(l);
+                            l.setUploaded(true);
+                            userOperationLogService.saveLog(l);
                         });
                     }
                 });
@@ -310,7 +312,7 @@ public class CampaignServiceImpl implements CampaignService {
             campaignType.setStatus(dto.getStatus());
             campaignType.setIsDynamicCreative(dto.getIsDynamicCreative());
             List<UserOperationLogDTO> orm = userOperationLogService.updateCampaignAll(campaignType);
-            if (orm.size()>0) {
+            if (orm.size() > 0) {
                 logs.addAll(orm);
             }
             campaignTypeList.add(campaignType);
@@ -327,7 +329,8 @@ public class CampaignServiceImpl implements CampaignService {
                 returnCampaignIds.add(s.getCampaignId());
                 if (logs.size() > 0) {
                     logs.stream().forEach(l -> {
-                        if (l.getOid().equals(Long.toString(s.getCampaignId()))) {
+                        if (l.getOid().equals(s.getCampaignId())) {
+                            l.setUploaded(true);
                             userOperationLogService.saveLog(l);
                         }
                     });

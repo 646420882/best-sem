@@ -6,26 +6,31 @@ import java.util.EnumMap;
  * Created by yousheng on 2015/12/13.
  */
 public enum UserOperationTypeEnum {
-    ACCOUNT_ID(1), DEFAULT(-1),
-    ADD_CAMPAIGN(101),
-    MODIFY_CAMPAIGN(102),
-    DEL_CAMPAIGN(103),
-    ADD_ADGROUP(201),
-    MODIFY_ADGROUP(202),
-    DEL_ADGROUP(203),
-    ADD_KEYWORD(301),
-    MODIFY_KEYWORD(302),
-    DEL_KEYWORD(303),
+    OPERATION(0),
 
-    ADD_CREATIVE(401),
-    MODIFY_CREATIVE(402),
-    DEL_CREATIVE(403);
+    ACCOUNT_ID(1), DEFAULT(-1),
+
+    ADD_KEYWORD(101),
+    ADD_ADGROUP(102),
+    ADD_CREATIVE(103),
+    ADD_CAMPAIGN(104),
+
+
+    DEL_KEYWORD(201),
+    DEL_ADGROUP(202),
+    DEL_CREATIVE(203),
+    DEL_CAMPAIGN(204),
+
+    MODIFY_KEYWORD(301),
+    MODIFY_CREATIVE(302),
+    MODIFY_ADGROUP(303),
+    MODIFY_CAMPAIGN(304);
 
 
     private static EnumMap<UserOperationTypeEnum, String> logTypeMap = new EnumMap<UserOperationTypeEnum, String>(UserOperationTypeEnum.class);
 
     static {
-        logTypeMap.put(ACCOUNT_ID, "{%type% %name%} %prop% 从%before%到%after%");
+        logTypeMap.put(OPERATION, "{%type% %name%}");
     }
 
     public static String layout(UserOperationTypeEnum userOperationTypeEnum) {

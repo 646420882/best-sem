@@ -1,19 +1,15 @@
 package com.perfect.db.mongodb.impl;
 
-import com.perfect.commons.constants.LogStatusConstant;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.creative.CreativeBackUpDAO;
 import com.perfect.dao.creative.CreativeDAO;
-import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.entity.backup.CreativeBackUpEntity;
-import com.perfect.entity.backup.KeywordBackUpEntity;
 import com.perfect.entity.creative.CreativeEntity;
-import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.utils.ObjectUtils;
@@ -43,8 +39,6 @@ import java.util.regex.Pattern;
 @Repository("creativeDAO")
 public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> implements CreativeDAO {
 
-    @Resource
-    private LogDAO logDAO;
     @Resource
     private CreativeBackUpDAO bakcUpDAO;
 
@@ -237,14 +231,12 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         BaseMongoTemplate.getUserMongo().updateFirst(new Query(Criteria.where(CREATIVE_ID).is(objectId)), update, getEntityClass());
         //以前是直接删除拉取到本地的数据，是硬删除，现在改为软删除，以便以后还原操作
 //        BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(CREATIVE_ID).is(objectId)), getEntityClass(), TBL_CREATIVE);
-        logDAO.insertLog(objectId, LogStatusConstant.ENTITY_CREATIVE, LogStatusConstant.OPT_DELETE);
     }
 
     @Override
     public void deleteByCacheId(String cacheCreativeId) {
         BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(cacheCreativeId)), getEntityClass(), TBL_CREATIVE);
         BaseMongoTemplate.getUserMongo().remove(new Query(Criteria.where(getId()).is(cacheCreativeId)), CreativeBackUpEntity.class, BAK_CREATIVE);
-        logDAO.insertLog(cacheCreativeId, LogStatusConstant.ENTITY_CREATIVE);
     }
 
     @Override
@@ -290,7 +282,6 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
         up.set("d", creativeDTO.getDevicePreference());
         up.set("md", creativeDTO.getMobileDisplayUrl());
         getMongoTemplate().updateFirst(new Query(Criteria.where(getId()).is(creativeDTO.getId())), up, getEntityClass());
-        logDAO.insertLog(creativeDTO.getId(), LogStatusConstant.ENTITY_CREATIVE);
     }
 
     @Override
@@ -324,7 +315,6 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             BeanUtils.copyProperties(creativeBackUpDTO, backUpEntity);
             getMongoTemplate().insert(backUpEntity);
         }
-        logDAO.insertLog(id, LogStatusConstant.ENTITY_CREATIVE, LogStatusConstant.OPT_UPDATE);
     }
 
 

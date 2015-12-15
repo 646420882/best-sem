@@ -294,6 +294,7 @@ public class AdgroupServiceImpl implements AdgroupService {
                     if (logs.size() > 0) {
                         logs.stream().forEach(l -> {
                             if (l.getName().equals(s.getAdgroupName()) && s.getAdgroupId() != null) {
+                                l.setUploaded(true);
                                 userOperationLogService.saveLog(l);
                             }
                         });
@@ -331,7 +332,8 @@ public class AdgroupServiceImpl implements AdgroupService {
             DeleteAdgroupResponse adgroupResponse = adgroupService.deleteAdgroup(adgroupRequest);
             result = adgroupResponse.getResponse();
             if (orm != null) {
-//                userOperationLogService.saveLog(orm);
+                orm.setUploaded(true);
+                userOperationLogService.saveLog(orm);
             }
             return result;
         } catch (ApiException e) {
@@ -376,7 +378,8 @@ public class AdgroupServiceImpl implements AdgroupService {
                 returnAdgroupDTO.add(adgroupDTO);
                 if (logs.size() > 0) {
                     logs.stream().forEach(l -> {
-                        if (l.getOid().equals(Long.toString(s.getAdgroupId()))) {
+                        if (l.getOid().equals(s.getAdgroupId())) {
+                            l.setUploaded(true);
                             userOperationLogService.saveLog(l);
                         }
                     });

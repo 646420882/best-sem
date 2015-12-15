@@ -6,7 +6,6 @@ import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.adgroup.AdgroupBackUpDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
-import com.perfect.dao.sys.LogDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.adgroup.AdgroupDTO;
@@ -699,9 +698,6 @@ public class AdgroupDAOImpl extends AbstractUserBaseDAOImpl<AdgroupDTO, Long> im
         getMongoTemplate().updateFirst(query, up, CreativeEntity.class);
         getMongoTemplate().updateFirst(query, up, KeywordEntity.class);
     }
-
-    @Resource
-    LogDAO logDAO;
 
     private List<AdgroupDTO> wrapperList(List<AdgroupEntity> list) {
         return ObjectUtils.convert(list, AdgroupDTO.class);

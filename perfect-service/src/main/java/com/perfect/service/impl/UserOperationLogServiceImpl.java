@@ -7,7 +7,7 @@ import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.sms.v3.*;
-import com.perfect.commons.constants.LogObjConstants;
+import com.perfect.commons.constants.UserOperationLogProperty;
 import com.perfect.commons.constants.UserOperationLogLevelEnum;
 import com.perfect.commons.constants.UserOperationTypeEnum;
 import com.perfect.core.AppContext;
@@ -22,7 +22,9 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
+import com.perfect.entity.log.UserOperationLogEntity;
 import com.perfect.service.UserOperationLogService;
+import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.SystemLogDTOBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -69,7 +71,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 .setName(newWord.getKeyword())
                 .setType(UserOperationTypeEnum.ADD_KEYWORD.getValue())
                 .setAfter(newWord.getKeyword())
-                .setName(LogObjConstants.NAME);
+                .setName(UserOperationLogProperty.NAME);
         getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
         return builder.build();
     }
@@ -115,60 +117,32 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
         List<UserOperationLogDTO> logs = Lists.newArrayList();
-        if (baiduType.getPrice() != newWord.getPrice()) {
-            logs.add(updateKeyword(newWord, newWord.getPrice(), baiduType.getPrice(), LogObjConstants.PRICE));
+        if (!baiduType.getPrice().equals(newWord.getPrice())) {
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.PRICE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getPrice(), baiduType.getPrice()));
         }
         if (baiduType.getPause() != newWord.getPause()) {
-            logs.add(updateKeyword(newWord, newWord.getPause(), baiduType.getPause(), LogObjConstants.PAUSE));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getPause(), baiduType.getPause()));
         }
         if (baiduType.getMatchType() != newWord.getMatchType()) {
-            logs.add(updateKeyword(newWord, newWord.getMatchType(), baiduType.getMatchType(), LogObjConstants.MATCH_TYPE));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.MATCH_TYPE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getMatchType(), baiduType.getMatchType()));
         }
-        if (!baiduType.getPcDestinationUrl().equals(newWord.getPcDestinationUrl())) {
-            logs.add(updateKeyword(newWord, newWord.getPcDestinationUrl(), baiduType.getPcDestinationUrl(), LogObjConstants.PC_DES_URL));
+        String pcOld = nullJudge(baiduType.getPcDestinationUrl());
+        String pcNew = nullJudge(newWord.getPcDestinationUrl());
+        if (!Objects.equals(pcOld, pcNew)) {
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.PC_DES_URL, UserOperationTypeEnum.MODIFY_KEYWORD, nullJudge(newWord.getPcDestinationUrl()), nullJudge(baiduType.getPcDestinationUrl())));
         }
-        if (!baiduType.getMobileDestinationUrl().equals(newWord.getMobileDestinationUrl())) {
-            logs.add(updateKeyword(newWord, newWord.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL));
+        if (!nullJudge(baiduType.getMobileDestinationUrl()).equals(nullJudge(newWord.getMobileDestinationUrl()))) {
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.MIB_DES_URL, UserOperationTypeEnum.MODIFY_KEYWORD, nullJudge(newWord.getMobileDestinationUrl()), nullJudge(baiduType.getMobileDestinationUrl())));
         }
-        if (baiduType.getAdgroupId() != newWord.getAdgroupId()) {
+        if (!baiduType.getAdgroupId().equals(newWord.getAdgroupId())) {
             AdgroupDTO newAdgroup = adgroupDAO.findOne(newWord.getAdgroupId());
             AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
-            logs.add(updateKeyword(newWord, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName(), LogObjConstants.MOVE_ADGROUP));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.MOVE_ADGROUP, UserOperationTypeEnum.MODIFY_KEYWORD, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName()));
         }
         return logs;
     }
 
-//    @Override
-//    public void reduceKeywordLog(KeywordDTO dbFindKeyWord) {
-//        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-//        builder.setType(LogLevelConstants.KEYWORD)
-//                .setOid(OptContentEnum.reBak)
-//                .setName(dbFindKeyWord.getKeyword())
-//                .setOptType(OptContentEnum.reBak)
-//                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
-//        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
-//        save(builder.build());
-//    }
-
-    //    @Override
-//    public void moveKeywordLog(KeywordDTO dbFindKeyWord, Object oldVal, Object newVal) {
-//        SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-//        builder.setType(LogLevelConstants.KEYWORD)
-//                .setOid(OptContentEnum.KeyMove)
-//                .setName(dbFindKeyWord.getKeyword())
-//                .setOptType(OptContentEnum.KeyMove)
-//                .setOptObj(LogObjConstants.MOVE_ADGROUP)
-//                .setOptComprehensiveID(dbFindKeyWord.getKeywordId());
-//        getCamAdgroupInfoByLong(dbFindKeyWord.getAdgroupId(), builder);
-//        if (oldVal != null) {
-//            builder.setBefore(oldVal.toString());
-//        }
-//        if (newVal != null) {
-//            builder.setAfter(newVal.toString());
-//        }
-//        save(builder.build());
-//    }
-//------------------------------------计划-----------------------------------------
+    //------------------------------------计划-----------------------------------------
     @Override
     public UserOperationLogDTO addCampaign(CampaignType campaignType) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
@@ -222,18 +196,8 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         CampaignType baiduType = baiduApiService.getCampaignTypeById(newCampaign.getCampaignId());
-        List<UserOperationLogDTO> logs=Lists.newArrayList();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         if (baiduType != null && newCampaign != null) {
-            if (!Objects.equals(baiduType.getCampaignName(), newCampaign.getCampaignName())) {
-                //TODO 计划名称修改的枚举需要重新添加 暂定用创意的修改表示
-                logs.add(updateCampaign(newCampaign, newCampaign.getCampaignName(), baiduType.getCampaignName(), LogObjConstants.NAME));
-            }
-            if (!Objects.equals(baiduType.getPause(), newCampaign.getPause())) {
-                logs.add(updateCampaign(newCampaign, newCampaign.getPause().toString(), baiduType.getPause().toString(), LogObjConstants.PAUSE));
-            }
-            if (!Objects.equals(baiduType.getBudget(), newCampaign.getBudget())) {
-                logs.add( updateCampaign(newCampaign, newCampaign.getBudget().toString(), baiduType.getBudget().toString(), LogObjConstants.CAMPAIGN_BUDGET));
-            }
             StringBuilder newSbSc = new StringBuilder();
             for (int i = 0; i < baiduType.getSchedule().size(); i++) {
                 newSbSc.append(baiduType.getSchedule(i).toString());
@@ -242,11 +206,22 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
             for (int i = 0; i < newCampaign.getSchedule().size(); i++) {
                 oldSbSc.append(newCampaign.getSchedule(i).toString());
             }
+            if (!Objects.equals(baiduType.getCampaignName(), newCampaign.getCampaignName())) {
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.NAME, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getCampaignName(), baiduType.getCampaignName()));
+            }
+            if (!Objects.equals(baiduType.getPause(), newCampaign.getPause())) {
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getPause().toString(), baiduType.getPause().toString()));
+            }
+            if (!Objects.equals(baiduType.getBudget(), newCampaign.getBudget())) {
+
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_BUDGET, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getBudget().toString(), baiduType.getBudget().toString()));
+            }
             if (!Objects.equals(newSbSc.toString(), oldSbSc.toString())) {
-                logs.add( updateCampaign(newCampaign, newSbSc.toString(), oldSbSc.toString(), LogObjConstants.CAMPAIGN_SCHEDULE));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_SCHEDULE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbSc.toString(), oldSbSc.toString()));
+
             }
             if (!Objects.equals(baiduType.getDevice(), newCampaign.getDevice())) {
-                logs.add( updateCampaign(newCampaign, newCampaign.getDevice().toString(), baiduType.getDevice().toString(), LogObjConstants.DEVICE));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.DEVICE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getDevice().toString(), baiduType.getDevice().toString()));
             }
             if (!Objects.equals(baiduType.getExactNegativeWords().size(), newCampaign.getExactNegativeWords().size())) {
                 StringBuilder oldSbWord = new StringBuilder();
@@ -257,7 +232,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 for (int i = 0; i < baiduType.getExactNegativeWords().size(); i++) {
                     newSbWord.append(newCampaign.getExactNegativeWord(i));
                 }
-                logs.add( updateCampaign(newCampaign, newSbWord.toString(), oldSbWord.toString(), LogObjConstants.EXA_WORD));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.EXA_WORD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbWord.toString(), oldSbWord.toString()));
             }
             if (!Objects.equals(baiduType.getNegativeWords().size(), newCampaign.getNegativeWords().size())) {
                 StringBuilder oldSbWord = new StringBuilder();
@@ -268,16 +243,16 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 for (int i = 0; i < baiduType.getNegativeWords().size(); i++) {
                     newSbWord.append(newCampaign.getNegativeWord(i));
                 }
-                logs.add( updateCampaign(newCampaign, newSbWord.toString(), oldSbWord.toString(), LogObjConstants.NEG_WORD));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.NEG_WORD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbWord.toString(), oldSbWord.toString()));
             }
             if (!Objects.equals(baiduType.getExcludeIp().size(), newCampaign.getExcludeIp())) {
-                logs.add( updateCampaign(newCampaign, newCampaign.getExcludeIp().toString(), baiduType.getExcludeIp().toString(), LogObjConstants.CAMPAIGN_EXCLUDEIP));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_EXCLUDEIP, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getExcludeIp().toString(), baiduType.getExcludeIp().toString()));
             }
             if (!Objects.equals(baiduType.getPriceRatio(), newCampaign.getPriceRatio())) {
-                logs.add( updateCampaign(newCampaign, newCampaign.getPriceRatio().toString(), baiduType.getPriceRatio().toString(), LogObjConstants.MIB_FACTOR));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.MIB_FACTOR, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getPriceRatio().toString(), baiduType.getPriceRatio().toString()));
             }
             if (!Objects.equals(baiduType.getRegionTarget().size(), newCampaign.getRegionTarget().size())) {
-                logs.add( updateCampaign(newCampaign, newCampaign.getRegionTarget().toString(), baiduType.getRegionTarget().toString(), LogObjConstants.CAMPAIGN_REGION));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_REGION, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getRegionTarget().toString(), baiduType.getRegionTarget().toString()));
             }
         }
         return null;
@@ -335,13 +310,13 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         AdgroupType baiduType = baiduApiService.getAdgroupTypeById(newAdgroup.getAdgroupId());
-        List<UserOperationLogDTO> logs=Lists.newArrayList();
+        List<UserOperationLogDTO> logs = Lists.newArrayList();
         if (baiduType != null && newAdgroup != null) {
             if (!Objects.equals(baiduType.getAdgroupName(), newAdgroup.getAdgroupName())) {
-                logs.add(updateAdgroup(newAdgroup, newAdgroup.getAdgroupName(), baiduType.getAdgroupName(), LogObjConstants.NAME));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.NAME, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getAdgroupName(), baiduType.getAdgroupName()));
             }
             if (!Objects.equals(baiduType.getMaxPrice(), newAdgroup.getMaxPrice())) {
-                logs.add(updateAdgroup(newAdgroup, newAdgroup.getMaxPrice().toString(), baiduType.getMaxPrice().toString(), LogObjConstants.PRICE));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.PRICE, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getMaxPrice().toString(), baiduType.getMaxPrice().toString()));
             }
             if (!Objects.equals(baiduType.getExactNegativeWords().size(), newAdgroup.getExactNegativeWords().size())) {
                 StringBuilder oldSb = new StringBuilder();
@@ -352,7 +327,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 for (int i = 0; i < baiduType.getExactNegativeWords().size(); i++) {
                     newSb.append(newAdgroup.getExactNegativeWord(i));
                 }
-                logs.add(updateAdgroup(newAdgroup, newSb.toString(), oldSb.toString(), LogObjConstants.EXA_WORD));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.EXA_WORD, UserOperationTypeEnum.MODIFY_ADGROUP, newSb.toString(), oldSb.toString()));
             }
             if (!Objects.equals(baiduType.getNegativeWords().size(), newAdgroup.getNegativeWords().size())) {
                 StringBuilder oldSb = new StringBuilder();
@@ -363,19 +338,19 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 for (int i = 0; i < baiduType.getNegativeWords().size(); i++) {
                     newSb.append(newAdgroup.getNegativeWord(i));
                 }
-                logs.add(updateAdgroup(newAdgroup, newSb.toString(), oldSb.toString(), LogObjConstants.NEG_WORD));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.NEG_WORD, UserOperationTypeEnum.MODIFY_ADGROUP, newSb.toString(), oldSb.toString()));
             }
             if (!Objects.equals(baiduType.getCampaignId(), newAdgroup.getCampaignId())) {
                 CampaignDTO oldCampaignDTO = campaignDAO.findOne(baiduType.getCampaignId());
                 CampaignDTO newCampaignDTO = campaignDAO.findOne(newAdgroup.getCampaignId());
-                logs.add(updateAdgroup(newAdgroup, newCampaignDTO.getCampaignName(), oldCampaignDTO.getCampaignName(), LogObjConstants.MOVE_CAMPAIGN));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.MOVE_CAMPAIGN, UserOperationTypeEnum.MODIFY_ADGROUP, newCampaignDTO.getCampaignName(), oldCampaignDTO.getCampaignName()));
             }
             if (!Objects.equals(baiduType.getPause(), newAdgroup.getPause())) {
-                logs.add( updateAdgroup(newAdgroup, newAdgroup.getPause().toString(), baiduType.getPause().toString(), LogObjConstants.PAUSE));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getPause().toString(), baiduType.getPause().toString()));
             }
             //TODO 单元移动出价比例搜客暂时没有这个操作,如需单元出价比例操作,解除注释即可
 //            if(!Objects.equals(baiduType.getAccuPriceFactor(),newAdgroup.getAccuPriceFactor())){
-//                return updateAdgroup(newAdgroup,newAdgroup.getAccuPriceFactor().toString(),baiduType.getAccuPriceFactor().toString(),LogObjConstants.MIB_FACTOR,AdGroupEnum.mobilePriceFactor);
+//                return updateAdgroup(newAdgroup,newAdgroup.getAccuPriceFactor().toString(),baiduType.getAccuPriceFactor().toString(),UserOperationLogProperty.MIB_FACTOR,AdGroupEnum.mobilePriceFactor);
 //            }
         }
         return null;
@@ -437,36 +412,36 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         List<UserOperationLogDTO> logs = Lists.newArrayList();
         if (baiduType != null && newCreative != null) {
             if (!baiduType.getTitle().equals(newCreative.getTitle())) {
-                logs.add(updateCreative(newCreative, newCreative.getTitle(), baiduType.getTitle(), LogObjConstants.CREATIVE_TITLE));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CREATIVE_TITLE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getTitle(), baiduType.getTitle()));
             }
             if (!baiduType.getDescription1().equals(newCreative.getDescription1())) {
-                logs.add(updateCreative(newCreative, newCreative.getDescription1(), baiduType.getDescription1(), LogObjConstants.CREATIVE_DESC1));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CREATIVE_DESC1, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDescription1(), baiduType.getDescription1()));
             }
             if (!baiduType.getDescription2().equals(newCreative.getDescription2())) {
-                logs.add(updateCreative(newCreative, newCreative.getDescription2(), baiduType.getDescription2(), LogObjConstants.CREATIVE_DESC2));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CREATIVE_DESC2, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDescription2(), baiduType.getDescription2()));
             }
             if (!baiduType.getPcDestinationUrl().equals(newCreative.getPcDestinationUrl())) {
-                logs.add(updateCreative(newCreative, newCreative.getPcDestinationUrl(), baiduType.getPcDestinationUrl(), LogObjConstants.PC_DES_URL));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PC_DES_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getPcDestinationUrl(), baiduType.getPcDestinationUrl()));
             }
             if (!baiduType.getPcDisplayUrl().equals(newCreative.getPcDisplayUrl())) {
-                logs.add(updateCreative(newCreative, newCreative.getPcDisplayUrl(), baiduType.getPcDisplayUrl(), LogObjConstants.PC_DIS_URL));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PC_DIS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getPcDisplayUrl(), baiduType.getPcDisplayUrl()));
             }
             if (!baiduType.getMobileDestinationUrl().equals(newCreative.getMobileDestinationUrl())) {
-                logs.add(updateCreative(newCreative, newCreative.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl(), LogObjConstants.MIB_DES_URL));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MIB_DES_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl()));
             }
             if (!baiduType.getMobileDisplayUrl().equals(newCreative.getMobileDisplayUrl())) {
-                logs.add(updateCreative(newCreative, newCreative.getMobileDisplayUrl(), baiduType.getMobileDisplayUrl(), LogObjConstants.MIB_DIS_URL));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MIB_DIS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getMobileDisplayUrl(), baiduType.getMobileDisplayUrl()));
             }
             if (baiduType.getPause() != newCreative.getPause()) {
-                logs.add(updateCreative(newCreative, newCreative.getPause().toString(), baiduType.getPause().toString(), LogObjConstants.PAUSE));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getPause().toString(), baiduType.getPause().toString()));
             }
             if (baiduType.getDevicePreference() != newCreative.getDevicePreference()) {
-                logs.add(updateCreative(newCreative, newCreative.getDevicePreference().toString(), baiduType.getDevicePreference().toString(), LogObjConstants.DEVICE));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.DEVICE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDevicePreference().toString(), baiduType.getDevicePreference().toString()));
             }
             if (baiduType.getAdgroupId() != newCreative.getAdgroupId()) {
                 AdgroupDTO newAdgroup = adgroupDAO.findOne(newCreative.getAdgroupId());
                 AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
-                logs.add(updateCreative(newCreative, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName(), LogObjConstants.MOVE_ADGROUP));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MOVE_ADGROUP, UserOperationTypeEnum.MODIFY_CREATIVE, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName()));
             }
         }
         return logs;
@@ -507,8 +482,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public void saveLog(UserOperationLogDTO userOperationLogDTO) {
-        System.out.println(userOperationLogDTO);
-
+        userOperationLogDAO.save(userOperationLogDTO);
     }
 
 
@@ -518,8 +492,8 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     private final String CREATIVE_ID = "creativeId";
 
     @Override
-    public void update(Object object, UserOperationLogLevelEnum level, String property, UserOperationTypeEnum userOperationTypeEnum, Object
-            oldVal, Object newVal) {
+    public UserOperationLogDTO update(Object object, UserOperationLogLevelEnum level, String property, UserOperationTypeEnum userOperationTypeEnum, Object newVal, Object
+            oldVal) {
 
         UserOperationLogDTO userOperationLogDTO = new UserOperationLogDTO();
         userOperationLogDTO.setTime(System.currentTimeMillis());
@@ -534,48 +508,20 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         fillLayout(userOperationTypeEnum, oldVal, newVal, userOperationLogDTO);
         switch (level) {
             case CAMPAIGN:
-                fillCampaignInfo(object, userOperationLogDTO);
-                break;
-
-            case ADGROUP:
-                fillCampaignInfo(object, userOperationLogDTO);
-                fillAdgroupInfo(object, userOperationLogDTO);
+                CampaignDTO campaignDTO = (CampaignDTO) object;
+                userOperationLogDTO.setCampgainId(campaignDTO.getCampaignId());
+                userOperationLogDTO.setCampaignName(campaignDTO.getCampaignName());
                 break;
             default:
+                AdgroupDTO adgroupDTO = fillAdgroupInfo(object, userOperationLogDTO);
+                fillCampaignInfo(adgroupDTO, userOperationLogDTO);
                 break;
         }
-
-
-        userOperationLogDAO.save(userOperationLogDTO);
+        return userOperationLogDTO;
     }
 
     private final String VALUE_EMPTY = "空";
 
-    private void fillLayout(UserOperationTypeEnum userOperationTypeEnum, Object oldVal, Object newVal,
-                            UserOperationLogDTO userOperationLogDTO) {
-        String layout = UserOperationTypeEnum.layout(userOperationTypeEnum);
-
-        layout = replaceValue(layout, "%old%", oldVal);
-        layout = replaceValue(layout, "%new%", newVal);
-        userOperationLogDTO.setText(layout);
-    }
-
-
-    private String replaceValue(String layout, String pattern, Object value) {
-        String innerLayout = layout;
-        if (value instanceof Date) {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            innerLayout = innerLayout.replace(pattern, dateFormat.format(value));
-        } else {
-            if (value == null) {
-                innerLayout = layout.replace("%old%", VALUE_EMPTY);
-            } else {
-                innerLayout = layout.replace("%old%", value.toString());
-            }
-        }
-
-        return innerLayout;
-    }
 
     private void fillObjectInfo(Object object, UserOperationLogDTO userOperationLogDTO) {
         if (object == null) {
@@ -610,7 +556,15 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     }
 
     private void fillCampaignInfo(Object object, UserOperationLogDTO userOperationLogDTO) {
-        Long campaignId = getCampaignId(object);
+
+        Long campaignId = null;
+
+        if (object instanceof AdgroupDTO) {
+            campaignId = ((AdgroupDTO) object).getCampaignId();
+        } else {
+            campaignId = getCampaignId(object);
+        }
+
         if (campaignId == null)
             return;
         userOperationLogDTO.setCampgainId(campaignId);
@@ -618,13 +572,20 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         userOperationLogDTO.setCampaignName(getCampaignName(campaignId));
     }
 
-    private void fillAdgroupInfo(Object object, UserOperationLogDTO userOperationLogDTO) {
+    private AdgroupDTO fillAdgroupInfo(Object object, UserOperationLogDTO userOperationLogDTO) {
         Long adgroupId = getAdgroupId(object);
         if (adgroupId == null)
-            return;
+            return null;
+
+        AdgroupDTO adgroupDTO = adgroupDAO.findOne(adgroupId);
+        if (adgroupDTO == null) {
+            return null;
+        }
+
         userOperationLogDTO.setAdgroupdId(adgroupId);
 
-        userOperationLogDTO.setAdgroupName(getAdgroupName(adgroupId));
+        userOperationLogDTO.setAdgroupName(adgroupDTO.getAdgroupName());
+        return adgroupDTO;
     }
 
 
@@ -673,7 +634,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         String cacheKey = clz.getSimpleName() + "." + property;
         Field field = fieldCacheMap.get(cacheKey);
 
-        if (field != null) {
+        if (field == null) {
             try {
                 field = clz.getDeclaredField(property);
             } catch (NoSuchFieldException e) {
@@ -691,7 +652,13 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         }
 
         try {
-            return field.getLong(object);
+            field.setAccessible(true);
+            Object val = field.get(object);
+            if (val instanceof Long) {
+                return (Long) val;
+            }
+
+            return -1l;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -700,7 +667,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     }
 
     @Override
-    public void newdel(Object object, UserOperationLogLevelEnum level, UserOperationTypeEnum
+    public UserOperationLogDTO newdel(Object object, UserOperationLogLevelEnum level, UserOperationTypeEnum
             userOperationTypeEnum) {
         UserOperationLogDTO userOperationLogDTO = new UserOperationLogDTO();
         userOperationLogDTO.setTime(System.currentTimeMillis());
@@ -709,30 +676,151 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         userOperationLogDTO.setUserName(AppContext.getUser());
 
         fillObjectInfo(object, userOperationLogDTO);
-        fillLayout(userOperationTypeEnum, userOperationLogDTO);
+        fillLayout(userOperationLogDTO);
         switch (level) {
             case CAMPAIGN:
-                fillCampaignInfo(object, userOperationLogDTO);
-                break;
-
-            case ADGROUP:
-                fillCampaignInfo(object, userOperationLogDTO);
-                fillAdgroupInfo(object, userOperationLogDTO);
+                CampaignDTO campaignDTO = (CampaignDTO) object;
+                userOperationLogDTO.setCampgainId(campaignDTO.getCampaignId());
+                userOperationLogDTO.setCampaignName(campaignDTO.getCampaignName());
                 break;
             default:
+                AdgroupDTO adgroupDTO = fillAdgroupInfo(object, userOperationLogDTO);
+                fillCampaignInfo(adgroupDTO, userOperationLogDTO);
                 break;
         }
-
-        userOperationLogDAO.save(userOperationLogDTO);
+        return userOperationLogDTO;
     }
 
-    private void fillLayout(UserOperationTypeEnum userOperationTypeEnum, UserOperationLogDTO
-            userOperationLogDTO) {
-
+    private void fillLayout(UserOperationTypeEnum userOperationTypeEnum, Object oldVal, Object newVal,
+                            UserOperationLogDTO userOperationLogDTO) {
         String layout = UserOperationTypeEnum.layout(userOperationTypeEnum);
 
-        layout = replaceValue(layout, "%target%", userOperationLogDTO.getName());
+        layout = replaceValue(layout, "%type%", getOperationType(userOperationLogDTO));
+        layout = replaceValue(layout, "%name%", userOperationLogDTO.getName());
+        layout = replaceValue(layout, "%prop%", getProperty(userOperationLogDTO.getProperty()));
+        layout = replaceValue(layout, "%before%", oldVal);
+        layout = replaceValue(layout, "%after%", newVal);
         userOperationLogDTO.setText(layout);
+    }
+
+
+    private String replaceValue(String layout, String pattern, Object value) {
+        String innerLayout = layout;
+        if (value instanceof Date) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            innerLayout = innerLayout.replace(pattern, dateFormat.format(value));
+        } else {
+            if (value == null) {
+                innerLayout = layout.replace(pattern, VALUE_EMPTY);
+            } else {
+                innerLayout = layout.replace(pattern, value.toString());
+            }
+        }
+
+        return innerLayout;
+    }
+
+    private void fillLayout(UserOperationLogDTO
+                                    userOperationLogDTO) {
+
+        String layout = UserOperationTypeEnum.layout(UserOperationTypeEnum.OPERATION);
+
+        layout = replaceValue(layout, "%type%", getOperationType(userOperationLogDTO));
+        layout = replaceValue(layout, "%name%", userOperationLogDTO.getName());
+        userOperationLogDTO.setText(layout);
+    }
+
+    private String nullJudge(Object obj) {
+        if (obj == null) {
+            return "空";
+        } else {
+            obj = obj.toString().replaceAll(" ", "");
+            if (obj.toString().equals("")) {
+                return "空";
+            } else {
+                return obj.toString();
+            }
+        }
+    }
+
+    private String getOperationType(UserOperationLogDTO userOperationLogDTO) {
+        int type = userOperationLogDTO.getType();
+        switch (type) {
+            case 101:
+                return "新增关键词";
+            case 102:
+                return "新增创意";
+            case 103:
+                return "新增推广单元";
+            case 104:
+                return "新增推广计划";
+            case 201:
+                return "删除关键词";
+            case 202:
+                return "删除创意";
+            case 203:
+                return "删除推广单元";
+            case 204:
+                return "删除推广计划";
+            case 301:
+                return "修改关键词";
+            case 302:
+                return "修改创意";
+            case 303:
+                return "修改推广单元";
+            default:
+                return "修改推广计划";
+        }
+    }
+
+    private String getProperty(String property) {
+        switch (property) {
+            case UserOperationLogProperty.NAME:
+                return UserOperationLogProperty.NAME_CH;
+            case UserOperationLogProperty.PRICE:
+                return UserOperationLogProperty.PRICE_CH;
+            case UserOperationLogProperty.PC_DES_URL:
+                return UserOperationLogProperty.PC_DES_URL_CH;
+            case UserOperationLogProperty.PC_DIS_URL:
+                return UserOperationLogProperty.PC_DIS_URL_CH;
+            case UserOperationLogProperty.MIB_DES_URL:
+                return UserOperationLogProperty.MIB_DES_URL_CH;
+            case UserOperationLogProperty.MIB_DIS_URL:
+                return UserOperationLogProperty.MIB_DIS_URL_CH;
+            case UserOperationLogProperty.MATCH_TYPE:
+                return UserOperationLogProperty.MATCH_TYPE_CH;
+            case UserOperationLogProperty.PRASE_TYPE:
+                return UserOperationLogProperty.PRASE_TYPE_CH;
+            case UserOperationLogProperty.PAUSE:
+                return UserOperationLogProperty.PAUSE_CH;
+            case UserOperationLogProperty.MOVE_ADGROUP:
+                return UserOperationLogProperty.MOVE_ADGROUP_CH;
+            case UserOperationLogProperty.CREATIVE_TITLE:
+                return UserOperationLogProperty.CREATIVE_TITLE_CH;
+            case UserOperationLogProperty.CREATIVE_DESC1:
+                return UserOperationLogProperty.CREATIVE_DESC1_CH;
+            case UserOperationLogProperty.CREATIVE_DESC2:
+                return UserOperationLogProperty.CREATIVE_DESC2_CH;
+            case UserOperationLogProperty.DEVICE:
+                return UserOperationLogProperty.DEVICE_CH;
+            case UserOperationLogProperty.NEG_WORD:
+                return UserOperationLogProperty.NEG_WORD_CH;
+            case UserOperationLogProperty.EXA_WORD:
+                return UserOperationLogProperty.EXA_WORD_CH;
+            case UserOperationLogProperty.MOVE_CAMPAIGN:
+                return UserOperationLogProperty.MOVE_CAMPAIGN_CH;
+            case UserOperationLogProperty.MIB_FACTOR:
+                return UserOperationLogProperty.MIB_FACTOR_CH;
+            case UserOperationLogProperty.CAMPAIGN_BUDGET:
+                return UserOperationLogProperty.CAMPAIGN_BUDGET_CH;
+            case UserOperationLogProperty.CAMPAIGN_SCHEDULE:
+                return UserOperationLogProperty.CAMPAIGN_SCHEDULE_CH;
+            case UserOperationLogProperty.CAMPAIGN_EXCLUDEIP:
+                return UserOperationLogProperty.CAMPAIGN_EXCLUDEIP_CH;
+            case UserOperationLogProperty.CAMPAIGN_REGION:
+                return UserOperationLogProperty.CAMPAIGN_REGION_CH;
+        }
+        return null;
     }
 
 }
