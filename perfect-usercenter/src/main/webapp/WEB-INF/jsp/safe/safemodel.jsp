@@ -55,10 +55,10 @@
                         <div class="col-xs-2">选择问题：</div>
                         <div class="col-xs-10">
                             <select class="form-control">
-                                <option value="">我的名字</option>
-                                <option value="">我的生日</option>
-                                <option value="">我的家乡</option>
-
+                                <option value="">我的职工编号</option>
+                                <option value="">最喜欢哪支球队？</option>
+                                <option value="">我的第一个电话号码是什么？</option>
+                                <option value="">我XX的名字/生日/手机号？</option>
                             </select>
                         </div>
                     </div>

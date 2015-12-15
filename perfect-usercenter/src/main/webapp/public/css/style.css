@@ -350,6 +350,11 @@
     margin: 0px;
 
 }
+.account_box h3 span{
+    color:#5a5a5a;
+    font-size:12px;
+    padding-left:20px;
+}
 
 .account_box p {
     color: #5a5a5a;
@@ -361,4 +366,43 @@
     background: #fff;
     padding: 25px;
 
+}
+.fixed-table-container thead th{
+    background: #f0f0f0;
+}
+.table>thead>tr>th{
+    border-bottom: none;
+}
+.bootstrap-table .table>thead>tr>th{
+    border-bottom: none;
+}
+.binding{
+    display:block;
+    float:left;
+    width:54px;
+    text-align: center;
+}
+.binding,.delete{
+    color:#01aef0;
+    margin-right:10px;
+}
+.modal_align{
+    display: table;
+    height: 100%;
+    margin: 0px auto
+}
+.modal-dialog{
+    margin-top:12%
+}
+.account_box .btn-default{
+    margin-top:0px;
+    padding:5px 30px;
+    background: #f0f0f0;
+}
+.account_box .btn-default:hover{
+    background: #01aeef;
+    color:#fff;
+}
+.account_box .btn-default span{
+    margin-right:10px;
 }

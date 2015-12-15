@@ -5,7 +5,6 @@ $(function () {
     //路由控制
     var href = window.location.href;
     href = '/' + href.split("/").slice(-1);
-    console.log(href);
     if (href == "/") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
