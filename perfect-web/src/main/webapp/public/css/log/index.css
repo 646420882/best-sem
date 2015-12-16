@@ -216,28 +216,38 @@
     left: 330px;
     top: 0;
     width: 330px;
-    height: 350px;
+    height: 260px;
     border: 1px solid #D2DAEF;
     background-color: #fff;
     display: none;
     z-index: 100;
 }
 
-.plan-box h2 {
+.plan-box .title {
     padding: 0 10px;
     line-height: 32px;
     font-size: 12px;
     border-bottom: 1px solid #E5E5E5;
 }
 
-.plan-box h2 .close-ico {
+.plan-box .title .close-ico {
     float: right;
     width: 30px;
     height: 30px;
     background: url(/public/img/close.png) no-repeat center center;
 }
-.plan-box ul li{
+.plan-box .serach ul li{
     height: 40px;
+    padding: 5px 0 5px 5px;
+
+}.plan-box .serach ul li{
+    height: 40px;
+    padding: 5px 0 5px 5px;
+
+}
+.plan-box .serach ul li:first-child{
+    float: left;
+    padding:  5px;
 }
 .plan-box form {
     padding: 10px;
@@ -267,7 +277,7 @@
 
 .plan-box .query-result {
     padding: 10px;
-    height:260px;
+    height:180px;
     overflow-y: auto;
 }
 
