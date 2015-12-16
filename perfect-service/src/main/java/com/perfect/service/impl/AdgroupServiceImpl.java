@@ -319,9 +319,9 @@ public class AdgroupServiceImpl implements AdgroupService {
         BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         AdgroupDTO adgroupDTO = adgroupDAO.findOne(aid);
-        UserOperationLogDTO orm=null;
-        if(adgroupDTO!=null){
-            orm= userOperationLogService.removeAdgroup(adgroupDTO);
+        UserOperationLogDTO orm = null;
+        if (adgroupDTO != null) {
+            orm = userOperationLogService.removeAdgroup(adgroupDTO);
         }
         try {
             com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
@@ -351,6 +351,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             AdgroupDTO adgroupDTOFind = adgroupDAO.findOne(s);
             AdgroupType adgroupType = new AdgroupType();
             adgroupType.setAdgroupId(adgroupDTOFind.getAdgroupId());
+            adgroupType.setCampaignId(adgroupDTOFind.getCampaignId());
             adgroupType.setAdgroupName(adgroupDTOFind.getAdgroupName());
             adgroupType.setMaxPrice(adgroupDTOFind.getMaxPrice());
             adgroupType.setNegativeWords(adgroupDTOFind.getNegativeWords());
@@ -358,8 +359,10 @@ public class AdgroupServiceImpl implements AdgroupService {
             adgroupType.setPause(adgroupDTOFind.getPause());
             adgroupType.setStatus(adgroupDTOFind.getStatus());
             List<UserOperationLogDTO> orm = userOperationLogService.updateAdgroupAll(adgroupType);
-            if (orm.size()>0) {
-                logs.addAll(orm);
+            if (orm != null) {
+                if (orm.size() > 0) {
+                    logs.addAll(orm);
+                }
             }
             adgroupTypes.add(adgroupType);
         });

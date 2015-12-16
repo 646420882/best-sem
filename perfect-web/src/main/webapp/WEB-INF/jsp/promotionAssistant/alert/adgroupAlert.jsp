@@ -81,6 +81,7 @@
                         <div class="planbox1 fl"> 推广单元状态:</div>
                         <div class="planbox2 fl">
                             <label id="adStatus"></label>
+                            <input type="hidden" name="status"/>
                         </div>
                     </li>
                     <li>
