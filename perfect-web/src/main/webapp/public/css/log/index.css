@@ -236,7 +236,9 @@
     height: 30px;
     background: url(/public/img/close.png) no-repeat center center;
 }
-
+.plan-box ul li{
+    height: 40px;
+}
 .plan-box form {
     padding: 10px;
 }
