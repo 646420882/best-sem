@@ -23,6 +23,7 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.param.UserMenuParams;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.ObjectUtils;
@@ -657,8 +658,8 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean updateModuleMenus(String id, String modulename, String[] menus) {
-        return systemUserDAO.updateModuleMenus(id, modulename, menus);
+    public boolean updateUserModuleMenus(String id, String moduleid, UserMenuParams menus) {
+        return systemUserDAO.updateModuleMenus(id, moduleid, menus);
     }
 
     @Override

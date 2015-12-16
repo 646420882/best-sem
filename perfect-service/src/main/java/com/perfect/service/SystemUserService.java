@@ -4,6 +4,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.param.UserMenuParams;
 
 import java.util.Date;
 import java.util.List;
@@ -76,7 +77,7 @@ public interface SystemUserService {
 
     List<SystemUserModuleDTO> getUserModules(String id);
 
-    boolean updateModuleMenus(String id, String modulename, String[] menus);
+    boolean updateUserModuleMenus(String id, String modulename, UserMenuParams menus);
 
     boolean addModule(String userid, String moduleId);
 

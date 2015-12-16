@@ -15,6 +15,7 @@ import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.entity.sys.ModuleAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.entity.sys.SystemUserModuleEntity;
+import com.perfect.param.UserMenuParams;
 import com.perfect.utils.ObjectUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
@@ -265,15 +266,16 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
      * 更新模块菜单权限
      *
      * @param id
-     * @param modulename
+     * @param moduleid
      * @param menus
      * @return
      */
     @Override
-    public boolean updateModuleMenus(String id, String modulename, String[] menus) {
+    public boolean updateModuleMenus(String id, String moduleid, UserMenuParams menus) {
+
         WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(id).and
-                ("modules.modulename").is
-                (modulename)), Update.update("modules.$.menus", menus), getEntityClass());
+                ("modules.moduleId").is
+                (moduleid)), Update.update("modules.$.menus", menus), getEntityClass());
         return updateSuccess(writeResult);
     }
 

@@ -57,7 +57,7 @@ public class UserManageController {
 
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/users/{id}/accountStatus", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView changeAccountStatus(@PathVariable("id") String id, @RequestParam(value = "status") Boolean
             accountStatus) {
 
@@ -74,7 +74,7 @@ public class UserManageController {
         return JsonViews.generate(-1);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/users/{id}/payed", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView changeAccountPayed(@PathVariable("id") String id,
                                            @RequestParam(value = "payed") Boolean payed) {
 
