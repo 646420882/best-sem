@@ -16,8 +16,18 @@ public class AppContext {
     private static Map<String, SessionObject> sessionMap = new HashMap<>();
 
     private static ContextLocal contextMap = new ContextLocal();
+
+    private static ThreadLocal<SystemUserInfo> systemUserInfoThreadLocal = new ThreadLocal<>();
+
     private static Object accountId;
 
+    public static void setSystemUserInfo(SystemUserInfo systemUserInfo) {
+        systemUserInfoThreadLocal.set(systemUserInfo);
+    }
+
+    public static SystemUserInfo getSystemUserInfo() {
+        return systemUserInfoThreadLocal.get();
+    }
 
     public static SessionObject get() {
         return contextMap.get();

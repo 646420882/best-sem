@@ -1,13 +1,21 @@
 /**
  * 忘记密码单击事件
  */
+function next(){
+    $(".login_box:eq(0)").addClass("hides");
+    $(".login_box:eq(1)").removeClass("hides")
+}
+function next_complete(){
+    $(".login_box:eq(1)").addClass("hides");
+    $(".login_box:eq(2)").removeClass("hides")
+}
 $("#forgetPassword").click(function () {
     var userName = $("#j_username").val();
     userName = userName.replace(/ /g,"");
-    if(userName.length==0){
-        alert("请输入要找回的账号");
-        return;
-    }
+    //if(userName.length==0){
+    //    alert("请输入要找回的账号");
+    //    return;
+    //}
 
     var XMLHttpReq;
     function createXMLHttpRequest() {

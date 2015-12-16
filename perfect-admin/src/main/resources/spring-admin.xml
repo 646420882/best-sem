@@ -9,6 +9,7 @@
     <import resource="spring-admin-mongodb.xml"/>
     <mvc:interceptors>
         <ref bean="adminPriviledgeHandler"/>
+        <bean class="com.perfect.admin.filter.SystemLogHandler"/>
     </mvc:interceptors>
 
 

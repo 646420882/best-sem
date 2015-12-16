@@ -1,7 +1,6 @@
 package com.perfect.admin.controllers;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.perfect.admin.utils.JsonViews;
 import com.perfect.commons.web.JsonResultMaps;
 import com.perfect.dto.sys.SystemUserDTO;
@@ -10,15 +9,12 @@ import com.perfect.service.SystemUserService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.AbstractView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by yousheng on 15/12/15.
@@ -37,21 +33,19 @@ public class UserManageController {
                                  @RequestParam(value = "pagesize", required = false, defaultValue = "20") int pagesize,
                                  @RequestParam(value = "order", required = false, defaultValue = "ctime") String order,
                                  @RequestParam(value = "asc", required = false, defaultValue = "false") boolean asc) {
-        AbstractView mv = new MappingJackson2JsonView();
         List<SystemUserDTO> systemUserDTOList = systemUserService.findUsers(companyName, userName, accountStatus,
                 (page - 1) * pagesize, pagesize, order, asc);
 
 
         if (systemUserDTOList == null || systemUserDTOList.isEmpty()) {
-            return new ModelAndView(mv);
+            return JsonViews.generateSuccessNoData();
         }
-        Map<String, Object> attrmap = Maps.newHashMap();
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
 
         systemUserDTOList.forEach((dto) -> {
-            dto.setPassword("******");
+//            dto.setPassword("******");
             dto.setImg(null);
 
             // format date
@@ -59,9 +53,7 @@ public class UserManageController {
             dto.setDisplayCtime(format.format(date));
         });
 
-        attrmap.put("data", systemUserDTOList);
-        mv.setAttributesMap(attrmap);
-        return new ModelAndView(mv);
+        return JsonViews.generate(JsonResultMaps.successMap(systemUserDTOList));
 
     }
 
@@ -150,31 +142,4 @@ public class UserManageController {
         return null;
     }
 
-    @RequestMapping(value = "/users/{id}/modules", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView userModules(@PathVariable("id") String id) {
-
-        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserService.getUserModules(id);
-
-        if (systemUserModuleDTOs == null || systemUserModuleDTOs.isEmpty()) {
-            return JsonViews.generateSuccessNoData();
-        }
-        return JsonViews.generate(JsonResultMaps.successMap(systemUserModuleDTOs));
-
-    }
-
-
-    @RequestMapping(value = "/users/{id}/modules/{modulename}/rights", method = RequestMethod.POST, produces = MediaType
-            .APPLICATION_JSON_VALUE)
-    public ModelAndView updateUserModuleMenus(@PathVariable("id") String id, @PathVariable("modulename") String
-            modulename, @RequestParam("menus") String menus) {
-
-        System.out.println("id = " + id);
-        boolean success = systemUserService.updateModuleMenus(id, modulename, menus.split("|"));
-
-        if (success) {
-            return JsonViews.generateSuccessNoData();
-        }
-
-        return JsonViews.generate(-1);
-    }
 }

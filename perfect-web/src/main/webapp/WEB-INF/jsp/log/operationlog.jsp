@@ -48,12 +48,18 @@
 
                     <div class="ctrlbuttonoptSelect"></div>
                 </div>
-                <!-- 计划列表 -->                <div class="plan-box">
-                    <h2><span id="boxheader">计划列表</span><a href="javascript:;" class="close-ico"></a></h2>
-                    <ul>
-                        <li> <input type="text" id="txtkey"/></li>
-                        <li>   <button id="btnsearch">查询</button></li>
-                    </ul>
+                <!-- 计划列表 -->
+                <div class="plan-box">
+                    <div class="title"><span id="boxheader">计划列表</span><a href="javascript:;" class="close-ico"></a></div>
+                    <div class="serach">
+                        <ul>
+                            <li><input type="text" id="txtkey"/></li>
+                            <li>
+                                <button id="btnsearch">查询</button>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="query-result" id="query-result">
                         <ul>
                             <li><a href="javascript:;">添加</a><span>test</span></li>
