@@ -27,6 +27,20 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <bean class="com.perfect.commons.SessionTimeoutInterceptor" >
+                <property name="allowUrls">
+                    <list>
+                        <value>/</value>
+                        <value>/login</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <!-- 扫描注册处理器实现类 -->
     <context:component-scan base-package="com.perfect.usercenter.controller">
         <context:include-filter type="annotation"

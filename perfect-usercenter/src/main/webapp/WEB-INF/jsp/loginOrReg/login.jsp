@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: baizz
@@ -39,7 +40,7 @@
             <span class="fl">用户登录</span>
             <a href="/userCenter/reg" class="fr">→ 还没有账号？点击注册</a>
         </div>
-        <form action="../j_spring_security_check" method="post">
+        <form action="/login" method="post">
             <input type="hidden" name="redirect" value="${redirect_url}"/>
 
             <div class="login_part1 ">

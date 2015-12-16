@@ -17,6 +17,8 @@
     <context:annotation-config/>
     <context:component-scan base-package="com.perfect.*"/>
 
+    <bean id="stdScheduler" lazy-init="false" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
 
     <!-- ====================== Additional Resources ======================= -->
     <import resource="spring-mongodb.xml"/>
