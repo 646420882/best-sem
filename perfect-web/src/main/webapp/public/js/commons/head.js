@@ -318,7 +318,6 @@ $(document).ready(function () {
 
             $("#searchCount").autocomplete({
                 source: tags,
-
                 select: function (event, ui) {
                     // 这里的this指向当前输入框的DOM元素
                     // event参数是事件对象
@@ -361,8 +360,9 @@ $(document).ready(function () {
                         $("#searchCount").siblings().hide()
                         $("#switchAccount").height($(".ui-autocomplete").height() + 44);
                     }
-                }, 1000);
+                }, 500);
             });
+            $(".ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content").css({"z-index":"3000","border": "1px solid #dddddd", " background": "#ffffff",  " color": "#333333"});
 
         })
 });

@@ -11,11 +11,10 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public.css">
     <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
     <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">--%>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/onlyLogin.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/onlyLogin.css">
     <script>
         var _pct = _pct || [];
         (function () {
@@ -38,7 +37,7 @@
     <div class="login_box1">
         <div class="login_click over" style="margin-bottom: 35px">
             <span class="fl">用户登录</span>
-            <a href="/register/page" class="fr">→ 还没有账号？点击注册</a>
+            <a href="/userCenter/reg" class="fr">→ 还没有账号？点击注册</a>
         </div>
         <form action="../j_spring_security_check" method="post">
             <input type="hidden" name="redirect" value="${redirect_url}"/>
@@ -97,7 +96,7 @@
 <script type="text/javascript">
     window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js'>\x3C/script>");
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/forgetPassword.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/loginOrReg/forgetPassword.js"></script>
 
 <script type="text/javascript">
 

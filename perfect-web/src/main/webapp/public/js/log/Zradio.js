@@ -238,8 +238,8 @@ $(function () {
      	    			var downParam="/assistant/download?level="+params.level+"&opt_id="+params.opt_id;
      	    				downParam+="&opt_obj="+params.opt_obj+"&start_time="+params.start_time+"&end_time="+params.end_time;
      	    			
-     	    			$("#download").attr("href",downParam);
-     	    			$("#download").css("display","block");
+     	    			$("#downloadhistory").attr("href",downParam);
+     	    			$("#downloadhistory").css("display","block");
      	    		}
      	    		var content='';
      	    		$('#tbodydata').html('');

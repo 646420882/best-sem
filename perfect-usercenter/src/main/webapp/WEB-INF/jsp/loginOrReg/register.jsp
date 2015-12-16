@@ -11,12 +11,11 @@
 <head>
     <meta charset="utf-8">
     <title>大数据智能营销</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/public.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public.css">
     <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">--%>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/onlyLogin.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/onlyLogin.css">
 </head>
 <body>
 <div class="login over">
@@ -29,7 +28,7 @@
     <div class="login_box2">
         <div class="login_click over">
             <span id="tishi" class="fl">用户注册</span>
-            <a href="/login" class="fr">→ 已有账号？登陆</a>
+            <a href="/" class="fr">→ 已有账号？登陆</a>
         </div>
         <div class="login_part1 ">
             <div class="login_input2">
@@ -192,7 +191,7 @@
 </div>
 <input type="hidden" id="dataRe" value="${state}">
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/login/bootstrapValidator.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/public/bootstrapValidator.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     /*$(window).resize(function () {

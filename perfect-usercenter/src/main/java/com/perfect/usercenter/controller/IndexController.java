@@ -17,9 +17,13 @@ public class IndexController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
-        return new ModelAndView("index");
+        return new ModelAndView("/loginOrReg/login");
     }
 
+    @RequestMapping(value = "/userCenter/reg")
+    public ModelAndView reg(){
+        return new ModelAndView("/loginOrReg/register");
+    }
 
     @RequestMapping(value = "/userCenter/account", method = RequestMethod.GET)
     public ModelAndView account() {
