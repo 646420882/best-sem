@@ -24,6 +24,10 @@ public class JsonViews {
         return generate(JsonResultMaps.successMap());
     }
 
+    public static ModelAndView generateFailedNoData() {
+        return generate(JsonResultMaps.failedMap());
+    }
+
 
     public static ModelAndView generate(int code) {
         return generate(JsonResultMaps.map(code));

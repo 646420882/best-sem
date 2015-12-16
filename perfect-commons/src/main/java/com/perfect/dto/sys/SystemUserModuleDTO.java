@@ -1,26 +1,31 @@
 package com.perfect.dto.sys;
 
+import com.perfect.dto.BaseDTO;
+
 import java.util.List;
 
 /**
+ * modulename 以及 moduleUrl属性只用在显示
+ * 保存时不用设置
  * Created by yousheng on 15/12/15.
  */
-public class SystemUserModuleDTO {
+public class SystemUserModuleDTO extends BaseDTO {
     private String moduleName;
 
     private String moduleUrl;
 
     private boolean isPayed;
 
-    private boolean isOpened;
+    private boolean enabled;
 
     private long startTime;
 
     private long endTime;
 
-    private List<String> systemMenuInfoEntityList;
+    private List<SystemMenuDTO> menus;
 
-    private List<ModuleAccountInfoDTO> moduleAccountInfoDTOList;
+    private List<ModuleAccountInfoDTO> accounts;
+    private String moduleId;
 
     public long getStartTime() {
         return startTime;
@@ -38,13 +43,6 @@ public class SystemUserModuleDTO {
         this.endTime = endTime;
     }
 
-    public List<String> getSystemMenuInfoEntityList() {
-        return systemMenuInfoEntityList;
-    }
-
-    public void setSystemMenuInfoEntityList(List<String> systemMenuInfoEntityList) {
-        this.systemMenuInfoEntityList = systemMenuInfoEntityList;
-    }
 
     public String getModuleName() {
         return moduleName;
@@ -62,12 +60,12 @@ public class SystemUserModuleDTO {
         this.isPayed = isPayed;
     }
 
-    public boolean isOpened() {
-        return isOpened;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setIsOpened(boolean isOpened) {
-        this.isOpened = isOpened;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getModuleUrl() {
@@ -78,11 +76,28 @@ public class SystemUserModuleDTO {
         this.moduleUrl = moduleUrl;
     }
 
-    public List<ModuleAccountInfoDTO> getModuleAccountInfoDTOList() {
-        return moduleAccountInfoDTOList;
+    public List<ModuleAccountInfoDTO> getAccounts() {
+        return accounts;
     }
 
-    public void setModuleAccountInfoDTOList(List<ModuleAccountInfoDTO> moduleAccountInfoDTOList) {
-        this.moduleAccountInfoDTOList = moduleAccountInfoDTOList;
+    public void setAccounts(List<ModuleAccountInfoDTO> accounts) {
+        this.accounts = accounts;
+    }
+
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+    }
+
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public List<SystemMenuDTO> getMenus() {
+        return menus;
+    }
+
+    public SystemUserModuleDTO setMenus(List<SystemMenuDTO> menus) {
+        this.menus = menus;
+        return this;
     }
 }
