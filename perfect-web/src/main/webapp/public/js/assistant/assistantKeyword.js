@@ -241,7 +241,7 @@ function keywordDataToHtml(obj, index) {
         html = html + "<td class='table_add'><input type='checkbox'   name='keywordCheck' value='" + obj.object.keywordId + "' /><span class='" + TableStatus + "' step='" + obj.object.localStatus + "'></span></td>";
     } else {
         var replaceText = $("input[name='replaceText']").val();
-        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td class='table_add'><input type='checkbox' class='fl' style='margin-top:9px;' name='keywordCheck' value='" + obj.object.keywordId + "' />&nbsp;</td>";
+        var ls = replaceText ? "<td>" + getLocalStatus(2) + "</td>" : "<td class='table_add'><input type='checkbox' class='fl' style='margin-top:9px;' name='keywordCheck' value='" + obj.object.keywordId + "' /></td>";
         html = html + ls;
     }
     /*   if(obj.object.localStatus != -1){*/
@@ -770,6 +770,13 @@ function deleteKwd() {
 function missBlur(even, obj) {
     if (even.keyCode == 13) {
         obj.blur();
+    }
+    var _val=$(obj).val();
+    $(obj).next("span").html(""+_val.length+"/1024");
+    if(_val.length>1024){
+        $(obj).next("span").attr("style","color:red");
+    }else{
+        $(obj).next("span").attr("style","");
     }
 }
 

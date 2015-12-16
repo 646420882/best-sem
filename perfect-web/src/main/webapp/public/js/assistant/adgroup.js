@@ -17,19 +17,19 @@ var sp = null;
 var nn = null;
 var ne = null;
 var aAdd = {
-        text: "添加单元",
+        text: "添加",
         img: "../public/img/zs_function1.png",
         func: function () {
             addAdgroup();
         }
     }, aDel = {
-        text: "删除单元",
+        text: "删除",
         img: "../public/img/zs_function2.png",
         func: function () {
             adgroupDel();
         }
     }, aUpdate = {
-        text: "修改单元",
+        text: "编辑",
         img: "../public/img/zs_function4.png",
         func: function () {
             adgroupUpdate();
@@ -230,10 +230,11 @@ function loadAdgroupData(page_index) {
                     var ne = json[i].exactNegativeWords != null ? json[i].exactNegativeWords : "";
                     var _edit = json[i].localStatus != null ? json[i].localStatus : -2;
                     var _ls = getLocalStatus(parseInt(_edit));
-                    var _tbody = "<tr class=" + _trClass + " onclick=aon(this)>" +
-                        "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/><input type='hidden' name='cid' value='" + _id+ "'/>" + _ls + "</td>" +
+                    var _del = _edit == 3 || _edit == 4 ? "del" : "";
+                    var _tbody = "<tr class='" + _trClass + " "+_del+"' onclick='aon(this)'>" +
+                        "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + _id + "' onchange='adgroupListCheck()'/><input type='hidden' name='cid' value='" + _id + "'/>" + _ls + "</td>" +
                         "<td >" + json[i].adgroupName + "</td>" +
-                        "<td >" + until.getAdgroupStatus(json[i].status) + "</td>" +
+                        "<td >" + until.getAdgroupStatus(json[i].status) + "<input type='hidden' value='"+json[i].status+"'/></td>" +
                         "<td >" + until.convert(json[i].pause, "启用:暂停") + "</td>" +
                         " <td class='InputTd'>" + "<span>" + parseFloat(_maxPrice).toFixed(2) + "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>" +
                         "<td ><input type='hidden' value='" + nn + "'><input type='hidden' value='" + ne + "'>" + getNoAdgroupLabel(nn, ne) + "</td>" +
@@ -310,7 +311,7 @@ function aon(ts) {
     }
     var data = {};
     data[0] = _this.find("td:eq(1)").html();
-    data[1] = _this.find("td:eq(4) span:eq(0)").html()?_this.find("td:eq(4) span:eq(0)").html():_this.find("td:eq(4) input").val();
+    data[1] = _this.find("td:eq(4) span:eq(0)").html() ? _this.find("td:eq(4) span:eq(0)").html() : _this.find("td:eq(4) input").val();
     data[2] = _this.find("td:eq(5)").html();
     var status = _this.find("td:eq(2)").html();
     var pause = _this.find("td:eq(3)").html();
@@ -411,8 +412,14 @@ function adgroupDel() {
         if (con) {
             $.get("../assistantAdgroup/del", {oid: oid}, function (rs) {
                 if (rs == "1") {
-                    loadTree();
-                    $(atmp).find("td:eq(0)").find("span").attr("step", 3).attr("class", "table_delete");
+                    if (oid.length < 18) {
+                        $(atmp).addClass("del");
+                        $(atmp).find("td:eq(0)").append("<span class='table_delete' step='3'></span>")
+                    } else {
+                        loadTree();
+                        $(atmp).addClass("del");
+                        $(atmp).find("td:eq(0) span").attr("step", 3)
+                    }
                 }
             });
         }
@@ -441,16 +448,18 @@ function adgroupUpdate() {
         $("#adgroupUpdateForm input").empty();
         var oid = _tr.find("td:eq(0) input[type='checkbox']").val();
         var name = _tr.find("td:eq(1)").html();
-        var status = _tr.find("td:eq(2) input").val();
+        var status = _tr.find("td:eq(2) ").html();
+        var status_val= _tr.find("td:eq(2) input").val();
         var pause = _tr.find("td:eq(3)").html();
-        var maxPrice = _tr.find("td:eq(4) span:eq(0)").html()?_tr.find("td:eq(4) span:eq(0)").html():_tr.find("td:eq(4)").html();
+        var maxPrice = _tr.find("td:eq(4) span:eq(0)").html() ? _tr.find("td:eq(4) span:eq(0)").html() : _tr.find("td:eq(4)").html();
         var sp = _tr.find("td:eq(5) span").html();
         var nn = _tr.find("td:eq(5) input").val();
         var ne = _tr.find("td:eq(5) input:eq(1)").val();
         var cn = _tr.find("td:eq(6)").html();
         $("#adgroupUpdateForm input[name='oid']").val(oid);
         $("#adgroupUpdateForm input[name='adgroupName']").val(name);
-        $("#adStatus").html(adgroupConvertStatus(parseInt(status)));
+        $("#adgroupUpdateForm input[name='status']").val(status_val);
+        $("#adStatus").html(status);
         $("#auSpan").html(sp);
         if (pause == "启用") {
             $("#adgroupUpdateForm select[name='pause']").get(0).selectedIndex = 0;
@@ -710,7 +719,7 @@ function adrgoupUpdateOk() {
                 var _tbody =
                     "<td class='table_add'><input type='checkbox' name='adgroupCheck' value='" + formData["oid"] + "' onchange='adgroupListCheck()'/><input type='hidden' name='cid' value='" + formData["oid"] + "'/>" + _edit + "</td>" +
                     "<td>" + formData["adgroupName"] + "</td>" +
-                    "<td>" + adgroupConvertStatus(formData["status"]) + "</td>" +
+                    "<td>" + adgroupConvertStatus(parseInt(formData["status"])) + "</td>" +
                     " <td>" + getAdgroupPauseByBoolean(formData["pause"]) + "</td>" +
                     "<td class='InputTd'>" + "<span>" + parseFloat(formData["maxPrice"]).toFixed(2) + "</span>" + "<span  id='InputImg' onclick='InputPrice(this)'><img  src='../public/img/zs_table_input.png'></span>" + "</td>" +
                     "<td><span>" + _span + "</span><input type='hidden' value='" + formData["negativeWords"] + "'><input type='hidden' value='" + formData["exactNegativeWords"] + "'></td>" +
@@ -833,7 +842,8 @@ function agReBack(oid) {
 function agDelReBack(oid) {
     $.get("../assistantAdgroup/agDelBack", {oid: oid}, function (rs) {
         if (rs == "1") {
-            $(atmp).find("td:eq(8)").html(" ");
+            $(atmp).removeClass("del");
+            $(atmp).find("td:eq(0) span").remove();
         }
     });
 }
@@ -877,7 +887,7 @@ function adgroupUpload() {
                     break;
                 case "2":
                     if (oid.length < 18 && oid != undefined) {
-                        adgroupUploadOperate(oid, 2,function(){
+                        adgroupUploadOperate(oid, 2, function () {
                             $(atmp).find("td:first span").remove();
                         });
                     }
@@ -897,7 +907,7 @@ function adgroupUpload() {
         return;
     }
 }
-function adgroupUploadOperate(aid, ls,func) {
+function adgroupUploadOperate(aid, ls, func) {
     $.get("/assistantAdgroup/uploadOperate", {aid: aid, ls: ls}, function (str) {
         if (str.msg == "1") {
             //alert("上传成功");
@@ -906,7 +916,7 @@ function adgroupUploadOperate(aid, ls,func) {
                 getAdgroupPlan(plans.cid, plans.cn);
                 loadTree();
             }
-            if(func){
+            if (func) {
                 func();
             }
         } else if (str.msg == "noUp") {

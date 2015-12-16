@@ -11,14 +11,6 @@ var $rootScope = {
 var commons = {
     foRShow: function (type, _this) {
         var exist_selected = jsonData;
-        //if (!tabMenu) {
-        //    if (!exist_selected.cid) {
-        //        //alert("请选择一个推广计划！");
-        //        AlertPrompt.show("请选择一个推广计划！");
-        //        return;
-        //    }
-        //}
-        //checkType
         var checkType = $("select[name='checkType']");
         checkType.empty();
         var opt = "<option value='0'>当前选中</option><option value='-1'>所有(全账户)</option>"
@@ -613,9 +605,13 @@ $.extend({
                         for (var i = 0; i < json.length; i++) {
                             var _id = json[i].creativeId != null ? json[i].creativeId : json[i].id;
                             var _edit = json[i].localStatus != null ? json[i].localStatus : -2;
+                            var _del = "";
+                            if (_edit == 3 || _edit == 4) {
+                                _del = "del";
+                            }
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                            var _tbody = "<tr class=" + _trClass + " onclick='on(this);''>" +
+                            var _tbody =  "<tr class='" + _trClass + " " + _del + "' onclick='on(this);'>"  +
                                 "<td class='table_add'>&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/><input type='hidden' value='" + _id + "'/>" + ls + "</td>" +
                                 "<td >" + until.substring(10, json[i].title) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description1) + "</td>" +
