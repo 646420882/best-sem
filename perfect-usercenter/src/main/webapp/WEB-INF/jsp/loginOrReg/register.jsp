@@ -15,6 +15,7 @@
     <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
     <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/login/login.css">--%>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/multiple-select.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/onlyLogin.css">
 </head>
 <body>
@@ -41,7 +42,7 @@
                                            onblur="if (value=='') {value='个人用户请填写姓名'}">--%>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="text" name="companyname" value="个人用户请填写姓名"
+                                            <input class="registeInput" type="text" name="companyname" value="个人用户请填写姓名"
                                                    onfocus="if(value=='个人用户请填写姓名') {value=''}"
                                                    onblur="if (value=='') {value='个人用户请填写姓名'}">
                                         </div>
@@ -54,7 +55,7 @@
 
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="text" name="username">
+                                            <input class="registeInput" type="text" name="username">
                                         </div>
                                     </div>
 
@@ -65,7 +66,7 @@
 
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="text" name="email"/>
+                                            <input class="registeInput" type="text" name="email"/>
                                         </div>
                                     </div>
                                     <span style="color: red" class="register_star">*</span>
@@ -74,7 +75,7 @@
                                     <label class="fl">密码：</label>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="password" name="password">
+                                            <input class="registeInput" type="password" name="password">
                                         </div>
                                     </div>
                                     <span style="color: red" class="register_star">*</span>
@@ -83,7 +84,7 @@
                                     <label class="fl">确认密码：</label>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="password" name="confirmPassword">
+                                            <input class="registeInput" type="password" name="confirmPassword">
                                         </div>
                                     </div>
                                     <span style="color: red" class="register_star">*</span>
@@ -92,7 +93,7 @@
                                     <label class="fl">通信地址：</label>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="text" name="mailinAddress">
+                                            <input class="registeInput" type="text" name="mailinAddress">
                                         </div>
                                     </div>
                                 </li>
@@ -100,7 +101,7 @@
                                     <label class="fl">联系人：</label>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="text" name="contacts">
+                                            <input class="registeInput" type="text" name="contacts">
                                         </div>
                                     </div>
                                 </li>
@@ -108,20 +109,18 @@
                                     <label class="fl">联系电话：</label>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="text" name="contactsPhone">
+                                            <input class="registeInput" type="text" name="contactsPhone">
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li id="openPlatformLi">
                                     <label class="fl">开通平台：</label>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <select>
-                                                <option>请选择开通平台</option>
+                                            <select id="openPlatform" multiple="multiple">
                                                 <option value="1">百思搜客</option>
                                                 <option value="2">百思慧眼</option>
                                             </select>
-                                            <%--<input type="text" name="opePlatform">--%>
                                         </div>
                                     </div>
                                     <span style="color: red" class="register_star">*</span>
@@ -131,7 +130,7 @@
                                     <div class="form-group has-feedback">
                                         <div>
 
-                                            <input type="text" name="phoenixNestUser">
+                                            <input class="registeInput" type="text" name="phoenixNestUser">
                                         </div>
                                     </div>
                                     <span style="color: red" class="register_star">*</span>
@@ -141,7 +140,7 @@
                                     <div class="form-group has-feedback">
                                         <div>
 
-                                            <input type="text" name="phoenixNestPassword">
+                                            <input class="registeInput" type="text" name="phoenixNestPassword">
                                         </div>
                                     </div>
                                     <span style="color: red" class="register_star">*</span>
@@ -150,7 +149,7 @@
                                     <label class="fl">网站URL地址：</label>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="text" name="urlAddress">
+                                            <input class="registeInput" type="text" name="urlAddress">
 
                                         </div>
                                     </div>
@@ -165,7 +164,7 @@
 
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input type="text" class="proving" id="input1" name="code_text">
+                                            <input type="text" class="proving registeInput" id="input1" name="code_text">
                                             <input type="text" onclick="createCode()" name="code" readonly="readonly"
                                                    id="checkCode" class="unchanged" style="width: 65px"/>
 
@@ -174,7 +173,7 @@
                                     <span style="color: red" class="register_star">*</span>
                                 </li>
                                 <li >
-                                    <input type="submit" id="" style="width: 100%" value="立即注册" class="submit registeButton">
+                                    <input type="submit" value="立即注册" class="submit registeButton">
                                 </li>
                             </ul>
                             <%--<div class="login_part2" style="margin-top:20px;">
@@ -199,6 +198,7 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/public/bootstrapValidator.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/public/jquery.multiple.select.js"></script>
 <script type="text/javascript">
     /*$(window).resize(function () {
         $('.login_box').css({
@@ -210,6 +210,12 @@
     //初始化函数
     $(window).resize();
     $(document).ready(function () {
+        $("#openPlatform").multipleSelect({
+            placeholder: "请选择开通平台",
+            selectAll: false,
+            minumimCountSelected: 20,
+            multiple: true
+        })
         createCode();
         $('#defaultForm').bootstrapValidator({
             message: '此值无效',
