@@ -32,24 +32,9 @@
                             <p>您可以在这里设置密保主手机和子手机，密保手机能够完成登录时的二次校验，提升账户安全等级，同时可以用来找回密码和接收相关安全提醒信息。</p>
 
                             <div class="panel_safe fl ">
-                                <div class="fl">已绑定号码：15040****11<span>解绑</span><span>修改</span></div>
-                                <button type="button" class="btn btn-primary fr" data-toggle="modal"
+                                <div class="fl hide">已绑定号码：15040****11<span>解绑</span><span>修改</span></div>
+                                <button type="button" class="btn btn-primary fl" data-toggle="modal"
                                         data-target="#phoneModal">设置密保手机
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><span aria-hidden="true" ng-class="icon"
-                                                         class="glyphicon glyphicon-lock"></span>密保问题
-                        </div>
-                        <div class="panel-body">
-                            <p>设定1个您自己才知道的问题。以便找回密码或验证时使用。</p>
-
-                            <div class="panel_safe fl ">
-                                <div class="fl">已绑定问题：我的名字<span>解绑</span><span>修改</span></div>
-                                <button type="button" class="btn btn-primary fr" data-toggle="modal"
-                                        data-target="#questionModal">设置密保问题
                                 </button>
                             </div>
                         </div>
@@ -62,8 +47,8 @@
                             <p>与电子邮箱绑定，不但能在找回密码时使用，还能方便获取相关安全提醒信息。</p>
 
                             <div class="panel_safe fl ">
-                                <div class="fl">已绑定邮箱：<span>解绑</span><span>修改</span></div>
-                                <button type="button" class="btn btn-primary fr" data-toggle="modal"
+                                <div class="fl hide">已绑定邮箱：<span>解绑</span><span>修改</span></div>
+                                <button type="button" class="btn btn-primary fl" data-toggle="modal"
                                         data-target="#emailModal">设置密保邮箱
                                 </button>
                             </div>
@@ -75,5 +60,6 @@
     </div>
 </div>
 <jsp:include page="../safe/safemodel.jsp"/>
+<script type="text/javascript" src="/public/js/safetool/safetool.js"></script>
 </body>
 </html>

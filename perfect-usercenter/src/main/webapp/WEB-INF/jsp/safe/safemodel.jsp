@@ -16,14 +16,14 @@
                 <h4 class="modal-title">设置密保手机</h4>
             </div>
             <div class="modal-body">
-                <form class="">
+                <form id="phoneForm">
                     <div class="form-group">
-                        <input type="text" class="form-control" style=" max-width:340px;" placeholder="请填写手机号码"
+                        <input type="text" class="form-control" name="phone" style=" max-width:340px;" placeholder="请填写手机号码"
                                name="username"/>
                     </div>
                     <div class="form-group form-inline">
-                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="6位验证码">
-                        <button type="submit" class="btn btn_large ">发送验证码</button>
+                        <input type="text" class="form-control"  name="code_text" id="exampleInputAmount" placeholder="6位验证码">
+                        <button type="button" class="btn btn_large ">发送验证码</button>
                     </div>
                 </form>
                 <p>无法及时获取验证码？是否以下情况</p>

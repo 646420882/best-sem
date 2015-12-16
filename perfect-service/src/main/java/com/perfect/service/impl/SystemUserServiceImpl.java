@@ -12,12 +12,15 @@ import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dao.keyword.KeywordDAO;
+import com.perfect.dao.sys.SystemLogDAO;
+import com.perfect.dao.sys.SystemModuleDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.service.SystemUserService;
@@ -59,6 +62,12 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Resource
     private CreativeDAO creativeDAO;
+
+    @Resource
+    private SystemModuleDAO systemModuleDAO;
+
+    @Resource
+    private SystemLogDAO systemLogDAO;
 
     @Override
     public void initAccount(String userName, Long accountId) {
@@ -628,11 +637,83 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public List<SystemUserModuleDTO> getUserModules(String name) {
-        return systemUserDAO.getUserModules(name);
+        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDAO.getUserModules(name);
+
+        if (systemUserModuleDTOs == null || systemUserModuleDTOs.isEmpty()) {
+            return systemUserModuleDTOs;
+        }
+
+        systemUserModuleDTOs.removeIf((dto) -> !systemModuleDAO.exists(dto.getModuleId()));
+
+        systemUserModuleDTOs.forEach((dto) -> {
+            SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(dto.getModuleId());
+            if (systemModuleDTO == null) {
+                return;
+            }
+            dto.setModuleName(systemModuleDTO.getModuleName());
+            dto.setModuleUrl(systemModuleDTO.getModuleUrl());
+        });
+        return systemUserModuleDTOs;
     }
 
     @Override
     public boolean updateModuleMenus(String id, String modulename, String[] menus) {
         return systemUserDAO.updateModuleMenus(id, modulename, menus);
+    }
+
+    @Override
+    public boolean addModule(String userid, String moduleId) {
+
+        SystemUserDTO systemUserDTO = systemUserDAO.findByUserId(userid);
+        if (systemUserDTO == null) {
+            return false;
+        }
+
+        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(moduleId);
+        if (systemModuleDTO == null) {
+            return false;
+        }
+
+        SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
+        systemUserModuleDTO.setModuleId(moduleId);
+//        systemUserModuleDTO.setModuleName(systemModuleDTO.getModuleName());
+//        systemUserModuleDTO.setModuleUrl(systemModuleDTO.getModuleUrl());
+
+        systemUserModuleDTO.setIsPayed(false);
+        systemUserModuleDTO.setEnabled(true);
+//        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDTO.getModuleDTOList();
+//
+//        if (systemUserModuleDTOs == null || systemUserModuleDTOs.isEmpty()) {
+//            systemUserDTO.setModuleDTOList(Lists.newArrayList(systemUserModuleDTO));
+//        } else {
+//            systemUserModuleDTOs.removeIf((dto) -> dto.getModuleName().equals(systemModuleDTO.getModuleName()));
+//            systemUserModuleDTOs.add(systemUserModuleDTO);
+//        }
+
+        boolean success = systemUserDAO.saveUserModule(userid, systemUserModuleDTO);
+        if (success) {
+            systemLogDAO.log("用户:" + systemUserDTO.getUserName() + " 新增系统模块:" + systemModuleDTO.getModuleName());
+        }
+
+        return success;
+    }
+
+    @Override
+    public boolean deleteModule(String userid, String moduleId) {
+        SystemUserDTO systemUserDTO = systemUserDAO.findByUserId(userid);
+        if (systemUserDTO == null) {
+            return false;
+        }
+
+        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(moduleId);
+        if (systemModuleDTO == null) {
+            return false;
+        }
+
+        boolean success = systemUserDAO.deleteModule(userid, moduleId);
+        if (success) {
+            systemLogDAO.log("用户:" + systemUserDTO.getUserName() + " 删除系统模块:" + systemModuleDTO.getModuleName());
+        }
+        return success;
     }
 }

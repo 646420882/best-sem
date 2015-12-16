@@ -77,4 +77,8 @@ public interface SystemUserService {
     List<SystemUserModuleDTO> getUserModules(String id);
 
     boolean updateModuleMenus(String id, String modulename, String[] menus);
+
+    boolean addModule(String userid, String moduleId);
+
+    boolean deleteModule(String userid, String moduleId);
 }

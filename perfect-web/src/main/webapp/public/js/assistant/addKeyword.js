@@ -259,7 +259,6 @@ function addKeywordInitCampSelect() {
             $("#adgroup_selectNew").empty();
             $("#adgroup_selectNew").append("<option value=''>请选择推广计划</option>");
             if (jsonData.cid != undefined && jsonData.cid != null) {
-                console.log(jsonData)
                 changeAdgroup(jsonData.cid);
             }
         }

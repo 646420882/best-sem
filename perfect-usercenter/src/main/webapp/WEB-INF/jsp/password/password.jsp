@@ -30,26 +30,26 @@
                 </div>
                 <div class="user_content password_box">
                     <div class="password_box_title"><b>登录密码修改</b><span>新密码至少6位，包括数字、大小写英文字母</span></div>
-                    <form class="form-inline">
+                    <form class="form-inline" id="defaultForm">
                         <div class="form-group col-xs-12 ">
-                            <div class="input-group">
+                            <div class="input-group" >
                                 <div class="input-group-addon"><span aria-hidden="true" ng-class="icon"
                                                                      class="glyphicon glyphicon-lock"></span></div>
-                                <input type="text" class="form-control" placeholder="请输入旧密码">
+                                <input type="text" name="password" class="form-control" placeholder="请输入旧密码">
                             </div>
                         </div>
                         <div class="form-group col-xs-12">
                             <div class="input-group">
                                 <div class="input-group-addon"><span aria-hidden="true" ng-class="icon"
                                                                      class="glyphicon glyphicon-lock"></span></div>
-                                <input type="text" class="form-control" placeholder="请输入新密码">
+                                <input type="text" name="NewPassword" class="form-control" placeholder="请输入新密码">
                             </div>
                         </div>
                         <div class="form-group col-xs-12">
                             <div class="input-group">
                                 <div class="input-group-addon"><span aria-hidden="true" ng-class="icon"
                                                                      class="glyphicon glyphicon-lock"></span></div>
-                                <input type="text" class="form-control" placeholder="请再次输入新密码">
+                                <input type="text" name="confirmPassword" class="form-control" placeholder="请再次输入新密码">
                             </div>
                         </div>
                     </form>
@@ -59,6 +59,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/public/js/password/password.js"></script>
 </body>
 </html>
 

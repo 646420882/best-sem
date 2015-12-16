@@ -52,4 +52,7 @@ public class JsonResultMaps {
     }
 
 
+    public static Map<String, Object> failedMap() {
+        return map(-1);
+    }
 }

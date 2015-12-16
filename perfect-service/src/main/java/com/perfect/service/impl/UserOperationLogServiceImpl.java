@@ -71,7 +71,8 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 .setName(newWord.getKeyword())
                 .setType(UserOperationTypeEnum.ADD_KEYWORD.getValue())
                 .setAfter(newWord.getKeyword())
-                .setName(UserOperationLogProperty.NAME);
+                .setName(newWord.getKeyword());
+        fillLayout(builder.build());
         getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
         return builder.build();
     }
@@ -104,6 +105,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
             builder.setType(UserOperationTypeEnum.DEL_KEYWORD.getValue())
                     .setOid(newWord.getKeywordId())
                     .setName(newWord.getKeyword());
+            fillLayout(builder.build());
             getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
             return builder.build();
         }
@@ -152,6 +154,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 .setType(UserOperationTypeEnum.ADD_CAMPAIGN.getValue())
                 .setCampaignName(campaignType.getCampaignName())
                 .setAfter(campaignType.getCampaignName());
+        fillLayout(builder.build());
         return builder.build();
     }
 
@@ -170,6 +173,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                     .setCampaignId(campaignType.getCampaignId())
                     .setCampaignName(campaignType.getCampaignName())
                     .setBefore(campaignType.getCampaignName());
+            fillLayout(builder.build());
             return builder.build();
         }
         return null;
@@ -199,12 +203,26 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         List<UserOperationLogDTO> logs = Lists.newArrayList();
         if (baiduType != null && newCampaign != null) {
             StringBuilder newSbSc = new StringBuilder();
-            for (int i = 0; i < baiduType.getSchedule().size(); i++) {
-                newSbSc.append(baiduType.getSchedule(i).toString());
+            if (baiduType.getSchedule() != null) {
+                for (int i = 0; i < baiduType.getSchedule().size(); i++) {
+                    if(baiduType.getSchedule(i)!=null){
+                        ScheduleType scheduleTypes=baiduType.getSchedule(i);
+                        String _tempText="["+scheduleTypes.getWeekDay()+"]["+scheduleTypes.getStartHour()+"]["+scheduleTypes.getEndHour()+"]";
+                        newSbSc.append(_tempText);
+                    }
+                }
             }
             StringBuilder oldSbSc = new StringBuilder();
-            for (int i = 0; i < newCampaign.getSchedule().size(); i++) {
-                oldSbSc.append(newCampaign.getSchedule(i).toString());
+            if (newCampaign.getSchedule() != null) {
+                if (newCampaign.getSchedule() != null) {
+                    for (int i = 0; i < newCampaign.getSchedule().size(); i++) {
+                        if(newCampaign.getSchedule(i)!=null){
+                            ScheduleType scheduleTypes=newCampaign.getSchedule(i);
+                            String _tempText="["+scheduleTypes.getWeekDay()+"]["+scheduleTypes.getStartHour()+"]["+scheduleTypes.getEndHour()+"]";
+                            oldSbSc.append(_tempText);
+                        }
+                    }
+                }
             }
             if (!Objects.equals(baiduType.getCampaignName(), newCampaign.getCampaignName())) {
                 logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.NAME, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getCampaignName(), baiduType.getCampaignName()));
@@ -214,48 +232,58 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
             }
             if (!Objects.equals(baiduType.getBudget(), newCampaign.getBudget())) {
 
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_BUDGET, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getBudget().toString(), baiduType.getBudget().toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_BUDGET, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getBudget().toString(), nullJudge(baiduType.getBudget()).toString()));
             }
             if (!Objects.equals(newSbSc.toString(), oldSbSc.toString())) {
                 logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_SCHEDULE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbSc.toString(), oldSbSc.toString()));
-
             }
             if (!Objects.equals(baiduType.getDevice(), newCampaign.getDevice())) {
                 logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.DEVICE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getDevice().toString(), baiduType.getDevice().toString()));
             }
-            if (!Objects.equals(baiduType.getExactNegativeWords().size(), newCampaign.getExactNegativeWords().size())) {
+            if (!Objects.equals(nullList(baiduType.getExactNegativeWords()).size(), nullList(newCampaign.getExactNegativeWords()).size())) {
                 StringBuilder oldSbWord = new StringBuilder();
                 StringBuilder newSbWord = new StringBuilder();
-                for (int i = 0; i < baiduType.getExactNegativeWords().size(); i++) {
-                    oldSbWord.append(baiduType.getExactNegativeWord(i));
+                if (baiduType.getExactNegativeWords() != null) {
+                    for (int i = 0; i < baiduType.getExactNegativeWords().size(); i++) {
+                        oldSbWord.append(baiduType.getExactNegativeWord(i));
+                    }
                 }
-                for (int i = 0; i < baiduType.getExactNegativeWords().size(); i++) {
-                    newSbWord.append(newCampaign.getExactNegativeWord(i));
+                if (newCampaign.getExactNegativeWords() != null) {
+                    for (int i = 0; i < newCampaign.getExactNegativeWords().size(); i++) {
+                        newSbWord.append(newCampaign.getExactNegativeWord(i));
+                    }
                 }
                 logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.EXA_WORD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbWord.toString(), oldSbWord.toString()));
             }
-            if (!Objects.equals(baiduType.getNegativeWords().size(), newCampaign.getNegativeWords().size())) {
+            if (!Objects.equals(nullList(baiduType.getNegativeWords()).size(), nullList(newCampaign.getNegativeWords()).size())) {
                 StringBuilder oldSbWord = new StringBuilder();
                 StringBuilder newSbWord = new StringBuilder();
-                for (int i = 0; i < baiduType.getNegativeWords().size(); i++) {
-                    oldSbWord.append(baiduType.getNegativeWord(i));
+                if (baiduType.getNegativeWords() != null) {
+                    for (int i = 0; i < baiduType.getNegativeWords().size(); i++) {
+                        oldSbWord.append(baiduType.getNegativeWord(i));
+                    }
                 }
-                for (int i = 0; i < baiduType.getNegativeWords().size(); i++) {
-                    newSbWord.append(newCampaign.getNegativeWord(i));
+                if (newCampaign.getNegativeWords() != null) {
+                    for (int i = 0; i < newCampaign.getNegativeWords().size(); i++) {
+                        newSbWord.append(newCampaign.getNegativeWord(i));
+                    }
                 }
                 logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.NEG_WORD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbWord.toString(), oldSbWord.toString()));
             }
-            if (!Objects.equals(baiduType.getExcludeIp().size(), newCampaign.getExcludeIp())) {
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_EXCLUDEIP, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getExcludeIp().toString(), baiduType.getExcludeIp().toString()));
+            if (!Objects.equals(nullList(baiduType.getExcludeIp()).size(), nullList(newCampaign.getExcludeIp()).size())) {
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_EXCLUDEIP, UserOperationTypeEnum.MODIFY_CAMPAIGN, nullList(newCampaign.getExcludeIp()).toString(), nullJudge(baiduType.getExcludeIp()).toString()));
             }
             if (!Objects.equals(baiduType.getPriceRatio(), newCampaign.getPriceRatio())) {
                 logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.MIB_FACTOR, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getPriceRatio().toString(), baiduType.getPriceRatio().toString()));
             }
-            if (!Objects.equals(baiduType.getRegionTarget().size(), newCampaign.getRegionTarget().size())) {
+            if (!Objects.equals(nullList(baiduType.getRegionTarget()).size(), nullList(newCampaign.getRegionTarget()).size())) {
                 logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_REGION, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getRegionTarget().toString(), baiduType.getRegionTarget().toString()));
             }
+            if(!Objects.equals(baiduType.getShowProb(),newCampaign.getShowProb())){
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_SHOWPRO, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getShowProb(),baiduType.getShowProb()));
+            }
         }
-        return null;
+        return logs;
     }
 
     //----------------------------------单元------------------------------------------------
@@ -268,6 +296,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 .setName(adgroupType.getAdgroupName())
                 .setAdgroupName(adgroupType.getAdgroupName())
                 .setAfter(adgroupType.getAdgroupName());
+        fillLayout(builder.build());
         getCampInfoByLongId(adgroupType.getCampaignId(), builder);
         return builder.build();
     }
@@ -284,6 +313,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                     .setOid(adgroupType.getAdgroupId())
                     .setName(adgroupType.getAdgroupName())
                     .setBefore(adgroupType.getAdgroupName());
+            fillLayout(builder.build());
             getCampInfoByLongId(adgroupType.getCampaignId(), builder);
             return builder.build();
         }
@@ -318,25 +348,33 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
             if (!Objects.equals(baiduType.getMaxPrice(), newAdgroup.getMaxPrice())) {
                 logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.PRICE, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getMaxPrice().toString(), baiduType.getMaxPrice().toString()));
             }
-            if (!Objects.equals(baiduType.getExactNegativeWords().size(), newAdgroup.getExactNegativeWords().size())) {
+            if (!Objects.equals(nullList(baiduType.getExactNegativeWords()).size(), nullList(newAdgroup.getExactNegativeWords()).size())) {
                 StringBuilder oldSb = new StringBuilder();
                 StringBuilder newSb = new StringBuilder();
-                for (int i = 0; i < baiduType.getExactNegativeWords().size(); i++) {
-                    oldSb.append(baiduType.getExactNegativeWord(i));
+                if (baiduType.getExactNegativeWords() != null) {
+                    for (int i = 0; i < baiduType.getExactNegativeWords().size(); i++) {
+                        oldSb.append(baiduType.getExactNegativeWord(i));
+                    }
                 }
-                for (int i = 0; i < baiduType.getExactNegativeWords().size(); i++) {
-                    newSb.append(newAdgroup.getExactNegativeWord(i));
+                if (newAdgroup.getExactNegativeWords() != null) {
+                    for (int i = 0; i < newAdgroup.getExactNegativeWords().size(); i++) {
+                        newSb.append(newAdgroup.getExactNegativeWord(i));
+                    }
                 }
                 logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.EXA_WORD, UserOperationTypeEnum.MODIFY_ADGROUP, newSb.toString(), oldSb.toString()));
             }
-            if (!Objects.equals(baiduType.getNegativeWords().size(), newAdgroup.getNegativeWords().size())) {
+            if (!Objects.equals(nullList(baiduType.getNegativeWords()).size(), nullList(newAdgroup.getNegativeWords()).size())) {
                 StringBuilder oldSb = new StringBuilder();
                 StringBuilder newSb = new StringBuilder();
-                for (int i = 0; i < baiduType.getNegativeWords().size(); i++) {
-                    oldSb.append(baiduType.getNegativeWord(i));
+                if (baiduType.getNegativeWords() != null) {
+                    for (int i = 0; i < baiduType.getNegativeWords().size(); i++) {
+                        oldSb.append(baiduType.getNegativeWord(i));
+                    }
                 }
-                for (int i = 0; i < baiduType.getNegativeWords().size(); i++) {
-                    newSb.append(newAdgroup.getNegativeWord(i));
+                if (newAdgroup.getNegativeWords() != null) {
+                    for (int i = 0; i < newAdgroup.getNegativeWords().size(); i++) {
+                        newSb.append(newAdgroup.getNegativeWord(i));
+                    }
                 }
                 logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.NEG_WORD, UserOperationTypeEnum.MODIFY_ADGROUP, newSb.toString(), oldSb.toString()));
             }
@@ -353,7 +391,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 //                return updateAdgroup(newAdgroup,newAdgroup.getAccuPriceFactor().toString(),baiduType.getAccuPriceFactor().toString(),UserOperationLogProperty.MIB_FACTOR,AdGroupEnum.mobilePriceFactor);
 //            }
         }
-        return null;
+        return logs;
     }
 
     //-----------------------------------------创意-----------------------------------------------
@@ -364,6 +402,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 .setOid(creativeType.getCreativeId())
                 .setName(creativeType.getTitle())
                 .setAfter(creativeType.getTitle());
+        fillLayout(builder.build());
         getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
         return builder.build();
     }
@@ -380,6 +419,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                     .setOid(creativeType.getCreativeId())
                     .setName(creativeType.getTitle())
                     .setBefore(creativeType.getTitle());
+            fillLayout(builder.build());
             getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
             return builder.build();
         }
@@ -420,17 +460,17 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
             if (!baiduType.getDescription2().equals(newCreative.getDescription2())) {
                 logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CREATIVE_DESC2, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDescription2(), baiduType.getDescription2()));
             }
-            if (!baiduType.getPcDestinationUrl().equals(newCreative.getPcDestinationUrl())) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PC_DES_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getPcDestinationUrl(), baiduType.getPcDestinationUrl()));
+            if (!nullJudge(baiduType.getPcDestinationUrl()).equals(nullJudge(newCreative.getPcDestinationUrl()))) {
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PC_DES_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getPcDestinationUrl()), nullJudge(baiduType.getPcDestinationUrl())));
             }
-            if (!baiduType.getPcDisplayUrl().equals(newCreative.getPcDisplayUrl())) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PC_DIS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getPcDisplayUrl(), baiduType.getPcDisplayUrl()));
+            if (!nullJudge(baiduType.getPcDisplayUrl()).equals(nullJudge(newCreative.getPcDisplayUrl()))) {
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PC_DIS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getPcDisplayUrl()), nullJudge(baiduType.getPcDisplayUrl())));
             }
-            if (!baiduType.getMobileDestinationUrl().equals(newCreative.getMobileDestinationUrl())) {
+            if (!nullJudge(baiduType.getMobileDestinationUrl()).equals(nullJudge(newCreative.getMobileDestinationUrl()))) {
                 logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MIB_DES_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl()));
             }
-            if (!baiduType.getMobileDisplayUrl().equals(newCreative.getMobileDisplayUrl())) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MIB_DIS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getMobileDisplayUrl(), baiduType.getMobileDisplayUrl()));
+            if (!nullJudge(baiduType.getMobileDisplayUrl()).equals(nullJudge(newCreative.getMobileDisplayUrl()))) {
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MIB_DIS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getMobileDisplayUrl()), nullJudge(baiduType.getMobileDisplayUrl())));
             }
             if (baiduType.getPause() != newCreative.getPause()) {
                 logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getPause().toString(), baiduType.getPause().toString()));
@@ -438,7 +478,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
             if (baiduType.getDevicePreference() != newCreative.getDevicePreference()) {
                 logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.DEVICE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDevicePreference().toString(), baiduType.getDevicePreference().toString()));
             }
-            if (baiduType.getAdgroupId() != newCreative.getAdgroupId()) {
+            if (baiduType.getAdgroupId().equals(newCreative.getAdgroupId())) {
                 AdgroupDTO newAdgroup = adgroupDAO.findOne(newCreative.getAdgroupId());
                 AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
                 logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MOVE_ADGROUP, UserOperationTypeEnum.MODIFY_CREATIVE, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName()));
@@ -508,9 +548,9 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         fillLayout(userOperationTypeEnum, oldVal, newVal, userOperationLogDTO);
         switch (level) {
             case CAMPAIGN:
-                CampaignDTO campaignDTO = (CampaignDTO) object;
-                userOperationLogDTO.setCampgainId(campaignDTO.getCampaignId());
-                userOperationLogDTO.setCampaignName(campaignDTO.getCampaignName());
+                CampaignType campaignType = (CampaignType) object;
+                userOperationLogDTO.setCampgainId(campaignType.getCampaignId());
+                userOperationLogDTO.setCampaignName(campaignType.getCampaignName());
                 break;
             default:
                 AdgroupDTO adgroupDTO = fillAdgroupInfo(object, userOperationLogDTO);
@@ -732,15 +772,27 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     private String nullJudge(Object obj) {
         if (obj == null) {
-            return "空";
+            return VALUE_EMPTY;
         } else {
             obj = obj.toString().replaceAll(" ", "");
             if (obj.toString().equals("")) {
-                return "空";
+                return VALUE_EMPTY;
             } else {
                 return obj.toString();
             }
         }
+    }
+
+    private List<Object> nullList(Object obj) {
+        List<Object> o = Lists.newArrayList();
+        if (obj == null) {
+            return o;
+        } else {
+            if (obj instanceof List) {
+                return (List<Object>) obj;
+            }
+        }
+        return o;
     }
 
     private String getOperationType(UserOperationLogDTO userOperationLogDTO) {
@@ -819,6 +871,8 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 return UserOperationLogProperty.CAMPAIGN_EXCLUDEIP_CH;
             case UserOperationLogProperty.CAMPAIGN_REGION:
                 return UserOperationLogProperty.CAMPAIGN_REGION_CH;
+            case UserOperationLogProperty.CAMPAIGN_SHOWPRO:
+                return UserOperationLogProperty.CAMPAIGN_SHOWPRO_CH;
         }
         return null;
     }

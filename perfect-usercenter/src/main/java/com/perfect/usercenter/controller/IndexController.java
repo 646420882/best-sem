@@ -56,9 +56,10 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/userCenter/password", method = RequestMethod.GET)
-    public ModelAndView password() {
-        return new ModelAndView("/password/password");
-    }
+    public ModelAndView password() {    return new ModelAndView("/password/password"); }
+
+    @RequestMapping(value = "/userCenter/forget", method = RequestMethod.GET)
+    public ModelAndView forget() {    return new ModelAndView("/password/forget");  }
 
     @RequestMapping(value = "/userCenter/safetyTool", method = RequestMethod.GET)
     public ModelAndView safetyTool() {

@@ -9,23 +9,26 @@ import java.util.List;
  */
 public class SystemUserModuleEntity {
 
-    private String moduleName;
+    private String id;
 
-    private String moduleUrl;
+    private String moduleId;
+//    private String moduleName;
+//
+//    private String moduleUrl;
 
     private boolean isPayed;
 
-    private boolean isOpened;
+    private boolean enabled;
 
     private long startTime;
 
     private long endTime;
 
     @Field("menus")
-    private List<String> systemMenuInfoEntityList;
+    private List<SystemMenuEntity> menus;
 
     @Field("accounts")
-    private List<ModuleAccountInfoEntity> accountInfoEntityList;
+    private List<ModuleAccountInfoEntity> accounts;
 
     public long getStartTime() {
         return startTime;
@@ -43,21 +46,21 @@ public class SystemUserModuleEntity {
         this.endTime = endTime;
     }
 
-    public List<String> getSystemMenuInfoEntityList() {
-        return systemMenuInfoEntityList;
+    public List<SystemMenuEntity> getMenus() {
+        return menus;
     }
 
-    public void setSystemMenuInfoEntityList(List<String> systemMenuInfoEntityList) {
-        this.systemMenuInfoEntityList = systemMenuInfoEntityList;
+    public void setMenus(List<SystemMenuEntity> menus) {
+        this.menus = menus;
     }
 
-    public String getModuleName() {
-        return moduleName;
-    }
-
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
-    }
+//    public String getModuleName() {
+//        return moduleName;
+//    }
+//
+//    public void setModuleName(String moduleName) {
+//        this.moduleName = moduleName;
+//    }
 
     public boolean isPayed() {
         return isPayed;
@@ -67,19 +70,38 @@ public class SystemUserModuleEntity {
         this.isPayed = isPayed;
     }
 
-    public boolean isOpened() {
-        return isOpened;
+
+//    public String getModuleUrl() {
+//        return moduleUrl;
+//    }
+//
+//    public void setModuleUrl(String moduleUrl) {
+//        this.moduleUrl = moduleUrl;
+//    }
+
+    public String getId() {
+        return id;
     }
 
-    public void setIsOpened(boolean isOpened) {
-        this.isOpened = isOpened;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getModuleUrl() {
-        return moduleUrl;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setModuleUrl(String moduleUrl) {
-        this.moduleUrl = moduleUrl;
+    public SystemUserModuleEntity setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public SystemUserModuleEntity setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+        return this;
     }
 }

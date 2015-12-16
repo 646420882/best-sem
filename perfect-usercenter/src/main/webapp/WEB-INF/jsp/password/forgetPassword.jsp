@@ -1,14 +1,14 @@
 <%--
   Created by IntelliJ IDEA.
-  User: yousheng
-  Date: 15/12/15
-  Time: 下午12:42
+  User: 文楷
+  Date: 2015/12/16
+  Time: 11:45
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>login</title>
+    <title></title>
 </head>
 <body>
 
