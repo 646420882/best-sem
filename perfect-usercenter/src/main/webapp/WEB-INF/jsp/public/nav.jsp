@@ -8,13 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="menu">
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="panel totalNav panel-default current">
-            <div class="panel-heading" role="tab" id="headingOne">
+        <div class="panel totalNav  panel-default">
+            <div class="panel-heading" role="tab">
                 <h4 class="panel-title">
-                    <a role="button" data-parent="#accordion" href="/"
-                       aria-expanded="true" aria-controls="collapseOne">
-                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-th-large"></span>
-                        账户概览
+                    <a class="collapsed" role="button" data-parent="#accordion"
+                       href="${pageContext.request.contextPath}/userCenter/index" aria-expanded="false"
+                       aria-controls="collapseTwo">
+                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-wrench"></span> 账户概览
                     </a>
                 </h4>
             </div>

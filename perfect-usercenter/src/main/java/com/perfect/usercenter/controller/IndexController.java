@@ -28,7 +28,7 @@ public class IndexController {
         return new ModelAndView("/bestPage/bestIndex");
     }
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/userCenter/index", method = RequestMethod.GET)
     public ModelAndView index() {
         return new ModelAndView("/index");
     }

@@ -33,7 +33,7 @@
     </div>
     <div class="servicesBox">
         <div class="time over">
-            <b id="time" class="fl"></b><a href="/index"><span class="fl">${user.userName}</span></a>
+            <b id="time" class="fl"></b><a href="/userCenter/index"><span class="fl">${user.userName}</span></a>
 
             <form class="fl" name="logout" method="POST" action="/logout">
                 <input type="submit" value="| 退出"

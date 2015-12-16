@@ -33,7 +33,7 @@
                 </div>
                 <div class="login_part1 ">
                     <div class="login_input2">
-                        <form id="defaultForm" method="post" class="form-horizontal" action="/register/add">
+                        <form id="defaultForm" method="post" class="form-horizontal" action="/userCenter/add">
                             <ul>
                                 <li>
                                     <label class="fl">公司名称：</label>
@@ -42,7 +42,7 @@
                                            onblur="if (value=='') {value='个人用户请填写姓名'}">--%>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <input class="registeInput" type="text" name="companyname" value="个人用户请填写姓名"
+                                            <input class="registeInput" type="text" name="companyname" placeholder="个人用户请填写姓名"
                                                    onfocus="if(value=='个人用户请填写姓名') {value=''}"
                                                    onblur="if (value=='') {value='个人用户请填写姓名'}">
                                         </div>
@@ -117,7 +117,7 @@
                                     <label class="fl">开通平台：</label>
                                     <div class="form-group has-feedback">
                                         <div>
-                                            <select id="openPlatform" multiple="multiple">
+                                            <select id="openPlatform" multiple="multiple" name="openPlatform">
                                                 <option value="1">百思搜客</option>
                                                 <option value="2">百思慧眼</option>
                                             </select>
@@ -156,8 +156,8 @@
                                     <span style="color: red" class="register_star">*</span>
                                 </li>
                                 <li style="margin-left: 115px;">
-                                    <input name="accountType" checked type="radio" id="freeAccount" class="accountType"><label for="freeAccount" class="accountType" style="margin-right: 15px;">试用账户</label>
-                                    <input type="radio" name="accountType" id="payAccount" class="accountType"><label for="payAccount" class="accountType">付费账户</label>
+                                    <input name="accountType" checked type="radio" id="freeAccount" class="accountType" value="1"><label for="freeAccount" class="accountType" style="margin-right: 15px;">试用账户</label>
+                                    <input type="radio" name="accountType" id="payAccount" class="accountType" value="2"><label for="payAccount" class="accountType">付费账户</label>
                                 </li>
                                 <li>
                                     <label class="fl">验证码：</label>
@@ -348,7 +348,7 @@
     });
     if ($("#dataRe").val() == 1) {
         $("#tishi").append("注册成功！                ");
-        if(confirm('注册成功！点击按钮继续操作')){ location.href="/login"}else{ location.href="/login"}
+        if(confirm('注册成功！点击按钮继续操作')){ location.href="/"}else{ location.href="/"}
     } else if ($("#dataRe").val() == -1) {
         $("#tishi").append("注册失败！用户名已存在！   ");
     }
