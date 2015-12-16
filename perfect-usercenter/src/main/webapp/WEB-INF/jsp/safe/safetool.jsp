@@ -41,21 +41,6 @@
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading"><span aria-hidden="true" ng-class="icon"
-                                                         class="glyphicon glyphicon-lock"></span>密保问题
-                        </div>
-                        <div class="panel-body">
-                            <p>设定1个您自己才知道的问题。以便找回密码或验证时使用。</p>
-
-                            <div class="panel_safe fl ">
-                                <div class="fl">已绑定问题：我的名字<span>解绑</span><span>修改</span></div>
-                                <button type="button" class="btn btn-primary fr" data-toggle="modal"
-                                        data-target="#questionModal">设置密保问题
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><span aria-hidden="true" ng-class="icon"
                                                          class="glyphicon glyphicon-lock"></span>密保邮箱
                         </div>
                         <div class="panel-body">

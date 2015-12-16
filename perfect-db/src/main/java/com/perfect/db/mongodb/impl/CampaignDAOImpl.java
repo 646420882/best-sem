@@ -78,9 +78,12 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
                 CampaignEntity.class,
                 TBL_CAMPAIGN);
 
-        CampaignDTO campaignDTO = new CampaignDTO();
-        BeanUtils.copyProperties(campaignEntity, campaignDTO);
-        return campaignDTO;
+        if (campaignEntity != null) {
+            CampaignDTO campaignDTO = new CampaignDTO();
+            BeanUtils.copyProperties(campaignEntity, campaignDTO);
+            return campaignDTO;
+        }
+        return null;
     }
 
 
@@ -404,10 +407,10 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
                     Long id = Long.parseLong(e);
                     //查询是否存在备份数据
                     boolean exists = getMongoTemplate().exists(new Query(Criteria.where(CAMPAIGN_ID).is(id)), CampaignBackUpEntity.class);
-                    if(exists){
+                    if (exists) {
                         //如果备份表里面存在当前数据则直接修改
                         getMongoTemplate().updateFirst(new Query(Criteria.where(CAMPAIGN_ID).is(id)), update, getEntityClass());
-                    }else{
+                    } else {
                         //查询创意需要备份的数据
                         CampaignEntity campaignEntity = getMongoTemplate().findOne(new Query(Criteria.where(CAMPAIGN_ID).is(id)), getEntityClass());
                         CampaignBackUpEntity campaignBackUpEntity = new CampaignBackUpEntity();
@@ -754,10 +757,10 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
         }
     }
 
-	@Override
-	public List<CampaignDTO> findAllDownloadCampaignByBaiduAccountId() {
-		 List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where("ls").is(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
-	        return ObjectUtils.convert(campaignEntityList, CampaignDTO.class);
-	}
+    @Override
+    public List<CampaignDTO> findAllDownloadCampaignByBaiduAccountId() {
+        List<CampaignEntity> campaignEntityList = getMongoTemplate().find(new Query(Criteria.where("ls").is(null).and(ACCOUNT_ID).is(AppContext.getAccountId())), getEntityClass());
+        return ObjectUtils.convert(campaignEntityList, CampaignDTO.class);
+    }
 
 }

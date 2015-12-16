@@ -1,0 +1,425 @@
+/*导航*/
+.hide{
+    display:none;
+}
+.container-fluid {
+    padding: 0px;
+    font-family: "微软雅黑";
+}
+
+.navbar {
+    position: fixed;
+    border-radius: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1020;
+    min-height: 60px;
+    line-height: 60px;
+    margin-bottom: 0px;
+}
+
+.logo {
+    display: block;
+    float: left;
+    padding: 0px 0 0 1em;
+    height: 60px;
+    line-height: 60px;
+}
+
+.navbar-collapse {
+    padding: 0px;
+}
+
+.top_menu ul li {
+    float: left;
+    display: block;
+    border-left: 1px solid #ededed;
+    font-size: 12px;
+    padding: 0 20px;
+    height: 60px;
+    vertical-align: middle;
+    color: #999c9e;
+}
+
+.navbar-nav > li > a, .navbar-nav > li > span {
+    padding: 0px;
+    display: block;
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    vertical-align: middle;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #999c9e;
+}
+
+.navbar-nav > li .glyphicon {
+    margin-right: 8px;
+    color: #999c9e;
+}
+
+/***nav**/
+.containers {
+    overflow: hidden;
+}
+
+.containers {
+    min-height: 100%;
+}
+
+.menu {
+    position: fixed;
+    top: 60px;
+    bottom: 0px;
+    z-index: 100;
+    float: left;
+    width: 155px;
+    margin-right: -100%;
+    background: #334e72;
+}
+
+.middle {
+    float: left;
+    width: 100%;
+    margin-top: 60px;
+}
+
+.middle_containers {
+    min-height: 100%;
+    padding-top: 62px;
+    margin-left: 155px;
+    position: relative;
+    font-family: "微软雅黑";
+}
+
+.menu .panel-heading a {
+    display: block;
+    width: 100%;
+    padding: 13px 12px;
+    color: #a7b1c2;
+}
+
+.menu .panel-group .panel.current {
+    background: none repeat scroll 0 0 #283f5b;
+    border-left: 4px solid #01aeef;
+}
+
+.menu .panel-group .panel.current a {
+    color: #fff;
+}
+
+.menu .panel-group .panel, .panel {
+    padding: 0px;
+    border-radius: 0px;
+    background: none;
+    border: none;
+    font-size: 12px;
+    box-shadow: none;
+
+}
+
+.btn-primary {
+    background-color: #01aef0;
+    border-color: #01aef0;
+}
+
+.btn {
+    padding: 4px 30px;
+}
+
+.btn.btn_large {
+    padding: 6px 30px;
+}
+
+.panel-title {
+    font-size: 12px;
+}
+
+.menu_list h4 {
+    margin: 0px;
+
+}
+
+.panel-heading {
+    cursor: pointer;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+.panel-default > .panel-heading {
+    background: none;
+}
+
+.panel-group .panel-heading + .panel-collapse > .list-group, .panel-group .panel-heading + .panel-collapse > .panel-body {
+    border: 0px;
+}
+
+.panel-body {
+    padding: 0px;
+}
+
+.panel-body ul li {
+    width: 100%;
+    padding: 0px 0 0 28px;
+    margin-bottom: 10px;
+}
+
+.panel-body a {
+    color: #a7b1c2;
+    cursor: pointer;
+}
+
+.panel-group .panel + .panel {
+    margin-top: 0px;
+}
+
+.panel-body .current a {
+    color: #fff;
+}
+
+.page_title {
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
+    background: #f0f0f0;
+    color: #a1a1a1;
+    padding: 0 20px;
+    font-size: 14px;
+    position: fixed;
+    z-index: 10;
+}
+
+.btn.btn-default {
+    padding: 1px 12px;
+    border: none;
+    background: #fdfdfd;
+}
+.user_content {
+    padding: 0 20px;
+}
+
+.user_content ul li {
+    font-size: 14px;
+    color: #5a5a5a;
+    margin-top: 34px;
+}
+
+.user_content ul li span {
+    width: 70px;
+    display: block;
+    float: left;
+    text-align: right;
+    margin-right: 15px;
+}
+
+.menu .panel-heading a .glyphicon {
+    margin-right: 10px;
+}
+
+.user_box {
+    padding-top: 38px;
+}
+
+.user_content .btn-primary {
+    padding: 4px 26px;
+    background: #01aef0;
+    border: none;
+    margin-top: 26px;
+}
+
+/*安全工具***/
+.safe_box {
+    max-width: 1002px;
+}
+
+.safe_box .panel-heading {
+    padding: 17px 0;
+    font-size: 18px;
+    color: #5a5a5a;
+}
+
+.safe_box .panel-heading .glyphicon {
+    color: #cbcbcb;
+    margin-right: 14px;
+}
+
+.safe_box .panel-body {
+    padding: 18px 0 18px 38px;
+    font-size: 14px;
+}
+
+.safe_box .panel-body p {
+    color: #858585;
+}
+
+.panel_safe {
+    color: #000000;
+    margin-top: 24px;
+    width: 100%;
+
+}
+
+.panel_safe span {
+    padding: 0 14px;
+    color: #01aef0;
+    cursor: pointer;
+}
+
+.safe_box .btn-primary {
+    margin-top: 0px;
+}
+
+.modal-body {
+    font-size: 14px;
+}
+
+.modal-body p {
+    color: #818181;
+    font-size: 12px;
+}
+
+.col-xs-2, .col-xs-10 {
+    padding: 0 5px;
+}
+
+.modal-footer {
+    border: none;
+}
+
+.modal-body form {
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.modal-body .form-group .col-xs-2 {
+    line-height: 34px;
+}
+
+.password_box .form-inline .form-group {
+    margin-bottom: 10px;
+
+}
+
+.password_box .input-group-addon {
+    background: #cbcbcb;
+    color: #fff;
+}
+
+.password_box .col-xs-12 {
+    padding-left: 0px;
+}
+
+.password_box_title {
+    font-size: 12px;
+    color: #a1a1a1;
+    padding: 25px 0;
+}
+
+.password_box_title b {
+    font-weight: normal;
+    font-size: 18px;
+    color: #5a5a5a;
+    margin-right: 17px;
+}
+
+.account_box h3 {
+    color: #01aeef;
+    font-size: 18px;
+    padding: 0 0 25px 0;
+    margin: 0px;
+
+}
+.account_box h3 span{
+    color:#5a5a5a;
+    font-size:12px;
+    padding-left:20px;
+}
+
+.account_box p {
+    color: #5a5a5a;
+    margin: 10px 0;
+}
+
+.account_box {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 25px;
+
+}
+.fixed-table-container thead th{
+    background: #f0f0f0;
+}
+.table>thead>tr>th{
+    border-bottom: none;
+}
+.bootstrap-table .table>thead>tr>th{
+    border-bottom: none;
+}
+.binding,.delete,.editor{
+    color:#01aef0;
+    margin-right:10px;
+    line-height:28px;
+    display:inline-block;
+    float:left;
+    width:30px;
+    text-align: center;
+}
+.binding{
+    display:block;
+    float:left;
+    width:52px;
+    text-align: center;
+}
+.preserve{
+    display:inline-block;
+    float:left;
+    margin-right:10px;
+
+}
+.user_content .preserve.btn-primary{
+    padding:4px 0px;
+    margin-top:0px;
+    width:52px;
+    text-align: center;
+}
+.modal_align{
+    display: table;
+    height: 100%;
+    margin: 0px auto
+}
+.modal-dialog{
+    margin-top:12%
+}
+.account_box .btn-default{
+    margin-top:0px;
+    padding:5px 30px;
+    background: #f0f0f0;
+}
+.account_box .btn-default:hover{
+    background: #01aeef;
+    color:#fff;
+}
+.account_box .btn-default span{
+    margin-right:10px;
+}
+/*用户管理**/
+.admin_title{
+    background: #f6f5f5;
+    height:37px;
+    line-height:37px;
+    border:1px solid #ffffff;
+    padding:0 20px;
+
+}
+.admin_title .select select{
+    min-width:140px;
+    height:28px;
+}
+.admin_title .dropdown-menu{
+   min-width:inherit;width:100%;
+
+}
+.admin_title .dropdown-menu>li>a{
+    padding: 2px 10px;
+}

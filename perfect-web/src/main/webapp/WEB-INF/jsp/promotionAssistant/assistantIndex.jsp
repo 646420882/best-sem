@@ -294,7 +294,7 @@
                                                                                                  onkeydown="missBlur(event,this)"
                                                                                                  class="zs_input1 pcurl_1 form-control"
                                                                                                  maxlength="1024"><span
-                                                                    class="pcurlSize_1">0/1024</span></div>
+                                                                    class="pcurlSize_1" >0/1024</span></div>
                                                         </li>
                                                         <li>
                                                             <div class="t_list01 fl over">移动访问URL：</div>

@@ -163,4 +163,11 @@ public class UserOperationLogProperty {
 
     public static final String CAMPAIGN_REGION_CH = "推广地域";
 
+    /**
+     * 创意展现方式
+     */
+    public static final String CAMPAIGN_SHOWPRO = "showPro";
+
+    public static final String CAMPAIGN_SHOWPRO_CH = "创意展现方式";
+
 }
