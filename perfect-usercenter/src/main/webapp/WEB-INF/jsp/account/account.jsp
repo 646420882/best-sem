@@ -25,10 +25,11 @@
             <div class="user_box" style="background: #f0f0f0">
                 <div class="user_content account_box over">
                     <h3>百思搜客绑定 <span>使用时间：2015-10.10至2016-12-12</span></h3>
-                    <table id="account_table" data-height="150">
+                    <table id="account_table" >
                         <thead>
                         <tr>
                             <th data-field="name">关联推广账户</th>
+                            <th data-field="remark ">备注名</th>
                             <th data-field="url">URL地址</th>
                             <th data-field="platform">账户所属平台</th>
                             <th data-field="time">绑定时间</th>
@@ -43,20 +44,20 @@
                 </div>
                 <div class="user_content account_box over">
                     <h3>百思慧眼绑定<span>使用时间：2015-10.10至2016-12-12</span></h3>
-                    <table id="AccountTable" data-height="150">
+                    <table id="AccountTable">
                         <thead>
                         <tr>
                             <th data-field="name">关联推广账户</th>
-                            <th data-field="stargazers_count">备注名</th>
-                            <th>网站名称</th>
-                            <th>网站URL</th>
-                            <th>统计代码</th>
+                            <th data-field="remark">备注名</th>
+                            <th data-field="wedName">网站名称</th>
+                            <th data-field="wedUrl">网站URL</th>
+                            <th data-field="wedCode">统计代码</th>
                             <th data-field="action" data-formatter="operateFormatter" data-events="operateEvents">操作
                             </th>
                         </tr>
                         </thead>
                     </table>
-                    <button type="button" class="btn btn-default col-xs-12"><span
+                    <button type="button" class="btn btn-default col-xs-12" id="SecendTablebutton"><span
                             class="glyphicon glyphicon-plus"></span>新增关联账户
                     </button>
                 </div>

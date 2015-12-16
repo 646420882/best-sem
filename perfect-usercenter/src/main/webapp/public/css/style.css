@@ -1,4 +1,7 @@
 /*导航*/
+.hide{
+    display:none;
+}
 .container-fluid {
     padding: 0px;
     font-family: "微软雅黑";
@@ -376,15 +379,32 @@
 .bootstrap-table .table>thead>tr>th{
     border-bottom: none;
 }
+.binding,.delete,.editor{
+    color:#01aef0;
+    margin-right:10px;
+    line-height:28px;
+    display:inline-block;
+    float:left;
+    width:30px;
+    text-align: center;
+}
 .binding{
     display:block;
     float:left;
-    width:54px;
+    width:52px;
     text-align: center;
 }
-.binding,.delete{
-    color:#01aef0;
+.preserve{
+    display:inline-block;
+    float:left;
     margin-right:10px;
+
+}
+.user_content .preserve.btn-primary{
+    padding:4px 0px;
+    margin-top:0px;
+    width:52px;
+    text-align: center;
 }
 .modal_align{
     display: table;
