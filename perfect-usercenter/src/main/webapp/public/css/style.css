@@ -1,7 +1,8 @@
 /*导航*/
-.hide{
-    display:none;
+.hide {
+    display: none;
 }
+
 .container-fluid {
     padding: 0px;
     font-family: "微软雅黑";
@@ -324,6 +325,13 @@
 
 }
 
+.password_box .form-inline .col-xs-12 {
+    max-width: 300px;
+    float: none;
+    display: block;
+
+}
+
 .password_box .input-group-addon {
     background: #cbcbcb;
     color: #fff;
@@ -353,10 +361,11 @@
     margin: 0px;
 
 }
-.account_box h3 span{
-    color:#5a5a5a;
-    font-size:12px;
-    padding-left:20px;
+
+.account_box h3 span {
+    color: #5a5a5a;
+    font-size: 12px;
+    padding-left: 20px;
 }
 
 .account_box p {
@@ -370,59 +379,71 @@
     padding: 25px;
 
 }
-.fixed-table-container thead th{
+
+.fixed-table-container thead th {
     background: #f0f0f0;
 }
-.table>thead>tr>th{
+
+.table > thead > tr > th {
     border-bottom: none;
 }
-.bootstrap-table .table>thead>tr>th{
+
+.bootstrap-table .table > thead > tr > th {
     border-bottom: none;
 }
-.binding,.delete,.editor{
-    color:#01aef0;
-    margin-right:10px;
-    line-height:28px;
-    display:inline-block;
-    float:left;
-    width:30px;
+
+.binding, .delete, .editor, .disable {
+    color: #01aef0;
+    margin-right: 10px;
+    line-height: 28px;
+    display: inline-block;
+    float: left;
+    width: 30px;
     text-align: center;
 }
-.binding{
-    display:block;
-    float:left;
-    width:52px;
+
+.binding {
+    display: block;
+    float: left;
+    width: 52px;
     text-align: center;
 }
-.preserve{
-    display:inline-block;
-    float:left;
-    margin-right:10px;
+
+.preserve {
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
 
 }
-.user_content .preserve.btn-primary{
-    padding:4px 0px;
-    margin-top:0px;
-    width:52px;
+
+.user_content .preserve.btn-primary {
+    padding: 4px 0px;
+    margin-top: 0px;
+    width: 52px;
     text-align: center;
 }
-.modal_align{
+
+.modal_align {
     display: table;
     height: 100%;
     margin: 0px auto
 }
-.modal-dialog{
-    margin-top:12%
+
+.modal-dialog {
+    margin-top: 12%
 }
-.account_box .btn-default{
-    margin-top:0px;
-    padding:5px 30px;
+
+.account_box .btn-default {
+    margin-top: 0px;
+    padding: 5px 30px;
     background: #f0f0f0;
 }
-.account_box .btn-default:hover{
+
+.account_box .btn-default:hover {
     background: #01aeef;
-    color:#fff;
+    color: #fff;
 }
-.account_box .btn-default span{
-    margin-right:10px;
+
+.account_box .btn-default span {
+    margin-right: 10px;
 }

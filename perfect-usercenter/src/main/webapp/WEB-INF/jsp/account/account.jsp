@@ -52,7 +52,7 @@
                             <th data-field="wedName">网站名称</th>
                             <th data-field="wedUrl">网站URL</th>
                             <th data-field="wedCode">统计代码</th>
-                            <th data-field="action" data-formatter="operateFormatter" data-events="operateEvents">操作
+                            <th data-field="action" data-formatter="disableFormatter" data-events="operateEvents">操作
                             </th>
                         </tr>
                         </thead>
