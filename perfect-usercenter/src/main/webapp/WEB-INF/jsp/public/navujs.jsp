@@ -19,6 +19,6 @@
 <!-- Latest compiled and minified Locales -->
 <script src="//cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table-locale-all.min.js"></script>
 <script type="text/javascript"
-        src="//cdn.bootcss.com/jqBootstrapValidation/1.3.7/jqBootstrapValidation.min.js"></script>
+        src="/public/js/public/bootstrapValidator.js"></script>
 <script type="text/javascript" src="/public/js/public/public.js"></script>
 
