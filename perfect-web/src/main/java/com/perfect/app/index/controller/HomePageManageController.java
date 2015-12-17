@@ -92,13 +92,8 @@ public class HomePageManageController extends WebContextSupport {
         response.addCookie(cookies);
     }
 
-    /**
-     * 跳转至SEM首页
-     *
-     * @return
-     */
-    @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
+    @RequestMapping(value = "/")
+    public ModelAndView index(HttpServletRequest request, ModelMap modelMap) {
         String userName = WebUtils.getUserName(request);
         SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
         if (systemUserDTO == null) {
@@ -111,16 +106,34 @@ public class HomePageManageController extends WebContextSupport {
     }
 
     /**
-     * 登录成功, 跳转至百思首页
+     * 跳转至SEM首页
      *
      * @return
-     */
-    @RequestMapping(value = "/index", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getBestIndexPage(HttpServletRequest request, ModelMap modelMap) {
+     *//*
+    @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
         String userName = WebUtils.getUserName(request);
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+        if (systemUserDTO == null) {
+            return new ModelAndView("redirect:/logout");
+        }
+
         modelMap.put("currSystemUserName", userName);
-        return new ModelAndView("bestPage/bestIndex");
-    }
+        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+        return new ModelAndView("homePage/home");
+    }*/
+
+//    /**
+//     * 登录成功, 跳转至百思首页
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/index", method = {RequestMethod.GET, RequestMethod.POST})
+//    public ModelAndView getBestIndexPage(HttpServletRequest request, ModelMap modelMap) {
+//        String userName = WebUtils.getUserName(request);
+//        modelMap.put("currSystemUserName", userName);
+//        return new ModelAndView("bestPage/bestIndex");
+//    }
 
     /**
      * 智能分组页面

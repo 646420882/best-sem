@@ -51,20 +51,7 @@ public class RegisterController {
      */
     @RequestMapping(value = "/add", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView registerData(ModelMap model, HttpServletResponse response, HttpServletRequest request,
-                                     @ModelAttribute RegisterParam registerParam
-                                     /*@RequestParam(value = "username", required = false) String username,
-                                     @RequestParam(value = "email", required = false) String email,
-                                     @RequestParam(value = "password", required = false) String password,
-                                     @RequestParam(value = "mailinAddress", required = false) String mailinAddress,
-                                     @RequestParam(value = "contacts", required = false) String contacts,
-                                     @RequestParam(value = "contactsPhone", required = false) String contactsPhone,
-                                     @RequestParam(value = "openPlatform", required = false) String openPlatform,
-                                     @RequestParam(value = "phoenixNestUser", required = false) String phoenixNestUser,
-                                     @RequestParam(value = "phoenixNestPassword", required = false) String phoenixNestPassword,
-                                     @RequestParam(value = "urlAddress", required = false) String urlAddress,
-                                     @RequestParam(value = "accountType", required = false) String accountType*/) {
-        //RegisterParam registerParam = new RegisterParam();
-
+                                     @ModelAttribute RegisterParam registerParam) {
 
         //int flag = accountRegisterService.addAccount(account, pwd, company, email);
         model.addAttribute("state", 1);

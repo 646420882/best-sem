@@ -56,8 +56,10 @@ public class LoginController {
             }
 
             if (account.equals(systemUserDTO.getUserName()) && pwdKey.equals(systemUserDTO.getPassword())) {
+                ModelAndView view = new ModelAndView("/bestPage/bestIndex");
                 //登录成功
-                loginSuccessHandler(request, response, systemUserDTO, model);
+                loginSuccessHandler(request, response, systemUserDTO, view);
+                return view;
             } else {
                 int s = loginFailureHandler(request, response, systemUserDTO);
                 if (s == 3) {
@@ -76,7 +78,7 @@ public class LoginController {
     }
 
 
-    private void loginSuccessHandler(HttpServletRequest request, HttpServletResponse response, SystemUserDTO systemUserDTO, ModelMap model) {
+    private void loginSuccessHandler(HttpServletRequest request, HttpServletResponse response, SystemUserDTO systemUserDTO, ModelAndView modelAndView) {
 
         String url = request.getParameter("redirect");
         if (url.equals("") || url == null) {
@@ -134,20 +136,18 @@ public class LoginController {
             }
         }
 
-        try {
-            if (response.isCommitted()) {
-                logger.debug("Response has already been committed. Unable to redirect to /platformPage");
-                return;
-            }
-            Cookie cookie = new Cookie("userToken", uuid);
-            cookie.setMaxAge(30 * 60 * 60);
-            response.addCookie(cookie);
-
-            request.getSession().setAttribute("user", systemUserDTO);
-            response.sendRedirect("/platformPage");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (response.isCommitted()) {
+            logger.debug("Response has already been committed. Unable to redirect to /platformPage");
+            return;
         }
+        Cookie cookie = new Cookie("userToken", uuid);
+        cookie.setMaxAge(30 * 60 * 60);
+        response.addCookie(cookie);
+        request.getSession().setAttribute("user", systemUserDTO);
+
+        // token settings
+        ModelMap modelMap = modelAndView.getModelMap();
+        modelMap.put("userToken", uuid);
     }
 
 
