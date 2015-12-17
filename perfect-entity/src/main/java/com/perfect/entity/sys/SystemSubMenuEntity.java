@@ -1,9 +1,5 @@
 package com.perfect.entity.sys;
 
-import org.springframework.data.annotation.Id;
-
-import java.util.List;
-
 /**
  * 系统菜单类
  * 模块下的各个菜单实体
@@ -12,31 +8,13 @@ import java.util.List;
 public class SystemSubMenuEntity {
     private String id;
 
+    private String menuId;
+
     private String menuName;
 
     private String menuUrl;
 
     private int order;
-
-    private String parentMenu;
-
-    private int menuno;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getParentMenu() {
-        return parentMenu;
-    }
-
-    public void setParentMenu(String parentMenu) {
-        this.parentMenu = parentMenu;
-    }
 
     public String getMenuName() {
         return menuName;
@@ -62,11 +40,12 @@ public class SystemSubMenuEntity {
         this.order = order;
     }
 
-    public int getMenuno() {
-        return menuno;
+    public String getId() {
+        return id;
     }
 
-    public void setMenuno(int menuno) {
-        this.menuno = menuno;
+    public SystemSubMenuEntity setId(String id) {
+        this.id = id;
+        return this;
     }
 }

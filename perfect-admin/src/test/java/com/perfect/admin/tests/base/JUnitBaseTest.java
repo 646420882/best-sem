@@ -24,6 +24,15 @@ import org.springframework.web.context.WebApplicationContext;
 })
 public class JUnitBaseTest {
 
+    public String userid = "53fec848e4b07cfcbba06db6";
+
+    public String moduleid = "5670f8ac77c8f56e10489559";
+
+    public String usermoduleid = "5672534677c8b0c225a6f374";
+
+    public String moduleMenuId = "5672517477c8d7f4989df0f0";
+
+    public String updateModuleMenuId = "567251e177c843be6b69a8be";
     @Autowired
     private WebApplicationContext wac;
     protected MockMvc mockMvc;

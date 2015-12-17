@@ -1,10 +1,8 @@
 package com.perfect.dao.sys;
 
 import com.perfect.dao.base.HeyCrudRepository;
-import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.*;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.dto.sys.SystemUserModuleDTO;
-import com.perfect.param.UserMenuParams;
 
 import java.util.Date;
 import java.util.List;
@@ -67,9 +65,17 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     SystemUserDTO findByUserId(String id);
 
-    boolean updateModuleMenus(String id, String moduleid, UserMenuParams menus);
+    boolean updateModuleMenus(String id, String moduleid, List<SystemMenuDTO> menus);
 
     boolean saveUserModule(String userid, SystemUserModuleDTO systemUserModuleDTO);
 
     boolean deleteModule(String userid, String moduleId);
+
+    SystemUserModuleDTO getUserModuleByModuleId(String id, String moduleid);
+
+    boolean existsModule(String userid, String moduleId);
+
+    SystemUserModuleDTO getUserModuleById(String userid, String id);
+
+    boolean addModuleAccount(String id, String moduleid, ModuleAccountInfoDTO moduleAccountInfoDTO);
 }

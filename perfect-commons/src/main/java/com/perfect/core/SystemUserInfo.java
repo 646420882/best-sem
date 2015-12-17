@@ -8,6 +8,8 @@ public class SystemUserInfo {
 
     private String user;
 
+    private boolean isSuper;
+
     public String getIp() {
         return ip;
     }
@@ -32,5 +34,14 @@ public class SystemUserInfo {
                 "ip='" + ip + '\'' +
                 ", user='" + user + '\'' +
                 '}';
+    }
+
+    public boolean isSuper() {
+        return isSuper;
+    }
+
+    public SystemUserInfo setIsSuper(boolean isSuper) {
+        this.isSuper = isSuper;
+        return this;
     }
 }

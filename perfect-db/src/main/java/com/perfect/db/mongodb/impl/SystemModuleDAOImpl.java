@@ -60,6 +60,18 @@ public class SystemModuleDAOImpl extends AbstractSysBaseDAOImpl<SystemModuleDTO,
         return systemModuleDTO;
     }
 
+    public SystemModuleDTO fromEntity(SystemModuleEntity systemModuleEntity) {
+        if (systemModuleEntity == null)
+            return null;
+
+        SystemModuleDTO systemModuleDTO = ObjectUtils.convert(systemModuleEntity, getDTOClass());
+
+        List<SystemMenuEntity> systemMenuEntities = systemModuleEntity.getMenus();
+
+        systemModuleDTO.setMenus(ObjectUtils.convertToList(systemMenuEntities, SystemMenuDTO.class));
+
+        return systemModuleDTO;
+    }
 
     public SystemModuleDTO updateMenus(SystemModuleDTO systemModuleDTO) {
 
@@ -136,7 +148,7 @@ public class SystemModuleDAOImpl extends AbstractSysBaseDAOImpl<SystemModuleDTO,
     }
 
     @Override
-    public boolean updateMenus(String moduleId, String menuid, String menuname, Integer order) {
+    public boolean updateMenus(String moduleId, String menuid, String menuname, Integer order, String menuUrl) {
         Update update = new Update();
         if (!Strings.isNullOrEmpty(menuname)) {
             update.set("menus.$.menuName", menuname);
@@ -144,6 +156,10 @@ public class SystemModuleDAOImpl extends AbstractSysBaseDAOImpl<SystemModuleDTO,
 
         if (order != null) {
             update.set("menus.$.order", order);
+        }
+
+        if (menuUrl != null) {
+            update.set("menus.$.menuUrl", menuUrl);
         }
 
         WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(moduleId).and
@@ -170,5 +186,10 @@ public class SystemModuleDAOImpl extends AbstractSysBaseDAOImpl<SystemModuleDTO,
         WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(systemModuleDTO
                 .getId())), update, getEntityClass());
         return wr.getN() == 1;
+    }
+
+    @Override
+    public boolean existsMenu(String moduleId, String menuName) {
+        return getSysMongoTemplate().exists(Query.query(Criteria.where(SYSTEM_ID).is(moduleId).and("menus.menuName").is(menuName)), getEntityClass());
     }
 }

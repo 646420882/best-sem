@@ -8,7 +8,11 @@ import java.util.List;
  * Created by yousheng on 15/12/16.
  */
 public class SystemMenuEntity {
+
     private String id;
+
+    // 系统菜单外键ID
+    private String menuId;
 
     private String menuName;
 
@@ -18,22 +22,12 @@ public class SystemMenuEntity {
 
     private List<SystemSubMenuEntity> subMenus;
 
-    private String parentMenu;
-
     public List<SystemSubMenuEntity> getSubMenus() {
         return subMenus;
     }
 
     public void setSubMenus(List<SystemSubMenuEntity> subMenus) {
         this.subMenus = subMenus;
-    }
-
-    public String getParentMenu() {
-        return parentMenu;
-    }
-
-    public void setParentMenu(String parentMenu) {
-        this.parentMenu = parentMenu;
     }
 
     public String getMenuName() {
@@ -72,7 +66,17 @@ public class SystemMenuEntity {
         return id;
     }
 
-    public void setId(String id) {
+    public SystemMenuEntity setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getMenuId() {
+        return menuId;
+    }
+
+    public SystemMenuEntity setMenuId(String menuId) {
+        this.menuId = menuId;
+        return this;
     }
 }

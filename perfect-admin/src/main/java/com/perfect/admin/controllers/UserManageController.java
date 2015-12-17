@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import com.perfect.admin.utils.JsonViews;
 import com.perfect.commons.web.JsonResultMaps;
 import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.service.SystemUserService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -74,9 +73,12 @@ public class UserManageController {
         return JsonViews.generate(-1);
     }
 
-    @RequestMapping(value = "/users/{id}/payed", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/users/{id}/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView changeAccountPayed(@PathVariable("id") String id,
-                                           @RequestParam(value = "payed") Boolean payed) {
+                                           @RequestParam(value = "status") Boolean accountStatus,
+                                           @RequestParam(value = "payed") Boolean payed,
+                                           @RequestParam(value = "start", required = false) String start,
+                                           @RequestParam(value = "end", required = false) String end) {
 
         boolean success = systemUserService.updateAccountPayed(id, payed);
 

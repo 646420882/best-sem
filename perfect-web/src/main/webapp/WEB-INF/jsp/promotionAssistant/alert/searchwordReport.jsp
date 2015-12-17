@@ -315,7 +315,7 @@
                 var html = "<option value='pleaseChoose'>请选择推广计划</option>";
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].campaignId == null) {
-                        html += "<option value='" + data[i].id + "'>" + data[i].campaignName + "</option>";
+                        html += "<option value='" + data[i].menuId + "'>" + data[i].campaignName + "</option>";
                     } else {
                         html += "<option value='" + data[i].campaignId + "'>" + data[i].campaignName + "</option>";
                     }
@@ -342,7 +342,7 @@
                 var html = "<option value='pleaseChoose'>请选择推广单元</option>";
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].adgroupId == null) {
-                        html += "<option value='" + data[i].id + "'>" + data[i].adgroupName + "</option>";
+                        html += "<option value='" + data[i].menuId + "'>" + data[i].adgroupName + "</option>";
                     } else {
                         html += "<option value='" + data[i].adgroupId + "'>" + data[i].adgroupName + "</option>";
                     }
@@ -368,7 +368,7 @@
                 var html = "<option value='pleaseChoose'>请选择推广单元</option>";
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].adgroupId == null) {
-                        html += "<option value='" + data[i].id + "'>" + data[i].adgroupName + "</option>";
+                        html += "<option value='" + data[i].menuId + "'>" + data[i].adgroupName + "</option>";
                     } else {
                         html += "<option value='" + data[i].adgroupId + "'>" + data[i].adgroupName + "</option>";
                     }

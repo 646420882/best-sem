@@ -25,6 +25,7 @@ public class SystemUserModuleDTO extends BaseDTO {
     private List<SystemMenuDTO> menus;
 
     private List<ModuleAccountInfoDTO> accounts;
+
     private String moduleId;
 
     public long getStartTime() {

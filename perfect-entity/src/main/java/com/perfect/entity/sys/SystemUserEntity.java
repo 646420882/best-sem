@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,12 +56,6 @@ public class SystemUserEntity implements Serializable {
     private List<ModuleAccountInfoEntity> baiduAccounts;//百度账号列表
 
     //系统帐号状态: 1.启用  0.禁用
-    @Field(value = "acstate")
-    private Integer accountState;
-
-    public SystemUserEntity() {
-    }
-
     @PersistenceConstructor
     public SystemUserEntity(String userName, String password,
                             List<ModuleAccountInfoEntity> baiduAccounts) {
@@ -68,6 +63,14 @@ public class SystemUserEntity implements Serializable {
         this.password = password;
         this.baiduAccounts = baiduAccounts;
     }
+
+    @Field(value = "acstate")
+    private Integer accountState;
+
+    public SystemUserEntity() {
+    }
+
+//
 
     public String getId() {
         return id;
@@ -209,7 +212,7 @@ public class SystemUserEntity implements Serializable {
         return systemUserModuleEntities;
     }
 
-    public void setSystemUserModuleEntities(List<SystemUserModuleEntity> systemUserModuleEntities) {
+    public void setSystemUserModuleEntities(ArrayList<SystemUserModuleEntity> systemUserModuleEntities) {
         this.systemUserModuleEntities = systemUserModuleEntities;
     }
 }
