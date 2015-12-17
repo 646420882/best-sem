@@ -23,7 +23,6 @@
 
 
     <!-- ====================== Additional Resources ======================= -->
-    <import resource="applicationContext-security.xml"/>
     <import resource="spring-mongodb.xml"/>
 
 </beans>
