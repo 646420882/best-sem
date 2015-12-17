@@ -15,7 +15,7 @@ ul, ol {
     left: 50%;
     top: 50%;
     margin-left: -320px;
-    margin-top: -380px;
+    margin-top: -250px;
 }
 .registe_box{
    /* position: absolute;
@@ -31,7 +31,7 @@ ul, ol {
     /*height: 360px;*/
     /*background: url(/public/img/login_box_bg.png) no-repeat;*/
     background: #fff;
-    margin: 0 auto;
+    margin: 58px auto 0 auto;
 }
 /*.login_box2{
     width: 490px;
@@ -50,7 +50,7 @@ ul, ol {
 
 .login_logo {
     text-align: center;
-    padding: 78px 0 30px 0px;
+    /*padding: 78px 0 30px 0px;*/
 }
 
 .login_logo2 {
