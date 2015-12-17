@@ -42,8 +42,14 @@ public class SystemRoleController {
     @RequestMapping(value = "/sysroles", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView createSystemRole(@RequestBody SystemRoleDTO systemRoleDTO) {
 
-        systemRoleDTO.setPassword(new MD5.Builder().password(systemRoleDTO.getPassword()).salt("role_password").build().getMD5());
         systemRoleService.addSystemRole(systemRoleDTO);
+        return JsonViews.generateSuccessNoData();
+    }
+
+    @RequestMapping(value = "/sysroles/{roleid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView deleteSystemRole(@PathVariable("roleid") String roleid) {
+
+        boolean success = systemRoleService.deleteSystemRole(roleid);
         return JsonViews.generateSuccessNoData();
     }
 
@@ -51,7 +57,7 @@ public class SystemRoleController {
     @RequestMapping(value = "/sysroles/{roleid}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView createSystemRole(@PathVariable("roleid") String roleid, @RequestBody SystemRoleDTO systemRoleDTO) {
 
-        if(!Strings.isNullOrEmpty(systemRoleDTO.getPassword())){
+        if (!Strings.isNullOrEmpty(systemRoleDTO.getPassword())) {
             systemRoleDTO.setPassword(new MD5.Builder().password(systemRoleDTO.getPassword()).salt("role_password").build().getMD5());
         }
         systemRoleService.update(roleid, systemRoleDTO);
