@@ -117,7 +117,11 @@
     border: none;
     font-size: 12px;
     box-shadow: none;
+    border-left: 4px solid #334e72;
+}
 
+.user_box .panel {
+    border-left: 0px;
 }
 
 .btn-primary {
@@ -446,4 +450,10 @@
 
 .account_box .btn-default span {
     margin-right: 10px;
+}
+
+.input-group-btn .btn.btn-default {
+    padding: 6px 12px;
+    background: #fbfbfb;
+    border: 1px solid #ccc;
 }

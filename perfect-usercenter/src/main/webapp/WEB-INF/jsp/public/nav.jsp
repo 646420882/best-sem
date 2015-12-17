@@ -14,7 +14,7 @@
                     <a class="collapsed" role="button" data-parent="#accordion"
                        href="${pageContext.request.contextPath}/userCenter/index" aria-expanded="false"
                        aria-controls="collapseTwo">
-                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-wrench"></span> 账户概览
+                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-th-large"></span> 账户概览
                     </a>
                 </h4>
             </div>

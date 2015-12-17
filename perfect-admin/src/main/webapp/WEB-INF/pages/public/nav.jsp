@@ -6,7 +6,7 @@
                 <h4 class="panel-title">
                     <a role="button" data-parent="#accordion" href="/"
                        aria-expanded="true" aria-controls="collapseOne">
-                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-th-large"></span>
+                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-user"></span>
                         用户管理
                     </a>
                 </h4>
@@ -18,7 +18,7 @@
                     <a class="collapsed" role="button" data-parent="#accordion"
                        href="${pageContext.request.contextPath}/admin/role" aria-expanded="false"
                        aria-controls="collapseTwo">
-                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-ok"></span> 角色管理
+                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-picture"></span> 角色管理
                     </a>
                 </h4>
             </div>
@@ -29,7 +29,7 @@
                     <a class="collapsed" role="button" data-parent="#accordion"
                        href="${pageContext.request.contextPath}/admin/system" aria-expanded="false"
                        aria-controls="collapseTwo">
-                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-lock"></span> 系统模块
+                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-adjust"></span> 系统模块
                     </a>
                 </h4>
             </div>
@@ -40,7 +40,7 @@
                     <a class="collapsed" role="button" data-parent="#accordion"
                        href="${pageContext.request.contextPath}/admin/jurisdiction" aria-expanded="false"
                        aria-controls="collapseTwo">
-                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-wrench"></span>模块权限
+                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-th"></span>模块权限
                     </a>
                 </h4>
             </div>
@@ -51,7 +51,7 @@
                     <a class="collapsed" role="button" data-parent="#accordion"
                        href="${pageContext.request.contextPath}/admin/log" aria-expanded="false"
                        aria-controls="collapseTwo">
-                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-wrench"></span>日志管理
+                        <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-list-alt"></span>日志管理
                     </a>
                 </h4>
             </div>

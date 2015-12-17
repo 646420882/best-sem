@@ -29,11 +29,13 @@
                                                          class="glyphicon glyphicon-lock"></span>密保手机
                         </div>
                         <div class="panel-body">
-                            <p>您可以在这里设置密保主手机和子手机，密保手机能够完成登录时的二次校验，提升账户安全等级，同时可以用来找回密码和接收相关安全提醒信息。</p>
+                            <p>您可以在这里设置密保手机，密保手机能够完成登录时的二次校验，提升账户安全等级，同时可以用来找回密码和接收相关安全提醒信息。</p>
 
                             <div class="panel_safe fl ">
-                                <div class="fl hide">已绑定号码：15040****11<span>解绑</span><span>修改</span></div>
-                                <button type="button" class="btn btn-primary fl" data-toggle="modal"
+                                <div class="fl phoneHide hide">已绑定号码：15040****11<span
+                                        onclick="phoneUnBundling(this)">解绑</span><span onclick="commons.unBinding('modifyPhone',this)">修改</span></div>
+                                <button type="button" class="btn btn-primary fl" id="phoneModalbottom"
+                                        data-toggle="modal"
                                         data-target="#phoneModal">设置密保手机
                                 </button>
                             </div>
@@ -47,9 +49,10 @@
                             <p>与电子邮箱绑定，不但能在找回密码时使用，还能方便获取相关安全提醒信息。</p>
 
                             <div class="panel_safe fl ">
-                                <div class="fl hide">已绑定邮箱：<span>解绑</span><span>修改</span></div>
+                                <div class="fl emailHide hide">已绑定邮箱：443895413@qq.com</b><span
+                                        onclick="phoneUnBundling(this)">解绑</span><span onclick="commons.unBinding('modifyEmail',this)">修改</span></div>
                                 <button type="button" class="btn btn-primary fl" data-toggle="modal"
-                                        data-target="#emailModal">设置密保邮箱
+                                        data-target="#emailModal" id="emailModalbottom">设置密保邮箱
                                 </button>
                             </div>
                         </div>

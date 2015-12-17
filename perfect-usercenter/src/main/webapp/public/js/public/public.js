@@ -5,7 +5,7 @@ $(function () {
     //路由控制
     var href = window.location.href;
     href = '/' + href.split("/").slice(-1);
-    if (href == "/") {
+    if (href == "/index") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(1) ").addClass("current")
