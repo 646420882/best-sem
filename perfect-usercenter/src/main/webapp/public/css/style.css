@@ -233,6 +233,10 @@
     margin-top: 34px;
 }
 
+.user_content ul li b {
+    font-weight: normal;
+}
+
 .user_content ul li span {
     width: 70px;
     display: block;
