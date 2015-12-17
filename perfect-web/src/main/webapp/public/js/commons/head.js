@@ -103,14 +103,15 @@ function imageChange(obj) {
     var path = $(obj).val();
     var index = $(obj).attr('fileindex');
     var fileName = getFileName(path);
-    var fileExtLowerCase = (/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName.toLowerCase()) : '';//文件后缀
+    var fileExtLowerCase = (/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName.toLowerCase()) : '';     // 文件后缀
     if (fileFormat.indexOf(fileExtLowerCase) >= 0) {
+        $("#userImgFileType").attr("value", fileExtLowerCase);
         ShowImage(obj, index, 72, 72);
     } else {
-//            alert('请选择图片,格式（*.jpg|*.jpeg|*.png|*.gif|*.bmp）');
+        //alert('请选择图片,格式（*.jpg|*.jpeg|*.png|*.gif|*.bmp）');
         AlertPrompt.show('请选择图片,格式（*.jpg|*.jpeg|*.png|*.gif|*.bmp）');
         $(obj).val('');
-//            alert($("#imgHeadPhoto" + index).get(0).src);
+        //alert($("#imgHeadPhoto" + index).get(0).src);
         AlertPrompt.show($("#imgHeadPhoto" + index).get(0).src);
         $("#imgHeadPhoto" + index).get(0).src = '';
     }
@@ -213,16 +214,16 @@ var PromptBox = {
         if (sure == 1) {
             $("#promptBottom").empty();
             $("#promptBottom").append("" +
-            "<li class='current' onclick='PromptBox.hide()'>确认</li>")
+                "<li class='current' onclick='PromptBox.hide()'>确认</li>")
         } else if (sure == 2) {
             $("#promptBottom").empty();
             $("#promptBottom").append("" +
-            "<li onclick='PromptBox.hide()'>取消</li>")
+                "<li onclick='PromptBox.hide()'>取消</li>")
         } else {
             $("#promptBottom").empty();
             $("#promptBottom").append("" +
-            "<li class='current' onclick='PromptBox.hide()'>确认</li>" +
-            "<li onclick='PromptBox.hide()'>取消</li>")
+                "<li class='current' onclick='PromptBox.hide()'>确认</li>" +
+                "<li onclick='PromptBox.hide()'>取消</li>")
         }
 
     },
@@ -362,7 +363,12 @@ $(document).ready(function () {
                     }
                 }, 500);
             });
-            $(".ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content").css({"z-index":"3000","border": "1px solid #dddddd", " background": "#ffffff",  " color": "#333333"});
+            $(".ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content").css({
+                "z-index": "3000",
+                "border": "1px solid #dddddd",
+                " background": "#ffffff",
+                " color": "#333333"
+            });
 
         })
 });

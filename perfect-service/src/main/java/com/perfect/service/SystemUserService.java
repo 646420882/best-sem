@@ -2,8 +2,12 @@ package com.perfect.service;
 
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
-import com.perfect.dto.sys.*;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.dto.sys.SystemMenuDTO;
+import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -84,4 +88,8 @@ public interface SystemUserService {
     List<SystemMenuDTO> getUserSubMenu(String id, String modulename);
 
     boolean addModuleAccount(String id, String moduleid, ModuleAccountInfoDTO moduleAccountInfoDTO);
+
+    void updateUserImage(InputStream is, String fileSuffix);
+
+    InputStream findUserImage(String sysUserName);
 }
