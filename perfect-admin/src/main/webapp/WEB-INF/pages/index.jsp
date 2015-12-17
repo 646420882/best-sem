@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>百思-用户管理中心</title>
-    <jsp:include page="WEB-INF/pages/public/navujs.jsp"/>
+    <jsp:include page="public/navujs.jsp"/>
 </head>
 <body>
 <div class="container-fluid">
-    <jsp:include page="WEB-INF/pages/public/header.jsp"/>
+    <jsp:include page="public/header.jsp"/>
     <div class="containers">
-        <jsp:include page="WEB-INF/pages/public/nav.jsp"/>
+        <jsp:include page="public/nav.jsp"/>
         <div class="middle_containers">
             <div class="page_title">
                 当前位置：用户管理
@@ -61,7 +61,7 @@
         </div>
     </div>
 </div>
-<jsp:include page="WEB-INF/pages/home/homemodel.jsp"/>
+<jsp:include page="home/homemodel.jsp"/>
 <script type="text/javascript" src="/public/js/index/index.js"></script>
 </body>
 </html>

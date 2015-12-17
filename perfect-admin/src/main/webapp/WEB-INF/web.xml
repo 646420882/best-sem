@@ -72,4 +72,8 @@
         <url-pattern>*.jpg</url-pattern>
         <url-pattern>*.jpeg</url-pattern>
     </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/pages/loginOrReg/login.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

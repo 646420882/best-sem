@@ -50,6 +50,6 @@ public class AdminLoginController {
             model.put("error", "");
         }
         model.put("redirect_url", url);
-        return new ModelAndView("/login", model);
+        return new ModelAndView("loginOrReg/login", model);
     }
 }

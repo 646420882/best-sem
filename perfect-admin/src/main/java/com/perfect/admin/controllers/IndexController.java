@@ -15,9 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Scope("prototype")
 public class IndexController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
-        return new ModelAndView("/WEB-INF/index.jsp");
+        return new ModelAndView("index");
     }
 
     @RequestMapping(value = "/admin/role")
@@ -38,6 +38,18 @@ public class IndexController {
     @RequestMapping(value = "/admin/log", method = RequestMethod.GET)
     public ModelAndView log() {
         return new ModelAndView("/log/log");
+    }
+    @RequestMapping(value = "/admin/register", method = RequestMethod.GET)
+    public ModelAndView register() {
+        return new ModelAndView("/lognOrReg/register");
+    }
+    @RequestMapping(value = "/admin/forget", method = RequestMethod.GET)
+    public ModelAndView forget() {
+        return new ModelAndView("/lognOrReg/forget");
+    }
+    @RequestMapping(value = "/admin/forgetPassword", method = RequestMethod.GET)
+    public ModelAndView forgetPassword() {
+        return new ModelAndView("/lognOrReg/forgetPassword");
     }
 }
 
