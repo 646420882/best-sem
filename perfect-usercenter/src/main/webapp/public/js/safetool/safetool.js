@@ -77,6 +77,12 @@ var commons = {
 
 //解绑
 function phoneUnBundling(_this) {
-    $(_this).parent().addClass("hide");
-    $(_this).parent().next("button").show();
+    $("#modelbox").modal('show');
+    $("#modelboxTitle").html("确认取消绑定？");
+    $("#modelboxBottom").click(function () {
+        $("#modelbox").modal('hide');
+        $(_this).parent().addClass("hide");
+        $(_this).parent().next("button").show();
+    })
+
 }

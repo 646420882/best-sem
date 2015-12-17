@@ -25,7 +25,7 @@
             <div class="user_box" style="background: #f0f0f0">
                 <div class="user_content account_box over">
                     <h3>百思搜客绑定 <span>使用时间：2015-10.10至2016-12-12</span></h3>
-                    <table id="account_table" >
+                    <table id="account_table">
                         <thead>
                         <tr>
                             <th data-field="name">关联推广账户</th>
@@ -65,7 +65,7 @@
         </div>
     </div>
 </div>
-<jsp:include page="../account/accountmodel.jsp"/>
+<jsp:include page="../public/publicmodel.jsp"/>
 <script type="text/javascript" src="/public/js/account/account.js"></script>
 </body>
 </html>

@@ -33,7 +33,8 @@
 
                             <div class="panel_safe fl ">
                                 <div class="fl phoneHide hide">已绑定号码：15040****11<span
-                                        onclick="phoneUnBundling(this)">解绑</span><span onclick="commons.unBinding('modifyPhone',this)">修改</span></div>
+                                        onclick="phoneUnBundling(this)">解绑</span><span
+                                        onclick="commons.unBinding('modifyPhone',this)">修改</span></div>
                                 <button type="button" class="btn btn-primary fl" id="phoneModalbottom"
                                         data-toggle="modal"
                                         data-target="#phoneModal">设置密保手机
@@ -50,7 +51,8 @@
 
                             <div class="panel_safe fl ">
                                 <div class="fl emailHide hide">已绑定邮箱：443895413@qq.com</b><span
-                                        onclick="phoneUnBundling(this)">解绑</span><span onclick="commons.unBinding('modifyEmail',this)">修改</span></div>
+                                        onclick="phoneUnBundling(this)">解绑</span><span
+                                        onclick="commons.unBinding('modifyEmail',this)">修改</span></div>
                                 <button type="button" class="btn btn-primary fl" data-toggle="modal"
                                         data-target="#emailModal" id="emailModalbottom">设置密保邮箱
                                 </button>
@@ -63,6 +65,7 @@
     </div>
 </div>
 <jsp:include page="../safe/safemodel.jsp"/>
+<jsp:include page="../public/publicmodel.jsp"/>
 <script type="text/javascript" src="/public/js/safetool/safetool.js"></script>
 </body>
 </html>
