@@ -76,6 +76,26 @@ function operateFormatter(value, row, index) {
 
     ].join('');
 }
+function disableFormatter(value, row, index) {
+    return [
+        '<a class="disable" href="javascript:void(0)" title="禁用">',
+        '禁用',
+        '</a>',
+        '<a class="editor" href="javascript:void(0)" title="修改">',
+        '修改',
+        '</a>',
+        '<button class="preserve btn btn-primary" style="display:none" href="javascript:void(0)" title="保存">',
+        '保存',
+        '</button>',
+        '<button class="preserve newadd btn btn-primary" style="display:none" href="javascript:void(0)" title="新增">',
+        '新增',
+        '</button>',
+        '<a class="delete ml10" href="javascript:void(0)" title="删除" >',
+        '删除',
+        '</a>'
+
+    ].join('');
+}
 window.operateEvents = {
     'click .binding': function (e, value, row, index) {
         var bindingtext = $(this);
@@ -93,6 +113,26 @@ window.operateEvents = {
             $("#modelboxBottom").click(function () {
                 $('#modelbox').modal('hide');
                 bindingtext.html("绑定");
+            })
+
+        }
+    },
+    'click .disable': function (e, value, row, index) {
+        var bindingtext = $(this);
+        if ($(this).html() == "禁用") {
+            $('#modelbox').modal()
+            $("#modelboxTitle").html("是否禁用？");
+            $("#modelboxBottom").click(function () {
+                $('#modelbox').modal('hide');
+                bindingtext.html("启动");
+            })
+
+        } else {
+            $("#modelboxTitle").html("是否启动？");
+            $('#modelbox').modal()
+            $("#modelboxBottom").click(function () {
+                $('#modelbox').modal('hide');
+                bindingtext.html("禁用");
             })
 
         }

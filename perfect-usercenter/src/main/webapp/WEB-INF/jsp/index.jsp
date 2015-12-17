@@ -25,13 +25,13 @@
             <div class="user_box">
                 <div class="user_title">
                     <span aria-hidden="true" ng-class="icon"
-                          class="glyphicon glyphicon-user"></span>账户：<b>perfect2015</b>
+                          class="glyphicon glyphicon-user"></span>账户：<b>${user.userName}</b>
                     <button type="button" class="btn btn-default">试用账户</button>
                 </div>
                 <div class="user_content">
                     <ul>
-                        <li><span>公司名称：</span>北京普菲特广告有限公司</li>
-                        <li><span>开通平台：</span>北百思搜客、百思慧眼</li>
+                        <li><span>公司名称：</span>${user.companyName}</li>
+                        <li><span>开通平台：</span>${user.companyName}北百思搜客、百思慧眼</li>
                         <li><span>网站名称：</span>北京普菲特广告有限公司</li>
                         <li><span>网址：</span>http：//www.perfect-cn.cn</li>
                         <li><span>注册时间：</span>2015-10-10</li>
