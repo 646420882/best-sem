@@ -37,6 +37,7 @@
                         <value>/login</value>
                         <value>/userCenter/reg</value>
                         <value>/userCenter/add</value>
+                        <value>/userCenter/forget</value>
                     </list>
                 </property>
             </bean>
