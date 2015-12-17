@@ -39,7 +39,7 @@
                     <span class="fl">管理员登录</span>
                     <a href="/admin/register" class="fr">→ 还没有账号？点击注册</a>
                 </div>
-                <form action="/" method="post">
+                <form action="/loginaction" method="post">
                     <input type="hidden" name="redirect" value="${redirect_url}"/>
 
                     <div class="login_part1 ">
