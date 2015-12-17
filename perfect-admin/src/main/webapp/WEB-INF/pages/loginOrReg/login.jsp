@@ -28,7 +28,7 @@
 <body>
 <div class="login over">
     <%--<img src="${pageContext.request.contextPath}/public/img/login_bg.jpg" width="100%" height="100%">--%>
-        <div class="loginBg" style="position: absolute;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
+        <div class="loginBg" style="position: fixed;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
         <div class="login_box">
             <div class="login_logo ">
                 <a href="http://best-ad.cn/" target="_blank"><img
@@ -36,7 +36,7 @@
             </div>
             <div class="login_box1">
                 <div class="login_click over" style="margin-bottom: 35px">
-                    <span class="fl">用户登录</span>
+                    <span class="fl">管理员登录</span>
                     <a href="/admin/register" class="fr">→ 还没有账号？点击注册</a>
                 </div>
                 <form action="/" method="post">
