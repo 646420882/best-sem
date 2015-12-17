@@ -118,8 +118,7 @@
                                     <div class="form-group has-feedback">
                                         <div>
                                             <select id="openPlatform" multiple="multiple" name="openPlatform">
-                                                <option value="1">百思搜客</option>
-                                                <option value="2">百思慧眼</option>
+
                                             </select>
                                         </div>
                                     </div>
@@ -210,12 +209,26 @@
     //初始化函数
     $(window).resize();
     $(document).ready(function () {
-        $("#openPlatform").multipleSelect({
-            placeholder: "请选择开通平台",
-            selectAll: false,
-            minumimCountSelected: 20,
-            multiple: true
-        })
+        $.ajax({
+            url: "/userCenter/getPlatform",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                $("#openPlatform").empty();
+                var html = "";
+                data.data.forEach(function(item,i){
+                    html = html +"<option value='"+item.id+"'>"+item.moduleName+"</option>"
+                })
+                console.log(html)
+                $("#openPlatform").append(html);
+                $("#openPlatform").multipleSelect({
+                    placeholder: "请选择开通平台",
+                    selectAll: false,
+                    minumimCountSelected: 20,
+                    multiple: true
+                })
+            }
+        });
         createCode();
         $('#defaultForm').bootstrapValidator({
             message: '此值无效',
