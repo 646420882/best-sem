@@ -110,7 +110,42 @@ $(function () {
             })
         },
         'click .look': function (e, value, row, index) {
-            $('#modelbox').modal();
+           /* console.log(e)
+            console.log(value)
+            console.log(row)
+            console.log(index)*/
+            $("#userLookUpWrap").css({"display":"block","top": 221+index*44+"px"});
+            var lookUpData = [{
+                id: 1,
+                systemModal: '百思搜客',
+                userProperty: "使用账户",
+                openStates: "正常使用",
+                startDate: "2015-09-20",
+                endDate: "2015-09-20",
+                authorityAssignment: "设置",
+                relatedAccount:["凤巢账户1","凤巢账户2"],
+                relatedAccountPwd:"123123",
+                APICode:"(运营人员双击填写)",
+                URLAddress:"www.perfect-cn.cn",
+                statisticalCode:"(运营人员双击填写)"
+
+            }, {
+                id: 2,
+                systemModal: '百思慧眼',
+                userProperty: "使用账户",
+                openStates: "正常使用",
+                startDate: "2015-09-20",
+                endDate: "2015-09-20",
+                authorityAssignment: "设置",
+                relatedAccount:"凤巢账户1",
+                relatedAccountPwd:"123123",
+                APICode:"(运营人员双击填写)",
+                URLAddress:"www.perfect-cn.cn",
+                statisticalCode:"(运营人员双击填写)"
+            }];
+            $('#userLookUpTable').bootstrapTable({
+                data: lookUpData
+            });
         },
         'click .password_reset': function (e, value, row, index) {
             $('#modelbox').modal();

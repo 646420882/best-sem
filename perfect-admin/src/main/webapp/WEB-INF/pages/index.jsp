@@ -16,24 +16,31 @@
                 当前位置：用户管理
             </div>
             <div class="user_box">
-                <div class="admin_title over">
+                <div class="admin_title">
                     <label class="control-label fl"> 账户状态：</label>
 
                     <div class="fl select">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default ">Action</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                所有账户
                                 <span class="caret"></span>
-                                <span class="sr-only">所有账户</span>
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                 <li><a href="#">所有账户</a></li>
                                 <li><a href="#">启用</a></li>
                                 <li><a href="#">禁用</a></li>
                             </ul>
                         </div>
                     </div>
+
+                    <div class="fl">
+                        <input type="text" class="adminInput" placeholder="请输入姓名、登录账号">
+                    </div>
+                    <div class="fl">
+                        <span class="adminButton">搜索</span>
+                    </div>
+                    <!-- /.row -->
+
                 </div>
                 <table id="userAdmin" data-click-to-select="true" data-query-params="queryParams"
                        data-pagination="true">
@@ -57,7 +64,33 @@
                     </thead>
                 </table>
             </div>
-
+<%--查看的内容--%>
+            <div id="userLookUpWrap" style="display: none">
+                <div class="lookUpContent">
+                    <table id="userLookUpTable">
+                        <thead>
+                        <tr>
+                            <th data-field="systemModal">系统模块</th>
+                            <th data-field="userProperty">用户属性</th>
+                            <th data-field="openStates">开通状态</th>
+                            <th data-field="startDate">开始日期</th>
+                            <th data-field="endDate">结束日期</th>
+                            <th data-field="authorityAssignment">权限分配</th>
+                            <th data-field="relatedAccount">关联账户</th>
+                            <th data-field="relatedAccountPwd">关联账户密码</th>
+                            <th data-field="APICode">API代理</th>
+                            <th data-field="URLAddress">URL地址</th>
+                            <th data-field="APICode">统计代码</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="lookUpConfirmBtn fr">
+                        <span class="adminButton" onclick="cancelLookUp()">确定</span>
+                        <span  class="adminButton" onclick="cancelLookUp()" style="background-color: #e0e0e0;color: #000">取消</span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

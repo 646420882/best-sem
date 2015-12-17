@@ -20,26 +20,7 @@ $(function () {
         action: "1",
         password:"3213612321"
     }]
-    var datas = [{
-        id: 1,
-        name: 'baidu-perfect2151880',
-        remark: "http://www.perfect-cn.cn",
-        wedName: "百度",
-        wedUrl: "2015年12月25日",
-        wedCode: "",
-        action: "1",
-        password:"3213612321"
 
-    }, {
-        id: 2,
-        name: 'baidu-perfect2151880',
-        remark: "http://www.perfect-cn.cn",
-        wedName: "百度",
-        wedUrl: "2015年12月25日",
-        wedCode: "",
-        action: "1",
-        password:"3213612321"
-    }]
     $('#userAdmin').bootstrapTable({
         data: data
     });
@@ -48,6 +29,7 @@ $(function () {
 
     });
 })
+
 function disableFormatter(value, row, index) {
     return [
         '<a class="disable tab_operate" href="javascript:void(0)" title="禁用">',
@@ -59,7 +41,8 @@ function LookUp(value, row, index) {
     return [
         '<a class="look tab_operate" href="javascript:void(0)" title="查看">',
         '查看',
-        '</a>'
+        '</a>'+
+        '<span class="glyphicon glyphicon-triangle-top" style="left: -31px;top: 20px;display: none"></span>'
     ].join('');
 }
 function passwordFormatter (value, row, index) {
@@ -69,4 +52,7 @@ function passwordFormatter (value, row, index) {
         '重置',
         '</a>'
     ].join('')
+}
+function cancelLookUp(){
+    $("#userLookUpWrap").css({"display":"none"});
 }
