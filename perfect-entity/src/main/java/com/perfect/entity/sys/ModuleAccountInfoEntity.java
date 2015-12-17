@@ -11,14 +11,18 @@ import java.util.List;
  */
 public class ModuleAccountInfoEntity {
 
-    private Long id;
+    private String id;
 
+    @Field("bname")
     private String baiduUserName;//百度账号
 
+    @Field("rname")
     private String baiduRemarkName;//百度账户备注名
 
+    @Field("bpasswd")
     private String baiduPassword;//百度账号密码
 
+    @Field("btoken")
     private String token;//百度的代码标识
 
     private String hyToken;
@@ -77,11 +81,11 @@ public class ModuleAccountInfoEntity {
     //该账户下的百度帐号是否启用   启用：1  停用：0
     private Long state;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -54,7 +54,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
             return true;
         } else {
             AppContext.setUser(userName);
-            SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+            SystemUserDTO systemUserDTO = (SystemUserDTO) request.getSession().getAttribute(USER_INFORMATION);
             if (systemUserDTO == null) {
                 return false;
             }

@@ -2,16 +2,18 @@ package com.perfect.app.ucenter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.perfect.web.suport.WebContextSupport;
-import com.perfect.web.suport.WebUtils;
 import com.perfect.core.AppContext;
-import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.AccountDataService;
 import com.perfect.service.AccountManageService;
+import com.perfect.service.SystemUserService;
 import com.perfect.utils.json.JSONUtils;
+import com.perfect.web.suport.WebContextSupport;
+import com.perfect.web.suport.WebUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
@@ -25,6 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +46,9 @@ public class AccountManageController extends WebContextSupport {
 
     @Resource
     private AccountDataService accountDataService;
+
+    @Resource
+    private SystemUserService systemUserService;
 
 
 //    @Resource
@@ -207,10 +213,13 @@ public class AccountManageController extends WebContextSupport {
      */
     @RequestMapping(value = "/getImg", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
-        if (imgBytes != null) {
-            response.getOutputStream().write(imgBytes);
-        }
+//        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
+//        if (imgBytes != null) {
+//            response.getOutputStream().write(imgBytes);
+//        }
+
+        InputStream imageInputStream = systemUserService.findUserImage(AppContext.getUser());
+        response.getOutputStream().write(IOUtils.toByteArray(imageInputStream));
     }
 
     /**
@@ -224,8 +233,12 @@ public class AccountManageController extends WebContextSupport {
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        byte[] bytes = multipartRequest.getFile("userImgFile").getBytes();
-        accountManageService.uploadImg(bytes);
+//        byte[] bytes = multipartRequest.getFile("userImgFile").getBytes();
+        InputStream imageInputStream = multipartRequest.getFile("userImgFile").getInputStream();
+        String fileSuffix = multipartRequest.getParameter("userImgFileType");
+
+        systemUserService.updateUserImage(imageInputStream, "." + fileSuffix);
+//        accountManageService.uploadImg(bytes);
         response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
     }
 

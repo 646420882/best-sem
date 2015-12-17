@@ -2617,7 +2617,7 @@
 
 <script type="text/javascript">
     $('.ui_radiobox').click(function () {
-        if (this.id == 'ctrlradioboxpartRegion') {
+        if (this.menuId == 'ctrlradioboxpartRegion') {
             $('#ctrlregionregionBody').show();
         } else {
             $('#ctrlregionregionBody').hide();

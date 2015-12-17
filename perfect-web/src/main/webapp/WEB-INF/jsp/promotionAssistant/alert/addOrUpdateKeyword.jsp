@@ -197,7 +197,7 @@
                                                                                 id="insertRadios"
                                                                                 value="0">不添加这些关键词</label></p>
                                             <table border="0" cellspacing="0" width="100%" id="createTable"
-                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                   class="table2 table-bordered" data-resizable-columns-menuId="demo-table">
                                                 <thead>
                                                 <tr class="list02_top">
                                                     <th>&nbsp;计划名称</th>
@@ -239,7 +239,7 @@
 
                                             <%--<p><input type="radio" name="hasRadio">不更新这些关键词</p>--%>
                                             <table border="0" cellspacing="0" width="100%"
-                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
+                                                   class="table2 table-bordered" data-resizable-columns-menuId="demo-table">
                                                 <thead>
                                                 <tr class="list02_top">
                                                     <th>&nbsp;计划名称</th>
@@ -460,7 +460,7 @@
         var nodes = node ? [node] : zTree.transformToArray(zTree.getNodes());
         for (var i = 0, l = nodes.length; i < l; i++) {
             var n = nodes[i];
-            n.title = "[" + n.id + "] isFirstNode = " + n.isFirstNode + ", isLastNode = " + n.isLastNode;
+            n.title = "[" + n.menuId + "] isFirstNode = " + n.isFirstNode + ", isLastNode = " + n.isLastNode;
             zTree.updateNode(n);
         }
     }
@@ -540,9 +540,9 @@
         var parentNode = "";
         for (var i = 0; i < selectNode.length; i++) {
             if (selectNode[i].isParent == true) {
-                parentNode = selectNode[i].id;
+                parentNode = selectNode[i].menuId;
             } else {
-                v = v + parentNode + "," + selectNode[i].id + "-";
+                v = v + parentNode + "," + selectNode[i].menuId + "-";
             }
         }
         return v;

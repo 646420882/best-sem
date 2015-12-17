@@ -1,18 +1,18 @@
 package com.perfect.usercenter.controller;
 
-import com.perfect.commons.CustomUserDetails;
 import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 
@@ -91,7 +91,7 @@ public class LoginController {
         systemUserDTO.setImgBytes(null);
         String json = JSONUtils.getJsonString(systemUserDTO);
         Jedis jedis = JRedisUtils.get();
-        jedis.setex(uuid, 60, json);
+        jedis.setex(uuid, 3600, json);
 
         if (url != null && !url.isEmpty() && !url.equals("null")) {
             String target;

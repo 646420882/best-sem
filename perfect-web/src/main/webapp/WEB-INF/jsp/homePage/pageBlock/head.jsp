@@ -24,7 +24,7 @@
                         <div class="user_logo1">
                             <div class="user_img fl over">
                             <span id="head_click"><img id="user_img"
-                                                       src="${userImageUrl}"></span>
+                                                       src="/account/getImg"></span>
                             </div>
                             <div class="user_text fl">
                                 <div class="user_top over">
@@ -116,6 +116,7 @@
                  style="filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image); border: solid 1px #d2e2e2; display: none; "></div>
             <input id="userImgFile" name="userImgFile" class="input_200" type="file" fileindex="1"
                    onchange="imageChange(this)"/>
+            <input id="userImgFileType" name="userImgFileType" type="text" style="display: none"/>
         </form>
     </div>
     <div class="main_bottom">

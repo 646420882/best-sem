@@ -4,7 +4,7 @@
         <div class="panel totalNav panel-default current">
             <div class="panel-heading" role="tab" id="headingOne">
                 <h4 class="panel-title">
-                    <a role="button" data-parent="#accordion" href="/"
+                    <a role="button" data-parent="#accordion" href="/index"
                        aria-expanded="true" aria-controls="collapseOne">
                         <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-user"></span>
                         用户管理

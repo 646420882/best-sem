@@ -79,6 +79,13 @@ public class SystemModuleServiceImpl implements SystemModuleService {
 
     @Override
     public boolean insertMenu(String moduleId, SystemMenuDTO systemMenuDTO) {
+        boolean exits = systemModuleDAO.existsMenu(moduleId, systemMenuDTO.getMenuName());
+
+
+        if (exits) {
+            return false;
+        }
+
         boolean success = systemModuleDAO.insertMenu(moduleId, systemMenuDTO);
 
         if (success) {
@@ -97,8 +104,8 @@ public class SystemModuleServiceImpl implements SystemModuleService {
     }
 
     @Override
-    public boolean updateMenu(String moduleId, String menuid, String menuname, Integer order) {
-        return systemModuleDAO.updateMenus(moduleId, menuid, menuname, order);
+    public boolean updateMenu(String moduleId, String menuid, String menuname, Integer order, String menuUrl) {
+        return systemModuleDAO.updateMenus(moduleId, menuid, menuname, order, menuUrl);
     }
 
     @Override

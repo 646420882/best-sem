@@ -1,10 +1,10 @@
 package com.perfect.web.filter;
 
 import com.perfect.commons.constants.AuthConstants;
-import com.perfect.web.suport.ServletContextUtils;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
+import com.perfect.web.suport.ServletContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import redis.clients.jedis.Jedis;
 
@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
+
+import static javax.servlet.http.HttpServletResponse.SC_FOUND;
 
 /**
  * Created on 2015-12-17.
@@ -56,8 +58,9 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
                     }
 
                     // 重定向至登录之前访问的页面
-                    response.setStatus(HttpServletResponse.SC_FOUND);
-                    response.sendRedirect(request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL).toString());
+                    Object _url = request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL);
+                    response.setStatus(SC_FOUND);
+                    response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
 
                     // 清除Session中用户在未登录时访问的URL信息
                     request.getSession().setAttribute(USER_PRE_LOGIN_VISIT_URL, null);
@@ -80,7 +83,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
         // 清除Session中的用户信息
         request.getSession().setAttribute(USER_INFORMATION, null);
 
-        response.setStatus(HttpServletResponse.SC_FOUND);
+        response.setStatus(SC_FOUND);
         response.setHeader(LOCATION, USER_LOGIN_URL);
     }
 
@@ -91,7 +94,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
      * @param response
      */
     private void redirectForLogin(HttpServletRequest request, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_FOUND);
+        response.setStatus(SC_FOUND);
         response.setHeader(LOCATION, String.format(USER_LOGIN_REDIRECT_URL, request.getHeader(HOST)));
         if (Objects.isNull(request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL))) {
             request.getSession().setAttribute(USER_PRE_LOGIN_VISIT_URL, request.getRequestURI());
@@ -113,7 +116,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             jedis = JRedisUtils.get();
             String userInfoMsg = jedis.get(token);
             if (Objects.isNull(userInfoMsg)) {
-                response.setStatus(HttpServletResponse.SC_FOUND);
+                response.setStatus(SC_FOUND);
                 response.setHeader(LOCATION, USER_LOGIN_URL);
                 return null;
             }
@@ -121,7 +124,6 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             SystemUserDTO systemUserDTO = JSONUtils.getObjectByJson(userInfoMsg, SystemUserDTO.class);
             if (Objects.nonNull(systemUserDTO)) {
                 request.getSession().setAttribute(USER_INFORMATION, systemUserDTO);
-
                 return systemUserDTO;
             }
         } finally {

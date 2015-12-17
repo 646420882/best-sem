@@ -22,7 +22,9 @@ public interface SystemModuleDAO extends HeyCrudRepository<SystemModuleDTO, Stri
 
     boolean insertMenu(String moduleId, SystemMenuDTO systemMenuDTO);
 
-    boolean updateMenus(String moduleId, String menuid, String menuname, Integer order);
+    boolean updateMenus(String moduleId, String menuid, String menuname, Integer order, String menuUrl);
 
     boolean updateModule(SystemModuleDTO systemModuleDTO);
+
+    boolean existsMenu(String moduleId, String menuName);
 }
