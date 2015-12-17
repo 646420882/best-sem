@@ -7,6 +7,7 @@ import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
+import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -41,7 +42,7 @@ public class LoginController {
                               @RequestParam(value = "j_password") String pwd,
                               ModelMap model) {
 
-
+        String a = response.getHeader("redirect");
         SystemUserDTO systemUserDTO = systemUserService.getSystemUser(account);
         if (systemUserDTO != null) {
             MD5.Builder md5Builder = new MD5.Builder();
@@ -55,8 +56,10 @@ public class LoginController {
             }
 
             if (account.equals(systemUserDTO.getUserName()) && pwdKey.equals(systemUserDTO.getPassword())) {
+                ModelAndView view = new ModelAndView("/bestPage/bestIndex");
                 //登录成功
-                loginSuccessHandler(request, response, systemUserDTO, model);
+                loginSuccessHandler(request, response, systemUserDTO, view);
+                return view;
             } else {
                 int s = loginFailureHandler(request, response, systemUserDTO);
                 if (s == 3) {
@@ -75,17 +78,29 @@ public class LoginController {
     }
 
 
-    private void loginSuccessHandler(HttpServletRequest request, HttpServletResponse response, SystemUserDTO systemUserDTO, ModelMap model) {
+    private void loginSuccessHandler(HttpServletRequest request, HttpServletResponse response, SystemUserDTO systemUserDTO, ModelAndView modelAndView) {
 
         String url = request.getParameter("redirect");
+        if (url.equals("") || url == null) {
+            url = request.getParameter("url");
+        }
+
         String uuid = UUID.randomUUID().toString();
         //systemUserDTO.setImg(null);
+        systemUserDTO.setImg(null);
+        systemUserDTO.setImgBytes(null);
         String json = JSONUtils.getJsonString(systemUserDTO);
         Jedis jedis = JRedisUtils.get();
         jedis.setex(uuid, 60, json);
 
-        if (url != null && !url.isEmpty()) {
-            String target = "http://" + url + "/token?tokenid=" + uuid;
+        if (url != null && !url.isEmpty() && !url.equals("null")) {
+            String target;
+            if (url.lastIndexOf("/") != -1) {
+                target = "http://" + url + "token?tokenid=" + uuid;
+            } else {
+                target = "http://" + url + "/token?tokenid=" + uuid;
+            }
+
             try {
                 response.sendRedirect(target);
             } catch (IOException e) {
@@ -121,20 +136,18 @@ public class LoginController {
             }
         }
 
-        try {
-            if (response.isCommitted()) {
-                logger.debug("Response has already been committed. Unable to redirect to /platformPage");
-                return;
-            }
-            Cookie cookie = new Cookie("userToken", uuid);
-            cookie.setMaxAge(30 * 60 * 60);
-            response.addCookie(cookie);
-
-            request.getSession().setAttribute("user", systemUserDTO);
-            response.sendRedirect("/platformPage");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (response.isCommitted()) {
+            logger.debug("Response has already been committed. Unable to redirect to /platformPage");
+            return;
         }
+        Cookie cookie = new Cookie("userToken", uuid);
+        cookie.setMaxAge(30 * 60 * 60);
+        response.addCookie(cookie);
+        request.getSession().setAttribute("user", systemUserDTO);
+
+        // token settings
+        ModelMap modelMap = modelAndView.getModelMap();
+        modelMap.put("userToken", uuid);
     }
 
 

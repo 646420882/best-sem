@@ -1,26 +1,35 @@
-package com.perfect.commons.web;
+package com.perfect.web.suport;
 
+import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
  */
-public class WebUtils extends org.springframework.web.util.WebUtils {
+public class WebUtils extends org.springframework.web.util.WebUtils implements AuthConstants {
 
     public static final String KEY_ACCOUNT = "_accountId";
     public static final String KEY_ACCOUNTLIST = "_acclist";
 
 
     public static String getUserName(HttpServletRequest request) {
-        Principal userPrincipal = request.getUserPrincipal();
-        return (userPrincipal != null ? userPrincipal.getName() : null);
+//        Principal userPrincipal = request.getUserPrincipal();
+//        return (userPrincipal != null ? userPrincipal.getName() : null);
+
+        Object userInfo = request.getSession().getAttribute(USER_INFORMATION);
+        if (Objects.isNull(userInfo))
+            return null;
+
+        return ((SystemUserDTO) userInfo).getUserName();
     }
 
 
@@ -29,10 +38,9 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     }
 
     public static Long getAccountId(HttpServletRequest request) {
-
         Object accid = request.getSession().getAttribute(KEY_ACCOUNT);
 
-        return (Long) ((accid == null) ? -1l : accid);
+        return (Long) ((accid == null) ? -1L : accid);
     }
 
 
@@ -47,6 +55,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         request.getSession().setAttribute(KEY_ACCOUNTLIST, baiduAccountInfoDTOList);
     }
 
+    @SuppressWarnings("unchecked")
     public static List<BaiduAccountInfoDTO> getAccountList(HttpServletRequest request) {
         Object list = request.getSession().getAttribute(KEY_ACCOUNTLIST);
 

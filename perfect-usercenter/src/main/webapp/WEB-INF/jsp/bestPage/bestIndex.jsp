@@ -66,7 +66,7 @@
             <div>
             </div>
         </div>
-        <div class="serBox" onclick="window.open('${pageContext.request.contextPath}/home')">
+        <div class="serBox" onclick="window.open('http://xxxxxx'+${userToken})">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke2.png"></div>

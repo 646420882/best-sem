@@ -16,13 +16,6 @@
                 当前位置：密码管理
             </div>
             <div class="user_box">
-                <div class="user_title">
-                    <span aria-hidden="true" ng-class="icon"
-                          class="glyphicon glyphicon-user"></span>账户：<b>perfect2015</b>
-                    <button type="button" class="btn btn-default">试用账户</button>
-                </div>
-                <div class="user_content">
-                </div>
             </div>
         </div>
     </div>

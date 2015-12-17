@@ -116,6 +116,7 @@
     border: none;
     font-size: 12px;
     box-shadow: none;
+    border-left: 4px solid #283f5b;
 
 }
 
@@ -356,15 +357,16 @@
 .bootstrap-table .table>thead>tr>th{
     border-bottom: none;
 }
-.binding,.delete,.editor{
-    color:#01aef0;
-    margin-right:10px;
-    line-height:28px;
-    display:inline-block;
-    float:left;
-    width:30px;
+.tab_operate{
+    color: #01aef0;
+    margin-right: 10px;
+    line-height: 28px;
+    display: inline-block;
+    float: left;
+    width: 30px;
     text-align: center;
 }
+
 .binding{
     display:block;
     float:left;

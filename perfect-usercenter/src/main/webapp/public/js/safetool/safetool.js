@@ -32,4 +32,51 @@ $(document).ready(function () {
             }
         }
     });
+    $(phoneModal)
 });
+//绑定
+var commons = {
+    Binding: function (type) {
+        switch (type) {
+            case "phone":
+                $('#phoneModal').modal('hide');
+                $("#phoneModalbottom").hide();
+                $(".phoneHide").removeClass("hide");
+                break;
+            case "email":
+                $('#emailModal').modal('hide');
+                $(".emailHide").removeClass("hide");
+                $("#emailModalbottom").hide();
+                break;
+        }
+    },
+    unBinding: function (type) {
+        switch (type) {
+            case "modifyPhone":
+                $('#phoneModal').modal("show");
+                $("#phoneTitle").html("修改手机号码");
+                $("#phoneModalbottom").hide();
+                $(".phoneHide").removeClass("hide");
+                break;
+            case "modifyEmail":
+                $('#modifyemailModal').modal('show');
+                $(".emailHide").removeClass("hide");
+                $("#emailModalbottom").hide();
+                break;
+        }
+    },
+    oldEmail: function (type) {
+        switch (type) {
+            case "oldEmails":
+                $("#EmailChange").hide();
+                $("#newEmail").removeClass("hide");
+                break;
+        }
+    }
+}
+
+//解绑
+function phoneUnBundling(_this) {
+    $(_this).parent().addClass("hide");
+    $(_this).parent().next("button").show();
+}

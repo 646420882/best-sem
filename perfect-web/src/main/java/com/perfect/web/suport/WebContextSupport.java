@@ -1,4 +1,4 @@
-package com.perfect.commons.web;
+package com.perfect.web.suport;
 
 
 import com.perfect.dto.web.MessageResultDTO;
