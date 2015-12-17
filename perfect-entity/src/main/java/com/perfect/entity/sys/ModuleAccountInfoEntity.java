@@ -50,6 +50,9 @@ public class ModuleAccountInfoEntity {
     @Field("od")
     private List<String> openDomains;//账户开放域名列表
 
+    @Field("brd")
+    private String bestRegDomain; //百思注册时网站url
+
     @Field("rd")
     private String regDomain;//账户注册域名
 
@@ -256,5 +259,13 @@ public class ModuleAccountInfoEntity {
 
     public void setHyToken(String hyToken) {
         this.hyToken = hyToken;
+    }
+
+    public String getBestRegDomain() {
+        return bestRegDomain;
+    }
+
+    public void setBestRegDomain(String bestRegDomain) {
+        this.bestRegDomain = bestRegDomain;
     }
 }

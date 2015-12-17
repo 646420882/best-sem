@@ -91,7 +91,7 @@ public class LoginController {
         systemUserDTO.setImgBytes(null);
         String json = JSONUtils.getJsonString(systemUserDTO);
         Jedis jedis = JRedisUtils.get();
-        jedis.setex(uuid, 60, json);
+        jedis.setex(uuid, 3600, json);
 
         if (url != null && !url.isEmpty() && !url.equals("null")) {
             String target;

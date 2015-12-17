@@ -10,15 +10,15 @@ import java.util.List;
 public class SystemMenuEntity {
     private String id;
 
-    private String menuName;
+    private String menuName;    //菜单名称
 
-    private String menuUrl;
+    private String menuUrl;     //菜单url
 
-    private int order;
+    private int order;          //暂时未用   后期菜单排序
 
-    private List<SystemSubMenuEntity> subMenus;
+    private List<SystemSubMenuEntity> subMenus; //子菜单
 
-    private String parentMenu;
+    private String parentMenu;  //父级菜单
 
     public List<SystemSubMenuEntity> getSubMenus() {
         return subMenus;

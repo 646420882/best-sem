@@ -41,6 +41,8 @@ public class ModuleAccountInfoDTO {
 
     private String regDomain;//账户注册域名
 
+    private String bestRegDomain; //百思注册时网站url
+
     private List<OfflineTimeDTO> budgetOfflineTime;//到达预算下线时段
 
     private List<Double> weeklyBudget;//返回本周的每日预算值
@@ -238,5 +240,13 @@ public class ModuleAccountInfoDTO {
 
     public void setHyToken(String hyToken) {
         this.hyToken = hyToken;
+    }
+
+    public String getBestRegDomain() {
+        return bestRegDomain;
+    }
+
+    public void setBestRegDomain(String bestRegDomain) {
+        this.bestRegDomain = bestRegDomain;
     }
 }

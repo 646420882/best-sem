@@ -1,5 +1,7 @@
 package com.perfect.service;
 
+import com.perfect.param.RegisterParam;
+
 /**
  * Created by SubDong on 2014/9/30.
  */
@@ -11,5 +13,12 @@ public interface AccountRegisterService {
      * @param company 公司名称
      * @return
      */
-    public int addAccount(String account, String pwd, String company, String email);
+    int addAccount(String account, String pwd, String company, String email);
+
+    /**
+     * 添加系统账户
+     * @param registerParam
+     * @return
+     */
+    int addAccount(RegisterParam registerParam);
 }

@@ -25,6 +25,14 @@ public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserDTO
     }
 
     @Override
+    public void regAccount(SystemUserDTO systemUserDTO) {
+        SystemUserEntity sys_user = new SystemUserEntity();
+        BeanUtils.copyProperties(systemUserDTO, sys_user);
+
+        //getSysMongoTemplate().insert(sys_user, "sys_user");
+    }
+
+    @Override
     public SystemUserDTO getAccount(String userName) {
         SystemUserEntity user = getSysMongoTemplate().findOne(Query.query(Criteria.where("userName").is(userName)), getEntityClass(), "sys_user");
 

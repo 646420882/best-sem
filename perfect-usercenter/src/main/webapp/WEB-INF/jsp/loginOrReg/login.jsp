@@ -42,7 +42,6 @@
         <form action="/login" method="post">
             <input type="hidden" name="redirect" value="${redirect_url}"/>
             <input type="" name="url" value="<%=request.getParameter("url")%>"/>
-            <input type="" name="url" value="<%=request.getParameter("url")%>"/>
 
             <div class="login_part1 ">
                 <div class="login_input">

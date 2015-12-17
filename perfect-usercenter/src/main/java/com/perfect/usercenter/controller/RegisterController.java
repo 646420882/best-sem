@@ -53,7 +53,7 @@ public class RegisterController {
     public ModelAndView registerData(ModelMap model, HttpServletResponse response, HttpServletRequest request,
                                      @ModelAttribute RegisterParam registerParam) {
 
-        //int flag = accountRegisterService.addAccount(account, pwd, company, email);
+        int flag = accountRegisterService.addAccount(registerParam);
         model.addAttribute("state", 1);
         return new ModelAndView("loginOrReg/register", model);
     }

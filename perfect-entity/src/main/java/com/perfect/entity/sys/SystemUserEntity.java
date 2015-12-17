@@ -21,7 +21,7 @@ public class SystemUserEntity implements Serializable {
     @Indexed(unique = true)
     private String userName;//用户名
 
-    private boolean payed;
+    private boolean payed;//是否付费 true付费   flase试用
 
     private String password;//密码
 
@@ -29,11 +29,11 @@ public class SystemUserEntity implements Serializable {
 
     private String contactName; //联系人
 
-    private String telephone;
+    private String telephone;//办公电话
 
-    private String mobilephone;
+    private String mobilephone;//移动电话
 
-    private String address;
+    private String address;//通讯地址
 
     private Integer state;      //审核状态: 1审核通过, 0审核未通过
 

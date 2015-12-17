@@ -27,7 +27,7 @@ public class RegisterParam {
     //网站URL地址
     private String urlAddress;
     //用户类型   1 试用装户  2付费用户
-    private String accountType;
+    private int accountType;
 
     public String getCompanyname() {
         return companyname;
@@ -117,11 +117,11 @@ public class RegisterParam {
         this.urlAddress = urlAddress;
     }
 
-    public String getAccountType() {
+    public int getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(int accountType) {
         this.accountType = accountType;
     }
 
