@@ -2,7 +2,9 @@ package com.perfect.db.mongodb.impl;
 
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+import com.mongodb.gridfs.GridFSDBFile;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
@@ -24,8 +26,11 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
+import java.io.InputStream;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -36,6 +41,9 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
  */
 @Repository("systemUserDAO")
 public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, String> implements SystemUserDAO {
+
+    @Resource
+    private GridFsTemplate gridFsTemplate;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -455,9 +463,28 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         return updateSuccess(wr);
     }
 
+    @Override
+    public void updateUserImage(InputStream is, String fileName, Map<String, Object> metaData) {
+        gridFsTemplate.delete(Query.query(Criteria.where("userId").is(metaData.get("userId").toString())));
+
+        String fileType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        DBObject _metaData = new BasicDBObject();
+        for (Map.Entry<String, Object> entry : metaData.entrySet()) {
+            _metaData.put(entry.getKey(), entry.getValue());
+        }
+
+        gridFsTemplate.store(is, fileName, "image/" + fileType, _metaData);
+    }
+
+    @Override
+    public InputStream findUserImage(String sysUserId) {
+        GridFSDBFile gridFSDBFile = gridFsTemplate.findOne(Query.query(Criteria.where("metadata.userId").is(sysUserId)));
+        return Objects.nonNull(gridFSDBFile) ? gridFSDBFile.getInputStream() : null;
+    }
+
     private boolean accountExistsByAccountName(String userid, String baiduUserName) {
 
-        return getSysMongoTemplate().exists(Query.query(Criteria.where("modules.accounts.bname").is(baiduUserName)),getEntityClass());
+        return getSysMongoTemplate().exists(Query.query(Criteria.where("modules.accounts.bname").is(baiduUserName)), getEntityClass());
     }
 
     private SystemUserModuleDTO fromEntity(SystemUserModuleEntity systemUserModuleEntity) {

@@ -7,6 +7,7 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
@@ -31,6 +32,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -757,6 +759,23 @@ public class SystemUserServiceImpl implements SystemUserService {
     public boolean addModuleAccount(String id, String moduleid, ModuleAccountInfoDTO moduleAccountInfoDTO) {
 
         return systemUserDAO.addModuleAccount(id, moduleid, moduleAccountInfoDTO);
+    }
+
+    @Override
+    public void updateUserImage(InputStream is, String fileSuffix) {
+        String sysUserName = AppContext.getUser();
+        Map<String, Object> metaData = Maps.newHashMap();
+        String sysUserId = systemUserDAO.findByUserName(sysUserName).getId();
+        metaData.put("userId", sysUserId);
+
+        systemUserDAO.updateUserImage(is, sysUserName + fileSuffix, metaData);
+    }
+
+    @Override
+    public InputStream findUserImage(String sysUserName) {
+        String sysUserId = systemUserDAO.findByUserName(sysUserName).getId();
+
+        return systemUserDAO.findUserImage(sysUserId);
     }
 
     /**
