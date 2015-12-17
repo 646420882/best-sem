@@ -3,7 +3,7 @@ package com.perfect.app.bdlogin.controller;
 import com.perfect.commons.bdlogin.BaiduHttpLoginHandler;
 import com.perfect.commons.bdlogin.BaiduSearchPageUtils;
 import com.perfect.commons.bdlogin.CaptchaHandler;
-import com.perfect.commons.web.ServletContextUtils;
+import com.perfect.web.suport.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.service.AccountManageService;
