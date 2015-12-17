@@ -21,8 +21,8 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/admin/role")
-    public ModelAndView role(){
-        return new ModelAndView("/role/role");
+    public ModelAndView Role() {
+        return new ModelAndView("/Role/Role");
     }
 
     @RequestMapping(value = "/admin/system", method = RequestMethod.GET)
@@ -32,7 +32,7 @@ public class IndexController {
 
     @RequestMapping(value = "/admin/jurisdiction", method = RequestMethod.GET)
     public ModelAndView jurisdiction() {
-        return new ModelAndView("/jurisdiction/jurisdiction");
+        return new ModelAndView("/Jurisdiction/jurisdiction");
     }
 
     @RequestMapping(value = "/admin/log", method = RequestMethod.GET)
