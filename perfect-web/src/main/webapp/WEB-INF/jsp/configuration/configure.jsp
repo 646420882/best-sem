@@ -85,10 +85,10 @@
                                                 class="fl">${i.baiduUserName}</b></td>
                                         <td>&nbsp;<a href="${i.regDomain}">${i.regDomain}</a></td>
                                         <td>&nbsp;${i.token}</td>
-                                        <td>&nbsp;<input type="text" id="updateInput" data-baidu-id="${i.id}"
+                                        <td>&nbsp;<input type="text" id="updateInput" data-baidu-menuId="${i.menuId}"
                                                          style="border: none" remarkName="${i.baiduRemarkName}"
                                                          value="${i.baiduRemarkName}" width="10px" readonly></td>
-                                        <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-id="${i.id}"
+                                        <td>&nbsp;<a href="#" class="showbox">同步密码</a> &nbsp; <a data-menuId="${i.menuId}"
                                                                                                  data-userName="${currSystemUserName}"
                                                                                                  class="delBtn"
                                                                                                  style="cursor: pointer">删除</a>

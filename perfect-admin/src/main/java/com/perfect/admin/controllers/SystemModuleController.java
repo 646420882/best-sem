@@ -197,13 +197,13 @@ public class SystemModuleController {
             .APPLICATION_JSON_VALUE)
     public ModelAndView updateMenu(@PathVariable("moduleid") String moduleId, @PathVariable("menuid") String
             menuid, @RequestParam(value = "menuname", required = false) String menuname, @RequestParam(value = "order",
-            required = false) Integer order) {
+            required = false) Integer order, @RequestParam(value = "menuurl", required = false) String menuUrl) {
 
         if (Strings.isNullOrEmpty(menuname) && order == null) {
             return JsonViews.generate(-1, "参数为空");
         }
 
-        boolean success = systemModuleService.updateMenu(moduleId, menuid, menuname, order);
+        boolean success = systemModuleService.updateMenu(moduleId, menuid, menuname, order, menuUrl);
 
         if (success) {
             return JsonViews.generateSuccessNoData();

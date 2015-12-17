@@ -324,7 +324,7 @@
         var nodes = node ? [node] : zTree.transformToArray(zTree.getNodes());
         for (var i = 0, l = nodes.length; i < l; i++) {
             var n = nodes[i];
-            n.title = "[" + n.id + "] isFirstNode = " + n.isFirstNode + ", isLastNode = " + n.isLastNode;
+            n.title = "[" + n.menuId + "] isFirstNode = " + n.isFirstNode + ", isLastNode = " + n.isLastNode;
             zTree.updateNode(n);
         }
     }
@@ -410,9 +410,9 @@ function getSelectedNodeToString() {
     var parentNode = "";
     for (var i = 0; i < selectNode.length; i++) {
         if (selectNode[i].isParent == true) {
-            parentNode = selectNode[i].id;
+            parentNode = selectNode[i].menuId;
         } else {
-            v = v + parentNode + "," + selectNode[i].id + "-";
+            v = v + parentNode + "," + selectNode[i].menuId + "-";
         }
     }
 
@@ -482,7 +482,7 @@ function createDeleteKwdHtml(listType, list) {
 
         for (var i = 0; i < list.length; i++) {
             if (list[i].object.keywordId == null) {
-                ids += list[i].object.id + ",";
+                ids += list[i].object.menuId + ",";
             } else {
                 ids += list[i].object.keywordId + ",";
             }

@@ -28,7 +28,7 @@ public interface SystemModuleService {
 
     SystemModuleDTO findByModuleId(String moduleid);
 
-    boolean updateMenu(String moduleId, String menuid, String menuname, Integer order);
+    boolean updateMenu(String moduleId, String menuid, String menuname, Integer order, String menuUrl);
 
     boolean updateModule(SystemModuleDTO systemModuleDTO);
 

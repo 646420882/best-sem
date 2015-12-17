@@ -8,7 +8,8 @@ import java.util.List;
  * Created by yousheng on 15/12/16.
  */
 public class SystemMenuDTO extends BaseDTO {
-    private int menuno;
+
+    private String menuId;
 
     private String menuName;
 
@@ -18,23 +19,12 @@ public class SystemMenuDTO extends BaseDTO {
 
     private List<SystemMenuDTO> subMenus;
 
-    private String parentMenu;
-
-
     public List<SystemMenuDTO> getSubMenus() {
         return subMenus;
     }
 
     public void setSubMenus(List<SystemMenuDTO> subMenus) {
         this.subMenus = subMenus;
-    }
-
-    public String getParentMenu() {
-        return parentMenu;
-    }
-
-    public void setParentMenu(String parentMenu) {
-        this.parentMenu = parentMenu;
     }
 
     public String getMenuName() {
@@ -61,11 +51,12 @@ public class SystemMenuDTO extends BaseDTO {
         this.order = order;
     }
 
-    public int getMenuno() {
-        return menuno;
+    public String getMenuId() {
+        return menuId;
     }
 
-    public void setMenuno(int menuno) {
-        this.menuno = menuno;
+    public SystemMenuDTO setMenuId(String menuId) {
+        this.menuId = menuId;
+        return this;
     }
 }

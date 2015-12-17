@@ -6,15 +6,15 @@ import com.mongodb.WriteResult;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.dto.sys.SystemMenuDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
-import com.perfect.entity.sys.ModuleAccountInfoEntity;
-import com.perfect.entity.sys.SystemUserEntity;
-import com.perfect.entity.sys.SystemUserModuleEntity;
+import com.perfect.entity.sys.*;
 import com.perfect.utils.ObjectUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
@@ -265,17 +265,80 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
      * 更新模块菜单权限
      *
      * @param id
-     * @param modulename
+     * @param usermoduleid
      * @param menus
      * @return
      */
     @Override
-    public boolean updateModuleMenus(String id, String modulename, String[] menus) {
+    public boolean updateModuleMenus(String id, String usermoduleid, List<SystemMenuDTO> menus) {
+
         WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(id).and
-                ("modules.modulename").is
-                (modulename)), Update.update("modules.$.menus", menus), getEntityClass());
+                ("modules._id").is
+                (new ObjectId(usermoduleid))), Update.update("modules.$.menus", fromMenuDTO(menus)), getEntityClass());
         return updateSuccess(writeResult);
     }
+
+    /**
+     * 嵌套list必须循环拷贝
+     *
+     * @param menus
+     * @return
+     */
+    public List<SystemMenuEntity> fromMenuDTO(List<SystemMenuDTO> menus) {
+
+        if (menus == null) {
+            return null;
+        }
+        if (menus.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<SystemMenuEntity> resultList = Lists.newArrayList();
+
+        menus.forEach((systemMenuDTO -> {
+            // 拷贝本层目录属性
+            SystemMenuEntity systemMenuEntity = ObjectUtils.convert(systemMenuDTO, SystemMenuEntity.class);
+            systemMenuEntity.setId(new ObjectId(Calendar.getInstance().getTime()).toString());
+
+            // 拷贝下一层目录属性
+            List<SystemMenuDTO> subMenus = systemMenuDTO.getSubMenus();
+
+            if (subMenus != null) {
+                List<SystemSubMenuEntity> systemSubMenuEntities = fromSubMenuDTO(subMenus);
+
+                systemMenuEntity.setSubMenus(systemSubMenuEntities);
+            }
+
+            resultList.add(systemMenuEntity);
+        }));
+
+
+        return resultList;
+    }
+
+    private List<SystemSubMenuEntity> fromSubMenuDTO(List<SystemMenuDTO> subMenus) {
+
+
+        if (subMenus == null) {
+            return null;
+        }
+        if (subMenus.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<SystemSubMenuEntity> resultList = Lists.newArrayList();
+
+        subMenus.forEach((systemMenuDTO -> {
+            // 拷贝本层目录属性
+            SystemSubMenuEntity systemMenuEntity = ObjectUtils.convert(systemMenuDTO, SystemSubMenuEntity.class);
+
+            resultList.add(systemMenuEntity);
+        }));
+
+
+        return resultList;
+    }
+
 
     @Override
     public boolean saveUserModule(String userid, SystemUserModuleDTO systemUserModuleDTO) {
@@ -283,28 +346,28 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
         systemUserModuleDTO.setId(new ObjectId(Calendar.getInstance().getTime()).toString());
 
-        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDTO.getModuleDTOList();
-        if (systemUserModuleDTOs == null) {
-            WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)),
-                    Update.update("modules", ObjectUtils.convert(systemUserModuleDTO, SystemUserModuleEntity.class)),
-                    getEntityClass());
-            return wr.getN() == 1;
-        } else {
-            boolean removed = systemUserModuleDTOs.removeIf((dto) -> dto.getModuleId().equals(systemUserModuleDTO.getModuleId()));
-            if (removed) {
-                return false;
-            } else {
-                Update update = new Update();
-                update.addToSet("modules", ObjectUtils.convert(systemUserModuleDTO, SystemUserModuleEntity.class));
-                WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)),
-                        update, getEntityClass());
-                return wr.getN() == 1;
-            }
-        }
+//        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDTO.getModuleDTOList();
+//        if (systemUserModuleDTOs == null) {
+//            WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)),
+//                    Update.update("modules", ObjectUtils.convert(systemUserModuleDTO, SystemUserModuleEntity.class)),
+//                    getEntityClass());
+//            return wr.getN() == 1;
+//        } else {
+//            boolean removed = systemUserModuleDTOs.removeIf((dto) -> dto.getModuleId().equals(systemUserModuleDTO.getModuleId()));
+//            if (removed) {
+//                return false;
+//            } else {
+        Update update = new Update();
+        update.addToSet("modules", ObjectUtils.convert(systemUserModuleDTO, SystemUserModuleEntity.class));
+        WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)),
+                update, getEntityClass());
+        return wr.getN() == 1;
+//            }
+//        }
     }
 
     @Override
-    public boolean deleteModule(String userid, String moduleId) {
+    public boolean deleteModule(String userid, String id) {
 
         SystemUserDTO systemUserDTO = findByUserId(userid);
 
@@ -319,7 +382,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 //            update = update.unset("modules");
 //        } else {
 
-        update = update.pull("modules", new BasicDBObject("moduleId", moduleId));
+        update = update.pull("modules", new BasicDBObject("_id", new ObjectId(id)));
 
         // 如果模块数据为空, 则删除该内嵌文档属性
 //            if (wr.getN() == 1) {
@@ -337,6 +400,114 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
                 update, getEntityClass());
         return updateSuccess(wr);
 
+    }
+
+    @Override
+    public SystemUserModuleDTO getUserModuleByModuleId(String id, String moduleid) {
+        SystemUserEntity systemUserEntity = getSysMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(id).and("modules.moduleId").is(moduleid)), getEntityClass());
+
+        if (systemUserEntity == null) {
+            return null;
+        }
+
+        SystemUserModuleEntity systemUserModuleEntity = systemUserEntity.getSystemUserModuleEntities().stream().findFirst()
+                .filter((entity) -> moduleid.equals(entity.getModuleId())).get();
+
+        if (systemUserModuleEntity == null) {
+            return null;
+        }
+
+
+        return fromEntity(systemUserModuleEntity);
+    }
+
+    @Override
+    public boolean existsModule(String userid, String moduleId) {
+        return getSysMongoTemplate().exists(Query.query(Criteria.where(SYSTEM_ID).is(userid).and("modules.moduleId").is(moduleId)), getEntityClass());
+    }
+
+    @Override
+    public SystemUserModuleDTO getUserModuleById(String userid, String id) {
+        SystemUserEntity systemUserEntity = getSysMongoTemplate()
+                .findOne(Query.query(Criteria.where(SYSTEM_ID).is(userid).and("modules._id").is(new ObjectId(id))), getEntityClass());
+
+        Optional<SystemUserModuleEntity> optional = systemUserEntity.getSystemUserModuleEntities().stream().findFirst().filter((entity -> entity.getId().equals(id)));
+        if (optional.isPresent()) {
+            return fromEntity(optional.get());
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean addModuleAccount(String id, String moduleid, ModuleAccountInfoDTO moduleAccountInfoDTO) {
+
+        boolean exists = accountExistsByAccountName(id, moduleAccountInfoDTO.getBaiduUserName());
+
+        ModuleAccountInfoEntity moduleAccountInfoEntity = ObjectUtils.convert(moduleAccountInfoDTO, ModuleAccountInfoEntity.class);
+        moduleAccountInfoEntity.setId(new ObjectId(Calendar.getInstance().getTime()).toString());
+
+        Update update = new Update();
+        update.addToSet("modules.$.accounts", ObjectUtils.convert(moduleAccountInfoDTO, ModuleAccountInfoEntity.class));
+
+        WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(id).and("modules._id").is(new ObjectId(moduleid))), update, getEntityClass());
+
+        return updateSuccess(wr);
+    }
+
+    private boolean accountExistsByAccountName(String userid, String baiduUserName) {
+
+        return getSysMongoTemplate().exists(Query.query(Criteria.where("modules.accounts.bname").is(baiduUserName)),getEntityClass());
+    }
+
+    private SystemUserModuleDTO fromEntity(SystemUserModuleEntity systemUserModuleEntity) {
+        if (systemUserModuleEntity == null) {
+            return null;
+        }
+
+        SystemUserModuleDTO systemUserModuleDTO = ObjectUtils.convert(systemUserModuleEntity, SystemUserModuleDTO.class);
+
+        List<SystemMenuEntity> menuEntities = systemUserModuleEntity.getMenus();
+
+        if (menuEntities != null) {
+            List<SystemMenuDTO> systemMenuDTOs = fromMenuEntity(menuEntities, SystemMenuDTO.class);
+            systemUserModuleDTO.setMenus(systemMenuDTOs);
+        }
+
+        return systemUserModuleDTO;
+    }
+
+    private List<SystemMenuDTO> fromMenuEntity(List<SystemMenuEntity> menuEntities, Class<SystemMenuDTO> systemMenuDTOClass) {
+        if (menuEntities.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<SystemMenuDTO> resultList = Lists.newArrayList();
+        menuEntities.stream().forEach(systemMenuEntity -> {
+            SystemMenuDTO systemMenuDTO = ObjectUtils.convert(systemMenuEntity, systemMenuDTOClass);
+
+            List<SystemSubMenuEntity> subMenus = systemMenuEntity.getSubMenus();
+            if (subMenus != null) {
+                systemMenuDTO.setSubMenus(fromSubMenuEntity(subMenus, SystemMenuDTO.class));
+            }
+
+            resultList.add(systemMenuDTO);
+        });
+
+        return resultList;
+    }
+
+    private List<SystemMenuDTO> fromSubMenuEntity(List<SystemSubMenuEntity> menuEntities, Class<SystemMenuDTO> systemMenuDTOClass) {
+        if (menuEntities.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<SystemMenuDTO> resultList = Lists.newArrayList();
+        menuEntities.stream().forEach(systemMenuEntity -> {
+            resultList.add(ObjectUtils.convert(systemMenuEntity, systemMenuDTOClass));
+
+        });
+        return resultList;
     }
 
     private boolean updateSuccess(WriteResult writeResult) {
@@ -363,9 +534,9 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
 
         List<SystemUserModuleEntity> systemUserModuleEntities = systemUserEntity.getSystemUserModuleEntities();
-
-        user.setModuleDTOList(ObjectUtils.convertToList(systemUserModuleEntities, SystemUserModuleDTO.class));
-
+        if (systemUserModuleEntities != null) {
+            user.setModuleDTOList(ObjectUtils.convertToList(systemUserModuleEntities, SystemUserModuleDTO.class));
+        }
         return user;
     }
 

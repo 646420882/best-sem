@@ -92,7 +92,7 @@ public class ObjectUtils {
         }
 
         List<T> targetList = new ArrayList<>(srcList.size());
-        srcList.parallelStream().forEach(e -> targetList.add(convertToObject(e, targetClz)));
+        srcList.stream().forEach(e -> targetList.add(convertToObject(e, targetClz)));
 
         return targetList;
     }

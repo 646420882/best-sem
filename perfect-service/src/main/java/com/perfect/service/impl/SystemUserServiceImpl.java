@@ -20,9 +20,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.dto.sys.SystemModuleDTO;
-import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.dto.sys.*;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.ObjectUtils;
@@ -657,8 +655,8 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean updateModuleMenus(String id, String modulename, String[] menus) {
-        return systemUserDAO.updateModuleMenus(id, modulename, menus);
+    public boolean updateUserModuleMenus(String id, String moduleid, List<SystemMenuDTO> menus) {
+        return systemUserDAO.updateModuleMenus(id, moduleid, menus);
     }
 
     @Override
@@ -666,6 +664,11 @@ public class SystemUserServiceImpl implements SystemUserService {
 
         SystemUserDTO systemUserDTO = systemUserDAO.findByUserId(userid);
         if (systemUserDTO == null) {
+            return false;
+        }
+
+        boolean exists = systemUserDAO.existsModule(userid, moduleId);
+        if (exists) {
             return false;
         }
 
@@ -699,21 +702,90 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean deleteModule(String userid, String moduleId) {
+    public boolean deleteModule(String userid, String id) {
         SystemUserDTO systemUserDTO = systemUserDAO.findByUserId(userid);
         if (systemUserDTO == null) {
             return false;
         }
 
-        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(moduleId);
+        SystemUserModuleDTO systemUserModuleDTO = systemUserDTO.getModuleDTOList().stream().findFirst().filter((dto -> dto.getId().equals(id))).get();
+
+        if (systemUserModuleDTO == null) {
+            return false;
+        }
+
+        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(systemUserModuleDTO.getModuleId());
         if (systemModuleDTO == null) {
             return false;
         }
 
-        boolean success = systemUserDAO.deleteModule(userid, moduleId);
+        boolean success = systemUserDAO.deleteModule(userid, id);
         if (success) {
             systemLogDAO.log("用户:" + systemUserDTO.getUserName() + " 删除系统模块:" + systemModuleDTO.getModuleName());
         }
         return success;
+    }
+
+    @Override
+    public List<SystemMenuDTO> getUserSubMenu(String userid, String id) {
+
+        SystemUserModuleDTO systemUserModuleDTO = systemUserDAO.getUserModuleById(userid, id);
+
+        if (systemUserModuleDTO == null) {
+            return Lists.newArrayList();
+        }
+        // 查询系统模块菜单，获取最新菜单名称，url等
+        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(systemUserModuleDTO.getModuleId());
+
+//        List<SystemMenuDTO> systemMenuDTOs = systemModuleDTO.getMenus();
+//
+//        List<SystemMenuDTO> userMenuDTOs = systemUserModuleDTO.getMenus();
+//
+//        userMenuDTOs.stream().forEach((userMenuDTO -> {
+//            SystemMenuDTO matchedMenuDTO = systemMenuDTOs.stream().findFirst()
+//                    .filter((systemMenuDTO -> userMenuDTO.getId().equals(systemMenuDTO.getId()))).get();
+//
+//            userMenuDTO.setMenuName(matchedMenuDTO.getMenuName());
+//            userMenuDTO.setMenuUrl(matchedMenuDTO.getMenuName());
+//        }));
+
+        updateMenuData(systemModuleDTO.getMenus(), systemUserModuleDTO.getMenus());
+        return systemUserModuleDTO.getMenus();
+    }
+
+    @Override
+    public boolean addModuleAccount(String id, String moduleid, ModuleAccountInfoDTO moduleAccountInfoDTO) {
+
+        return systemUserDAO.addModuleAccount(id, moduleid, moduleAccountInfoDTO);
+    }
+
+    /**
+     * @param from 原始数据
+     * @param to   需要被设置的数据
+     */
+    private void updateMenuData(List<SystemMenuDTO> from, List<SystemMenuDTO> to) {
+        if (to == null || from == null) {
+            return;
+        }
+        to.stream().forEach((userMenuDTO -> {
+            SystemMenuDTO matchedMenuDTO = null;
+
+            Optional<SystemMenuDTO> optional = from.stream().filter((systemMenuDTO) -> userMenuDTO.getMenuId().equals(systemMenuDTO.getId())).findAny();
+
+            if (optional.isPresent()) {
+                matchedMenuDTO = optional.get();
+            } else {
+                return;
+            }
+
+            userMenuDTO.setMenuName(matchedMenuDTO.getMenuName());
+            userMenuDTO.setMenuUrl(matchedMenuDTO.getMenuUrl());
+
+            if (userMenuDTO.getSubMenus() == null || userMenuDTO.getSubMenus().isEmpty()) {
+                return;
+            } else {
+                updateMenuData(matchedMenuDTO.getSubMenus(), userMenuDTO.getSubMenus());
+            }
+        }));
     }
 }
