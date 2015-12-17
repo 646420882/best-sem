@@ -1,15 +1,14 @@
 package com.perfect.app.index.controller;
 
-//import com.perfect.commons.CustomUserDetailsService;
 import com.perfect.commons.message.mail.SendMail;
-import com.perfect.web.suport.WebContextSupport;
-import com.perfect.web.suport.WebUtils;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.redis.JRedisUtils;
+import com.perfect.web.suport.WebContextSupport;
+import com.perfect.web.suport.WebUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +40,17 @@ public class HomePageManageController extends WebContextSupport {
     private AccountRegisterService accountRegisterService;
 
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView index() {
-        return new ModelAndView("bestPage/bestIndex");
+    @RequestMapping(value = "/")
+    public ModelAndView index(HttpServletRequest request, ModelMap modelMap) {
+        String userName = WebUtils.getUserName(request);
+        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+        if (systemUserDTO == null) {
+            return new ModelAndView("redirect:/logout");
+        }
+
+        modelMap.put("currSystemUserName", userName);
+        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+        return new ModelAndView("homePage/home");
     }
 
 //    /**
@@ -92,37 +99,24 @@ public class HomePageManageController extends WebContextSupport {
         response.addCookie(cookies);
     }
 
-    @RequestMapping(value = "/")
-    public ModelAndView index(HttpServletRequest request, ModelMap modelMap) {
-        String userName = WebUtils.getUserName(request);
-        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-        if (systemUserDTO == null) {
-            return new ModelAndView("redirect:/logout");
-        }
-
-        modelMap.put("currSystemUserName", userName);
-        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
-        return new ModelAndView("homePage/home");
-    }
-
-    /**
-     * 跳转至SEM首页
-     *
-     * @return
-     *//*
-    @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
-        String userName = WebUtils.getUserName(request);
-        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-        if (systemUserDTO == null) {
-            return new ModelAndView("redirect:/logout");
-        }
-
-        modelMap.put("currSystemUserName", userName);
-        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
-        return new ModelAndView("homePage/home");
-    }*/
-
+//    /**
+//     * 跳转至SEM首页
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
+//    public ModelAndView getHomePage(HttpServletRequest request, ModelMap modelMap) {
+//        String userName = WebUtils.getUserName(request);
+//        SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
+//        if (systemUserDTO == null) {
+//            return new ModelAndView("redirect:/logout");
+//        }
+//
+//        modelMap.put("currSystemUserName", userName);
+//        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+//        return new ModelAndView("homePage/home");
+//    }
+//
 //    /**
 //     * 登录成功, 跳转至百思首页
 //     *

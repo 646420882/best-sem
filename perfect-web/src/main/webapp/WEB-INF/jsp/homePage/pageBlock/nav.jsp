@@ -19,7 +19,7 @@
                 </div>
                 <ul>
                     <li class="current">
-                        <a href="${pageContext.request.contextPath}/home" data-toggle="tooltip" data-placement="right"
+                        <a href="${pageContext.request.contextPath}/" data-toggle="tooltip" data-placement="right"
                            title="账户全景">
                             <span class="list_1"></span>
 
