@@ -3,7 +3,6 @@ package com.perfect.db.mongodb.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mongodb.WriteResult;
 import com.perfect.dao.sys.SystemRoleDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
@@ -19,7 +18,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by yousheng on 15/12/17.
@@ -81,6 +79,20 @@ public class SystemRoleDAOImpl extends AbstractSysBaseDAOImpl<SystemRoleDTO, Str
         WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(roleid)), update, getEntityClass());
 
         return wr.getN() == 1;
+    }
+
+    @Override
+    public SystemRoleDTO findByNameAndPasswd(String username, String password) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("loginName").is(username).and("password").is(password));
+        SystemRoleEntity systemRoleEntity = getSysMongoTemplate().findOne(query, getEntityClass());
+
+        if (systemRoleEntity == null) {
+            return null;
+        }
+
+        systemRoleEntity.setPassword(null);
+        return ObjectUtils.convert(systemRoleEntity, getDTOClass());
     }
 
 }

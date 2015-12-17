@@ -1,5 +1,7 @@
 package com.perfect.admin.controllers;
 
+import com.perfect.dto.sys.SystemRoleDTO;
+import com.perfect.service.SystemRoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -15,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class AdminLoginController {
 
+
+    @Resource
+    private SystemRoleService systemRoleService;
 
     public AdminLoginController() {
         System.out.println("true = " + true);
@@ -26,30 +32,39 @@ public class AdminLoginController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/login", method = {RequestMethod.GET})
     public ModelAndView getLoginPage(HttpServletRequest request,
                                      ModelMap model,
                                      @RequestParam(value = "url", required = false) String url,
                                      @RequestParam(value = "error", required = false) boolean error) {
-        if (error) {
-//            int badCredentialsNum = CustomUserDetailsService.getPasswdBadCredentialsNum();
-//            if (CustomUserDetailsService.isUsernameNotFound()) {
-//                if (CustomUserDetailsService.isVerifyNotPass())
-//                    model.put("invalidUserName", "正在审核中");
-//                else if (CustomUserDetailsService.isForbidden())
-//                    model.put("invalidUserName", "帐号已禁用");
-//                else
-//                    model.put("invalidUserName", "用户名不存在");
-//            } else if (badCredentialsNum > 0) {
-//                if (badCredentialsNum == 3)
-//                    model.put("invalidPassword", "帐号已被锁定");
-//                else
-//                    model.put("invalidPassword", "密码错误, 剩余" + (3 - badCredentialsNum) + "次");
-//            }
-        } else {
-            model.put("error", "");
-        }
-        model.put("redirect_url", url);
+
+
         return new ModelAndView("loginOrReg/login", model);
     }
+
+
+    @RequestMapping(value = "/loginaction", method = {RequestMethod.POST})
+    public ModelAndView login(HttpServletRequest request,
+                              ModelMap model,
+                              @RequestParam(value = "url", required = false) String url,
+                              @RequestParam(value = "error", required = false) boolean error) {
+
+        String username = request.getParameter("j_username");
+        String password = request.getParameter("j_password");
+
+
+        SystemRoleDTO systemRoleDTO = systemRoleService.login(username, password);
+        if (systemRoleDTO == null) {
+
+            ModelAndView modelAndView = new ModelAndView("loginOrReg/login");
+//            modelAndView.addObject("invalidUserName", "用户名或者密码错误!");
+
+            modelAndView.getModel().put("invalidUserName","用户名或者密码错误");
+            return modelAndView;
+        }
+        request.getSession().setAttribute("user", systemRoleDTO);
+
+        return new ModelAndView("redirect:/");
+    }
+
 }

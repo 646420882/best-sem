@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.perfect.dao.sys.SystemRoleDAO;
 import com.perfect.dto.sys.SystemRoleDTO;
 import com.perfect.service.SystemRoleService;
+import com.perfect.utils.MD5;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import java.util.Map;
 @Service
 public class SystemRoleServiceImpl implements SystemRoleService {
 
+    private final String pass_salt = "admin_password";
     @Resource
     private SystemRoleDAO systemRoleDAO;
 
@@ -36,11 +38,22 @@ public class SystemRoleServiceImpl implements SystemRoleService {
 
     @Override
     public void addSystemRole(SystemRoleDTO systemRoleDTO) {
+        systemRoleDTO.setPassword(new MD5.Builder().password(systemRoleDTO.getPassword()).salt(pass_salt).build().getMD5());
         systemRoleDAO.save(systemRoleDTO);
     }
 
     @Override
     public boolean update(String roleid, SystemRoleDTO systemRoleDTO) {
         return systemRoleDAO.update(roleid, systemRoleDTO);
+    }
+
+    @Override
+    public SystemRoleDTO login(String username, String password) {
+        return systemRoleDAO.findByNameAndPasswd(username, new MD5.Builder().password(password).salt(pass_salt).build().getMD5());
+    }
+
+    @Override
+    public boolean deleteSystemRole(String roleid) {
+        return systemRoleDAO.delete(roleid);
     }
 }

@@ -39,14 +39,17 @@ public class IndexController {
     public ModelAndView log() {
         return new ModelAndView("/log/log");
     }
+
     @RequestMapping(value = "/admin/register", method = RequestMethod.GET)
     public ModelAndView register() {
         return new ModelAndView("/lognOrReg/register");
     }
+
     @RequestMapping(value = "/admin/forget", method = RequestMethod.GET)
     public ModelAndView forget() {
         return new ModelAndView("/lognOrReg/forget");
     }
+
     @RequestMapping(value = "/admin/forgetPassword", method = RequestMethod.GET)
     public ModelAndView forgetPassword() {
         return new ModelAndView("/lognOrReg/forgetPassword");

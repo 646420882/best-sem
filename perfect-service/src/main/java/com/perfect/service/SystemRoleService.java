@@ -13,4 +13,8 @@ public interface SystemRoleService {
     void addSystemRole(SystemRoleDTO systemRoleDTO);
 
     boolean update(String roleid, SystemRoleDTO systemRoleDTO);
+
+    SystemRoleDTO login(String username, String password);
+
+    boolean deleteSystemRole(String roleid);
 }

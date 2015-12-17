@@ -54,4 +54,13 @@ public class SystemRoleControllerTest extends JUnitBaseTest {
                 .andDo(MockMvcResultHandlers.print()).andReturn();
 
     }
+
+
+    @Test
+    public void testDeleteSystemRole() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/sysroles/" + roleid))
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+
+    }
 }
