@@ -28,14 +28,6 @@ public class SystemUserInfo {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "SystemUserInfo{" +
-                "ip='" + ip + '\'' +
-                ", user='" + user + '\'' +
-                '}';
-    }
-
     public boolean isSuper() {
         return isSuper;
     }

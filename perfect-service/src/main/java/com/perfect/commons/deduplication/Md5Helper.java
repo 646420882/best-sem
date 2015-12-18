@@ -10,7 +10,7 @@ import java.util.function.Function;
  *
  * @author dolphineor
  */
-public class KeywordDeduplication {
+public class Md5Helper {
 
     /**
      * <p>MD5去重算法.

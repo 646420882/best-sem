@@ -17,6 +17,10 @@
             <groupId>com.perfect</groupId>
             <artifactId>perfect-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-entity</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>redis.clients</groupId>
@@ -82,6 +86,11 @@
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
         </dependency>
 
         <dependency>

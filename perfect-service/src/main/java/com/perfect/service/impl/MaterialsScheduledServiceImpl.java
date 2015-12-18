@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.perfect.commons.constants.MaterialsJobEnum.ACTIVE;
-import static com.perfect.commons.deduplication.KeywordDeduplication.MD5.getMD5;
+import static com.perfect.commons.deduplication.Md5Helper.MD5.getMD5;
 
 /**
  * Created on 2015-09-29.

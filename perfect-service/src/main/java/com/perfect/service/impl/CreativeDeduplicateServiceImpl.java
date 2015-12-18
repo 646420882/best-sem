@@ -1,6 +1,6 @@
 package com.perfect.service.impl;
 
-import com.perfect.commons.deduplication.KeywordDeduplication;
+import com.perfect.commons.deduplication.Md5Helper;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.service.CreativeDeduplicateService;
@@ -42,7 +42,7 @@ public class CreativeDeduplicateServiceImpl implements CreativeDeduplicateServic
             final Map<String, List<CreativeDTO>> sameAdgroupCreativeMap = ((BiFunction<Long, Long, List<CreativeDTO>>) creativeDAO::findByAdgroupId).apply(baiduUserId, adgroupId)
                     .stream()
                     .collect(Collectors.groupingBy(creative -> {
-                        return KeywordDeduplication.MD5.getMD5(creative.getTitle() + creative.getDescription1() + creative.getDescription2());
+                        return Md5Helper.MD5.getMD5(creative.getTitle() + creative.getDescription1() + creative.getDescription2());
                     }));
 
             return creativeList.stream()
@@ -62,7 +62,7 @@ public class CreativeDeduplicateServiceImpl implements CreativeDeduplicateServic
             final Map<String, List<CreativeDTO>> sameAdgroupCreativeMap = ((BiFunction<Long, String, List<CreativeDTO>>) creativeDAO::findByAdgroupId).apply(baiduUserId, adgroupId)
                     .stream()
                     .collect(Collectors.groupingBy(creative -> {
-                        return KeywordDeduplication.MD5.getMD5(creative.getTitle() + creative.getDescription1() + creative.getDescription2());
+                        return Md5Helper.MD5.getMD5(creative.getTitle() + creative.getDescription1() + creative.getDescription2());
                     }));
 
             return creativeList.stream()

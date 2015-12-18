@@ -32,13 +32,13 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
      * @param list
      * @param currSystemUserName
      */
-    void addBaiduAccount(List<BaiduAccountInfoDTO> list, String currSystemUserName);
+    void addBaiduAccount(List<ModuleAccountInfoDTO> list, String currSystemUserName);
 
     SystemUserDTO findByAid(long aid);
 
     Iterable<SystemUserDTO> getAllValidUser();
 
-    void insertAccountInfo(String userName, BaiduAccountInfoDTO baiduAccountInfoDTO);
+    void insertAccountInfo(String userName, ModuleAccountInfoDTO baiduAccountInfoDTO);
 
     int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs, String account);
 

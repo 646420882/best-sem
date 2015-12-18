@@ -11,6 +11,7 @@ import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.sys.ModuleAccountInfoEntity;
@@ -135,12 +136,14 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
      * @return
      */
     @Override
-    public List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName) {
-        SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(currUserName);
-        if (systemUserDTO != null) {
-            return systemUserDTO.getBaiduAccounts();
-        }
-        return Collections.emptyList();
+    public List<ModuleAccountInfoDTO> getBaiduAccountItems(String currUserName) {
+        return AppContext.getModuleAccounts();
+
+//        SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(currUserName);
+//        if (systemUserDTO != null) {
+//            return systemUserDTO.getBaiduAccounts();
+//        }
+//        return Collections.emptyList();
     }
 
     @Override
@@ -158,13 +161,12 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
      * @return
      */
     @Override
-    public BaiduAccountInfoDTO findByBaiduUserId(Long baiduUserId) {
-        String currUser = AppContext.getUser();
-        List<BaiduAccountInfoDTO> list = getBaiduAccountItems(currUser);
+    public ModuleAccountInfoDTO findByBaiduUserId(Long baiduUserId) {
+        List<ModuleAccountInfoDTO> list = AppContext.getModuleAccounts();
 
-        BaiduAccountInfoDTO baiduAccount = null;
-        for (BaiduAccountInfoDTO dto : list) {
-            if (baiduUserId.equals(dto.getId())) {
+        ModuleAccountInfoDTO baiduAccount = null;
+        for (ModuleAccountInfoDTO dto : list) {
+            if (baiduUserId.equals(dto.getBaiduAccountId())) {
                 baiduAccount = dto;
                 break;
             }

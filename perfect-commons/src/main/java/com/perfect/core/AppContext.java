@@ -1,6 +1,10 @@
 package com.perfect.core;
 
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
+
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,6 +71,12 @@ public class AppContext {
 //        contextMap.set(so);
 //    }
 
+    public static void setModuleId(String moduleId) {
+        SessionObject so = new SessionObject();
+        so.setModuleId(moduleId);
+        contextMap.set(so);
+    }
+
     public static void setUser(String userName) {
         SessionObject so = new SessionObject();
         so.setUserName(userName);
@@ -81,6 +91,21 @@ public class AppContext {
         contextMap.set(so);
     }
 
+    public static void setUser(String userName, Long accountId, List<ModuleAccountInfoDTO> moduleAccountInfoDTOs) {
+        SessionObject so = new SessionObject();
+        so.setUserName(userName);
+        so.setAccountId(accountId);
+        so.setModuleAccountInfoDTOs(moduleAccountInfoDTOs);
+        contextMap.set(so);
+    }
+
+    public static String getModuleId() {
+        if (contextMap.get() == null)
+            return null;
+
+        return contextMap.get().getModuleId();
+    }
+
     public static String getUser() {
         if (contextMap.get() == null)
             return null;
@@ -88,12 +113,12 @@ public class AppContext {
     }
 
     public static Long getAccountId() {
-        SessionObject sessionObject = contextMap.get();
+        SessionObject so = contextMap.get();
 
-        if (sessionObject != null) {
-            return sessionObject.getAccountId();
+        if (so != null) {
+            return so.getAccountId();
         } else {
-            return -1l;
+            return -1L;
         }
     }
 
@@ -103,6 +128,16 @@ public class AppContext {
 
     public static void setRemote(String remote) {
         remoteIpThreadLocal.set(remote);
+    }
+
+    public static List<ModuleAccountInfoDTO> getModuleAccounts() {
+        SessionObject so = contextMap.get();
+
+        if (so != null) {
+            return so.getModuleAccountInfoDTOs();
+        } else {
+            return Collections.emptyList();
+        }
     }
 
 }

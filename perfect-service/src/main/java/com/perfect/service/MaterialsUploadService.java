@@ -1,6 +1,6 @@
 package com.perfect.service;
 
-import com.perfect.commons.deduplication.KeywordDeduplication;
+import com.perfect.commons.deduplication.Md5Helper;
 import com.perfect.dto.creative.CreativeDTO;
 
 import java.util.List;
@@ -120,12 +120,12 @@ public interface MaterialsUploadService {
 
 
     default boolean isDuplicate(CreativeDTO source, List<CreativeDTO> targets) {
-        String sourceMd5 = KeywordDeduplication.MD5
+        String sourceMd5 = Md5Helper.MD5
                 .getMD5(source.getTitle() + source.getDescription1() + source.getDescription2());
 
         return targets.stream()
                 .filter(c -> Long.compare(source.getAdgroupId(), c.getAdgroupId()) == 0)
-                .anyMatch(c -> sourceMd5.equals(KeywordDeduplication.MD5
+                .anyMatch(c -> sourceMd5.equals(Md5Helper.MD5
                         .getMD5(c.getTitle() + c.getDescription1() + c.getDescription2())));
     }
 }

@@ -5,6 +5,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.mongodb.gridfs.GridFSDBFile;
+import com.perfect.core.AppContext;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
@@ -18,6 +19,7 @@ import com.perfect.entity.creative.CreativeEntity;
 import com.perfect.entity.keyword.KeywordEntity;
 import com.perfect.entity.sys.*;
 import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.SystemUserUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -57,14 +59,15 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
-    public void addBaiduAccount(List<BaiduAccountInfoDTO> list, String currSystemUserName) {
-        SystemUserDTO currSystemUserDTO = findByUserName(currSystemUserName);
-        List<BaiduAccountInfoDTO> _list = currSystemUserDTO.getBaiduAccounts();
+    public void addBaiduAccount(List<ModuleAccountInfoDTO> list, String currSystemUserName) {
+        List<ModuleAccountInfoDTO> _list = AppContext.getModuleAccounts();
         if (_list == null)
             _list = new ArrayList<>();
 
         _list.addAll(list);
-        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName)), Update.update("baiduAccountInfos", _list), "sys_user");
+
+        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName).and("modules.moduleId").is(AppContext.getModuleId())),
+                Update.update("modules.accounts", _list), "sys_user");
     }
 
     @Override
@@ -86,20 +89,29 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
-    public void insertAccountInfo(String userName, BaiduAccountInfoDTO baiduAccountInfoDTO) {
+    public void insertAccountInfo(String userName, ModuleAccountInfoDTO baiduAccountInfoDTO) {
         SystemUserDTO systemUserDTO = findByUserName(userName);
-        if (systemUserDTO.getBaiduAccounts().isEmpty())
+
+        boolean isEmpty = systemUserDTO.getModuleDTOList()
+                .stream()
+                .filter(o -> Objects.equals(AppContext.getModuleId(), o.getModuleId()))
+                .findFirst()
+                .get()
+                .getAccounts()
+                .isEmpty();
+
+        if (isEmpty)
             baiduAccountInfoDTO.setDfault(true);
 
         ModuleAccountInfoEntity moduleAccountInfoEntity = ObjectUtils.convert(baiduAccountInfoDTO, ModuleAccountInfoEntity.class);
         Update update = new Update();
-        update.addToSet("bdAccounts", moduleAccountInfoEntity);
-        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(userName)), update, getEntityClass());
+        update.addToSet("modules.accounts", moduleAccountInfoEntity);
+        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(userName).and("modules.moduleId").is(AppContext.getModuleId())), update, getEntityClass());
     }
 
     @Override
     public int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs, String account) {
-
+        // TODO
         List<ModuleAccountInfoEntity> baiduAccountInfoEntities = ObjectUtils.convert(baiduAccountInfoDTOs, ModuleAccountInfoEntity.class);
 
 
@@ -514,7 +526,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     private List<SystemMenuDTO> fromMenuEntity(List<SystemMenuEntity> menuEntities, Class<SystemMenuDTO> systemMenuDTOClass) {
         if (menuEntities.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List<SystemMenuDTO> resultList = Lists.newArrayList();
@@ -534,7 +546,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     private List<SystemMenuDTO> fromSubMenuEntity(List<SystemSubMenuEntity> menuEntities, Class<SystemMenuDTO> systemMenuDTOClass) {
         if (menuEntities.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List<SystemMenuDTO> resultList = Lists.newArrayList();
@@ -561,27 +573,37 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     protected SystemUserDTO fromEntity(SystemUserEntity systemUserEntity) {
-        List<ModuleAccountInfoEntity> moduleAccountInfoEntityList = systemUserEntity.getBaiduAccounts();
-        SystemUserDTO user = ObjectUtils.convert(systemUserEntity, getDTOClass());
-
-        List<BaiduAccountInfoDTO> dtoList = convertByClass(moduleAccountInfoEntityList, BaiduAccountInfoDTO.class);
-        user.setBaiduAccounts(dtoList);
-
-
-        List<SystemUserModuleEntity> systemUserModuleEntities = systemUserEntity.getSystemUserModuleEntities();
-        if (systemUserModuleEntities != null) {
-            user.setModuleDTOList(ObjectUtils.convertToList(systemUserModuleEntities, SystemUserModuleDTO.class));
-        }
-        return user;
+//        List<ModuleAccountInfoEntity> moduleAccountInfoEntityList = systemUserEntity
+//                .getSystemUserModuleEntities()
+//                .stream()
+//                .filter(o -> Objects.equals(AppContext.getModuleId(), o.getModuleId()))
+//                .findFirst()
+//                .get()
+//                .getAccounts();
+//
+//        SystemUserDTO user = ObjectUtils.convert(systemUserEntity, getDTOClass());
+//
+//        List<BaiduAccountInfoDTO> dtoList = convertByClass(moduleAccountInfoEntityList, BaiduAccountInfoDTO.class);
+//        user.setBaiduAccounts(dtoList);
+//
+//
+//        List<SystemUserModuleEntity> systemUserModuleEntities = systemUserEntity.getSystemUserModuleEntities();
+//        if (systemUserModuleEntities != null) {
+//            user.setModuleDTOList(ObjectUtils.convertToList(systemUserModuleEntities, SystemUserModuleDTO.class));
+//        }
+//        return user;
+        return SystemUserUtils.convertToDTO(systemUserEntity);
     }
 
 
     protected SystemUserEntity toEntity(SystemUserDTO systemUserDTO) {
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
-        SystemUserEntity user = ObjectUtils.convert(systemUserDTO, getEntityClass());
+//        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
+//        SystemUserEntity user = ObjectUtils.convert(systemUserDTO, getEntityClass());
+//
+//        List<ModuleAccountInfoEntity> moduleAccountInfoEntityList = convertByClass(baiduAccountInfoDTOList, ModuleAccountInfoEntity.class);
+//        user.setBaiduAccounts(moduleAccountInfoEntityList);
+//        return user;
 
-        List<ModuleAccountInfoEntity> moduleAccountInfoEntityList = convertByClass(baiduAccountInfoDTOList, ModuleAccountInfoEntity.class);
-        user.setBaiduAccounts(moduleAccountInfoEntityList);
-        return user;
+        return SystemUserUtils.convertToEntity(systemUserDTO);
     }
 }

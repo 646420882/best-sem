@@ -52,26 +52,24 @@
                 <h4 class="modal-title">设置密保邮箱</h4>
             </div>
             <div class="modal-body">
-                <form id="emailSettingForm" action="/email/sendCaptcha">
-                    <div class="form-group over">
-                        <div class="col-xs-2">邮箱地址：</div>
-                        <div class="col-xs-10">
-                            <input type="text" id="email" name="email" class="form-control"/>
-                            <%--<select class="form-control">
-                                <option value="">443895413@qq.com</option>
-                                <option value="">443895413@qq.com</option>
-                                <option value="">443895413@qq.com</option>
-                            </select>--%>
-                        </div>
+                <div class="form-group over">
+                    <div class="col-xs-2">邮箱地址：</div>
+                    <div class="col-xs-10">
+                        <input type="text" id="email" name="email" class="form-control"/>
+                        <%--<select class="form-control">
+                            <option value="">443895413@qq.com</option>
+                            <option value="">443895413@qq.com</option>
+                            <option value="">443895413@qq.com</option>
+                        </select>--%>
                     </div>
-                    <div class="form-group form-inline">
-                        <div class="col-xs-2"></div>
-                        <div class="col-xs-10">
-                            <input type="text" class="form-control" placeholder="6位验证码">
-                            <button type="submit" class="btn btn_large ">发送验证码</button>
-                        </div>
+                </div>
+                <div class="form-group form-inline">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" placeholder="6位验证码">
+                        <button id="emailSetting" type="button" class="btn btn_large ">发送验证码</button>
                     </div>
-                </form>
+                </div>
                 <p>* 您可用使用此密保邮箱找回密码及登录</p>
 
                 <p>* 请勿随意泄露邮箱地址，以防被不法分子利用，骗取帐号信息</p>

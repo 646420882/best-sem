@@ -33,23 +33,15 @@ $(document).ready(function () {
         }
     });
 
-    $('#emailSettingForm').bind('submit', function () {
+    $('#emailSetting').click(function () {
         $.ajax({
             url: "/email/sendCaptcha",
             type: "POST",
             dataType: "JSON",
             data: {
                 "email": $('#email').val()
-            },
-            success: function () {
-                // On success do what you want to do
-                // and then ubind the submit event handler and submit the form
-                $('#emailSettingForm').unbind('submit').submit();
             }
         });
-
-        // Prevent default form submit
-        return false;
 
     });
 

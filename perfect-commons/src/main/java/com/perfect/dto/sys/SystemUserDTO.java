@@ -1,7 +1,6 @@
 package com.perfect.dto.sys;
 
 import com.perfect.dto.BaseDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,8 +26,6 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     private List<SystemUserModuleDTO> moduleDTOList;
 
-    private List<BaiduAccountInfoDTO> baiduAccounts;
-
     private Integer accountState;
 
     private long startTime;
@@ -47,15 +44,6 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     private String displayCtime;
 
-    public SystemUserDTO() {
-    }
-
-    public SystemUserDTO(String userName, String password,
-                         List<BaiduAccountInfoDTO> baiduAccounts) {
-        this.userName = userName;
-        this.password = password;
-        this.baiduAccounts = baiduAccounts;
-    }
 
     public String getUserName() {
         return userName;
@@ -103,14 +91,6 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public List<BaiduAccountInfoDTO> getBaiduAccounts() {
-        return baiduAccounts;
-    }
-
-    public void setBaiduAccounts(List<BaiduAccountInfoDTO> baiduAccounts) {
-        this.baiduAccounts = baiduAccounts;
     }
 
     public Integer getAccountState() {

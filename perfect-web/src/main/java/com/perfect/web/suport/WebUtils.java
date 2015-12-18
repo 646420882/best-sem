@@ -3,12 +3,13 @@ package com.perfect.web.suport;
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,10 +22,19 @@ public class WebUtils extends org.springframework.web.util.WebUtils implements A
     public static final String KEY_ACCOUNTLIST = "_acclist";
 
 
-    public static String getUserName(HttpServletRequest request) {
-//        Principal userPrincipal = request.getUserPrincipal();
-//        return (userPrincipal != null ? userPrincipal.getName() : null);
+    public static void setModuleId(HttpServletRequest request, String moduleId) {
+        request.getSession().setAttribute(MODULE, moduleId);
+    }
 
+    public static String getModuleId(HttpServletRequest request) {
+        Object obj = request.getSession().getAttribute(MODULE);
+        if (Objects.isNull(obj))
+            return null;
+
+        return obj.toString();
+    }
+
+    public static String getUserName(HttpServletRequest request) {
         Object userInfo = request.getSession().getAttribute(USER_INFORMATION);
         if (Objects.isNull(userInfo))
             return null;
@@ -43,6 +53,18 @@ public class WebUtils extends org.springframework.web.util.WebUtils implements A
         return (Long) ((accid == null) ? -1L : accid);
     }
 
+    public static void setModuleAccounts(HttpServletRequest request, List<ModuleAccountInfoDTO> moduleAccountInfoDTOs) {
+        request.getSession().setAttribute(MODULE_ACCOUNT_INFORMATION, moduleAccountInfoDTOs);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<ModuleAccountInfoDTO> getModuleAccounts(HttpServletRequest request) {
+        Object moduleAccountInfo = request.getAttribute(MODULE_ACCOUNT_INFORMATION);
+        if (Objects.isNull(moduleAccountInfo))
+            return Collections.emptyList();
+
+        return ((List<ModuleAccountInfoDTO>) moduleAccountInfo);
+    }
 
     public static void setContext(HttpServletRequest request) {
         String userName = getUserName(request);

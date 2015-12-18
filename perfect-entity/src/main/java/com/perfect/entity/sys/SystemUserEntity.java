@@ -1,7 +1,6 @@
 package com.perfect.entity.sys;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -47,25 +46,8 @@ public class SystemUserEntity implements Serializable {
     @Field("modules")
     private List<SystemUserModuleEntity> systemUserModuleEntities;
 
-
-    // 请参考SystemUserModuleEntity
-    @Deprecated
-    @Field(value = "bdAccounts")
-    private List<ModuleAccountInfoEntity> baiduAccounts;            // 百度帐号列表
-
     @Field(value = "acstate")
     private Integer accountState;                                   // 系统帐号状态: 1.启用, 0.禁用
-
-
-    public SystemUserEntity() {
-    }
-
-    @PersistenceConstructor
-    public SystemUserEntity(String userName, String password, List<ModuleAccountInfoEntity> baiduAccounts) {
-        this.userName = userName;
-        this.password = password;
-        this.baiduAccounts = baiduAccounts;
-    }
 
 
     public String getId() {
@@ -122,14 +104,6 @@ public class SystemUserEntity implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public List<ModuleAccountInfoEntity> getBaiduAccounts() {
-        return baiduAccounts;
-    }
-
-    public void setBaiduAccounts(List<ModuleAccountInfoEntity> baiduAccounts) {
-        this.baiduAccounts = baiduAccounts;
     }
 
     public Integer getAccountState() {

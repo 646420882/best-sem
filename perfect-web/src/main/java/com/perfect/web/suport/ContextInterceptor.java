@@ -3,8 +3,9 @@ package com.perfect.web.suport;
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.*;
 import com.perfect.service.AccountManageService;
+import com.perfect.service.SystemModuleService;
 import com.perfect.service.SystemUserService;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,6 +31,9 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
     @Resource
     private AccountManageService accountManageService;
+
+    @Resource
+    private SystemModuleService systemModuleService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -50,7 +55,8 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
         Long accoundId = WebUtils.getAccountId(request);
         if (accoundId != null && accoundId > 0) {
-            AppContext.setUser(userName, accoundId);
+            AppContext.setModuleId(WebUtils.getModuleId(request));
+            AppContext.setUser(userName, accoundId, WebUtils.getModuleAccounts(request));
             return true;
         } else {
             AppContext.setUser(userName);
@@ -65,25 +71,9 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
                 adminFlag[0] = false;
             }
 
-
-            if (systemUserDTO.getBaiduAccounts().size() == 1) {
-                BaiduAccountInfoDTO infoDTO = systemUserDTO.getBaiduAccounts().get(0);
-                WebUtils.setAccountId(request, infoDTO.getId());
-                AppContext.setUser(userName, infoDTO.getId());
-                return true;
-            }
-
-            for (BaiduAccountInfoDTO infoDTO : systemUserDTO.getBaiduAccounts()) {
-                if (infoDTO.isDfault()) {
-                    WebUtils.setAccountId(request, infoDTO.getId());
-                    AppContext.setUser(userName, infoDTO.getId());
-                    break;
-                }
-            }
+            return handleRequest(request, userName);
         }
 
-
-        return true;
     }
 
     @Override
@@ -153,6 +143,46 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
         Double balance = accountInfo.getBalance();
         Double yesterdayCost = accountInfo.getBudget();
         return new Double[]{balance, yesterdayCost};
+    }
+
+    private boolean handleRequest(HttpServletRequest request, String userName) {
+        SystemUserDTO systemUserDTO = (SystemUserDTO) request.getSession().getAttribute(USER_INFORMATION);
+        List<SystemUserModuleDTO> userModuleDTOs = systemUserDTO.getModuleDTOList();
+
+        for (SystemUserModuleDTO userModuleDTO : userModuleDTOs) {
+            SystemModuleDTO systemModuleDTO = systemModuleService.findByModuleId(userModuleDTO.getModuleId());
+
+            if (Objects.equals(request.getHeader(HOST), systemModuleDTO.getModuleUrl())) {
+                List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = userModuleDTO.getAccounts();
+                WebUtils.setModuleId(request, userModuleDTO.getModuleId());
+                WebUtils.setModuleAccounts(request, moduleAccountInfoDTOs);
+                AppContext.setModuleId(userModuleDTO.getModuleId());
+
+                // TODO 菜单权限处理
+                List<SystemMenuDTO> systemMenuDTOs = userModuleDTO.getMenus();
+
+                if (moduleAccountInfoDTOs.size() == 1) {
+                    ModuleAccountInfoDTO moduleAccountInfoDTO = moduleAccountInfoDTOs.get(0);
+                    WebUtils.setAccountId(request, moduleAccountInfoDTO.getBaiduAccountId());
+
+                    // 将模块帐号信息写入AppContext
+                    AppContext.setUser(userName, moduleAccountInfoDTO.getBaiduAccountId(), moduleAccountInfoDTOs);
+                } else {
+                    for (ModuleAccountInfoDTO moduleAccountInfoDTO : moduleAccountInfoDTOs) {
+                        if (moduleAccountInfoDTO.isDfault()) {
+                            WebUtils.setAccountId(request, moduleAccountInfoDTO.getBaiduAccountId());
+                            // 将模块帐号信息写入AppContext
+                            AppContext.setUser(userName, moduleAccountInfoDTO.getBaiduAccountId(), moduleAccountInfoDTOs);
+                            break;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean isAdmin() {

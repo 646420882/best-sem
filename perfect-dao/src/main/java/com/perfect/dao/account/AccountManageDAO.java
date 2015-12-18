@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 
 import java.util.Date;
@@ -27,7 +28,7 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      *
      * @return
      */
-    List<BaiduAccountInfoDTO> getBaiduAccountItems(String currUserName);
+    List<ModuleAccountInfoDTO> getBaiduAccountItems(String currUserName);
 
     /**
      * 获取所有系统用户
@@ -42,7 +43,7 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      * @param baiduUserId
      * @return
      */
-    BaiduAccountInfoDTO findByBaiduUserId(Long baiduUserId);
+    ModuleAccountInfoDTO findByBaiduUserId(Long baiduUserId);
 
     /**
      * 获取当前登陆的系统用户信息

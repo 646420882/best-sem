@@ -21,4 +21,8 @@ public interface AuthConstants {
 
     String USER_INFORMATION = "SEM_USER_INFORMATION";
 
+    String MODULE = "BEST_MODULE_ID";
+
+    String MODULE_ACCOUNT_INFORMATION = "SEM_MODULE_INFORMATION";
+
 }
