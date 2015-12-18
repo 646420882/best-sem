@@ -2,9 +2,9 @@ package com.perfect.dao.account;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.perfect.dao.base.HeyCrudRepository;
-import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -75,11 +75,12 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
 
     /**
      * 更新百度账号备注名
+     *
      * @param name
      * @param baiduId
      * @return
      */
-    boolean updateBaiDuName(String name,Long baiduId);
+    boolean updateBaiDuName(String name, Long baiduId);
 
     /**
      * 百度帐号启用/停用状态更改
@@ -111,13 +112,6 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      * @return
      */
     int updateAccountStruts(String userName);
-
-    /**
-     * 上传用户头像
-     *
-     * @param bytes
-     */
-    void uploadImg(byte[] bytes);
 
     /**
      * 更新百度帐号信息

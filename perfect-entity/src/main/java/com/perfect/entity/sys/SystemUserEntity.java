@@ -20,31 +20,29 @@ public class SystemUserEntity implements Serializable {
     private String id;
 
     @Indexed(unique = true)
-    private String userName;//用户名
+    private String userName;                                        // 系统用户名
 
-    private boolean payed;//是否付费 true付费   flase试用
+    private boolean payed;                                          // 是否付费 true -> 付费, false -> 试用
 
-    private String password;//密码
+    private String password;                                        // 密码
 
-    private String companyName;//公司名
+    private String companyName;                                     // 公司名
 
-    private String contactName; //联系人
+    private String contactName;                                     // 联系人
 
-    private String telephone;//办公电话
+    private String telephone;                                       // 办公电话
 
-    private String mobilephone;//移动电话
+    private String mobilephone;                                     // 移动电话
 
-    private String address;//通讯地址
+    private String address;                                         // 通讯地址
 
-    private Integer state;      //审核状态: 1审核通过, 0审核未通过
+    private Integer state;                                          // 审核状态: 1审核通过, 0审核未通过
 
-    private Integer access;     //1.admin; 2.user
+    private Integer access;                                         // 1.admin, 2.user
 
-    private byte[] img;//二进制头像图片
+    private String email;                                           // 邮箱
 
-    private String email;//邮箱
-
-    private long ctime; //注册时间
+    private long ctime;                                             // 注册时间
 
     @Field("modules")
     private List<SystemUserModuleEntity> systemUserModuleEntities;
@@ -53,24 +51,22 @@ public class SystemUserEntity implements Serializable {
     // 请参考SystemUserModuleEntity
     @Deprecated
     @Field(value = "bdAccounts")
-    private List<ModuleAccountInfoEntity> baiduAccounts;//百度账号列表
+    private List<ModuleAccountInfoEntity> baiduAccounts;            // 百度帐号列表
 
-    //系统帐号状态: 1.启用  0.禁用
+    @Field(value = "acstate")
+    private Integer accountState;                                   // 系统帐号状态: 1.启用, 0.禁用
+
+
+    public SystemUserEntity() {
+    }
+
     @PersistenceConstructor
-    public SystemUserEntity(String userName, String password,
-                            List<ModuleAccountInfoEntity> baiduAccounts) {
+    public SystemUserEntity(String userName, String password, List<ModuleAccountInfoEntity> baiduAccounts) {
         this.userName = userName;
         this.password = password;
         this.baiduAccounts = baiduAccounts;
     }
 
-    @Field(value = "acstate")
-    private Integer accountState;
-
-    public SystemUserEntity() {
-    }
-
-//
 
     public String getId() {
         return id;
@@ -104,14 +100,6 @@ public class SystemUserEntity implements Serializable {
         this.access = access;
     }
 
-    public byte[] getImgBytes() {
-        return img;
-    }
-
-    public void setImgBytes(byte[] bytes) {
-        this.img = bytes;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -142,14 +130,6 @@ public class SystemUserEntity implements Serializable {
 
     public void setBaiduAccounts(List<ModuleAccountInfoEntity> baiduAccounts) {
         this.baiduAccounts = baiduAccounts;
-    }
-
-    public byte[] getImg() {
-        return img;
-    }
-
-    public void setImg(byte[] img) {
-        this.img = img;
     }
 
     public Integer getAccountState() {

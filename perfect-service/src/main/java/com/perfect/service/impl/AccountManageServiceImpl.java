@@ -10,10 +10,10 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
-import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.MD5;
@@ -161,11 +161,6 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Override
     public SystemUserDTO getCurrUserInfo() {
         return accountManageDAO.getCurrUserInfo();
-    }
-
-    @Override
-    public void uploadImg(byte[] bytes) {
-        accountManageDAO.uploadImg(bytes);
     }
 
     @Override

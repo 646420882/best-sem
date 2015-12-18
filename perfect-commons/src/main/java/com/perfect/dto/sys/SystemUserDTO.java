@@ -4,7 +4,6 @@ import com.perfect.dto.BaseDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,13 +16,12 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
     private String password;
 
     private boolean payed;
+
     private String companyName;
 
-    private Integer state;      //审核状态
+    private Integer state;                                  // 审核状态
 
-    private Integer access;     //1.admin; 2.user
-
-    private byte[] img;
+    private Integer access;                                 // 1.admin, 2.user
 
     private String email;
 
@@ -37,7 +35,7 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     private long endTime;
 
-    private String contactName; //联系人
+    private String contactName;                             // 联系人
 
     private String telephone;
 
@@ -83,14 +81,6 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
         this.access = access;
     }
 
-    public byte[] getImgBytes() {
-        return img;
-    }
-
-    public void setImgBytes(byte[] bytes) {
-        this.img = bytes;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -115,14 +105,6 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
         this.companyName = companyName;
     }
 
-    public byte[] getImg() {
-        return img;
-    }
-
-    public void setImg(byte[] img) {
-        this.img = img;
-    }
-
     public List<BaiduAccountInfoDTO> getBaiduAccounts() {
         return baiduAccounts;
     }
@@ -137,22 +119,6 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     public void setAccountState(Integer accountState) {
         this.accountState = accountState;
-    }
-
-
-    @Override
-    public String toString() {
-        return "SystemUserDTO{" +
-                "userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", state=" + state +
-                ", access=" + access +
-                ", img=" + Arrays.toString(img) +
-                ", email='" + email + '\'' +
-                ", baiduAccounts=" + baiduAccounts +
-                ", accountState=" + accountState +
-                '}';
     }
 
     public long getStartTime() {

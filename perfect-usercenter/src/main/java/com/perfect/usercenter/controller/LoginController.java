@@ -81,14 +81,11 @@ public class LoginController {
     private void loginSuccessHandler(HttpServletRequest request, HttpServletResponse response, SystemUserDTO systemUserDTO, ModelAndView modelAndView) {
 
         String url = request.getParameter("redirect");
-        if (url.equals("") || url == null) {
+        if (url == null || "".equals(url)) {
             url = request.getParameter("url");
         }
 
         String uuid = UUID.randomUUID().toString();
-        //systemUserDTO.setImg(null);
-        systemUserDTO.setImg(null);
-        systemUserDTO.setImgBytes(null);
         String json = JSONUtils.getJsonString(systemUserDTO);
         Jedis jedis = JRedisUtils.get();
         jedis.setex(uuid, 3600, json);

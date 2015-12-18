@@ -1,8 +1,8 @@
 package com.perfect.service;
 
-import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ public interface AccountManageService {
      * @param newPwd
      * @return
      */
-    public int updatePwd(String password, String newPwd);
+    int updatePwd(String password, String newPwd);
 
     /**
      * 当前密码判断
@@ -28,42 +28,42 @@ public interface AccountManageService {
      * @param password
      * @return
      */
-    public int JudgePwd(String password);
+    int JudgePwd(String password);
 
     /**
      * 得到所有未审核的帐号
      *
      * @return
      */
-    public List<SystemUserDTO> getAccount();
+    List<SystemUserDTO> getAccount();
 
     /**
      * 得到所有未审核的帐号
      *
      * @return
      */
-    public int auditAccount(String userNmae);
+    int auditAccount(String userNmae);
 
     /**
      * 获得所有帐号信息
      *
      * @return
      */
-    public List<AccountAllStateDTO> getAccountAll();
+    List<AccountAllStateDTO> getAccountAll();
 
     /**
      * 修改百度帐号的启用状态
      *
      * @return
      */
-    public int updateAccountAllState(String userName, Long baiduId, Long state);
+    int updateAccountAllState(String userName, Long baiduId, Long state);
 
     /**
      * 修改系统账户启用禁用状态
      *
      * @return
      */
-    public int updateSystemAccount(String userName, Long state);
+    int updateSystemAccount(String userName, Long state);
 
     /**
      * 获取账户树
@@ -78,13 +78,6 @@ public interface AccountManageService {
      * @return
      */
     SystemUserDTO getCurrUserInfo();
-
-    /**
-     * 上传用户头像
-     *
-     * @param bytes
-     */
-    void uploadImg(byte[] bytes);
 
     /**
      * 获取当前登录的系统用户下的所有百度账号
@@ -140,7 +133,8 @@ public interface AccountManageService {
     Double getYesterdayCost(Long accountId);
 
     /**
-     *  根据百度Id查询百度账号
+     * 根据百度Id查询百度账号
+     *
      * @param baiduUserId
      * @return
      */

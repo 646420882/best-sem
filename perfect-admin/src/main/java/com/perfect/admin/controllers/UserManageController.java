@@ -45,7 +45,6 @@ public class UserManageController {
 
         systemUserDTOList.forEach((dto) -> {
 //            dto.setPassword("******");
-            dto.setImg(null);
 
             // format date
             date.setTime(dto.getCtime());

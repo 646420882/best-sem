@@ -3,11 +3,7 @@ package com.perfect.service.impl;
 import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
-import com.perfect.entity.sys.ModuleAccountInfoEntity;
-import com.perfect.entity.sys.SystemUserEntity;
-import com.perfect.entity.sys.SystemUserModuleEntity;
 import com.perfect.param.RegisterParam;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.utils.MD5;
@@ -33,15 +29,13 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
         SystemUserDTO systemUserDTO = new SystemUserDTO();
         MD5.Builder md5Builder = new MD5.Builder();
         MD5 md5 = md5Builder.password(pwd).salt(account).build();
-        SystemUserDTO administrator = accountRegisterDAO.getAccount("administrator");
         systemUserDTO.setAccess(2);
-        systemUserDTO.setBaiduAccounts(new ArrayList<BaiduAccountInfoDTO>());
+        systemUserDTO.setBaiduAccounts(new ArrayList<>());
         systemUserDTO.setUserName(account);
         systemUserDTO.setPassword(md5.getMD5());
         systemUserDTO.setCompanyName(company);
         systemUserDTO.setEmail(email);
         systemUserDTO.setState(0);
-        systemUserDTO.setImg(administrator.getImg());
 
         systemUserDTO.setAccountState(1);
         int returnState;

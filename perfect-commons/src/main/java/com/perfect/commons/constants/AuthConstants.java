@@ -13,7 +13,7 @@ public interface AuthConstants {
 
     String USER_TOKEN = "SEM_USER_TOKEN";
 
-    String USER_LOGIN_URL = "http://192.168.1.190:8088/";
+    String USER_LOGIN_URL = "http://localhost:8088/";
 
     String USER_LOGIN_REDIRECT_URL = USER_LOGIN_URL + "?url=%s";
 

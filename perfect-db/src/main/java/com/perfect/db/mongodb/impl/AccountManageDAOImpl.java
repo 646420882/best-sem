@@ -9,9 +9,9 @@ import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractUserBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
-import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.sys.ModuleAccountInfoEntity;
 import com.perfect.entity.sys.SystemUserEntity;
@@ -278,12 +278,6 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         if (writeResult.isUpdateOfExisting())
             i = 1;
         return i;
-    }
-
-    @Override
-    public void uploadImg(byte[] bytes) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(AppContext.getUser())), Update.update("img", bytes), getEntityClass());
     }
 
     @Override

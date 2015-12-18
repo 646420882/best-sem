@@ -28,10 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by baizz on 2014-6-25.
@@ -213,13 +210,10 @@ public class AccountManageController extends WebContextSupport {
      */
     @RequestMapping(value = "/getImg", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        byte[] imgBytes = accountManageService.getCurrUserInfo().getImgBytes();
-//        if (imgBytes != null) {
-//            response.getOutputStream().write(imgBytes);
-//        }
-
         InputStream imageInputStream = systemUserService.findUserImage(AppContext.getUser());
-        response.getOutputStream().write(IOUtils.toByteArray(imageInputStream));
+        if (Objects.nonNull(imageInputStream)) {
+            response.getOutputStream().write(IOUtils.toByteArray(imageInputStream));
+        }
     }
 
     /**
@@ -233,12 +227,10 @@ public class AccountManageController extends WebContextSupport {
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void uploadImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-//        byte[] bytes = multipartRequest.getFile("userImgFile").getBytes();
         InputStream imageInputStream = multipartRequest.getFile("userImgFile").getInputStream();
         String fileSuffix = multipartRequest.getParameter("userImgFileType");
 
         systemUserService.updateUserImage(imageInputStream, "." + fileSuffix);
-//        accountManageService.uploadImg(bytes);
         response.getWriter().write("<script type='text/javascript'>parent.callback('true')</script>");
     }
 
@@ -258,6 +250,7 @@ public class AccountManageController extends WebContextSupport {
             put("status", true);
         }};
         jsonView.setAttributesMap(result);
+
         return new ModelAndView(jsonView);
     }
 
