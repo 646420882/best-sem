@@ -52,16 +52,16 @@
                 <h4 class="modal-title">设置密保邮箱</h4>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="emailSettingForm" action="/email/sendCaptcha">
                     <div class="form-group over">
                         <div class="col-xs-2">邮箱地址：</div>
                         <div class="col-xs-10">
-                            <select class="form-control">
+                            <input type="text" id="email" name="email" class="form-control"/>
+                            <%--<select class="form-control">
                                 <option value="">443895413@qq.com</option>
                                 <option value="">443895413@qq.com</option>
                                 <option value="">443895413@qq.com</option>
-
-                            </select>
+                            </select>--%>
                         </div>
                     </div>
                     <div class="form-group form-inline">

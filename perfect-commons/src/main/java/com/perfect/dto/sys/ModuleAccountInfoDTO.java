@@ -9,7 +9,10 @@ import java.util.List;
  * Created by yousheng on 15/12/15.
  */
 public class ModuleAccountInfoDTO {
-    private Long id;
+
+    private String id;
+
+    private Long baiduAccountId;
 
     private String baiduUserName;//百度账号
 
@@ -58,12 +61,36 @@ public class ModuleAccountInfoDTO {
     //该账户下的百度帐号是否启用   启用：1  停用：0
     private Long state;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public Long getBaiduAccountId() {
+        return baiduAccountId;
+    }
+
+    public void setBaiduAccountId(Long baiduAccountId) {
+        this.baiduAccountId = baiduAccountId;
+    }
+
+    public Boolean getDfault() {
+        return dfault;
+    }
+
+    public void setDfault(Boolean dfault) {
+        this.dfault = dfault;
+    }
+
+    public Boolean getDynamicCreative() {
+        return isDynamicCreative;
+    }
+
+    public void setDynamicCreative(Boolean dynamicCreative) {
+        isDynamicCreative = dynamicCreative;
     }
 
     public String getBaiduUserName() {
