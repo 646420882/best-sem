@@ -13,6 +13,9 @@ public class ModuleAccountInfoEntity {
 
     private String id;
 
+    @Field("bid")
+    private Long baiduAccountId;
+
     @Field("bname")
     private String baiduUserName;//百度账号
 
@@ -271,5 +274,14 @@ public class ModuleAccountInfoEntity {
 
     public void setBestRegDomain(String bestRegDomain) {
         this.bestRegDomain = bestRegDomain;
+    }
+
+    public Long getBaiduAccountId() {
+        return baiduAccountId;
+    }
+
+    public ModuleAccountInfoEntity setBaiduAccountId(Long baiduAccountId) {
+        this.baiduAccountId = baiduAccountId;
+        return this;
     }
 }
