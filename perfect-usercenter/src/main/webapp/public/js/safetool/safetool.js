@@ -32,9 +32,30 @@ $(document).ready(function () {
             }
         }
     });
+
+    $('#emailSettingForm').bind('submit', function () {
+        $.ajax({
+            url: "/email/sendCaptcha",
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                "email": $('#email').val()
+            },
+            success: function () {
+                // On success do what you want to do
+                // and then ubind the submit event handler and submit the form
+                $('#emailSettingForm').unbind('submit').submit();
+            }
+        });
+
+        // Prevent default form submit
+        return false;
+
+    });
+
     $(phoneModal)
 });
-//绑定
+// 绑定
 var commons = {
     Binding: function (type) {
         switch (type) {
@@ -73,9 +94,9 @@ var commons = {
                 break;
         }
     }
-}
+};
 
-//解绑
+// 解绑
 function phoneUnBundling(_this) {
     $("#modelbox").modal('show');
     $("#modelboxTitle").html("确认取消绑定？");
@@ -83,6 +104,10 @@ function phoneUnBundling(_this) {
         $("#modelbox").modal('hide');
         $(_this).parent().addClass("hide");
         $(_this).parent().next("button").show();
-    })
-
+    });
 }
+
+var validateEmail = function (email) {
+    var regx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regx.test(email);
+};

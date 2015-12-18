@@ -2,6 +2,7 @@ package com.perfect.entity.sys;
 
 import com.perfect.entity.baidu.OfflineTimeEntity;
 import com.perfect.entity.baidu.OptTypeEntity;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public class ModuleAccountInfoEntity {
 
+    @Id
     private String id;
 
     @Field("bid")
