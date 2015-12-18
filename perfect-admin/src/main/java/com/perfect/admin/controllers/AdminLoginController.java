@@ -1,5 +1,6 @@
 package com.perfect.admin.controllers;
 
+import com.perfect.admin.filter.AdminPriviledgeFilter;
 import com.perfect.dto.sys.SystemRoleDTO;
 import com.perfect.service.SystemRoleService;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 权限中心登陆控制器
+ * <p>
+ * logout直接在filter中判断
  * Created by yousheng on 15/12/14.
  */
 @Controller
@@ -59,10 +63,10 @@ public class AdminLoginController {
             ModelAndView modelAndView = new ModelAndView("loginOrReg/login");
 //            modelAndView.addObject("invalidUserName", "用户名或者密码错误!");
 
-            modelAndView.getModel().put("invalidUserName","用户名或者密码错误");
+            modelAndView.getModel().put("invalidUserName", "用户名或者密码错误");
             return modelAndView;
         }
-        request.getSession().setAttribute("user", systemRoleDTO);
+        request.getSession().setAttribute(AdminPriviledgeFilter.SESSION_USER, systemRoleDTO);
 
         return new ModelAndView("redirect:/");
     }

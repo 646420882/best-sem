@@ -50,7 +50,7 @@ public class SystemLogDAOImpl extends AbstractSysBaseDAOImpl<SystemLogDTO, Strin
                 query = query.addCriteria(Criteria.where("user").is(params.getUser()));
             }
         }
-        PageRequest pageRequest = new PageRequest(page, size, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort);
+        PageRequest pageRequest = new PageRequest(page - 1, size, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort);
         List<SystemLogEntity> systemLogEntities = getSysMongoTemplate().find(query.with(pageRequest), getEntityClass());
 
         return ObjectUtils.convert(systemLogEntities, getDTOClass());
@@ -58,13 +58,13 @@ public class SystemLogDAOImpl extends AbstractSysBaseDAOImpl<SystemLogDTO, Strin
 
     @Override
     public void log(String txt) {
-        SystemLogEntity systemLogEntity = new SystemLogEntity();
-
         SystemUserInfo systemUserInfo = AppContext.getSystemUserInfo();
         if (systemUserInfo == null) {
             return;
         }
-        systemLogEntity.setIp(systemUserInfo.getIp());
+
+        SystemLogEntity systemLogEntity = new SystemLogEntity();
+        systemLogEntity.setIp(AppContext.getRemote());
         systemLogEntity.setUser(systemUserInfo.getUser());
         systemLogEntity.setTime(System.currentTimeMillis());
         systemLogEntity.setDesc(txt);

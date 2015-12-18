@@ -19,6 +19,8 @@ public class AppContext {
 
     private static ThreadLocal<SystemUserInfo> systemUserInfoThreadLocal = new ThreadLocal<>();
 
+    private static ThreadLocal<String> remoteIpThreadLocal = new ThreadLocal<>();
+
     private static Object accountId;
 
     public static void setSystemUserInfo(SystemUserInfo systemUserInfo) {
@@ -27,6 +29,10 @@ public class AppContext {
 
     public static SystemUserInfo getSystemUserInfo() {
         return systemUserInfoThreadLocal.get();
+    }
+
+    public static boolean isAdminSystemLogin() {
+        return systemUserInfoThreadLocal.get() != null;
     }
 
     public static SessionObject get() {
@@ -90,4 +96,13 @@ public class AppContext {
             return -1l;
         }
     }
+
+    public static String getRemote() {
+        return remoteIpThreadLocal.get();
+    }
+
+    public static void setRemote(String remote) {
+        remoteIpThreadLocal.set(remote);
+    }
+
 }

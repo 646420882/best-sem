@@ -4,20 +4,20 @@ package com.perfect.core;
  * Created by yousheng on 15/12/16.
  */
 public class SystemUserInfo {
-    private String ip;
+//    private String ip;
 
     private String user;
 
     private boolean isSuper;
 
-    public String getIp() {
-        return ip;
-    }
-
-    public SystemUserInfo setIp(String ip) {
-        this.ip = ip;
-        return this;
-    }
+//    public String getIp() {
+//        return ip;
+//    }
+//
+//    public SystemUserInfo setIp(String ip) {
+//        this.ip = ip;
+//        return this;
+//    }
 
     public String getUser() {
         return user;

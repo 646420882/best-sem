@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.sys.SystemRoleDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 
 import java.util.List;
 
@@ -10,11 +11,14 @@ import java.util.List;
 public interface SystemRoleService {
     List<SystemRoleDTO> list(String queryName, Boolean superUser, Integer page, Integer size, String sort, Boolean asc);
 
-    void addSystemRole(SystemRoleDTO systemRoleDTO);
+    boolean addSystemRole(SystemRoleDTO systemRoleDTO);
 
     boolean update(String roleid, SystemRoleDTO systemRoleDTO);
 
     SystemRoleDTO login(String username, String password);
 
     boolean deleteSystemRole(String roleid);
+
+    SystemRoleDTO findByUserName(String user);
+
 }

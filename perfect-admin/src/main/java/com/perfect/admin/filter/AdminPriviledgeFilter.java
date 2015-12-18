@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * 用户session信息校验和重定向管理
- *
+ * <p>
  * Created by yousheng on 15/12/14.
  */
 public class AdminPriviledgeFilter implements Filter {
@@ -27,6 +27,7 @@ public class AdminPriviledgeFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        AppContext.setRemote(request.getRemoteHost());
 
         if (request instanceof HttpServletRequest) {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -38,6 +39,7 @@ public class AdminPriviledgeFilter implements Filter {
 
             String url = ((HttpServletRequest) request).getRequestURI();
             if (url.equals("/login") || url.equals("/loginaction")) {
+
                 if (httpServletRequest.getSession().getAttribute(SESSION_USER) != null) {
                     HttpServletResponse httpServletResponse = (HttpServletResponse) response;
                     httpServletResponse.sendRedirect("/");
@@ -60,7 +62,7 @@ public class AdminPriviledgeFilter implements Filter {
             SystemRoleDTO systemRoleDTO = (SystemRoleDTO) httpServletRequest.getSession().getAttribute(SESSION_USER);
 
             SystemUserInfo systemUserInfo = new SystemUserInfo();
-            systemUserInfo.setIp(request.getRemoteHost());
+//            systemUserInfo.setIp(request.getRemoteHost());
             systemUserInfo.setUser(systemRoleDTO.getLoginName());
             systemUserInfo.setIsSuper(systemRoleDTO.isSuperAdmin());
             AppContext.setSystemUserInfo(systemUserInfo);

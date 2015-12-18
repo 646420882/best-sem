@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 用户管理控制器
  * Created by yousheng on 15/12/15.
  */
 @RestController
@@ -44,7 +45,7 @@ public class UserManageController {
         Date date = new Date();
 
         systemUserDTOList.forEach((dto) -> {
-//            dto.setPassword("******");
+            dto.setPassword(null);
 
             // format date
             date.setTime(dto.getCtime());
@@ -55,7 +56,14 @@ public class UserManageController {
 
     }
 
-    @RequestMapping(value = "/users/{id}/accountStatus", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * 开通账号
+     *
+     * @param id
+     * @param accountStatus
+     * @return
+     */
+    @RequestMapping(value = "/users/{id}/status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView changeAccountStatus(@PathVariable("id") String id, @RequestParam(value = "status") Boolean
             accountStatus) {
 
@@ -72,12 +80,9 @@ public class UserManageController {
         return JsonViews.generate(-1);
     }
 
-    @RequestMapping(value = "/users/{id}/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/users/{id}/payed", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView changeAccountPayed(@PathVariable("id") String id,
-                                           @RequestParam(value = "status") Boolean accountStatus,
-                                           @RequestParam(value = "payed") Boolean payed,
-                                           @RequestParam(value = "start", required = false) String start,
-                                           @RequestParam(value = "end", required = false) String end) {
+                                           @RequestParam(value = "payed") Boolean payed) {
 
         boolean success = systemUserService.updateAccountPayed(id, payed);
 
@@ -88,8 +93,19 @@ public class UserManageController {
         return JsonViews.generate(-1);
     }
 
+    @RequestMapping(value = "/users/{userid}/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView resetUserPassword(@PathVariable("userid") String userid, @RequestParam(value = "password", required = false, defaultValue = "Abcd1234") String password) {
+        boolean success = systemUserService.updateUserPassword(userid, password);
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+        if (success) {
+            return JsonViews.generateSuccessNoData();
+        }
+        return JsonViews.generateFailedNoData();
+
+    }
+
+
+    @RequestMapping(value = "/users/{id}/time", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView updateAccountTime(@PathVariable("id") String id,
                                           @RequestParam(value = "start", required = false) String start,
                                           @RequestParam(value = "end", required = false) String end) {

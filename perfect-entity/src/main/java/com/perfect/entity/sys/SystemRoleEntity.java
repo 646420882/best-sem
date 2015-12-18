@@ -64,7 +64,7 @@ public class SystemRoleEntity {
         return this;
     }
 
-    public String isLoginName() {
+    public String getLoginName() {
         return loginName;
     }
 

@@ -47,4 +47,15 @@ public class SystemLogDTO extends BaseDTO {
     private String desc;
 
     private long time;
+
+    private String displayTime;
+
+    public String getDisplayTime() {
+        return displayTime;
+    }
+
+    public SystemLogDTO setDisplayTime(String displayTime) {
+        this.displayTime = displayTime;
+        return this;
+    }
 }

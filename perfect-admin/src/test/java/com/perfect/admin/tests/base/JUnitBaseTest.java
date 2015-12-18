@@ -1,5 +1,7 @@
 package com.perfect.admin.tests.base;
 
+import com.perfect.core.AppContext;
+import com.perfect.core.SystemUserInfo;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Created by IntelliJ IDEA 13.
@@ -40,5 +45,17 @@ public class JUnitBaseTest {
     @Before
     public void init() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+
+        SystemUserInfo systemUserInfo = new SystemUserInfo();
+
+        systemUserInfo.setUser("yangle");
+        try {
+            systemUserInfo.setIp(InetAddress.getLocalHost().toString());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        systemUserInfo.setIsSuper(true);
+
+        AppContext.setSystemUserInfo(systemUserInfo);
     }
 }
