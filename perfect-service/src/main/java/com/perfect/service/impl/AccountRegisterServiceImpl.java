@@ -2,10 +2,15 @@ package com.perfect.service.impl;
 
 import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.entity.sys.SystemModuleEntity;
+import com.perfect.entity.sys.SystemUserEntity;
+import com.perfect.entity.sys.SystemUserModuleEntity;
 import com.perfect.param.RegisterParam;
 import com.perfect.service.AccountRegisterService;
+import com.perfect.service.SystemModuleService;
 import com.perfect.utils.MD5;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,9 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
 
     @Resource
     private AccountRegisterDAO accountRegisterDAO;
+
+    @Resource
+    private SystemModuleService systemModuleService;
 
     @Override
     public int addAccount(String account, String pwd, String company, String email) {
@@ -73,8 +81,9 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             //通讯地址
             systemUserDTO.setAddress(registerParam.getMailinAddress());
             //审核状态
-            systemUserDTO.setState(0);
+            systemUserDTO.setState(1);
             systemUserDTO.setAccess(2);
+            systemUserDTO.setAccountState(1);
             //注册时间
             systemUserDTO.setCtime(new Date().getTime());
             //是否付费用户
@@ -84,10 +93,14 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             String[] dd = registerParam.getOpenPlatform().split(",");
             List<SystemUserModuleDTO> entities = new ArrayList<>();
             for (String s : dd) {
+                SystemModuleDTO byModuleId = systemModuleService.findByModuleId(s);
+
                 SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
                 systemUserModuleDTO.setModuleId(s);
-                systemUserModuleDTO.setIsPayed(false);
-                systemUserModuleDTO.setEnabled(false);
+                systemUserModuleDTO.setIsPayed(true);
+                systemUserModuleDTO.setEnabled(true);
+                systemUserModuleDTO.setModuleName(byModuleId.getModuleName());
+                systemUserModuleDTO.setModuleUrl(byModuleId.getModuleUrl());
 
                 //百度账户处理
                 List<ModuleAccountInfoDTO> baiduList = new ArrayList<>();
@@ -106,7 +119,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             SystemUserDTO user = accountRegisterDAO.getAccount(registerParam.getUsername());
 
             if (user == null) {
-                //accountRegisterDAO.regAccount(systemUserDTO);
+                accountRegisterDAO.regAccount(systemUserDTO);
                 returnState = 1;
             } else {
                 returnState = -1;
