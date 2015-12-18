@@ -482,6 +482,14 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         return Objects.nonNull(gridFSDBFile) ? gridFSDBFile.getInputStream() : null;
     }
 
+    @Override
+    public boolean updateAccountPassword(String userid, String password) {
+        WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)), Update.update("password", password), getEntityClass());
+
+
+        return updateSuccess(wr);
+    }
+
     private boolean accountExistsByAccountName(String userid, String baiduUserName) {
 
         return getSysMongoTemplate().exists(Query.query(Criteria.where("modules.accounts.bname").is(baiduUserName)), getEntityClass());

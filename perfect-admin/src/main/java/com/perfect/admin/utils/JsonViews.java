@@ -2,7 +2,6 @@ package com.perfect.admin.utils;
 
 import com.perfect.commons.web.JsonResultMaps;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Map;
@@ -14,7 +13,8 @@ public class JsonViews {
 
 
     public static ModelAndView generate(Map<String, Object> map) {
-        AbstractView av = new MappingJackson2JsonView();
+        MappingJackson2JsonView av = new MappingJackson2JsonView();
+        av.setPrettyPrint(true);
         av.setAttributesMap(map);
         return new ModelAndView(av);
     }

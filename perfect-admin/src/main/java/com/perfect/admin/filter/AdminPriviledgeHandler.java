@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by yousheng on 15/12/14.
  */
+
+@Deprecated
 public class AdminPriviledgeHandler implements HandlerInterceptor {
 
     private final String SESSION_KEY = "USER_OBJ";

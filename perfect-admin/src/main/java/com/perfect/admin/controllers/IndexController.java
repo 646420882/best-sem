@@ -22,7 +22,7 @@ public class IndexController {
 
     @RequestMapping(value = "/admin/role")
     public ModelAndView Role() {
-        return new ModelAndView("/Role/Role");
+        return new ModelAndView("/role/role");
     }
 
     @RequestMapping(value = "/admin/system", method = RequestMethod.GET)

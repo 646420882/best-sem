@@ -21,7 +21,7 @@ public class SystemRoleControllerTest extends JUnitBaseTest {
 
 
     @Test
-    public void testCreateSystemRole() throws Exception {
+    public void testCreateAdminSystemRole() throws Exception {
 
         SystemRoleDTO systemRoleDTO = new SystemRoleDTO();
         systemRoleDTO.setPassword("yangle");
@@ -31,6 +31,26 @@ public class SystemRoleControllerTest extends JUnitBaseTest {
         systemRoleDTO.setContact("yangle@perfect-cn.cn");
         systemRoleDTO.setTitle("BOSS");
         systemRoleDTO.setLoginName("yangle");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/sysroles").content(JSON.toJSONString(systemRoleDTO)).contentType("application/json;charset=UTF-8"))
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+
+    }
+
+
+    @Test
+    public void testCreateSystemRole() throws Exception {
+
+        String name = "zhangxueyou";
+
+        SystemRoleDTO systemRoleDTO = new SystemRoleDTO();
+        systemRoleDTO.setPassword(name);
+        systemRoleDTO.setName("张学友");
+        systemRoleDTO.setSuperAdmin(false);
+        systemRoleDTO.setCtime(System.currentTimeMillis());
+        systemRoleDTO.setContact(name + "@perfect-cn.cn");
+        systemRoleDTO.setTitle("WORKER");
+        systemRoleDTO.setLoginName(name);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/sysroles").content(JSON.toJSONString(systemRoleDTO)).contentType("application/json;charset=UTF-8"))
                 .andDo(MockMvcResultHandlers.print()).andReturn();

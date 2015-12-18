@@ -14,6 +14,11 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ *
+ * 用户模块控制器
+ *
+ * 包括模块的新增以及菜单的维护,另外维护模块对应的账号信息
+ *
  * Created by yousheng on 15/12/15.
  */
 @RestController

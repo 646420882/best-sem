@@ -24,6 +24,7 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.sys.*;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.EntityConvertUtils;
+import com.perfect.utils.MD5;
 import com.perfect.utils.ObjectUtils;
 import org.elasticsearch.common.Strings;
 import org.slf4j.Logger;
@@ -44,6 +45,8 @@ import java.util.*;
 public class SystemUserServiceImpl implements SystemUserService {
 
     private Logger logger = LoggerFactory.getLogger(SystemUserServiceImpl.class);
+
+    private final String user_salt = "user_password";
 
     @Resource
     private SystemUserDAO systemUserDAO;
@@ -776,6 +779,21 @@ public class SystemUserServiceImpl implements SystemUserService {
         String sysUserId = systemUserDAO.findByUserName(sysUserName).getId();
 
         return systemUserDAO.findUserImage(sysUserId);
+    }
+
+    @Override
+    public boolean updateUserPassword(String userid, String password) {
+
+        SystemUserDTO systemUserDTO = systemUserDAO.findOne(userid);
+        if (systemUserDTO == null) {
+            return false;
+        }
+        boolean success = systemUserDAO.updateAccountPassword(userid, new MD5.Builder().password(password).salt(user_salt).build().getMD5());
+
+        if (success) {
+            systemLogDAO.log("修改用户密码: " + systemUserDTO.getUserName());
+        }
+        return success;
     }
 
     /**

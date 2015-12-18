@@ -92,4 +92,6 @@ public interface SystemUserService {
     void updateUserImage(InputStream is, String fileSuffix);
 
     InputStream findUserImage(String sysUserName);
+
+    boolean updateUserPassword(String userid, String password);
 }

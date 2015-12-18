@@ -94,4 +94,6 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
     void updateUserImage(InputStream is, String fileName, Map<String, Object> metaData);
 
     InputStream findUserImage(String sysUserId);
+
+    boolean updateAccountPassword(String userid, String password);
 }

@@ -11,7 +11,5 @@ import java.util.List;
  */
 public interface SystemLogDAO extends HeyCrudRepository<SystemLogDTO, String> {
     List<SystemLogDTO> list(SystemLogParams params, int page, int size, String sort, boolean asc);
-
-
     void log(String txt);
 }

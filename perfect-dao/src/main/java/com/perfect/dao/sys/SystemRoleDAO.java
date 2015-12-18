@@ -2,6 +2,7 @@ package com.perfect.dao.sys;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.sys.SystemRoleDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface SystemRoleDAO extends HeyCrudRepository<SystemRoleDTO, String> 
     boolean update(String roleid, SystemRoleDTO systemRoleDTO);
 
     SystemRoleDTO findByNameAndPasswd(String username, String password);
+
+    SystemRoleDTO findByUserLoginName(String user);
 }

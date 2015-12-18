@@ -19,8 +19,6 @@ public class SystemLogServiceImpl implements SystemLogService {
 
     @Override
     public List<SystemLogDTO> list(SystemLogParams params, int page, int size, String s, boolean b) {
-
-
         return systemLogDAO.list(params, page, size, s, b);
     }
 }

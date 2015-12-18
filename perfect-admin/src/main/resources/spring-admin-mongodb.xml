@@ -15,6 +15,9 @@
 
     <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
 
+    <mongo:mapping-converter id="converter"/>
+
+
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
         <property name="writeConcern">
@@ -29,4 +32,9 @@
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
     </bean>
 
+    <bean id="gridFsTemplate"
+          class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+        <constructor-arg ref="mongoDbFactory"/>
+        <constructor-arg ref="converter"/>
+    </bean>
 </beans>

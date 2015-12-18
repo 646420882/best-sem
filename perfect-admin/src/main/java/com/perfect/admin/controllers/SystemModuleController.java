@@ -14,6 +14,8 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ *
+ * 系统模块控制器
  * Created by yousheng on 15/12/16.
  * TODO 子模块的增删改查
  */
