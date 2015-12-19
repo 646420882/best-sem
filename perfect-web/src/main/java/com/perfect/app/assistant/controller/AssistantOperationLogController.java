@@ -2,6 +2,7 @@ package com.perfect.app.assistant.controller;
 
 import com.perfect.core.AppContext;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.CampaignService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +54,7 @@ public class AssistantOperationLogController {
     @RequestMapping("/account")
     @ResponseBody
     public Map<String, String> account() {
-        BaiduAccountInfoDTO dto = accountManageService.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO dto = accountManageService.findByBaiduUserId(AppContext.getAccountId());
         Map<String, String> accountMap = new HashMap<String, String>();
         accountMap.put("accountName", dto.getBaiduUserName());
         accountMap.put("accountId", String.valueOf(AppContext.getAccountId()));

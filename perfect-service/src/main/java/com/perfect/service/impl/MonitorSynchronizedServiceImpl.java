@@ -10,6 +10,7 @@ import com.perfect.dao.monitoring.MonitorSynchronizedDAO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.MonitorSynchronizedService;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +88,7 @@ public class MonitorSynchronizedServiceImpl implements MonitorSynchronizedServic
      */
     public PromotionMonitoring getUserInfo() {
         Long accid = AppContext.getAccountId();
-        BaiduAccountInfoDTO entity = accountManageDAO.findByBaiduUserId(accid);
+        ModuleAccountInfoDTO entity = accountManageDAO.findByBaiduUserId(accid);
         PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
         return Monitoring;
     }

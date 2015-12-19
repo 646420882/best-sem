@@ -128,7 +128,7 @@
                             <div class="form-group has-feedback">
                                 <div>
 
-                                    <input type="text" name="phoenixNestUser">
+                                    <input type="text" name="baiduUserName">
                                 </div>
                             </div>
                             <span style="color: red" class="register_star">*</span>
@@ -138,7 +138,7 @@
                             <div class="form-group has-feedback">
                                 <div>
 
-                                    <input type="text" name="phoenixNestPassword">
+                                    <input type="text" name="baiduUserPassword">
                                 </div>
                             </div>
                             <span style="color: red" class="register_star">*</span>

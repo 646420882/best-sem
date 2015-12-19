@@ -7,6 +7,8 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.constants.PasswordSalts;
+import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
@@ -17,7 +19,6 @@ import com.perfect.dao.sys.SystemLogDAO;
 import com.perfect.dao.sys.SystemModuleDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
@@ -26,6 +27,7 @@ import com.perfect.service.SystemUserService;
 import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.MD5;
 import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.SystemUserUtils;
 import org.elasticsearch.common.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +48,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     private Logger logger = LoggerFactory.getLogger(SystemUserServiceImpl.class);
 
-    private final String user_salt = "user_password";
+    private final String user_salt = PasswordSalts.USER_SALT;
 
     @Resource
     private SystemUserDAO systemUserDAO;
@@ -87,59 +89,61 @@ public class SystemUserServiceImpl implements SystemUserService {
         clearAccountData(accountId);
         logger.info("清理数据完成!");
 
-        for (BaiduAccountInfoDTO baiduAccountInfoDTO : systemUserDTO.getBaiduAccounts()) {
+        systemUserDTO.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findFirst().ifPresent((systemUserModuleDTO1 -> {
+            systemUserModuleDTO1.getAccounts().forEach((moduleAccountInfoDTO -> {
+                Long aid = moduleAccountInfoDTO.getBaiduAccountId();
+                if (!Objects.equals(aid, accountId))
+                    return;
+                CommonService commonService = BaiduServiceSupport.getCommonService(moduleAccountInfoDTO.getBaiduUserName(), moduleAccountInfoDTO.getBaiduPassword(), moduleAccountInfoDTO.getToken());
+                BaiduApiService apiService = new BaiduApiService(commonService);
 
-            Long aid = baiduAccountInfoDTO.getId();
-            if (!Objects.equals(aid, accountId))
-                continue;
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-            BaiduApiService apiService = new BaiduApiService(commonService);
+                logger.info("查询账户信息...");
+                // 初始化账户数据
+                AccountInfoType accountInfoType = apiService.getAccountInfo();
+                if (accountInfoType == null) {
+                    logger.error("获取账户信息错误: " + ResHeaderUtil.getJsonResHeader(false).toString());
+                    return;
+                }
+                boolean isDefault = moduleAccountInfoDTO.isDfault();
+                moduleAccountInfoDTO = ObjectUtils.convert(accountInfoType, ModuleAccountInfoDTO.class);
+                moduleAccountInfoDTO.setBaiduAccountId(accountInfoType.getUserid());
 
-            logger.info("查询账户信息...");
-            // 初始化账户数据
-            AccountInfoType accountInfoType = apiService.getAccountInfo();
-            if (accountInfoType == null) {
-                logger.error("获取账户信息错误: " + ResHeaderUtil.getJsonResHeader(false).toString());
-                continue;
-            }
-            boolean isDefault = baiduAccountInfoDTO.isDfault();
-            baiduAccountInfoDTO = ObjectUtils.convert(accountInfoType, BaiduAccountInfoDTO.class);
-            baiduAccountInfoDTO.setId(accountInfoType.getUserid());
-            baiduAccountInfoDTO.setBaiduUserName(baiduAccountInfoDTO.getBaiduUserName());
-            baiduAccountInfoDTO.setBaiduPassword(baiduAccountInfoDTO.getBaiduPassword());
-            baiduAccountInfoDTO.setToken(baiduAccountInfoDTO.getToken());
-            baiduAccountInfoDTO.setDfault(isDefault);
+                // TODO 为什么要重新设置 @subDong
+//                baiduAccountInfoDTO.setBaiduUserName(baiduAccountInfoDTO.getBaiduUserName());
+//                baiduAccountInfoDTO.setBaiduPassword(baiduAccountInfoDTO.getBaiduPassword());
+//                baiduAccountInfoDTO.setToken(baiduAccountInfoDTO.getToken());
+                moduleAccountInfoDTO.setDfault(isDefault);
 
-            //新增百度账户
-            systemUserDAO.insertAccountInfo(userName, baiduAccountInfoDTO);
+                //新增百度账户
+                systemUserDAO.insertAccountInfo(userName, moduleAccountInfoDTO);
 
-            logger.info("查询账户推广计划...");
-            List<CampaignType> campaignTypes = apiService.getAllCampaign();
-            logger.info("查询结束: 计划数=" + campaignTypes.size());
+                logger.info("查询账户推广计划...");
+                List<CampaignType> campaignTypes = apiService.getAllCampaign();
+                logger.info("查询结束: 计划数=" + campaignTypes.size());
 
-            List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
+                List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
 
-            // 查询推广单元
-            List<Long> ids = new ArrayList<>(campaignEntities.size());
+                // 查询推广单元
+                List<Long> ids = new ArrayList<>(campaignEntities.size());
 
-            for (CampaignDTO campaignEntity : campaignEntities) {
-                campaignEntity.setAccountId(aid);
-                ids.add(campaignEntity.getCampaignId());
-            }
+                for (CampaignDTO campaignEntity : campaignEntities) {
+                    campaignEntity.setAccountId(aid);
+                    ids.add(campaignEntity.getCampaignId());
+                }
 
-            logger.info("查询账户推广单元...");
-            List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(ids);
+                logger.info("查询账户推广单元...");
+                List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(ids);
 
-            logger.info("查询结束: 单元数=" + adgroupTypeList.size());
+                logger.info("查询结束: 单元数=" + adgroupTypeList.size());
 
-            List<AdgroupDTO> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
-            ids.clear();
-            for (AdgroupDTO adgroupEntity : adgroupEntities) {
-                adgroupEntity.setAccountId(aid);
-                ids.add(adgroupEntity.getAdgroupId());
-            }
+                List<AdgroupDTO> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
+                ids.clear();
+                for (AdgroupDTO adgroupEntity : adgroupEntities) {
+                    adgroupEntity.setAccountId(aid);
+                    ids.add(adgroupEntity.getAdgroupId());
+                }
 
-            logger.info("查询账户推广关键词...");
+                logger.info("查询账户推广关键词...");
 
 //            List<KeywordType> keywordTypes = apiService.getAllKeyword(ids);
 //            logger.info("查询结束: 关键词数=" + keywordTypes.size());
@@ -150,13 +154,26 @@ public class SystemUserServiceImpl implements SystemUserService {
 //                keywordEntity.setAccountId(aid);
 //            }
 
-            //分批次请求关键词数据
-            List<Long> subList = new ArrayList<>(4);
-            for (int i = 1; i <= ids.size(); i++) {
-                Long adgroupId = ids.get(i - 1);
-                subList.add(adgroupId);
+                //分批次请求关键词数据
+                List<Long> subList = new ArrayList<>(4);
+                for (int i = 1; i <= ids.size(); i++) {
+                    Long adgroupId = ids.get(i - 1);
+                    subList.add(adgroupId);
 
-                if (i % 4 == 0) {
+                    if (i % 4 == 0) {
+                        List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                        List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+                        for (KeywordDTO keywordEntity : keywordEntities) {
+                            keywordEntity.setAccountId(aid);
+                        }
+                        keywordDAO.save(keywordEntities);
+                        subList.clear();
+                    }
+                }
+
+
+                if (!subList.isEmpty()) {
                     List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
                     List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
 
@@ -166,35 +183,27 @@ public class SystemUserServiceImpl implements SystemUserService {
                     keywordDAO.save(keywordEntities);
                     subList.clear();
                 }
-            }
 
+                logger.info("查询账户推广创意...");
+                List<CreativeType> creativeTypes = apiService.getAllCreative(ids);
+                logger.info("查询结束: 普通创意数=" + creativeTypes.size());
 
-            if (!subList.isEmpty()) {
-                List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
-                List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+                List<CreativeDTO> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
 
-                for (KeywordDTO keywordEntity : keywordEntities) {
-                    keywordEntity.setAccountId(aid);
+                for (CreativeDTO creativeEntity : creativeEntityList) {
+                    creativeEntity.setAccountId(aid);
                 }
-                keywordDAO.save(keywordEntities);
-                subList.clear();
+
+                // 开始保存数据
+                campaignDAO.save(campaignEntities);
+                adgroupDAO.save(adgroupEntities);
+                creativeDAO.save(creativeEntityList);
             }
-
-            logger.info("查询账户推广创意...");
-            List<CreativeType> creativeTypes = apiService.getAllCreative(ids);
-            logger.info("查询结束: 普通创意数=" + creativeTypes.size());
-
-            List<CreativeDTO> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
-
-            for (CreativeDTO creativeEntity : creativeEntityList) {
-                creativeEntity.setAccountId(aid);
-            }
-
-            // 开始保存数据
-            campaignDAO.save(campaignEntities);
-            adgroupDAO.save(adgroupEntities);
-            creativeDAO.save(creativeEntityList);
+            ));
         }
+        ));
+
+
     }
 
     @Override
@@ -204,98 +213,103 @@ public class SystemUserServiceImpl implements SystemUserService {
             return;
         }
 
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
+        systemUserDTO.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findFirst()
+                .ifPresent((systemUserModuleDTO1 -> {
+                    List<ModuleAccountInfoDTO> baiduAccountInfoDTOList = systemUserModuleDTO1.getAccounts();
 
-        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
-            return;
-        }
-
-        //清除当前账户所有数据
-        clearAccountData(accountId);
-
-        BaiduAccountInfoDTO _dto;
-        for (BaiduAccountInfoDTO baiduAccountInfoDTO : baiduAccountInfoDTOList) {
-
-            Long aid = baiduAccountInfoDTO.getId();
-            if (aid != accountId)
-                continue;
-
-            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-            BaiduApiService apiService = new BaiduApiService(commonService);
-
-            // 初始化账户数据
-            AccountInfoType accountInfoType = apiService.getAccountInfo();
-            boolean isDefault = baiduAccountInfoDTO.isDfault();
-            _dto = ObjectUtils.convert(accountInfoType, BaiduAccountInfoDTO.class);
-            _dto.setId(accountInfoType.getUserid());
-            _dto.setBaiduUserName(baiduAccountInfoDTO.getBaiduUserName());
-            _dto.setBaiduPassword(baiduAccountInfoDTO.getBaiduPassword());
-            _dto.setToken(baiduAccountInfoDTO.getToken());
-            _dto.setDfault(isDefault);
-
-            //更新账户数据
-            updateBaiduAccountInfo(userName, accountId, _dto);
-
-            //更新推广计划数据
-            List<CampaignType> campaignTypes = apiService.getAllCampaign();
-            List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-            //查询推广单元
-            List<Long> camIds = new ArrayList<>(campaignEntities.size());
-            for (CampaignDTO campaignEntity : campaignEntities) {
-                campaignEntity.setAccountId(aid);
-                camIds.add(campaignEntity.getCampaignId());
-            }
-            campaignDAO.save(campaignEntities);
-
-            //更新推广单元数据
-            List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(camIds);
-            List<AdgroupDTO> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
-            List<Long> adgroupIds = new ArrayList<>();
-            for (AdgroupDTO adgroupEntity : adgroupEntities) {
-                adgroupEntity.setAccountId(aid);
-                adgroupIds.add(adgroupEntity.getAdgroupId());
-            }
-            adgroupDAO.save(adgroupEntities);
-
-            //分批次请求关键词数据
-            List<Long> subList = new ArrayList<>(4);
-            for (int i = 1; i <= adgroupIds.size(); i++) {
-                Long adgroupId = adgroupIds.get(i - 1);
-                subList.add(adgroupId);
-
-                if (i % 4 == 0) {
-                    List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
-                    List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
-
-                    for (KeywordDTO keywordEntity : keywordEntities) {
-                        keywordEntity.setAccountId(aid);
+                    if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
+                        return;
                     }
-                    keywordDAO.save(keywordEntities);
-                    subList.clear();
-                }
-            }
+
+                    //清除当前账户所有数据
+                    clearAccountData(accountId);
+
+                    ModuleAccountInfoDTO _dto;
+                    for (ModuleAccountInfoDTO baiduAccountInfoDTO : baiduAccountInfoDTOList) {
+
+                        Long aid = baiduAccountInfoDTO.getBaiduAccountId();
+                        if (aid != accountId)
+                            continue;
+
+                        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+                        BaiduApiService apiService = new BaiduApiService(commonService);
+
+                        // 初始化账户数据
+                        AccountInfoType accountInfoType = apiService.getAccountInfo();
+                        boolean isDefault = baiduAccountInfoDTO.isDfault();
+                        _dto = ObjectUtils.convert(accountInfoType, ModuleAccountInfoDTO.class);
+                        _dto.setBaiduAccountId(accountInfoType.getUserid());
+                        _dto.setBaiduUserName(baiduAccountInfoDTO.getBaiduUserName());
+                        _dto.setBaiduPassword(baiduAccountInfoDTO.getBaiduPassword());
+                        _dto.setToken(baiduAccountInfoDTO.getToken());
+                        _dto.setDfault(isDefault);
+
+                        //更新账户数据
+                        updateBaiduAccountInfo(userName, accountId, _dto);
+
+                        //更新推广计划数据
+                        List<CampaignType> campaignTypes = apiService.getAllCampaign();
+                        List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
+                        //查询推广单元
+                        List<Long> camIds = new ArrayList<>(campaignEntities.size());
+                        for (CampaignDTO campaignEntity : campaignEntities) {
+                            campaignEntity.setAccountId(aid);
+                            camIds.add(campaignEntity.getCampaignId());
+                        }
+                        campaignDAO.save(campaignEntities);
+
+                        //更新推广单元数据
+                        List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(camIds);
+                        List<AdgroupDTO> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
+                        List<Long> adgroupIds = new ArrayList<>();
+                        for (AdgroupDTO adgroupEntity : adgroupEntities) {
+                            adgroupEntity.setAccountId(aid);
+                            adgroupIds.add(adgroupEntity.getAdgroupId());
+                        }
+                        adgroupDAO.save(adgroupEntities);
+
+                        //分批次请求关键词数据
+                        List<Long> subList = new ArrayList<>(4);
+                        for (int i = 1; i <= adgroupIds.size(); i++) {
+                            Long adgroupId = adgroupIds.get(i - 1);
+                            subList.add(adgroupId);
+
+                            if (i % 4 == 0) {
+                                List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                                List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+                                for (KeywordDTO keywordEntity : keywordEntities) {
+                                    keywordEntity.setAccountId(aid);
+                                }
+                                keywordDAO.save(keywordEntities);
+                                subList.clear();
+                            }
+                        }
 
 
-            if (!subList.isEmpty()) {
-                List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
-                List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+                        if (!subList.isEmpty()) {
+                            List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                            List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
 
-                for (KeywordDTO keywordEntity : keywordEntities) {
-                    keywordEntity.setAccountId(aid);
-                }
-                keywordDAO.save(keywordEntities);
-                subList.clear();
-            }
+                            for (KeywordDTO keywordEntity : keywordEntities) {
+                                keywordEntity.setAccountId(aid);
+                            }
+                            keywordDAO.save(keywordEntities);
+                            subList.clear();
+                        }
 
-            List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupIds);
+                        List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupIds);
 
-            List<CreativeDTO> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
+                        List<CreativeDTO> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
 
-            for (CreativeDTO creativeEntity : creativeEntityList) {
-                creativeEntity.setAccountId(aid);
-            }
-            creativeDAO.save(creativeEntityList);
-        }
+                        for (CreativeDTO creativeEntity : creativeEntityList) {
+                            creativeEntity.setAccountId(aid);
+                        }
+                        creativeDAO.save(creativeEntityList);
+                    }
+                }));
+
+
     }
 
     @Override
@@ -312,76 +326,89 @@ public class SystemUserServiceImpl implements SystemUserService {
             return;
         }
 
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
-        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
-            return;
-        }
-
-        BaiduAccountInfoDTO baiduAccountInfoDTO = null;
-        for (BaiduAccountInfoDTO dto : baiduAccountInfoDTOList) {
-            if (accountId == dto.getId()) {
-                baiduAccountInfoDTO = dto;
-                break;
+        SystemUserUtils.consumeCurrentSystemAccount(systemUserDTO, AppContext.getModuleName(), (systemUserModuleDTO -> {
+            List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = systemUserModuleDTO.getAccounts();
+            if (moduleAccountInfoDTOs == null || moduleAccountInfoDTOs.isEmpty()) {
+                return;
             }
-        }
 
-        Objects.requireNonNull(baiduAccountInfoDTO);
-        Long acid = baiduAccountInfoDTO.getId();
+            ModuleAccountInfoDTO moduleAccountInfoDTO = null;
+            for (ModuleAccountInfoDTO dto : moduleAccountInfoDTOs) {
+                if (accountId == dto.getBaiduAccountId()) {
+                    moduleAccountInfoDTO = dto;
+                    break;
+                }
+            }
 
-        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-        BaiduApiService apiService = new BaiduApiService(commonService);
+            Objects.requireNonNull(moduleAccountInfoDTO);
+            Long acid = moduleAccountInfoDTO.getBaiduAccountId();
 
-        //获取账户总数据
-        AccountInfoType accountInfoType = apiService.getAccountInfo();
-        BeanUtils.copyProperties(accountInfoType, baiduAccountInfoDTO);
+            CommonService commonService = BaiduServiceSupport.getCommonService(moduleAccountInfoDTO.getBaiduUserName(), moduleAccountInfoDTO.getBaiduPassword(), moduleAccountInfoDTO.getToken());
+            BaiduApiService apiService = new BaiduApiService(commonService);
 
-        //update account data
-        updateBaiduAccountInfo(userName, accountId, baiduAccountInfoDTO);
+            //获取账户总数据
+            AccountInfoType accountInfoType = apiService.getAccountInfo();
+            BeanUtils.copyProperties(accountInfoType, moduleAccountInfoDTO);
 
-        //获取指定id的推广计划
-        List<CampaignType> campaignTypes = apiService.getCampaignById(camIds);
+            //update account data
+            updateBaiduAccountInfo(userName, accountId, moduleAccountInfoDTO);
 
-        //转换成本地系统的实体
-        List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
+            //获取指定id的推广计划
+            List<CampaignType> campaignTypes = apiService.getCampaignById(camIds);
 
-        List<Long> localAdgroupIds = getLocalAdgroupIds(accountId, camIds);
-        List<Long> localKeywordIds = getLocalKeywordIds(accountId, localAdgroupIds);
-        List<Long> localCreativeIds = getLocalCreativeIds(accountId, localAdgroupIds);
+            //转换成本地系统的实体
+            List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
 
-        //clear data
-        clearCampaignData(accountId, camIds);
-        clearAdgroupData(accountId, localAdgroupIds);
-        clearKeywordData(accountId, localKeywordIds);
-        clearCreativeData(accountId, localCreativeIds);
+            List<Long> localAdgroupIds = getLocalAdgroupIds(accountId, camIds);
+            List<Long> localKeywordIds = getLocalKeywordIds(accountId, localAdgroupIds);
+            List<Long> localCreativeIds = getLocalCreativeIds(accountId, localAdgroupIds);
 
-        //凤巢返回回来的计划实体id
-        List<Long> campaignIds = new ArrayList<>(campaignEntities.size());
+            //clear data
+            clearCampaignData(accountId, camIds);
+            clearAdgroupData(accountId, localAdgroupIds);
+            clearKeywordData(accountId, localKeywordIds);
+            clearCreativeData(accountId, localCreativeIds);
 
-        for (CampaignDTO campaignEntity : campaignEntities) {
-            campaignEntity.setAccountId(acid);
-            campaignIds.add(campaignEntity.getCampaignId());
-        }
-        campaignDAO.save(campaignEntities);
+            //凤巢返回回来的计划实体id
+            List<Long> campaignIds = new ArrayList<>(campaignEntities.size());
 
-        List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(campaignIds);
+            for (CampaignDTO campaignEntity : campaignEntities) {
+                campaignEntity.setAccountId(acid);
+                campaignIds.add(campaignEntity.getCampaignId());
+            }
+            campaignDAO.save(campaignEntities);
 
-        List<AdgroupDTO> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
+            List<AdgroupType> adgroupTypeList = apiService.getAllAdGroup(campaignIds);
 
-        List<Long> adgroupIds = new ArrayList<>(adgroupEntities.size());
-        for (AdgroupDTO adgroupEntity : adgroupEntities) {
-            adgroupEntity.setAccountId(acid);
-            adgroupIds.add(adgroupEntity.getAdgroupId());
-        }
-        adgroupDAO.save(adgroupEntities);
+            List<AdgroupDTO> adgroupEntities = EntityConvertUtils.convertToAdEntity(adgroupTypeList);
+
+            List<Long> adgroupIds = new ArrayList<>(adgroupEntities.size());
+            for (AdgroupDTO adgroupEntity : adgroupEntities) {
+                adgroupEntity.setAccountId(acid);
+                adgroupIds.add(adgroupEntity.getAdgroupId());
+            }
+            adgroupDAO.save(adgroupEntities);
 
 
-        //分批次请求关键词数据
-        List<Long> subList = new ArrayList<>(4);
-        for (int i = 1; i <= adgroupIds.size(); i++) {
-            Long adgroupId = adgroupIds.get(i - 1);
-            subList.add(adgroupId);
+            //分批次请求关键词数据
+            List<Long> subList = new ArrayList<>(4);
+            for (int i = 1; i <= adgroupIds.size(); i++) {
+                Long adgroupId = adgroupIds.get(i - 1);
+                subList.add(adgroupId);
 
-            if (i % 4 == 0) {
+                if (i % 4 == 0) {
+                    List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
+                    List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+
+                    for (KeywordDTO keywordEntity : keywordEntities) {
+                        keywordEntity.setAccountId(acid);
+                    }
+                    keywordDAO.save(keywordEntities);
+                    subList.clear();
+                }
+            }
+
+            if (!subList.isEmpty()) {
                 List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
                 List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
 
@@ -391,32 +418,23 @@ public class SystemUserServiceImpl implements SystemUserService {
                 keywordDAO.save(keywordEntities);
                 subList.clear();
             }
-        }
 
-        if (!subList.isEmpty()) {
-            List<KeywordType> keywordTypes = apiService.getAllKeyword(subList);
-            List<KeywordDTO> keywordEntities = EntityConvertUtils.convertToKwEntity(keywordTypes);
+            List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupIds);
 
-            for (KeywordDTO keywordEntity : keywordEntities) {
-                keywordEntity.setAccountId(acid);
+            List<CreativeDTO> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
+
+            for (CreativeDTO creativeEntity : creativeEntityList) {
+                creativeEntity.setAccountId(acid);
             }
-            keywordDAO.save(keywordEntities);
-            subList.clear();
-        }
+            creativeDAO.save(creativeEntityList);
+        }));
 
-        List<CreativeType> creativeTypes = apiService.getAllCreative(adgroupIds);
 
-        List<CreativeDTO> creativeEntityList = EntityConvertUtils.convertToCrEntity(creativeTypes);
-
-        for (CreativeDTO creativeEntity : creativeEntityList) {
-            creativeEntity.setAccountId(acid);
-        }
-        creativeDAO.save(creativeEntityList);
     }
 
     @Override
-    public void updateBaiduAccountInfo(String userName, Long accountId, BaiduAccountInfoDTO dto) {
-        accountManageDAO.updateBaiduAccountInfo(userName, accountId, dto);
+    public void updateBaiduAccountInfo(String userName, Long accountId, ModuleAccountInfoDTO moduleAccountInfoDTO) {
+        accountManageDAO.updateBaiduAccountInfo(userName, accountId, moduleAccountInfoDTO);
     }
 
     @Override
@@ -427,60 +445,68 @@ public class SystemUserServiceImpl implements SystemUserService {
             return Collections.emptyList();
         }
 
-        List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
+        List<CampaignDTO> list = Collections.EMPTY_LIST;
 
-        if (baiduAccountInfoDTOList == null || baiduAccountInfoDTOList.isEmpty()) {
-            return Collections.emptyList();
-        }
+        SystemUserUtils.consumeCurrentSystemAccount(systemUserDTO, AppContext.getModuleName(), systemUserModuleDTO -> {
+            List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = systemUserModuleDTO.getAccounts();
 
-        BaiduAccountInfoDTO baiduAccountInfoDTO = null;
-        for (BaiduAccountInfoDTO dto : baiduAccountInfoDTOList) {
-            if (Long.valueOf(accountId).compareTo(dto.getId()) == 0) {
-                baiduAccountInfoDTO = dto;
-                break;
+            if (moduleAccountInfoDTOs == null || moduleAccountInfoDTOs.isEmpty()) {
+                return;
             }
-        }
 
-        Objects.requireNonNull(baiduAccountInfoDTO);
-        Long acid = baiduAccountInfoDTO.getId();
-
-        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
-        BaiduApiService apiService = new BaiduApiService(commonService);
-
-        //本地的推广单元
-        List<CampaignDTO> campaignEntityList = Lists.newArrayList(campaignDAO.findAll());
-        List<CampaignType> campaignTypes = apiService.getAllCampaign();
-        List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
-        //凤巢中的推广单元
-        Map<Long, CampaignDTO> campaignEntityMap = new LinkedHashMap<>();
-        for (CampaignDTO campaignEntity : campaignEntities) {
-            campaignEntity.setAccountId(acid);
-            campaignEntityMap.put(campaignEntity.getCampaignId(), campaignEntity);
-        }
-
-        List<CampaignDTO> sumList = new ArrayList<>(campaignEntityList);
-        sumList.addAll(campaignEntities);
-        for (CampaignDTO entity : sumList) {
-            Long campaignId = entity.getCampaignId();
-            if (campaignId == null) {
-                continue;
+            ModuleAccountInfoDTO baiduAccountInfoDTO = null;
+            for (ModuleAccountInfoDTO dto : moduleAccountInfoDTOs) {
+                if (Long.valueOf(accountId).compareTo(dto.getBaiduAccountId()) == 0) {
+                    baiduAccountInfoDTO = dto;
+                    break;
+                }
             }
-            if (campaignEntityMap.get(campaignId) != null) {
-                campaignEntityMap.remove(campaignId);
-            }
-        }
 
-        if (campaignEntityMap.size() == 0) {
-            return Collections.emptyList();
-        } else {
-            List<CampaignDTO> campaignDTOList = new ArrayList<>();
-            campaignEntityMap.values().forEach(e -> {
-                CampaignDTO campaignDTO = new CampaignDTO();
-                BeanUtils.copyProperties(e, campaignDTO);
-                campaignDTOList.add(campaignDTO);
-            });
-            return new ArrayList<>(campaignDTOList);
-        }
+            Objects.requireNonNull(baiduAccountInfoDTO);
+            Long acid = baiduAccountInfoDTO.getBaiduAccountId();
+
+            CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
+            BaiduApiService apiService = new BaiduApiService(commonService);
+
+            //本地的推广单元
+            List<CampaignDTO> campaignEntityList = Lists.newArrayList(campaignDAO.findAll());
+            List<CampaignType> campaignTypes = apiService.getAllCampaign();
+            List<CampaignDTO> campaignEntities = EntityConvertUtils.convertToCamEntity(campaignTypes);
+            //凤巢中的推广单元
+            Map<Long, CampaignDTO> campaignEntityMap = new LinkedHashMap<>();
+            for (CampaignDTO campaignEntity : campaignEntities) {
+                campaignEntity.setAccountId(acid);
+                campaignEntityMap.put(campaignEntity.getCampaignId(), campaignEntity);
+            }
+
+            List<CampaignDTO> sumList = new ArrayList<>(campaignEntityList);
+            sumList.addAll(campaignEntities);
+            for (CampaignDTO entity : sumList) {
+                Long campaignId = entity.getCampaignId();
+                if (campaignId == null) {
+                    continue;
+                }
+                if (campaignEntityMap.get(campaignId) != null) {
+                    campaignEntityMap.remove(campaignId);
+                }
+            }
+
+            if (campaignEntityMap.size() == 0) {
+                return;
+            } else {
+                List<CampaignDTO> campaignDTOList = new ArrayList<>();
+                campaignEntityMap.values().forEach(e -> {
+                    CampaignDTO campaignDTO = new CampaignDTO();
+                    BeanUtils.copyProperties(e, campaignDTO);
+                    campaignDTOList.add(campaignDTO);
+                });
+                list.addAll(campaignDTOList);
+                return;
+            }
+        });
+
+        return list;
+
     }
 
     @Override
@@ -513,31 +539,39 @@ public class SystemUserServiceImpl implements SystemUserService {
 
         SystemUserDTO byUserName = systemUserDAO.findByUserName(account);
         boolean Master = false;
-        if (byUserName != null && byUserName.getBaiduAccounts().size() > 0) {
-            for (int i = 0; i < byUserName.getBaiduAccounts().size(); i++) {
-                if (byUserName.getBaiduAccounts().get(i).getId().compareTo(id) == 0) {
-                    if (byUserName.getBaiduAccounts().get(i).isDfault()) {
+        if (byUserName != null && byUserName.getModuleDTOList().size() > 0) {
 
-                    }
-                    byUserName.getBaiduAccounts().remove(i);
-                    --i;
+            SystemUserModuleDTO systemUserModuleDTO = null;
+            try {
+                systemUserModuleDTO = byUserName.getModuleDTOList().stream().filter((tmp -> {
+                    return tmp.getModuleName().equals(SystemNameConstant.SOUKE_SYSTEM_NAME);
+                })).findFirst().get();
+
+            } catch (Exception ex) {
+                return false;
+            }
+
+            if (systemUserModuleDTO.getAccounts() == null) {
+                return false;
+            }
+
+            boolean removed = systemUserModuleDTO.getAccounts().removeIf((tmp -> tmp.getBaiduAccountId().compareTo(id) == 0));
+
+            if (removed) {
+                if (systemUserModuleDTO.getAccounts().size() > 0 && Master) {
+                    systemUserModuleDTO.getAccounts().get(0).setDfault(true);
                 }
             }
-            List<BaiduAccountInfoDTO> baiduAccountInfoDTOs = byUserName.getBaiduAccounts();
-            if (baiduAccountInfoDTOs.size() > 0 && Master) {
-                baiduAccountInfoDTOs.get(0).setDfault(true);
-            }
-            int falg = systemUserDAO.removeAccountInfo(baiduAccountInfoDTOs, account);
-            if (falg > 0) {
-                return true;
-            }
+
+            boolean update = systemUserDAO.updateModuleInfo(systemUserModuleDTO, byUserName.getId());
+            return update;
         }
         return false;
     }
 
-    @Override
-    public void addAccount(String user, BaiduAccountInfoDTO baiduAccountInfoDTO) {
-        systemUserDAO.insertAccountInfo(user, baiduAccountInfoDTO);
+    //    @Override
+    public void addAccount(String user, ModuleAccountInfoDTO moduleAccountInfoDTO) {
+        systemUserDAO.insertAccountInfo(user, moduleAccountInfoDTO);
     }
 
     @Override
@@ -794,6 +828,34 @@ public class SystemUserServiceImpl implements SystemUserService {
             systemLogDAO.log("修改用户密码: " + systemUserDTO.getUserName());
         }
         return success;
+    }
+
+    @Override
+    public boolean updateUserModuleMenus(String userid, UserModuleMenuDTO userModuleMenuDTO) {
+        SystemUserDTO systemUserDTO = systemUserDAO.findByUserId(userid);
+
+        if (systemUserDTO == null) {
+            return false;
+        }
+
+
+        boolean updated = systemUserDAO.updateUserMenus(userid, userModuleMenuDTO);
+
+        if (updated) {
+            systemLogDAO.log("更新用户菜单:" + systemUserDTO.getUserName());
+        }
+
+        return updated;
+    }
+
+    @Override
+    public SystemUserDTO findByUserId(String userid) {
+        return systemUserDAO.findByUserId(userid);
+    }
+
+    @Override
+    public boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO) {
+        return systemUserDAO.updateUserBaseInfo(userid, systemUserDTO);
     }
 
     /**

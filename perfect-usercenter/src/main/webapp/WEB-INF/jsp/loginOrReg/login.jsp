@@ -37,7 +37,7 @@
     <div class="login_box1">
         <div class="login_click over" style="margin-bottom: 35px">
             <span class="fl">用户登录</span>
-            <a href="/userCenter/reg" class="fr">→ 还没有账号？点击注册</a>
+            <a href="/register" class="fr">→ 还没有账号？点击注册</a>
         </div>
         <form action="/login" method="post">
             <input type="hidden" name="redirect" value="${redirect_url}"/>

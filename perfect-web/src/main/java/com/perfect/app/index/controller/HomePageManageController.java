@@ -1,11 +1,13 @@
 package com.perfect.app.index.controller;
 
 import com.perfect.commons.message.mail.SendMail;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.core.AppContext;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
+import com.perfect.utils.SystemUserUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import com.perfect.web.suport.WebContextSupport;
 import com.perfect.web.suport.WebUtils;
@@ -22,7 +24,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -49,7 +50,7 @@ public class HomePageManageController extends WebContextSupport {
         }
 
         modelMap.put("currSystemUserName", userName);
-        modelMap.put("accountList", systemUserDTO.getBaiduAccounts());
+        modelMap.put("accountList", SystemUserUtils.findAccountsBySystemName(systemUserDTO, AppContext.getModuleName()));
         return new ModelAndView("homePage/home");
     }
 
@@ -283,14 +284,19 @@ public class HomePageManageController extends WebContextSupport {
         try {
             if (jedis.exists(key)) {
                 SystemUserDTO systemUserDTO = systemUserService.getSystemUser(userName);
-                List<BaiduAccountInfoDTO> baiduAccountInfoDTOList = systemUserDTO.getBaiduAccounts();
-                String baiduUserName = null;
-                for (BaiduAccountInfoDTO dto : baiduAccountInfoDTOList) {
-                    if (dto.getBaiduUserName().equals(baiduAccountName)) {
-                        baiduUserName = dto.getBaiduUserName();
-                        break;
+
+                final StringBuilder baiduUserName = new StringBuilder();
+
+
+                SystemUserUtils.consumeCurrentSystemAccount(systemUserDTO, AppContext.getModuleName(), systemUserModuleDTO -> {
+                    for (ModuleAccountInfoDTO dto : systemUserModuleDTO.getAccounts()) {
+                        if (dto.getBaiduUserName().equals(baiduAccountName)) {
+                            baiduUserName.append(dto.getBaiduUserName());
+                            break;
+                        }
                     }
-                }
+                });
+
 
                 if (baiduUserName != null) {
                     //重置密码

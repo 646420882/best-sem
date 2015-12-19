@@ -5,8 +5,10 @@ import com.perfect.dto.BaseDTO;
 import java.util.List;
 
 /**
+ * 暂停使用
  * Created by yousheng on 15/12/16.
  */
+@Deprecated
 public class SystemMenuDTO extends BaseDTO {
 
     private String menuId;

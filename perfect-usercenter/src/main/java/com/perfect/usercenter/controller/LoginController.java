@@ -1,7 +1,9 @@
 package com.perfect.usercenter.controller;
 
+import com.google.common.base.Strings;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
+import com.perfect.usercenter.filters.UserInfoFilter;
 import com.perfect.utils.MD5;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
@@ -81,7 +83,7 @@ public class LoginController {
     private void loginSuccessHandler(HttpServletRequest request, HttpServletResponse response, SystemUserDTO systemUserDTO, ModelAndView modelAndView) {
 
         String url = request.getParameter("redirect");
-        if (url == null || "".equals(url)) {
+        if (Strings.isNullOrEmpty(url)) {
             url = request.getParameter("url");
         }
 
@@ -90,7 +92,7 @@ public class LoginController {
         Jedis jedis = JRedisUtils.get();
         jedis.setex(uuid, 3600, json);
 
-        if (url != null && !url.isEmpty() && !url.equals("null")) {
+        if (!Strings.isNullOrEmpty(url) && !url.equals("null")) {
             String target;
             if (url.lastIndexOf("/") != -1) {
                 target = "http://" + url + "token?tokenid=" + uuid;
@@ -140,7 +142,7 @@ public class LoginController {
         Cookie cookie = new Cookie("userToken", uuid);
         cookie.setMaxAge(30 * 60 * 60);
         response.addCookie(cookie);
-        request.getSession().setAttribute("user", systemUserDTO);
+        request.getSession().setAttribute(UserInfoFilter.SESSION_USER, systemUserDTO);
 
         // token settings
         ModelMap modelMap = modelAndView.getModelMap();

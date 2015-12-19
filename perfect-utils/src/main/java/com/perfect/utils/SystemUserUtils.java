@@ -1,13 +1,18 @@
 package com.perfect.utils;
 
+import com.google.common.collect.Lists;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.entity.sys.SystemUserEntity;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -57,5 +62,19 @@ public class SystemUserUtils {
         }
 
         return systemUserDTO;
+    }
+
+
+    public static List<ModuleAccountInfoDTO> findAccountsBySystemName(SystemUserDTO systemUserDTO, String systemName) {
+        final List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = Lists.newArrayList();
+        systemUserDTO.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(systemName))).findFirst().ifPresent(systemUserModuleDTO1 -> {
+            moduleAccountInfoDTOs.addAll(systemUserModuleDTO1.getAccounts());
+        });
+
+        return moduleAccountInfoDTOs;
+    }
+
+    public static void consumeCurrentSystemAccount(SystemUserDTO systemUserDTO, String systemName, Consumer<SystemUserModuleDTO> consumer) {
+        systemUserDTO.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(systemName))).findFirst().ifPresent(consumer);
     }
 }

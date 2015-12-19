@@ -22,7 +22,9 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.entity.log.UserOperationLogEntity;
+import com.perfect.entity.sys.ModuleAccountInfoEntity;
 import com.perfect.service.UserOperationLogService;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.SystemLogDTOBuilder;
@@ -96,7 +98,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public UserOperationLogDTO deleteKeywordLog(KeywordDTO newWord) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
@@ -114,7 +116,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public List<UserOperationLogDTO> updateKeywordAll(KeywordType newWord) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
@@ -160,7 +162,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public UserOperationLogDTO removeCampaign(CampaignDTO campaignType) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         CampaignType baiduType = baiduApiService.getCampaignTypeById(campaignType.getCampaignId());
@@ -196,7 +198,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public List<UserOperationLogDTO> updateCampaignAll(CampaignType newCampaign) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         CampaignType baiduType = baiduApiService.getCampaignTypeById(newCampaign.getCampaignId());
@@ -303,7 +305,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public UserOperationLogDTO removeAdgroup(AdgroupDTO adgroupType) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         AdgroupType baiduType = baiduApiService.getAdgroupTypeById(adgroupType.getAdgroupId());
@@ -336,7 +338,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public List<UserOperationLogDTO> updateAdgroupAll(AdgroupType newAdgroup) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         AdgroupType baiduType = baiduApiService.getAdgroupTypeById(newAdgroup.getAdgroupId());
@@ -409,7 +411,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public UserOperationLogDTO removeCreative(CreativeDTO creativeType) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         CreativeType baiduType = baiduApiService.getCreativeTypeById(creativeType.getCreativeId());
@@ -445,7 +447,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     @Override
     public List<UserOperationLogDTO> updateCreativeAll(CreativeType newCreative) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         BaiduApiService baiduApiService = new BaiduApiService(commonService);
         CreativeType baiduType = baiduApiService.getCreativeTypeById(newCreative.getCreativeId());

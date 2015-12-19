@@ -130,7 +130,7 @@
                                     <div class="form-group has-feedback">
                                         <div>
 
-                                            <input class="registeInput" type="text" name="phoenixNestUser">
+                                            <input class="registeInput" type="text" name="baiduUserName">
                                         </div>
                                     </div>
                                     <span style="color: red" class="register_star">*</span>
@@ -140,7 +140,7 @@
                                     <div class="form-group has-feedback">
                                         <div>
 
-                                            <input class="registeInput" type="text" name="phoenixNestPassword">
+                                            <input class="registeInput" type="text" name="baiduUserPassword">
                                         </div>
                                     </div>
                                     <span style="color: red" class="register_star">*</span>

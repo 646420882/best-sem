@@ -12,9 +12,9 @@ import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.keyword.KeywordQualityDAO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.dto.keyword.QualityDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.KeywordQualityService;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.TopN;
@@ -195,7 +195,7 @@ public class KeywordQualityServiceImpl implements KeywordQualityService {
 
     @Override
     public List<Quality10Type> getKeyword10Quality(List<Long> keywordIds) {
-        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
         if (commonService == null) {
             return Collections.<Quality10Type>emptyList();

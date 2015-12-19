@@ -13,6 +13,7 @@ import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.utils.DateUtils;
@@ -165,23 +166,28 @@ public class AccountManageServiceImpl implements AccountManageService {
 
     @Override
     public Map<String, Object> getAllBaiduAccount(String currSystemUserName) {
-        List<BaiduAccountInfoDTO> list = accountManageDAO.getBaiduAccountItems(currSystemUserName);
+        List<ModuleAccountInfoDTO> list = accountManageDAO.getBaiduAccountItems(currSystemUserName);
         return JSONUtils.getJsonMapData(list);
     }
 
     @Override
-    public List<BaiduAccountInfoDTO> getAllBaiduAccount() {
-        List<BaiduAccountInfoDTO> baiduAccountList = new ArrayList<>();
+    public List<ModuleAccountInfoDTO> getAllBaiduAccount() {
+        List<ModuleAccountInfoDTO> baiduAccountList = new ArrayList<>();
         List<SystemUserDTO> userDTOList = accountManageDAO.getAllSysUserAccount();
-        userDTOList.stream().filter(o -> o.getBaiduAccounts() != null).forEach(e -> {
-            if (!e.getBaiduAccounts().isEmpty())
-                baiduAccountList.addAll(e.getBaiduAccounts());
+        userDTOList.stream().filter(o -> o.getModuleDTOList() != null).forEach(e -> {
+            if (!e.getModuleDTOList().isEmpty()) {
+                e.getModuleDTOList().forEach((systemUserModuleDTO -> {
+                    if (systemUserModuleDTO.getAccounts() != null && !systemUserModuleDTO.getAccounts().isEmpty()) {
+                        baiduAccountList.addAll(systemUserModuleDTO.getAccounts());
+                    }
+                }));
+            }
         });
         return baiduAccountList;
     }
 
     public Map<String, Object> getBaiduAccountInfoByUserId(Long baiduUserId) {
-        BaiduAccountInfoDTO dto = accountManageDAO.findByBaiduUserId(baiduUserId);
+        ModuleAccountInfoDTO dto = accountManageDAO.findByBaiduUserId(baiduUserId);
         Map<String, Object> results = JSONUtils.getJsonMapData(dto);
         results.put("cost", getYesterdayCost(baiduUserId));
         results.put("costRate", accountManageDAO.getCostRate());
@@ -204,7 +210,7 @@ public class AccountManageServiceImpl implements AccountManageService {
         return results;
     }
 
-    public BaiduAccountInfoDTO getBaiduAccountInfoById(Long baiduUserId) {
+    public ModuleAccountInfoDTO getBaiduAccountInfoById(Long baiduUserId) {
         return accountManageDAO.findByBaiduUserId(baiduUserId);
     }
 
@@ -268,7 +274,7 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public BaiduAccountInfoDTO findByBaiduUserId(Long baiduUserId) {
+    public ModuleAccountInfoDTO findByBaiduUserId(Long baiduUserId) {
         return accountManageDAO.findByBaiduUserId(baiduUserId);
     }
 

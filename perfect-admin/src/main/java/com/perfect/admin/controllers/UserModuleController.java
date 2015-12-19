@@ -5,6 +5,7 @@ import com.perfect.commons.web.JsonResultMaps;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemMenuDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.dto.sys.UserModuleMenuDTO;
 import com.perfect.service.SystemUserService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +15,10 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- *
  * 用户模块控制器
- *
+ * <p>
  * 包括模块的新增以及菜单的维护,另外维护模块对应的账号信息
- *
+ * <p>
  * Created by yousheng on 15/12/15.
  */
 @RestController
@@ -26,6 +26,21 @@ public class UserModuleController {
 
     @Resource
     private SystemUserService systemUserService;
+
+    @RequestMapping(value = "/users/{userid}/menus", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updateUserModules(@PathVariable("userid") String userid, @RequestBody UserModuleMenuDTO userModuleMenuDTO) {
+        if (userModuleMenuDTO == null) {
+            return JsonViews.generate(-1, "无菜单信息.");
+        }
+
+        boolean success = systemUserService.updateUserModuleMenus(userid, userModuleMenuDTO);
+
+        if (success) {
+            return JsonViews.generateSuccessNoData();
+        } else {
+            return JsonViews.generateFailedNoData();
+        }
+    }
 
     @RequestMapping(value = "/users/{userid}/modules", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addModule(@PathVariable("userid") String userid, @RequestParam("moduleid") String moduleId) {

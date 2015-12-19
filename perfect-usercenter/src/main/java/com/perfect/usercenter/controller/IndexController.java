@@ -19,6 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 public class IndexController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView index() {
+        return new ModelAndView("/index");
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
         return new ModelAndView("/loginOrReg/login");
     }
@@ -28,10 +33,6 @@ public class IndexController {
         return new ModelAndView("/bestPage/bestIndex");
     }
 
-    @RequestMapping(value = "/userCenter/index", method = RequestMethod.GET)
-    public ModelAndView index() {
-        return new ModelAndView("/index");
-    }
 
     /**
      * 登出
@@ -45,23 +46,27 @@ public class IndexController {
         response.addCookie(cookies);
     }
 
-    @RequestMapping(value = "/userCenter/reg")
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView reg() {
         return new ModelAndView("/loginOrReg/register");
     }
 
-    @RequestMapping(value = "/userCenter/account", method = RequestMethod.GET)
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ModelAndView account() {
         return new ModelAndView("/account/account");
     }
 
-    @RequestMapping(value = "/userCenter/password", method = RequestMethod.GET)
-    public ModelAndView password() {    return new ModelAndView("/password/password"); }
+    @RequestMapping(value = "/password", method = RequestMethod.GET)
+    public ModelAndView password() {
+        return new ModelAndView("/password/password");
+    }
 
-    @RequestMapping(value = "/userCenter/forget", method = RequestMethod.GET)
-    public ModelAndView forget() {    return new ModelAndView("/password/forget");  }
+    @RequestMapping(value = "/forget", method = RequestMethod.GET)
+    public ModelAndView forget() {
+        return new ModelAndView("/password/forget");
+    }
 
-    @RequestMapping(value = "/userCenter/safetyTool", method = RequestMethod.GET)
+    @RequestMapping(value = "/safetyTool", method = RequestMethod.GET)
     public ModelAndView safetyTool() {
         return new ModelAndView("/safe/safetool");
     }

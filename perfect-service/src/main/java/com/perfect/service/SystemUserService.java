@@ -2,10 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
-import com.perfect.dto.sys.ModuleAccountInfoDTO;
-import com.perfect.dto.sys.SystemMenuDTO;
-import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.dto.sys.*;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -26,7 +23,7 @@ public interface SystemUserService {
 
     void updateAccountData(String userName, long accountId, List<Long> camIds);
 
-    void updateBaiduAccountInfo(String userName, Long accountId, BaiduAccountInfoDTO dto);
+    void updateBaiduAccountInfo(String userName, Long accountId, ModuleAccountInfoDTO moduleAccountInfoDTO);
 
     List<CampaignDTO> getCampaign(String userName, long accountId);
 
@@ -42,7 +39,7 @@ public interface SystemUserService {
 
     boolean removeAccount(Long id, String account);
 
-    void addAccount(String user, BaiduAccountInfoDTO baiduAccountInfoDTO);
+//    void addAccount(String user, BaiduAccountInfoDTO baiduAccountInfoDTO);
 
     boolean updatePassword(String userName, String pwd);
 
@@ -79,6 +76,14 @@ public interface SystemUserService {
 
     List<SystemUserModuleDTO> getUserModules(String id);
 
+    /**
+     * @param id
+     * @param modulename
+     * @param menus
+     * @return
+     * @see SystemUserService.updateUserModuleMenus(String userid, UserModuleMenuDTO userModuleMenuDTO);
+     */
+    @Deprecated
     boolean updateUserModuleMenus(String id, String modulename, List<SystemMenuDTO> menus);
 
     boolean addModule(String userid, String moduleId);
@@ -94,4 +99,10 @@ public interface SystemUserService {
     InputStream findUserImage(String sysUserName);
 
     boolean updateUserPassword(String userid, String password);
+
+    boolean updateUserModuleMenus(String userid, UserModuleMenuDTO userModuleMenuDTO);
+
+    SystemUserDTO findByUserId(String userid);
+
+    boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO);
 }

@@ -15,6 +15,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.monitor.FolderDTO;
 import com.perfect.dto.monitor.FolderMonitorDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AssistantKeywordService;
 import com.perfect.service.MonitoringService;
 import org.springframework.stereotype.Service;
@@ -137,7 +138,7 @@ public class MonitoringServiceImpl implements MonitoringService {
             }
 
             List<KeywordInfoDTO> keywordInfoDTOs = assistantKeywordService.getKeywordListByIds(longs);
-            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            ModuleAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
             List<QualityType> qualityType = apiService.getKeywordQuality(longs);
@@ -183,7 +184,7 @@ public class MonitoringServiceImpl implements MonitoringService {
             }
 
             keywordInfoDTOs = assistantKeywordService.getKeywordListByIds(longs);
-            BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            ModuleAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
             BaiduApiService apiService = new BaiduApiService(commonService);
             List<QualityType> qualityType = apiService.getKeywordQuality(longs);
@@ -315,7 +316,7 @@ public class MonitoringServiceImpl implements MonitoringService {
      */
     public PromotionMonitoring getUserInfo() {
         Long accid = AppContext.getAccountId();
-        BaiduAccountInfoDTO entity = accountManageDAO.findByBaiduUserId(accid);
+        ModuleAccountInfoDTO entity = accountManageDAO.findByBaiduUserId(accid);
 
         PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
         return Monitoring;

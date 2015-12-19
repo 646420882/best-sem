@@ -3,20 +3,21 @@ package com.perfect.app.assistant.controller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.autosdk.sms.v3.ScheduleType;
-import com.perfect.web.suport.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dto.SchedulerDTO;
-import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.baidu.OfflineTimeDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.utils.RegionalCodeUtils;
+import com.perfect.utils.SystemUserUtils;
 import com.perfect.utils.paging.PagerInfo;
+import com.perfect.web.suport.WebContextSupport;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -155,20 +156,24 @@ public class AssistantCampaignController extends WebContextSupport {
          */
         SystemUserDTO currentUser = systemUserService.findByAid(AppContext.getAccountId());
 
-        List<BaiduAccountInfoDTO> accounts = currentUser.getBaiduAccounts();
 
-        BaiduAccountInfoDTO baiduEntity = null;
+        SystemUserUtils.consumeCurrentSystemAccount(currentUser, AppContext.getModuleName(), systemUserModuleDTO -> {
+            List<ModuleAccountInfoDTO> accounts = systemUserModuleDTO.getAccounts();
 
-        for (BaiduAccountInfoDTO accountInfoDTO : accounts) {
-            if (accountInfoDTO.getId().longValue() == AppContext.getAccountId().longValue()) {
-                baiduEntity = accountInfoDTO;
-                break;
+            ModuleAccountInfoDTO baiduEntity = null;
+
+            for (ModuleAccountInfoDTO accountInfoDTO : accounts) {
+                if (accountInfoDTO.getBaiduAccountId().longValue() == AppContext.getAccountId().longValue()) {
+                    baiduEntity = accountInfoDTO;
+                    break;
+                }
             }
-        }
 
-        List<RegionalCodeDTO> regionalCodeDTOs = sysRegionalService.getProvinceIdByRegionalId(baiduEntity.getRegionTarget());
+            List<RegionalCodeDTO> regionalCodeDTOs = sysRegionalService.getProvinceIdByRegionalId(baiduEntity.getRegionTarget());
 
-        writeJson(regionalCodeDTOs, response);
+            writeJson(regionalCodeDTOs, response);
+        });
+
     }
 
 

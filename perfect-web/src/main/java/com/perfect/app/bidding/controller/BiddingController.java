@@ -10,9 +10,7 @@ import com.perfect.commons.constants.KeywordStatusEnum;
 import com.perfect.core.AppContext;
 import com.perfect.dto.CookieDTO;
 import com.perfect.dto.StructureReportDTO;
-import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.bidding.BiddingRuleDTO;
 import com.perfect.dto.bidding.KeywordBiddingInfoDTO;
 import com.perfect.dto.bidding.StrategyDTO;
@@ -21,11 +19,14 @@ import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordRankDTO;
 import com.perfect.dto.regional.RegionCodeDTO;
 import com.perfect.dto.regional.RegionalCodeDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.param.BiddingRuleParam;
 import com.perfect.service.*;
 import com.perfect.utils.BiddingRuleUtils;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.NumberUtils;
+import com.perfect.utils.SystemUserUtils;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.paging.PaginationParam;
 import org.apache.commons.lang.StringUtils;
@@ -716,107 +717,115 @@ public class BiddingController {
         }
 
         List<Integer> accountRegionList = new ArrayList<>();
-        CommonService commonService = null;
-        String host = null;
-        for (BaiduAccountInfoDTO infoEntity : systemUserEntity.getBaiduAccounts()) {
-            if (infoEntity.getId().longValue() == accid) {
-                try {
-                    // 如果竞价规则和推广计划都未设置推广地域,则通过账户获取
-                    accountRegionList.addAll(infoEntity.getRegionTarget());
-                    host = infoEntity.getRegDomain();
-                    commonService = ServiceFactory.getInstance(infoEntity.getBaiduUserName(), infoEntity.getBaiduPassword(), infoEntity.getToken(), null);
-                    break;
-                } catch (ApiException e) {
-                    e.printStackTrace();
-                }
 
-            }
-        }
+        final Map<String, KeywordRankDTO> rankMap = new HashMap<>();
 
-        if (commonService == null) {
-            return new ModelAndView(jsonView);
-        }
+        SystemUserUtils.consumeCurrentSystemAccount(systemUserEntity, AppContext.getModuleName(), systemUserModuleDTO -> {
 
-        Map<String, KeywordDTO> keywordEntityMap = new HashMap<>();
-
-        Map<String, KeywordRankDTO> rankMap = new HashMap<>();
+            CommonService commonService = null;
+            String host = null;
 
 
-        for (Long kwid : ids) {
-
-            KeywordDTO keywordEntity = sysKeywordService.findById(kwid);
-            keywordEntityMap.put(keywordEntity.getKeyword(), keywordEntity);
-
-
-            CampaignDTO campaignEntity = sysCampaignService.findByKeywordId(kwid);
-            List<Integer> targetList = campaignEntity.getRegionTarget();
-            // 设置计划区域或者账户区域
-            KeywordRankDTO keywordRankDTO = new KeywordRankDTO();
-            keywordRankDTO.setKwid(kwid + "");
-            keywordRankDTO.setName(keywordEntity.getKeyword());
-            keywordRankDTO.setTime(System.currentTimeMillis());
-            keywordRankDTO.setAccountId(AppContext.getAccountId());
-
-
-            Map<Integer, Integer> regionRankMap = new HashMap<>();
-            if (targetList != null && !targetList.isEmpty()) {
-                for (Integer region : targetList) {
-                    CookieDTO cookieDTO = cookieService.takeOne();
-                    if (cookieDTO == null) {
-                        continue;
+            for (ModuleAccountInfoDTO infoEntity : systemUserModuleDTO.getAccounts()) {
+                if (infoEntity.getBaiduAccountId().longValue() == accid) {
+                    try {
+                        // 如果竞价规则和推广计划都未设置推广地域,则通过账户获取
+                        accountRegionList.addAll(infoEntity.getRegionTarget());
+                        host = infoEntity.getRegDomain();
+                        commonService = ServiceFactory.getInstance(infoEntity.getBaiduUserName(), infoEntity.getBaiduPassword(), infoEntity.getToken(), null);
+                        break;
+                    } catch (ApiException e) {
+                        e.printStackTrace();
                     }
 
-                    String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieDTO.getCookie(), keywordEntity.getKeyword(), region);
-
-                    int rank = BaiduSearchPageUtils.where(previewHTML, host);
-
-                    regionRankMap.put(region, rank);
                 }
-            } else {
+            }
 
-                for (Integer region : accountRegionList) {
-                    CookieDTO cookieDTO = cookieService.takeOne();
-                    if (cookieDTO == null) {
-                        continue;
+
+            if (commonService == null) {
+                return;
+            }
+
+            Map<String, KeywordDTO> keywordEntityMap = new HashMap<>();
+
+
+            for (Long kwid : ids) {
+
+                KeywordDTO keywordEntity = sysKeywordService.findById(kwid);
+                keywordEntityMap.put(keywordEntity.getKeyword(), keywordEntity);
+
+
+                CampaignDTO campaignEntity = sysCampaignService.findByKeywordId(kwid);
+                List<Integer> targetList = campaignEntity.getRegionTarget();
+                // 设置计划区域或者账户区域
+                KeywordRankDTO keywordRankDTO = new KeywordRankDTO();
+                keywordRankDTO.setKwid(kwid + "");
+                keywordRankDTO.setName(keywordEntity.getKeyword());
+                keywordRankDTO.setTime(System.currentTimeMillis());
+                keywordRankDTO.setAccountId(AppContext.getAccountId());
+
+
+                Map<Integer, Integer> regionRankMap = new HashMap<>();
+                if (targetList != null && !targetList.isEmpty()) {
+                    for (Integer region : targetList) {
+                        CookieDTO cookieDTO = cookieService.takeOne();
+                        if (cookieDTO == null) {
+                            continue;
+                        }
+
+                        String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieDTO.getCookie(), keywordEntity.getKeyword(), region);
+
+                        int rank = BaiduSearchPageUtils.where(previewHTML, host);
+
+                        regionRankMap.put(region, rank);
+                    }
+                } else {
+
+                    for (Integer region : accountRegionList) {
+                        CookieDTO cookieDTO = cookieService.takeOne();
+                        if (cookieDTO == null) {
+                            continue;
+                        }
+
+                        String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieDTO.getCookie(), keywordEntity.getKeyword(), region);
+
+                        int rank = BaiduSearchPageUtils.where(previewHTML, host);
+
+                        regionRankMap.put(region, rank);
                     }
 
-                    String previewHTML = BaiduSearchPageUtils.getBaiduSearchPage(cookieDTO.getCookie(), keywordEntity.getKeyword(), region);
+                }
 
-                    int rank = BaiduSearchPageUtils.where(previewHTML, host);
+                keywordRankDTO.setTargetRank(regionRankMap);
 
-                    regionRankMap.put(region, rank);
+                rankMap.put(keywordEntity.getKeyword(), keywordRankDTO);
+
+            }
+
+
+            Long accountId = AppContext.getAccountId();
+
+            for (String key : rankMap.keySet()) {
+                String id;
+                KeywordDTO keywordEntity = keywordEntityMap.get(key);
+                if (keywordEntity.getKeywordId() == null) {
+                    id = keywordEntity.getId();
+                } else {
+                    id = keywordEntity.getKeywordId().toString();
+                }
+
+                KeywordRankDTO currentRank = keywordRankService.findRankByKeywordId(id);
+
+                if (currentRank == null) {
+                    KeywordRankDTO keywordRankEntity = rankMap.get(key);
+                    keywordRankEntity.setAccountId(accountId);
+                    keywordRankEntity.setKwid(id);
                 }
 
             }
+            keywordRankService.updateRanks(rankMap.values());
+        });
 
-            keywordRankDTO.setTargetRank(regionRankMap);
-
-            rankMap.put(keywordEntity.getKeyword(), keywordRankDTO);
-
-        }
-
-
-        Long accountId = AppContext.getAccountId();
-
-        for (String key : rankMap.keySet()) {
-            String id;
-            KeywordDTO keywordEntity = keywordEntityMap.get(key);
-            if (keywordEntity.getKeywordId() == null) {
-                id = keywordEntity.getId();
-            } else {
-                id = keywordEntity.getKeywordId().toString();
-            }
-
-            KeywordRankDTO currentRank = keywordRankService.findRankByKeywordId(id);
-
-            if (currentRank == null) {
-                KeywordRankDTO keywordRankEntity = rankMap.get(key);
-                keywordRankEntity.setAccountId(accountId);
-                keywordRankEntity.setKwid(id);
-            }
-
-        }
-        keywordRankService.updateRanks(rankMap.values());
 
         Map<String, Object> attributes = JSONUtils.getJsonMapData(rankMap);
         jsonView.setAttributesMap(attributes);

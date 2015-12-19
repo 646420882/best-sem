@@ -12,6 +12,7 @@ import com.perfect.dto.backup.CreativeBackUpDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.param.SearchFilterParam;
 import com.perfect.service.*;
 import com.perfect.web.suport.WebContextSupport;
@@ -570,7 +571,7 @@ public class AssistantCreativeController extends WebContextSupport {
                                        @RequestParam(value = "pcUrl", defaultValue = "") String pcUrl,
                                        @RequestParam(value = "pcsUrl", defaultValue = "") String pcsUrl) {
 //        System.out.println("cid:"+cid+"aid"+aid+"title:"+title+"desc1"+desc1+"desc2"+desc2+"pcUrl"+pcUrl+"pcsUrl"+pcsUrl);
-        BaiduAccountInfoDTO bad = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         CreativeType creativeTypes = new CreativeType();
         creativeTypes.setTitle(title);
         creativeTypes.setDescription1(desc1);
@@ -601,7 +602,7 @@ public class AssistantCreativeController extends WebContextSupport {
 
     @RequestMapping(value = "/getDomain", method = RequestMethod.GET)
     public ModelAndView getDomain(HttpServletResponse response) {
-        BaiduAccountInfoDTO baiduAccountInfoEntity = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        ModuleAccountInfoDTO baiduAccountInfoEntity = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         if (baiduAccountInfoEntity != null) {
             writeHtml(baiduAccountInfoEntity.getRegDomain(), response);
         } else {
@@ -625,7 +626,7 @@ public class AssistantCreativeController extends WebContextSupport {
             sublinkInfos.add(sublinkInfo);
         }
         sublinkType.setSublinkInfos(sublinkInfos);
-        BaiduAccountInfoDTO bad = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         try {
             NewCreativeService newCreativeService = commonService.getService(NewCreativeService.class);
@@ -767,7 +768,7 @@ public class AssistantCreativeController extends WebContextSupport {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            ModuleAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
             CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", accountInfoDTO);
             List<CreativeDTO> getList = csvReadUtil.getImportCreativeList();
             targetFile.delete();

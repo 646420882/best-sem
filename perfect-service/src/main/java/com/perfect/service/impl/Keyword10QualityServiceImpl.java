@@ -9,6 +9,7 @@ import com.perfect.autosdk.sms.v3.KeywordService;
 import com.perfect.autosdk.sms.v3.Quality10Type;
 import com.perfect.core.AppContext;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.Keyword10QualityService;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class Keyword10QualityServiceImpl implements Keyword10QualityService {
     @Override
     @SuppressWarnings("unchecked")
     public Map<Long, Quality10Type> getKeyword10Quality(List<Long> keywordIds) {
-        BaiduAccountInfoDTO baiduAccount = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
+        ModuleAccountInfoDTO baiduAccount = accountManageService.getBaiduAccountInfoById(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
         try {
             KeywordService keywordService = commonService.getService(KeywordService.class);

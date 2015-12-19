@@ -5,9 +5,6 @@ import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
-import com.perfect.entity.sys.SystemModuleEntity;
-import com.perfect.entity.sys.SystemUserEntity;
-import com.perfect.entity.sys.SystemUserModuleEntity;
 import com.perfect.param.RegisterParam;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemModuleService;
@@ -38,7 +35,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
         MD5.Builder md5Builder = new MD5.Builder();
         MD5 md5 = md5Builder.password(pwd).salt(account).build();
         systemUserDTO.setAccess(2);
-        systemUserDTO.setBaiduAccounts(new ArrayList<>());
+//        systemUserDTO.set(new ArrayList<>());
         systemUserDTO.setUserName(account);
         systemUserDTO.setPassword(md5.getMD5());
         systemUserDTO.setCompanyName(company);
@@ -105,8 +102,8 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
                 //百度账户处理
                 List<ModuleAccountInfoDTO> baiduList = new ArrayList<>();
                 ModuleAccountInfoDTO baiduAccountInfo = new ModuleAccountInfoDTO();
-                baiduAccountInfo.setBaiduUserName(registerParam.getPhoenixNestUser());
-                baiduAccountInfo.setBaiduPassword(registerParam.getPhoenixNestPassword());
+                baiduAccountInfo.setBaiduUserName(registerParam.getBaiduUserName());
+                baiduAccountInfo.setBaiduPassword(registerParam.getBaiduUserPassword());
                 baiduAccountInfo.setBestRegDomain(registerParam.getUrlAddress());
                 baiduList.add(baiduAccountInfo);
                 //设置百度帐号信息

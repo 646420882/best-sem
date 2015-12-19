@@ -1,5 +1,6 @@
 package com.perfect.core;
 
+import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 
 import java.util.Collections;
@@ -25,6 +26,7 @@ public class AppContext {
 
     private static ThreadLocal<String> remoteIpThreadLocal = new ThreadLocal<>();
 
+    private static ThreadLocal<UserInfo> userInfoThreadLocal = new ThreadLocal<>();
     private static Object accountId;
 
     public static void setSystemUserInfo(SystemUserInfo systemUserInfo) {
@@ -99,11 +101,14 @@ public class AppContext {
         contextMap.set(so);
     }
 
-    public static String getModuleId() {
-        if (contextMap.get() == null)
-            return null;
+    public static String getModuleName() {
 
-        return contextMap.get().getModuleId();
+        return SystemNameConstant.SOUKE_SYSTEM_NAME;
+
+//        if (contextMap.get() == null)
+//            return null;
+//
+//        return contextMap.get().getModuleName();
     }
 
     public static String getUser() {
@@ -140,4 +145,11 @@ public class AppContext {
         }
     }
 
+    public static UserInfo getUserInfo() {
+        return userInfoThreadLocal.get();
+    }
+
+    public static void setUserInfo(UserInfo userInfo) {
+        userInfoThreadLocal.set(userInfo);
+    }
 }

@@ -14,10 +14,10 @@ import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.creative.CreativeDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.MaterialsUploadService;
 import com.perfect.utils.ObjectUtils;
 import org.bson.types.ObjectId;
@@ -78,7 +78,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
 
         accountManageDAO.getBaiduAccountItems(sysUser)
                 .stream()
-                .map(BaiduAccountInfoDTO::getId)
+                .map(ModuleAccountInfoDTO::getBaiduAccountId)
                 .collect(Collectors.toList())
                 .stream()
                 .forEach(id -> uploadFunc1.apply(id).forEach((k, v) -> result.get(k).add(v)));
@@ -155,7 +155,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
                             .collect(Collectors.groupingBy(k -> k.getKeyword().trim().toUpperCase()))
                             .values()
                             .stream()
-                            // 1. 找出新增关键词中本身重复的
+                                    // 1. 找出新增关键词中本身重复的
                             .map(sourceList -> sourceList
                                     .stream()
                                     .sorted((o1, o2) -> {
@@ -166,7 +166,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
                                     .findFirst()
                                     .orElse(null))
                             .filter(Objects::nonNull)
-                            // 2. 找出和本单元已经存在的百度关键词重复的
+                                    // 2. 找出和本单元已经存在的百度关键词重复的
                             .filter(keywordDTO -> !sameAdgroupKeywordMap.containsKey(keywordDTO.getKeyword().trim().toUpperCase()))
                             .collect(Collectors.toList());
 
@@ -215,7 +215,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     };
 
     private final Function<Long, Boolean> updateFunc = baiduUserId -> {
-        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
+        ModuleAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
         CommonService commonService = BaiduServiceSupport
                 .getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
 
@@ -223,7 +223,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
         try {
             // 更新账户信息
             AccountInfoType accountInfoType = ObjectUtils.convert(baiduAccount, AccountInfoType.class);
-            accountInfoType.setUserid(baiduAccount.getId());
+            accountInfoType.setUserid(baiduAccount.getBaiduAccountId());
 //            System.out.printf("Before: %s\n", JSON.toJSONString(accountInfoType));
             AccountInfoType aResult = baiduApiService.updateAccount(accountInfoType);
             System.out.printf("After: %s\n", JSON.toJSONString(aResult));
@@ -289,7 +289,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
 
                     List<KeywordDTO> _list = entry.getValue()
                             .stream()
-                            // 找出和本单元已经存在的百度关键词重复的
+                                    // 找出和本单元已经存在的百度关键词重复的
                             .filter(keywordDTO -> !sameAdgroupKeywordMap.containsKey(keywordDTO.getKeyword().trim().toUpperCase()))
                             .collect(Collectors.toList());
 
@@ -398,7 +398,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
     private final Function<String, List<Long>> pauseFunc2 = sysUser ->
             accountManageDAO.getBaiduAccountItems(sysUser)
                     .stream()
-                    .map(BaiduAccountInfoDTO::getId)
+                    .map(ModuleAccountInfoDTO::getBaiduAccountId)
                     .collect(Collectors.toList())
                     .stream()
                     .map(id -> Maps.immutableEntry(id, pauseFunc1.apply(id)))
@@ -407,7 +407,7 @@ public class MaterialsUploadServiceImpl implements MaterialsUploadService {
                     .collect(Collectors.toList());
 
     private final Function<Long, BaiduApiService> baiduApiServiceFunction = baiduUserId -> {
-        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
+        ModuleAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(baiduUserId);
         CommonService commonService = BaiduServiceSupport
                 .getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
 

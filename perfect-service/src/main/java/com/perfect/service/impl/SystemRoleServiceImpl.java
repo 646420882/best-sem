@@ -2,6 +2,7 @@ package com.perfect.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import com.perfect.commons.constants.PasswordSalts;
 import com.perfect.core.AppContext;
 import com.perfect.core.SystemUserInfo;
 import com.perfect.dao.sys.SystemLogDAO;
@@ -21,7 +22,7 @@ import java.util.Map;
 @Service
 public class SystemRoleServiceImpl implements SystemRoleService {
 
-    private final String pass_salt = "admin_password";
+    private final String pass_salt = PasswordSalts.ADMIN_SALT;
     @Resource
     private SystemRoleDAO systemRoleDAO;
 

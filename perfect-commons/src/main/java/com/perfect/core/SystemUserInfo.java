@@ -4,7 +4,8 @@ package com.perfect.core;
  * Created by yousheng on 15/12/16.
  */
 public class SystemUserInfo {
-//    private String ip;
+    //    private String ip;
+    private String userId;
 
     private String user;
 
@@ -28,12 +29,29 @@ public class SystemUserInfo {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "SystemUserInfo{" +
+                "user='" + user + '\'' +
+                ", isSuper=" + isSuper +
+                '}';
+    }
+
     public boolean isSuper() {
         return isSuper;
     }
 
     public SystemUserInfo setIsSuper(boolean isSuper) {
         this.isSuper = isSuper;
+        return this;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public SystemUserInfo setUserId(String userId) {
+        this.userId = userId;
         return this;
     }
 }

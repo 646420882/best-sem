@@ -7,6 +7,7 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.MongoEntityConstants;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.web.suport.WebContextSupport;
 import com.perfect.core.AppContext;
 import com.perfect.dto.adgroup.AdgroupDTO;
@@ -583,7 +584,7 @@ public class AssistantKeywordController extends WebContextSupport {
 
         List<RealTimeQueryResultType> resultList = null;
         try {
-            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            ModuleAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
             resultList = getSearchTermsReprot(accountInfoDTO, levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -683,9 +684,9 @@ public class AssistantKeywordController extends WebContextSupport {
         writeJson(RES_SUCCESS, response);
     }
 
-    public List<RealTimeQueryResultType> getSearchTermsReprot(BaiduAccountInfoDTO accountInfoDTO, Integer levelOfDetails, Date startDate, Date endDate, List<AttributeType> attributes, Integer device, Integer searchType) {
+    public List<RealTimeQueryResultType> getSearchTermsReprot(ModuleAccountInfoDTO moduleAccountInfoDTO, Integer levelOfDetails, Date startDate, Date endDate, List<AttributeType> attributes, Integer device, Integer searchType) {
         DateFormat df = new SimpleDateFormat("hh:mm:ss");
-        CommonService commonService = BaiduServiceSupport.getCommonService(accountInfoDTO.getBaiduUserName(), accountInfoDTO.getBaiduPassword(), accountInfoDTO.getToken());
+        CommonService commonService = BaiduServiceSupport.getCommonService(moduleAccountInfoDTO.getBaiduUserName(), moduleAccountInfoDTO.getBaiduPassword(), moduleAccountInfoDTO.getToken());
         List<RealTimeQueryResultType> resList = new ArrayList<>();
         try {
             Date baseDate = df.parse("23:59:59");
@@ -817,7 +818,7 @@ public class AssistantKeywordController extends WebContextSupport {
     public ModelAndView addCensus() {
         try {
             Iterable<KeywordDTO> list = assistantKeywordService.findAll();
-            BaiduAccountInfoDTO accountIdDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            ModuleAccountInfoDTO accountIdDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
 
             BaiduApiService apiService = new BaiduApiService(BaiduServiceSupport.getCommonService(
                     accountIdDTO.getBaiduUserName(),
@@ -889,7 +890,7 @@ public class AssistantKeywordController extends WebContextSupport {
 
         List<RealTimeQueryResultType> resultList = null;
         try {
-            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            ModuleAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
             resultList = getSearchTermsReprot(accountInfoDTO, levelOfDetails, df.parse(startDate), df.parse(endDate), list, device, searchType);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -974,7 +975,7 @@ public class AssistantKeywordController extends WebContextSupport {
                 e.printStackTrace();
             }
 
-            BaiduAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
+            ModuleAccountInfoDTO accountInfoDTO = baiduAccountService.getBaiduAccountInfoBySystemUserNameAndAcId(AppContext.getUser(), AppContext.getAccountId());
             CsvReadUtil csvReadUtil = new CsvReadUtil(path + File.separator + fileNameUpdateAgo, "UTF-8", accountInfoDTO);
             List<KeywordInfoDTO> getList = csvReadUtil.getImportKeywordList();
 //            getList.stream().forEach(s -> {

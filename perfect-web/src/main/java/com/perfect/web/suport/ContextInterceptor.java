@@ -135,7 +135,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
     // 获取账户余额和账户余额
     private Double[] getBalanceAndBudget(Long accountId) {
-        BaiduAccountInfoDTO accountInfo = accountManageService.getBaiduAccountInfoById(accountId);
+        ModuleAccountInfoDTO accountInfo = accountManageService.getBaiduAccountInfoById(accountId);
         if (accountInfo == null) {
             return new Double[]{null, null};
         }

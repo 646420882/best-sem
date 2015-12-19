@@ -4,12 +4,13 @@ import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.core.AppContext;
 import com.perfect.dao.report.GetAccountReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.RealTimeResultDTO;
-import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.account.AccountReportDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.GetAccountReportService;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
@@ -18,10 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by XiaoWei on 2014/12/3.
@@ -43,15 +41,23 @@ public class GetAccountReportServiceImpl implements GetAccountReportService {
     public List<RealTimeResultDTO> getAccountRealTimeTypeByDate(String systemUserName, Long accountId, String startDate, String endDate) {
 
         SystemUserDTO systemUserDTO = systemUserDAO.findByAid(accountId);
-        List<BaiduAccountInfoDTO> accountInfoDTO = systemUserDTO.getBaiduAccounts();
-        BaiduAccountInfoDTO baiduAccountInfoDTO = new BaiduAccountInfoDTO();
-        for (BaiduAccountInfoDTO infoDTO : accountInfoDTO) {
-            if (infoDTO.getId() == accountId) {
-                baiduAccountInfoDTO = infoDTO;
+        try {
+            List<ModuleAccountInfoDTO> accountInfoDTO = systemUserDTO.getModuleDTOList().stream()
+                    .filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())))
+                    .findFirst().get().getAccounts();
+            ModuleAccountInfoDTO baiduAccountInfoDTO = new ModuleAccountInfoDTO();
+            for (ModuleAccountInfoDTO infoDTO : accountInfoDTO) {
+                if (infoDTO.getBaiduAccountId().equals(accountId)) {
+                    baiduAccountInfoDTO = infoDTO;
+                }
             }
+            List<RealTimeResultDTO> realTimeDataList = getAccountRealTimeData(systemUserName, baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken(), startDate, endDate);
+            return ObjectUtils.convert(realTimeDataList, RealTimeResultDTO.class);
+        } catch (Exception ex) {
+            return Collections.EMPTY_LIST;
         }
-        List<RealTimeResultDTO> realTimeDataList = getAccountRealTimeData(systemUserName, baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken(), startDate, endDate);
-        return ObjectUtils.convert(realTimeDataList, RealTimeResultDTO.class);
+
+
     }
 
     private List<RealTimeResultDTO> getAccountRealTimeData(String username, String passwd, String token, String _startDate, String _endDate) {

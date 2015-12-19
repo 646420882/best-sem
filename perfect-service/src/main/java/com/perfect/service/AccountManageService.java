@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 
 import java.util.List;
@@ -91,7 +92,7 @@ public interface AccountManageService {
      *
      * @return
      */
-    List<BaiduAccountInfoDTO> getAllBaiduAccount();
+    List<ModuleAccountInfoDTO> getAllBaiduAccount();
 
     /**
      * 根据百度账户id获取其账户信息
@@ -107,7 +108,7 @@ public interface AccountManageService {
      * @param baiduUserId
      * @return
      */
-    BaiduAccountInfoDTO getBaiduAccountInfoById(Long baiduUserId);
+    ModuleAccountInfoDTO getBaiduAccountInfoById(Long baiduUserId);
 
     /**
      * 更新百度账户数据
@@ -138,6 +139,6 @@ public interface AccountManageService {
      * @param baiduUserId
      * @return
      */
-    BaiduAccountInfoDTO findByBaiduUserId(Long baiduUserId);
+    ModuleAccountInfoDTO findByBaiduUserId(Long baiduUserId);
 
 }

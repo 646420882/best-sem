@@ -9,10 +9,10 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.keyword.KeywordGroupDAO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.baidu.BaiduKeywordDTO;
 import com.perfect.dto.baidu.KRResultDTO;
 import com.perfect.dto.keyword.LexiconDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.KeywordGroupService;
 import com.perfect.utils.TopN;
 import com.perfect.utils.json.JSONUtils;
@@ -309,7 +309,7 @@ public class KeywordGroupServiceImpl implements KeywordGroupService {
     }
 
     private KRService getKRService() {
-        BaiduAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO baiduAccount = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService service = BaiduServiceSupport.getCommonService(baiduAccount.getBaiduUserName(), baiduAccount.getBaiduPassword(), baiduAccount.getToken());
         try {
             if (service != null)

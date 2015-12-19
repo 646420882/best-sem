@@ -16,6 +16,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -269,7 +270,7 @@ public class CreativeServiceImpl implements CreativeService {
             }
         });
         if (creativeTypes.size() > 0) {
-            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
             try {
                 com.perfect.autosdk.sms.v3.CreativeService creativeService = commonService.getService(com.perfect.autosdk.sms.v3.CreativeService.class);
@@ -337,7 +338,7 @@ public class CreativeServiceImpl implements CreativeService {
 
     @Override
     public Integer uploadDel(Long crid) {
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         CreativeDTO creativeDTO = creativeDAO.findOne(crid);
         UserOperationLogDTO orm = userOperationLogService.removeCreative(creativeDTO);
@@ -391,7 +392,7 @@ public class CreativeServiceImpl implements CreativeService {
             }
         });
         if (creativeTypes.size() > 0) {
-            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
             try {
                 com.perfect.autosdk.sms.v3.CreativeService creativeService = commonService.getService(com.perfect.autosdk.sms.v3.CreativeService.class);

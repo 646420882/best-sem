@@ -19,6 +19,7 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -277,7 +278,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             }
         });
         if (adgroupTypes.size() > 0) {
-            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
             try {
                 com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);
@@ -316,7 +317,7 @@ public class AdgroupServiceImpl implements AdgroupService {
     @Override
     public String uploadDel(Long aid) {
         String result = null;
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         AdgroupDTO adgroupDTO = adgroupDAO.findOne(aid);
         UserOperationLogDTO orm = null;
@@ -366,7 +367,7 @@ public class AdgroupServiceImpl implements AdgroupService {
             }
             adgroupTypes.add(adgroupType);
         });
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         try {
             com.perfect.autosdk.sms.v3.AdgroupService adgroupService = commonService.getService(com.perfect.autosdk.sms.v3.AdgroupService.class);

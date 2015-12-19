@@ -9,11 +9,13 @@ import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.autosdk.sms.v3.AccountService;
 import com.perfect.autosdk.sms.v3.GetAccountInfoRequest;
 import com.perfect.autosdk.sms.v3.GetAccountInfoResponse;
-import com.perfect.web.suport.WebUtils;
+import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.core.AppContext;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.service.SystemUserService;
+import com.perfect.web.suport.WebUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,9 +49,11 @@ public class ConfigurationController {
 
         SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
 
-        List<BaiduAccountInfoDTO> baiduAccountInfoEntityList = systemUserEntity.getBaiduAccounts();
+        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserEntity.getModuleDTOList();
 
-        modelMap.addAttribute("accountList", baiduAccountInfoEntityList);
+        modelMap.addAttribute("accountList", systemUserModuleDTOs.stream().filter((systemUserModuleDTO -> {
+            return systemUserModuleDTO.getModuleName().equals(SystemNameConstant.SOUKE_SYSTEM_NAME);
+        })));
         return new ModelAndView("configuration/configure", modelMap);
     }
 
@@ -73,16 +77,16 @@ public class ConfigurationController {
             if (response != null) {
                 AccountInfoType accountInfoType = response.getAccountInfoType();
 
-                BaiduAccountInfoDTO baiduAccountInfoEntity = new BaiduAccountInfoDTO();
+                ModuleAccountInfoDTO moduleAccountInfoDTO = new ModuleAccountInfoDTO();
 
-                BeanUtils.copyProperties(accountInfoType, baiduAccountInfoEntity);
-                baiduAccountInfoEntity.setId(accountInfoType.getUserid());
-                baiduAccountInfoEntity.setBaiduUserName(username);
-                baiduAccountInfoEntity.setBaiduPassword(password);
-                baiduAccountInfoEntity.setToken(token);
-                baiduAccountInfoEntity.setState(1l);
+                BeanUtils.copyProperties(accountInfoType, moduleAccountInfoDTO);
+                moduleAccountInfoDTO.setBaiduAccountId(accountInfoType.getUserid());
+                moduleAccountInfoDTO.setBaiduUserName(username);
+                moduleAccountInfoDTO.setBaiduPassword(password);
+                moduleAccountInfoDTO.setToken(token);
+                moduleAccountInfoDTO.setState(1l);
 
-                systemUserService.addAccount(WebUtils.getUserName(request), baiduAccountInfoEntity);
+                systemUserService.addModuleAccount(WebUtils.getUserName(request), AppContext.getModuleName(), moduleAccountInfoDTO);
                 flag = 1;
             } else {
                 ResHeader resHeader = ResHeaderUtil.getJsonResHeader(false);

@@ -1,6 +1,7 @@
 package com.perfect.service;
 
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 
 /**
  * Created by john on 2014/11/7.
@@ -15,5 +16,5 @@ public interface BaiduAccountService {
      * @param accountId
      * @return
      */
-    BaiduAccountInfoDTO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId);
+    ModuleAccountInfoDTO getBaiduAccountInfoBySystemUserNameAndAcId(String systemUserName, Long accountId);
 }

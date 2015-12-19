@@ -19,11 +19,12 @@ public class RegisterParam {
     //联系电话
     private String contactsPhone;
     //开通平台
+    // "百思慧眼,百思搜客"
     private String openPlatform;
     //百度凤巢账户
-    private String phoenixNestUser;
+    private String baiduUserName;
     //百度凤巢密码
-    private String phoenixNestPassword;
+    private String baiduUserPassword;
     //网站URL地址
     private String urlAddress;
     //用户类型   1 试用装户  2付费用户
@@ -93,20 +94,20 @@ public class RegisterParam {
         this.openPlatform = openPlatform;
     }
 
-    public String getPhoenixNestUser() {
-        return phoenixNestUser;
+    public String getBaiduUserName() {
+        return baiduUserName;
     }
 
-    public void setPhoenixNestUser(String phoenixNestUser) {
-        this.phoenixNestUser = phoenixNestUser;
+    public void setBaiduUserName(String baiduUserName) {
+        this.baiduUserName = baiduUserName;
     }
 
-    public String getPhoenixNestPassword() {
-        return phoenixNestPassword;
+    public String getBaiduUserPassword() {
+        return baiduUserPassword;
     }
 
-    public void setPhoenixNestPassword(String phoenixNestPassword) {
-        this.phoenixNestPassword = phoenixNestPassword;
+    public void setBaiduUserPassword(String baiduUserPassword) {
+        this.baiduUserPassword = baiduUserPassword;
     }
 
     public String getUrlAddress() {
@@ -136,8 +137,8 @@ public class RegisterParam {
                 ", contacts='" + contacts + '\'' +
                 ", contactsPhone='" + contactsPhone + '\'' +
                 ", openPlatform='" + openPlatform + '\'' +
-                ", phoenixNestUser='" + phoenixNestUser + '\'' +
-                ", phoenixNestPassword='" + phoenixNestPassword + '\'' +
+                ", baiduUserName='" + baiduUserName + '\'' +
+                ", baiduUserPassword='" + baiduUserPassword + '\'' +
                 ", urlAddress='" + urlAddress + '\'' +
                 ", accountType='" + accountType + '\'' +
                 '}';

@@ -3,12 +3,12 @@ package com.perfect.app.bdlogin.controller;
 import com.perfect.commons.bdlogin.BaiduHttpLoginHandler;
 import com.perfect.commons.bdlogin.BaiduSearchPageUtils;
 import com.perfect.commons.bdlogin.CaptchaHandler;
-import com.perfect.web.suport.ServletContextUtils;
 import com.perfect.dto.CookieDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.CookieService;
 import com.perfect.utils.json.JSONUtils;
+import com.perfect.web.suport.ServletContextUtils;
 import org.apache.http.client.CookieStore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -69,15 +69,15 @@ public class BaiduHttpLoginController implements Controller {
         Map<String, Object> map = new HashMap<>();
         if (number > 0) {
             HttpSession session = ServletContextUtils.getSession();
-            BaiduAccountInfoDTO dto;
+            ModuleAccountInfoDTO dto;
             if (session.getAttribute(session.getId() + "-baiduAccountInfo") == null) {
-                List<BaiduAccountInfoDTO> list = accountManageService.getAllBaiduAccount();
+                List<ModuleAccountInfoDTO> list = accountManageService.getAllBaiduAccount();
                 int index = list.size() - 1;
                 dto = list.get(index);
                 list.remove(index);
                 session.setAttribute(session.getId() + "-baiduAccountInfo", list);
             } else {
-                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
+                List<ModuleAccountInfoDTO> list = (List<ModuleAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
                 if (list.isEmpty()) {
                     map.put("number", number);
                     map.put("status", "fail");
@@ -107,7 +107,7 @@ public class BaiduHttpLoginController implements Controller {
 
                 session.removeAttribute(session.getId() + "-bdLogin");
             } else {
-                List<BaiduAccountInfoDTO> list = (List<BaiduAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
+                List<ModuleAccountInfoDTO> list = (List<ModuleAccountInfoDTO>) session.getAttribute(session.getId() + "-baiduAccountInfo");
                 list.add(dto);
                 session.setAttribute(session.getId() + "-baiduAccountInfo", list);
                 map.put("status", "fail");

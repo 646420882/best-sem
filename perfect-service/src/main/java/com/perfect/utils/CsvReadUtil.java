@@ -8,6 +8,7 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
@@ -28,7 +29,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
     private String csvFile;
     private AccountInfoType baiduAccountInfoDTO;
 
-    public CsvReadUtil(String csvFile, String encoding, BaiduAccountInfoDTO baiduAccountInfoDTO) {
+    public CsvReadUtil(String csvFile, String encoding, ModuleAccountInfoDTO baiduAccountInfoDTO) {
         super();
         try {
             this.encoding = encoding;

@@ -165,11 +165,11 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         List<ModuleAccountInfoDTO> list = AppContext.getModuleAccounts();
 
         ModuleAccountInfoDTO baiduAccount = null;
-        for (ModuleAccountInfoDTO dto : list) {
-            if (baiduUserId.equals(dto.getBaiduAccountId())) {
-                baiduAccount = dto;
-                break;
-            }
+
+        try {
+            baiduAccount = list.stream().filter(moduleAccountInfoDTO -> moduleAccountInfoDTO.getBaiduAccountId().compareTo(baiduUserId) == 0).findFirst().get();
+        } catch (Exception ex) {
+            return null;
         }
 
         return baiduAccount;
@@ -300,11 +300,11 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
-    public void updateBaiduAccountInfo(String userName, Long accountId, BaiduAccountInfoDTO dto) {
+    public void updateBaiduAccountInfo(String userName, Long accountId, ModuleAccountInfoDTO dto) {
         getSysMongoTemplate().updateFirst(
                 Query.query(
-                        Criteria.where("userName").is(userName).and("bdAccounts._id").is(accountId)),
-                Update.update("bdAccounts.$", ObjectUtils.convert(dto, ModuleAccountInfoEntity.class)),
+                        Criteria.where("userName").is(userName).and("modules.accounts.bid").is(accountId)),
+                Update.update("modules.accounts.$", ObjectUtils.convert(dto, ModuleAccountInfoEntity.class)),
                 getEntityClass());
     }
 

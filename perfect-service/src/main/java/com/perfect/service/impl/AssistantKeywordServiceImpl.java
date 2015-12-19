@@ -22,6 +22,7 @@ import com.perfect.dto.keyword.AssistantKeywordIgnoreDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.keyword.KeywordInfoDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.param.EnableOrPauseParam;
 import com.perfect.param.FindOrReplaceParam;
 import com.perfect.param.SearchFilterParam;
@@ -1012,7 +1013,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         });
         //这里需要告诉用户哪些关键字没有上传成功，原因是该关键字的上级单元也没有上传，所以，这个方法以后要改为map类型的返回值，一个返回成功的List，一个返回失败的List
         if (keywordTypes.size() > 0) {//这里判断是否有符合条件的关键词
-            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
 
             try {
@@ -1081,7 +1082,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
     @Override
     public Integer uploadDel(Long kid) {
         Integer result = 0;
-        BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+        ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
         CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
         KeywordDTO keywordDTO = keywordDAO.findByLongId(kid);
         if (keywordDTO != null) {
@@ -1138,7 +1139,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
 
 
         if (keywordTypes.size() > 0) {
-            BaiduAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
+            ModuleAccountInfoDTO bad = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
             CommonService commonService = BaiduServiceSupport.getCommonService(bad.getBaiduUserName(), bad.getBaiduPassword(), bad.getToken());
             try {
                 KeywordService keywordService = commonService.getService(KeywordService.class);

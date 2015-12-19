@@ -2,10 +2,7 @@ package com.perfect.dao.sys;
 
 import com.perfect.dao.base.HeyCrudRepository;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.dto.sys.ModuleAccountInfoDTO;
-import com.perfect.dto.sys.SystemMenuDTO;
-import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.dto.sys.*;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -38,7 +35,7 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     Iterable<SystemUserDTO> getAllValidUser();
 
-    void insertAccountInfo(String userName, ModuleAccountInfoDTO baiduAccountInfoDTO);
+    void insertAccountInfo(String userName, ModuleAccountInfoDTO moduleAccountInfoDTO);
 
     int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs, String account);
 
@@ -96,4 +93,10 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
     InputStream findUserImage(String sysUserId);
 
     boolean updateAccountPassword(String userid, String password);
+
+    boolean updateUserMenus(String userid, UserModuleMenuDTO userModuleMenuDTO);
+
+    boolean updateModuleInfo(SystemUserModuleDTO systemUserModuleDTO, String id);
+
+    boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO);
 }

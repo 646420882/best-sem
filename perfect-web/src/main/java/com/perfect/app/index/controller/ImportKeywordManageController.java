@@ -5,13 +5,13 @@ import com.perfect.api.baidu.PromotionMonitoring;
 import com.perfect.autosdk.sms.v3.FolderMonitor;
 import com.perfect.autosdk.sms.v3.Monitor;
 import com.perfect.core.AppContext;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.KeywordReportService;
-import com.perfect.web.suport.WebContextSupport;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.paging.PagerInfo;
+import com.perfect.web.suport.WebContextSupport;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by XiaoWei on 2014/7/29.
@@ -68,8 +71,9 @@ public class ImportKeywordManageController extends WebContextSupport {
      */
     public PromotionMonitoring getUserInfo() {
         Long accid = AppContext.getAccountId();
-        BaiduAccountInfoDTO entity = accountManageService.findByBaiduUserId(accid);
-        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(),entity.getBaiduPassword(),entity.getToken());;
+        ModuleAccountInfoDTO entity = accountManageService.findByBaiduUserId(accid);
+        PromotionMonitoring Monitoring = new PromotionMonitoring(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
+        ;
         return Monitoring;
     }
 

@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
  */
 public class SystemRoleControllerTest extends JUnitBaseTest {
 
-    private String roleid = "56727d7e77c8243187c06982";
 
     @Test
     public void testListSystemRole() throws Exception {

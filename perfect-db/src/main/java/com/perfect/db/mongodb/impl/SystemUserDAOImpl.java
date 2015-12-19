@@ -5,14 +5,12 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.mongodb.gridfs.GridFSDBFile;
+import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
-import com.perfect.dto.sys.ModuleAccountInfoDTO;
-import com.perfect.dto.sys.SystemMenuDTO;
-import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.dto.sys.*;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.campaign.CampaignEntity;
 import com.perfect.entity.creative.CreativeEntity;
@@ -66,13 +64,13 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
         _list.addAll(list);
 
-        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName).and("modules.moduleId").is(AppContext.getModuleId())),
+        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName).and("modules.moduleId").is(AppContext.getModuleName())),
                 Update.update("modules.accounts", _list), "sys_user");
     }
 
     @Override
     public SystemUserDTO findByAid(long aid) {
-        Query query = Query.query(Criteria.where("bdAccounts._id").is(aid));
+        Query query = Query.query(Criteria.where("modules.accounts.bid").is(aid));
         SystemUserEntity entity = getSysMongoTemplate().findOne(query, getEntityClass());
         SystemUserDTO dto = ObjectUtils.convertToObject(entity, getDTOClass());
         return dto;
@@ -94,7 +92,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
         boolean isEmpty = systemUserDTO.getModuleDTOList()
                 .stream()
-                .filter(o -> Objects.equals(AppContext.getModuleId(), o.getModuleId()))
+                .filter(o -> Objects.equals(AppContext.getModuleName(), o.getModuleId()))
                 .findFirst()
                 .get()
                 .getAccounts()
@@ -106,7 +104,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         ModuleAccountInfoEntity moduleAccountInfoEntity = ObjectUtils.convert(baiduAccountInfoDTO, ModuleAccountInfoEntity.class);
         Update update = new Update();
         update.addToSet("modules.accounts", moduleAccountInfoEntity);
-        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(userName).and("modules.moduleId").is(AppContext.getModuleId())), update, getEntityClass());
+        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(userName).and("modules.moduleId").is(AppContext.getModuleName())), update, getEntityClass());
     }
 
     @Override
@@ -116,7 +114,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
 
         WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(account)),
-                Update.update("bdAccounts", baiduAccountInfoEntities), getEntityClass());
+                Update.update("$.modules.accounts", baiduAccountInfoEntities), getEntityClass());
         return writeResult.getN();
     }
 
@@ -373,7 +371,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 //                    getEntityClass());
 //            return wr.getN() == 1;
 //        } else {
-//            boolean removed = systemUserModuleDTOs.removeIf((dto) -> dto.getModuleId().equals(systemUserModuleDTO.getModuleId()));
+//            boolean removed = systemUserModuleDTOs.removeIf((dto) -> dto.getModuleName().equals(systemUserModuleDTO.getModuleName()));
 //            if (removed) {
 //                return false;
 //            } else {
@@ -502,6 +500,53 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         return updateSuccess(wr);
     }
 
+    @Override
+    public boolean updateUserMenus(String userid, UserModuleMenuDTO userModuleMenuDTO) {
+
+        Update update = new Update();
+        update.addToSet("menus", ObjectUtils.convert(userModuleMenuDTO, UserModuleMenuEntity.class));
+
+        WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)), update, getEntityClass());
+
+
+        return updateSuccess(wr);
+    }
+
+    /**
+     * 更新模块信息
+     *
+     * @param systemUserModuleDTO
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean updateModuleInfo(SystemUserModuleDTO systemUserModuleDTO, String id) {
+        Update update = new Update();
+
+        update.addToSet("$.modules", systemUserModuleDTO);
+
+        WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(id).and("modules.moduleName").is(SystemNameConstant.SOUKE_SYSTEM_NAME)),
+                update, getEntityClass());
+        return wr.getN() == 1;
+    }
+
+    @Override
+    public boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO) {
+        Update update = new Update();
+
+        update.set("userName", systemUserDTO.getUserName());
+        update.set("companyName", systemUserDTO.getCompanyName());
+        update.set("address", systemUserDTO.getAddress());
+        update.set("contactName", systemUserDTO.getContactName());
+        update.set("email", systemUserDTO.getEmail());
+        update.set("telephone", systemUserDTO.getTelephone());
+
+
+        WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)), update, getEntityClass());
+
+        return wr.getN() == 1;
+    }
+
     private boolean accountExistsByAccountName(String userid, String baiduUserName) {
 
         return getSysMongoTemplate().exists(Query.query(Criteria.where("modules.accounts.bname").is(baiduUserName)), getEntityClass());
@@ -576,7 +621,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 //        List<ModuleAccountInfoEntity> moduleAccountInfoEntityList = systemUserEntity
 //                .getSystemUserModuleEntities()
 //                .stream()
-//                .filter(o -> Objects.equals(AppContext.getModuleId(), o.getModuleId()))
+//                .filter(o -> Objects.equals(AppContext.getModuleName(), o.getModuleName()))
 //                .findFirst()
 //                .get()
 //                .getAccounts();

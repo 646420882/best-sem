@@ -124,10 +124,10 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     /**
      * 更新百度帐号信息
      *
-     * @param dto
      * @param accountId
+     * @param dto
      */
-    void updateBaiduAccountInfo(String userName, Long accountId, BaiduAccountInfoDTO dto);
+    void updateBaiduAccountInfo(String userName, Long accountId, ModuleAccountInfoDTO dto);
 
     /**
      * 根据当前登录的系统用户下指定的百度帐号获取帐户报告

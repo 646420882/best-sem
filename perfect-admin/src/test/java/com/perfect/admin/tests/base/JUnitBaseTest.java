@@ -29,7 +29,11 @@ import java.net.UnknownHostException;
 })
 public class JUnitBaseTest {
 
+    public String CONTENT_TYPE = "application/json;charset=UTF-8";
+
     public String userid = "53fec848e4b07cfcbba06db6";
+
+    public String roleid = "56727d7e77c8243187c06982";
 
     public String moduleid = "5670f8ac77c8f56e10489559";
 
@@ -49,13 +53,14 @@ public class JUnitBaseTest {
         SystemUserInfo systemUserInfo = new SystemUserInfo();
 
         systemUserInfo.setUser("yangle");
+
+        systemUserInfo.setIsSuper(true);
+        AppContext.setSystemUserInfo(systemUserInfo);
+
         try {
-            systemUserInfo.setIp(InetAddress.getLocalHost().toString());
+            AppContext.setRemote(InetAddress.getLocalHost().toString());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        systemUserInfo.setIsSuper(true);
-
-        AppContext.setSystemUserInfo(systemUserInfo);
     }
 }
