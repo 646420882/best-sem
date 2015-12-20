@@ -8,10 +8,13 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MD5 {
 
+    private static final String SALT = "PasswordSalt";
+
     private String md5;
 
-    private MD5(String password, Object salt) {
-        this.md5 = generateMD5(password + "{" + salt.toString() + "}");
+
+    private MD5(String password) {
+        this.md5 = generateMD5(password + "{" + SALT + "}");
     }
 
     private String generateMD5(String plainText) {
@@ -50,20 +53,14 @@ public class MD5 {
     public static class Builder {
 
         private String password;
-        private String salt;
 
         public Builder password(String password) {
             this.password = password;
             return this;
         }
 
-        public Builder salt(String salt) {
-            this.salt = salt;
-            return this;
-        }
-
         public MD5 build() {
-            return new MD5(password, salt);
+            return new MD5(password);
         }
     }
 }

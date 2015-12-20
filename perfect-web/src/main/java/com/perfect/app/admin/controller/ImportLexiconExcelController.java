@@ -1,12 +1,12 @@
 package com.perfect.app.admin.controller;
 
-import com.perfect.web.suport.WebContextSupport;
 import com.perfect.dto.keyword.LexiconDTO;
 import com.perfect.service.LexiconService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.excel.XSSFReadUtils;
 import com.perfect.utils.excel.XSSFSheetHandler;
 import com.perfect.utils.redis.JRedisUtils;
+import com.perfect.web.suport.WebContextSupport;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
@@ -79,7 +79,7 @@ public class ImportLexiconExcelController extends WebContextSupport {
                 trade = fileName.substring(0, 2);
 
                 MD5.Builder md5Builder = new MD5.Builder();
-                MD5 md5 = md5Builder.password(fileName.replace("." + XLSX, "")).salt(XLSX).build();
+                MD5 md5 = md5Builder.password(fileName.replace("." + XLSX, "")).build();
                 fileName = md5.getMD5();
 
                 File _file = new File(tmpDirPath, fileName);

@@ -80,6 +80,8 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     boolean addModuleAccount(String id, String moduleid, ModuleAccountInfoDTO moduleAccountInfoDTO);
 
+    SystemModuleDTO findSystemModuleByModuleName(String username, String moduleName);
+
     /**
      * <p>更新用户头像</p>
      *

@@ -314,7 +314,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateBaiDuName(String name, Long baiduId) {
-        boolean flag = accountManageDAO.updateBaiDuName(name, baiduId);
+        boolean flag = accountManageDAO.updateBaiduRemarkName(name, baiduId);
         return flag;
     }
 
@@ -822,7 +822,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         if (systemUserDTO == null) {
             return false;
         }
-        boolean success = systemUserDAO.updateAccountPassword(userid, new MD5.Builder().password(password).salt(user_salt).build().getMD5());
+        boolean success = systemUserDAO.updateAccountPassword(userid, new MD5.Builder().password(password).build().getMD5());
 
         if (success) {
             systemLogDAO.log("修改用户密码: " + systemUserDTO.getUserName());
