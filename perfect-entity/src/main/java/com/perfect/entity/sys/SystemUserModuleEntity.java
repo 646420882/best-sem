@@ -11,18 +11,19 @@ public class SystemUserModuleEntity {
 
     private String id;
 
-    private String moduleId;    //模块id
+    private String moduleId;    // 模块id
+
 //    private String moduleName;
 //
 //    private String moduleUrl;
 
-    private boolean isPayed;    //是否购买当前模块   true 购买  flase未购买
+    private boolean isPayed;    // 是否购买当前模块  true 购买  false 未购买
 
-    private boolean enabled;    //是否启用模块 true启用  flase 不启用
+    private boolean enabled;    // 是否启用模块  true 启用  false 不启用
 
-    private long startTime;     //模块使用期限  开始时间
+    private long startTime;     // 模块使用期限  开始时间
 
-    private long endTime;       //模块使用期限  结束时间
+    private long endTime;       // 模块使用期限  结束时间
 
     @Field("menus")
     private List<SystemMenuEntity> menus;

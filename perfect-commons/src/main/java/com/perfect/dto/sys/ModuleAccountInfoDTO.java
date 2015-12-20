@@ -12,54 +12,57 @@ public class ModuleAccountInfoDTO {
 
     private String id;
 
-    private Long baiduAccountId;
+    private String accountPlatformType;                 // 账号所属平台
 
-    private String baiduUserName;//百度账号
+    private Long accountBindingTime;                    // 账号绑定时间
 
-    private String baiduRemarkName;//百度账户备注名
+    private Long baiduAccountId;                        // 百度账号ID
 
-    private String baiduPassword;//百度账号密码
+    private String baiduUserName;                       // 百度账号
 
-    private String token;//百度的代码标识
+    private String baiduRemarkName;                     // 百度账户备注名
+
+    private String baiduPassword;                       // 百度账号密码
+
+    private String token;                               // 百度推广的代码标识
 
     private String hyToken;
 
-    private Boolean dfault = false;//是否是默认加载账号
+    private Boolean dfault = false;                     // 是否是默认加载账号
 
-    private Double balance;//账户余额
+    private Double balance;                             // 账户余额
 
-    private Double cost;//账户积累消费
+    private Double cost;                                // 账户积累消费
 
-    private Double payment;//账户投资
+    private Double payment;                             // 账户投资
 
-    private Integer budgetType;//账户预算类型，0不设预算，1日预算，2周预算
+    private Integer budgetType;                         // 账户预算类型，0不设预算，1日预算，2周预算
 
-    private Double budget;//账户预算
+    private Double budget;                              // 账户预算
 
-    private List<Integer> regionTarget;//推广地域列表
+    private List<Integer> regionTarget;                 // 推广地域列表
 
-    private List<String> excludeIp;//ip排除列表
+    private List<String> excludeIp;                     // ip排除列表
 
-    private List<String> openDomains;//账户开放域名列表
+    private List<String> openDomains;                   // 账户开放域名列表
 
-    private String regDomain;//账户注册域名
+    private String regDomain;                           // 账户注册域名
 
-    private String bestRegDomain; //百思注册时网站url
+    private String bestRegDomain;                       // 百思注册时网站url
 
-    private List<OfflineTimeDTO> budgetOfflineTime;//到达预算下线时段
+    private List<OfflineTimeDTO> budgetOfflineTime;     // 到达预算下线时段
 
-    private List<Double> weeklyBudget;//返回本周的每日预算值
+    private List<Double> weeklyBudget;                  // 返回本周的每日预算值
 
-    private Integer userStat;//账户状态
+    private Integer userStat;                           // 账户状态
 
-    private Boolean isDynamicCreative;//是否开启动态创意 
+    private Boolean isDynamicCreative;                  // 是否开启动态创意
 
-    private String dynamicCreativeParam;//动态创意统计参数
+    private String dynamicCreativeParam;                // 动态创意统计参数
 
     private OptTypeDTO opt;
 
-    //该账户下的百度帐号是否启用   启用：1  停用：0
-    private Long state;
+    private Long state;                                 // 该账户下的百度帐号是否启用  启用：1  停用：0
 
     public String getId() {
         return id;
@@ -67,6 +70,22 @@ public class ModuleAccountInfoDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAccountPlatformType() {
+        return accountPlatformType;
+    }
+
+    public void setAccountPlatformType(String accountPlatformType) {
+        this.accountPlatformType = accountPlatformType;
+    }
+
+    public Long getAccountBindingTime() {
+        return accountBindingTime;
+    }
+
+    public void setAccountBindingTime(Long accountBindingTime) {
+        this.accountBindingTime = accountBindingTime;
     }
 
     public Long getBaiduAccountId() {

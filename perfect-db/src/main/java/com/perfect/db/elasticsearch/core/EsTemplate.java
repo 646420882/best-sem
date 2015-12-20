@@ -127,7 +127,6 @@ public class EsTemplate implements EsRequest {
 
         MD5.Builder md5 = new MD5.Builder();
         md5.password(keyBuilder.toString());
-        md5.salt(SALT);
         return md5.build().getMD5();
     }
 

@@ -34,9 +34,8 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
 
         SystemUserDTO systemUserDTO = new SystemUserDTO();
         MD5.Builder md5Builder = new MD5.Builder();
-        MD5 md5 = md5Builder.password(pwd).salt(account).build();
+        MD5 md5 = md5Builder.password(pwd).build();
         systemUserDTO.setAccess(2);
-//        systemUserDTO.set(new ArrayList<>());
         systemUserDTO.setUserName(account);
         systemUserDTO.setPassword(md5.getMD5());
         systemUserDTO.setCompanyName(company);
@@ -65,7 +64,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             //帐号
             systemUserDTO.setUserName(registerParam.getUsername());
             MD5.Builder md5Builder = new MD5.Builder();
-            MD5 md5 = md5Builder.password(registerParam.getPassword()).salt(registerParam.getUsername()).build();
+            MD5 md5 = md5Builder.password(registerParam.getPassword()).build();
             //密码
             systemUserDTO.setPassword(md5.getMD5());
             //邮箱
@@ -110,6 +109,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
                 //设置百度帐号信息
                 systemUserModuleDTO.setAccounts(baiduList);
                 systemUserModuleDTO.setStartTime(new Date().getTime());
+                systemUserModuleDTO.setEndTime(0L);
                 systemUserModuleDTO.setMenus(Collections.emptyList());
                 entities.add(systemUserModuleDTO);
             }

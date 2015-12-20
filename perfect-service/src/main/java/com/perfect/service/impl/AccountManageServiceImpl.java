@@ -51,7 +51,7 @@ public class AccountManageServiceImpl implements AccountManageService {
     public int updatePwd(String userName, String newPassword) {
         SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(userName);
 
-        MD5 newPwd = builder.password(newPassword).salt(systemUserDTO.getUserName()).build();
+        MD5 newPwd = builder.password(newPassword).build();
 
         boolean writeResult = accountManageDAO.updatePwd(systemUserDTO.getUserName(), newPwd.getMD5());
         if (writeResult) {
@@ -66,7 +66,7 @@ public class AccountManageServiceImpl implements AccountManageService {
     public int JudgePwd(String userName, String password) {
         SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(userName);
 
-        MD5 md5 = builder.password(password).salt(userName).build();
+        MD5 md5 = builder.password(password).build();
         if (md5.getMD5().equals(systemUserDTO.getPassword())) {
             return 1;
         } else {
@@ -129,7 +129,7 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Override
     public int updateAccountAllState(String userName, Long baiduId, Long state) {
         int i = 0;
-        boolean writeResult = accountManageDAO.updateBaiDuAccount(userName, baiduId, state);
+        boolean writeResult = accountManageDAO.updateBaiduAccountStatus(userName, baiduId, state);
         if (writeResult) {
             i = 1;
         }

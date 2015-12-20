@@ -1,6 +1,7 @@
 package com.perfect.usercenter.controller;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +48,8 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/toUserCenter", method = RequestMethod.GET)
-    public void toUserCenter(){}
+    public void toUserCenter() {
+    }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView reg() {
@@ -55,8 +57,11 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/account", method = RequestMethod.GET)
-    public ModelAndView account() {
-        return new ModelAndView("/account/account");
+    public ModelAndView account(ModelMap modelMap) {
+        modelMap.put("startTime", "2015-10-10");
+        modelMap.put("endTime", "2016-10-10");
+
+        return new ModelAndView("/account/account").addAllObjects(modelMap);
     }
 
     @RequestMapping(value = "/password", method = RequestMethod.GET)

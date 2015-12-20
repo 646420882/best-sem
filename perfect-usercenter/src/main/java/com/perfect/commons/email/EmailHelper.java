@@ -1,4 +1,4 @@
-package com.perfect.usercenter.email;
+package com.perfect.commons.email;
 
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
