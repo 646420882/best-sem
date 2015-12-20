@@ -76,4 +76,20 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void deleteAccountForSem(String username, Long moduleAccountId) {
         accountManageDAO.deleteBaiduAccount(username, moduleAccountId);
     }
+
+    @Override
+    public String getUserEmail(String username) {
+        String email = systemUserDAO.getUserEmail(username);
+
+        if (Objects.isNull(email))
+            return "";
+
+        return email;
+    }
+
+    @Override
+    public void updateEmail(String username, String email) {
+        String sysUserId = systemUserDAO.findByUserName(username).getId();
+        systemUserDAO.updateUserEmail(sysUserId, email);
+    }
 }

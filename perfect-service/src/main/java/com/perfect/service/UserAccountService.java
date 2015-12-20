@@ -15,6 +15,10 @@ import java.util.Objects;
  */
 public interface UserAccountService extends SoukeAccountService, HuiyanAccountService {
 
+    String getUserEmail(String username);
+
+    void updateEmail(String username, String email);
+
 
     default long getBaiduAccountId(ModuleAccountInfoDTO dto) {
         if (Objects.isNull(dto))

@@ -45,6 +45,7 @@
 <!-- 设置密保邮箱 -->
 <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
+        <input id="sysUserName" type="hidden" value="${user.userName}"/>
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -66,7 +67,7 @@
                 <div class="form-group form-inline">
                     <div class="col-xs-2"></div>
                     <div class="col-xs-10">
-                        <input type="text" class="form-control" placeholder="6位验证码">
+                        <input id="emailCaptcha" type="text" class="form-control" placeholder="6位验证码">
                         <button id="emailSetting" type="button" class="btn btn_large ">发送验证码</button>
                     </div>
                 </div>
@@ -96,17 +97,17 @@
                     <div class="form-group over">
                         <div class="col-xs-2">现邮箱地址：</div>
                         <div class="col-xs-10">
-                            <label id="oldEmail">443895413@qq.com</label>
-                            <button type="" class="btn btn_large ">发送验证码</button>
+                            <label id="oldEmail">${userEmail}</label>
+                            <button id="changeEmailAddr" type="button" class="btn btn_large ">发送验证码</button>
                         </div>
                     </div>
                     <div class="form-group form-inline">
                         <div class="col-xs-2"></div>
                         <div class="col-xs-10">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="请输入校验码">
+                                <input id="changeEmailCaptcha" type="text" class="form-control" placeholder="请输入校验码">
                             <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">校验</button>
+                                <button id="captchaValidate" class="btn btn-default" type="button">校验</button>
                             </span>
                             </div>
                         </div>
@@ -116,22 +117,22 @@
                     <div class="form-group over">
                         <div class="col-xs-2">新邮箱地址：</div>
                         <div class="col-xs-10">
-                            <input type="text" class="form-control" placeholder="请输入新邮箱地址">
+                            <input id="newEmailAddr" type="text" class="form-control" placeholder="请输入新邮箱地址">
                         </div>
                     </div>
                     <div class="form-group form-inline">
                         <div class="col-xs-2"></div>
                         <div class="col-xs-10">
-                            <input type="text" class="form-control" placeholder="6位验证码">
-                            <button type="submit" class="btn btn_large ">发送验证码</button>
+                            <input id="newEmailCaptcha" type="text" class="form-control" placeholder="6位验证码">
+                            <button id="setNewEmail" type="button" class="btn btn_large ">发送验证码</button>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
+                <input id="emailChangeStepStatus" type="hidden" value="0"/>
                 <button type="button" class="btn btn-primary" onclick="commons.oldEmail('oldEmails')">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-
             </div>
         </div>
     </div>
