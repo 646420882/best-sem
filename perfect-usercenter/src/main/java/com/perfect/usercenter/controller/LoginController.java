@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import com.perfect.commons.constants.UserConstants;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
-import com.perfect.usercenter.filters.UserInfoFilter;
 import com.perfect.utils.MD5;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
@@ -49,7 +48,7 @@ public class LoginController {
         SystemUserDTO systemUserDTO = systemUserService.getSystemUser(account);
         if (systemUserDTO != null) {
             MD5.Builder md5Builder = new MD5.Builder();
-            MD5 md5 = md5Builder.password(pwd).salt(account).build();
+            MD5 md5 = md5Builder.password(pwd).build();
             String pwdKey = md5.getMD5();
 
             if (systemUserDTO.getAccountState() == 0) {
@@ -114,7 +113,7 @@ public class LoginController {
         }
 
         MD5.Builder md5Builder = new MD5.Builder();
-        MD5 md5 = md5Builder.password(systemUserDTO.getUserName()).salt("passwd").build();
+        MD5 md5 = md5Builder.password(systemUserDTO.getUserName()).build();
         String pwdKey = md5.getMD5();
 
         try {
@@ -163,7 +162,7 @@ public class LoginController {
             if (systemUserDTO != null) {
                 //密码验证失败
                 MD5.Builder md5Builder = new MD5.Builder();
-                MD5 md5 = md5Builder.password(systemUserDTO.getUserName()).salt("passwd").build();
+                MD5 md5 = md5Builder.password(systemUserDTO.getUserName()).build();
                 String key = md5.getMD5();
                 Jedis jedis = null;
                 try {

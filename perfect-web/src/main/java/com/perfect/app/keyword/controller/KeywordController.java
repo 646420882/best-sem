@@ -3,15 +3,13 @@ package com.perfect.app.keyword.controller;
 import com.alibaba.fastjson.JSON;
 import com.google.common.primitives.Bytes;
 import com.perfect.dto.keyword.KeywordDTO;
-import com.perfect.dto.keyword.LexiconDTO;
+import com.perfect.service.KeywordService;
+import com.perfect.service.SysKeywordService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.excel.HSSFReadUtils;
 import com.perfect.utils.excel.XSSFReadUtils;
 import com.perfect.utils.excel.XSSFSheetHandler;
 import com.perfect.utils.json.JSONUtils;
-import com.perfect.service.KeywordService;
-import com.perfect.service.SysKeywordService;
-import com.perfect.utils.redis.JRedisUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +36,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
-
-import static com.perfect.commons.constants.MongoEntityConstants.TRADE_KEY;
 
 /**
  * Created by baizz on 2014-7-8.
@@ -124,7 +117,7 @@ public class KeywordController {
                     XLSX = "xls";
                 }
                 MD5.Builder md5Builder = new MD5.Builder();
-                MD5 md5 = md5Builder.password(fileName.replace("." + XLSX, "")).salt(XLSX).build();
+                MD5 md5 = md5Builder.password(fileName.replace("." + XLSX, "")).build();
                 fileName = md5.getMD5();
 
                 File _file = new File(tmpDirPath, fileName);
@@ -214,7 +207,7 @@ public class KeywordController {
     }
 
     @RequestMapping(value = "/downTemplate", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void downTemplate(HttpServletRequest request,HttpServletResponse response) {
+    public void downTemplate(HttpServletRequest request, HttpServletResponse response) {
         try {
             String filename = "关键词模板.xls";
             response.addHeader("Content-Disposition", "attachment;filename=" + new String((filename).getBytes("GBK"), "ISO8859-1"));

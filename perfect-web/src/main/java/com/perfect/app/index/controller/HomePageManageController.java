@@ -301,7 +301,7 @@ public class HomePageManageController extends WebContextSupport {
                 if (baiduUserName != null) {
                     //重置密码
                     MD5.Builder md5Builder = new MD5.Builder();
-                    MD5 md5 = md5Builder.password(pwd).salt(userName).build();
+                    MD5 md5 = md5Builder.password(pwd).build();
                     boolean isSuccess = systemUserService.updatePassword(userName, md5.getMD5());
                     if (isSuccess) {
                         jedis.expire(key, 0);

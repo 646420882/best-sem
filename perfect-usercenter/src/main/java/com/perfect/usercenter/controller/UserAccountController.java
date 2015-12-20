@@ -1,7 +1,7 @@
 package com.perfect.usercenter.controller;
 
 import com.perfect.service.AccountManageService;
-import com.perfect.usercenter.email.EmailHelper;
+import com.perfect.commons.email.EmailHelper;
 import com.perfect.utils.JsonViews;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;

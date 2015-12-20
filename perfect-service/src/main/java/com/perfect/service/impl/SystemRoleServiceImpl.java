@@ -45,7 +45,7 @@ public class SystemRoleServiceImpl implements SystemRoleService {
 
     @Override
     public boolean addSystemRole(SystemRoleDTO systemRoleDTO) {
-        systemRoleDTO.setPassword(new MD5.Builder().password(systemRoleDTO.getPassword()).salt(pass_salt).build().getMD5());
+        systemRoleDTO.setPassword(new MD5.Builder().password(systemRoleDTO.getPassword()).build().getMD5());
         systemRoleDAO.save(systemRoleDTO);
 
         SystemRoleDTO newSystemRoleDTO = systemRoleDAO.findByUserLoginName(systemRoleDTO.getLoginName());
@@ -65,7 +65,7 @@ public class SystemRoleServiceImpl implements SystemRoleService {
     public boolean update(String roleid, SystemRoleDTO systemRoleDTO) {
 
         if (!Strings.isNullOrEmpty(systemRoleDTO.getPassword())) {
-            systemRoleDTO.setPassword(new MD5.Builder().password(systemRoleDTO.getPassword()).salt(pass_salt).build().getMD5());
+            systemRoleDTO.setPassword(new MD5.Builder().password(systemRoleDTO.getPassword()).build().getMD5());
         }
 
         boolean updated = systemRoleDAO.update(roleid, systemRoleDTO);
@@ -79,7 +79,7 @@ public class SystemRoleServiceImpl implements SystemRoleService {
 
     @Override
     public SystemRoleDTO login(String username, String password) {
-        SystemRoleDTO loginUser = systemRoleDAO.findByNameAndPasswd(username, new MD5.Builder().password(password).salt(pass_salt).build().getMD5());
+        SystemRoleDTO loginUser = systemRoleDAO.findByNameAndPasswd(username, new MD5.Builder().password(password).build().getMD5());
         if (loginUser != null) {
 
             SystemUserInfo systemUserInfo = new SystemUserInfo();

@@ -23,10 +23,12 @@ public class AdminUserDetailsService implements UserDetailsService {
 
 
     private final AdminUserDTO DEFAULT = new AdminUserDTO();
+
     {
         DEFAULT.setName("默认超级管理员");
         DEFAULT.setLoginName("ROOT");
-        MD5 md5 = new MD5.Builder().password("perfectadmin").salt("123wqewq2134").build();
+//        MD5 md5 = new MD5.Builder().password("perfectadmin").salt("123wqewq2134").build();
+        MD5 md5 = new MD5.Builder().password("perfectadmin").build();
         DEFAULT.setPassword(md5.getMD5());
         DEFAULT.setSuperAdmin(true);
     }

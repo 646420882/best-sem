@@ -13,76 +13,81 @@ public class ModuleAccountInfoEntity {
 
     private String id;
 
+    @Field("acpt")
+    private String accountPlatformType;                 // 账号所属平台
+
+    @Field("acbt")
+    private Long accountBindingTime;                    // 账号绑定时间
+
     @Field("bid")
-    private Long baiduAccountId;
+    private Long baiduAccountId;                        // 百度账号ID
 
     @Field("bname")
-    private String baiduUserName;//百度账号
+    private String baiduUserName;                       // 百度账号名称
 
     @Field("rname")
-    private String baiduRemarkName;//百度账户备注名
+    private String baiduRemarkName;                     // 百度账户备注名
 
     @Field("bpasswd")
-    private String baiduPassword;//百度账号密码
+    private String baiduPassword;                       // 百度账号密码
 
     @Field("btoken")
-    private String token;//百度的代码标识
+    private String token;                               // 百度推广的代码标识
 
     private String hyToken;
 
     @Field("dft")
-    private Boolean dfault = false;//是否是默认加载账号
+    private Boolean dfault = false;                     // 是否是默认加载账号
 
     @Field("b")
-    private Double balance;//账户余额
+    private Double balance;                             // 账户余额
 
     @Field("c")
-    private Double cost;//账户积累消费
+    private Double cost;                                // 账户积累消费
 
     @Field("pay")
-    private Double payment;//账户投资
+    private Double payment;                             // 账户投资
 
     @Field("bgtt")
-    private Integer budgetType;//账户预算类型，0不设预算，1日预算，2周预算
+    private Integer budgetType;                         // 账户预算类型，0不设预算，1日预算，2周预算
 
     @Field("bgt")
-    private Double budget;//账户预算
+    private Double budget;                              // 账户预算
 
     @Field("rt")
-    private List<Integer> regionTarget;//推广地域列表
+    private List<Integer> regionTarget;                 // 推广地域列表
 
     @Field("exIp")
-    private List<String> excludeIp;//ip排除列表
+    private List<String> excludeIp;                     // ip排除列表
 
     @Field("od")
-    private List<String> openDomains;//账户开放域名列表
+    private List<String> openDomains;                   // 账户开放域名列表
 
     @Field("brd")
-    private String bestRegDomain; //百思注册时网站url
+    private String bestRegDomain;                       // 百思注册时网站url
 
     @Field("rd")
-    private String regDomain;//账户注册域名
+    private String regDomain;                           // 账户注册域名
 
     @Field("bot")
-    private List<OfflineTimeEntity> budgetOfflineTime;//到达预算下线时段
+    private List<OfflineTimeEntity> budgetOfflineTime;  // 到达预算下线时段
 
     @Field("wb")
-    private List<Double> weeklyBudget;//返回本周的每日预算值
+    private List<Double> weeklyBudget;                  // 返回本周的每日预算值
 
     @Field("us")
-    private Integer userStat;//账户状态
+    private Integer userStat;                           // 账户状态
 
     @Field("dc")
-    private Boolean isDynamicCreative;//是否开启动态创意 
+    private Boolean isDynamicCreative;                  // 是否开启动态创意
 
     @Field("dcp")
-    private String dynamicCreativeParam;//动态创意统计参数
+    private String dynamicCreativeParam;                // 动态创意统计参数
 
     @Field("o")
     private OptTypeEntity opt;
 
-    //该账户下的百度帐号是否启用   启用：1  停用：0
-    private Long state;
+    private Long state;                                 // 该用户模块下的百度账号是否启用  启用: 1  停用: 0
 
     public String getId() {
         return id;
@@ -90,6 +95,30 @@ public class ModuleAccountInfoEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAccountPlatformType() {
+        return accountPlatformType;
+    }
+
+    public void setAccountPlatformType(String accountPlatformType) {
+        this.accountPlatformType = accountPlatformType;
+    }
+
+    public Long getAccountBindingTime() {
+        return accountBindingTime;
+    }
+
+    public void setAccountBindingTime(Long accountBindingTime) {
+        this.accountBindingTime = accountBindingTime;
+    }
+
+    public Boolean getDynamicCreative() {
+        return isDynamicCreative;
+    }
+
+    public void setDynamicCreative(Boolean dynamicCreative) {
+        isDynamicCreative = dynamicCreative;
     }
 
     public String getBaiduUserName() {
@@ -236,11 +265,11 @@ public class ModuleAccountInfoEntity {
         this.opt = opt;
     }
 
-    public boolean isDfault() {
+    public Boolean isDfault() {
         return dfault;
     }
 
-    public void setDfault(boolean dfault) {
+    public void setDfault(Boolean dfault) {
         this.dfault = dfault;
     }
 
