@@ -29,6 +29,7 @@
                         <thead>
                         <tr>
                             <th data-field="name">关联推广账户</th>
+                            <th class="hide" data-field="password">账户密码</th>
                             <th data-field="remark ">备注名</th>
                             <th data-field="url">URL地址</th>
                             <th data-field="platform">账户所属平台</th>
@@ -48,6 +49,7 @@
                         <thead>
                         <tr>
                             <th data-field="name">关联推广账户</th>
+                            <th class="hide" data-field="password">账户密码</th>
                             <th data-field="remark">备注名</th>
                             <th data-field="webName">网站名称</th>
                             <th data-field="webUrl">网站URL</th>
