@@ -22,18 +22,19 @@ $(function () {
         id: 1,
         name: 'baidu-perfect2151880',
         remark: "http://www.perfect-cn.cn",
-        wedName: "百度",
-        wedUrl: "2015年12月25日",
-        wedCode: "",
+        webName: "百度",
+        webUrl: "http://localhost:8088/account",
+        webCode: "http://localhost:8088/account",
         action: "1"
 
     }, {
         id: 2,
         name: 'baidu-perfect2151880',
         remark: "http://www.perfect-cn.cn",
-        wedName: "百度",
-        wedUrl: "2015年12月25日",
-        wedCode: "",
+
+        webUrl: "http://localhost:8088/account",
+        webName: "百度",
+        webCode: "",
         action: "1"
     }]
     $('#account_table').bootstrapTable({
@@ -61,7 +62,7 @@ function operateFormatter(value, row, index) {
         '<a class="binding" href="javascript:void(0)" title="绑定">',
         '绑定',
         '</a>',
-        '<a class="editor" href="javascript:void(0)" title="修改">',
+        '<a class="editor suoke" href="javascript:void(0)" title="修改">',
         '修改',
         '</a>',
         '<button class="preserve btn btn-primary" style="display:none" href="javascript:void(0)" title="保存">',
@@ -81,7 +82,7 @@ function disableFormatter(value, row, index) {
         '<a class="disable" href="javascript:void(0)" title="禁用">',
         '禁用',
         '</a>',
-        '<a class="editor" href="javascript:void(0)" title="修改">',
+        '<a class="editor huiyan" href="javascript:void(0)" title="修改">',
         '修改',
         '</a>',
         '<button class="preserve btn btn-primary" style="display:none" href="javascript:void(0)" title="保存">',
@@ -139,7 +140,7 @@ window.operateEvents = {
 
         }
     },
-    'click .editor': function (e, value, row, index) {
+    'click .suoke': function (e, value, row, index) {
         $('#modelbox').modal();
         $('.modal-dialog').css({width:'400px'})
         $("#modelboxTitle").html("修改关联账户");
@@ -160,6 +161,29 @@ window.operateEvents = {
                 //editorBottom.hide();
                 //editorBottom.prev().hide();
                 //editorBottom.next(".preserve").attr("style", "display:block");
+        });
+    },
+    'click .huiyan': function (e, value, row, index) {
+        $('#modelbox').modal();
+        $('.modal-dialog').css({width:'400px'})
+        $("#modelboxTitle").html("修改关联账户");
+        $(".modal-body").html("<ul class='account_change'>" +
+        "<li>关联账户名：" +
+        "<li>备注名：" +
+        "<li>网站名称：" +
+        "<li>网站URL：" +
+        "<li>统计代码：</ul>");
+        var editorBottom = $(this);
+        var that = $(this).parent().prevAll("td");
+        var that_value = that.each(function (index) {
+            var that_html = $(this).html();
+            var acount_html="<input type='text' class='form-control' value='" + that_html + "'> "
+            $(".account_change").find('li').eq(4-index).append(acount_html);
+            console.log(that_html   )
+            //$(this).html("<input type='text' class='form-control' value='" + that_html + "'> ").append();
+            //editorBottom.hide();
+            //editorBottom.prev().hide();
+            //editorBottom.next(".preserve").attr("style", "display:block");
         });
     },
     'click .preserve': function (e, value, row, index) {
