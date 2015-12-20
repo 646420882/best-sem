@@ -10,12 +10,22 @@ $(document).ready(function () {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            password:{
+            password: {
                 validators: {
-                notEmpty: {
-                    message: '请输入旧密码'
+                    notEmpty: {
+                        message: '请输入旧密码'
+                    },
+                    remote: {
+                        url: '/account/password/validate',
+                        type: 'POST',
+                        delay: 2000,
+                        data: {
+                            userName: $('#userName').val(),
+                            oldPassword: $('#userOldPassword').val()
+                        },
+                        message: '与当前使用密码不一致!'
+                    }
                 }
-            }
             },
             NewPassword: {
                 validators: {

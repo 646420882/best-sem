@@ -13,11 +13,14 @@ import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.sys.ModuleAccountInfoEntity;
+import com.perfect.entity.sys.SystemModuleEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
+import com.perfect.utils.SystemUserUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -31,10 +34,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -164,11 +164,11 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     public ModuleAccountInfoDTO findByBaiduUserId(Long baiduUserId) {
         List<ModuleAccountInfoDTO> list = AppContext.getModuleAccounts();
 
-        ModuleAccountInfoDTO baiduAccount = null;
+        ModuleAccountInfoDTO baiduAccount;
 
         try {
             baiduAccount = list.stream().filter(moduleAccountInfoDTO -> moduleAccountInfoDTO.getBaiduAccountId().compareTo(baiduUserId) == 0).findFirst().get();
-        } catch (Exception ex) {
+        } catch (Exception e) {
             return null;
         }
 
@@ -177,9 +177,23 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public SystemUserDTO getCurrUserInfo() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        SystemUserEntity entity = mongoTemplate.findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getEntityClass());
-        return ObjectUtils.convert(entity, getDTOClass());
+        SystemUserEntity entity = getSysMongoTemplate().findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getEntityClass());
+
+        SystemUserDTO systemUserDTO = SystemUserUtils.retrieveDTOFromEntity(entity);
+        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDTO.getSystemUserModules();
+        for (SystemUserModuleDTO systemUserModuleDTO : systemUserModuleDTOs) {
+            SystemModuleEntity systemModuleEntity = getSysMongoTemplate().findOne(
+                    Query.query(Criteria.where(SYSTEM_ID).is(systemUserModuleDTO.getModuleId())),
+                    SystemModuleEntity.class);
+            if (Objects.isNull(systemModuleEntity))
+                continue;
+
+            systemUserModuleDTO.setModuleName(systemModuleEntity.getModuleName());
+            systemUserModuleDTO.setModuleUrl(systemModuleEntity.getModuleUrl());
+        }
+
+
+        return systemUserDTO;
     }
 
     @Override

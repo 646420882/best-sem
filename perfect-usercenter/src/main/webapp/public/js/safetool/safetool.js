@@ -35,7 +35,7 @@ $(document).ready(function () {
 
     $('#emailSetting').click(function () {
         $.ajax({
-            url: "/email/sendCaptcha",
+            url: "/account/email/sendCaptcha",
             type: "POST",
             dataType: "JSON",
             data: {

@@ -79,7 +79,7 @@ public class EmailHelper {
             email.setSubject(subject);
             email.setMsg(msg);
             email.addTo(targetEmail);
-            for (String p : path) { // 循环传进来的复件地址, 可添加多个复件
+            for (String p : path) { // 循环传进来的附件地址, 可添加多个附件
                 EmailAttachment ea = new EmailAttachment(); // 设置一个附件对象
                 ea.setPath(p);      // 传入当前附件的路径
                 email.attach(ea);   // 添加附件到email中
