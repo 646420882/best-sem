@@ -1,6 +1,7 @@
 package com.perfect.usercenter.controller;
 
-import com.perfect.commons.SessionContext;
+import com.perfect.core.AppContext;
+import com.perfect.service.UserAccountService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -20,6 +21,11 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @Scope("prototype")
 public class IndexController {
+
+
+    @Resource
+    private UserAccountService userAccountService;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
@@ -77,8 +83,10 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/safetyTool", method = RequestMethod.GET)
-    public ModelAndView safetyTool() {
-        return new ModelAndView("/safe/safetool");
+    public ModelAndView safetyTool(ModelMap modelMap) {
+        String email = userAccountService.getUserEmail(AppContext.getUserInfo().getUserName());
+        modelMap.put("userEmail", email);
+        return new ModelAndView("/safe/safetool").addAllObjects(modelMap);
     }
 }
 

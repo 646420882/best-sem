@@ -1,8 +1,9 @@
 package com.perfect.usercenter.controller;
 
-import com.perfect.service.AccountManageService;
+import com.google.common.collect.Maps;
 import com.perfect.commons.email.EmailHelper;
-import com.perfect.utils.JsonViews;
+import com.perfect.service.AccountManageService;
+import com.perfect.service.UserAccountService;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -49,6 +50,9 @@ public class UserAccountController {
 
     @Resource
     private AccountManageService accountManageService;
+
+    @Resource
+    private UserAccountService userAccountService;
 
 
     /**
@@ -105,13 +109,54 @@ public class UserAccountController {
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            jedis.setex(captcha, 600, "1");
+            jedis.setex(captcha, 600, captcha);
         } finally {
             if (Objects.nonNull(jedis))
                 jedis.close();
         }
 
-        EmailHelper.sendHtmlEmail("", String.format(captchaHtmlTemplate, captcha), email);
+        EmailHelper.sendHtmlEmail("邮箱绑定", String.format(captchaHtmlTemplate, captcha), email);
+    }
+
+    @RequestMapping(value = "/email/confirmCaptcha", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView confirmEmailCaptcha(@RequestParam String username, @RequestParam String email, @RequestParam String captcha) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> attrMap = Maps.newHashMap();
+
+        Jedis jedis = null;
+        try {
+            jedis = JRedisUtils.get();
+            String orgCaptcha = jedis.get(captcha);
+            if (Objects.nonNull(orgCaptcha)) {
+                if (Objects.equals(orgCaptcha, captcha)) {
+                    // 校验成功
+                    attrMap.put("status", 1);
+                    userAccountService.updateEmail(username, email);
+                } else {
+                    // 验证码错误
+                    attrMap.put("status", 0);
+                }
+            } else {
+                // 验证码失效
+                attrMap.put("status", -1);
+            }
+        } finally {
+            if (Objects.nonNull(jedis))
+                jedis.close();
+        }
+
+        jsonView.setAttributesMap(attrMap);
+        return new ModelAndView(jsonView);
+    }
+
+    @RequestMapping(value = "/email/unbind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView unbindEmail(@RequestParam String username) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> attrMap = Maps.newHashMap();
+        userAccountService.updateEmail(username, "");
+        attrMap.put("status", true);
+        jsonView.setAttributesMap(attrMap);
+        return new ModelAndView(jsonView);
     }
 
 

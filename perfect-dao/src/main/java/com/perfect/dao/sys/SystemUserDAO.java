@@ -100,4 +100,8 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
     boolean updateModuleInfo(SystemUserModuleDTO systemUserModuleDTO, String id);
 
     boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO);
+
+    void updateUserEmail(String userId, String email);
+
+    String getUserEmail(String username);
 }
