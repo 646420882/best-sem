@@ -127,7 +127,8 @@
                                         <input name="openPlatform" style="width: 0;height: 0;position: absolute"
                                                id="openPlatformInput">
                                         <select id="openPlatform" multiple="multiple">
-
+                                            <option value="百思搜客">百思搜客</option>
+                                            <option value="百思慧眼">百思慧眼</option>
                                         </select>
                                     </div>
                                 </div>
@@ -223,7 +224,7 @@
     //初始化函数
     $(window).resize();
     $(document).ready(function () {
-        $.ajax({
+        /*$.ajax({
             url: "/getPlatform",
             dataType: "json",
             async: true,
@@ -234,47 +235,40 @@
                     html = html + "<option value='" + item.id + "'>" + item.moduleName + "</option>"
                 })
                 $("#openPlatform").append(html);
-                $("#openPlatform").multipleSelect({
-                    placeholder: "请选择开通平台",
-                    selectAll: false,
-                    minumimCountSelected: 20,
-                    multiple: true,
-                    onClose: function () {
-                        var multiSelect = $("#openPlatform").multipleSelect('getSelects');
-                        $("#openPlatformInput").val(multiSelect)
-                        for (var i = 0; i < multiSelect.length; i++) {
-                            if (multiSelect[i] == '5671135777c8a5c9319deaa5') {
-                                $(".NameStar").eq(0).css({"display": "block"})
-                                $(".NameStar").eq(1).css({"display": "block"})
-                                $(".NameStar").eq(2).css({"display": "none"})
-                                $('#defaultForm').bootstrapValidator({
-                                    message: '此值无效',
-                                    feedbackIcons: {
-                                        valid: 'glyphicon glyphicon-ok',
-                                        invalid: 'glyphicon glyphicon-remove',
-                                        validating: 'glyphicon glyphicon-refresh'
-                                    },
-                                    fields: {}
-                                })
-                            } else if (multiSelect[i] == '567146ee77c80b6a4d82b7dd') {
-                                $(".NameStar").eq(0).css({"display": "none"})
-                                $(".NameStar").eq(1).css({"display": "none"})
-                                $(".NameStar").eq(2).css({"display": "block"})
-                            }
-                        }
-                        if (multiSelect.length == 3) {
-                            $(".NameStar").eq(0).css({"display": "block"})
-                            $(".NameStar").eq(1).css({"display": "block"})
-                            $(".NameStar").eq(2).css({"display": "block"})
-                        } else if (multiSelect.length == 0) {
-                            $(".NameStar").eq(0).css({"display": "none"})
-                            $(".NameStar").eq(1).css({"display": "none"})
-                            $(".NameStar").eq(2).css({"display": "none"})
-                        }
-                    }
-                })
+
             }
-        });
+        });*/
+        $("#openPlatform").multipleSelect({
+            placeholder: "请选择开通平台",
+            selectAll: false,
+            minumimCountSelected: 20,
+            multiple: true,
+            onClose: function () {
+                var multiSelect = $("#openPlatform").multipleSelect('getSelects');
+                $("#openPlatformInput").val(multiSelect)
+                for (var i = 0; i < multiSelect.length; i++) {
+                    if (multiSelect[i] == "百思搜客") {
+                        $(".NameStar").eq(0).css({"display": "block"})
+                        $(".NameStar").eq(1).css({"display": "block"})
+                        $(".NameStar").eq(2).css({"display": "none"})
+
+                    } else if (multiSelect[i] == '百思慧眼') {
+                        $(".NameStar").eq(0).css({"display": "none"})
+                        $(".NameStar").eq(1).css({"display": "none"})
+                        $(".NameStar").eq(2).css({"display": "block"})
+                    }
+                }
+                if (multiSelect.length == 2) {
+                    $(".NameStar").eq(0).css({"display": "block"})
+                    $(".NameStar").eq(1).css({"display": "block"})
+                    $(".NameStar").eq(2).css({"display": "block"})
+                } else if (multiSelect.length == 0) {
+                    $(".NameStar").eq(0).css({"display": "none"})
+                    $(".NameStar").eq(1).css({"display": "none"})
+                    $(".NameStar").eq(2).css({"display": "none"})
+                }
+            }
+        })
         createCode();
         $('#defaultForm').bootstrapValidator({
             message: '此值无效',

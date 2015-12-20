@@ -2,6 +2,8 @@ package com.perfect.usercenter.controller;
 
 import com.google.common.base.Strings;
 import com.perfect.commons.constants.UserConstants;
+import com.perfect.core.AppContext;
+import com.perfect.core.UserInfo;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
@@ -143,7 +145,10 @@ public class LoginController {
         cookie.setMaxAge(30 * 60 * 60);
         response.addCookie(cookie);
         request.getSession().setAttribute(UserConstants.SESSION_USER, systemUserDTO);
-
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserName(systemUserDTO.getUserName());
+        userInfo.setUserId(systemUserDTO.getId());
+        AppContext.setUserInfo(userInfo);
         // token settings
         ModelMap modelMap = modelAndView.getModelMap();
         modelMap.put(UserConstants.TOKEN_USER, uuid);

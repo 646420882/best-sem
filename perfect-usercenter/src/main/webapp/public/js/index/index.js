@@ -6,7 +6,10 @@ function Modify(_this) {
     var list = $("#userList").find("b");
     list.each(function () {
         var listMessage = $(this).html();
+        console.log($(this).parent().first().find("span").html());
+
         $(this).html("<input type='text' class='form-control' style='display:inline-block;max-width:300px' value='" + listMessage + "'> ");
+
         $(_this).hide();
         $(_this).next().removeClass("hide");
     })

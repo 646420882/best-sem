@@ -2,6 +2,15 @@
  * Created by guochunyan on 2015/12/16.
  */
 $(document).ready(function () {
+    var valid = $("#valid").val();
+    if (valid != null && valid != "" && valid != undefined) {
+        if (valid) {
+            alert("密码修改成功,请重新登录帐号！");
+            location.href = "/logout";
+        } else {
+            alert("密码修改失败");
+        }
+    }
     $('#defaultForm').bootstrapValidator({
         message: '此值无效',
         feedbackIcons: {
@@ -20,8 +29,10 @@ $(document).ready(function () {
                         type: 'POST',
                         delay: 2000,
                         data: {
-                            userName: $('#userName').val(),
-                            oldPassword: $('#userOldPassword').val()
+                            pwd: function () {
+                                return $("#password").val()
+                            },
+                            userName: $("#userName").val()
                         },
                         message: '与当前使用密码不一致!'
                     }

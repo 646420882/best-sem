@@ -90,14 +90,14 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             String[] dd = registerParam.getOpenPlatform().split(",");
             List<SystemUserModuleDTO> entities = new ArrayList<>();
             for (String s : dd) {
-                SystemModuleDTO byModuleId = systemModuleService.findByModuleId(s);
+                //SystemModuleDTO byModuleId = systemModuleService.findByModuleId(s);
 
                 SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
                 systemUserModuleDTO.setModuleId(s);
                 systemUserModuleDTO.setIsPayed(true);
                 systemUserModuleDTO.setEnabled(true);
-                systemUserModuleDTO.setModuleName(byModuleId.getModuleName());
-                systemUserModuleDTO.setModuleUrl(byModuleId.getModuleUrl());
+                systemUserModuleDTO.setModuleName(s);
+                systemUserModuleDTO.setModuleUrl(s.equals("百思搜客") ? "sem.best-ad.cn" : "hy.best-ad.cn");
 
                 //百度账户处理
                 List<ModuleAccountInfoDTO> baiduList = new ArrayList<>();

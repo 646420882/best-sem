@@ -25,18 +25,19 @@
             <div class="user_box">
                 <div class="user_title">
                     <span aria-hidden="true" ng-class="icon"
-                          class="glyphicon glyphicon-user"></span>账户：<b>perfect2015</b>
-                    <button type="button" class="btn btn-default">试用账户</button>
+                          class="glyphicon glyphicon-user"></span>账户：<b>${user.userName}</b>
+                    <button type="button" class="btn btn-default">${user.payed ? "付费账户":"试用账户"}</button>
                 </div>
                 <div class="user_content password_box">
-                    <input id="userName" type="hidden" value="${user.userName}"/>
                     <div class="password_box_title"><b>登录密码修改</b><span>新密码至少6位，包括数字、大小写英文字母</span></div>
-                    <form class="form-inline" id="defaultForm">
+                    <form action="/account/password/update" method="post" class="form-inline" id="defaultForm">
+                        <input id="userName" name="userName" type="hidden" value="${user.userName}"/>
+                        <input id="valid" type="hidden" value="${valid}"/>
                         <div class="form-group col-xs-12 ">
                             <div class="input-group">
                                 <div class="input-group-addon"><span aria-hidden="true" ng-class="icon"
                                                                      class="glyphicon glyphicon-lock"></span></div>
-                                <input type="text" id="userOldPassword" name="password" class="form-control"
+                                <input type="text" id="password" name="password" class="form-control"
                                        placeholder="请输入旧密码">
                             </div>
                         </div>
@@ -54,8 +55,8 @@
                                 <input type="text" name="confirmPassword" class="form-control" placeholder="请再次输入新密码">
                             </div>
                         </div>
+                        <button type="submit" class="btn btn-primary">确认</button>
                     </form>
-                    <button type="button" class="btn btn-primary" id="">确认</button>
                 </div>
             </div>
         </div>
