@@ -32,7 +32,7 @@ public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserDTO
 
         /*List<SystemUserModuleEntity> systemUserModuleEntities = new ArrayList<>();
 
-        systemUserDTO.getModuleDTOList().forEach(e -> {
+        systemUserDTO.getSystemUserModules().forEach(e -> {
             SystemUserModuleEntity systemUserModuleEntity = new SystemUserModuleEntity();
             List<ModuleAccountInfoEntity> moduleAccountInfoEntities = new ArrayList<>();
             List<SystemMenuEntity> systemMenuEntities = new ArrayList<>();
@@ -59,10 +59,10 @@ public class AccountRegisterDaoImpl extends AbstractSysBaseDAOImpl<SystemUserDTO
         });
 
         BeanUtils.copyProperties(systemUserDTO,sys_user);
-        sys_user.setSystemUserModuleEntities(systemUserModuleEntities);*/
+        sys_user.setSystemUserModules(systemUserModuleEntities);*/
 
         //Convert to entity
-        SystemUserEntity systemUserEntity = SystemUserUtils.convertToEntity(systemUserDTO);
+        SystemUserEntity systemUserEntity = SystemUserUtils.retrieveEntityFromDTO(systemUserDTO);
 
 
         getSysMongoTemplate().insert(systemUserEntity, "sys_user");

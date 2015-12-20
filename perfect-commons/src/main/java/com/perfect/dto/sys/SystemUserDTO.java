@@ -24,7 +24,7 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     private String email;
 
-    private List<SystemUserModuleDTO> moduleDTOList;
+    private List<SystemUserModuleDTO> systemUserModules;
 
     private Integer accountState;
 
@@ -173,11 +173,11 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
         this.displayCtime = displayCtime;
     }
 
-    public List<SystemUserModuleDTO> getModuleDTOList() {
-        return moduleDTOList;
+    public List<SystemUserModuleDTO> getSystemUserModules() {
+        return systemUserModules;
     }
 
-    public void setModuleDTOList(List<SystemUserModuleDTO> moduleDTOList) {
-        this.moduleDTOList = moduleDTOList;
+    public void setSystemUserModules(List<SystemUserModuleDTO> systemUserModules) {
+        this.systemUserModules = systemUserModules;
     }
 }

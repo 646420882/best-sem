@@ -163,9 +163,9 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
         }
 
         // 查找搜客系统的账号
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(systemUserDTO -> systemUserDTO != null && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0 && systemUserDTO.getModuleDTOList() != null && !systemUserDTO.getModuleDTOList().isEmpty())
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(systemUserDTO -> systemUserDTO != null && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0 && systemUserDTO.getSystemUserModules() != null && !systemUserDTO.getSystemUserModules().isEmpty())
                 .filter(systemUserDTO -> {
-                    return systemUserDTO.getModuleDTOList().stream()
+                    return systemUserDTO.getSystemUserModules().stream()
                             .filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).filter((tmp -> {
                                 return tmp.getAccounts().stream().filter(moduleAccountInfoDTO -> moduleAccountInfoDTO.getState() != 0).findFirst().isPresent();
                             })).findFirst().isPresent();
@@ -495,7 +495,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 systemUserList = getBaiduUser(null);
                 if (systemUserList != null && !systemUserList.isEmpty()) {
                     systemUserList.forEach(sysUser -> {
-                        sysUser.getModuleDTOList().forEach(systemUserModuleDTO -> {
+                        sysUser.getSystemUserModules().forEach(systemUserModuleDTO -> {
                             systemUserModuleDTO.getAccounts().forEach((moduleAccountInfoDTO -> {
                                 nmsApi.getAllApi(moduleAccountInfoDTO.getBaiduUserName(), moduleAccountInfoDTO.getBaiduPassword(), moduleAccountInfoDTO.getToken(), dates);
 
@@ -508,7 +508,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                 systemUserList = getBaiduUser(args[0]);
                 if (systemUserList != null && !systemUserList.isEmpty()) {
                     SystemUserDTO systemUser = systemUserList.get(0);
-                    systemUser.getModuleDTOList()
+                    systemUser.getSystemUserModules()
                             .forEach(systemUserModuleDTO -> {
                                 systemUserModuleDTO.getAccounts().forEach(moduleAccountInfoDTO -> {
                                     nmsApi.getAllApi(moduleAccountInfoDTO.getBaiduUserName(), moduleAccountInfoDTO.getBaiduPassword(), moduleAccountInfoDTO.getToken(), dates);
@@ -525,7 +525,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
 
                     switch (type) {
                         case 1:
-                            systemUser.getModuleDTOList().forEach(systemUserModuleDTO -> {
+                            systemUser.getSystemUserModules().forEach(systemUserModuleDTO -> {
                                 systemUserModuleDTO.getAccounts().forEach(ba -> {
                                     nmsApi.getAccountApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates);
                                 });
@@ -533,7 +533,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                             break;
                         case 2:
 
-                            systemUser.getModuleDTOList().forEach(systemUserModuleDTO -> {
+                            systemUser.getSystemUserModules().forEach(systemUserModuleDTO -> {
                                 systemUserModuleDTO.getAccounts().forEach(ba -> {
                                     nmsApi.getCampaignApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates);
                                 });
@@ -541,7 +541,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                             break;
                         case 3:
 
-                            systemUser.getModuleDTOList().forEach(systemUserModuleDTO -> {
+                            systemUser.getSystemUserModules().forEach(systemUserModuleDTO -> {
                                 systemUserModuleDTO.getAccounts().forEach(ba -> {
                                     nmsApi.getGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates);
                                 });
@@ -549,7 +549,7 @@ public class AsynchronousNmsReportServiceImpl implements AsynchronousNmsReportSe
                             break;
                         case 4:
 
-                            systemUser.getModuleDTOList().forEach(systemUserModuleDTO -> {
+                            systemUser.getSystemUserModules().forEach(systemUserModuleDTO -> {
                                 systemUserModuleDTO.getAccounts().forEach(ba -> {
                                     nmsApi.getAdbyGroupApi(ba.getBaiduUserName(), ba.getBaiduPassword(), ba.getToken(), dates);
                                 });

@@ -42,7 +42,7 @@ public class GetAccountReportServiceImpl implements GetAccountReportService {
 
         SystemUserDTO systemUserDTO = systemUserDAO.findByAid(accountId);
         try {
-            List<ModuleAccountInfoDTO> accountInfoDTO = systemUserDTO.getModuleDTOList().stream()
+            List<ModuleAccountInfoDTO> accountInfoDTO = systemUserDTO.getSystemUserModules().stream()
                     .filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())))
                     .findFirst().get().getAccounts();
             ModuleAccountInfoDTO baiduAccountInfoDTO = new ModuleAccountInfoDTO();

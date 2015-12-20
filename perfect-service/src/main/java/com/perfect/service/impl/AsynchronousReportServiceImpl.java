@@ -87,8 +87,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         Jedis jc = JRedisUtils.get();
 
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getModuleDTOList() != null).filter(e -> {
-            return e.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getSystemUserModules() != null).filter(e -> {
+            return e.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
         }).filter(systemUserDTO -> {
             boolean judge = (systemUserDTO.getState() != 0 && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0);
             if (!judge) {
@@ -101,7 +101,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
         for (SystemUserDTO systemUser : newEntityList) {
 
-            systemUser.getModuleDTOList().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
+            systemUser.getSystemUserModules().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
                 for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
                     getStartPull(systemUser, entity, dateStr + "--用户");
 
@@ -157,8 +157,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getModuleDTOList() != null).filter(e -> {
-            return e.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getSystemUserModules() != null).filter(e -> {
+            return e.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
         }).filter(systemUserDTO -> {
             boolean judge = (systemUserDTO.getState() != 0 && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0);
             if (!judge) {
@@ -170,7 +170,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
         for (SystemUserDTO systemUser : newEntityList) {
             final AtomicInteger i = new AtomicInteger(1);
-            systemUser.getModuleDTOList().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst()
+            systemUser.getSystemUserModules().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
                             getStartPull(systemUser, entity, dateStr + "--计划");
@@ -224,8 +224,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getModuleDTOList() != null).filter(e -> {
-            return e.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getSystemUserModules() != null).filter(e -> {
+            return e.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
         }).filter(systemUserDTO -> {
             boolean judge = (systemUserDTO.getState() != 0 && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0);
             if (!judge) {
@@ -237,7 +237,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
         for (SystemUserDTO systemUser : newEntityList) {
             final AtomicInteger i = new AtomicInteger(1);
-            systemUser.getModuleDTOList().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
+            systemUser.getSystemUserModules().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
                 for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
                     getStartPull(systemUser, entity, dateStr + "--单元");
                     AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -292,8 +292,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getModuleDTOList() != null).filter(e -> {
-            return e.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getSystemUserModules() != null).filter(e -> {
+            return e.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
         }).filter(systemUserDTO -> {
             boolean judge = (systemUserDTO.getState() != 0 && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0);
             if (!judge) {
@@ -305,7 +305,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
         for (SystemUserDTO systemUser : newEntityList) {
             final AtomicInteger i = new AtomicInteger(1);
-            systemUser.getModuleDTOList().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
+            systemUser.getSystemUserModules().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
                 for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
                     getStartPull(systemUser, entity, dateStr + "--创意");
                     AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -359,8 +359,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         Jedis jc = JRedisUtils.get();
 
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getModuleDTOList() != null).filter(e -> {
-            return e.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getSystemUserModules() != null).filter(e -> {
+            return e.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
         }).filter(systemUserDTO -> {
             boolean judge = (systemUserDTO.getState() != 0 && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0);
             if (!judge) {
@@ -372,7 +372,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
         for (SystemUserDTO systemUser : newEntityList) {
             final AtomicInteger i = new AtomicInteger(1);
-            systemUser.getModuleDTOList().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
+            systemUser.getSystemUserModules().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
                 for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
                     getStartPull(systemUser, entity, dateStr + "--关键字");
                     AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());
@@ -425,8 +425,8 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         }
         Jedis jc = JRedisUtils.get();
 
-        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getModuleDTOList() != null).filter(e -> {
-            return e.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
+        List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getSystemUserModules() != null).filter(e -> {
+            return e.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
         }).filter(systemUserDTO -> {
             boolean judge = (systemUserDTO.getState() != 0 && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0);
             if (!judge) {
@@ -438,15 +438,15 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
         for (SystemUserDTO systemUser : newEntityList) {
             if (systemUser.getState() == 0 ||
-                    systemUser.getModuleDTOList() == null ||
+                    systemUser.getSystemUserModules() == null ||
                     systemUser.getAccess() == 1 || systemUser.getAccountState() == 0
-                    || systemUser.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent()) {
+                    || systemUser.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent()) {
                 getSkipPull(jc, systemUser, dateStr + "--地域");
                 continue;
             }
             final AtomicInteger i = new AtomicInteger(1);
 
-            systemUser.getModuleDTOList().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
+            systemUser.getSystemUserModules().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
                 for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
                     getStartPull(systemUser, entity, dateStr + "--地域");
                     AsynchronousReport report = new AsynchronousReport(entity.getBaiduUserName(), entity.getBaiduPassword(), entity.getToken());

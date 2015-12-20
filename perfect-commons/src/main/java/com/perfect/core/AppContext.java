@@ -101,20 +101,28 @@ public class AppContext {
         contextMap.set(so);
     }
 
+    public static String getModuleId() {
+        SessionObject so = contextMap.get();
+
+        if (so != null) {
+            return so.getModuleId();
+        } else {
+            return null;
+        }
+    }
+
     public static String getModuleName() {
-
         return SystemNameConstant.SOUKE_SYSTEM_NAME;
-
-//        if (contextMap.get() == null)
-//            return null;
-//
-//        return contextMap.get().getModuleName();
     }
 
     public static String getUser() {
-        if (contextMap.get() == null)
+        SessionObject so = contextMap.get();
+
+        if (so != null) {
+            return so.getUserName();
+        } else {
             return null;
-        return contextMap.get().getUserName();
+        }
     }
 
     public static Long getAccountId() {

@@ -49,7 +49,7 @@ public class ConfigurationController {
 
         SystemUserDTO systemUserEntity = systemUserService.getSystemUser(userName);
 
-        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserEntity.getModuleDTOList();
+        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserEntity.getSystemUserModules();
 
         modelMap.addAttribute("accountList", systemUserModuleDTOs.stream().filter((systemUserModuleDTO -> {
             return systemUserModuleDTO.getModuleName().equals(SystemNameConstant.SOUKE_SYSTEM_NAME);

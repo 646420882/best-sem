@@ -1,7 +1,6 @@
 package com.perfect.dao.sys;
 
 import com.perfect.dao.base.HeyCrudRepository;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.sys.*;
 
 import java.io.InputStream;
@@ -37,7 +36,7 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     void insertAccountInfo(String userName, ModuleAccountInfoDTO moduleAccountInfoDTO);
 
-    int removeAccountInfo(List<BaiduAccountInfoDTO> baiduAccountInfoDTOs, String account);
+    int removeAccountInfo(List<ModuleAccountInfoDTO> baiduAccountInfoDTOs, String account);
 
     void clearAccountData(Long accountId);
 

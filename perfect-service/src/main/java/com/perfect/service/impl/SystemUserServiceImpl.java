@@ -89,7 +89,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         clearAccountData(accountId);
         logger.info("清理数据完成!");
 
-        systemUserDTO.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findFirst().ifPresent((systemUserModuleDTO1 -> {
+        systemUserDTO.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findFirst().ifPresent((systemUserModuleDTO1 -> {
             systemUserModuleDTO1.getAccounts().forEach((moduleAccountInfoDTO -> {
                 Long aid = moduleAccountInfoDTO.getBaiduAccountId();
                 if (!Objects.equals(aid, accountId))
@@ -213,7 +213,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             return;
         }
 
-        systemUserDTO.getModuleDTOList().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findFirst()
+        systemUserDTO.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findFirst()
                 .ifPresent((systemUserModuleDTO1 -> {
                     List<ModuleAccountInfoDTO> baiduAccountInfoDTOList = systemUserModuleDTO1.getAccounts();
 
@@ -539,11 +539,11 @@ public class SystemUserServiceImpl implements SystemUserService {
 
         SystemUserDTO byUserName = systemUserDAO.findByUserName(account);
         boolean Master = false;
-        if (byUserName != null && byUserName.getModuleDTOList().size() > 0) {
+        if (byUserName != null && byUserName.getSystemUserModules().size() > 0) {
 
             SystemUserModuleDTO systemUserModuleDTO = null;
             try {
-                systemUserModuleDTO = byUserName.getModuleDTOList().stream().filter((tmp -> {
+                systemUserModuleDTO = byUserName.getSystemUserModules().stream().filter((tmp -> {
                     return tmp.getModuleName().equals(SystemNameConstant.SOUKE_SYSTEM_NAME);
                 })).findFirst().get();
 
@@ -723,10 +723,10 @@ public class SystemUserServiceImpl implements SystemUserService {
 
         systemUserModuleDTO.setIsPayed(false);
         systemUserModuleDTO.setEnabled(true);
-//        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDTO.getModuleDTOList();
+//        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDTO.getSystemUserModules();
 //
 //        if (systemUserModuleDTOs == null || systemUserModuleDTOs.isEmpty()) {
-//            systemUserDTO.setModuleDTOList(Lists.newArrayList(systemUserModuleDTO));
+//            systemUserDTO.setSystemUserModules(Lists.newArrayList(systemUserModuleDTO));
 //        } else {
 //            systemUserModuleDTOs.removeIf((dto) -> dto.getModuleName().equals(systemModuleDTO.getModuleName()));
 //            systemUserModuleDTOs.add(systemUserModuleDTO);
@@ -747,7 +747,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             return false;
         }
 
-        SystemUserModuleDTO systemUserModuleDTO = systemUserDTO.getModuleDTOList().stream().findFirst().filter((dto -> dto.getId().equals(id))).get();
+        SystemUserModuleDTO systemUserModuleDTO = systemUserDTO.getSystemUserModules().stream().findFirst().filter((dto -> dto.getId().equals(id))).get();
 
         if (systemUserModuleDTO == null) {
             return false;

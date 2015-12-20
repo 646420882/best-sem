@@ -2,7 +2,6 @@ package com.perfect.web.suport;
 
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.sys.*;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.SystemModuleService;
@@ -147,7 +146,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
     private boolean handleRequest(HttpServletRequest request, String userName) {
         SystemUserDTO systemUserDTO = (SystemUserDTO) request.getSession().getAttribute(USER_INFORMATION);
-        List<SystemUserModuleDTO> userModuleDTOs = systemUserDTO.getModuleDTOList();
+        List<SystemUserModuleDTO> userModuleDTOs = systemUserDTO.getSystemUserModules();
 
         for (SystemUserModuleDTO userModuleDTO : userModuleDTOs) {
             SystemModuleDTO systemModuleDTO = systemModuleService.findByModuleId(userModuleDTO.getModuleId());

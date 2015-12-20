@@ -29,7 +29,7 @@ public class BaiduAccountServiceImpl implements BaiduAccountService {
         SystemUserModuleDTO systemUserModuleDTO = null;
 
         try {
-            systemUserModuleDTO = systemUserEntity.getModuleDTOList().stream().filter((tmp -> tmp.getModuleName().equals(AppContext.getModuleName()))).findFirst().get();
+            systemUserModuleDTO = systemUserEntity.getSystemUserModules().stream().filter((tmp -> tmp.getModuleName().equals(AppContext.getModuleName()))).findFirst().get();
         } catch (Exception ex) {
             return null;
         }

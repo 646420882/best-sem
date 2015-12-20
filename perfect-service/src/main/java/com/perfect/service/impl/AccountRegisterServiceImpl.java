@@ -111,7 +111,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
                 systemUserModuleDTO.setStartTime(new Date().getTime());
                 entities.add(systemUserModuleDTO);
             }
-            systemUserDTO.setModuleDTOList(entities);
+            systemUserDTO.setSystemUserModules(entities);
 
             SystemUserDTO user = accountRegisterDAO.getAccount(registerParam.getUsername());
 

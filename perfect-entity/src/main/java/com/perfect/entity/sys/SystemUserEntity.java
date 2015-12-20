@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +43,7 @@ public class SystemUserEntity implements Serializable {
     private long ctime;                                             // 注册时间
 
     @Field("modules")
-    private List<SystemUserModuleEntity> systemUserModuleEntities;
+    private List<SystemUserModuleEntity> systemUserModules;
 
     @Field(value = "acstate")
     private Integer accountState;                                   // 系统帐号状态: 1.启用, 0.禁用
@@ -162,11 +161,11 @@ public class SystemUserEntity implements Serializable {
         this.ctime = ctime;
     }
 
-    public List<SystemUserModuleEntity> getSystemUserModuleEntities() {
-        return systemUserModuleEntities;
+    public List<SystemUserModuleEntity> getSystemUserModules() {
+        return systemUserModules;
     }
 
-    public void setSystemUserModuleEntities(ArrayList<SystemUserModuleEntity> systemUserModuleEntities) {
-        this.systemUserModuleEntities = systemUserModuleEntities;
+    public void setSystemUserModules(List<SystemUserModuleEntity> systemUserModules) {
+        this.systemUserModules = systemUserModules;
     }
 }
