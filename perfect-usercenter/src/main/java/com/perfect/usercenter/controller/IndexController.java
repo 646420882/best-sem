@@ -41,7 +41,7 @@ public class IndexController {
      */
     @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
     public void logout(HttpServletResponse response) {
-        Cookie cookies = new Cookie("semToken", null);
+        Cookie cookies = new Cookie("userToken", null);
         cookies.setMaxAge(0);
         response.addCookie(cookies);
     }

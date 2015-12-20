@@ -12,7 +12,7 @@
             <div class="panel-heading" role="tab">
                 <h4 class="panel-title">
                     <a class="collapsed" role="button" data-parent="#accordion"
-                       href="${pageContext.request.contextPath}/userCenter/index" aria-expanded="false"
+                       href="${pageContext.request.contextPath}/" aria-expanded="false"
                        aria-controls="collapseTwo">
                         <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-th-large"></span> 账户概览
                     </a>
@@ -23,7 +23,7 @@
             <div class="panel-heading" role="tab">
                 <h4 class="panel-title">
                     <a class="collapsed" role="button" data-parent="#accordion"
-                       href="${pageContext.request.contextPath}/userCenter/account" aria-expanded="false"
+                       href="${pageContext.request.contextPath}/account" aria-expanded="false"
                        aria-controls="collapseTwo">
                         <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-ok"></span> 账户绑定
                     </a>
@@ -34,7 +34,7 @@
             <div class="panel-heading" role="tab">
                 <h4 class="panel-title">
                     <a class="collapsed" role="button" data-parent="#accordion"
-                       href="${pageContext.request.contextPath}/userCenter/password" aria-expanded="false"
+                       href="${pageContext.request.contextPath}/password" aria-expanded="false"
                        aria-controls="collapseTwo">
                         <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-lock"></span> 密码管理
                     </a>
@@ -45,7 +45,7 @@
             <div class="panel-heading" role="tab">
                 <h4 class="panel-title">
                     <a class="collapsed" role="button" data-parent="#accordion"
-                       href="${pageContext.request.contextPath}/userCenter/safetyTool" aria-expanded="false"
+                       href="${pageContext.request.contextPath}/safetyTool" aria-expanded="false"
                        aria-controls="collapseTwo">
                         <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-wrench"></span> 安全工具
                     </a>

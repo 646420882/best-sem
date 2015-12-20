@@ -31,11 +31,12 @@ public class SessionTimeoutInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+
         String requestUrl = request.getRequestURI();
         //对所有的请求,进行拦截
         if (requestUrl != null) {
             /**
-             * 登录页login.do不进行拦截
+             * 不进行拦截url
              */
             for (String url : allowUrls) {
                 if (requestUrl.endsWith(url)) {

@@ -27,7 +27,6 @@ import java.util.stream.Stream;
  */
 @RestController
 @Scope("prototype")
-@RequestMapping(value = "/userCenter")
 public class RegisterController {
 
     @Resource
@@ -56,7 +55,7 @@ public class RegisterController {
      *
      * @return
      */
-    @RequestMapping(value = "/add", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/userAdd", method = RequestMethod.POST)
     public ModelAndView registerData(ModelMap model, HttpServletResponse response, HttpServletRequest request,
                                      @ModelAttribute RegisterParam registerParam) {
 
@@ -66,8 +65,6 @@ public class RegisterController {
             model.addAttribute("msg", msg);
             return new ModelAndView("loginOrReg/register", model);
         }
-        // TODO 注册成功是否要跳转到登陆页面?
-
         int flag = accountRegisterService.addAccount(registerParam);
         model.addAttribute("state", 1);
         return new ModelAndView("loginOrReg/register", model);

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -109,6 +110,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
                 //设置百度帐号信息
                 systemUserModuleDTO.setAccounts(baiduList);
                 systemUserModuleDTO.setStartTime(new Date().getTime());
+                systemUserModuleDTO.setMenus(Collections.emptyList());
                 entities.add(systemUserModuleDTO);
             }
             systemUserDTO.setSystemUserModules(entities);

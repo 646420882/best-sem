@@ -33,7 +33,7 @@
                 </div>
                 <div class="login_part1 ">
                     <div class="login_input2">
-                        <form id="defaultForm" method="post" class="form-horizontal" action="/userCenter/add">
+                        <form id="defaultForm" method="post" class="form-horizontal" action="/userAdd">
                             <ul>
                                 <li>
                                     <label class="fl">公司名称：</label>
@@ -210,16 +210,16 @@
     $(window).resize();
     $(document).ready(function () {
         $.ajax({
-            url: "/userCenter/getPlatform",
+            url: "/getPlatform",
             dataType: "json",
             async: true,
             success: function (data) {
+                console.log(data);
                 $("#openPlatform").empty();
                 var html = "";
                 data.data.forEach(function(item,i){
                     html = html +"<option value='"+item.id+"'>"+item.moduleName+"</option>"
                 })
-                console.log(html)
                 $("#openPlatform").append(html);
                 $("#openPlatform").multipleSelect({
                     placeholder: "请选择开通平台",

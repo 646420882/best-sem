@@ -23,7 +23,7 @@
         <span aria-hidden="true" class="glyphicon glyphicon-user fl"></span>
         <span data-ng-bind="perfectUser" class="ng-binding">perfect2015</span>
       </li>
-      <li><a href="/"><span aria-hidden="true" class="glyphicon glyphicon-share"></span>退出</a></li>
+      <li><a href="/logout"><span aria-hidden="true" class="glyphicon glyphicon-share"></span>退出</a></li>
     </ul>
   </div>
 </nav>
