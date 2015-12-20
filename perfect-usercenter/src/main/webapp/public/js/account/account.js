@@ -127,14 +127,16 @@ window.operateEvents = {
         var bindingtext = $(this);
         if ($(this).html() == "禁用") {
             $('#modelbox').modal()
-            $("#modelboxTitle").html("是否禁用？");
+            $("#modelboxTitle").html("系统提示");
+            $(".modal-body").html("是否禁用？");
             $("#modelboxBottom").click(function () {
                 $('#modelbox').modal('hide');
                 bindingtext.html("启动");
             })
 
         } else {
-            $("#modelboxTitle").html("是否启动？");
+            $("#modelboxTitle").html("系统提示");
+            $(".modal-body").html("是否启动？");
             $('#modelbox').modal()
             $("#modelboxBottom").click(function () {
                 $('#modelbox').modal('hide');
@@ -166,10 +168,6 @@ window.operateEvents = {
             if(index>0){
                 $(".account_change").find('li').eq(5-index).append(acount_html);
             }
-                //$(this).html("<input type='text' class='form-control' value='" + that_html + "'> ").append();
-                //editorBottom.hide();
-                //editorBottom.prev().hide();
-                //editorBottom.next(".preserve").attr("style", "display:block");
         });
     },
     'click .huiyan': function (e, value, row, index) {
@@ -193,11 +191,6 @@ window.operateEvents = {
                 var acount_html="<input type='text' class='form-control' value='" + that_html + "'> "
             }
             $(".account_change").find('li').eq(5-index).append(acount_html);
-
-            //$(this).html("<input type='text' class='form-control' value='" + that_html + "'> ").append();
-            //editorBottom.hide();
-            //editorBottom.prev().hide();
-            //editorBottom.next(".preserve").attr("style", "display:block");
         });
     },
     'click .preserve': function (e, value, row, index) {
@@ -236,8 +229,6 @@ $(function () {
         $('.modal-dialog').css({width:'400px'})
         $("#modelboxTitle").html("新增关联账户");
         $(".modal-body").html(acountContent);
-        //$table.bootstrapTable('append', firstAdd());
-        //$table.bootstrapTable('scrollTo', 'bottom');
     });
 });
 
@@ -247,40 +238,6 @@ $(function () {
         $('.modal-dialog').css({width:'400px'})
         $("#modelboxTitle").html("新增关联账户");
         $(".modal-body").html(acountContent);
-        //$('#modelbox').modal();
-        //$("#modelboxTitle").html("是否删除？");
-        //$("#modelboxBottom").click(function () {
-        //    $('#modelbox').modal('hide');
-        //    tabledelete.remove();
-        //
-        //})
-        //$('#AccountTable').bootstrapTable('append', secondAdd());
-        //$('#AccountTable').bootstrapTable('scrollTo', 'bottom');
     });
 });
-function firstAdd() {
-    var startId = "<input type='text' class='form-control'>",
-        rows = [];
-    rows.push({
-        id: startId,
-        name: startId,
-        remark: startId,
-        url: startId,
-        platform: startId,
-        time: startId
-    });
-    return rows;
-}
-function secondAdd() {
-    var startId = "<input type='text' class='form-control'>",
-        rows = [];
-    rows.push({
-        id: startId,
-        name: startId,
-        remark: startId,
-        wedName: startId,
-        wedUrl: startId,
-        wedCode: startId
-    });
-    return rows;
-}
+
