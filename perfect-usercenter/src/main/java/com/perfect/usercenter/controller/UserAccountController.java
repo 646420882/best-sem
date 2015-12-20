@@ -1,27 +1,32 @@
 package com.perfect.usercenter.controller;
 
+import com.perfect.service.AccountManageService;
 import com.perfect.usercenter.email.EmailHelper;
+import com.perfect.utils.JsonViews;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
- * Created on 2015-12-18.
+ * Created on 2015-12-20.
  *
  * @author dolphineor
  */
 @RestController
-@RequestMapping("/email")
 @Scope("prototype")
-public class EmailController {
+@RequestMapping("/account")
+public class UserAccountController {
 
     private static String captchaHtmlTemplate = "<!DOCTYPE html>" +
             "<html>" +
@@ -38,7 +43,54 @@ public class EmailController {
             "</body>" +
             "</html>";
 
-    @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @Resource
+    private AccountManageService accountManageService;
+
+
+    /**
+     * <p>修改密码时, 校验当前使用的密码
+     *
+     * @param oldPassword
+     * @param userName
+     * @return
+     */
+    @RequestMapping(value = "/password/validate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView validatePassword(@RequestParam String oldPassword, @RequestParam String userName) {
+        int status = accountManageService.JudgePwd(userName, oldPassword);
+
+        if (status == 1) {
+            return JsonViews.generateSuccessNoData();
+        } else {
+            return JsonViews.generateFailedNoData();
+        }
+    }
+
+    /**
+     * <p>修改密码
+     *
+     * @param userName
+     * @param newPassword
+     * @return
+     */
+    @RequestMapping(value = "/password/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updatePassword(@RequestParam String userName, @RequestParam String newPassword) {
+        int status = accountManageService.updatePwd(userName, newPassword);
+
+        if (status == 1) {
+            return JsonViews.generateSuccessNoData();
+        } else {
+            return JsonViews.generateFailedNoData();
+        }
+    }
+
+    /**
+     * <p>发送邮箱验证码
+     *
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = "/email/sendCaptcha", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public void sendEmailCaptcha(HttpServletRequest request, HttpServletResponse response) {
         String email = request.getParameter("email");
         String captcha = createCaptcha();
@@ -55,6 +107,12 @@ public class EmailController {
         EmailHelper.sendHtmlEmail("", String.format(captchaHtmlTemplate, captcha), email);
     }
 
+
+    /**
+     * <p>生成邮箱验证码
+     *
+     * @return
+     */
     private String createCaptcha() {
         // 验证码在Redis中是否已经存在
         boolean continueFlag = true;
@@ -122,5 +180,4 @@ public class EmailController {
                 jedis.close();
         }
     }
-
 }

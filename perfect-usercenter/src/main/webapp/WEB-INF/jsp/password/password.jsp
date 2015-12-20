@@ -29,13 +29,15 @@
                     <button type="button" class="btn btn-default">试用账户</button>
                 </div>
                 <div class="user_content password_box">
+                    <input id="userName" type="hidden" value="${user.userName}"/>
                     <div class="password_box_title"><b>登录密码修改</b><span>新密码至少6位，包括数字、大小写英文字母</span></div>
                     <form class="form-inline" id="defaultForm">
                         <div class="form-group col-xs-12 ">
-                            <div class="input-group" >
+                            <div class="input-group">
                                 <div class="input-group-addon"><span aria-hidden="true" ng-class="icon"
                                                                      class="glyphicon glyphicon-lock"></span></div>
-                                <input type="text" name="password" class="form-control" placeholder="请输入旧密码">
+                                <input type="text" id="userOldPassword" name="password" class="form-control"
+                                       placeholder="请输入旧密码">
                             </div>
                         </div>
                         <div class="form-group col-xs-12">

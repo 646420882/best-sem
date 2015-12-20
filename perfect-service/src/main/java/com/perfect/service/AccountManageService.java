@@ -17,11 +17,11 @@ public interface AccountManageService {
     /**
      * 修改密码
      *
-     * @param password
-     * @param newPwd
+     * @param userName
+     * @param newPassword
      * @return
      */
-    int updatePwd(String password, String newPwd);
+    int updatePwd(String userName, String newPassword);
 
     /**
      * 当前密码判断
@@ -29,7 +29,7 @@ public interface AccountManageService {
      * @param password
      * @return
      */
-    int JudgePwd(String password);
+    int JudgePwd(String userName, String password);
 
     /**
      * 得到所有未审核的帐号

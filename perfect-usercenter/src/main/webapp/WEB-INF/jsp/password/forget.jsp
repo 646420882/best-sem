@@ -40,7 +40,8 @@
                 <span class="fl">找回密码</span>
                 <a href="/" class="fr">→ 返回</a>
             </div>
-            <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img src="${pageContext.request.contextPath}/public/img/surecount.png" alt=""/></div>
+            <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img
+                    src="${pageContext.request.contextPath}/public/img/surecount.png" alt=""/></div>
             <div class="forget_form">
                 <input type="hidden" name="redirect" value="${redirect_url}"/>
 
@@ -58,12 +59,12 @@
                                 </div>
                             </li>
                             <li>
-                                <label for="j_password">请输入注册邮箱：</label>
+                                <label>请输入注册邮箱：</label>
                                 <input type="email" id="email" name="j_password" placeholder="请输入邮箱地址"/>
                                 <%--<span><img src="${pageContext.request.contextPath}/public/img/login_lock.png"></span>--%>
 
                                 <div>
-                                    <b id="invalidemail">${invalidPassword}</b>
+                                    <b id="invalidEmail">${invalidEmail}</b>
                                 </div>
                             </li>
 
@@ -96,7 +97,8 @@
                 <span class="fl">找回密码</span>
                 <a href="/" class="fr">→ 返回</a>
             </div>
-            <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img src="${pageContext.request.contextPath}/public/img/resetpassword.png" alt=""/></div>
+            <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img
+                    src="${pageContext.request.contextPath}/public/img/resetpassword.png" alt=""/></div>
             <div class="forget_form">
                 <input type="hidden" name="redirect" value="${redirect_url}"/>
 
@@ -114,7 +116,7 @@
                                 </div>
                             </li>
                             <li>
-                                <label for="j_password">确认密码：</label>
+                                <label>确认密码：</label>
                                 <input type="password" id="email" name="j_password" placeholder="请输入登陆密码"/>
                                 <%--<span><img src="${pageContext.request.contextPath}/public/img/login_lock.png"></span>--%>
 
@@ -155,7 +157,8 @@
                 <span class="fl">找回密码</span>
                 <a href="/" class="fr">→ 返回</a>
             </div>
-            <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img src="${pageContext.request.contextPath}/public/img/complete.png" alt=""/></div>
+            <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img
+                    src="${pageContext.request.contextPath}/public/img/complete.png" alt=""/></div>
             <div class="forget_form">
                 <input type="hidden" name="redirect" value="${redirect_url}"/>
 

@@ -10,6 +10,7 @@ import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.AccountAllStateDTO;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
@@ -41,43 +42,36 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Resource
     private AccountManageDAO accountManageDAO;
 
+    @Resource
+    private SystemUserDAO systemUserDAO;
+
+    private final MD5.Builder builder = new MD5.Builder();
+
     @Override
-    public int updatePwd(String password, String newPwd) {
-        SystemUserDTO currUserInfo = getCurrUserInfo();
+    public int updatePwd(String userName, String newPassword) {
+        SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(userName);
 
-        MD5.Builder builder = new MD5.Builder();
-        MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
+        MD5 newPwd = builder.password(newPassword).salt(systemUserDTO.getUserName()).build();
 
-        MD5 md5NewPwd = builder.password(newPwd).salt(currUserInfo.getUserName()).build();
-
-        int i;
-        if (md5.getMD5().equals(currUserInfo.getPassword())) {
-            boolean writeResult = accountManageDAO.updatePwd(currUserInfo.getUserName(), md5NewPwd.getMD5());
-            if (writeResult) {
-                i = 1;
-            } else {
-                i = 0;
-            }
+        boolean writeResult = accountManageDAO.updatePwd(systemUserDTO.getUserName(), newPwd.getMD5());
+        if (writeResult) {
+            return 1;
         } else {
-            i = -1;
+            return -1;
         }
-        return i;
+
     }
 
     @Override
-    public int JudgePwd(String password) {
-        SystemUserDTO currUserInfo = getCurrUserInfo();
+    public int JudgePwd(String userName, String password) {
+        SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(userName);
 
-        MD5.Builder builder = new MD5.Builder();
-        MD5 md5 = builder.password(password).salt(currUserInfo.getUserName()).build();
-        int i;
-        if (md5.getMD5().equals(currUserInfo.getPassword())) {
-            i = 1;
+        MD5 md5 = builder.password(password).salt(userName).build();
+        if (md5.getMD5().equals(systemUserDTO.getPassword())) {
+            return 1;
         } else {
-            i = -1;
+            return -1;
         }
-
-        return i;
     }
 
     @Override
@@ -87,8 +81,8 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public int auditAccount(String userNmae) {
-        int flagStruts = accountManageDAO.updateAccountStruts(userNmae);
+    public int auditAccount(String userName) {
+        int flagStruts = accountManageDAO.updateAccountStruts(userName);
         return flagStruts;
     }
 
