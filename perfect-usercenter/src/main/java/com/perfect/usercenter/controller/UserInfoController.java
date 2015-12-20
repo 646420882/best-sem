@@ -51,7 +51,7 @@ public class UserInfoController {
      * @return
      */
     @RequestMapping(value = "/user/{userid}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView updateUserBaseInfo(@PathVariable String userid, @RequestBody SystemUserDTO systemUserDTO) {
+    public ModelAndView updateUserBaseInfo(@PathVariable String userid, SystemUserDTO systemUserDTO) {
 
         UserInfo userInfo = AppContext.getUserInfo();
 

@@ -567,12 +567,12 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     public boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO) {
         Update update = new Update();
 
-        update.set("userName", systemUserDTO.getUserName());
         update.set("companyName", systemUserDTO.getCompanyName());
         update.set("address", systemUserDTO.getAddress());
         update.set("contactName", systemUserDTO.getContactName());
         update.set("email", systemUserDTO.getEmail());
         update.set("telephone", systemUserDTO.getTelephone());
+        update.set("mobilephone", systemUserDTO.getMobilephone());
 
 
         WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)), update, getEntityClass());

@@ -39,7 +39,7 @@
             <span class="fl">用户登录</span>
             <a href="/register" class="fr">→ 还没有账号？点击注册</a>
         </div>
-        <form action="/login" method="post">
+        <form action="/login" id="frmSubmit" method="post">
             <input type="hidden" name="redirect" value="${redirect_url}"/>
             <input type="hidden" name="url" value="<%=request.getParameter("url")%>"/>
 
@@ -68,11 +68,14 @@
                         <li>
                             <label for="j_validate">验证码：</label>
                             <input style="width: 50%" type="text" id="j_validate" name="j_validate"/>
-                            <b>4598</b>
-                            <%--<span><img src="${pageContext.request.contextPath}/public/img/login_lock.png"></span>--%>
+                            <b id="code" style="cursor: pointer;padding: 10px;font-size: 16px" onclick="createCodeLogin()"></b>
+                            <div>
+                                <b id="codeMsg"></b>
+                            </div>
                         </li>
                         <li>
-                            <input type="submit" class="loginButton" onclick="_pct.putPar(['_trackEvent', 'Login', 'click', '登陆信息'])" value="登陆"/>
+                            <input type="button" id="loginSec" class="loginButton"
+                                   onclick="_pct.putPar(['_trackEvent', 'Login', 'click', '登陆信息'])" value="登陆"/>
                         </li>
                         <li><a id="forgetPassword" class="fr" href="#">忘记密码?</a></li>
                     </ul>
@@ -102,12 +105,12 @@
 <script type="text/javascript">
 
     /*$(window).resize(function () {
-        $('.login_box').css({
-            position: 'absolute',
-            left: ($(window).width() - $('.login_box').outerWidth()) / 2,
-            top: ($(window).height() - $('.login_box').outerHeight()) / 2 + $(document).scrollTop()
-        });
-    });*/
+     $('.login_box').css({
+     position: 'absolute',
+     left: ($(window).width() - $('.login_box').outerWidth()) / 2,
+     top: ($(window).height() - $('.login_box').outerHeight()) / 2 + $(document).scrollTop()
+     });
+     });*/
     //初始化函数
     $(window).resize();
 
@@ -129,6 +132,45 @@
             $("#invalidPassword").parent().addClass("login_checkbox");
         }
     });
+
+    var code; //在全局定义验证码
+    //产生验证码
+    var createCodeLogin = function () {
+        code = "";
+        var codeLength = 4;//验证码的长度
+        var checkCode = document.getElementById("code");
+        var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//随机数
+        for (var i = 0; i < codeLength; i++) {//循环操作
+            var index = Math.floor(Math.random() * 36);//取得随机数的索引（0~35）
+            code += random[index];//根据索引取得随机数加到code上
+        }
+        checkCode.innerHTML = code;//把code值赋给验证码
+    };
+    window.onload = createCodeLogin();
+    //校验验证码
+    $("#loginSec").click(function () {
+        var inputCode = document.getElementById("j_validate").value.toUpperCase(); //取得输入的验证码并转化为大写
+        if (inputCode.length <= 0) {
+            $("#codeMsg").html("请输入验证码！");
+            if ($("#codeMsg").html() == "") {
+                $("#codeMsg").parent().removeClass("login_checkbox");
+            } else {
+                $("#codeMsg").parent().addClass("login_checkbox");
+            }
+        } else if (inputCode != code) {
+            $("#codeMsg").html("验证码输入错误！");
+            if ($("#codeMsg").html() == "") {
+                $("#codeMsg").parent().removeClass("login_checkbox");
+            } else {
+                $("#codeMsg").parent().addClass("login_checkbox");
+            }
+            createCodeLogin();
+            document.getElementById("j_validate").value = "";
+        } else {
+            $("#frmSubmit").submit();
+        }
+    })
 
 </script>
 
