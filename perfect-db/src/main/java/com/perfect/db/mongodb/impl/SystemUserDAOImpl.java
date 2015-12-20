@@ -74,7 +74,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         Query query = Query.query(Criteria.where("modules.accounts.bid").is(aid));
         SystemUserEntity entity = getSysMongoTemplate().findOne(query, getEntityClass());
 
-        return SystemUserUtils.retrieveDTOFromEntity(entity);
+        return fromEntity(entity);
     }
 
     @Override

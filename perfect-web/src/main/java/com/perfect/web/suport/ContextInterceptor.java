@@ -151,7 +151,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
         for (SystemUserModuleDTO userModuleDTO : userModuleDTOs) {
             SystemModuleDTO systemModuleDTO = systemModuleService.findByModuleId(userModuleDTO.getModuleId());
 
-            if (Objects.equals(request.getHeader(HOST), systemModuleDTO.getModuleUrl())) {
+            if (Objects.equals(AppContext.getModuleName(), systemModuleDTO.getModuleName())) {
                 List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = userModuleDTO.getAccounts();
                 WebUtils.setModuleId(request, userModuleDTO.getModuleId());
                 WebUtils.setModuleAccounts(request, moduleAccountInfoDTOs);

@@ -55,7 +55,7 @@ public class AssistantOperationLogController {
     @ResponseBody
     public Map<String, String> account() {
         ModuleAccountInfoDTO dto = accountManageService.findByBaiduUserId(AppContext.getAccountId());
-        Map<String, String> accountMap = new HashMap<String, String>();
+        Map<String, String> accountMap = new HashMap<>();
         accountMap.put("accountName", dto.getBaiduUserName());
         accountMap.put("accountId", String.valueOf(AppContext.getAccountId()));
         return accountMap;

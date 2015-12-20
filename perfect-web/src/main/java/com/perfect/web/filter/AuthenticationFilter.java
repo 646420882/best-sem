@@ -1,8 +1,8 @@
 package com.perfect.web.filter;
 
+import com.alibaba.fastjson.JSON;
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import com.perfect.web.suport.ServletContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -121,7 +121,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
                 return null;
             }
 
-            SystemUserDTO systemUserDTO = JSONUtils.getObjectByJson(userInfoMsg, SystemUserDTO.class);
+            SystemUserDTO systemUserDTO = JSON.parseObject(userInfoMsg, SystemUserDTO.class);
             if (Objects.nonNull(systemUserDTO)) {
                 request.getSession().setAttribute(USER_INFORMATION, systemUserDTO);
                 return systemUserDTO;

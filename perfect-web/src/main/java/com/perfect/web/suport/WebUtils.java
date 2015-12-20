@@ -59,7 +59,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils implements A
 
     @SuppressWarnings("unchecked")
     public static List<ModuleAccountInfoDTO> getModuleAccounts(HttpServletRequest request) {
-        Object moduleAccountInfo = request.getAttribute(MODULE_ACCOUNT_INFORMATION);
+        Object moduleAccountInfo = request.getSession().getAttribute(MODULE_ACCOUNT_INFORMATION);
         if (Objects.isNull(moduleAccountInfo))
             return Collections.emptyList();
 
