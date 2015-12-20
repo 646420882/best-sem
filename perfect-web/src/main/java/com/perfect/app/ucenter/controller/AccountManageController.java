@@ -68,23 +68,22 @@ public class AccountManageController extends WebContextSupport {
         return new ModelAndView("configuration/configure", modelMap);
     }
 
-    /**
-     * 验证账户密码
-     *
-     * @return
-     */
-    @RequestMapping(value = "/judgePwd", method = {RequestMethod.GET, RequestMethod.POST})
-    public void judgePwd(HttpServletResponse response,
-                         @RequestParam(value = "password", required = false) String password) {
-
-        int flag = accountManageService.JudgePwd(password);
-
-        Map<String, Integer> map = new HashMap<>();
-        map.put("sturts", flag);
-
-        writeJson(map, response);
-
-    }
+//    /**
+//     * 验证账户密码
+//     *
+//     * @return
+//    @RequestMapping(value = "/judgePwd", method = {RequestMethod.GET, RequestMethod.POST})
+//    public void judgePwd(HttpServletResponse response,
+//                         @RequestParam(value = "password", required = false) String password) {
+//
+//        int flag = accountManageService.JudgePwd(password);
+//
+//        Map<String, Integer> map = new HashMap<>();
+//        map.put("sturts", flag);
+//
+//        writeJson(map, response);
+//
+//    }*/
 
     /**
      * 得到所有未审核的帐号

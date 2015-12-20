@@ -14,6 +14,11 @@ import static javax.servlet.http.HttpServletResponse.SC_FOUND;
  */
 public class RedisObtainedByToken {
 
+    /**
+     * 通过token 得到用户信息
+     * @param token
+     * @return
+     */
     public static SystemUserDTO getUserInfo(String token){
         Jedis jedis = null;
 
@@ -24,7 +29,8 @@ public class RedisObtainedByToken {
                 return null;
             }
 
-            SystemUserDTO systemUserDTO = JSON.parseObject(JsonUserInfo, SystemUserDTO.class);
+            SystemUserDTO systemUserDTO = getUserDTO(JsonUserInfo);
+
             if (Objects.nonNull(systemUserDTO)) {
                 return systemUserDTO;
             }
@@ -34,5 +40,14 @@ public class RedisObtainedByToken {
             }
         }
         return null;
+    }
+
+    /**
+     * user JSON数据 转化为 user DTO
+     * @param JsonUserInfo
+     * @return
+     */
+    public static SystemUserDTO getUserDTO(String JsonUserInfo){
+        return JSON.parseObject(JsonUserInfo, SystemUserDTO.class);
     }
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: guochunyan
@@ -26,20 +27,29 @@
                 <div class="user_title">
                     <span aria-hidden="true" ng-class="icon"
                           class="glyphicon glyphicon-user"></span>账户：<b>${user.userName}</b>
-                    <button type="button" class="btn btn-default">试用账户</button>
+                    <button type="button" class="btn btn-default">${user.payed ? "付费账户":"试用账户"}</button>
                 </div>
                 <div class="user_content">
                     <ul id="userList">
-                        <li><span>公司名称：</span><b>${user.companyName}</b></li>
-                        <li><span>开通平台：</span><b>${user.companyName}</b></li>
-                        <li><span>网站名称：</span><b>北京普菲特广告有限公司</b></li>
-                        <li><span>网址：</span><b>http：//www.perfect-cn.cn</b></li>
-                        <li><span>注册时间：</span>2015-10-10</li>
-                        <li><span>联系人：</span><b>北京某某</b></li>
-                        <li><span>办公电话：</span><b>12315464</b></li>
-                        <li><span>移动电话：</span><b>1555555552</b></li>
-                        <li><span>通讯地址：</span><b>XXX省xxx市XXXXXX</b></li>
-                        <li><span>电子邮箱：</span><b>A@b.com</b></li>
+                        <li><span>公司名称：</span><b>${user.companyName}&nbsp;</b></li>
+                        <li><span>开通平台：</span><b>
+                            <c:forEach items="${user.systemUserModules}" var="a" varStatus="b">
+                                <c:if test="${b.count > 1}">
+                                    ${a.moduleName},
+                                </c:if>
+                                <c:if test="${b.count == 1}">
+                                    ${a.moduleName}
+                                </c:if>
+                            </c:forEach>
+                            &nbsp;</b></li>
+                        <li><span>网站名称：</span><b>帐号信息需要此信息？&nbsp;</b></li>
+                        <li><span>网址：</span><b>帐号信息需要此信息？</b></li>
+                        <li><span>注册时间：</span>${user.ctime}</li>
+                        <li><span>联系人：</span><b>${user.contactName}&nbsp;</b></li>
+                        <li><span>办公电话：</span><b>${user.telephone}&nbsp;</b></li>
+                        <li><span>移动电话：</span><b>${user.mobilephone}&nbsp;</b></li>
+                        <li><span>通讯地址：</span><b>${user.address}&nbsp;</b></li>
+                        <li><span>电子邮箱：</span><b>${user.email}&nbsp;</b></li>
                     </ul>
                     <button type="button" class="btn btn-primary" onclick="Modify(this)">修改</button>
                     <div class="ModifyHide hide">
@@ -51,6 +61,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/public/bootstrapValidator.js"></script>
 <script type="text/javascript" src="/public/js/index/index.js"></script>
 </body>
 </html>

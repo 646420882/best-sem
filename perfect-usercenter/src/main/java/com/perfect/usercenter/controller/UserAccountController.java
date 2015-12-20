@@ -6,11 +6,14 @@ import com.perfect.utils.JsonViews;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
@@ -51,37 +54,41 @@ public class UserAccountController {
     /**
      * <p>修改密码时, 校验当前使用的密码
      *
-     * @param oldPassword
+     * @param pwd
      * @param userName
      * @return
      */
     @RequestMapping(value = "/password/validate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView validatePassword(@RequestParam String oldPassword, @RequestParam String userName) {
-        int status = accountManageService.JudgePwd(userName, oldPassword);
+    public ModelAndView validatePassword(@RequestParam String pwd, @RequestParam String userName) {
+        int status = accountManageService.JudgePwd(userName, pwd);
 
+        Map<String, Boolean> map = new HashMap<>();
         if (status == 1) {
-            return JsonViews.generateSuccessNoData();
+            map.put("valid", true);
         } else {
-            return JsonViews.generateFailedNoData();
+            map.put("valid", false);
         }
+        AbstractView jsonView = new MappingJackson2JsonView();
+        jsonView.setAttributesMap(map);
+        return new ModelAndView(jsonView);
     }
 
     /**
      * <p>修改密码
      *
      * @param userName
-     * @param newPassword
+     * @param NewPassword
      * @return
      */
     @RequestMapping(value = "/password/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView updatePassword(@RequestParam String userName, @RequestParam String newPassword) {
-        int status = accountManageService.updatePwd(userName, newPassword);
-
+    public ModelAndView updatePassword(@RequestParam String userName, @RequestParam String NewPassword, ModelMap modelMap) {
+        int status = accountManageService.updatePwd(userName, NewPassword);
         if (status == 1) {
-            return JsonViews.generateSuccessNoData();
+            modelMap.put("valid", true);
         } else {
-            return JsonViews.generateFailedNoData();
+            modelMap.put("valid", false);
         }
+        return new ModelAndView("/password/password", modelMap);
     }
 
     /**
