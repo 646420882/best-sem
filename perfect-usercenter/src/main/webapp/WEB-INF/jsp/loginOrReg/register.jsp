@@ -21,175 +21,188 @@
 <body>
 <div class="login">
     <%--<img src="/public/img/login_bg.jpg" width="100%" height="100%">--%>
-        <div class="loginBg" style="position: absolute;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
-        <div class="registe_box">
-            <div class="login_logo2 ">
-                <a href="http://best-ad.cn/" target="_blank"><img src="/public/img/login_logo.png"></a>
+    <div class="loginBg" style="position: absolute;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
+    <div class="registe_box">
+        <div class="login_logo2 ">
+            <a href="http://best-ad.cn/" target="_blank"><img src="/public/img/login_logo.png"></a>
+        </div>
+        <div class="login_box2">
+            <div class="login_click over">
+                <span id="tishi" class="fl">用户注册</span>
+                <a href="/" class="fr">→ 已有账号？登陆</a>
             </div>
-            <div class="login_box2">
-                <div class="login_click over">
-                    <span id="tishi" class="fl">用户注册</span>
-                    <a href="/" class="fr">→ 已有账号？登陆</a>
+            <div class="login_part1 ">
+                <div class="login_input2">
+                    <form id="defaultForm" method="post" class="form-horizontal" action="/userAdd">
+                        <ul>
+                            <li>
+                                <label class="fl">公司名称：</label>
+                                <%--<input type="text" name="companyname" value="个人用户请填写姓名"
+                                       onfocus="if(value=='个人用户请填写姓名') {value=''}"
+                                       onblur="if (value=='') {value='个人用户请填写姓名'}">--%>
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="companyname"
+                                               placeholder="个人用户请填写姓名"
+                                               onfocus="if(value=='个人用户请填写姓名') {value=''}"
+                                               onblur="if (value=='') {value='个人用户请填写姓名'}">
+                                    </div>
+                                </div>
+                                <span style="color: red" class="register_star">*</span>
+                            </li>
+                            <li>
+                                <label class="fl">用户名：</label>
+
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="username">
+                                    </div>
+                                </div>
+
+                                <span style="color: red" class="register_star">*</span>
+                            </li>
+                            <li>
+                                <label class="fl">注册邮箱：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="email"/>
+                                    </div>
+                                </div>
+                                <span style="color: red" class="register_star">*</span>
+                            </li>
+                            <li>
+                                <label class="fl">密码：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="password" name="password">
+                                    </div>
+                                </div>
+                                <span style="color: red" class="register_star">*</span>
+                            </li>
+                            <li>
+                                <label class="fl">确认密码：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="password" name="confirmPassword">
+                                    </div>
+                                </div>
+                                <span style="color: red" class="register_star">*</span>
+                            </li>
+                            <li>
+                                <label class="fl">通信地址：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="mailinAddress">
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <label class="fl">联系人：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="contacts">
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <label class="fl">联系电话：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="contactsPhone">
+                                    </div>
+                                </div>
+                            </li>
+                            <li id="openPlatformLi">
+                                <label class="fl">开通平台：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input name="openPlatform" style="width: 0;height: 0;position: absolute"
+                                               id="openPlatformInput">
+                                        <select id="openPlatform" multiple="multiple">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <span style="color: red" class="register_star">*</span>
+                            </li>
+                            <li>
+                                <label class="fl">百度凤巢账户：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="baiduUserName">
+                                    </div>
+                                </div>
+                                <span style="color: red;display: none" class="register_star NameStar">*</span>
+                            </li>
+                            <li>
+                                <label class="fl">百度凤巢密码：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="baiduUserPassword">
+                                    </div>
+                                </div>
+                                <span style="color: red;display: none" class="register_star NameStar">*</span>
+                            </li>
+                            <li>
+                                <label class="fl">网站URL地址：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input class="registeInput" type="text" name="urlAddress">
+
+                                    </div>
+                                </div>
+                                <span style="color: red;display: none" class="register_star NameStar">*</span>
+                            </li>
+                            <li style="margin-left: 115px;">
+                                <input name="accountType" checked type="radio" id="freeAccount" class="accountType"
+                                       value="1"><label for="freeAccount" class="accountType"
+                                                        style="margin-right: 15px;">试用账户</label>
+                                <input type="radio" name="accountType" id="payAccount" class="accountType"
+                                       value="2"><label for="payAccount" class="accountType">付费账户</label>
+                            </li>
+                            <li>
+                                <label class="fl">验证码：</label>
+
+                                <div class="form-group has-feedback">
+                                    <div>
+                                        <input type="text" class="proving registeInput" id="input1" name="code_text">
+                                        <input type="text" onclick="createCode()" name="code" readonly="readonly"
+                                               id="checkCode" class="unchanged" style="width: 65px"/>
+
+                                    </div>
+                                </div>
+                                <span style="color: red" class="register_star">*</span>
+                            </li>
+                            <li>
+                                <input value="立即注册" id="immedateRegister" type="button" class="submit registeButton">
+                            </li>
+                        </ul>
+                        <%--<div class="login_part2" style="margin-top:20px;">
+                            <input type="submit" id="" value="立即注册" class="submit">
+                        </div>--%>
+                    </form>
                 </div>
-                <div class="login_part1 ">
-                    <div class="login_input2">
-                        <form id="defaultForm" method="post" class="form-horizontal" action="/userAdd">
-                            <ul>
-                                <li>
-                                    <label class="fl">公司名称：</label>
-                                    <%--<input type="text" name="companyname" value="个人用户请填写姓名"
-                                           onfocus="if(value=='个人用户请填写姓名') {value=''}"
-                                           onblur="if (value=='') {value='个人用户请填写姓名'}">--%>
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="text" name="companyname" placeholder="个人用户请填写姓名"
-                                                   onfocus="if(value=='个人用户请填写姓名') {value=''}"
-                                                   onblur="if (value=='') {value='个人用户请填写姓名'}">
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li>
-                                    <label class="fl">用户名：</label>
-
-
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="text" name="username">
-                                        </div>
-                                    </div>
-
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li>
-                                    <label class="fl">注册邮箱：</label>
-
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="text" name="email"/>
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li>
-                                    <label class="fl">密码：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="password" name="password">
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li>
-                                    <label class="fl">确认密码：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="password" name="confirmPassword">
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li>
-                                    <label class="fl">通信地址：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="text" name="mailinAddress">
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <label class="fl">联系人：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="text" name="contacts">
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <label class="fl">联系电话：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="text" name="contactsPhone">
-                                        </div>
-                                    </div>
-                                </li>
-                                <li id="openPlatformLi">
-                                    <label class="fl">开通平台：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <select id="openPlatform" multiple="multiple" name="openPlatform">
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li>
-                                    <label class="fl">百度凤巢账户：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-
-                                            <input class="registeInput" type="text" name="baiduUserName">
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li>
-                                    <label class="fl">百度凤巢密码：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-
-                                            <input class="registeInput" type="text" name="baiduUserPassword">
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li>
-                                    <label class="fl">网站URL地址：</label>
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input class="registeInput" type="text" name="urlAddress">
-
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li style="margin-left: 115px;">
-                                    <input name="accountType" checked type="radio" id="freeAccount" class="accountType" value="1"><label for="freeAccount" class="accountType" style="margin-right: 15px;">试用账户</label>
-                                    <input type="radio" name="accountType" id="payAccount" class="accountType" value="2"><label for="payAccount" class="accountType">付费账户</label>
-                                </li>
-                                <li>
-                                    <label class="fl">验证码：</label>
-
-                                    <div class="form-group has-feedback">
-                                        <div>
-                                            <input type="text" class="proving registeInput" id="input1" name="code_text">
-                                            <input type="text" onclick="createCode()" name="code" readonly="readonly"
-                                                   id="checkCode" class="unchanged" style="width: 65px"/>
-
-                                        </div>
-                                    </div>
-                                    <span style="color: red" class="register_star">*</span>
-                                </li>
-                                <li >
-                                    <input type="submit" value="立即注册" class="submit registeButton">
-                                </li>
-                            </ul>
-                            <%--<div class="login_part2" style="margin-top:20px;">
-                                <input type="submit" id="" value="立即注册" class="submit">
-                            </div>--%>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="login_contact over">
-                <a href="http://www.perfect-cn.cn/" target="_blank">普菲特官网 </a>如在使用过程中有任何问题请联系客服：010-84922996
-                <script type="text/javascript">
-                    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-                    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F9e0d99624d24d17bb95abc5ca469c64e' type='text/javascript'%3E%3C/script%3E"));
-                </script>
             </div>
         </div>
+        <div class="login_contact over">
+            <a href="http://www.perfect-cn.cn/" target="_blank">普菲特官网 </a>如在使用过程中有任何问题请联系客服：010-84922996
+            <script type="text/javascript">
+                var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F9e0d99624d24d17bb95abc5ca469c64e' type='text/javascript'%3E%3C/script%3E"));
+            </script>
+        </div>
+    </div>
 </div>
 
 </div>
@@ -197,15 +210,16 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/public/bootstrapValidator.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/public/jquery.multiple.select.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/public/js/public/jquery.multiple.select.js"></script>
 <script type="text/javascript">
     /*$(window).resize(function () {
-        $('.login_box').css({
-            position: 'absolute',
-            left: ($(window).width() - $('.login_box').outerWidth()) / 2,
-            top: ($(window).height() - $('.login_box').outerHeight()) / 2 + $(document).scrollTop()
-        });
-    });*/
+     $('.login_box').css({
+     position: 'absolute',
+     left: ($(window).width() - $('.login_box').outerWidth()) / 2,
+     top: ($(window).height() - $('.login_box').outerHeight()) / 2 + $(document).scrollTop()
+     });
+     });*/
     //初始化函数
     $(window).resize();
     $(document).ready(function () {
@@ -214,18 +228,50 @@
             dataType: "json",
             async: true,
             success: function (data) {
-                console.log(data);
                 $("#openPlatform").empty();
                 var html = "";
-                data.data.forEach(function(item,i){
-                    html = html +"<option value='"+item.id+"'>"+item.moduleName+"</option>"
+                data.data.forEach(function (item, i) {
+                    html = html + "<option value='" + item.id + "'>" + item.moduleName + "</option>"
                 })
                 $("#openPlatform").append(html);
                 $("#openPlatform").multipleSelect({
                     placeholder: "请选择开通平台",
                     selectAll: false,
                     minumimCountSelected: 20,
-                    multiple: true
+                    multiple: true,
+                    onClose: function () {
+                        var multiSelect = $("#openPlatform").multipleSelect('getSelects');
+                        $("#openPlatformInput").val(multiSelect)
+                        for (var i = 0; i < multiSelect.length; i++) {
+                            if (multiSelect[i] == '5671135777c8a5c9319deaa5') {
+                                $(".NameStar").eq(0).css({"display": "block"})
+                                $(".NameStar").eq(1).css({"display": "block"})
+                                $(".NameStar").eq(2).css({"display": "none"})
+                                $('#defaultForm').bootstrapValidator({
+                                    message: '此值无效',
+                                    feedbackIcons: {
+                                        valid: 'glyphicon glyphicon-ok',
+                                        invalid: 'glyphicon glyphicon-remove',
+                                        validating: 'glyphicon glyphicon-refresh'
+                                    },
+                                    fields: {}
+                                })
+                            } else if (multiSelect[i] == '567146ee77c80b6a4d82b7dd') {
+                                $(".NameStar").eq(0).css({"display": "none"})
+                                $(".NameStar").eq(1).css({"display": "none"})
+                                $(".NameStar").eq(2).css({"display": "block"})
+                            }
+                        }
+                        if (multiSelect.length == 3) {
+                            $(".NameStar").eq(0).css({"display": "block"})
+                            $(".NameStar").eq(1).css({"display": "block"})
+                            $(".NameStar").eq(2).css({"display": "block"})
+                        } else if (multiSelect.length == 0) {
+                            $(".NameStar").eq(0).css({"display": "none"})
+                            $(".NameStar").eq(1).css({"display": "none"})
+                            $(".NameStar").eq(2).css({"display": "none"})
+                        }
+                    }
                 })
             }
         });
@@ -238,6 +284,62 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
+                baiduUserName: {
+                    validators: {
+                        callback: {
+                            message: '百度凤巢账户不能为空',
+                            callback: function (value, validator) {
+                                if ($(".NameStar").eq(0).css("display") == "block") {
+                                    return false;
+                                } else {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                },
+                baiduUserPassword: {
+                    validators: {
+                        callback: {
+                            message: '百度凤巢密码不能为空',
+                            callback: function (value, validator) {
+                                if ($(".NameStar").eq(1).css("display") == "block") {
+                                    return false;
+                                } else {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                },
+                urlAddress: {
+                    validators: {
+                        callback: {
+                            message: 'URL地址不能为空',
+                            callback: function (value, validator) {
+                                if ($(".NameStar").eq(2).css("display") == "block") {
+                                    return false;
+                                } else {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                },
+                openPlatform: {
+                    validators: {
+                        callback: {
+                            message: '开通平台必须选择',
+                            callback: function (value, validator) {
+                                if ($("#openPlatformInput").val() == '') {
+                                    return false;
+                                } else {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                },
                 username: {
                     message: '用户名无效',
                     validators: {
@@ -300,7 +402,7 @@
                         }
                     }
                 },
-                /*            code_text:{
+                /* code_text: {
                  validators: {
                  notEmpty: {
                  message: '验证码不能为空'
@@ -310,8 +412,7 @@
                  message: '请输入正确的验证码'
                  }
                  }
-                 }
-                 */
+                 },*/
                 code_text: {
                     validators: {
                         callback: {
@@ -356,12 +457,20 @@
         }
 
     }
-    $("#submitBtn").click(function () {
-        $("#defaultForm").submit;
+    $("#immedateRegister").click(function () {
+        /*if($('#openPlatform option:selected').text() == ''){
+         $("#openPlatformLi .help-block").css("display","block");
+         return false;
+         }*/
+        $("#defaultForm").submit();
     });
     if ($("#dataRe").val() == 1) {
         $("#tishi").append("注册成功！                ");
-        if(confirm('注册成功！点击按钮继续操作')){ location.href="/"}else{ location.href="/"}
+        if (confirm('注册成功！点击按钮继续操作')) {
+            location.href = "/"
+        } else {
+            location.href = "/"
+        }
     } else if ($("#dataRe").val() == -1) {
         $("#tishi").append("注册失败！用户名已存在！   ");
     }
