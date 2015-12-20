@@ -159,7 +159,6 @@ window.operateEvents = {
         var that = $(this).parent().prevAll("td");
         var that_value = that.each(function (index) {
             var that_html = $(this).html();
-            console.log(that_html)
             if(index==4){
                 var acount_html="<input type='password' class='form-control' value='" + that_html + "'> "
             }else{
