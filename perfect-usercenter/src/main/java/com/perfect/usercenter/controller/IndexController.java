@@ -46,6 +46,9 @@ public class IndexController {
         response.addCookie(cookies);
     }
 
+    @RequestMapping(value = "/toUserCenter", method = RequestMethod.GET)
+    public void toUserCenter(){}
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView reg() {
         return new ModelAndView("/loginOrReg/register");

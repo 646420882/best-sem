@@ -29,7 +29,7 @@
                             <div class="user_text fl">
                                 <div class="user_top over">
                                     <div class="fl"><b id="time"></b><a
-                                            href="#"><span>${currSystemUserName}</span></a>
+                                            href="http://localhost:8088/toUserCenter?userToken=${SEM_USER_TOKEN}"><span>${currSystemUserName}</span></a>
                                     </div>
                                     <input type="image" onclick="downloadUser()"
                                            src="${pageContext.request.contextPath}/public/img/download.png"

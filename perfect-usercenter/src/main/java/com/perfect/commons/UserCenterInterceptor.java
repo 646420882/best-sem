@@ -1,7 +1,10 @@
 package com.perfect.commons;
 
+import com.perfect.commons.constants.UserConstants;
+import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.usercenter.filters.UserInfoFilter;
+import com.perfect.utils.RedisObtainedByToken;
 import com.perfect.utils.redis.JRedisUtils;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
@@ -9,13 +12,13 @@ import redis.clients.jedis.Jedis;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by subdong on 15-12-16.
  */
-public class SessionTimeoutInterceptor implements HandlerInterceptor {
+public class UserCenterInterceptor implements HandlerInterceptor {
 
     private List<String> allowUrls;
 
@@ -47,9 +50,31 @@ public class SessionTimeoutInterceptor implements HandlerInterceptor {
             Cookie[] cookies = request.getCookies();
             String userToken = "";
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("userToken")) {
+                if (cookie.getName().equals(UserConstants.TOKEN_USER)) {
                     userToken = cookie.getValue().toString();
                 }
+            }
+
+            //其他平台跳转到userCenter
+            if (requestUrl.equals("/toUserCenter")) {
+                try {
+                    String token = request.getParameter(UserConstants.TOKEN_USER);
+                    SystemUserDTO systemUserDTO = RedisObtainedByToken.getUserInfo(token);
+
+                    if (Objects.isNull(systemUserDTO)) {
+                        response.sendRedirect("/login");
+                    }
+
+                    Cookie cookie = new Cookie(UserConstants.TOKEN_USER, token);
+                    cookie.setMaxAge(30 * 60 * 60);
+                    response.addCookie(cookie);
+                    request.getSession().setAttribute(UserConstants.SESSION_USER, systemUserDTO);
+                }finally {
+                    if(jedis != null){
+                        jedis.close();
+                    }
+                }
+                response.sendRedirect("/");
             }
 
             try {
@@ -57,14 +82,14 @@ public class SessionTimeoutInterceptor implements HandlerInterceptor {
                 if (obj != null && jedis.exists(userToken)) {
                     if (requestUrl.equals("/logout")) {
                         request.getSession().removeAttribute("user");
-                        response.sendRedirect("/");
+                        response.sendRedirect("/login");
                     }
                     return true;
                 } else {
-                    Cookie cookie = new Cookie("userToken", null);
+                    Cookie cookie = new Cookie(UserConstants.TOKEN_USER, null);
                     cookie.setMaxAge(0);
                     response.addCookie(cookie);
-                    response.sendRedirect("/");
+                    response.sendRedirect("/login");
                     return false;
                 }
             } finally {

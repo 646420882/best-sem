@@ -1,6 +1,7 @@
 package com.perfect.usercenter.filters;
 
 import com.perfect.commons.ServletContextUtils;
+import com.perfect.commons.constants.UserConstants;
 import com.perfect.core.AppContext;
 import com.perfect.core.UserInfo;
 import com.perfect.dto.sys.SystemUserDTO;
@@ -15,7 +16,6 @@ import java.io.IOException;
  * Created by yousheng on 15/12/19.
  */
 public class UserInfoFilter implements Filter {
-    public static final String SESSION_USER = "user";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -37,7 +37,7 @@ public class UserInfoFilter implements Filter {
             // 登陆 注册页面
             if (url.equals("/login") || url.equals("/loginaction")) {
                 // 已经登陆直接跳转到根目录
-                if (httpServletRequest.getSession().getAttribute(SESSION_USER) != null) {
+                if (httpServletRequest.getSession().getAttribute(UserConstants.SESSION_USER) != null) {
                     HttpServletResponse httpServletResponse = (HttpServletResponse) response;
                     httpServletResponse.sendRedirect("/");
                     return;
@@ -47,19 +47,19 @@ public class UserInfoFilter implements Filter {
                 return;
                 // 注销操作
             } else if (url.equals("/logout")) {
-                httpServletRequest.getSession().setAttribute(SESSION_USER, null);
-            } else if (url.equals("/register") || url.equals("/getPlatform") || url.equals("/userAdd")) {
+                httpServletRequest.getSession().setAttribute(UserConstants.SESSION_USER, null);
+            } else if (url.equals("/register") || url.equals("/getPlatform") || url.equals("/userAdd") || url.equals("/toUserCenter")) {
                 chain.doFilter(request, response);
                 return;
             }
 
-            if (httpServletRequest.getSession().getAttribute(SESSION_USER) == null) {
+            if (httpServletRequest.getSession().getAttribute(UserConstants.SESSION_USER) == null) {
                 HttpServletResponse httpServletResponse = (HttpServletResponse) response;
                 httpServletResponse.sendRedirect("/login");
                 return;
             }
 
-            SystemUserDTO systemUserDTO = (SystemUserDTO) httpServletRequest.getSession().getAttribute(SESSION_USER);
+            SystemUserDTO systemUserDTO = (SystemUserDTO) httpServletRequest.getSession().getAttribute(UserConstants.SESSION_USER);
 
             UserInfo userInfo = new UserInfo();
 //            systemUserInfo.setIp(request.getRemoteHost());

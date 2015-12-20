@@ -1,6 +1,7 @@
 package com.perfect.usercenter.controller;
 
 import com.google.common.base.Strings;
+import com.perfect.commons.constants.UserConstants;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
 import com.perfect.usercenter.filters.UserInfoFilter;
@@ -139,14 +140,14 @@ public class LoginController {
             logger.debug("Response has already been committed. Unable to redirect to /platformPage");
             return;
         }
-        Cookie cookie = new Cookie("userToken", uuid);
+        Cookie cookie = new Cookie(UserConstants.TOKEN_USER, uuid);
         cookie.setMaxAge(30 * 60 * 60);
         response.addCookie(cookie);
-        request.getSession().setAttribute(UserInfoFilter.SESSION_USER, systemUserDTO);
+        request.getSession().setAttribute(UserConstants.SESSION_USER, systemUserDTO);
 
         // token settings
         ModelMap modelMap = modelAndView.getModelMap();
-        modelMap.put("userToken", uuid);
+        modelMap.put(UserConstants.TOKEN_USER, uuid);
     }
 
 

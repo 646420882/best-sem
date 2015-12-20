@@ -30,7 +30,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**" />
-            <bean class="com.perfect.commons.SessionTimeoutInterceptor" >
+            <bean class="com.perfect.commons.UserCenterInterceptor" >
                 <property name="allowUrls">
                     <list>
                         <value>/</value>
