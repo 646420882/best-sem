@@ -16,7 +16,7 @@
                 当前位置：日志管理
             </div>
             <div class="user_box">
-                <table id="logAdmin" data-click-to-select="true" data-query-params="queryParams" data-pagination="true">
+                <table id="logAdmin" data-click-to-select="true" data-query-params="queryParams" data-pagination="true" data-page-list="[1, 25, 50, 100, All]" data-page-number="1" data-page-size="1">
                     <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true"></th>
@@ -29,8 +29,10 @@
                     </tr>
                     </thead>
                 </table>
+                <div class="skip" style="position: absolute; margin: -45px 0 0 52%;">跳转到 <input id="selectPages" class='form-control' maxlength='3'  style='width: 38px;height: 22px; margin-top: 4px; display: inline;text-align: center;padding: 0' type='text'/>&nbsp;&nbsp;<span class="selectPage">Go</span></div>
             </div>
         </div>
+
     </div>
 </div>
 <script type="text/javascript" src="/public/js/log/log.js"></script>

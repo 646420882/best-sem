@@ -461,3 +461,15 @@
     background: #fbfbfb;
     border: 1px solid #ccc;
 }
+.account_add,.account_change{
+    text-align: right;
+    padding: 0 10px 0 0;
+}
+.account_add li,.account_change li{
+    height: 50px;
+}
+.account_add input,.account_change input{
+    font-size: 12px;
+    display: inline-block;
+    width: 68%;
+}

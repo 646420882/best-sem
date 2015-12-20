@@ -12,7 +12,7 @@ $(function () {
 
     }, {
         id: 2,
-        name: 'baidu-perfect2151880',
+        name: 'tudou.com',
         url: "http://www.perfect-cn.cn",
         platform: "百度",
         time: "2015年12月25日",
@@ -25,4 +25,38 @@ $(function () {
         $('#logAdmin').bootstrapTable('resetView');
 
     });
+
+    //分页
+    //$(".page-pre").empty();
+    $(".page-pre a").text("上一页");
+    $(".page-next a").text("下一页");
+    $("*").click(function(){
+        $(".page-pre a").text("上一页");
+        $(".page-next a").text("下一页");
+        if( $(".pull-right.pagination").css("display")=='none' ) {
+            $(".skip").css({display:"none"});
+        }else{
+            $(".skip").css({display:"block"});
+        }
+        console.log($('.pagination>.page-number>a'))
+        for(var i=0;i<=$('.pagination>li>a').length;i++){
+            if($('.pagination>li>a:eq(i)').text()==$("#selectPages").val()){
+                $(this).addClass("active")
+            }
+        }
+
+    })
+    $(".selectPage").click(function(){
+        var pages=$("#selectPages").val();
+        $('#logAdmin').bootstrapTable('selectPage',pages);
+    })
+    $(".nextPage").click(function(){
+        $('#logAdmin').bootstrapTable('nextPage');
+    })
+
+
+
+
+
+
 })
