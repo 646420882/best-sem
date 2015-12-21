@@ -1,5 +1,7 @@
 package com.perfect.usercenter.controller;
 
+import com.google.common.base.Strings;
+import com.perfect.commons.constants.UserConstants;
 import com.perfect.core.AppContext;
 import com.perfect.service.UserAccountService;
 import org.springframework.context.annotation.Scope;
@@ -11,7 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * Created on 2015-12-14.
@@ -37,9 +41,20 @@ public class IndexController {
         return new ModelAndView("/loginOrReg/login");
     }
 
-    @RequestMapping(value = "/platformPage")
-    public ModelAndView platform() {
-        return new ModelAndView("/bestPage/bestIndex");
+    @RequestMapping(value = "/platform")
+    public ModelAndView platform(HttpServletRequest request, HttpServletResponse response, final ModelMap modelMap) {
+        StringBuilder redirect = new StringBuilder();
+
+        Arrays.asList(request.getCookies()).stream().filter(cookie -> cookie.getName().equals(UserConstants.TOKEN_USER)).findFirst().ifPresent((cookie1 -> {
+            String token = cookie1.getValue();
+            if (Strings.isNullOrEmpty(token)) {
+                redirect.append("/login");
+            } else {
+                modelMap.put(UserConstants.TOKEN_USER, token);
+            }
+        }));
+
+        return new ModelAndView("/bestPage/bestIndex", modelMap);
     }
 
 

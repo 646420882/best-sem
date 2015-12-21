@@ -79,5 +79,4 @@ public class UserInfoController {
         return JsonViews.generateFailedNoData();
     }
 
-
 }
