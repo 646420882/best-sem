@@ -45,19 +45,21 @@
     float: left;
     padding: 0 40px;
     line-height: 66px;
-    color: #6f6f6f;
+    color: #666;
     background: url(/public/img/border.png) right no-repeat;
     font-size: 14px;
     cursor: pointer;
 }
-
+.tab_menu li:hover{
+    color: #333;
+}
 .tab_box {
     clear: both;
 }
 
 .tab_menu .selected {
     background: #ffffff url(/public/img/border.png) right no-repeat;
-    color: #030303;
+    color: #333;
     font-weight: bold;
 }
 
@@ -98,6 +100,8 @@
     background: url(/public/img/point.png) left no-repeat;
     padding-left: 20px;
     overflow: hidden;
+    font-weight: normal;
+    color: #333;
 }
 
 .list01_top .date_choice span {
@@ -147,9 +151,9 @@
     background: #fff;
     position: relative;
     z-index: 3;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
     overflow: hidden;
 }
 
@@ -169,12 +173,12 @@
     line-height: 26px;
     height: 26px;
     text-align: center;
-    color: #000000;
+    color: #666;
     cursor: pointer;
 }
 
 .list01_top ul li a b {
-    color: #000000;
+    color: #666;
     line-height: 26px;
 }
 
@@ -288,7 +292,7 @@
     margin-top: 10px;
     font-size: 24px;
     color: #fff;
-    font-family: "Arial";
+    font-family: "微软雅黑";
 }
 
 .list01_under2 ul li p {
@@ -4138,7 +4142,7 @@ input[type=checkbox]:focus {
 }
 
 .list01_color {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .list01_under2.list01_color ul li .blue1 {

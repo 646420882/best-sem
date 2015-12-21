@@ -61,7 +61,7 @@
                 <a href="#">
                     账户全景
                 </a>
-                &nbsp;&nbsp;>&nbsp;&nbsp;<span id="TitleName">账户概览</span>
+                &nbsp;&nbsp;<span style="font-family: '宋体'">></span>&nbsp;&nbsp;<a id="TitleName" href="#">账户概览</a>
             </div>
         </div>
 

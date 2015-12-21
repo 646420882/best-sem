@@ -159,13 +159,15 @@ table tr, table tr td {
 }
 
 .on_title a {
-    color: #000000;
+    color: #666;
 }
 
-.on_title span {
-    color: #8e8e8e;
+/*.on_title span {
+    color: #666;
+}*/
+.on_title a:hover{
+    color: #333;
 }
-
 .on_title span b {
     font-weight: normal;
 }
