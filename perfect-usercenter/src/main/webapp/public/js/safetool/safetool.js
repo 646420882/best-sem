@@ -50,6 +50,7 @@ $(document).ready(function () {
             type: "POST",
             dataType: "JSON",
             data: {
+                username: $('#sysUserName').val(),
                 email: $('#email').val()
             }
         });
@@ -64,6 +65,7 @@ $(document).ready(function () {
             type: "POST",
             dataType: "JSON",
             data: {
+                username: $('#sysUserName').val(),
                 email: $('#oldEmail').html()
             }
         });
@@ -86,6 +88,7 @@ $(document).ready(function () {
             type: "POST",
             dataType: "JSON",
             data: {
+                username: $('#sysUserName').val(),
                 email: $('#newEmailAddr').val()
             }
         });
@@ -166,8 +169,7 @@ var commons = {
                             }
                             case -1:
                             {
-                                alert("验证码输入错误!");
-                                //alert("验证码已失效!请重新发送");
+                                alert("验证码已失效!请重新发送");
                             }
                             default:
                                 break;
@@ -234,8 +236,7 @@ var commons = {
                                 }
                                 case -1:
                                 {
-                                    alert("验证码输入错误!");
-                                    //alert("验证码已失效!请重新发送");
+                                    alert("验证码已失效!请重新发送");
                                 }
                                 default:
                                     break;

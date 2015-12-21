@@ -30,6 +30,8 @@ import java.util.*;
 @RequestMapping("/account")
 public class UserAccountController {
 
+    private static final String EMAIL_CAPTCHA_OF_REDIS_KEY = "BEST-USER-%s-EMAIL-CAPTCHA";
+
     private static String captchaHtmlTemplate = "<!DOCTYPE html>" +
             "<html>" +
             "<head>" +
@@ -101,13 +103,15 @@ public class UserAccountController {
      */
     @RequestMapping(value = "/email/sendCaptcha", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public void sendEmailCaptcha(HttpServletRequest request, HttpServletResponse response) {
+        String username = request.getParameter("username");
         String email = request.getParameter("email");
         String captcha = createCaptcha();
 
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            jedis.setex(captcha, 600, captcha);
+            jedis.lpush(String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username), captcha);
+            jedis.expire(String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username), 600);
         } finally {
             if (Objects.nonNull(jedis))
                 jedis.close();
