@@ -11,7 +11,9 @@ import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
+import com.perfect.param.SystemLogParams;
 import com.perfect.utils.SystemLogDTOBuilder;
+import com.perfect.utils.paging.PagerInfo;
 
 import java.util.List;
 
@@ -210,4 +212,7 @@ public interface UserOperationLogService {
      */
     UserOperationLogDTO newdel(Object object, UserOperationLogLevelEnum level, UserOperationTypeEnum
             userOperationTypeEnum);
+
+
+    PagerInfo queryLog(SystemLogParams slp);
 }

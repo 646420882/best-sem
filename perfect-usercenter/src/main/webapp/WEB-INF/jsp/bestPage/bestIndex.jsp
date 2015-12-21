@@ -141,7 +141,7 @@
                 </div>
             </div>
         </div>
-        <div class="serBox" onclick="window.open('http://seo.best-ad.cn/auth/login?username=${currSystemUserName}')">
+        <div class="serBox" onclick="window.open('http://hy.best-ad.cn/token?tokenid=${userToken}')">
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan2.png"></div>

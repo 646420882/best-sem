@@ -688,7 +688,14 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateAccountPayed(String id, Boolean payed) {
-        return systemUserDAO.updateAccountPayed(id, payed);
+        boolean success = systemUserDAO.updateAccountPayed(id, payed);
+
+        if (success) {
+            SystemUserDTO systemUserDTO = findByUserId(id);
+            systemLogDAO.log("修改用户: " + systemUserDTO.getUserName() + " 用户状态: " + ((payed) ? "付费" : "试用"));
+        }
+
+        return success;
     }
 
     @Override

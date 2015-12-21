@@ -17,18 +17,17 @@ import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.keyword.KeywordDAO;
 import com.perfect.dao.log.UserOperationLogDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
 import com.perfect.dto.log.UserOperationLogDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
-import com.perfect.entity.log.UserOperationLogEntity;
-import com.perfect.entity.sys.ModuleAccountInfoEntity;
+import com.perfect.param.SystemLogParams;
 import com.perfect.service.UserOperationLogService;
-import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.SystemLogDTOBuilder;
+import com.perfect.utils.paging.PagerInfo;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -72,8 +71,8 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         builder.setOid(newWord.getKeywordId())
                 .setName(newWord.getKeyword())
                 .setType(UserOperationTypeEnum.ADD_KEYWORD.getValue())
-                .setAfter(newWord.getKeyword())
-                .setName(newWord.getKeyword());
+                .setProperty(UserOperationLogProperty.KWD_ADD)
+                .setAfter(newWord.getKeyword());
         fillLayout(builder.build());
         getCamAdgroupInfoByLong(newWord.getAdgroupId(), builder);
         return builder.build();
@@ -105,6 +104,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         if (baiduType != null) {
             SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
             builder.setType(UserOperationTypeEnum.DEL_KEYWORD.getValue())
+                    .setProperty(UserOperationLogProperty.KWD_DEL)
                     .setOid(newWord.getKeywordId())
                     .setName(newWord.getKeyword());
             fillLayout(builder.build());
@@ -122,26 +122,26 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         KeywordType baiduType = baiduApiService.getKeywordTypeById(newWord.getKeywordId());
         List<UserOperationLogDTO> logs = Lists.newArrayList();
         if (!baiduType.getPrice().equals(newWord.getPrice())) {
-            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.PRICE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getPrice(), baiduType.getPrice()));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.KWD_PRICE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getPrice(), baiduType.getPrice()));
         }
         if (baiduType.getPause() != newWord.getPause()) {
-            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getPause(), baiduType.getPause()));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.KWD_PAUSE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getPause(), baiduType.getPause()));
         }
         if (baiduType.getMatchType() != newWord.getMatchType()) {
-            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.MATCH_TYPE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getMatchType(), baiduType.getMatchType()));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.KWD_MATCH_TYPE, UserOperationTypeEnum.MODIFY_KEYWORD, newWord.getMatchType(), baiduType.getMatchType()));
         }
         String pcOld = nullJudge(baiduType.getPcDestinationUrl());
         String pcNew = nullJudge(newWord.getPcDestinationUrl());
         if (!Objects.equals(pcOld, pcNew)) {
-            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.PC_DES_URL, UserOperationTypeEnum.MODIFY_KEYWORD, nullJudge(newWord.getPcDestinationUrl()), nullJudge(baiduType.getPcDestinationUrl())));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.KWD_PCURL, UserOperationTypeEnum.MODIFY_KEYWORD, nullJudge(newWord.getPcDestinationUrl()), nullJudge(baiduType.getPcDestinationUrl())));
         }
         if (!nullJudge(baiduType.getMobileDestinationUrl()).equals(nullJudge(newWord.getMobileDestinationUrl()))) {
-            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.MIB_DES_URL, UserOperationTypeEnum.MODIFY_KEYWORD, nullJudge(newWord.getMobileDestinationUrl()), nullJudge(baiduType.getMobileDestinationUrl())));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.KWD_MIB_URL, UserOperationTypeEnum.MODIFY_KEYWORD, nullJudge(newWord.getMobileDestinationUrl()), nullJudge(baiduType.getMobileDestinationUrl())));
         }
         if (!baiduType.getAdgroupId().equals(newWord.getAdgroupId())) {
             AdgroupDTO newAdgroup = adgroupDAO.findOne(newWord.getAdgroupId());
             AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
-            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.MOVE_ADGROUP, UserOperationTypeEnum.MODIFY_KEYWORD, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName()));
+            logs.add(update(newWord, UserOperationLogLevelEnum.KEYWORD, UserOperationLogProperty.KWD_MOVE, UserOperationTypeEnum.MODIFY_KEYWORD, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName()));
         }
         return logs;
     }
@@ -154,6 +154,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                 .setName(campaignType.getCampaignName())
                 .setOid(campaignType.getCampaignId())
                 .setType(UserOperationTypeEnum.ADD_CAMPAIGN.getValue())
+                .setProperty(UserOperationLogProperty.CAM_ADD)
                 .setCampaignName(campaignType.getCampaignName())
                 .setAfter(campaignType.getCampaignName());
         fillLayout(builder.build());
@@ -172,6 +173,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                     .setOid(campaignType.getCampaignId())
                     .setName(campaignType.getCampaignName())
                     .setType(UserOperationTypeEnum.DEL_CAMPAIGN.getValue())
+                    .setProperty(UserOperationLogProperty.CAM_DEL)
                     .setCampaignId(campaignType.getCampaignId())
                     .setCampaignName(campaignType.getCampaignName())
                     .setBefore(campaignType.getCampaignName());
@@ -207,9 +209,9 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
             StringBuilder newSbSc = new StringBuilder();
             if (baiduType.getSchedule() != null) {
                 for (int i = 0; i < baiduType.getSchedule().size(); i++) {
-                    if(baiduType.getSchedule(i)!=null){
-                        ScheduleType scheduleTypes=baiduType.getSchedule(i);
-                        String _tempText="["+scheduleTypes.getWeekDay()+"]["+scheduleTypes.getStartHour()+"]["+scheduleTypes.getEndHour()+"]";
+                    if (baiduType.getSchedule(i) != null) {
+                        ScheduleType scheduleTypes = baiduType.getSchedule(i);
+                        String _tempText = "[" + scheduleTypes.getWeekDay() + "][" + scheduleTypes.getStartHour() + "][" + scheduleTypes.getEndHour() + "]";
                         newSbSc.append(_tempText);
                     }
                 }
@@ -218,29 +220,29 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
             if (newCampaign.getSchedule() != null) {
                 if (newCampaign.getSchedule() != null) {
                     for (int i = 0; i < newCampaign.getSchedule().size(); i++) {
-                        if(newCampaign.getSchedule(i)!=null){
-                            ScheduleType scheduleTypes=newCampaign.getSchedule(i);
-                            String _tempText="["+scheduleTypes.getWeekDay()+"]["+scheduleTypes.getStartHour()+"]["+scheduleTypes.getEndHour()+"]";
+                        if (newCampaign.getSchedule(i) != null) {
+                            ScheduleType scheduleTypes = newCampaign.getSchedule(i);
+                            String _tempText = "[" + scheduleTypes.getWeekDay() + "][" + scheduleTypes.getStartHour() + "][" + scheduleTypes.getEndHour() + "]";
                             oldSbSc.append(_tempText);
                         }
                     }
                 }
             }
             if (!Objects.equals(baiduType.getCampaignName(), newCampaign.getCampaignName())) {
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.NAME, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getCampaignName(), baiduType.getCampaignName()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_NAME, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getCampaignName(), baiduType.getCampaignName()));
             }
             if (!Objects.equals(baiduType.getPause(), newCampaign.getPause())) {
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getPause().toString(), baiduType.getPause().toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_PAUSE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getPause().toString(), baiduType.getPause().toString()));
             }
             if (!Objects.equals(baiduType.getBudget(), newCampaign.getBudget())) {
 
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_BUDGET, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getBudget().toString(), nullJudge(baiduType.getBudget()).toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_BUD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getBudget().toString(), nullJudge(baiduType.getBudget()).toString()));
             }
             if (!Objects.equals(newSbSc.toString(), oldSbSc.toString())) {
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_SCHEDULE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbSc.toString(), oldSbSc.toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_SCHE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbSc.toString(), oldSbSc.toString()));
             }
             if (!Objects.equals(baiduType.getDevice(), newCampaign.getDevice())) {
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.DEVICE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getDevice().toString(), baiduType.getDevice().toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_DEVICE, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getDevice().toString(), baiduType.getDevice().toString()));
             }
             if (!Objects.equals(nullList(baiduType.getExactNegativeWords()).size(), nullList(newCampaign.getExactNegativeWords()).size())) {
                 StringBuilder oldSbWord = new StringBuilder();
@@ -255,7 +257,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                         newSbWord.append(newCampaign.getExactNegativeWord(i));
                     }
                 }
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.EXA_WORD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbWord.toString(), oldSbWord.toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_EXT_WORD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbWord.toString(), oldSbWord.toString()));
             }
             if (!Objects.equals(nullList(baiduType.getNegativeWords()).size(), nullList(newCampaign.getNegativeWords()).size())) {
                 StringBuilder oldSbWord = new StringBuilder();
@@ -270,19 +272,19 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                         newSbWord.append(newCampaign.getNegativeWord(i));
                     }
                 }
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.NEG_WORD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbWord.toString(), oldSbWord.toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_NEG_WORD, UserOperationTypeEnum.MODIFY_CAMPAIGN, newSbWord.toString(), oldSbWord.toString()));
             }
             if (!Objects.equals(nullList(baiduType.getExcludeIp()).size(), nullList(newCampaign.getExcludeIp()).size())) {
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_EXCLUDEIP, UserOperationTypeEnum.MODIFY_CAMPAIGN, nullList(newCampaign.getExcludeIp()).toString(), nullJudge(baiduType.getExcludeIp()).toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_EXT_IP, UserOperationTypeEnum.MODIFY_CAMPAIGN, nullList(newCampaign.getExcludeIp()).toString(), nullJudge(baiduType.getExcludeIp()).toString()));
             }
             if (!Objects.equals(baiduType.getPriceRatio(), newCampaign.getPriceRatio())) {
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.MIB_FACTOR, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getPriceRatio().toString(), baiduType.getPriceRatio().toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_PRICE_RATIO, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getPriceRatio().toString(), baiduType.getPriceRatio().toString()));
             }
             if (!Objects.equals(nullList(baiduType.getRegionTarget()).size(), nullList(newCampaign.getRegionTarget()).size())) {
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_REGION, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getRegionTarget().toString(), baiduType.getRegionTarget().toString()));
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_REG, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getRegionTarget().toString(), baiduType.getRegionTarget().toString()));
             }
-            if(!Objects.equals(baiduType.getShowProb(),newCampaign.getShowProb())){
-                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAMPAIGN_SHOWPRO, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getShowProb(),baiduType.getShowProb()));
+            if (!Objects.equals(baiduType.getShowProb(), newCampaign.getShowProb())) {
+                logs.add(update(newCampaign, UserOperationLogLevelEnum.CAMPAIGN, UserOperationLogProperty.CAM_SHOWPRO, UserOperationTypeEnum.MODIFY_CAMPAIGN, newCampaign.getShowProb(), baiduType.getShowProb()));
             }
         }
         return logs;
@@ -294,6 +296,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
         builder
                 .setType(UserOperationTypeEnum.ADD_ADGROUP.getValue())
+                .setProperty(UserOperationLogProperty.ADG_ADD)
                 .setOid(adgroupType.getAdgroupId())
                 .setName(adgroupType.getAdgroupName())
                 .setAdgroupName(adgroupType.getAdgroupName())
@@ -312,6 +315,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         if (baiduType != null) {
             SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
             builder.setType(UserOperationTypeEnum.DEL_ADGROUP.getValue())
+                    .setProperty(UserOperationLogProperty.ADG_DEL)
                     .setOid(adgroupType.getAdgroupId())
                     .setName(adgroupType.getAdgroupName())
                     .setBefore(adgroupType.getAdgroupName());
@@ -345,10 +349,10 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         List<UserOperationLogDTO> logs = Lists.newArrayList();
         if (baiduType != null && newAdgroup != null) {
             if (!Objects.equals(baiduType.getAdgroupName(), newAdgroup.getAdgroupName())) {
-                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.NAME, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getAdgroupName(), baiduType.getAdgroupName()));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.ADG_NAME, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getAdgroupName(), baiduType.getAdgroupName()));
             }
             if (!Objects.equals(baiduType.getMaxPrice(), newAdgroup.getMaxPrice())) {
-                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.PRICE, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getMaxPrice().toString(), baiduType.getMaxPrice().toString()));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.ADG_PRICE, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getMaxPrice().toString(), baiduType.getMaxPrice().toString()));
             }
             if (!Objects.equals(nullList(baiduType.getExactNegativeWords()).size(), nullList(newAdgroup.getExactNegativeWords()).size())) {
                 StringBuilder oldSb = new StringBuilder();
@@ -363,7 +367,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                         newSb.append(newAdgroup.getExactNegativeWord(i));
                     }
                 }
-                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.EXA_WORD, UserOperationTypeEnum.MODIFY_ADGROUP, newSb.toString(), oldSb.toString()));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.ADG_EXT_WORD, UserOperationTypeEnum.MODIFY_ADGROUP, newSb.toString(), oldSb.toString()));
             }
             if (!Objects.equals(nullList(baiduType.getNegativeWords()).size(), nullList(newAdgroup.getNegativeWords()).size())) {
                 StringBuilder oldSb = new StringBuilder();
@@ -378,15 +382,15 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
                         newSb.append(newAdgroup.getNegativeWord(i));
                     }
                 }
-                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.NEG_WORD, UserOperationTypeEnum.MODIFY_ADGROUP, newSb.toString(), oldSb.toString()));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.ADG_NEG_WORD, UserOperationTypeEnum.MODIFY_ADGROUP, newSb.toString(), oldSb.toString()));
             }
             if (!Objects.equals(baiduType.getCampaignId(), newAdgroup.getCampaignId())) {
                 CampaignDTO oldCampaignDTO = campaignDAO.findOne(baiduType.getCampaignId());
                 CampaignDTO newCampaignDTO = campaignDAO.findOne(newAdgroup.getCampaignId());
-                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.MOVE_CAMPAIGN, UserOperationTypeEnum.MODIFY_ADGROUP, newCampaignDTO.getCampaignName(), oldCampaignDTO.getCampaignName()));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.ADG_MOVE, UserOperationTypeEnum.MODIFY_ADGROUP, newCampaignDTO.getCampaignName(), oldCampaignDTO.getCampaignName()));
             }
             if (!Objects.equals(baiduType.getPause(), newAdgroup.getPause())) {
-                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getPause().toString(), baiduType.getPause().toString()));
+                logs.add(update(newAdgroup, UserOperationLogLevelEnum.ADGROUP, UserOperationLogProperty.ADG_PAUSE, UserOperationTypeEnum.MODIFY_ADGROUP, newAdgroup.getPause().toString(), baiduType.getPause().toString()));
             }
             //TODO 单元移动出价比例搜客暂时没有这个操作,如需单元出价比例操作,解除注释即可
 //            if(!Objects.equals(baiduType.getAccuPriceFactor(),newAdgroup.getAccuPriceFactor())){
@@ -400,9 +404,10 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
     @Override
     public UserOperationLogDTO addCreative(CreativeType creativeType) {
         SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
-        builder.setType(UserOperationTypeEnum.ADD_CREATIVE.getValue())
-                .setOid(creativeType.getCreativeId())
+        builder.setOid(creativeType.getCreativeId())
                 .setName(creativeType.getTitle())
+                .setType(UserOperationTypeEnum.ADD_CREATIVE.getValue())
+                .setProperty(UserOperationLogProperty.CRE_ADD)
                 .setAfter(creativeType.getTitle());
         fillLayout(builder.build());
         getCamAdgroupInfoByLong(creativeType.getAdgroupId(), builder);
@@ -418,6 +423,7 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         if (baiduType != null) {
             SystemLogDTOBuilder builder = SystemLogDTOBuilder.builder();
             builder.setType(UserOperationTypeEnum.DEL_CREATIVE.getValue())
+                    .setProperty(UserOperationLogProperty.CRE_DEL)
                     .setOid(creativeType.getCreativeId())
                     .setName(creativeType.getTitle())
                     .setBefore(creativeType.getTitle());
@@ -454,36 +460,36 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         List<UserOperationLogDTO> logs = Lists.newArrayList();
         if (baiduType != null && newCreative != null) {
             if (!baiduType.getTitle().equals(newCreative.getTitle())) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CREATIVE_TITLE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getTitle(), baiduType.getTitle()));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_UPD_TITLE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getTitle(), baiduType.getTitle()));
             }
             if (!baiduType.getDescription1().equals(newCreative.getDescription1())) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CREATIVE_DESC1, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDescription1(), baiduType.getDescription1()));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_UPD_DESC1, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDescription1(), baiduType.getDescription1()));
             }
             if (!baiduType.getDescription2().equals(newCreative.getDescription2())) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CREATIVE_DESC2, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDescription2(), baiduType.getDescription2()));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_UPD_DESC2, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDescription2(), baiduType.getDescription2()));
             }
             if (!nullJudge(baiduType.getPcDestinationUrl()).equals(nullJudge(newCreative.getPcDestinationUrl()))) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PC_DES_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getPcDestinationUrl()), nullJudge(baiduType.getPcDestinationUrl())));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_UPD_PC_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getPcDestinationUrl()), nullJudge(baiduType.getPcDestinationUrl())));
             }
             if (!nullJudge(baiduType.getPcDisplayUrl()).equals(nullJudge(newCreative.getPcDisplayUrl()))) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PC_DIS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getPcDisplayUrl()), nullJudge(baiduType.getPcDisplayUrl())));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_UPD_PCS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getPcDisplayUrl()), nullJudge(baiduType.getPcDisplayUrl())));
             }
             if (!nullJudge(baiduType.getMobileDestinationUrl()).equals(nullJudge(newCreative.getMobileDestinationUrl()))) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MIB_DES_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl()));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_UPD_MIB_URL, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getMobileDestinationUrl(), baiduType.getMobileDestinationUrl()));
             }
             if (!nullJudge(baiduType.getMobileDisplayUrl()).equals(nullJudge(newCreative.getMobileDisplayUrl()))) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MIB_DIS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getMobileDisplayUrl()), nullJudge(baiduType.getMobileDisplayUrl())));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_UPD_MIBS_URL, UserOperationTypeEnum.MODIFY_CREATIVE, nullJudge(newCreative.getMobileDisplayUrl()), nullJudge(baiduType.getMobileDisplayUrl())));
             }
             if (baiduType.getPause() != newCreative.getPause()) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.PAUSE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getPause().toString(), baiduType.getPause().toString()));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_PAUSE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getPause().toString(), baiduType.getPause().toString()));
             }
             if (baiduType.getDevicePreference() != newCreative.getDevicePreference()) {
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.DEVICE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDevicePreference().toString(), baiduType.getDevicePreference().toString()));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_DEVICE, UserOperationTypeEnum.MODIFY_CREATIVE, newCreative.getDevicePreference().toString(), baiduType.getDevicePreference().toString()));
             }
             if (baiduType.getAdgroupId().equals(newCreative.getAdgroupId())) {
                 AdgroupDTO newAdgroup = adgroupDAO.findOne(newCreative.getAdgroupId());
                 AdgroupDTO oldAdgroup = adgroupDAO.findOne(baiduType.getAdgroupId());
-                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.MOVE_ADGROUP, UserOperationTypeEnum.MODIFY_CREATIVE, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName()));
+                logs.add(update(newCreative, UserOperationLogLevelEnum.CREATIVE, UserOperationLogProperty.CRE_MOVE, UserOperationTypeEnum.MODIFY_CREATIVE, newAdgroup.getAdgroupName(), oldAdgroup.getAdgroupName()));
             }
         }
         return logs;
@@ -733,6 +739,17 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
         return userOperationLogDTO;
     }
 
+    @Override
+    public PagerInfo queryLog(SystemLogParams slp) {
+        Query q = new Query();
+        PagerInfo p = new PagerInfo();
+        if (slp != null) {
+            p = userOperationLogDAO.queryLog(slp);
+        }
+        return p;
+    }
+
+
     private void fillLayout(UserOperationTypeEnum userOperationTypeEnum, Object oldVal, Object newVal,
                             UserOperationLogDTO userOperationLogDTO) {
         String layout = UserOperationTypeEnum.layout(userOperationTypeEnum);
@@ -829,52 +846,94 @@ public class UserOperationLogServiceImpl implements UserOperationLogService {
 
     private String getProperty(String property) {
         switch (property) {
-            case UserOperationLogProperty.NAME:
-                return UserOperationLogProperty.NAME_CH;
-            case UserOperationLogProperty.PRICE:
-                return UserOperationLogProperty.PRICE_CH;
-            case UserOperationLogProperty.PC_DES_URL:
-                return UserOperationLogProperty.PC_DES_URL_CH;
-            case UserOperationLogProperty.PC_DIS_URL:
-                return UserOperationLogProperty.PC_DIS_URL_CH;
-            case UserOperationLogProperty.MIB_DES_URL:
-                return UserOperationLogProperty.MIB_DES_URL_CH;
-            case UserOperationLogProperty.MIB_DIS_URL:
-                return UserOperationLogProperty.MIB_DIS_URL_CH;
-            case UserOperationLogProperty.MATCH_TYPE:
-                return UserOperationLogProperty.MATCH_TYPE_CH;
-            case UserOperationLogProperty.PRASE_TYPE:
-                return UserOperationLogProperty.PRASE_TYPE_CH;
-            case UserOperationLogProperty.PAUSE:
-                return UserOperationLogProperty.PAUSE_CH;
-            case UserOperationLogProperty.MOVE_ADGROUP:
-                return UserOperationLogProperty.MOVE_ADGROUP_CH;
-            case UserOperationLogProperty.CREATIVE_TITLE:
-                return UserOperationLogProperty.CREATIVE_TITLE_CH;
-            case UserOperationLogProperty.CREATIVE_DESC1:
-                return UserOperationLogProperty.CREATIVE_DESC1_CH;
-            case UserOperationLogProperty.CREATIVE_DESC2:
-                return UserOperationLogProperty.CREATIVE_DESC2_CH;
-            case UserOperationLogProperty.DEVICE:
-                return UserOperationLogProperty.DEVICE_CH;
-            case UserOperationLogProperty.NEG_WORD:
-                return UserOperationLogProperty.NEG_WORD_CH;
-            case UserOperationLogProperty.EXA_WORD:
-                return UserOperationLogProperty.EXA_WORD_CH;
-            case UserOperationLogProperty.MOVE_CAMPAIGN:
-                return UserOperationLogProperty.MOVE_CAMPAIGN_CH;
-            case UserOperationLogProperty.MIB_FACTOR:
-                return UserOperationLogProperty.MIB_FACTOR_CH;
-            case UserOperationLogProperty.CAMPAIGN_BUDGET:
-                return UserOperationLogProperty.CAMPAIGN_BUDGET_CH;
-            case UserOperationLogProperty.CAMPAIGN_SCHEDULE:
-                return UserOperationLogProperty.CAMPAIGN_SCHEDULE_CH;
-            case UserOperationLogProperty.CAMPAIGN_EXCLUDEIP:
-                return UserOperationLogProperty.CAMPAIGN_EXCLUDEIP_CH;
-            case UserOperationLogProperty.CAMPAIGN_REGION:
-                return UserOperationLogProperty.CAMPAIGN_REGION_CH;
-            case UserOperationLogProperty.CAMPAIGN_SHOWPRO:
-                return UserOperationLogProperty.CAMPAIGN_SHOWPRO_CH;
+            case UserOperationLogProperty.ADG_ADD:
+                return UserOperationLogProperty.ADG_ADD_CH;
+            case UserOperationLogProperty.ADG_DEL:
+                return UserOperationLogProperty.ADG_DEL_CH;
+            case UserOperationLogProperty.ADG_PAUSE:
+                return UserOperationLogProperty.ADG_PAUSE_CH;
+            case UserOperationLogProperty.ADG_PRICE:
+                return UserOperationLogProperty.ADG_PRICE_CH;
+            case UserOperationLogProperty.ADG_NAME:
+                return UserOperationLogProperty.ADG_NAME_CH;
+            case UserOperationLogProperty.ADG_NEG_WORD:
+                return UserOperationLogProperty.ADG_NEG_WORD_CH;
+            case UserOperationLogProperty.ADG_MOVE:
+                return UserOperationLogProperty.ADG_MOVE_CH;
+            case UserOperationLogProperty.ADG_EXT_WORD:
+                return UserOperationLogProperty.ADG_EXT_WORD_CH;
+            case UserOperationLogProperty.ADG_PRICE_RATIO:
+                return UserOperationLogProperty.ADG_PRICE_RATIO_CH;
+            case UserOperationLogProperty.CRE_ADD:
+                return UserOperationLogProperty.CRE_ADD_CH;
+            case UserOperationLogProperty.CRE_DEL:
+                return UserOperationLogProperty.CRE_DEL_CH;
+            case UserOperationLogProperty.CRE_PAUSE:
+                return UserOperationLogProperty.CRE_PAUSE_CH;
+            case UserOperationLogProperty.CRE_UPDATE:
+                return UserOperationLogProperty.CRE_UPDATE_CH;
+            case UserOperationLogProperty.CRE_UPD_TITLE:
+                return UserOperationLogProperty.CRE_UPD_TITLE_CH;
+            case UserOperationLogProperty.CRE_UPD_DESC1:
+                return UserOperationLogProperty.CRE_UPD_DESC1_CH;
+            case UserOperationLogProperty.CRE_UPD_DESC2:
+                return UserOperationLogProperty.CRE_UPD_DESC2_CH;
+            case UserOperationLogProperty.CRE_UPD_PC_URL:
+                return UserOperationLogProperty.CRE_UPD_PC_URL_CH;
+            case UserOperationLogProperty.CRE_UPD_PCS_URL:
+                return UserOperationLogProperty.CRE_UPD_PCS_URL_CH;
+            case UserOperationLogProperty.CRE_UPD_MIB_URL:
+                return UserOperationLogProperty.CRE_UPD_MIB_URL_CH;
+            case UserOperationLogProperty.CRE_UPD_MIBS_URL:
+                return UserOperationLogProperty.CRE_UPD_MIBS_URL_CH;
+            case UserOperationLogProperty.CRE_DEVICE:
+                return UserOperationLogProperty.CRE_DEVICE_CH;
+            case UserOperationLogProperty.CRE_MOVE:
+                return UserOperationLogProperty.CRE_MOVE_CH;
+            case UserOperationLogProperty.KWD_ADD:
+                return UserOperationLogProperty.KWD_ADD_CH;
+            case UserOperationLogProperty.KWD_DEL:
+                return UserOperationLogProperty.KWD_DEL_CH;
+            case UserOperationLogProperty.KWD_PAUSE:
+                return UserOperationLogProperty.KWD_PAUSE_CH;
+            case UserOperationLogProperty.KWD_PRICE:
+                return UserOperationLogProperty.KWD_PRICE_CH;
+            case UserOperationLogProperty.KWD_MATCH_TYPE:
+                return UserOperationLogProperty.KWD_MATCH_TYPE_CH;
+            case UserOperationLogProperty.KWD_MIB_URL:
+                return UserOperationLogProperty.KWD_MIB_URL_CH;
+            case UserOperationLogProperty.KWD_MOVE:
+                return UserOperationLogProperty.KWD_MOVE_CH;
+            case UserOperationLogProperty.KWD_PCURL:
+                return UserOperationLogProperty.KWD_PCURL_CH;
+            case UserOperationLogProperty.CAM_ADD:
+                return UserOperationLogProperty.CAM_ADD_CH;
+            case UserOperationLogProperty.CAM_NAME:
+                return UserOperationLogProperty.CAM_NAME_CH;
+            case UserOperationLogProperty.CAM_DEL:
+                return UserOperationLogProperty.CAM_DEL_CH;
+            case UserOperationLogProperty.CAM_PAUSE:
+                return UserOperationLogProperty.CAM_PAUSE_CH;
+            case UserOperationLogProperty.CAM_SCHE:
+                return UserOperationLogProperty.CAM_SCHE_CH;
+            case UserOperationLogProperty.CAM_BUD:
+                return UserOperationLogProperty.CAM_BUD_CH;
+            case UserOperationLogProperty.CAM_REG:
+                return UserOperationLogProperty.CAM_REG_CH;
+            case UserOperationLogProperty.CAM_EXT_IP:
+                return UserOperationLogProperty.CAM_EXT_IP_CH;
+            case UserOperationLogProperty.CAM_SHOWPRO:
+                return UserOperationLogProperty.CAM_SHOWPRO_CH;
+            case UserOperationLogProperty.CAM_NEG_WORD:
+                return UserOperationLogProperty.CAM_NEG_WORD_CH;
+            case UserOperationLogProperty.CAM_EXT_WORD:
+                return UserOperationLogProperty.CAM_EXT_WORD_CH;
+            case UserOperationLogProperty.CAM_DEVICE:
+                return UserOperationLogProperty.CAM_DEVICE_CH;
+            case UserOperationLogProperty.CAM_PRICE_RATIO:
+                return UserOperationLogProperty.CAM_PRICE_RATIO_CH;
+            case UserOperationLogProperty.CAM_PRASE_TYPE:
+                return UserOperationLogProperty.CAM_PRASE_TYPE_CH;
         }
         return null;
     }

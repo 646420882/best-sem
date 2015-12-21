@@ -357,5 +357,5 @@ function LogPageShow(){
     $("#LogPage").show();
     $(".assistant_left").height($(".assistant_right")[0].offsetHeight - 20 + "px");
     $("#zTree").height($(".assistant_right")[0].offsetHeight - 136 + "px");
-
+    lq.initUI();
 }

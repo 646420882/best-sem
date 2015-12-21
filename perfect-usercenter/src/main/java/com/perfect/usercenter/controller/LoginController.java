@@ -36,6 +36,11 @@ public class LoginController {
 
     protected Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+    private final String TOKEN_URL_PATH = "/token?tokenid=";
+
+    private final int COOKIE_TIMEOUT = 24 * 60 * 60;
+
+    private final int REDIS_KEY_TIMEOUT = 10800;
     @Resource
     private SystemUserService systemUserService;
 
@@ -60,7 +65,7 @@ public class LoginController {
             }
 
             if (account.equals(systemUserDTO.getUserName()) && pwdKey.equals(systemUserDTO.getPassword())) {
-                ModelAndView view = new ModelAndView("/bestPage/bestIndex");
+                ModelAndView view = new ModelAndView("redirect:/platform");
                 //登录成功
                 loginSuccessHandler(request, response, systemUserDTO, view);
                 return view;
@@ -97,9 +102,9 @@ public class LoginController {
         if (!Strings.isNullOrEmpty(url) && !url.equals("null")) {
             String target;
             if (url.lastIndexOf("/") != -1) {
-                target = "http://" + url + "token?tokenid=" + uuid;
+                target = "http://" + url + TOKEN_URL_PATH.substring(1) + uuid;
             } else {
-                target = "http://" + url + "/token?tokenid=" + uuid;
+                target = "http://" + url + TOKEN_URL_PATH + uuid;
             }
 
             try {
@@ -138,11 +143,13 @@ public class LoginController {
         }
 
         if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to /platformPage");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Response has already been committed. Unable to redirect to /platform");
+            }
             return;
         }
         Cookie cookie = new Cookie(UserConstants.TOKEN_USER, uuid);
-        cookie.setMaxAge(30 * 60 * 60);
+        cookie.setMaxAge(COOKIE_TIMEOUT);
         response.addCookie(cookie);
         request.getSession().setAttribute(UserConstants.SESSION_USER, systemUserDTO);
         UserInfo userInfo = new UserInfo();
@@ -174,14 +181,14 @@ public class LoginController {
                     jedis = JRedisUtils.get();
                     if (!jedis.exists(key)) {
                         jedis.incr(key);
-                        jedis.expire(key, 10800);
+                        jedis.expire(key, REDIS_KEY_TIMEOUT);
                         return 1;
                     } else {
                         Integer oldValue = Integer.valueOf(jedis.get(key));
                         if (oldValue < 3) {
                             Integer newValue = oldValue + 1;
                             jedis.incr(key);
-                            jedis.expire(key, 10800);
+                            jedis.expire(key, REDIS_KEY_TIMEOUT);
                             return newValue;
                         }
                         if (oldValue == 3) {

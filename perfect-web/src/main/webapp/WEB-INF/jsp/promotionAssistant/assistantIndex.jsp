@@ -1167,7 +1167,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <jsp:include page="../log/operationlog.jsp"/>
+                                <jsp:include page="../log/operationLog.jsp"/>
                                 <div class="zhushou_concent over hides" id="jiangkong_box3">
                                     <div class="zs_concent_top over">
                                         <ul class="zh_menu2 zh_menuMonitor fl">

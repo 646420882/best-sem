@@ -725,7 +725,6 @@ $.extend({
         var checkType = $("#checkType option:selected");
         var foR_params = {};
         var forType = $("#forType").val();
-        console.log(forType)
         if (checkType.val() == 0 || forType == "campaign") {
             var checked_data = [];
             var checkChildren = getMaterials(forType);

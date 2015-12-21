@@ -21,7 +21,7 @@
 <body>
 <div class="login">
     <%--<img src="/public/img/login_bg.jpg" width="100%" height="100%">--%>
-    <div class="loginBg" style="position: absolute;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
+    <div class="loginBg" style="position: fixed;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
     <div class="registe_box">
         <div class="login_logo2 ">
             <a href="http://best-ad.cn/" target="_blank"><img src="/public/img/login_logo.png"></a>
@@ -124,7 +124,9 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <select id="openPlatform" multiple="multiple" name="openPlatform">
+                                        <input name="openPlatform" type="text" style="position: absolute"
+                                               id="openPlatformInput">
+                                        <select id="openPlatform" multiple="multiple">
                                             <option value="百思搜客">百思搜客</option>
                                             <option value="百思慧眼">百思慧眼</option>
                                         </select>
@@ -190,7 +192,6 @@
                             <%--<input type="submit" id="" value="立即注册" class="submit">--%>
                             <input value="立即注册" id="immedateRegister" type="button" class="submit registeButton">
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -244,26 +245,52 @@
             multiple: true,
             onClose: function () {
                 var multiSelect = $("#openPlatform").multipleSelect('getSelects');
-                for (var i = 0; i < multiSelect.length; i++) {
-                    if (multiSelect[i] == "百思搜客") {
-                        $(".NameStar").eq(0).css({"display": "block"})
-                        $(".NameStar").eq(1).css({"display": "block"})
-                        $(".NameStar").eq(2).css({"display": "none"});
-
-                    } else if (multiSelect[i] == '百思慧眼') {
-                        $(".NameStar").eq(0).css({"display": "none"})
-                        $(".NameStar").eq(1).css({"display": "none"})
-                        $(".NameStar").eq(2).css({"display": "block"});
-                    }
-                }
+                $("#openPlatformInput").val(multiSelect);
                 if (multiSelect.length == 2) {
                     $(".NameStar").eq(0).css({"display": "block"})
                     $(".NameStar").eq(1).css({"display": "block"})
                     $(".NameStar").eq(2).css({"display": "block"});
+                    $('#defaultForm')
+                            .data('bootstrapValidator')
+                            .validateField('baiduUserName')
+                            .validateField('urlAddress')
+                            .validateField('baiduUserPassword')
+                            .updateStatus('openPlatform', 'NOT_VALIDATED', null)
                 } else if (multiSelect.length == 0) {
+                    $('#defaultForm')
+                            .data('bootstrapValidator')
+                            .validateField('openPlatform')
+                            .updateStatus('urlAddress', 'NOT_VALIDATED', null)
+                            .updateStatus('baiduUserPassword', 'NOT_VALIDATED', null)
+                            .updateStatus('baiduUserName', 'NOT_VALIDATED', null);
                     $(".NameStar").eq(0).css({"display": "none"})
                     $(".NameStar").eq(1).css({"display": "none"})
                     $(".NameStar").eq(2).css({"display": "none"});
+                } else {
+                    if (multiSelect[0] == "百思搜客") {
+                        $('#defaultForm')
+                                .data('bootstrapValidator')
+                                .validateField('baiduUserName')
+                                .validateField('baiduUserPassword')
+                                .updateStatus('urlAddress', 'NOT_VALIDATED', null)
+                                .updateStatus('openPlatform', 'NOT_VALIDATED', null);
+                        $(".NameStar").eq(0).css({"display": "block"})
+                        $(".NameStar").eq(1).css({"display": "block"})
+                        $(".NameStar").eq(2).css({"display": "none"});
+                    } else if (multiSelect[0] == '百思慧眼') {
+                        $('#defaultForm')
+                            // Get the bootstrapValidator instance
+                                .data('bootstrapValidator')
+                            // Mark the field as not validated, so it'll be re-validated when the user change date
+                                .updateStatus('baiduUserName', 'NOT_VALIDATED', null)
+                                .updateStatus('baiduUserPassword', 'NOT_VALIDATED', null)
+                                .updateStatus('openPlatform', 'NOT_VALIDATED', null)
+                            // Validate the field
+                                .validateField('urlAddress');
+                        $(".NameStar").eq(0).css({"display": "none"})
+                        $(".NameStar").eq(1).css({"display": "none"})
+                        $(".NameStar").eq(2).css({"display": "block"});
+                    }
                 }
             }
         })
@@ -278,69 +305,29 @@
             fields: {
                 baiduUserName: {
                     validators: {
-                        callback: {
-                            message: '百度凤巢账户不能为空',
-                            callback: function (value, validator) {
-                                if ($(".NameStar").eq(0).css("display") == "block") {
-                                    if (value != null && value != '') {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return true;
-                                }
-                            }
+                        notEmpty: {
+                            message: '百度凤巢账户不能为空'
                         }
                     }
                 },
                 baiduUserPassword: {
                     validators: {
-                        callback: {
-                            message: '百度凤巢密码不能为空',
-                            callback: function (value, validator) {
-                                if ($(".NameStar").eq(1).css("display") == "block") {
-                                    if (value != null && value != '') {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return true;
-                                }
-                            }
+                        notEmpty: {
+                            message: '百度凤巢密码不能为空'
                         }
                     }
                 },
                 urlAddress: {
                     validators: {
-                        callback: {
-                            message: 'URL地址不能为空',
-                            callback: function (value, validator) {
-                                if ($(".NameStar").eq(2).css("display") == "block") {
-                                    if (value != null && value != '') {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return true;
-                                }
-                            }
+                        notEmpty: {
+                            message: 'URL地址不能为空'
                         }
                     }
                 },
                 openPlatform: {
                     validators: {
-                        callback: {
-                            message: '开通平台必须选择',
-                            callback: function (value, validator) {
-                                if ($("#openPlatformInput").val() == '') {
-                                    return false;
-                                } else {
-                                    return true;
-                                }
-                            }
+                        notEmpty: {
+                            message: '开通平台必须选择'
                         }
                     }
                 },
@@ -437,7 +424,7 @@
                 }
 
             }
-        });
+        })
     });
 
     var code; //在全局 定义验证码
@@ -462,7 +449,30 @@
 
     }
     $("#immedateRegister").click(function () {
-        $("#defaultForm").submit();
+        $("#defaultForm").data('bootstrapValidator').validate();
+        if ($("#defaultForm").data('bootstrapValidator').isValid() == true) {
+            if ($("#openPlatformInput").val() == '') {
+                $('#defaultForm')
+                        .data('bootstrapValidator')
+                        .validateField('openPlatform')
+                        .updateStatus('urlAddress', 'NOT_VALIDATED', null)
+                        .updateStatus('baiduUserPassword', 'NOT_VALIDATED', null)
+                        .updateStatus('baiduUserName', 'NOT_VALIDATED', null);
+            } else {
+                $('#defaultForm')
+                        .data('bootstrapValidator')
+                        .updateStatus('openPlatform', 'NOT_VALIDATED', null)
+                $("#defaultForm").submit();
+            }
+        } else {
+            $('#defaultForm')
+                    .data('bootstrapValidator')
+                    .validateField('openPlatform')
+                    .updateStatus('urlAddress', 'NOT_VALIDATED', null)
+                    .updateStatus('baiduUserPassword', 'NOT_VALIDATED', null)
+                    .updateStatus('baiduUserName', 'NOT_VALIDATED', null);
+        }
+//        console.log($("#defaultForm").data('bootstrapValidator').isValid())
     });
     if ($("#dataRe").val() == 1) {
         $("#tishi").append("注册成功！                ");
