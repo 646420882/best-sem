@@ -640,3 +640,10 @@ table tr, table tr td {
 input[type=radio], input[type=checkbox] {
     margin: 4px 0 0;
 }
+.demodownload{
+    background-color: white;
+    border-radius: 5px;
+    height: 21px;
+    line-height: 21px;
+    border: solid 1px #888;
+}

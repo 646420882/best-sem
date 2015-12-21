@@ -65,6 +65,7 @@ $(function () {
 
 function Modify(_this) {
     var list = $("#userList").find("b");
+    $('.user_content').css({width:"440px"})
     list.each(function () {
         var listMessage = $(this).html();
         var cname = $(this).attr("cname");
@@ -80,6 +81,7 @@ function Modify(_this) {
 };
 function Cancel(_this) {
     var list = $("#userList").find("input");
+    $('.user_content').css({width:"282px"})
     list.each(function () {
             var listMessage = $(this).val();
             $(this).replaceWith(listMessage);
