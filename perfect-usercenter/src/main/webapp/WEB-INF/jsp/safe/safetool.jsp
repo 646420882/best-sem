@@ -50,9 +50,11 @@
                             <p>与电子邮箱绑定，不但能在找回密码时使用，还能方便获取相关安全提醒信息。</p>
 
                             <div class="panel_safe fl ">
-                                <div class="fl emailHide hide">已绑定邮箱：443895413@qq.com</b><span
-                                        onclick="phoneUnBundling(this)">解绑</span><span
-                                        onclick="commons.unBinding('modifyEmail',this)">修改</span></div>
+                                <div class="fl emailHide hide">
+                                    <b id="bindedEmail">已绑定邮箱：perfect-cn@perfect-cn.com</b>
+                                    <span onclick="phoneUnBundling(this)">解绑</span>
+                                    <span onclick="commons.unBinding('modifyEmail',this)">修改</span>
+                                </div>
                                 <button type="button" class="btn btn-primary fl" data-toggle="modal"
                                         data-target="#emailModal" id="emailModalbottom">设置密保邮箱
                                 </button>

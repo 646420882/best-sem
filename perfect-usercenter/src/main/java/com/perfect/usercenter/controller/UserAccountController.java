@@ -1,16 +1,15 @@
 package com.perfect.usercenter.controller;
 
-import com.perfect.service.AccountManageService;
+import com.google.common.collect.Maps;
 import com.perfect.commons.email.EmailHelper;
-import com.perfect.utils.JsonViews;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.service.AccountManageService;
+import com.perfect.service.UserAccountService;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -49,6 +48,9 @@ public class UserAccountController {
 
     @Resource
     private AccountManageService accountManageService;
+
+    @Resource
+    private UserAccountService userAccountService;
 
 
     /**
@@ -105,13 +107,136 @@ public class UserAccountController {
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            jedis.setex(captcha, 600, "1");
+            jedis.setex(captcha, 600, captcha);
         } finally {
             if (Objects.nonNull(jedis))
                 jedis.close();
         }
 
-        EmailHelper.sendHtmlEmail("", String.format(captchaHtmlTemplate, captcha), email);
+        EmailHelper.sendHtmlEmail("邮箱绑定", String.format(captchaHtmlTemplate, captcha), email);
+    }
+
+    @RequestMapping(value = "/email/confirmCaptcha", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView confirmEmailCaptcha(@RequestParam String username, @RequestParam String email, @RequestParam String captcha) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> attrMap = Maps.newHashMap();
+
+        Jedis jedis = null;
+        try {
+            jedis = JRedisUtils.get();
+            String orgCaptcha = jedis.get(captcha);
+            if (Objects.nonNull(orgCaptcha)) {
+                if (Objects.equals(orgCaptcha, captcha)) {
+                    // 校验成功
+                    attrMap.put("status", 1);
+                    userAccountService.updateEmail(username, email);
+                } else {
+                    // 验证码错误
+                    attrMap.put("status", 0);
+                }
+            } else {
+                // 验证码失效
+                attrMap.put("status", -1);
+            }
+        } finally {
+            if (Objects.nonNull(jedis))
+                jedis.close();
+        }
+
+        jsonView.setAttributesMap(attrMap);
+        return new ModelAndView(jsonView);
+    }
+
+    /**
+     * <p>解除邮箱绑定
+     *
+     * @param username
+     * @return
+     */
+    @RequestMapping(value = "/email/unbind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView unbindEmail(@RequestParam String username) {
+        userAccountService.updateEmail(username, "");
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>绑定搜客帐号
+     *
+     * @param username
+     * @param moduleAccount
+     * @return
+     */
+    @RequestMapping(value = "/souke/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView bindSoukeAccount(@RequestParam String username, @RequestBody ModuleAccountInfoDTO moduleAccount) {
+        userAccountService.bindAccountForSem(username, moduleAccount);
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>解除绑定
+     *
+     * @param username
+     * @param moduleAccountName
+     * @return
+     */
+    @RequestMapping(value = "/souke/unbind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView unbindSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
+        userAccountService.unbindAccountForSem(username, moduleAccountName);
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>激活搜客帐号
+     *
+     * @param username
+     * @param moduleAccountName
+     * @return
+     */
+    @RequestMapping(value = "/souke/active", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView activeSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
+        userAccountService.activeAccountForSem(username, moduleAccountName);
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>更新搜客账号
+     *
+     * @param username
+     * @param moduleAccount
+     * @return
+     */
+    @RequestMapping(value = "/souke/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updateSoukeAccount(@RequestParam String username, @RequestBody ModuleAccountInfoDTO moduleAccount) {
+        userAccountService.updateAccountForSem(username, moduleAccount);
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>更新搜客帐号
+     *
+     * @param username
+     * @param moduleAccountName
+     * @return
+     */
+    @RequestMapping(value = "/souke/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView deleteSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
+        userAccountService.deleteAccountForSem(username, moduleAccountName);
+
+        return jsonView(true);
+    }
+
+    private ModelAndView jsonView(boolean result) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        Map<String, Object> attrMap = Maps.newHashMap();
+        attrMap.put("status", result);
+        jsonView.setAttributesMap(attrMap);
+
+        return new ModelAndView(jsonView);
     }
 
 

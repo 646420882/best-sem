@@ -15,32 +15,48 @@ import java.util.Objects;
  */
 public interface UserAccountService extends SoukeAccountService, HuiyanAccountService {
 
+    /**
+     * <p>获取用户邮箱
+     *
+     * @param username
+     * @return
+     */
+    String getUserEmail(String username);
 
-    default long getBaiduAccountId(ModuleAccountInfoDTO dto) {
-        if (Objects.isNull(dto))
-            return -1L;
+    /**
+     * <p>更新用户邮箱
+     *
+     * @param username
+     * @param email
+     */
+    void updateEmail(String username, String email);
 
-        BaiduApiService baiduApiService = new BaiduApiService(
-                BaiduServiceSupport.getCommonService(dto.getBaiduUserName(), dto.getBaiduPassword(), dto.getToken()));
 
-        AccountInfoType accountInfoType = baiduApiService.getAccountInfo();
-        if (Objects.isNull(accountInfoType))
-            return -1L;
-
-        return accountInfoType.getUserid();
-    }
-
-    default AccountInfoType getBaiduAccount(ModuleAccountInfoDTO dto) {
-        if (Objects.isNull(dto))
-            return null;
-
-        BaiduApiService baiduApiService = new BaiduApiService(
-                BaiduServiceSupport.getCommonService(dto.getBaiduUserName(), dto.getBaiduPassword(), dto.getToken()));
-
-        AccountInfoType accountInfoType = baiduApiService.getAccountInfo();
-        if (Objects.isNull(accountInfoType))
-            return null;
-
-        return accountInfoType;
-    }
+//    default long getBaiduAccountId(ModuleAccountInfoDTO dto) {
+//        if (Objects.isNull(dto))
+//            return -1L;
+//
+//        BaiduApiService baiduApiService = new BaiduApiService(
+//                BaiduServiceSupport.getCommonService(dto.getBaiduUserName(), dto.getBaiduPassword(), dto.getToken()));
+//
+//        AccountInfoType accountInfoType = baiduApiService.getAccountInfo();
+//        if (Objects.isNull(accountInfoType))
+//            return -1L;
+//
+//        return accountInfoType.getUserid();
+//    }
+//
+//    default AccountInfoType getBaiduAccount(ModuleAccountInfoDTO dto) {
+//        if (Objects.isNull(dto))
+//            return null;
+//
+//        BaiduApiService baiduApiService = new BaiduApiService(
+//                BaiduServiceSupport.getCommonService(dto.getBaiduUserName(), dto.getBaiduPassword(), dto.getToken()));
+//
+//        AccountInfoType accountInfoType = baiduApiService.getAccountInfo();
+//        if (Objects.isNull(accountInfoType))
+//            return null;
+//
+//        return accountInfoType;
+//    }
 }

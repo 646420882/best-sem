@@ -567,17 +567,33 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     public boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO) {
         Update update = new Update();
 
-        update.set("userName", systemUserDTO.getUserName());
         update.set("companyName", systemUserDTO.getCompanyName());
         update.set("address", systemUserDTO.getAddress());
         update.set("contactName", systemUserDTO.getContactName());
         update.set("email", systemUserDTO.getEmail());
         update.set("telephone", systemUserDTO.getTelephone());
+        update.set("mobilephone", systemUserDTO.getMobilephone());
 
 
         WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(userid)), update, getEntityClass());
 
         return wr.getN() == 1;
+    }
+
+    @Override
+    public void updateUserEmail(String userId, String email) {
+        getSysMongoTemplate().updateFirst(
+                Query.query(Criteria.where(SYSTEM_ID).is(new ObjectId(userId))), Update.update("email", email),
+                getEntityClass());
+    }
+
+    @Override
+    public String getUserEmail(String username) {
+        SystemUserEntity systemUserEntity = getSysMongoTemplate().findOne(Query.query(Criteria.where("userName").is(username)), getEntityClass());
+        if (Objects.isNull(systemUserEntity))
+            return null;
+
+        return systemUserEntity.getEmail();
     }
 
     private boolean accountExistsByAccountName(String userid, String baiduUserName) {

@@ -1,11 +1,9 @@
 package com.perfect.service.impl;
 
-import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.UserAccountService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,23 +27,11 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 
     @Override
-    public boolean bindAccountForSem(String username, ModuleAccountInfoDTO dto, String accountPlatformType) {
-        if (Objects.isNull(accountPlatformType)) {
-            // 设置帐号的默认平台
-            dto.setAccountPlatformType(BAIDU);
-        }
-
+    public boolean bindAccountForSem(String username, ModuleAccountInfoDTO dto) {
         // 设置帐号绑定时间
         dto.setAccountBindingTime(Calendar.getInstance().getTimeInMillis());
-
-        // 调用百度API获取凤巢帐号ID
-        AccountInfoType accountInfoType = getBaiduAccount(dto);
-        if (Objects.isNull(accountInfoType)) {
-            return false;
-        }
-
-        BeanUtils.copyProperties(dto, accountInfoType);
-        dto.setBaiduAccountId(accountInfoType.getUserid());
+        // 设置帐号为可用状态
+        dto.setState(1L);
 
         systemUserDAO.insertAccountInfo(username, dto);
 
@@ -53,27 +39,38 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public void unbindAccountForSem(String username, Long moduleAccountId) {
-        accountManageDAO.updateBaiduAccountStatus(username, moduleAccountId, 0L);
+    public void unbindAccountForSem(String username, String moduleAccountName) {
+        accountManageDAO.updateBaiduAccountStatus(username, moduleAccountName, 0L);
     }
 
     @Override
-    public void activeAccountForSem(String username, Long moduleAccountId) {
-        accountManageDAO.updateBaiduAccountStatus(username, moduleAccountId, 1L);
+    public void activeAccountForSem(String username, String moduleAccountName) {
+        accountManageDAO.updateBaiduAccountStatus(username, moduleAccountName, 1L);
     }
 
     @Override
     public void updateAccountForSem(String username, ModuleAccountInfoDTO dto) {
-        long baiduAccountId = getBaiduAccountId(dto);
-        if (baiduAccountId == -1) {
-            return;
-        }
-
-        accountManageDAO.updateBaiduAccountInfo(username, baiduAccountId, dto);
+        accountManageDAO.updateBaiduAccountInfo(username, dto);
     }
 
     @Override
-    public void deleteAccountForSem(String username, Long moduleAccountId) {
-        accountManageDAO.deleteBaiduAccount(username, moduleAccountId);
+    public void deleteAccountForSem(String username, String moduleAccountName) {
+        accountManageDAO.deleteBaiduAccount(username, moduleAccountName);
+    }
+
+    @Override
+    public String getUserEmail(String username) {
+        String email = systemUserDAO.getUserEmail(username);
+
+        if (Objects.isNull(email))
+            return "";
+
+        return email;
+    }
+
+    @Override
+    public void updateEmail(String username, String email) {
+        String sysUserId = systemUserDAO.findByUserName(username).getId();
+        systemUserDAO.updateUserEmail(sysUserId, email);
     }
 }
