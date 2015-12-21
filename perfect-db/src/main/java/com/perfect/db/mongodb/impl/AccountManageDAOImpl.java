@@ -212,7 +212,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
-    public boolean updateBaiduAccountStatus(String userName, Long baiduId, Long status) {
+    public boolean updateBaiduAccountStatus(String userName, String moduleAccountName, Long status) {
         SystemModuleDTO systemModuleDTO = systemUserDAO.findSystemModuleByModuleName(userName, SystemNameConstant.SOUKE_SYSTEM_NAME);
         if (Objects.isNull(systemModuleDTO))
             return false;
@@ -223,7 +223,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         WriteResult writeResult = mongoTemplate.updateFirst(
                 Query.query(Criteria.where("userName").is(userName)
                         .and("modules.moduleId").is(systemModuleDTO.getId())
-                        .and("modules.accounts._id").is(baiduId)),
+                        .and("modules.accounts.bname").is(moduleAccountName)),
                 update,
                 "sys_user");
 
@@ -231,10 +231,10 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
-    public boolean updateBaiduRemarkName(String remarkName, Long baiduAccountId) {
+    public boolean updateBaiduRemarkName(String remarkName, String moduleAccountName) {
         MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Update update = Update.update("modules.accounts.$.baiduRemarkName", remarkName);
-        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("modules.accounts._id").is(baiduAccountId)), update, "sys_user");
+        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("modules.accounts.bname").is(moduleAccountName)), update, "sys_user");
 
         return writeResult.isUpdateOfExisting();
     }
@@ -326,17 +326,17 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
     }
 
     @Override
-    public void updateBaiduAccountInfo(String userName, Long accountId, ModuleAccountInfoDTO dto) {
+    public void updateBaiduAccountInfo(String userName, ModuleAccountInfoDTO dto) {
         getSysMongoTemplate().updateFirst(
-                Query.query(Criteria.where("userName").is(userName).and("modules.accounts.bid").is(accountId)),
+                Query.query(Criteria.where("userName").is(userName).and("modules.accounts.bname").is(dto.getBaiduUserName())),
                 Update.update("modules.accounts.$", ObjectUtils.convert(dto, ModuleAccountInfoEntity.class)),
                 getEntityClass());
     }
 
     @Override
-    public boolean deleteBaiduAccount(String username, Long moduleAccountId) {
+    public boolean deleteBaiduAccount(String username, String moduleAccountName) {
         WriteResult writeResult = getSysMongoTemplate().remove(
-                Query.query(Criteria.where("userName").is(username).and("modules.accounts.bid").is(moduleAccountId)),
+                Query.query(Criteria.where("userName").is(username).and("modules.accounts.bname").is(moduleAccountName)),
                 getEntityClass());
 
         return writeResult.isUpdateOfExisting();

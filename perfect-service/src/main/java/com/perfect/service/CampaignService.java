@@ -110,14 +110,20 @@ public interface CampaignService {
 
     /**
      * 通过单元ID批量暂停/启动 创意
+     *
      * @param param
      */
     void enableOrPauseCampaign(EnableOrPauseParam param);
-    
-    /**查询所有的百度单元信息
+
+    /**
+     * 查询所有的百度单元信息
+     *
      * @return
      */
 
-	List<Map<String, Object>> findAllDownloadCampaignByBaiduAccountId(
-			Integer type, long id);
+    List<Map<String, Object>> findAllDownloadCampaignByBaiduAccountId(
+            Integer type, long id);
+
+    List<Map<String, Object>> getLevelByParams(
+            Integer level, Long id);
 }

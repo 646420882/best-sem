@@ -2,16 +2,14 @@ package com.perfect.usercenter.controller;
 
 import com.google.common.collect.Maps;
 import com.perfect.commons.email.EmailHelper;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.UserAccountService;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -31,6 +29,8 @@ import java.util.*;
 @Scope("prototype")
 @RequestMapping("/account")
 public class UserAccountController {
+
+    private static final String EMAIL_CAPTCHA_OF_REDIS_KEY = "BEST-USER-%s-EMAIL-CAPTCHA";
 
     private static String captchaHtmlTemplate = "<!DOCTYPE html>" +
             "<html>" +
@@ -103,13 +103,15 @@ public class UserAccountController {
      */
     @RequestMapping(value = "/email/sendCaptcha", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public void sendEmailCaptcha(HttpServletRequest request, HttpServletResponse response) {
+        String username = request.getParameter("username");
         String email = request.getParameter("email");
         String captcha = createCaptcha();
 
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            jedis.setex(captcha, 600, captcha);
+            jedis.lpush(String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username), captcha);
+            jedis.expire(String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username), 600);
         } finally {
             if (Objects.nonNull(jedis))
                 jedis.close();
@@ -149,13 +151,95 @@ public class UserAccountController {
         return new ModelAndView(jsonView);
     }
 
+    /**
+     * <p>解除邮箱绑定
+     *
+     * @param username
+     * @return
+     */
     @RequestMapping(value = "/email/unbind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView unbindEmail(@RequestParam String username) {
+        userAccountService.updateEmail(username, "");
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>绑定搜客帐号
+     *
+     * @param username
+     * @param moduleAccount
+     * @return
+     */
+    @RequestMapping(value = "/souke/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView bindSoukeAccount(@RequestParam String username, @RequestBody ModuleAccountInfoDTO moduleAccount) {
+        userAccountService.bindAccountForSem(username, moduleAccount);
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>解除绑定
+     *
+     * @param username
+     * @param moduleAccountName
+     * @return
+     */
+    @RequestMapping(value = "/souke/unbind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView unbindSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
+        userAccountService.unbindAccountForSem(username, moduleAccountName);
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>激活搜客帐号
+     *
+     * @param username
+     * @param moduleAccountName
+     * @return
+     */
+    @RequestMapping(value = "/souke/active", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView activeSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
+        userAccountService.activeAccountForSem(username, moduleAccountName);
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>更新搜客账号
+     *
+     * @param username
+     * @param moduleAccount
+     * @return
+     */
+    @RequestMapping(value = "/souke/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updateSoukeAccount(@RequestParam String username, @RequestBody ModuleAccountInfoDTO moduleAccount) {
+        userAccountService.updateAccountForSem(username, moduleAccount);
+
+        return jsonView(true);
+    }
+
+    /**
+     * <p>更新搜客帐号
+     *
+     * @param username
+     * @param moduleAccountName
+     * @return
+     */
+    @RequestMapping(value = "/souke/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView deleteSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
+        userAccountService.deleteAccountForSem(username, moduleAccountName);
+
+        return jsonView(true);
+    }
+
+    private ModelAndView jsonView(boolean result) {
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> attrMap = Maps.newHashMap();
-        userAccountService.updateEmail(username, "");
-        attrMap.put("status", true);
+        attrMap.put("status", result);
         jsonView.setAttributesMap(attrMap);
+
         return new ModelAndView(jsonView);
     }
 

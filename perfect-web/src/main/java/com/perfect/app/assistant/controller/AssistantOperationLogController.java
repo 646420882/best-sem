@@ -3,11 +3,14 @@ package com.perfect.app.assistant.controller;
 import com.perfect.core.AppContext;
 import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.param.SystemLogParams;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.CampaignService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.perfect.service.UserOperationLogService;
+import com.perfect.utils.paging.PagerInfo;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +34,8 @@ public class AssistantOperationLogController {
     @Resource
     private AccountManageService accountManageService;
 
+    @Resource
+    private UserOperationLogService userOperationLogService;
 
     /**
      * 获取日志添加对象层级计划、单元、关键字
@@ -39,6 +44,7 @@ public class AssistantOperationLogController {
      * @param id
      * @return
      */
+    @Deprecated
     @RequestMapping("/logLevel")
     @ResponseBody
     public List<Map<String, Object>> logLevel(Integer type, long id) {
@@ -59,6 +65,19 @@ public class AssistantOperationLogController {
         accountMap.put("accountName", dto.getBaiduUserName());
         accountMap.put("accountId", String.valueOf(AppContext.getAccountId()));
         return accountMap;
+    }
+
+    @RequestMapping(value = "/getLevel")
+    @ResponseBody
+    public List<Map<String, Object>> getCurrentLevel(Integer level, Long id) {
+        return campaignService.getLevelByParams(level, id);
+    }
+
+    @RequestMapping(value = "/queryLog",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public PagerInfo queryLog(SystemLogParams slp) {
+        PagerInfo p = userOperationLogService.queryLog(slp);
+        return p;
     }
 
     /**

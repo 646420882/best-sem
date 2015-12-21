@@ -314,8 +314,26 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateBaiDuName(String name, Long baiduId) {
-        boolean flag = accountManageDAO.updateBaiduRemarkName(name, baiduId);
-        return flag;
+
+        try {
+            String moduleAccountName = findByAid(baiduId)
+                    .getSystemUserModules()
+                    .stream()
+                    .filter(o -> Objects.equals(SystemNameConstant.SOUKE_SYSTEM_NAME, o.getModuleName()))
+                    .findFirst()
+                    .get()
+                    .getAccounts()
+                    .stream()
+                    .filter(o -> Objects.equals(baiduId, o.getBaiduAccountId()))
+                    .findFirst()
+                    .get()
+                    .getBaiduUserName();
+
+            return accountManageDAO.updateBaiduRemarkName(name, moduleAccountName);
+        } catch (NullPointerException e) {
+            return false;
+        }
+
     }
 
     @Override
@@ -434,7 +452,8 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public void updateBaiduAccountInfo(String userName, Long accountId, ModuleAccountInfoDTO moduleAccountInfoDTO) {
-        accountManageDAO.updateBaiduAccountInfo(userName, accountId, moduleAccountInfoDTO);
+        moduleAccountInfoDTO.setBaiduAccountId(accountId);
+        accountManageDAO.updateBaiduAccountInfo(userName, moduleAccountInfoDTO);
     }
 
     @Override

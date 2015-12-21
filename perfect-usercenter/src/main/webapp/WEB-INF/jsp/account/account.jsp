@@ -51,9 +51,11 @@
                             <th data-field="name">关联推广账户</th>
                             <th class="hide" data-field="password">账户密码</th>
                             <th data-field="remark">备注名</th>
-                            <th data-field="webName">网站名称</th>
-                            <th data-field="webUrl">网站URL</th>
+                            <th data-field="webUrl">URL地址</th>
+                            <th data-field="platform">账户所属平台</th>
                             <th data-field="webCode">统计代码</th>
+                            <th data-field="webName">网站名称</th>
+                            <th data-field="time">绑定时间</th>
                             <th data-field="action" data-formatter="disableFormatter" data-events="operateEvents">操作
                             </th>
                         </tr>
