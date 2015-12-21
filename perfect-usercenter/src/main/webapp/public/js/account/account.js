@@ -7,7 +7,7 @@ $(function () {
         name: 'baidu-perfect2151880',
         password:'123455',
         url: "http://www.perfect-cn.cn",
-        platform: "百度",
+        platform: "百度搜客",
         time: "2015年12月25日",
         action: "1"
 
@@ -16,7 +16,7 @@ $(function () {
         name: 'baidu-perfect2151880',
         password:'123455',
         url: "http://www.perfect-cn.cn",
-        platform: "百度",
+        platform: "百度搜客",
         time: "2015年12月25日",
         action: "1"
     }]
@@ -25,9 +25,11 @@ $(function () {
         name: 'baidu-perfect2151880',
         password:'123455',
         remark: "http://www.perfect-cn.cn",
+        platform:"百思慧眼",
         webName: "百度",
         webUrl: "http://localhost:8088/account",
         webCode: "http://localhost:8088/account",
+        time: "2015年12月25日",
         action: "1"
 
     }, {
@@ -35,9 +37,11 @@ $(function () {
         name: 'baidu-perfect2151880',
         password:'123455',
         remark: "http://www.perfect-cn.cn",
+        platform:"百思慧眼",
         webUrl: "http://localhost:8088/account",
         webName: "百度",
-        webCode: "",
+        webCode: "http://localhost:8088/account",
+        time: "2015年12月25日",
         action: "1"
     }]
     $('#account_table').bootstrapTable({
@@ -161,6 +165,9 @@ window.operateEvents = {
             var that_html = $(this).html();
             if(index==4){
                 var acount_html="<input type='password' class='form-control' value='" + that_html + "'> "
+            }else if(index==1) {
+                var that_html="百思搜客"
+                var acount_html="<input type='text' class='form-control' readonly value='" + that_html + "'> "
             }else{
                 var acount_html="<input type='text' class='form-control' value='" + that_html + "'> "
             }
@@ -177,19 +184,24 @@ window.operateEvents = {
         "<li>关联账户名：</li>" +
         "<li>账户密码：</li>" +
         "<li>备注名：</li>" +
-        "<li>网站名称：</li>" +
-        "<li>网站URL：" +
-        "<li>统计代码：</li></ul>");
+        "<li>URL地址：</li>" +
+        "<li>账户所属平台：</li>" +
+        "<li>统计代码：</li>" +
+        "<li>网站名称：</li></ul>");
         var editorBottom = $(this);
         var that = $(this).parent().prevAll("td");
         var that_value = that.each(function (index) {
             var that_html = $(this).html();
-            if(index==4){
+            if(index==6){
                 var acount_html="<input type='password' class='form-control' value='" + that_html + "'> "
-            }else{
+            }else if(index==3){
+                var that_html="百思慧眼"
+                var acount_html="<input type='text'  class='form-control' readonly value='" + that_html + "'> "
+            }
+            else{
                 var acount_html="<input type='text' class='form-control' value='" + that_html + "'> "
             }
-            $(".account_change").find('li').eq(5-index).append(acount_html);
+            $(".account_change").find('li').eq(7-index).append(acount_html);
         });
     },
     'click .preserve': function (e, value, row, index) {
@@ -216,14 +228,15 @@ window.operateEvents = {
 };
 var $table = $('#account_table'),
     $button = $('#Tablebutton');
-var acountContent="<ul class='account_add'>" +
-    "<li>关联账户名：<input class='form-control ' type='text'></li>" +
-    "<li>账户密码：<input class='form-control ' type='text'></li>" +
-    "<li>备注名：<input class='form-control ' type='text'></li>" +
-    "<li>URL地址：<input class='form-control ' type='text'></li>" +
-    "<li>账户所属平台：<input class='form-control ' type='text'></li></ul>"
+
 $(function () {
     $button.click(function () {
+        var acountContent="<ul class='account_add'>" +
+            "<li>关联账户名：<input class='form-control ' type='text'></li>" +
+            "<li>账户密码：<input class='form-control ' type='text'></li>" +
+            "<li>备注名：<input class='form-control ' type='text'></li>" +
+            "<li>URL地址：<input class='form-control ' type='text'></li>" +
+            "<li>账户所属平台：<input class='form-control ' readonly value='百思搜客' type='text'></li></ul>"
         $('#modelbox').modal();
         $('.modal-dialog').css({width:'400px'})
         $("#modelboxTitle").html("新增关联账户");
@@ -233,6 +246,14 @@ $(function () {
 
 $(function () {
     $("#SecendTablebutton").click(function () {
+        var acountContent="<ul class='account_add'>" +
+            "<li>关联账户名：<input class='form-control ' type='text'></li>" +
+            "<li>账户密码：<input class='form-control ' type='text'></li>" +
+            "<li>备注名：<input class='form-control ' type='text'></li>" +
+            "<li>URL地址：<input class='form-control ' type='text'></li>" +
+            "<li>统计代码：<input class='form-control '  type='text'></li>"+
+            "<li>网站名称：<input class='form-control '  type='text'></li>"+
+            "<li>账户所属平台：<input class='form-control ' readonly value='百思慧眼' type='text'></li></ul>"
         $('#modelbox').modal();
         $('.modal-dialog').css({width:'400px'})
         $("#modelboxTitle").html("新增关联账户");

@@ -1203,7 +1203,7 @@
                                                     </li>
                                                     <li><a href="javascript:void(0);" onclick="searchword();"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
                                                     </li>
                                                     <%--                <li><a href="#"><span class="zs_top"><img
                                                                             src="../public/img/zs_function11.png"></span><b
