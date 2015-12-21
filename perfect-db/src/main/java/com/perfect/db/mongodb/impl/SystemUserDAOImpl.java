@@ -119,7 +119,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
         ModuleAccountInfoEntity moduleAccountInfoEntity = ObjectUtils.convert(baiduAccountInfoDTO, ModuleAccountInfoEntity.class);
         Update update = new Update();
-        update.addToSet("modules.accounts", moduleAccountInfoEntity);
+        update.addToSet("modules.$.accounts", moduleAccountInfoEntity);
         mongoTemplate.upsert(Query.query(Criteria.where("userName").is(userName).and("modules.moduleId").is(moduleId)), update, getEntityClass());
     }
 
