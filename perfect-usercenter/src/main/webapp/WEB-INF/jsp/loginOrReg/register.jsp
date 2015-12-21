@@ -124,9 +124,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input name="openPlatform" style="width: 0;height: 0;position: absolute"
-                                               id="openPlatformInput">
-                                        <select id="openPlatform" multiple="multiple">
+                                        <select id="openPlatform" multiple="multiple" name="openPlatform">
                                             <option value="百思搜客">百思搜客</option>
                                             <option value="百思慧眼">百思慧眼</option>
                                         </select>
@@ -134,7 +132,7 @@
                                 </div>
                                 <span style="color: red" class="register_star">*</span>
                             </li>
-                            <li>
+                            <li id="baiduUserNameLi">
                                 <label class="fl">百度凤巢账户：</label>
 
                                 <div class="form-group has-feedback">
@@ -144,23 +142,22 @@
                                 </div>
                                 <span style="color: red;display: none" class="register_star NameStar">*</span>
                             </li>
-                            <li>
+                            <li id="baiduUserPasswordLi">
                                 <label class="fl">百度凤巢密码：</label>
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="baiduUserPassword">
+                                        <input class="registeInput" type="password" name="baiduUserPassword">
                                     </div>
                                 </div>
                                 <span style="color: red;display: none" class="register_star NameStar">*</span>
                             </li>
-                            <li>
+                            <li id="urlAddressLi">
                                 <label class="fl">网站URL地址：</label>
 
                                 <div class="form-group has-feedback">
                                     <div>
                                         <input class="registeInput" type="text" name="urlAddress">
-
                                     </div>
                                 </div>
                                 <span style="color: red;display: none" class="register_star NameStar">*</span>
@@ -185,13 +182,15 @@
                                 </div>
                                 <span style="color: red" class="register_star">*</span>
                             </li>
-                            <li>
+                            <%--<li>
                                 <input value="立即注册" id="immedateRegister" type="button" class="submit registeButton">
-                            </li>
+                            </li>--%>
                         </ul>
-                        <%--<div class="login_part2" style="margin-top:20px;">
-                            <input type="submit" id="" value="立即注册" class="submit">
-                        </div>--%>
+                        <div class="registerWrap" style="margin-top:20px;">
+                            <%--<input type="submit" id="" value="立即注册" class="submit">--%>
+                            <input value="立即注册" id="immedateRegister" type="button" class="submit registeButton">
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -225,19 +224,19 @@
     $(window).resize();
     $(document).ready(function () {
         /*$.ajax({
-            url: "/getPlatform",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $("#openPlatform").empty();
-                var html = "";
-                data.data.forEach(function (item, i) {
-                    html = html + "<option value='" + item.id + "'>" + item.moduleName + "</option>"
-                })
-                $("#openPlatform").append(html);
+         url: "/getPlatform",
+         dataType: "json",
+         async: true,
+         success: function (data) {
+         $("#openPlatform").empty();
+         var html = "";
+         data.data.forEach(function (item, i) {
+         html = html + "<option value='" + item.id + "'>" + item.moduleName + "</option>"
+         })
+         $("#openPlatform").append(html);
 
-            }
-        });*/
+         }
+         });*/
         $("#openPlatform").multipleSelect({
             placeholder: "请选择开通平台",
             selectAll: false,
@@ -245,38 +244,37 @@
             multiple: true,
             onClose: function () {
                 var multiSelect = $("#openPlatform").multipleSelect('getSelects');
-                $("#openPlatformInput").val(multiSelect)
                 for (var i = 0; i < multiSelect.length; i++) {
                     if (multiSelect[i] == "百思搜客") {
                         $(".NameStar").eq(0).css({"display": "block"})
                         $(".NameStar").eq(1).css({"display": "block"})
-                        $(".NameStar").eq(2).css({"display": "none"})
+                        $(".NameStar").eq(2).css({"display": "none"});
 
                     } else if (multiSelect[i] == '百思慧眼') {
                         $(".NameStar").eq(0).css({"display": "none"})
                         $(".NameStar").eq(1).css({"display": "none"})
-                        $(".NameStar").eq(2).css({"display": "block"})
+                        $(".NameStar").eq(2).css({"display": "block"});
                     }
                 }
                 if (multiSelect.length == 2) {
                     $(".NameStar").eq(0).css({"display": "block"})
                     $(".NameStar").eq(1).css({"display": "block"})
-                    $(".NameStar").eq(2).css({"display": "block"})
+                    $(".NameStar").eq(2).css({"display": "block"});
                 } else if (multiSelect.length == 0) {
                     $(".NameStar").eq(0).css({"display": "none"})
                     $(".NameStar").eq(1).css({"display": "none"})
-                    $(".NameStar").eq(2).css({"display": "none"})
+                    $(".NameStar").eq(2).css({"display": "none"});
                 }
             }
         })
         createCode();
         $('#defaultForm').bootstrapValidator({
             message: '此值无效',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
+            /*feedbackIcons: {
+             valid: 'glyphicon glyphicon-ok',
+             invalid: 'glyphicon glyphicon-remove',
+             validating: 'glyphicon glyphicon-refresh'
+             },*/
             fields: {
                 baiduUserName: {
                     validators: {
@@ -284,7 +282,11 @@
                             message: '百度凤巢账户不能为空',
                             callback: function (value, validator) {
                                 if ($(".NameStar").eq(0).css("display") == "block") {
-                                    return false;
+                                    if (value != null && value != '') {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
                                 } else {
                                     return true;
                                 }
@@ -298,7 +300,11 @@
                             message: '百度凤巢密码不能为空',
                             callback: function (value, validator) {
                                 if ($(".NameStar").eq(1).css("display") == "block") {
-                                    return false;
+                                    if (value != null && value != '') {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
                                 } else {
                                     return true;
                                 }
@@ -312,7 +318,11 @@
                             message: 'URL地址不能为空',
                             callback: function (value, validator) {
                                 if ($(".NameStar").eq(2).css("display") == "block") {
-                                    return false;
+                                    if (value != null && value != '') {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
                                 } else {
                                     return true;
                                 }
@@ -452,10 +462,6 @@
 
     }
     $("#immedateRegister").click(function () {
-        /*if($('#openPlatform option:selected').text() == ''){
-         $("#openPlatformLi .help-block").css("display","block");
-         return false;
-         }*/
         $("#defaultForm").submit();
     });
     if ($("#dataRe").val() == 1) {
