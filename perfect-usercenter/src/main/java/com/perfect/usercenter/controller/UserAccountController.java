@@ -5,6 +5,7 @@ import com.perfect.commons.email.EmailHelper;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.UserAccountService;
+import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
@@ -55,6 +56,14 @@ public class UserAccountController {
     private UserAccountService userAccountService;
 
 
+    @RequestMapping(value = "/{username}/semAccount/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView semAccountList(@PathVariable String username) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        jsonView.setAttributesMap(JSONUtils.getJsonMapData(userAccountService.getSemAccounts(username)));
+
+        return new ModelAndView(jsonView);
+    }
+
     /**
      * <p>修改密码时, 校验当前使用的密码
      *
@@ -102,7 +111,7 @@ public class UserAccountController {
      * @param response
      */
     @RequestMapping(value = "/email/sendCaptcha", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void sendEmailCaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView sendEmailCaptcha(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String captcha = createCaptcha();
@@ -110,14 +119,21 @@ public class UserAccountController {
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            jedis.lpush(String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username), captcha);
-            jedis.expire(String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username), 600);
+            String key = String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username);
+            if (jedis.llen(key) > 0) {
+                return jsonView(false);
+            }
+
+            jedis.lpush(key, captcha);
+            jedis.expire(key, 600);
         } finally {
             if (Objects.nonNull(jedis))
                 jedis.close();
         }
 
         EmailHelper.sendHtmlEmail("邮箱绑定", String.format(captchaHtmlTemplate, captcha), email);
+
+        return jsonView(true);
     }
 
     @RequestMapping(value = "/email/confirmCaptcha", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -128,19 +144,26 @@ public class UserAccountController {
         Jedis jedis = null;
         try {
             jedis = JRedisUtils.get();
-            String orgCaptcha = jedis.get(captcha);
-            if (Objects.nonNull(orgCaptcha)) {
-                if (Objects.equals(orgCaptcha, captcha)) {
-                    // 校验成功
-                    attrMap.put("status", 1);
-                    userAccountService.updateEmail(username, email);
-                } else {
-                    // 验证码错误
-                    attrMap.put("status", 0);
-                }
-            } else {
-                // 验证码失效
+            String key = String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username);
+            boolean isExists = jedis.llen(key) > 0;
+            if (!isExists) {
+                // 验证码不存在, 即失效了
                 attrMap.put("status", -1);
+            } else {
+                String captchaValue = jedis.rpop(key);
+                if (Objects.isNull(captchaValue)) {
+                    // 验证码不存在, 即失效了
+                    attrMap.put("status", -1);
+                } else {
+                    if (Objects.equals(captchaValue, captcha)) {
+                        // 校验成功
+                        attrMap.put("status", 1);
+                        userAccountService.updateEmail(username, email);
+                    } else {
+                        // 验证码校验错误
+                        attrMap.put("status", 0);
+                    }
+                }
             }
         } finally {
             if (Objects.nonNull(jedis))
@@ -167,12 +190,13 @@ public class UserAccountController {
     /**
      * <p>绑定搜客帐号
      *
-     * @param username
+     * @param request
      * @param moduleAccount
      * @return
      */
-    @RequestMapping(value = "/souke/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView bindSoukeAccount(@RequestParam String username, @RequestBody ModuleAccountInfoDTO moduleAccount) {
+    @RequestMapping(value = "/souke/add/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView bindSoukeAccount(HttpServletRequest request, ModuleAccountInfoDTO moduleAccount) {
+        String username = request.getParameter("username");
         userAccountService.bindAccountForSem(username, moduleAccount);
 
         return jsonView(true);
@@ -182,12 +206,13 @@ public class UserAccountController {
      * <p>解除绑定
      *
      * @param username
-     * @param moduleAccountName
+     * @param moduleAccountId
      * @return
      */
     @RequestMapping(value = "/souke/unbind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView unbindSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
-        userAccountService.unbindAccountForSem(username, moduleAccountName);
+    public ModelAndView unbindSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountId) {
+        // TODO MongoDB 解除绑定状态修改 DAO层
+        userAccountService.unbindAccountForSem(username, moduleAccountId);
 
         return jsonView(true);
     }
@@ -196,12 +221,13 @@ public class UserAccountController {
      * <p>激活搜客帐号
      *
      * @param username
-     * @param moduleAccountName
+     * @param moduleAccountId
      * @return
      */
     @RequestMapping(value = "/souke/active", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView activeSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
-        userAccountService.activeAccountForSem(username, moduleAccountName);
+    public ModelAndView activeSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountId) {
+        // TODO MongoDB 激活状态修改 DAO层
+        userAccountService.activeAccountForSem(username, moduleAccountId);
 
         return jsonView(true);
     }
@@ -209,13 +235,13 @@ public class UserAccountController {
     /**
      * <p>更新搜客账号
      *
-     * @param username
      * @param moduleAccount
      * @return
      */
     @RequestMapping(value = "/souke/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView updateSoukeAccount(@RequestParam String username, @RequestBody ModuleAccountInfoDTO moduleAccount) {
-        userAccountService.updateAccountForSem(username, moduleAccount);
+    public ModelAndView updateSoukeAccount(ModuleAccountInfoDTO moduleAccount) {
+        // TODO MongoDB 确定修改层级关系 DAO层
+        userAccountService.updateAccountForSem(moduleAccount);
 
         return jsonView(true);
     }
@@ -224,12 +250,13 @@ public class UserAccountController {
      * <p>更新搜客帐号
      *
      * @param username
-     * @param moduleAccountName
+     * @param moduleAccountId
      * @return
      */
     @RequestMapping(value = "/souke/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView deleteSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountName) {
-        userAccountService.deleteAccountForSem(username, moduleAccountName);
+    public ModelAndView deleteSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountId) {
+        // TODO MongoDB 删除层级操作 DAO层
+        userAccountService.deleteAccountForSem(username, moduleAccountId);
 
         return jsonView(true);
     }
