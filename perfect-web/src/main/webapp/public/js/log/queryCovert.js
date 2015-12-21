@@ -383,6 +383,7 @@ var lq = {
 
             this.itemHover();
         }
+        $("#obj-num").html($(".obj-select-list").find(".obj-list").size())
     },
     itemHover: function () {
         $(".obj-list").hover(function () {
@@ -391,6 +392,7 @@ var lq = {
                 $(this).parent().remove();
                 var thisN = $(this).siblings().attr('name');
                 $(".query-result").find('#' + thisN).removeClass('default');
+                $("#obj-num").html($(".obj-select-list").find(".obj-list").size())
             });
         }, function () {
             $(this).children('.obj-list-del').hide();

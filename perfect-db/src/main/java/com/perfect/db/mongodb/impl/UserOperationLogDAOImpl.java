@@ -10,6 +10,7 @@ import com.perfect.entity.log.UserOperationLogEntity;
 import com.perfect.param.SystemLogParams;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.paging.PagerInfo;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -91,6 +92,7 @@ public class UserOperationLogDAOImpl extends AbstractUserBaseDAOImpl<UserOperati
         }
         int totalCount = getListTotalCount(q);
         PagerInfo p = new PagerInfo(slp.getPageNo(), slp.getPageSize(), totalCount);
+        q.with(new Sort(Sort.Direction.DESC,"time"));
         q.skip(p.getFirstStation());
         q.limit(p.getPageSize());
         if (totalCount < 1) {
