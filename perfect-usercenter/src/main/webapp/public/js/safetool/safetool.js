@@ -54,6 +54,8 @@ $(document).ready(function () {
             }
         });
 
+        alert("发送成功, 请注意查收!");
+
     });
 
     $('#changeEmailAddr').click(function () {
@@ -65,6 +67,8 @@ $(document).ready(function () {
                 email: $('#oldEmail').html()
             }
         });
+
+        alert("发送成功, 请注意查收!");
 
     });
 
@@ -85,6 +89,8 @@ $(document).ready(function () {
                 email: $('#newEmailAddr').val()
             }
         });
+
+        alert("发送成功, 请注意查收!");
 
     });
 
@@ -145,17 +151,24 @@ var commons = {
                     success: function (data) {
                         switch (data.status) {
                             case 1:
+                            {
                                 $('#bindedEmail').html("已绑定邮箱: " + $('#email').val());
                                 alert("绑定成功!");
                                 $('#emailModal').modal('hide');
                                 $(".emailHide").removeClass("hide");
                                 $("#emailModalbottom").hide();
                                 break;
+                            }
                             case 0:
+                            {
                                 alert("验证码输入错误!");
                                 break;
+                            }
                             case -1:
-                                alert("验证码已失效!请重新发送");
+                            {
+                                alert("验证码输入错误!");
+                                //alert("验证码已失效!请重新发送");
+                            }
                             default:
                                 break;
                         }
@@ -206,14 +219,12 @@ var commons = {
                             switch (data.status) {
                                 case 1:
                                 {
-                                    alert("绑定成功!");
-                                    // TODO 修改邮箱成功之后弹出框没有关闭
-                                    //$('#emailModal').modal('hide');
-                                    //$(".emailHide").removeClass("hide");
-                                    //$("#emailModalbottom").hide();
-                                    $('#modifyemailModal').modal('show');
+                                    $('.modal-backdrop').hide();
+                                    $('#modifyemailModal').hide();
                                     $(".emailHide").removeClass("hide");
                                     $("#emailModalbottom").hide();
+                                    $('#bindedEmail').html("已绑定邮箱: " + $('#newEmailAddr').val());
+                                    alert("修改成功!");
                                     break;
                                 }
                                 case 0:
@@ -223,7 +234,8 @@ var commons = {
                                 }
                                 case -1:
                                 {
-                                    alert("验证码已失效!请重新发送");
+                                    alert("验证码输入错误!");
+                                    //alert("验证码已失效!请重新发送");
                                 }
                                 default:
                                     break;
