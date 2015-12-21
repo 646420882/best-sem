@@ -26,9 +26,11 @@
     </script>
 </head>
 <body>
-<div class="login over">
-    <%--<img src="${pageContext.request.contextPath}/public/img/login_bg.jpg" width="100%" height="100%">--%>
-</div>
+<%--<div class="login over">
+
+    &lt;%&ndash;<img src="${pageContext.request.contextPath}/public/img/login_bg.jpg" width="100%" height="100%">&ndash;%&gt;
+</div>--%>
+<div class="loginBg" style="position: fixed;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
 <div class="login_box">
     <div class="login_logo ">
         <a href="http://best-ad.cn/" target="_blank"><img
@@ -150,6 +152,16 @@
     window.onload = createCodeLogin();
     //校验验证码
     $("#loginSec").click(function () {
+        submitToCode();
+    })
+    document.onkeydown=function(event){
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if(e && e.keyCode==13){ // enter 键
+            submitToCode();
+        }
+    };
+
+    var submitToCode = function(){
         var inputCode = document.getElementById("j_validate").value.toUpperCase(); //取得输入的验证码并转化为大写
         if (inputCode.length <= 0) {
             $("#codeMsg").html("请输入验证码！");
@@ -170,7 +182,7 @@
         } else {
             $("#frmSubmit").submit();
         }
-    })
+    }
 
 </script>
 
