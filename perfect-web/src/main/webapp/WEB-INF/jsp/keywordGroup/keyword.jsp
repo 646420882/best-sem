@@ -53,7 +53,7 @@ To change this template use File | Settings | File Templates.
                 <a href="#">
                     智能结构
                 </a>
-                &nbsp;&nbsp;&gt;&nbsp;&nbsp;<span id="TitleName">关键词拓词</span>
+                &nbsp;&nbsp;<span style="font-family: '宋体'">></span>&nbsp;&nbsp;<a id="TitleName" href="#">关键词拓词</a>
             </div>
         </div>
         <div id="tab">

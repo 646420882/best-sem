@@ -45,7 +45,8 @@
         <div class="title_box">
             <div class="on_title over">
                 <a href="#"> 智能竞价 </a>
-                <span id="TitleName"></span>
+                &nbsp;&nbsp;<span style="font-family: '宋体';display: none">></span>&nbsp;&nbsp;
+                <a id="TitleName" href="#"></a>
             </div>
         </div>
         <div id="tab">

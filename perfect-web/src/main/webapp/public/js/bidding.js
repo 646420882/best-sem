@@ -60,9 +60,11 @@ $(function () {
         var index = $tab_li.index(this);
         $('div.tab_box > div').eq(index).show().siblings().hide();
         if (index == 0) {
+            $("#TitleName").prev().css("display","none");
             $("#TitleName").html("");
         } else {
-            $("#TitleName").html("&nbsp;&nbsp;>&nbsp;&nbsp;重点词竞价");
+            $("#TitleName").html("重点词竞价");
+            $("#TitleName").prev().css("display","inline-block");
         }
     });
     //设置规则
