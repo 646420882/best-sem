@@ -21,7 +21,7 @@
 <body>
 <div class="login">
     <%--<img src="/public/img/login_bg.jpg" width="100%" height="100%">--%>
-    <div class="loginBg" style="position: absolute;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
+    <div class="loginBg" style="position: fixed;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
     <div class="registe_box">
         <div class="login_logo2 ">
             <a href="http://best-ad.cn/" target="_blank"><img src="/public/img/login_logo.png"></a>
