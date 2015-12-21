@@ -126,8 +126,8 @@
             '<div class="ranges">' +
             '</div>' +
             '<div class="range_inputs">' +
-            '<button class="btnDone applyBtn calendar-btn btn btn-small btn-success" disabled="disabled" type="button"></button> ' +
             '<button class="cancelBtn  calendar-btn_closedialog btn btn-small btn-default" type="button"></button>' +
+            '<button class="btnDone applyBtn calendar-btn btn btn-small btn-success" disabled="disabled" type="button"></button> ' +
             '</div>' +
             '</div>';
 

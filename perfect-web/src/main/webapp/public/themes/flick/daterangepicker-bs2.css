@@ -213,7 +213,7 @@
 }
 .daterangepicker td.start-date.end-date {
     color: #fff;
-    border-radius: 100%;
+    border-radius: 4px;
     background-color: #1fb8f1;
 }
 .daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
@@ -375,15 +375,16 @@ select {
 }
 .calendar-btn{
     float: right;
-    margin: 4px 18px 0 4px;
+    margin: 4px 4px 0 4px;
     padding-left: 20px;
 }
 .calendar-btn_closedialog{
     margin-right: 5px;
     float: right;
-    margin: 4px 5px 0 4px;
+    margin: 4px 15px 0 4px;
     padding-left: 20px;
-
+    background-color: #e0e0e0;
+    color: #666666;
 
 }
 .daterangepicker_input{
