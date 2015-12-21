@@ -8,6 +8,7 @@ import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ServiceFactory;
 import com.perfect.autosdk.exception.ApiException;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
 import com.perfect.dao.sys.SystemUserDAO;
@@ -129,10 +130,30 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Override
     public int updateAccountAllState(String userName, Long baiduId, Long state) {
         int i = 0;
-        boolean writeResult = accountManageDAO.updateBaiduAccountStatus(userName, baiduId, state);
-        if (writeResult) {
-            i = 1;
+
+        try {
+            String moduleAccountName = systemUserDAO.findByAid(baiduId)
+                    .getSystemUserModules()
+                    .stream()
+                    .filter(o -> Objects.equals(SystemNameConstant.SOUKE_SYSTEM_NAME, o.getModuleName()))
+                    .findFirst()
+                    .get()
+                    .getAccounts()
+                    .stream()
+                    .filter(o -> Objects.equals(baiduId, o.getBaiduAccountId()))
+                    .findFirst()
+                    .get()
+                    .getBaiduUserName();
+
+
+            boolean writeResult = accountManageDAO.updateBaiduAccountStatus(userName, moduleAccountName, state);
+            if (writeResult) {
+                i = 1;
+            }
+        } catch (NullPointerException e) {
+            return -1;
         }
+
         return i;
     }
 
