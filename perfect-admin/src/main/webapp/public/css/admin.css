@@ -43,3 +43,70 @@
 #userLookUpWrap .lookUpContent .bootstrap-table .fixed-table-container{
     background: #fff;
 }
+/*模块权限*/
+#adminModule{
+    background: #f6f4f5;
+}
+#adminModule .moduleSearchLabel{
+    width: 90px;
+    height: 28px;
+    line-height: 28px;
+}
+#adminModule .moduleSearch{
+    width: 130px;
+}
+#adminModule .moduleSearch input,#adminModule .moduleSearch select{
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+}
+#adminModule .moduleSearch span{
+    position: absolute;
+    top: 0;
+    right: 7px;
+    line-height: 28px;
+    z-index: 3;
+    color: #666;
+}
+.adminModuleWrap{
+    padding: 15px;
+    line-height: 30px;
+}
+#adminModuleReportWrap{
+    width: 88%;
+    background: #fff;
+    padding-bottom: 20px;
+}
+.adminModuleWrap .adminModuleReport .modalTree{
+    width: 15%;
+    margin-left: 15px;
+}
+.adminModuleWrap .adminModuleReport label input{
+    margin-right: 8px;
+}
+.adminModuleWrap .adminModuleReport .modalTree img{
+    margin-right: 5px;
+    margin-top: -8px;
+}
+.adminModuleWrap .adminModuleReport .modalTree div{
+    margin-left: 15px;
+}
+.adminModuleWrap .adminModuleReport .modalTree div.secondClass{
+    margin-left: 20px;
+}
+.adminModuleWrap .adminModuleReport .modalTree div.lastClass{
+    margin-left: 20px;
+}
+.adminModuleWrap .adminModuleReport .modalTree div.lastClass img{
+    margin-top: -31px;
+}
+.adminModuleWrap .adminModuleReport .modalTree.webSetWrap label{
+    margin-left: 15px;
+}
+.current{
+    background: #01aef0;
+    color: #fff;
+}
+.setJurisdictionBtn{
+    margin-top: 10px;
+}
