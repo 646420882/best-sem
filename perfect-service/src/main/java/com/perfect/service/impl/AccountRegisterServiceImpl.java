@@ -9,6 +9,7 @@ import com.perfect.param.RegisterParam;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.SystemModuleService;
 import com.perfect.utils.MD5;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -93,7 +94,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
                 //SystemModuleDTO byModuleId = systemModuleService.findByModuleId(s);
 
                 SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
-                //systemUserModuleDTO.setModuleId(s);
+                systemUserModuleDTO.setId(new ObjectId().toString());
                 systemUserModuleDTO.setIsPayed(true);
                 systemUserModuleDTO.setEnabled(true);
                 systemUserModuleDTO.setModuleName(s);
@@ -102,6 +103,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
                 //百度账户处理
                 List<ModuleAccountInfoDTO> baiduList = new ArrayList<>();
                 ModuleAccountInfoDTO baiduAccountInfo = new ModuleAccountInfoDTO();
+                baiduAccountInfo.setId(new ObjectId().toString());
                 baiduAccountInfo.setBaiduUserName(registerParam.getBaiduUserName());
                 baiduAccountInfo.setBaiduPassword(registerParam.getBaiduUserPassword());
                 baiduAccountInfo.setBestRegDomain(registerParam.getUrlAddress());

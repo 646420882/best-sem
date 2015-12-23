@@ -268,13 +268,13 @@
             }
         })
         createCode();
-        $('#defaultForm').bootstrapValidator({
+        /*$('#defaultForm').bootstrapValidator({
             message: '此值无效',
-            /*feedbackIcons: {
+            /!*feedbackIcons: {
              valid: 'glyphicon glyphicon-ok',
              invalid: 'glyphicon glyphicon-remove',
              validating: 'glyphicon glyphicon-refresh'
-             },*/
+             },*!/
             fields: {
                 baiduUserName: {
                     validators: {
@@ -389,10 +389,10 @@
                             max: 14,
                             message: '密码字段须大于4且小于14'
                         }
-                        /*identical: {
+                        /!*identical: {
                          field: 'confirmPassword',
                          message: '密码和确认是不一样的'
-                         }*/
+                         }*!/
                     }
                 },
                 confirmPassword: {
@@ -406,7 +406,7 @@
                         }
                     }
                 },
-                /* code_text: {
+                /!* code_text: {
                  validators: {
                  notEmpty: {
                  message: '验证码不能为空'
@@ -416,7 +416,7 @@
                  message: '请输入正确的验证码'
                  }
                  }
-                 },*/
+                 },*!/
                 code_text: {
                     validators: {
                         callback: {
@@ -437,7 +437,7 @@
                 }
 
             }
-        });
+        });*/
     });
 
     var code; //在全局 定义验证码
