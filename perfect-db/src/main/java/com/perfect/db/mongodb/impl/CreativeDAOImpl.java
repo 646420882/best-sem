@@ -608,8 +608,8 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
                         getNormalQuery(q, "md", sp.getSelected(), sp.getFilterValue());
                         break;
                     case "pause":
-                        if (Integer.valueOf(sp.getFilterValue()) != -1) {
-                            if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                        if (Integer.parseInt(sp.getFilterValue()) != -1) {
+                            if (Integer.parseInt(sp.getFilterValue()) == 0) {
                                 q.addCriteria(Criteria.where("p").is(false));
                             } else {
                                 q.addCriteria(Criteria.where("p").is(true));

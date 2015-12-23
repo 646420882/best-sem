@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  */
 public class JRedisUtils {
 
-    private static JedisPool pool;
+    private static volatile JedisPool pool;
 
     static {
         if (pool == null) {
@@ -26,13 +26,13 @@ public class JRedisUtils {
                                 "[redis.properties] is not found!");
                     }
                     JedisPoolConfig config = new JedisPoolConfig();
-                    config.setMaxTotal(Integer.valueOf(bundle
+                    config.setMaxTotal(Integer.parseInt(bundle
                             .getString("redis.pool.maxActive")));
-                    config.setMaxIdle(Integer.valueOf(bundle
+                    config.setMaxIdle(Integer.parseInt(bundle
                             .getString("redis.pool.maxIdle")));
-                    config.setTestOnBorrow(Boolean.valueOf(bundle
+                    config.setTestOnBorrow(Boolean.parseBoolean(bundle
                             .getString("redis.pool.testOnBorrow")));
-                    config.setTestOnReturn(Boolean.valueOf(bundle
+                    config.setTestOnReturn(Boolean.parseBoolean(bundle
                             .getString("redis.pool.testOnReturn")));
                     pool = new JedisPool(config, bundle.getString("redis.ip"),
                             Integer.valueOf(bundle.getString("redis.port")), Protocol.DEFAULT_TIMEOUT,

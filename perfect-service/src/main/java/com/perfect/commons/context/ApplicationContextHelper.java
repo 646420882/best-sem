@@ -12,7 +12,7 @@ import org.springframework.web.context.ContextLoader;
 @Component
 public class ApplicationContextHelper implements ApplicationContextAware {
 
-    private static ApplicationContext ctx;
+    private static volatile ApplicationContext ctx;
 
 
     @Override
