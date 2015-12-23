@@ -70,7 +70,7 @@ function LookUp(value, row, index) {
         '<a class="look tab_operate" href="javascript:void(0)" title="查看">',
         '查看',
         '</a>' +
-        '<span class="indexCret" style="position: relative;left: -31px;top: 17px;z-index:2;display: none"><img src="../../public/img/user_cret.png"></span>'
+        '<span class="indexCret" style="position: relative;left: -31px;top: 21px;z-index:2;display: none"><img src="../../public/img/user_cret.png"></span>'
     ].join('');
 }
 function passwordFormatter(value, row, index) {

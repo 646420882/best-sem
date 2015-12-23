@@ -80,9 +80,17 @@ $(function () {
         'click .editor': function (e, value, row, index) {
             var editorBottom = $(this);
             var that = $(this).parent().prevAll("td");
-            var that_value = that.each(function () {
+            var that_value = that.each(function (i) {
                 var that_html = $(this).html();
-                $(this).html("<input type='text' class='form-control' value='" + that_html + "'> ");
+                if(i == 1){
+                    return;
+                }else if(i == 2){
+                    $(this).html("<input type='password' class='form-control' value='******''> ");
+                }else if(i == 7){
+                    $(this).html('')
+                }else{
+                    $(this).html("<input type='text' class='form-control' value='" + that_html + "'> ");
+                }
                 editorBottom.hide();
                 editorBottom.next(".preserve").attr("style", "display:block");
                 editorBottom.next().next(".cancel").attr("style", "display:block");
@@ -102,16 +110,22 @@ $(function () {
             preserveHtML.prevAll().show();
         },
         'click .cancel': function (e, value, row, index) {
-            var preserveHtML = $(this);
-            var preserveThat = $(this).parent().prevAll("td");
-            preserveThat.each(function () {
+            var cancelHtML = $(this);
+            var cancelThat = $(this).parent().prevAll("td");
+            cancelThat.each(function (i) {
                 var that_html = $(this).find("input").val();
-                $(this).html(that_html);
+                if(i == 2){
+                    $(this).html('<span class="fl">******</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="password_reset" href="javascript:void(0)" title="重置">重置</a>');
+                }else if(i == 7){
+                    $(this).html('<input data-index="'+index+'" name="btSelectItem" type="checkbox">')
+                }else{
+                    $(this).html(that_html);
+                }
             });
-            preserveHtML.attr("style", "display:none");
-            preserveHtML.next(".delete").attr("style", "display:block");
-            preserveHtML.prev().prev(".editor").attr("style", "display:block");
-            preserveHtML.prev(".preserve").attr("style", "display:none");
+            cancelHtML.attr("style", "display:none");
+            cancelHtML.next(".delete").attr("style", "display:block");
+            cancelHtML.prev().prev(".editor").attr("style", "display:block");
+            cancelHtML.prev(".preserve").attr("style", "display:none");
         },
         'click .delete': function (e, value, row, index) {
             var tabledelete = $(this).parent().parent();
