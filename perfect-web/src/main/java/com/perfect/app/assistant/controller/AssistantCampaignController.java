@@ -149,11 +149,6 @@ public class AssistantCampaignController extends WebContextSupport {
      */
     @RequestMapping(value = "assistantCampaign/getRegionByAcid", method = {RequestMethod.GET, RequestMethod.POST})
     public void getAccountRegion(HttpServletResponse response) {
-        /**
-         * TODO replace with {@link com.perfect.service.SystemUserInfoService#findSystemUserInfoByBaiduAccountId(Long)}
-         *
-         * @deprecated
-         */
         SystemUserDTO currentUser = systemUserService.findByAid(AppContext.getAccountId());
 
 

@@ -11,6 +11,7 @@ import com.perfect.autosdk.sms.v3.*;
 import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dao.account.SystemAccountDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.account.AccountReportDTO;
 import com.perfect.dto.baidu.AccountAllStateDTO;
@@ -31,6 +32,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.perfect.commons.constants.PasswordSalts.USER_SALT;
+
 /**
  * Created by baizz on 2014-8-21.
  * 2014-12-2 refactor
@@ -46,15 +49,19 @@ public class AccountManageServiceImpl implements AccountManageService {
     @Resource
     private SystemUserDAO systemUserDAO;
 
-    private final MD5.Builder builder = new MD5.Builder();
+    @Resource
+    private SystemAccountDAO systemAccountDAO;
+
+    private final MD5.Builder md5Builder = new MD5.Builder();
+
 
     @Override
     public int updatePwd(String userName, String newPassword) {
-        SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(userName);
+        SystemUserDTO systemUserDTO = new SystemUserDTO();
+        systemUserDTO.setUserName(userName);
+        systemUserDTO.setPassword(md5Builder.source(newPassword).salt(USER_SALT).build().getMD5());
 
-        MD5 newPwd = builder.password(newPassword).build();
-
-        boolean writeResult = accountManageDAO.updatePwd(systemUserDTO.getUserName(), newPwd.getMD5());
+        boolean writeResult = systemAccountDAO.updateSystemUserInfo(systemUserDTO);
         if (writeResult) {
             return 1;
         } else {
@@ -65,9 +72,9 @@ public class AccountManageServiceImpl implements AccountManageService {
 
     @Override
     public int JudgePwd(String userName, String password) {
-        SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(userName);
+        SystemUserDTO systemUserDTO = systemAccountDAO.findByUserName(userName);
 
-        MD5 md5 = builder.password(password).build();
+        MD5 md5 = md5Builder.source(password).salt(USER_SALT).build();
         if (md5.getMD5().equals(systemUserDTO.getPassword())) {
             return 1;
         } else {
@@ -175,11 +182,6 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     @Override
-    public SystemUserDTO getCurrUserInfo() {
-        return accountManageDAO.getCurrUserInfo();
-    }
-
-    @Override
     public Map<String, Object> getAllBaiduAccount(String currSystemUserName) {
         List<ModuleAccountInfoDTO> list = accountManageDAO.getBaiduAccountItems(currSystemUserName);
         return JSONUtils.getJsonMapData(list);
@@ -226,7 +228,8 @@ public class AccountManageServiceImpl implements AccountManageService {
     }
 
     public ModuleAccountInfoDTO getBaiduAccountInfoById(Long baiduUserId) {
-        return accountManageDAO.findByBaiduUserId(baiduUserId);
+//        return accountManageDAO.findByBaiduUserId(baiduUserId);
+        return systemAccountDAO.findByModuleAccountId(baiduUserId);
     }
 
     public void updateBaiduAccount(BaiduAccountInfoDTO baiduAccountInfoDTO) {

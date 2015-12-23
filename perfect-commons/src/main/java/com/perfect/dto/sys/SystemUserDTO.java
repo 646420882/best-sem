@@ -36,11 +36,11 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
 
     private String telephone;
 
-    private String mobilephone;
+    private String mobilePhone;
 
     private String address;
 
-    private long ctime; //注册时间
+    private long ctime;                                     // 注册时间
 
     private String displayCtime;
 
@@ -141,12 +141,12 @@ public class SystemUserDTO extends BaseDTO implements Serializable {
         this.telephone = telephone;
     }
 
-    public String getMobilephone() {
-        return mobilephone;
+    public String getMobilePhone() {
+        return mobilePhone;
     }
 
-    public void setMobilephone(String mobilephone) {
-        this.mobilephone = mobilephone;
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
     public String getAddress() {

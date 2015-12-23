@@ -211,7 +211,6 @@ public class UserAccountController {
      */
     @RequestMapping(value = "/souke/unbind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView unbindSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountId) {
-        // TODO MongoDB 解除绑定状态修改 DAO层
         userAccountService.unbindAccountForSem(username, moduleAccountId);
 
         return jsonView(true);
@@ -226,7 +225,6 @@ public class UserAccountController {
      */
     @RequestMapping(value = "/souke/active", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView activeSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountId) {
-        // TODO MongoDB 激活状态修改 DAO层
         userAccountService.activeAccountForSem(username, moduleAccountId);
 
         return jsonView(true);
@@ -239,9 +237,8 @@ public class UserAccountController {
      * @return
      */
     @RequestMapping(value = "/souke/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView updateSoukeAccount(ModuleAccountInfoDTO moduleAccount) {
-        // TODO MongoDB 确定修改层级关系 DAO层
-        userAccountService.updateAccountForSem(moduleAccount);
+    public ModelAndView updateSoukeAccount(HttpServletRequest request, ModuleAccountInfoDTO moduleAccount) {
+        userAccountService.updateAccountForSem(request.getParameter("username"), moduleAccount);
 
         return jsonView(true);
     }
@@ -249,14 +246,12 @@ public class UserAccountController {
     /**
      * <p>更新搜客帐号
      *
-     * @param username
      * @param moduleAccountId
      * @return
      */
     @RequestMapping(value = "/souke/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView deleteSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountId) {
-        // TODO MongoDB 删除层级操作 DAO层
-        userAccountService.deleteAccountForSem(username, moduleAccountId);
+    public ModelAndView deleteSoukeAccount(@RequestParam String moduleAccountId) {
+        userAccountService.deleteAccountForSem(moduleAccountId);
 
         return jsonView(true);
     }

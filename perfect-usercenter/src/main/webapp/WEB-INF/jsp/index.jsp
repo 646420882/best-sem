@@ -20,7 +20,7 @@
     <div class="containers">
         <jsp:include page="public/nav.jsp"/>
         <div class="middle_containers">
-            <div class="page_title" >
+            <div class="page_title">
                 当前位置：账户概览
             </div>
             <div class="user_box" style="position: relative">
@@ -31,13 +31,13 @@
                 </div>
                 <div class="user_content" style="width: 282px;
     margin: 0 auto;">
-                    <ul id="userList" >
+                    <ul id="userList">
 
                     </ul>
                     <button type="button" class="btn btn-primary" onclick="Modify(this)">修改</button>
                     <div class="ModifyHide hide" style="float: right;">
-                        <button type="button" class="btn btn-primary" id = "save" >保存</button>
-                        <button type="button" class="btn" style="margin-top:26px;" onclick="Cancel(this)" >取消</button>
+                        <button type="button" class="btn btn-primary" id="save">保存</button>
+                        <button type="button" class="btn" style="margin-top:26px;" onclick="Cancel(this)">取消</button>
                     </div>
                 </div>
             </div>
@@ -46,6 +46,7 @@
 </div>
 <input type="hidden" id="userid" value="${user.id}">
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/public/bootstrapValidator.js"></script>
+<script type="text/javascript" src="/public/js/date/date-formatter.js"></script>
 <script type="text/javascript" src="/public/js/index/index.js"></script>
 </body>
 </html>

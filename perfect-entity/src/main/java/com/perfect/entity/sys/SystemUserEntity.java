@@ -30,7 +30,7 @@ public class SystemUserEntity implements Serializable {
 
     private String telephone;                                       // 办公电话
 
-    private String mobilephone;                                     // 移动电话
+    private String mobilePhone;                                     // 移动电话
 
     private String address;                                         // 通讯地址
 
@@ -137,12 +137,12 @@ public class SystemUserEntity implements Serializable {
         this.telephone = telephone;
     }
 
-    public String getMobilephone() {
-        return mobilephone;
+    public String getMobilePhone() {
+        return mobilePhone;
     }
 
-    public void setMobilephone(String mobilephone) {
-        this.mobilephone = mobilephone;
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
     public String getAddress() {

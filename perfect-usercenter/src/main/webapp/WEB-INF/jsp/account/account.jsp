@@ -26,7 +26,7 @@
             <input id="sysUserName" type="hidden" style="width: 0px; height: 0px" value="${user.userName}"/>
             <div class="user_box" style="background: #f0f0f0">
                 <div class="user_content account_box over">
-                    <h3>百思搜客绑定 <span>使用时间：2015-10.10至2016-12-12</span></h3>
+                    <h3>百思搜客绑定 <span>使用时间：${bestSemStartTime}至${bestSemEndTime}</span></h3>
                     <table id="account_table">
                         <thead>
                         <tr>
@@ -72,6 +72,7 @@
     </div>
 </div>
 <jsp:include page="../public/publicmodel.jsp"/>
+<script type="text/javascript" src="/public/js/date/date-formatter.js"></script>
 <script type="text/javascript" src="/public/js/account/account.js"></script>
 </body>
 </html>

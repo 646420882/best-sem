@@ -1,31 +1,6 @@
 /**
  * Created by guochunyan on 2015/12/15.
  */
-
-// 对Date的扩展，将 Date 转化为指定格式的String
-// 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
-// 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
-// 例子：
-// (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2014-07-02 08:09:04.423
-// (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2014-7-2 8:9:4.18
-Date.prototype.Format = function (fmt) {
-    var o = {
-        "M+": this.getMonth() + 1,                 //月份
-        "d+": this.getDate(),                    //日
-        "h+": this.getHours(),                   //小时
-        "m+": this.getMinutes(),                 //分
-        "s+": this.getSeconds(),                 //秒
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-        "S": this.getMilliseconds()             //毫秒
-    };
-    if (/(y+)/.test(fmt))
-        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-};
-
 $(function () {
     var huiyanData = [{
         id: 1,
@@ -68,6 +43,8 @@ $(function () {
                     obj["remark"] = item.baiduRemarkName;
                     obj["url"] = item.bestRegDomain;
                     obj["platform"] = "百思搜客";
+                    // TODO 页面绑定与取消绑定的显示
+                    //obj["state"] = item.state;  // 1 -> 显示取消绑定; 0 -> 显示绑定
                     obj["time"] = new Date(item.accountBindingTime).Format("yyyy年M月dd日");
                     obj["action"] = 1;
                     semAccounts.push(obj);
@@ -161,10 +138,10 @@ window.operateEvents = {
                         },
                         success: function (data) {
                             if (data.status) {
-                                alert("绑定成功!");
                                 $('#modelbox').modal('hide');
                                 $('.modal-backdrop').hide();
                                 bindingtext.html("取消绑定");
+                                alert("绑定成功!");
                             } else {
                                 alert("绑定失败!");
                             }
@@ -186,10 +163,10 @@ window.operateEvents = {
                         },
                         success: function (data) {
                             if (data.status) {
-                                alert("解除绑定成功!");
                                 $('#modelbox').modal('hide');
                                 $('.modal-backdrop').hide();
                                 bindingtext.html("绑定");
+                                alert("解除绑定成功!");
                             } else {
                                 alert("解除绑定失败!");
                             }
@@ -303,7 +280,7 @@ window.operateEvents = {
                 moduleAccount["baiduRemarkName"] = selectedSemAccountRemarkName;
                 moduleAccount["bestRegDomain"] = selectedSemAccountUrl;
                 $.ajax({
-                    url: '/account/souke/update',
+                    url: '/account/souke/update/?username=' + $('#sysUserName').val(),
                     type: 'POST',
                     change: false,
                     dataType: 'JSON',
@@ -383,10 +360,10 @@ window.operateEvents = {
                     },
                     success: function (data) {
                         if (data.status) {
-                            alert("删除成功!");
                             $('#modelbox').modal('hide');
                             $('.modal-backdrop').hide();
                             tabledelete.remove();
+                            alert("删除成功!");
                         } else {
                             alert("删除失败!");
                         }
@@ -488,18 +465,3 @@ $(function () {
         $(".modal-body").html(acountContent);
     });
 });
-
-/**
- * 获取当前用户的所有搜客帐号
- *
- */
-var getSemAccounts = function () {
-    $.ajax({
-        url: '/account/' + $('#sysUserName').val() + "/semAccount/list",
-        type: 'GET',
-        dataTye: 'JSON',
-        success: function (data) {
-            console.log(JSON.stringify(data.rows));
-        }
-    });
-};

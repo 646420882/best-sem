@@ -1,6 +1,6 @@
-package com.perfect.usercenter.tests;
+package com.perfect.usercenter.tests.base.admin;
 
-import com.perfect.usercenter.tests.base.JUnitBaseTest;
+import com.perfect.usercenter.tests.base.admin.JUnitBaseTest;
 import org.junit.Test;
 
 /**
