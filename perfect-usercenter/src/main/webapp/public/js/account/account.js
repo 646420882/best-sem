@@ -2,32 +2,6 @@
  * Created by guochunyan on 2015/12/15.
  */
 $(function () {
-    var huiyanData = [{
-        id: 1,
-        name: 'baidu-perfect2151880',
-        password: '123455',
-        remark: "http://www.perfect-cn.cn",
-        platform: "百思慧眼",
-        webName: "百度",
-        webUrl: "http://localhost:8088/account",
-        webCode: "http://localhost:8088/account",
-        time: "2015年12月25日",
-        action: "1"
-
-    }, {
-        id: 2,
-        name: 'baidu-perfect2151880',
-        password: '123455',
-        remark: "http://www.perfect-cn.cn",
-        platform: "百思慧眼",
-        webUrl: "http://localhost:8088/account",
-        webName: "百度",
-        webCode: "http://localhost:8088/account",
-        time: "2015年12月25日",
-        action: "1"
-    }];
-
-
     var retrieveSemAccounts = function () {
         $.ajax({
             url: '/account/' + $('#sysUserName').val() + "/semAccount/list",
@@ -63,9 +37,6 @@ $(function () {
     }();
 
 
-    $('#AccountTable').bootstrapTable({
-        data: huiyanData
-    });
     $(window).resize(function () {
         $('#account_table').bootstrapTable('resetView');
 
@@ -204,25 +175,61 @@ window.operateEvents = {
     'click .disable': function (e, value, row, index) {
         var platform = row.platform;
 
-        var bindingtext = $(this);
-        if ($(this).html() == "禁用") {
-            $('#modelbox').modal();
-            $("#modelboxTitle").html("系统提示");
-            $(".modal-body").html("是否禁用？");
-            $("#modelboxBottom").click(function () {
-                $('#modelbox').modal('hide');
-                bindingtext.html("启动");
-            })
+        if (platform == "百思慧眼") {
+            var bindingtext = $(this);
+            if ($(this).html() == "禁用") {
+                $('#modelbox').modal();
+                $("#modelboxTitle").html("系统提示");
+                $(".modal-body").html("是否禁用？");
+                $("#modelboxBottom").click(function () {
+                    $.ajax({
+                        url: "/enableOrPause",
+                        type: "post",
+                        data: {
+                            uid: row.id,
+                            enable: 1
+                        },
+                        cache: false,
+                        dataType: "json",
+                        success: function (user) {
+                            console.log(user)
+                            if (user.data != "" && user.data != undefined && user.data != null) {
+                                $('#modelbox').modal('hide');
+                                var tabledelete = $(this).parent().parent();
+                                tabledelete.remove();
+                                window.location.reload()
+                            }
+                        }
+                    });
+                })
 
-        } else {
-            $("#modelboxTitle").html("系统提示");
-            $(".modal-body").html("是否启动？");
-            $('#modelbox').modal();
-            $("#modelboxBottom").click(function () {
-                $('#modelbox').modal('hide');
-                bindingtext.html("禁用");
-            })
+            } else {
+                $("#modelboxTitle").html("系统提示");
+                $(".modal-body").html("是否启动？");
+                $('#modelbox').modal();
+                $("#modelboxBottom").click(function () {
+                    $.ajax({
+                        url: "/enableOrPause",
+                        type: "post",
+                        data: {
+                            uid: row.id,
+                            enable: 0
+                        },
+                        cache: false,
+                        dataType: "json",
+                        success: function (user) {
+                            console.log(user)
+                            if (user.data != "" && user.data != undefined && user.data != null) {
+                                $('#modelbox').modal('hide');
+                                var tabledelete = $(this).parent().parent();
+                                tabledelete.remove();
+                                window.location.reload()
+                            }
+                        }
+                    });
+                })
 
+            }
         }
     },
     'click .suoke': function (e, value, row, index) {
@@ -302,32 +309,57 @@ window.operateEvents = {
     'click .huiyan': function (e, value, row, index) {
         var platform = row.platform;
 
-        $('#modelbox').modal();
-        $('.modal-dialog').css({width: '400px'});
-        $("#modelboxTitle").html("修改关联账户");
-        $(".modal-body").html("<ul class='account_change'>" +
-            "<li>关联账户名：</li>" +
-            "<li>账户密码：</li>" +
-            "<li>备注名：</li>" +
-            "<li>URL地址：</li>" +
-            "<li>账户所属平台：</li>" +
-            "<li>统计代码：</li>" +
-            "<li>网站名称：</li></ul>");
-        var editorBottom = $(this);
-        var that = $(this).parent().prevAll("td");
-        var that_value = that.each(function (index) {
-            var that_html = $(this).html();
-            if (index == 6) {
-                var acount_html = "<input type='password' class='form-control' value='" + that_html + "'> "
-            } else if (index == 3) {
-                var that_html = "百思慧眼";
-                var acount_html = "<input type='text'  class='form-control' readonly value='" + that_html + "'> "
-            }
-            else {
-                var acount_html = "<input type='text' class='form-control' value='" + that_html + "'> "
-            }
-            $(".account_change").find('li').eq(7 - index).append(acount_html);
-        });
+        if (platform == "百思慧眼") {
+            $('#modelbox').modal();
+            $('.modal-dialog').css({width: '400px'});
+            $("#modelboxTitle").html("修改关联账户");
+            $(".modal-body").html("<ul class='account_change'>" +
+                "<li>关联账户名：</li>" +
+                "<li>账户密码：</li>" +
+                "<li id='rname'>备注名：</li>" +
+                "<li id='huiyanUrl'>URL地址：</li>" +
+                "<li>账户所属平台：</li>" +
+                "<li>统计代码：</li>" +
+                "<li id='webName'>网站名称：</li></ul>");
+            var editorBottom = $(this);
+            var that = $(this).parent().prevAll("td");
+            var that_value = that.each(function (index) {
+                var that_html = $(this).html();
+                if (index == 6) {
+                    var acount_html = "<input type='password' class='form-control' value='" + that_html + "'> "
+                } else if (index == 3) {
+                    var that_html = "百思慧眼";
+                    var acount_html = "<input type='text'  class='form-control' readonly value='" + that_html + "'> "
+                }
+                else {
+                    var acount_html = "<input type='text' class='form-control' value='" + that_html + "'> "
+                }
+                $(".account_change").find('li').eq(7 - index).append(acount_html);
+            });
+
+            $("#modelboxBottom").click(function () {
+                $.ajax({
+                    url: "/insightupdate",
+                    type: "post",
+                    data: {
+                        uid: row.id,
+                        rname: $("#rname input").val(),
+                        url: $("#huiyanUrl input").val(),
+                        webName: $("#webName input").val()
+                    },
+                    cache: false,
+                    dataType: "json",
+                    success: function (user) {
+                        if (user.data != "" && user.data != undefined && user.data != null) {
+                            $('#modelbox').modal('hide');
+                            var tabledelete = $(this).parent().parent();
+                            tabledelete.remove();
+                            window.location.reload()
+                        }
+                    }
+                });
+            });
+        }
     },
     'click .preserve': function (e, value, row, index) {
         var platform = row.platform;
@@ -376,8 +408,19 @@ window.operateEvents = {
             $("#modelboxTitle").html("系统提示");
             $(".modal-body").html("是否删除？");
             $("#modelboxBottom").click(function () {
-                $('#modelbox').modal('hide');
-                tabledelete.remove();
+                console.log(row.id)
+                $.ajax({
+                    url: "/insightDel/" + row.id,
+                    type: "get",
+                    dataType: "json",
+                    success: function (user) {
+                        if (user.data == "\"success\"") {
+                            $('#modelbox').modal('hide');
+                            tabledelete.remove();
+                            window.location.reload()
+                        }
+                    }
+                });
             })
         }
     }
@@ -421,7 +464,10 @@ $(function () {
                 alert("请输入URL地址!");
                 return;
             }
-            // TODO URL验证
+            if (IsURL(semAccountAddr)) {
+                alert("请输入正确的URL地址!");
+                return;
+            }
 
             var moduleAccount = {};
             moduleAccount["baiduUserName"] = semAccountName;
@@ -452,16 +498,110 @@ $(function () {
 $(function () {
     $("#SecendTablebutton").click(function () {
         var acountContent = "<ul class='account_add'>" +
-            "<li>关联账户名：<input class='form-control ' type='text'></li>" +
-            "<li>账户密码：<input class='form-control ' type='text'></li>" +
-            "<li>备注名：<input class='form-control ' type='text'></li>" +
-            "<li>URL地址：<input class='form-control ' type='text'></li>" +
-            "<li>统计代码：<input class='form-control '  type='text'></li>" +
-            "<li>网站名称：<input class='form-control '  type='text'></li>" +
-            "<li>账户所属平台：<input class='form-control ' readonly value='百思慧眼' type='text'></li></ul>";
+            "<li>URL地址：<input class='form-control ' id='url' type='text'><b style='color:red;'>  *</b></li>" +
+            "<li>网站名称：<input class='form-control ' id='urlname' type='text'><b style='color:red;'>  *</b></li>" +
+            "<li>关联账户名：<input class='form-control ' id='buserName' type='text'></li>" +
+            "<li>账户密码：<input class='form-control ' id='bpasswd' type='text'></li>" +
+            "<li>备注名：<input class='form-control ' id='rname' type='text'></li>" +
+            "<li>账户所属平台：<input class='form-control ' readonly value='百思慧眼' type='text'></li>" +
+            "<li>可输入如下4种域名形式 <p/>1.主域名（如：www.baidu.com）<br>2.二级域名（如：sub.baidu.com) 3.子目录（如：www.baidu.com/sub）<br>4.wap站域名（如：wap.baidu.com）</li></ul>";
         $('#modelbox').modal();
         $('.modal-dialog').css({width: '400px'});
         $("#modelboxTitle").html("新增关联账户");
         $(".modal-body").html(acountContent);
+
+        $("#modelboxBottom").click(function () {
+            var url = $("#url").val();
+            if (IsURL(url)) {
+                alert("请输入正确的url地址");
+                return
+            }
+            var urlname = $("#urlname").val();
+            var buserName = $("#buserName").val();
+            var bpasswd = $("#bpasswd").val();
+            var rname = $("#rname").val();
+            if (url == undefined) {
+                alert("url地址不能为空");
+                return
+            }
+            if (urlname == undefined) {
+                alert("网站名称不能为空");
+            }
+            var websiteDTO = {};
+            websiteDTO["uid"] = $("#sysUserId").val();
+            websiteDTO["site_url"] = url;
+            websiteDTO["site_name"] = urlname;
+            websiteDTO["bname"] = buserName;
+            websiteDTO["bpasswd"] = bpasswd;
+            websiteDTO["rname"] = rname;
+            $.ajax({
+                url: "/insightAdd",
+                type: "post",
+                data: websiteDTO,
+                cache: false,
+                dataType: "json",
+                success: function (user) {
+                    console.log(user)
+                    if (user.data != "" && user.data != undefined && user.data != null) {
+                        $('#modelbox').modal('hide');
+                        var tabledelete = $(this).parent().parent();
+                        tabledelete.remove();
+                        window.location.reload()
+                    }
+                }
+            });
+        })
     });
+    huiyanQuery();
 });
+
+var huiyanQuery = function () {
+    $.ajax({
+        url: "/insightQuery/" + $("#sysUserId").val(),
+        type: "get",
+        dataType: "json",
+        success: function (user) {
+            var datas = new Array();
+            if (user.code == 0) {
+                user.data.forEach(function (e, s) {
+                    var obj = {};
+                    console.log(e)
+                    obj.id = e.id;
+                    obj.name = e.bname;
+                    obj.remark = e.rname;
+                    obj.platform = "百思慧眼";
+                    obj.webName = e.site_name;
+                    obj.webUrl = e.site_url;
+                    var code = "<div id='base_code'>&lt;script&gt;<br>" +
+                        "var _pct= _pct|| [];<br> " +
+                        "(function() {<br>" +
+                        "var hm = document.createElement(\"script\");<br>" +
+                        "hm.src = \"//t.best-ad.cn/t.js?tid=" + e.track_id + "\";<br>" +
+                        "var s = document.getElementsByTagName(\"script\")[0];<br>" +
+                        "s.parentNode.insertBefore(hm, s);<br> " +
+                        "})();<br>" +
+                        "&lt;/script&gt;</div>";
+                    obj.webCode = code
+                    obj.time = e.ctime;
+                    datas.push(obj);
+                })
+            }
+            $('#AccountTable').bootstrapTable({
+                data: datas
+            });
+
+        }
+    });
+};
+
+
+function IsURL(str_url) {
+    var strRegex = '^(((https|http)?://)?([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))?\.+(com|top|cn|wang|net|org|hk|co|cc|me|pw|la|asia|biz|mobi|gov|name|info|tm|tv|tel|us|tw|website|host|press|cm|tw|sh|ws|in|io|vc|sc|ren))$';
+    var re = new RegExp(strRegex);
+
+    if (re.test(str_url)) {
+        return false;
+    } else {
+        return true;
+    }
+}

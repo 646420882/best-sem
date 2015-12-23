@@ -190,7 +190,7 @@
                         </ul>
                         <div class="registerWrap" style="margin-top:20px;">
                             <%--<input type="submit" id="" value="立即注册" class="submit">--%>
-                            <input value="立即注册" id="immedateRegister" type="button" class="submit registeButton">
+                            <input value="立即注册" id="immedateRegister" type="submit" class="submit registeButton">
                         </div>
                     </form>
                 </div>

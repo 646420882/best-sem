@@ -1,21 +1,25 @@
 package com.perfect.service.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.perfect.commons.constants.PasswordSalts;
+import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.dao.account.AccountRegisterDAO;
+import com.perfect.dao.account.SystemAccountDAO;
+import com.perfect.dto.huiyan.InsightWebsiteDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.param.RegisterParam;
 import com.perfect.service.AccountRegisterService;
+import com.perfect.service.UserAccountService;
 import com.perfect.utils.MD5;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by SubDong on 2014/9/30.
@@ -29,6 +33,12 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
 
     @Resource
     private AccountRegisterDAO accountRegisterDAO;
+
+    @Resource
+    private SystemAccountDAO systemAccountDAO;
+
+    @Resource
+    private UserAccountService userAccountService;
 
 
     @Override
@@ -87,29 +97,32 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
 
             //开通平台
             String[] dd = registerParam.getOpenPlatform().split(",");
-            List<SystemUserModuleDTO> entities = new ArrayList<>();
+            List<SystemUserModuleDTO> entities = Lists.newArrayList();
+            Map<String, ModuleAccountInfoDTO> moduleAccountInfoDTOMap = Maps.newHashMap();
             for (String s : dd) {
-                //SystemModuleDTO byModuleId = systemModuleService.findByModuleId(s);
+                SystemModuleDTO systemModuleDTO = systemAccountDAO.findByModuleName(s);
 
+                // 百思系统模块
                 SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
+                String sysUserModuleId = new ObjectId().toString();
+                systemUserModuleDTO.setId(sysUserModuleId);
+                systemUserModuleDTO.setModuleId(systemModuleDTO.getId());
+                systemUserModuleDTO.setModuleName(systemModuleDTO.getModuleName());
+                systemUserModuleDTO.setModuleUrl(systemModuleDTO.getModuleUrl());
                 systemUserModuleDTO.setPayed(true);
                 systemUserModuleDTO.setEnabled(true);
-                systemUserModuleDTO.setModuleName(s);
-                systemUserModuleDTO.setModuleUrl(s.equals("百思搜客") ? "sem.best-ad.cn" : "hy.best-ad.cn");
+                systemUserModuleDTO.setStartTime(Calendar.getInstance().getTimeInMillis());
+                systemUserModuleDTO.setEndTime(Calendar.getInstance().getTimeInMillis() + 3600_000 * 24 * 365);
 
                 //百度账户处理
-                List<ModuleAccountInfoDTO> baiduList = new ArrayList<>();
                 ModuleAccountInfoDTO baiduAccountInfo = new ModuleAccountInfoDTO();
-                baiduAccountInfo.setId(new ObjectId().toString());
+                baiduAccountInfo.setModuleId(sysUserModuleId);
+                baiduAccountInfo.setAccountBindingTime(Calendar.getInstance().getTimeInMillis());
                 baiduAccountInfo.setBaiduUserName(registerParam.getBaiduUserName());
                 baiduAccountInfo.setBaiduPassword(registerParam.getBaiduUserPassword());
                 baiduAccountInfo.setBestRegDomain(registerParam.getUrlAddress());
-                baiduList.add(baiduAccountInfo);
-                //设置百度帐号信息
-                systemUserModuleDTO.setAccounts(baiduList);
-                systemUserModuleDTO.setStartTime(new Date().getTime());
-                systemUserModuleDTO.setEndTime(0L);
-                systemUserModuleDTO.setMenus(Collections.emptyList());
+                moduleAccountInfoDTOMap.put(s, baiduAccountInfo);
+
                 entities.add(systemUserModuleDTO);
             }
             systemUserDTO.setSystemUserModules(entities);
@@ -117,7 +130,34 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             SystemUserDTO user = accountRegisterDAO.getAccount(registerParam.getUsername());
 
             if (user == null) {
-                accountRegisterDAO.regAccount(systemUserDTO);
+                // 注册用户
+                systemAccountDAO.insertUser(systemUserDTO);
+
+                // 获取用户注册后的Mongo ID
+                String userId = systemAccountDAO.findByUserName(systemUserDTO.getUserName()).getId();
+                for (Map.Entry<String, ModuleAccountInfoDTO> entry : moduleAccountInfoDTOMap.entrySet()) {
+                    entry.getValue().setUserId(userId);
+
+                    if (Objects.equals(SystemNameConstant.HUIYAN_SYSTEM_NAME, entry.getKey())) {
+                        try {
+                            InsightWebsiteDTO insightWebsiteDTO = new InsightWebsiteDTO();
+
+                            insightWebsiteDTO.setBname(entry.getValue().getBaiduUserName());
+                            insightWebsiteDTO.setBpasswd(entry.getValue().getBaiduPassword());
+                            insightWebsiteDTO.setRname(entry.getValue().getBaiduRemarkName());
+                            insightWebsiteDTO.setUid(userId);
+
+                            userAccountService.insertInsight(insightWebsiteDTO);
+                        } catch (final Exception ignored) {
+
+                        }
+                    }
+
+                    // 添加模块帐号
+                    systemAccountDAO.insertModuleAccount(entry.getValue());
+                }
+
+//                accountRegisterDAO.regAccount(systemUserDTO);
                 returnState = 1;
             } else {
                 returnState = -1;
