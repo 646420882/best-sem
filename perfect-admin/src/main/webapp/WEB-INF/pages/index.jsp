@@ -35,9 +35,9 @@
 
                     <div class="fl">
                         <input type="text" class="adminInput" placeholder="请输入姓名、登录账号">
-                    </div>
-                    <div class="fl">
-                        <span class="adminButton">搜索</span>
+                        <span class="adminSearch">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </span>
                     </div>
                     <!-- /.row -->
 

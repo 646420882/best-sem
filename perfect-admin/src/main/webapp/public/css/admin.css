@@ -12,6 +12,23 @@
     -moz-border-radius: 3px;
     cursor: pointer;
 }
+.adminSearch{
+    position: relative;
+    width: 28px;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    cursor: pointer;
+    left: -36px;
+    color: #666;
+}
+.adminSearch:hover{
+    color: #333;
+}
 .adminInput{
     width: 200px;
     height: 28px;
@@ -109,4 +126,11 @@
 }
 .setJurisdictionBtn{
     margin-top: 10px;
+}
+/*系统模块样式*/
+.systemWrap{
+    padding-left: 20px;
+}
+.systemWrap .firstClass li{
+    line-height: 34px;
 }

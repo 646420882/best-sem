@@ -16,24 +16,45 @@
                 当前位置：角色管理
             </div>
             <div class="user_box">
+                <div class="admin_title">
+                    <label class="control-label fl"> 账户状态：</label>
+
+                    <div class="fl select">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                所有人员
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="#">所有人员</a></li>
+                                <li><a href="#">管理员</a></li>
+                                <li><a href="#">超级管理员</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="fl">
+                        <input type="text" class="adminInput" placeholder="请输入姓名、登录账号">
+                        <span class="adminSearch">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </span>
+                    </div>
+                    <!-- /.row -->
+
+                </div>
                 <div>
-                    <table id="roleAdmin" data-click-to-select="true"    data-query-params="queryParams"  data-pagination="true" >
+                    <table id="roleAdmin" data-click-to-select="true" data-query-params="queryParams"  data-pagination="true" >
                         <thead>
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
-                            <th data-field="name">序号</th>
-                            <th data-field="name">公司名称</th>
-                            <th data-field="remark">用户名</th>
-                            <th data-field="wedName">密码</th>
-                            <th data-field="wedUrl">注册邮箱</th>
-                            <th data-field="wedCode">注册日期</th>
-                            <th data-field="wedCode">联系人</th>
-                            <th data-field="wedCode">办公电话</th>
-                            <th data-field="wedCode">移动电话</th>
-                            <th data-field="wedCode">通讯地址</th>
-                            <th data-field="wedCode">系统模块</th>
-                            <th data-field="action" data-formatter="disableFormatter" data-events="operateEvents">账户状态
-                            </th>
+                            <th data-field="roleName">姓名</th>
+                            <th data-field="rolePosition">职务</th>
+                            <th data-field="roleProperty">角色属性</th>
+                            <th data-field="roleAccount">登录账号</th>
+                            <th data-field="rolePassword" data-formatter="passwordFormatter" data-events="operateEvents">登录密码</th>
+                            <th data-field="roleCreateTime">创建日期</th>
+                            <th data-field="roleContactWay">联系方式</th>
+                            <th data-field="action" data-formatter="disableFormatter" data-events="operateEvents">操作</th>
                         </tr>
                         </thead>
                     </table>

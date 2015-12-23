@@ -47,7 +47,7 @@ function LookUp(value, row, index) {
 }
 function passwordFormatter (value, row, index) {
     return [
-        "<span class='fl'>*******</span>"+
+        "<span class='fl'>*******</span>&nbsp;&nbsp;&nbsp;&nbsp;"+
         '<a class="password_reset" href="javascript:void(0)" title="重置">',
         '重置',
         '</a>'
