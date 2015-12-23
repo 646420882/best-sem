@@ -183,7 +183,7 @@ public class AccountManageServiceImpl implements AccountManageService {
 
     @Override
     public Map<String, Object> getAllBaiduAccount(String currSystemUserName) {
-        List<ModuleAccountInfoDTO> list = accountManageDAO.getBaiduAccountItems(currSystemUserName);
+        List<ModuleAccountInfoDTO> list = systemAccountDAO.findAllModuleAccountByUserName(currSystemUserName);
         return JSONUtils.getJsonMapData(list);
     }
 
