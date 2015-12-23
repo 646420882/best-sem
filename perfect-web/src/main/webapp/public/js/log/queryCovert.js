@@ -301,13 +301,20 @@ var lq = {
             var _left_div = $("<div>");
             _left_div.attr("class", "list-view");
 
-            var _mainInput = $("<input type='checkbox' name='top' value='" + item.name + "' index='" + index + "' checked='checked' onchange='lq.checkChild(this)'/>");
+            //var _mainInput = $("<input type='checkbox' name='top' value='" + item.name + "' index='" + index + "' checked='checked' onchange='lq.checkChild(this)'/>");
+            var _mainInput = $("<input/>");
+            _mainInput.attr("type", "checkbox");
+            _mainInput.attr("name", "top");
+            _mainInput.attr("value", item.name);
+            _mainInput.attr("index", index);
+            _mainInput.attr("onchange", "lq.checkChild(this)");
+            _mainInput.attr("checked", "checked");
             if (index <= (currentLevel - 1)) {
-                _mainInput = $("<input type='checkbox' name='top' value='" + item.name + "' index='" + index + "' disabled='checked'  onchange='lq.checkChild(this)' disabled='disabled'/>");
+                _mainInput.attr("disabled", "disabled");
             }
             if (currentLevel == 3 || currentLevel == 4) {
                 if (index != currentLevel) {
-                    _mainInput = $("<input type='checkbox' name='top' value='" + item.name + "' index='" + index + "' disabled='checked'  onchange='lq.checkChild(this)' disabled='disabled'/>");
+                    _mainInput.attr("disabled", "disabled");
                 }
             }
             var _mainLabel = $("<label >" + item.label + "</label>");

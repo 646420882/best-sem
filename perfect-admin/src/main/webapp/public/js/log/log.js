@@ -1,59 +1,34 @@
 /**
  * Created by guochunyan on 2015/12/16.
  */
+var slog = {
+    init: {
+        data: function () {
+            $('#logAdmin').bootstrapTable({
+                locale: 'zh-CN',
+                url: "/syslogs",
+                pagination: true,
+                search: true,
+                smartDisplay: false,
+                //strictSearch:true,
+                pageSize: 20,
+                searchAlign: 'left',
+                pageList: new Array(20, 50, 100),
+                paginationPreText: "上一页",
+                paginationNextText: "下一页",
+                showHeader: true,
+                sidePagination: 'server'
+                //queryParams: function (params) {
+                //    params["page"] = params.offset;
+                //    return params;
+                //}
+                //data: slog.test.data
+            });
+        }
+    }
+}
+slog.init.data();
 $(function () {
-    var data = [{
-        id: 1,
-        name: 'baidu-perfect2151880',
-        url: "http://www.perfect-cn.cn",
-        platform: "百度",
-        time: "2015年12月25日",
-        action: "1"
-
-    }, {
-        id: 2,
-        name: 'tudou.com',
-        url: "http://www.perfect-cn.cn",
-        platform: "百度",
-        time: "2015年12月25日",
-        action: "1"
-    }]
-    $('#logAdmin').bootstrapTable({
-        data: data
-    });
-    $(window).resize(function () {
-        $('#logAdmin').bootstrapTable('resetView');
-
-    });
-
-    //分页
-    //$(".page-pre").empty();
-    $(".page-pre a").text("上一页");
-    $(".page-next a").text("下一页");
-    $("*").click(function(){
-        $(".page-pre a").text("上一页");
-        $(".page-next a").text("下一页");
-        if( $(".pull-right.pagination").css("display")=='none' ) {
-            $(".skip").css({display:"none"});
-        }else{
-            $(".skip").css({display:"block"});
-        }
-        for(var i=0;i<=$('.pagination>li>a').length;i++){
-            if($('.pagination>li>a:eq(i)').text()==$("#selectPages").val()){
-                $(this).addClass("active")
-            }
-        }
-
-    })
-    $(".selectPage").click(function(){
-        var pages=$("#selectPages").val();
-        $('#logAdmin').bootstrapTable('selectPage',pages);
-    })
-    $(".nextPage").click(function(){
-        $('#logAdmin').bootstrapTable('nextPage');
-    })
-
-    //加载日历
     $('input[name="reservation"]').daterangepicker({
             "showDropdowns": true,
             "timePicker24Hour": true,
@@ -77,43 +52,19 @@ $(function () {
                 "fromLabel": "From",
                 "toLabel": "To",
                 "customRangeLabel": "Custom",
-                "daysOfWeek": [
-                    "日",
-                    "一",
-                    "二",
-                    "三",
-                    "四",
-                    "五",
-                    "六"
-                ],
-                "monthNames": [
-                    "一月",
-                    "二月",
-                    "三月",
-                    "四月",
-                    "五月",
-                    "六月",
-                    "七月",
-                    "八月",
-                    "九月",
-                    "十月",
-                    "十一月",
-                    "十二月"
-                ],
+                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
                 "firstDay": 1
             },
             "startDate": moment(),
             "endDate": moment()
         },
-        function (start, end, label,e) {
+        function (start, end, label, e) {
             var _startDate = start.format('YY-MM-DD');
             var _endDate = end.format('YY-MM-DD');
             daterangepicker_start_date = _startDate;
             daterangepicker_end_date = _endDate;
-            $("#date").val(daterangepicker_start_date +" 至 "+ daterangepicker_end_date);
+            $("#date").val(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
         });
-
-
-
 
 })

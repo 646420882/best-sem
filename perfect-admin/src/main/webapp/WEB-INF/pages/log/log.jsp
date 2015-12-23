@@ -37,20 +37,18 @@
                     <!-- /.row -->
 
                 </div>
-                <table id="logAdmin" data-click-to-select="true" data-query-params="queryParams" data-pagination="true" data-page-list="[1, 25, 50, 100, All]" data-page-number="1" data-page-size="1">
+                <table id="logAdmin">
                     <thead>
                     <tr>
-                        <th data-field="state" data-checkbox="true"></th>
-                        <th data-field="name">序号</th>
-                        <th data-field="name">操作帐号</th>
-                        <th data-field="remark">操作人</th>
-                        <th data-field="password">IP地址</th>
-                        <th data-field="wedUrl">日志描述</th>
-                        <th data-field="wedCode">记录时间</th>
+                        <%--<th data-field="name">序号</th>--%>
+                        <th data-field="user">操作人</th>
+                        <th data-field="ip">IP地址</th>
+                        <th data-field="desc">日志描述</th>
+                        <th data-field="displayTime">记录时间</th>
                     </tr>
                     </thead>
                 </table>
-                <div class="skip" style="position: absolute; margin: -45px 0 0 52%;">跳转到 <input id="selectPages" class='form-control' maxlength='3'  style='width: 38px;height: 22px; margin-top: 4px; display: inline;text-align: center;padding: 0' type='text'/>&nbsp;&nbsp;<span class="selectPage">Go</span></div>
+                <%--<div class="skip" style="position: absolute; margin: -45px 0 0 52%;">跳转到 <input id="selectPages" class='form-control' maxlength='3'  style='width: 38px;height: 22px; margin-top: 4px; display: inline;text-align: center;padding: 0' type='text'/>&nbsp;&nbsp;<span class="selectPage">Go</span></div>--%>
             </div>
         </div>
 

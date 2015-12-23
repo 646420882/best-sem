@@ -1,9 +1,9 @@
 package com.perfect.service.impl;
 
 import com.perfect.dao.sys.SystemLogDAO;
-import com.perfect.dto.sys.SystemLogDTO;
 import com.perfect.param.SystemLogParams;
 import com.perfect.service.SystemLogService;
+import com.perfect.utils.paging.BootStrapPagerInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,7 +18,7 @@ public class SystemLogServiceImpl implements SystemLogService {
     private SystemLogDAO systemLogDAO;
 
     @Override
-    public List<SystemLogDTO> list(SystemLogParams params, int page, int size, String s, boolean b) {
-        return systemLogDAO.list(params, page, size, s, b);
+    public BootStrapPagerInfo list(SystemLogParams params, int offset, int limit, String s, String  order) {
+        return systemLogDAO.list(params, offset, limit, s, order);
     }
 }
