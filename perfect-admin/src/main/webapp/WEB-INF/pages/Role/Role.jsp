@@ -20,21 +20,15 @@
                     <label class="control-label fl"> 账户状态：</label>
 
                     <div class="fl select">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                所有人员
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="#">所有人员</a></li>
-                                <li><a href="#">管理员</a></li>
-                                <li><a href="#">超级管理员</a></li>
-                            </ul>
-                        </div>
+                        <select>
+                            <option>所有人员</option>
+                            <option>管理员</option>
+                            <option>超级管理员</option>
+                        </select>
                     </div>
 
                     <div class="fl">
-                        <input type="text" class="adminInput" placeholder="请输入姓名、登录账号">
+                        <%--<input type="text" class="adminInput" placeholder="请输入姓名、登录账号">--%>
                         <span class="adminSearch">
                             <span class="glyphicon glyphicon-search"></span>
                         </span>
@@ -42,8 +36,8 @@
                     <!-- /.row -->
 
                 </div>
-                <div>
-                    <table id="roleAdmin" data-click-to-select="true" data-query-params="queryParams"  data-pagination="true" >
+                <div id="roleTable">
+                    <table id="roleAdmin" data-click-to-select="true" data-query-params="queryParams" data-search="true" data-search-align="left" data-pagination="true" >
                         <thead>
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
@@ -58,7 +52,11 @@
                         </tr>
                         </thead>
                     </table>
+                    <div class="adminAddBtn">
+                        <a href="#"><strong>+ &nbsp;&nbsp;新增角色</strong></a>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

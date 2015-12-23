@@ -124,11 +124,9 @@ $(function () {
             })
         },
         'click .look': function (e, value, row, index) {
-           /* console.log(e)
-            console.log(value)
-            console.log(row)
-            console.log(index)*/
-            $("#userLookUpWrap").css({"display":"block","top": 221+index*44+"px"});
+            $(".indexCret").css({'display':'none'});
+            $("#userLookUpWrap").css({"display":"block","top": 221+index*45+"px"});
+            $(this).next().css("display",'block')
             var lookUpData = [{
                 id: 1,
                 systemModal: '百思搜客',
