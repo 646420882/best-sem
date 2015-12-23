@@ -1061,7 +1061,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
                             }
                             break;
                         case "pause":
-                            if (Integer.valueOf(sp.getFilterValue()) != -1) {
+                            if (Integer.parseInt(sp.getFilterValue()) != -1) {
                                 if (Integer.valueOf(sp.getFilterValue()) == 0) {
                                     q.addCriteria(Criteria.where("p").is(false));
                                 } else {

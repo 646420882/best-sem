@@ -33,7 +33,7 @@ public class BaseMongoTemplate {
 
     private static final ConcurrentHashMap<String, MongoTemplate> mongoTemplateMap = new ConcurrentHashMap<>();
 
-    private static MongoClient mongoClient;
+    private static volatile MongoClient mongoClient;
 
     static {
         if (mongoClient == null) {

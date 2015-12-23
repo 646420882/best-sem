@@ -590,7 +590,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = format.parse(arr[0]);
                     entity1.setDate(date);
-                    entity1.setAccountId(arr[1].equals("-") ? 0L : Long.valueOf(arr[1]));
+                    entity1.setAccountId(arr[1].equals("-") ? 0L : Long.parseLong(arr[1]));
                     entity1.setAccountName(arr[2]);
                     if (type == 1) {
                         entity1.setPcImpression(Integer.valueOf(arr[3] == null ? "0" : arr[3]));

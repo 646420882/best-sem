@@ -140,12 +140,15 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         SystemUserDTO systemUserDTO = systemUserDAO.findByUserName(currUserName);
         if (Objects.nonNull(systemUserDTO)) {
             try {
-                List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = systemUserDTO.getSystemUserModules()
+                List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = Collections.EMPTY_LIST;
+
+                systemUserDTO.getSystemUserModules()
                         .stream()
                         .filter(o -> Objects.equals(SystemNameConstant.SOUKE_SYSTEM_NAME, o.getModuleName()))
                         .findFirst()
-                        .get()
-                        .getAccounts();
+                        .ifPresent((systemUserModuleDTO -> {
+                    moduleAccountInfoDTOs.addAll(systemUserModuleDTO.getAccounts());
+                }));
 
                 return moduleAccountInfoDTOs;
             } catch (NullPointerException e) {

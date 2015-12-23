@@ -693,12 +693,12 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
                         }
                         q.addCriteria(Criteria.where("s").in(integers));
                     } else {
-                        q.addCriteria(Criteria.where("s").is(Integer.valueOf(sp.getFilterValue())));
+                        q.addCriteria(Criteria.where("s").is(Integer.parseInt(sp.getFilterValue())));
                     }
                     break;
                 case "pause":
-                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
-                        if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                    if (Integer.parseInt(sp.getFilterValue()) != -1) {
+                        if (Integer.parseInt(sp.getFilterValue()) == 0) {
                             q.addCriteria(Criteria.where("p").is(false));
                         } else {
                             q.addCriteria(Criteria.where("p").is(true));
@@ -712,13 +712,13 @@ public class CampaignDAOImpl extends AbstractUserBaseDAOImpl<CampaignDTO, Long> 
                     q.addCriteria(Criteria.where("bd").gte(starPrice).lte(endPrice));
                     break;
                 case "show":
-                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
-                        q.addCriteria(Criteria.where("sp").is(Integer.valueOf(sp.getFilterValue())));
+                    if (Integer.parseInt(sp.getFilterValue()) != -1) {
+                        q.addCriteria(Criteria.where("sp").is(Integer.parseInt(sp.getFilterValue())));
                     }
                     break;
                 case "dynamic":
-                    if (Integer.valueOf(sp.getFilterValue()) != -1) {
-                        if (Integer.valueOf(sp.getFilterValue()) == 0) {
+                    if (Integer.parseInt(sp.getFilterValue()) != -1) {
+                        if (Integer.parseInt(sp.getFilterValue()) == 0) {
                             q.addCriteria(Criteria.where("idc").is(false));
                         } else {
                             q.addCriteria(Criteria.where("idc").is(true));

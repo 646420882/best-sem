@@ -109,27 +109,29 @@ public class LoginController {
 
         String uuid = UUID.randomUUID().toString();
         String json = JSONUtils.getJsonString(systemUserDTO);
-        Jedis jedis = JRedisUtils.get();
-        jedis.setex(uuid, 3600, json);
+        Jedis jedis = null;
+        try {
+            jedis = JRedisUtils.get();
+            jedis.setex(uuid, 3600, json);
 
-        if (!Strings.isNullOrEmpty(url) && !url.equals("null")) {
-            String target;
-            if (url.lastIndexOf("/") != -1) {
-                target = "http://" + url + TOKEN_URL_PATH.substring(1) + uuid;
-            } else {
-                target = "http://" + url + TOKEN_URL_PATH + uuid;
-            }
-
-            try {
-                response.sendRedirect(target);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (jedis != null) {
-                    JRedisUtils.returnJedis(jedis);
+            if (!Strings.isNullOrEmpty(url) && !url.equals("null")) {
+                String target;
+                if (url.lastIndexOf("/") != -1) {
+                    target = "http://" + url + TOKEN_URL_PATH.substring(1) + uuid;
+                } else {
+                    target = "http://" + url + TOKEN_URL_PATH + uuid;
                 }
+
+                try {
+                    response.sendRedirect(target);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
             }
-            return;
+        } finally {
+            if (jedis != null)
+                jedis.close();
         }
 
         MD5 md5 = md5Builder.source(systemUserDTO.getUserName()).salt(loginSalt).build();
