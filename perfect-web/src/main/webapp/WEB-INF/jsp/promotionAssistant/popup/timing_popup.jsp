@@ -7,9 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="dropdown-menus tabmodel" id="Timings" style="width:240px;">
-    <div class="tabmodel_title"><span id="TimingTitle">定时</span><span class="fr glyphicon glyphicon-remove"
+    <%--<div class="tabmodel_title"><span id="TimingTitle">定时</span><span class="fr glyphicon glyphicon-remove"
                                                                       onclick="timing.TimingClose()"></span>
-    </div>
+    </div>--%>
     <div class="timing_content">
         <div>
             <ul>
