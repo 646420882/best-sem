@@ -127,9 +127,9 @@
                     html = html+"<td>"+data[i].mails+"</td>";
 
                     if(data[i].isEnable==0){
-                        html = html+"<td><select class='enbled' name='"+data[i].menuId+"'><option value = '0' selected='true'>禁用</option> <option value = '1'>启用</option></select></td></tr>";
+                        html = html+"<td><select class='enbled' name='"+data[i].id+"'><option value = '0' selected='true'>禁用</option> <option value = '1'>启用</option></select></td></tr>";
                     }else{
-                        html = html+"<td><select class='enbled' name='"+data[i].menuId+"'><option value = '0'>禁用</option> <option value = '1'  selected='true'>启用</option></select></td></tr>";
+                        html = html+"<td><select class='enbled' name='"+data[i].id+"'><option value = '0'>禁用</option> <option value = '1'  selected='true'>启用</option></select></td></tr>";
                     }
                     $("#warningTr").append(html);
                 }
@@ -144,7 +144,7 @@
 
     /**
     *修改启用或者禁用
-    * @param menuId
+    * @param id
     * @param value
      */
 

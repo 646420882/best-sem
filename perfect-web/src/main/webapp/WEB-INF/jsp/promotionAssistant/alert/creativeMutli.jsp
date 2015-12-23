@@ -199,7 +199,7 @@
                                         <div class="panel-body">
                                             <table border="0" cellspacing="0" width="100%" id="createTable"
                                                    class="table2 table-bordered"
-                                                   data-resizable-columns-menuId="demo-table">
+                                                   data-resizable-columns-id="demo-table">
                                                 <thead>
                                                 <tr class="list02_top">
                                                     <th>&nbsp;推广计划</th>
@@ -244,7 +244,7 @@
                                          aria-labelledby="creativeMutliheadingOne">
                                         <div class="panel-body">
                                             <table border="0" cellspacing="0" width="100%" id="errorTable"
-                                                   class="table2 table-bordered" data-resizable-columns-menuId="demo-table">
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                                 <thead>
                                                 <tr class="list02_top">
                                                     <th>&nbsp;推广计划</th>
@@ -440,9 +440,9 @@
         var parentNode = "";
         for (var i = 0; i < selectNode.length; i++) {
             if (selectNode[i].isParent == true) {
-                parentNode = selectNode[i].menuId;
+                parentNode = selectNode[i].id;
             } else {
-                v = v + parentNode + "," + selectNode[i].menuId + "-";
+                v = v + parentNode + "," + selectNode[i].id + "-";
             }
         }
         v = v.substr(0, v.length - 1);

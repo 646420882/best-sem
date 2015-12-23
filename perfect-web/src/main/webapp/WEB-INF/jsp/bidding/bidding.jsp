@@ -471,21 +471,21 @@
                         </div>
                         <div class="time_select01 hides">
                             <ul>
-                                <li><input name="mtimes" type="checkbox" data-menuId="1"><select id="start1">
+                                <li><input name="mtimes" type="checkbox" data-id="1"><select id="start1">
                                     <option>0点</option>
                                 </select><span>至</span>
                                     <select id="end1">
                                         <option>12点</option>
                                     </select>&nbsp;上午
                                 </li>
-                                <li><input name="mtimes" type="checkbox" data-menuId="2"><select id="start2">
+                                <li><input name="mtimes" type="checkbox" data-id="2"><select id="start2">
                                     <option>12点</option>
                                 </select> <span>至</span><select id="end2">
                                     <option>14点</option>
                                 </select>
                                     &nbsp;中午
                                 </li>
-                                <li><input name="mtimes" type="checkbox" data-menuId="3"><select id="start3">
+                                <li><input name="mtimes" type="checkbox" data-id="3"><select id="start3">
                                     <option>14点</option>
                                 </select><span>至</span><select id="end3">
                                     <option>24点</option>
@@ -1059,7 +1059,7 @@
         if (treeNode.level == 0) {
             //点击的是父节点(推广计划),则应该展示其下属的推广单元数据
 //            alert(treeNode.id + "," + treeNode.name);
-            _campaignId = treeNode.menuId;
+            _campaignId = treeNode.id;
             _adgroupId = null;
             text = null;
             f = null;
@@ -1082,7 +1082,7 @@
             var tmpValue1 = $("#table1").jqGrid("getGridParam", "postData");
             $.extend(tmpValue1, {
                 postData: {
-                    cp: treeNode.menuId,
+                    cp: treeNode.id,
                     ag: _adgroupId,
                     s: skip,
                     l: limit,
@@ -1105,7 +1105,7 @@
             //点击的是子节点(推广单元),则应该展示其下属的关键词数据
 //            alert(treeNode.id + "," + treeNode.name);
             _campaignId = null;
-            _adgroupId = treeNode.menuId;
+            _adgroupId = treeNode.id;
             text = null;
             f = null;
             _filter = null;
@@ -1128,7 +1128,7 @@
             $.extend(tmpValue2, {
                 postData: {
                     cp: _campaignId,
-                    ag: treeNode.menuId,
+                    ag: treeNode.id,
                     s: skip,
                     l: limit,
                     q: text,
@@ -1156,8 +1156,8 @@
 
             skip = 0;
             limit = 20;
-            selection = treeNode.menuId;
-            dataUrl2 = "/importBid/loadData?cgId=" + treeNode.menuId + "&s=" + skip + "&l=" + limit;
+            selection = treeNode.id;
+            dataUrl2 = "/importBid/loadData?cgId=" + treeNode.id + "&s=" + skip + "&l=" + limit;
 
             grid2.setGridParam({url: dataUrl2}).trigger("reloadGrid");
         }

@@ -175,7 +175,7 @@
                                          aria-labelledby="headingOne">
                                         <div class="panel-body">
                                             <table border="0" cellspacing="0" width="100%" id="createTable"
-                                                   class="table2 table-bordered" data-resizable-columns-menuId="demo-table">
+                                                   class="table2 table-bordered" data-resizable-columns-id="demo-table">
                                                 <thead>
                                                 <tr class="list02_top">
                                                     <th>&nbsp;推广计划</th>
@@ -303,7 +303,7 @@
                     json = {};
 
                     if (data[i].rootNode.campaignId == null) {
-                        camId = data[i].rootNode.menuId;
+                        camId = data[i].rootNode.id;
                     } else {
                         camId = data[i].rootNode.campaignId;
                     }
@@ -367,9 +367,9 @@
         var parentNode = "";
         for (var i = 0; i < selectNode.length; i++) {
             if (selectNode[i].isParent == true) {
-                parentNode = selectNode[i].menuId;
+                parentNode = selectNode[i].id;
             } else {
-                v = v + selectNode[i].menuId + ",";
+                v = v + selectNode[i].id + ",";
             }
         }
         v = v.substr(0, v.length - 1);

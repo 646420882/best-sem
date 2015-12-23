@@ -234,7 +234,7 @@ $(function () {
                 if (datas[i].campaignId != null) {
                     _campaignId = datas[i].campaignId;
                 } else {
-                    _campaignId = datas[i].menuId;
+                    _campaignId = datas[i].id;
                 }
                 campaigns += "<option value=" + _campaignId + ">" + datas[i].campaignName + "</option>";
             }
@@ -260,7 +260,7 @@ $(function () {
                             if (datas[i].adgroupId != null) {
                                 _adgroupId = datas[i].adgroupId;
                             } else {
-                                _adgroupId = datas[i].menuId;
+                                _adgroupId = datas[i].id;
                             }
                             adgroups += "<option value=" + _adgroupId + ">" + datas[i].adgroupName + "</option>";
                         }
@@ -278,7 +278,7 @@ $(function () {
                         var adgroups = "", datas = data.rows;
                         adgroups += "<option value='' selected='selected'>请选择推广单元</option>";
                         for (var i = 0, l = datas.length; i < l; i++) {
-                            adgroups += "<option value=" + datas[i].menuId + ">" + datas[i].adgroupName + "</option>";
+                            adgroups += "<option value=" + datas[i].id + ">" + datas[i].adgroupName + "</option>";
                         }
                         $("#adgroup").empty();
                         $("#adgroup").append(adgroups);

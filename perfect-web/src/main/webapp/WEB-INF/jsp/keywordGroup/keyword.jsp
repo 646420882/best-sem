@@ -785,7 +785,7 @@ To change this template use File | Settings | File Templates.
                     document.getElementById("background").style.display = "block";
                     document.getElementById("progressBar1").style.display = "block";
                     var iframe1 = document.createElement("iframe");
-                    iframe1.menuId = "downloadhelper_iframe";
+                    iframe1.id = "downloadhelper_iframe";
                     iframe1.width = 0;
                     iframe1.height = 0;
                     iframe1.src = _url;
@@ -822,7 +822,7 @@ To change this template use File | Settings | File Templates.
                     document.getElementById("background").style.display = "block";
                     document.getElementById("progressBar1").style.display = "block";
                     var iframe2 = document.createElement("iframe");
-                    iframe2.menuId = "downloadhelper_iframe";
+                    iframe2.id = "downloadhelper_iframe";
                     iframe2.width = 0;
                     iframe2.height = 0;
                     iframe2.src = _url;

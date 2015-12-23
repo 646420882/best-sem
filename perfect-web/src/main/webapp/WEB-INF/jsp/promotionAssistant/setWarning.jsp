@@ -56,7 +56,7 @@
                 <span>百度账户</span>
                 <select name="accountId">
                     <c:forEach items="${list}" var="va">
-                        <option value="<c:out value="${va.menuId}"/>"><c:out value="${va.baiduUserName}"/></option>
+                        <option value="<c:out value="${va.id}"/>"><c:out value="${va.baiduUserName}"/></option>
                     </c:forEach>
                 </select><br/><br/>
 

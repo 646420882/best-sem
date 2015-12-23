@@ -337,7 +337,7 @@
         var nodes = node ? [node] : zTree.transformToArray(zTree.getNodes());
         for (var i = 0, l = nodes.length; i < l; i++) {
             var n = nodes[i];
-            n.title = "[" + n.menuId + "] isFirstNode = " + n.isFirstNode + ", isLastNode = " + n.isLastNode;
+            n.title = "[" + n.id + "] isFirstNode = " + n.isFirstNode + ", isLastNode = " + n.isLastNode;
             zTree.updateNode(n);
         }
     }

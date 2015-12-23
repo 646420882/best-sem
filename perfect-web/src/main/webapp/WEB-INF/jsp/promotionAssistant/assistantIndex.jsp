@@ -198,7 +198,7 @@
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%"
                                                            class="table1 table-bordered"
-                                                           data-resizable-columns-menuId="demo-table">
+                                                           data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th style="min-width:80px;"><input type="checkbox"
@@ -403,7 +403,7 @@
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%" id="createTable"
                                                            class="table2 table-bordered"
-                                                           data-resizable-columns-menuId="demo-table">
+                                                           data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th style="min-width:90px; max-widt:92px;"><input
@@ -748,7 +748,7 @@
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%"
                                                            class="table3 table-bordered"
-                                                           data-resizable-columns-menuId="demo-table">
+                                                           data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th>&nbsp;推广电话号码</th>
@@ -774,7 +774,7 @@
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%"
                                                            class="table3 table-bordered"
-                                                           data-resizable-columns-menuId="demo-table">
+                                                           data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th>&nbsp;商桥移动咨询</th>
@@ -842,7 +842,7 @@
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%" id="adGroupTable"
                                                            class="table4 table-bordered"
-                                                           data-resizable-columns-menuId="demo-table">
+                                                           data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th style="min-width:80px;"><input type="checkbox"
@@ -982,7 +982,7 @@
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%"
                                                            class="table5 table-bordered"
-                                                           data-resizable-columns-menuId="demo-table">
+                                                           data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th style="max-width:80px;"><input type="checkbox"
@@ -1225,7 +1225,7 @@
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%"
                                                            class="table1 table-bordered"
-                                                           data-resizable-columns-menuId="demo-table">
+                                                           data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th>&nbsp;关键词名称</th>
@@ -1321,7 +1321,7 @@
                                                 <div class="containers">
                                                     <table border="0" cellspacing="0" width="100%"
                                                            class="table2 table-bordered"
-                                                           data-resizable-columns-menuId="demo-table">
+                                                           data-resizable-columns-id="demo-table">
                                                         <thead>
                                                         <tr class="list02_top">
                                                             <th>&nbsp;监控文件夹</th>
