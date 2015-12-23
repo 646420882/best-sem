@@ -22,6 +22,8 @@
                     <div class="fl select">
                         <div class="dropdown">
                             <input type="text" class="dateinput" readonly id="date" name="reservation"/>
+                            <input type="hidden" id="startTime"/>
+                            <input type="hidden" id="endTime"/>
                         </div>
                     </div>
 
