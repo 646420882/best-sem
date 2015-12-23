@@ -13,9 +13,24 @@
         <jsp:include page="../public/nav.jsp"/>
         <div class="middle_containers">
             <div class="page_title">
-                当前位置：安全工具
+                当前位置：系统模块
             </div>
             <div class="user_box">
+                <div class="system">
+                    <span class="system_title">模块列表</span>
+                    <div class="systemContent" style="position: relative;min-width: 0;">
+                        <ul class="webname">
+                                <li class="web_name">百度<span class='glyphicon glyphicon-triangle-bottom'></span>
+                                    <ul >
+                                        <li>111<span class='glyphicon glyphicon-triangle-bottom'></span></li>
+                                    </ul>
+                                </li>
+                        </ul>
+
+                        <ul class="hides">
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

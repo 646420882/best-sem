@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="menu">
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="panel totalNav panel-default current">
+        <div class="panel totalNav panel-default ">
             <div class="panel-heading" role="tab" id="headingOne">
                 <h4 class="panel-title">
-                    <a role="button" data-parent="#accordion" href="/index"
+                    <a role="button" data-parent="#accordion" href="${pageContext.request.contextPath}/"
                        aria-expanded="true" aria-controls="collapseOne">
                         <span aria-hidden="true" ng-class="icon" class="glyphicon glyphicon-user"></span>
                         用户管理
@@ -23,7 +23,7 @@
                 </h4>
             </div>
         </div>
-        <div class="panel totalNav  panel-default">
+        <div class="panel totalNav  panel-default hide">
             <div class="panel-heading" role="tab">
                 <h4 class="panel-title">
                     <a class="collapsed" role="button" data-parent="#accordion"
