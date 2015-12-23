@@ -68,7 +68,7 @@ public interface SystemUserService {
     List<SystemUserDTO> findUsers(String companyName, String userName, Boolean accountStatus, int skip, int
             limit, String order, boolean asc);
 
-    boolean updateAccountStatus(String id, Boolean accountStatus);
+    boolean updateAccountStatus(String id, Integer accountStatus);
 
     boolean updateAccountTime(String id, Date startDate, Date endDate);
 

@@ -28,6 +28,7 @@ import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.MD5;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.SystemUserUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.elasticsearch.common.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -595,7 +596,11 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updatePassword(String userName, String pwd) {
-        return accountManageDAO.updatePwd(userName, pwd);
+        boolean success = accountManageDAO.updatePwd(userName, pwd);
+        if (success) {
+            systemLogDAO.log("用户:" + userName + "修改密码");
+        }
+        return success;
     }
 
     @Override
@@ -677,22 +682,37 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean updateAccountStatus(String id, Boolean accountStatus) {
-        return systemUserDAO.updateAccountStatus(id, accountStatus);
+    public boolean updateAccountStatus(String id, Integer accountStatus) {
+        SystemUserDTO oldDto = findByUserId(id);
+
+        boolean success = systemUserDAO.updateAccountStatus(id, accountStatus);
+        if (success) {
+
+            systemLogDAO.log("修改用户: " + oldDto.getUserName() + " 审核状态:" + (oldDto.getAccountState() == 1 ? "审核通过" : "审核未通过") + " - > " + (accountStatus == 1 ? "审核通过" : "审核未通过"));
+        }
+        return success;
     }
 
     @Override
     public boolean updateAccountTime(String id, Date startDate, Date endDate) {
-        return systemUserDAO.updateAccountTime(id, startDate, endDate);
+        boolean success = systemUserDAO.updateAccountTime(id, startDate, endDate);
+        if (success) {
+            String startTime = DateFormatUtils.format(startDate, "yyyy-MM-dd");
+            String endTime = DateFormatUtils.format(endDate, "yyyy-MM-dd");
+            SystemUserDTO userDTO = findByUserId(id);
+            systemLogDAO.log("修改用户:" + userDTO.getUserName() + "使用时间开始为:" + startTime + ",结束时间为:" + endTime);
+            return success;
+        }
+        return false;
     }
 
     @Override
     public boolean updateAccountPayed(String id, Boolean payed) {
-        boolean success = systemUserDAO.updateAccountPayed(id, payed);
+        SystemUserDTO oldDto = findByUserId(id);
 
+        boolean success = systemUserDAO.updateAccountPayed(id, payed);
         if (success) {
-            SystemUserDTO systemUserDTO = findByUserId(id);
-            systemLogDAO.log("修改用户: " + systemUserDTO.getUserName() + " 用户状态: " + ((payed) ? "付费" : "试用"));
+            systemLogDAO.log("修改用户: " + oldDto.getUserName() + " 用户使用状态: " + ((oldDto.isPayed()) ? "付费" : "试用") + " - > " + ((payed) ? "付费" : "试用"));
         }
 
         return success;
@@ -821,7 +841,14 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public boolean addModuleAccount(String id, String moduleid, ModuleAccountInfoDTO moduleAccountInfoDTO) {
 
-        return systemUserDAO.addModuleAccount(id, moduleid, moduleAccountInfoDTO);
+
+        boolean success = systemUserDAO.addModuleAccount(id, moduleid, moduleAccountInfoDTO);
+        if (success) {
+            SystemUserDTO userDTO = findByUserId(id);
+            systemLogDAO.log("用户:" + userDTO.getUserName() + "添加了百度推广账号:" + moduleAccountInfoDTO.getBaiduUserName());
+        }
+
+        return success;
     }
 
     @Override
@@ -832,6 +859,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         metaData.put("userId", sysUserId);
 
         systemUserDAO.updateUserImage(is, sysUserName + fileSuffix, metaData);
+        systemLogDAO.log("用户:" + sysUserName + "修改了头像!");
     }
 
     @Override
@@ -881,7 +909,13 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO) {
-        return systemUserDAO.updateUserBaseInfo(userid, systemUserDTO);
+
+        boolean success = systemUserDAO.updateUserBaseInfo(userid, systemUserDTO);
+        if (success) {
+            SystemUserDTO userDTO = findByUserId(userid);
+            systemLogDAO.log("用户:" + userDTO.getUserName() + "修改了用户信息");
+        }
+        return success;
     }
 
     /**

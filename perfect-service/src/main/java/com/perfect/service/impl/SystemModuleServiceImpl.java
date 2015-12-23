@@ -1,6 +1,7 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
+import com.perfect.core.AppContext;
 import com.perfect.dao.sys.SystemLogDAO;
 import com.perfect.dao.sys.SystemModuleDAO;
 import com.perfect.dto.sys.SystemMenuDTO;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by yousheng on 15/12/16.
@@ -37,18 +39,23 @@ public class SystemModuleServiceImpl implements SystemModuleService {
     public boolean updateMenu(String moduleName, String menuname) {
         boolean success = systemModuleDAO.updateMenus(moduleName, menuname);
         if (success) {
-            systemLogDAO.log("更新模块 " + moduleName + " 下的菜单名称 " + menuname);
+            systemLogDAO.log("更新模块: " + moduleName + " 下的菜单名称: " + menuname);
         }
         return success;
     }
 
     @Override
-    public boolean deleteMenu(String moduleName, String menuname) {
-
-
-        boolean success = systemModuleDAO.deleteMenu(moduleName, menuname);
+    public boolean deleteMenu(String moduleId, String menuId) {
+        SystemModuleDTO oldDto = findByModuleId(moduleId);
+        SystemMenuDTO oldMenu = null;
+        for (SystemMenuDTO sm : oldDto.getMenus()) {
+            if (Objects.equals(sm.getId(), menuId)) {
+                oldMenu = sm;
+            }
+        }
+        boolean success = systemModuleDAO.deleteMenu(moduleId, menuId);
         if (success) {
-            systemLogDAO.log("删除模块 " + moduleName + " 下的菜单 " + menuname);
+            systemLogDAO.log("删除模块: " + oldDto.getModuleName() + " 下的菜单: " + oldMenu.getMenuName());
         }
         return success;
     }
@@ -60,14 +67,14 @@ public class SystemModuleServiceImpl implements SystemModuleService {
         systemModuleDTO.setModuleUrl(moduleurl);
         systemModuleDAO.save(systemModuleDTO);
 
-        systemLogDAO.log("创建模块 " + modulename);
+        systemLogDAO.log("创建模块: " + modulename);
         return systemModuleDTO;
     }
 
     @Override
     public SystemModuleDTO createModule(SystemModuleDTO systemModuleDTO) {
 
-        systemLogDAO.log("创建模块 " + systemModuleDTO.getModuleName());
+        systemLogDAO.log("创建模块: " + systemModuleDTO.getModuleName());
 
         return systemModuleDAO.save(systemModuleDTO);
     }
@@ -91,7 +98,7 @@ public class SystemModuleServiceImpl implements SystemModuleService {
         if (success) {
             SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(moduleId);
             if (systemModuleDTO != null) {
-                systemLogDAO.log("创建模块 " + systemModuleDTO.getModuleName() + " 下的菜单 " + systemMenuDTO.getMenuName());
+                systemLogDAO.log("创建模块: " + systemModuleDTO.getModuleName() + " 下的菜单: " + systemMenuDTO.getMenuName());
             }
         }
 
@@ -105,7 +112,30 @@ public class SystemModuleServiceImpl implements SystemModuleService {
 
     @Override
     public boolean updateMenu(String moduleId, String menuid, String menuname, Integer order, String menuUrl) {
-        return systemModuleDAO.updateMenus(moduleId, menuid, menuname, order, menuUrl);
+        SystemModuleDTO oldModule = findByModuleId(moduleId);
+        SystemMenuDTO oldMenu = null;
+        for (SystemMenuDTO sm : oldModule.getMenus()) {
+            if (Objects.equals(sm.getId(), menuid)) {
+                oldMenu = sm;
+            }
+        }
+        boolean success = systemModuleDAO.updateMenus(moduleId, menuid, menuname, order, menuUrl);
+
+        if (success) {
+            if (!Objects.equals(oldMenu.getMenuName(), menuname)) {
+                systemLogDAO.log("更新模块名称为:" + oldModule.getModuleName() + " 菜单名: " + oldMenu.getMenuName() + " -> " + menuname);
+            }
+            if (menuUrl != null) {
+                if (!Objects.equals(oldMenu.getMenuUrl(), menuUrl)) {
+                    systemLogDAO.log("更新模块名称为:" + oldModule.getModuleName() + " 菜单名: " + oldMenu.getMenuName() + " Url地址: " + oldMenu.getMenuUrl() + " -> " + menuUrl);
+                }
+            }
+            if (!Objects.equals(oldMenu.getOrder(), order)) {
+                systemLogDAO.log("更新模块名称为:" + oldModule.getModuleName() + " 菜单名: " + oldMenu.getMenuName() + " 排序: " + oldMenu.getOrder() + " -> " + order);
+            }
+        }
+
+        return success;
     }
 
     @Override
@@ -125,7 +155,7 @@ public class SystemModuleServiceImpl implements SystemModuleService {
             }
 
             if (!systemModuleDTO.getModuleUrl().equals(oldDto.getModuleUrl())) {
-                systemLogDAO.log("更新模块名称:" + oldDto.getModuleUrl() + " -> " + systemModuleDTO.getModuleUrl());
+                systemLogDAO.log("更新模块Url地址:" + oldDto.getModuleUrl() + " -> " + systemModuleDTO.getModuleUrl());
             }
         }
         return success;
@@ -140,7 +170,7 @@ public class SystemModuleServiceImpl implements SystemModuleService {
 
         boolean success = systemModuleDAO.delete(moduleId);
         if (success) {
-            systemLogDAO.log("删除模块 " + systemModuleDTO.getModuleName());
+            systemLogDAO.log("删除模块: " + systemModuleDTO.getModuleName());
         }
         return success;
     }

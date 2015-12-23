@@ -76,6 +76,9 @@ public class SystemRoleController {
 
 
         boolean success = systemRoleService.deleteSystemRole(roleid);
+        if (success) {
+            return JsonViews.generateFailedNoData();
+        }
         return JsonViews.generateSuccessNoData();
     }
 

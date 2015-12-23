@@ -16,7 +16,7 @@ public interface SystemModuleService {
 
     boolean updateMenu(String moduleName, String menuname);
 
-    boolean deleteMenu(String moduleName, String menuname);
+    boolean deleteMenu(String moduleId, String menuId);
 
     public SystemModuleDTO createModule(String modulename, String moduleurl);
 

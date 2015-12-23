@@ -94,7 +94,7 @@ public class SystemRoleServiceImpl implements SystemRoleService {
 
     @Override
     public boolean deleteSystemRole(String roleid) {
-        SystemRoleDTO systemRoleDTO = systemRoleDAO.findOne(roleid);
+        SystemRoleDTO systemRoleDTO = systemRoleDAO.findById(roleid);
 
         if (systemRoleDTO == null) {
             return false;

@@ -33,13 +33,16 @@ public class JUnitBaseTest {
 
     public String userid = "53fec848e4b07cfcbba06db6";
 
-    public String roleid = "56727d7e77c8243187c06982";
+    //百思测试
+    public String sysUserid = "5678bf10279c4ba1e19bd431";
 
-    public String moduleid = "5670f8ac77c8f56e10489559";
+    public String roleid = "567906ad769408288f619f12";
+
+    public String moduleid = "5678eaa476941d1cc5753f2f";
 
     public String usermoduleid = "5672534677c8b0c225a6f374";
 
-    public String moduleMenuId = "5672517477c8d7f4989df0f0";
+    public String moduleMenuId = "56790191769474372653eb1b";
 
     public String updateModuleMenuId = "567251e177c843be6b69a8be";
     @Autowired
