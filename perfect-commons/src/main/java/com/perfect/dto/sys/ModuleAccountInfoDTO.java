@@ -12,6 +12,10 @@ public class ModuleAccountInfoDTO {
 
     private String id;
 
+    private String userId;                              // 系统用户的Mongo ID
+
+    private String moduleId;                            // 模块ID
+
     private String accountPlatformType;                 // 账号所属平台
 
     private Long accountBindingTime;                    // 账号绑定时间
@@ -72,6 +76,22 @@ public class ModuleAccountInfoDTO {
         this.id = id;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+    }
+
     public String getAccountPlatformType() {
         return accountPlatformType;
     }
@@ -96,20 +116,12 @@ public class ModuleAccountInfoDTO {
         this.baiduAccountId = baiduAccountId;
     }
 
-    public Boolean getDfault() {
+    public Boolean isDfault() {
         return dfault;
     }
 
     public void setDfault(Boolean dfault) {
         this.dfault = dfault;
-    }
-
-    public Boolean getDynamicCreative() {
-        return isDynamicCreative;
-    }
-
-    public void setDynamicCreative(Boolean dynamicCreative) {
-        isDynamicCreative = dynamicCreative;
     }
 
     public String getBaiduUserName() {
@@ -232,11 +244,11 @@ public class ModuleAccountInfoDTO {
         this.userStat = userStat;
     }
 
-    public Boolean getIsDynamicCreative() {
+    public Boolean isDynamicCreative() {
         return isDynamicCreative;
     }
 
-    public void setIsDynamicCreative(Boolean isDynamicCreative) {
+    public void setDynamicCreative(Boolean isDynamicCreative) {
         this.isDynamicCreative = isDynamicCreative;
     }
 
@@ -254,14 +266,6 @@ public class ModuleAccountInfoDTO {
 
     public void setOpt(OptTypeDTO opt) {
         this.opt = opt;
-    }
-
-    public boolean isDfault() {
-        return dfault;
-    }
-
-    public void setDfault(boolean dfault) {
-        this.dfault = dfault;
     }
 
     public Long getState() {

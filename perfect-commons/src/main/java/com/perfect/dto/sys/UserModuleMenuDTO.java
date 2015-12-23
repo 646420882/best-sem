@@ -1,5 +1,6 @@
 package com.perfect.dto.sys;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class UserModuleMenuDTO {
 
     // 格式采用 "一级菜单名|二级菜单名"
     // 比如: "网站概览|今日概览"
-    private List<String> menus;
+    private List<String> menus = new ArrayList<>();
 
     public String getModuleName() {
         return moduleName;

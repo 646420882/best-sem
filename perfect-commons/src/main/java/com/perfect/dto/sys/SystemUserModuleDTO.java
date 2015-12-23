@@ -2,6 +2,7 @@ package com.perfect.dto.sys;
 
 import com.perfect.dto.BaseDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +24,8 @@ public class SystemUserModuleDTO extends BaseDTO {
     private long endTime;
 
     private List<SystemMenuDTO> menus;
+
+    private List<UserModuleMenuDTO> moduleMenus = new ArrayList<>();
 
     private List<ModuleAccountInfoDTO> accounts;
 
@@ -55,10 +58,6 @@ public class SystemUserModuleDTO extends BaseDTO {
 
     public boolean isPayed() {
         return isPayed;
-    }
-
-    public void setIsPayed(boolean isPayed) {
-        this.isPayed = isPayed;
     }
 
     public boolean isEnabled() {
@@ -100,5 +99,17 @@ public class SystemUserModuleDTO extends BaseDTO {
     public SystemUserModuleDTO setMenus(List<SystemMenuDTO> menus) {
         this.menus = menus;
         return this;
+    }
+
+    public void setPayed(boolean payed) {
+        isPayed = payed;
+    }
+
+    public List<UserModuleMenuDTO> getModuleMenus() {
+        return moduleMenus;
+    }
+
+    public void setModuleMenus(List<UserModuleMenuDTO> moduleMenus) {
+        this.moduleMenus = moduleMenus;
     }
 }

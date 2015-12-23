@@ -15,7 +15,7 @@ public interface EsRequest {
 
     String IDS = "ids";
 
-    String SALT = "hello,salt";
+    String SALT = "ElasticSalt";
 
     TransportClient getEsClient();
 

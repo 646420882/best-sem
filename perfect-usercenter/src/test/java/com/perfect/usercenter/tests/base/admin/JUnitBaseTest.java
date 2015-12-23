@@ -1,4 +1,4 @@
-package com.perfect.usercenter.tests.base;
+package com.perfect.usercenter.tests.base.admin;
 
 import com.perfect.core.AppContext;
 import com.perfect.core.SystemUserInfo;

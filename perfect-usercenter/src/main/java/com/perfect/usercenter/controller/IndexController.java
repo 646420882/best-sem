@@ -1,6 +1,7 @@
 package com.perfect.usercenter.controller;
 
 import com.google.common.base.Strings;
+import com.perfect.commons.SessionContext;
 import com.perfect.commons.constants.UserConstants;
 import com.perfect.core.AppContext;
 import com.perfect.service.UserAccountService;
@@ -15,7 +16,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created on 2015-12-14.
@@ -26,6 +30,7 @@ import java.util.Arrays;
 @Scope("prototype")
 public class IndexController {
 
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Resource
     private UserAccountService userAccountService;
@@ -80,9 +85,11 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/account", method = RequestMethod.GET)
-    public ModelAndView account(ModelMap modelMap) {
-        modelMap.put("startTime", "2015-10-10");
-        modelMap.put("endTime", "2016-10-10");
+    public ModelAndView account(HttpServletRequest request, ModelMap modelMap) {
+        // 获取搜客模块的使用期限
+        long[] serviceLife = userAccountService.getSemModuleServiceLife(SessionContext.getUser(request).getUserName());
+        modelMap.put("bestSemStartTime", DATE_FORMAT.format(new Date(serviceLife[0])));
+        modelMap.put("bestSemEndTime", DATE_FORMAT.format(new Date(serviceLife[1])));
 
         return new ModelAndView("/account/account").addAllObjects(modelMap);
     }

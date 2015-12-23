@@ -4,17 +4,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by baizz on 2014-7-6.
+ * Created on 2015-12-21.
+ *
+ * @author dolphineor
  */
 public class MD5 {
 
-    private static final String SALT = "PasswordSalt";
-
     private String md5;
 
-
-    private MD5(String password) {
-        this.md5 = generateMD5(password + "{" + SALT + "}");
+    private MD5(String source, Object salt) {
+        this.md5 = generateMD5(source + "{" + salt.toString() + "}");
     }
 
     private String generateMD5(String plainText) {
@@ -52,15 +51,21 @@ public class MD5 {
 
     public static class Builder {
 
-        private String password;
+        private String source;
+        private String salt;
 
-        public Builder password(String password) {
-            this.password = password;
+        public Builder source(String source) {
+            this.source = source;
+            return this;
+        }
+
+        public Builder salt(String salt) {
+            this.salt = salt;
             return this;
         }
 
         public MD5 build() {
-            return new MD5(password);
+            return new MD5(source, salt);
         }
     }
 }

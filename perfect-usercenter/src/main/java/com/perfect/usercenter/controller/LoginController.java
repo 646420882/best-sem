@@ -1,6 +1,7 @@
 package com.perfect.usercenter.controller;
 
 import com.google.common.base.Strings;
+import com.perfect.commons.constants.PasswordSalts;
 import com.perfect.commons.constants.UserConstants;
 import com.perfect.core.AppContext;
 import com.perfect.core.UserInfo;
@@ -36,11 +37,16 @@ public class LoginController {
 
     protected Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+    private final String loginSalt = "user_login_salt";
+
+    private final MD5.Builder md5Builder = new MD5.Builder();
+
     private final String TOKEN_URL_PATH = "/token?tokenid=";
 
     private final int COOKIE_TIMEOUT = 24 * 60 * 60;
 
     private final int REDIS_KEY_TIMEOUT = 10800;
+
     @Resource
     private SystemUserService systemUserService;
 
@@ -51,11 +57,10 @@ public class LoginController {
                               @RequestParam(value = "j_password") String pwd,
                               ModelMap model) {
 
-        String a = response.getHeader("redirect");
+//        String a = response.getHeader("redirect");
         SystemUserDTO systemUserDTO = systemUserService.getSystemUser(account);
         if (systemUserDTO != null) {
-            MD5.Builder md5Builder = new MD5.Builder();
-            MD5 md5 = md5Builder.password(pwd).build();
+            MD5 md5 = md5Builder.source(pwd).salt(PasswordSalts.USER_SALT).build();
             String pwdKey = md5.getMD5();
 
             if (systemUserDTO.getAccountState() == 0) {
@@ -65,10 +70,18 @@ public class LoginController {
             }
 
             if (account.equals(systemUserDTO.getUserName()) && pwdKey.equals(systemUserDTO.getPassword())) {
-                ModelAndView view = new ModelAndView("redirect:/platform");
                 //登录成功
+                String url = request.getParameter("redirect");
+                if (Strings.isNullOrEmpty(url)) {
+                    url = request.getParameter("url");
+                }
+
+                ModelAndView view = new ModelAndView("redirect:/platform");
                 loginSuccessHandler(request, response, systemUserDTO, view);
-                return view;
+
+                if (Strings.isNullOrEmpty(url) || java.util.Objects.equals("null", url)) {
+                    return view;
+                }
             } else {
                 int s = loginFailureHandler(request, response, systemUserDTO);
                 if (s == 3) {
@@ -121,8 +134,7 @@ public class LoginController {
                 jedis.close();
         }
 
-        MD5.Builder md5Builder = new MD5.Builder();
-        MD5 md5 = md5Builder.password(systemUserDTO.getUserName()).build();
+        MD5 md5 = md5Builder.source(systemUserDTO.getUserName()).salt(loginSalt).build();
         String pwdKey = md5.getMD5();
 
         try {
@@ -175,8 +187,7 @@ public class LoginController {
         } else {
             if (systemUserDTO != null) {
                 //密码验证失败
-                MD5.Builder md5Builder = new MD5.Builder();
-                MD5 md5 = md5Builder.password(systemUserDTO.getUserName()).build();
+                MD5 md5 = md5Builder.source(systemUserDTO.getUserName()).salt(loginSalt).build();
                 String key = md5.getMD5();
                 Jedis jedis = null;
                 try {
