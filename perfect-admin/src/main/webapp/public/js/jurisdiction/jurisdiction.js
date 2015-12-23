@@ -112,3 +112,48 @@ function checkboxCheck(obj,index,allId){
         }
     }
 }
+function skCheckAll(obj,index){
+    var isFlag = true;
+    if(index == 1){
+        if ($(obj).prop('checked') == false) {
+            $(obj).parent().parent().next().find("input").each(function(){
+                $(this).prop('checked', false);
+            })
+        } else {
+            $(obj).parent().parent().next().find("input").each(function(){
+                $(this).prop('checked', true);
+            })
+        }
+    }else if(index == 2){
+        if ($(obj).prop('checked') == false) {
+            $(obj).parent().parent().parent().parent().prev().find("input").each(function(){
+                $(this).prop('checked', false);
+            })
+        } else {
+            $(obj).parent().parent().parent().find("input").each(function(){
+                if($(this).prop('checked') == false){
+                    isFlag = false;
+                    return
+                }
+            })
+            if(isFlag == true){
+                $(obj).parent().parent().parent().parent().prev().find("input").each(function(){
+                    $(this).prop('checked', true);
+                })
+            }
+        }
+    }
+}
+//切换模块
+function transformModule(obj){
+    var _val = $(obj).val();
+    if(_val == 1){
+        $("#skJurisdiction").css("display","none")
+        $("#hyJurisdiction").css("display","block")
+        $("#moduleName").html("慧眼")
+    }else if(_val == 2){
+        $("#skJurisdiction").css("display","block")
+        $("#hyJurisdiction").css("display","none")
+        $("#moduleName").html("搜客")
+    }
+}
