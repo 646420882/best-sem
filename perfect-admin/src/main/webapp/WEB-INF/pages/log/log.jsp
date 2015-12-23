@@ -39,6 +39,7 @@
                     <!-- /.row -->
 
                 </div>
+                <div id="userTable">
                 <table id="logAdmin">
                     <thead>
                     <tr>
@@ -50,6 +51,7 @@
                     </tr>
                     </thead>
                 </table>
+                </div>
                 <%--<div class="skip" style="position: absolute; margin: -45px 0 0 52%;">跳转到 <input id="selectPages" class='form-control' maxlength='3'  style='width: 38px;height: 22px; margin-top: 4px; display: inline;text-align: center;padding: 0' type='text'/>&nbsp;&nbsp;<span class="selectPage">Go</span></div>--%>
             </div>
         </div>

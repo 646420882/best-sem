@@ -45,7 +45,8 @@
 }
 #userTable .pull-left.search .form-control{
     height: 28px;
-    line-height: 28px;
+    line-height: 27px;
+    margin-top: 1px;
 }
 #userAdmin tbody tr:first-child{
     border-top: 1px solid #fff;
