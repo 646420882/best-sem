@@ -1,5 +1,6 @@
 package com.perfect.app.index.controller;
 
+import com.perfect.commons.constants.PasswordSalts;
 import com.perfect.commons.message.mail.SendMail;
 import com.perfect.core.AppContext;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
@@ -39,6 +40,8 @@ public class HomePageManageController extends WebContextSupport {
 
     @Resource
     private AccountRegisterService accountRegisterService;
+
+    private final String userSalt = PasswordSalts.USER_SALT;
 
 
     @RequestMapping(value = "/")
@@ -301,7 +304,7 @@ public class HomePageManageController extends WebContextSupport {
                 if (baiduUserName != null) {
                     //重置密码
                     MD5.Builder md5Builder = new MD5.Builder();
-                    MD5 md5 = md5Builder.password(pwd).build();
+                    MD5 md5 = md5Builder.source(pwd).salt(userSalt).build();
                     boolean isSuccess = systemUserService.updatePassword(userName, md5.getMD5());
                     if (isSuccess) {
                         jedis.expire(key, 0);

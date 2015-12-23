@@ -74,13 +74,6 @@ public interface AccountManageService {
     Map<String, Object> getAccountTree();
 
     /**
-     * 获取当前登陆的系统用户信息
-     *
-     * @return
-     */
-    SystemUserDTO getCurrUserInfo();
-
-    /**
      * 获取当前登录的系统用户下的所有百度账号
      *
      * @return

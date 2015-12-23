@@ -2,10 +2,11 @@ package com.perfect.web.suport;
 
 import com.perfect.commons.constants.AuthConstants;
 import com.perfect.core.AppContext;
-import com.perfect.dto.sys.*;
+import com.perfect.dto.sys.ModuleAccountInfoDTO;
+import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
+import com.perfect.dto.sys.UserModuleMenuDTO;
 import com.perfect.service.AccountManageService;
-import com.perfect.service.SystemModuleService;
-import com.perfect.service.SystemUserService;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,13 +27,8 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
     private final boolean adminFlag[] = new boolean[1];
 
     @Resource
-    private SystemUserService systemUserService;
-
-    @Resource
     private AccountManageService accountManageService;
 
-    @Resource
-    private SystemModuleService systemModuleService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -149,16 +145,14 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
         List<SystemUserModuleDTO> userModuleDTOs = systemUserDTO.getSystemUserModules();
 
         for (SystemUserModuleDTO userModuleDTO : userModuleDTOs) {
-            SystemModuleDTO systemModuleDTO = systemModuleService.findByModuleId(userModuleDTO.getModuleId());
-
-            if (Objects.equals(AppContext.getModuleName(), systemModuleDTO.getModuleName())) {
+            if (Objects.equals(AppContext.getModuleName(), userModuleDTO.getModuleName())) {
                 List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = userModuleDTO.getAccounts();
                 WebUtils.setModuleId(request, userModuleDTO.getModuleId());
                 WebUtils.setModuleAccounts(request, moduleAccountInfoDTOs);
                 AppContext.setModuleId(userModuleDTO.getModuleId());
 
                 // TODO 菜单权限处理
-                List<SystemMenuDTO> systemMenuDTOs = userModuleDTO.getMenus();
+                List<UserModuleMenuDTO> sysUserModuleMenus = userModuleDTO.getModuleMenus();
 
                 if (moduleAccountInfoDTOs.size() == 1) {
                     ModuleAccountInfoDTO moduleAccountInfoDTO = moduleAccountInfoDTOs.get(0);

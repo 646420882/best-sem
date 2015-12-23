@@ -1,6 +1,5 @@
 package com.perfect.service;
 
-import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.sys.*;
 
@@ -76,13 +75,6 @@ public interface SystemUserService {
 
     List<SystemUserModuleDTO> getUserModules(String id);
 
-    /**
-     * @param id
-     * @param modulename
-     * @param menus
-     * @return
-     * @see SystemUserService.updateUserModuleMenus(String userid, UserModuleMenuDTO userModuleMenuDTO);
-     */
     @Deprecated
     boolean updateUserModuleMenus(String id, String modulename, List<SystemMenuDTO> menus);
 

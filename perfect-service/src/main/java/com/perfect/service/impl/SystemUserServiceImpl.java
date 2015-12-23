@@ -11,6 +11,7 @@ import com.perfect.commons.constants.PasswordSalts;
 import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.AccountManageDAO;
+import com.perfect.dao.account.SystemAccountDAO;
 import com.perfect.dao.adgroup.AdgroupDAO;
 import com.perfect.dao.campaign.CampaignDAO;
 import com.perfect.dao.creative.CreativeDAO;
@@ -73,6 +74,9 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Resource
     private SystemLogDAO systemLogDAO;
+
+    @Resource
+    private SystemAccountDAO systemAccountDAO;
 
     @Override
     public void initAccount(String userName, Long accountId) {
@@ -228,7 +232,7 @@ public class SystemUserServiceImpl implements SystemUserService {
                     for (ModuleAccountInfoDTO baiduAccountInfoDTO : baiduAccountInfoDTOList) {
 
                         Long aid = baiduAccountInfoDTO.getBaiduAccountId();
-                        if (aid != accountId)
+                        if (aid == null || aid != accountId)
                             continue;
 
                         CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
@@ -453,7 +457,13 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public void updateBaiduAccountInfo(String userName, Long accountId, ModuleAccountInfoDTO moduleAccountInfoDTO) {
         moduleAccountInfoDTO.setBaiduAccountId(accountId);
-        accountManageDAO.updateBaiduAccountInfo(userName, moduleAccountInfoDTO);
+        String userId = systemAccountDAO.findByUserName(userName).getId();
+        String sysUserModuleId = systemAccountDAO.findSysUserModuleId(userName, SystemNameConstant.SOUKE_SYSTEM_NAME);
+        moduleAccountInfoDTO.setUserId(userId);
+        moduleAccountInfoDTO.setModuleId(sysUserModuleId);
+
+        systemAccountDAO.updateModuleAccount(moduleAccountInfoDTO);
+//        accountManageDAO.updateBaiduAccountInfo(userName, moduleAccountInfoDTO);
     }
 
     @Override
@@ -530,7 +540,8 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public SystemUserDTO getSystemUser(String userName) {
-        return systemUserDAO.findByUserName(userName);
+        return systemAccountDAO.findByUserName(userName);
+//        return systemUserDAO.findByUserName(userName);
     }
 
     @Override
@@ -600,7 +611,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public SystemUserDTO findByAid(long aid) {
-        return systemUserDAO.findByAid(aid);
+        return systemAccountDAO.findUserByModuleAccountId(aid);
     }
 
     @Override
@@ -645,7 +656,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public SystemUserDTO findByUserName(String userName) {
-        return systemUserDAO.findByUserName(userName);
+        return systemAccountDAO.findByUserName(userName);
     }
 
     @Override
@@ -747,7 +758,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 //        systemUserModuleDTO.setModuleName(systemModuleDTO.getModuleName());
 //        systemUserModuleDTO.setModuleUrl(systemModuleDTO.getModuleUrl());
 
-        systemUserModuleDTO.setIsPayed(false);
+        systemUserModuleDTO.setPayed(false);
         systemUserModuleDTO.setEnabled(true);
 //        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDTO.getSystemUserModules();
 //
@@ -820,7 +831,6 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean addModuleAccount(String id, String moduleid, ModuleAccountInfoDTO moduleAccountInfoDTO) {
-
         return systemUserDAO.addModuleAccount(id, moduleid, moduleAccountInfoDTO);
     }
 
@@ -828,7 +838,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     public void updateUserImage(InputStream is, String fileSuffix) {
         String sysUserName = AppContext.getUser();
         Map<String, Object> metaData = Maps.newHashMap();
-        String sysUserId = systemUserDAO.findByUserName(sysUserName).getId();
+        String sysUserId = systemAccountDAO.findByUserName(sysUserName).getId();
         metaData.put("userId", sysUserId);
 
         systemUserDAO.updateUserImage(is, sysUserName + fileSuffix, metaData);
@@ -848,7 +858,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         if (systemUserDTO == null) {
             return false;
         }
-        boolean success = systemUserDAO.updateAccountPassword(userid, new MD5.Builder().password(password).build().getMD5());
+        boolean success = systemUserDAO.updateAccountPassword(userid, new MD5.Builder().source(password).salt(user_salt).build().getMD5());
 
         if (success) {
             systemLogDAO.log("修改用户密码: " + systemUserDTO.getUserName());

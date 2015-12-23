@@ -21,23 +21,23 @@ $(function () {
                 "<li><span>开通平台：</span>" + userModules + "</li>" +
                 "<li><span>网站名称：</span><b>帐号信息需要此信息？&nbsp;</b></li>" +
                 "<li><span>网址：</span><b>帐号信息需要此信息？&nbsp;</b></li>" +
-                "<li><span>注册时间：</span>" + userInfo.ctime + "</li>" +
+                "<li><span>注册时间：</span>" + new Date(userInfo.ctime).Format("yyyy-M-d") + "</li>" +
                 "<li><span>联系人：</span><b cname='contactName'>" + userInfo.contactName + "&nbsp;</b></li>" +
                 "<li><span>办公电话：</span><b cname='telephone'>" + userInfo.telephone + "&nbsp;</b></li>" +
-                "<li><span>移动电话：</span><b cname='mobilephone'>" + userInfo.mobilephone + "&nbsp;</b></li>" +
+                "<li><span>移动电话：</span><b cname='mobilePhone'>" + userInfo.mobilePhone + "&nbsp;</b></li>" +
                 "<li><span>通讯地址：</span><b cname='address'>" + userInfo.address + "&nbsp;</b></li>" +
                 "<li><span>电子邮箱：</span><b cname='email'>" + userInfo.email + "&nbsp;</b></li>";
             $("#userList").append(html);
         }
     });
-    $("body").on("click","#save",function(){
+    $("body").on("click", "#save", function () {
         var regx = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
         var regxm = /^(13[0-9]{9})|(15[89][0-9]{8})$/;
-        if(!regxm.test($("#userList input[cname=mobilephone]").val().trim())){
+        if (!regxm.test($("#userList input[cname=mobilePhone]").val().trim())) {
             alert("请输入正确的移动电话！");
             return
         }
-        if(!regx.test($("#userList input[cname=email]").val().trim())){
+        if (!regx.test($("#userList input[cname=email]").val().trim())) {
             alert("请输入正确的电子邮箱！");
             return;
         }
@@ -47,16 +47,16 @@ $(function () {
         dto["telephone"] = $("#userList input[cname=telephone]").val().trim();
         dto["address"] = $("#userList input[cname=address]").val().trim();
         dto["email"] = $("#userList input[cname=email]").val().trim();
-        dto["mobilephone"] = $("#userList input[cname=mobilephone]").val().trim();
+        dto["mobilePhone"] = $("#userList input[cname=mobilePhone]").val().trim();
 
         $.ajax({
-            url: "/user/"+$("#userid").val(),
+            url: "/user/" + $("#userid").val(),
             type: "post",
-            data:dto,
-            cache:false,
+            data: dto,
+            cache: false,
             dataType: "json",
             success: function (user) {
-                location.href ="/"
+                location.href = "/"
             }
         });
     })
@@ -65,7 +65,7 @@ $(function () {
 
 function Modify(_this) {
     var list = $("#userList").find("b");
-    $('.user_content').css({width:"440px"})
+    $('.user_content').css({width: "440px"})
     list.each(function () {
         var listMessage = $(this).html();
         var cname = $(this).attr("cname");
@@ -81,7 +81,7 @@ function Modify(_this) {
 };
 function Cancel(_this) {
     var list = $("#userList").find("input");
-    $('.user_content').css({width:"282px"})
+    $('.user_content').css({width: "282px"})
     list.each(function () {
             var listMessage = $(this).val();
             $(this).replaceWith(listMessage);

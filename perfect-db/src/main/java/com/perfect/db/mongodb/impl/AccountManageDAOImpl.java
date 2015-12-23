@@ -15,14 +15,11 @@ import com.perfect.dto.baidu.BaiduAccountInfoDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
-import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.entity.account.AccountReportEntity;
 import com.perfect.entity.sys.ModuleAccountInfoEntity;
-import com.perfect.entity.sys.SystemModuleEntity;
 import com.perfect.entity.sys.SystemUserEntity;
 import com.perfect.utils.DateUtils;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.SystemUserUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Sort;
@@ -186,27 +183,6 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         }
 
         return baiduAccount;
-    }
-
-    @Override
-    public SystemUserDTO getCurrUserInfo() {
-        SystemUserEntity entity = getSysMongoTemplate().findOne(Query.query(Criteria.where("userName").is(AppContext.getUser())), getEntityClass());
-
-        SystemUserDTO systemUserDTO = SystemUserUtils.retrieveDTOFromEntity(entity);
-        List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDTO.getSystemUserModules();
-        for (SystemUserModuleDTO systemUserModuleDTO : systemUserModuleDTOs) {
-            SystemModuleEntity systemModuleEntity = getSysMongoTemplate().findOne(
-                    Query.query(Criteria.where(SYSTEM_ID).is(systemUserModuleDTO.getModuleId())),
-                    SystemModuleEntity.class);
-            if (Objects.isNull(systemModuleEntity))
-                continue;
-
-            systemUserModuleDTO.setModuleName(systemModuleEntity.getModuleName());
-            systemUserModuleDTO.setModuleUrl(systemModuleEntity.getModuleUrl());
-        }
-
-
-        return systemUserDTO;
     }
 
     @Override

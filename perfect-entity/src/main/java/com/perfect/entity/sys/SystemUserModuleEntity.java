@@ -1,5 +1,6 @@
 package com.perfect.entity.sys;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
@@ -9,25 +10,31 @@ import java.util.List;
  */
 public class SystemUserModuleEntity {
 
+    @Id
     private String id;
 
-    private String moduleId;    // 模块id
+    private String moduleId;                            // 模块id
 
-//    private String moduleName;
-//
+    private String moduleName;                          // 模块名称
+
 //    private String moduleUrl;
 
-    private boolean isPayed;    // 是否购买当前模块  true 购买  false 未购买
+    private boolean isPayed;                            // 是否购买当前模块  true 购买  false 未购买
 
-    private boolean enabled;    // 是否启用模块  true 启用  false 不启用
+    private boolean enabled;                            // 是否启用模块  true 启用  false 不启用
 
-    private long startTime;     // 模块使用期限  开始时间
+    private long startTime;                             // 模块使用期限  开始时间
 
-    private long endTime;       // 模块使用期限  结束时间
+    private long endTime;                               // 模块使用期限  结束时间
 
+    @Deprecated
     @Field("menus")
     private List<SystemMenuEntity> menus;
 
+    @Field("moduleMenus")
+    private List<UserModuleMenuEntity> moduleMenus;
+
+    @Deprecated
     @Field("accounts")
     private List<ModuleAccountInfoEntity> accounts;
 
@@ -55,13 +62,17 @@ public class SystemUserModuleEntity {
         this.menus = menus;
     }
 
-//    public String getModuleName() {
-//        return moduleName;
-//    }
-//
-//    public void setModuleName(String moduleName) {
-//        this.moduleName = moduleName;
-//    }
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public void setPayed(boolean payed) {
+        isPayed = payed;
+    }
 
     public boolean isPayed() {
         return isPayed;
@@ -70,7 +81,6 @@ public class SystemUserModuleEntity {
     public void setIsPayed(boolean isPayed) {
         this.isPayed = isPayed;
     }
-
 
 //    public String getModuleUrl() {
 //        return moduleUrl;
@@ -112,5 +122,13 @@ public class SystemUserModuleEntity {
 
     public void setAccounts(List<ModuleAccountInfoEntity> accounts) {
         this.accounts = accounts;
+    }
+
+    public List<UserModuleMenuEntity> getModuleMenus() {
+        return moduleMenus;
+    }
+
+    public void setModuleMenus(List<UserModuleMenuEntity> moduleMenus) {
+        this.moduleMenus = moduleMenus;
     }
 }

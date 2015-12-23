@@ -1,13 +1,12 @@
 package com.perfect.service.impl;
 
+import com.perfect.commons.constants.PasswordSalts;
 import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
-import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.param.RegisterParam;
 import com.perfect.service.AccountRegisterService;
-import com.perfect.service.SystemModuleService;
 import com.perfect.utils.MD5;
 import org.springframework.stereotype.Service;
 
@@ -23,18 +22,18 @@ import java.util.List;
 @Service("accountRegisterService")
 public class AccountRegisterServiceImpl implements AccountRegisterService {
 
+    private final String userSalt = PasswordSalts.USER_SALT;
+
+    private final MD5.Builder md5Builder = new MD5.Builder();
+
     @Resource
     private AccountRegisterDAO accountRegisterDAO;
 
-    @Resource
-    private SystemModuleService systemModuleService;
 
     @Override
     public int addAccount(String account, String pwd, String company, String email) {
-
         SystemUserDTO systemUserDTO = new SystemUserDTO();
-        MD5.Builder md5Builder = new MD5.Builder();
-        MD5 md5 = md5Builder.password(pwd).build();
+        MD5 md5 = md5Builder.source(pwd).salt(userSalt).build();
         systemUserDTO.setAccess(2);
         systemUserDTO.setUserName(account);
         systemUserDTO.setPassword(md5.getMD5());
@@ -63,8 +62,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             systemUserDTO.setCompanyName(registerParam.getCompanyname());
             //帐号
             systemUserDTO.setUserName(registerParam.getUsername());
-            MD5.Builder md5Builder = new MD5.Builder();
-            MD5 md5 = md5Builder.password(registerParam.getPassword()).build();
+            MD5 md5 = md5Builder.source(registerParam.getPassword()).salt(userSalt).build();
             //密码
             systemUserDTO.setPassword(md5.getMD5());
             //邮箱
@@ -74,7 +72,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             //办公电话
             systemUserDTO.setTelephone("");
             //移动电话
-            systemUserDTO.setMobilephone(registerParam.getContactsPhone());
+            systemUserDTO.setMobilePhone(registerParam.getContactsPhone());
             //通讯地址
             systemUserDTO.setAddress(registerParam.getMailinAddress());
             //审核状态
@@ -94,7 +92,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
 
                 SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
                 //systemUserModuleDTO.setModuleId(s);
-                systemUserModuleDTO.setIsPayed(true);
+                systemUserModuleDTO.setPayed(true);
                 systemUserModuleDTO.setEnabled(true);
                 systemUserModuleDTO.setModuleName(s);
                 systemUserModuleDTO.setModuleUrl(s.equals("百思搜客") ? "sem.best-ad.cn" : "hy.best-ad.cn");

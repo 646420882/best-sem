@@ -79,7 +79,7 @@ public class ImportLexiconExcelController extends WebContextSupport {
                 trade = fileName.substring(0, 2);
 
                 MD5.Builder md5Builder = new MD5.Builder();
-                MD5 md5 = md5Builder.password(fileName.replace("." + XLSX, "")).build();
+                MD5 md5 = md5Builder.source(fileName.replace("." + XLSX, "")).salt(XLSX).build();
                 fileName = md5.getMD5();
 
                 File _file = new File(tmpDirPath, fileName);

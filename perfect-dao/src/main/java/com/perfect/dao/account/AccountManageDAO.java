@@ -46,13 +46,6 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     ModuleAccountInfoDTO findByBaiduUserId(Long baiduUserId);
 
     /**
-     * 获取当前登陆的系统用户信息
-     *
-     * @return
-     */
-    SystemUserDTO getCurrUserInfo();
-
-    /**
      * 修改密码
      *
      * @param pwd

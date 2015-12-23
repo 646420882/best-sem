@@ -2,6 +2,8 @@ package com.perfect.entity.sys;
 
 import com.perfect.entity.baidu.OfflineTimeEntity;
 import com.perfect.entity.baidu.OptTypeEntity;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
@@ -9,9 +11,15 @@ import java.util.List;
 /**
  * 改名成ModuleAccountInfoEntity
  */
+@Document(collection = "sys_module_account")
 public class ModuleAccountInfoEntity {
 
+    @Id
     private String id;
+
+    private String userId;                              // 系统用户的Mongo ID
+
+    private String moduleId;                            // 模块ID
 
     @Field("acpt")
     private String accountPlatformType;                 // 账号所属平台
@@ -95,6 +103,26 @@ public class ModuleAccountInfoEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+    }
+
+    public Boolean getDfault() {
+        return dfault;
     }
 
     public String getAccountPlatformType() {
