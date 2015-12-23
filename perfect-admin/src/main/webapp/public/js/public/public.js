@@ -5,7 +5,7 @@ $(function () {
     //路由控制
     var href = window.location.href;
     href = '/' + href.split("/").slice(-1);
-    if (href == "/index") {
+    if (href == "/") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(1) ").addClass("current");
@@ -28,7 +28,7 @@ $(function () {
             $(".totalNav:nth-child(4) ").addClass("current");
         })
     }
-    else {
+    else if(href == "/log") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(5) ").addClass("current");
@@ -84,9 +84,9 @@ $(function () {
                 var that_html = $(this).html();
                 $(this).html("<input type='text' class='form-control' value='" + that_html + "'> ");
                 editorBottom.hide();
-                editorBottom.prev().hide();
                 editorBottom.next(".preserve").attr("style", "display:block");
-
+                editorBottom.next().next(".cancel").attr("style", "display:block");
+                editorBottom.next().next().next(".delete").attr("style", "display:none");
             });
         },
         'click .preserve': function (e, value, row, index) {
@@ -97,7 +97,21 @@ $(function () {
                 $(this).html(that_html);
             });
             preserveHtML.attr("style", "display:none");
+            preserveHtML.next(".cancel").attr("style", "display:none");
+            preserveHtML.next().next(".delete").attr("style", "display:block");
             preserveHtML.prevAll().show();
+        },
+        'click .cancel': function (e, value, row, index) {
+            var preserveHtML = $(this);
+            var preserveThat = $(this).parent().prevAll("td");
+            preserveThat.each(function () {
+                var that_html = $(this).find("input").val();
+                $(this).html(that_html);
+            });
+            preserveHtML.attr("style", "display:none");
+            preserveHtML.next(".delete").attr("style", "display:block");
+            preserveHtML.prev().prev(".editor").attr("style", "display:block");
+            preserveHtML.prev(".preserve").attr("style", "display:none");
         },
         'click .delete': function (e, value, row, index) {
             var tabledelete = $(this).parent().parent();

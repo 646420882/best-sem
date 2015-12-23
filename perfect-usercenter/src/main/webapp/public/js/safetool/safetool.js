@@ -52,10 +52,15 @@ $(document).ready(function () {
             data: {
                 username: $('#sysUserName').val(),
                 email: $('#email').val()
+            },
+            success: function (data) {
+                if (data.status) {
+                    alert("发送成功, 请注意查收!");
+                } else {
+                    alert("请勿频繁发送, 稍后重试!");
+                }
             }
         });
-
-        alert("发送成功, 请注意查收!");
 
     });
 
@@ -67,10 +72,15 @@ $(document).ready(function () {
             data: {
                 username: $('#sysUserName').val(),
                 email: $('#oldEmail').html()
+            },
+            success: function (data) {
+                if (data.status) {
+                    alert("发送成功, 请注意查收!");
+                } else {
+                    alert("请勿频繁发送, 稍后重试!");
+                }
             }
         });
-
-        alert("发送成功, 请注意查收!");
 
     });
 
@@ -90,10 +100,15 @@ $(document).ready(function () {
             data: {
                 username: $('#sysUserName').val(),
                 email: $('#newEmailAddr').val()
+            },
+            success: function (data) {
+                if (data.status) {
+                    alert("发送成功, 请注意查收!");
+                } else {
+                    alert("请勿频繁发送, 稍后重试!");
+                }
             }
         });
-
-        alert("发送成功, 请注意查收!");
 
     });
 

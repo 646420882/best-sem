@@ -125,7 +125,8 @@
                 <a href="#">
                     数据报告
                 </a>
-                &nbsp;&nbsp;>&nbsp;&nbsp;<span id="TitleName">账户报告</span>
+                &nbsp;&nbsp;<span style="font-family: '宋体'">></span>&nbsp;&nbsp;
+                <a id="TitleName" href="#">账户报告</a>
             </div>
         </div>
         <div id="tab">

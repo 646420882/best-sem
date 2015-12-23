@@ -75,7 +75,7 @@ select {
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
-    border: 1px solid #dadadd;
+    border: 1px solid #ddd;
 }
 
 label {
@@ -159,13 +159,15 @@ table tr, table tr td {
 }
 
 .on_title a {
-    color: #000000;
+    color: #666;
 }
 
-.on_title span {
-    color: #8e8e8e;
+/*.on_title span {
+    color: #666;
+}*/
+.on_title a:hover{
+    color: #333;
 }
-
 .on_title span b {
     font-weight: normal;
 }
@@ -483,8 +485,8 @@ table tr, table tr td {
 }
 
 .user_detali ul li {
-    padding: 0px;
-    margin-bottom: 15px;
+    padding: 0;
+    margin-bottom: 11px;
     color: #777777;
     overflow: hidden;
     display: inherit;
@@ -639,4 +641,11 @@ table tr, table tr td {
 
 input[type=radio], input[type=checkbox] {
     margin: 4px 0 0;
+}
+.demodownload{
+    background-color: white;
+    border-radius: 5px;
+    height: 21px;
+    line-height: 21px;
+    border: solid 1px #888;
 }

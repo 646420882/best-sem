@@ -71,11 +71,11 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
      * 百度帐号启用/停用状态更改
      *
      * @param userName
-     * @param moduleAccountName
+     * @param moduleAccountId
      * @param status
      * @return
      */
-    boolean updateBaiduAccountStatus(String userName, String moduleAccountName, Long status);
+    boolean updateBaiduAccountStatus(String userName, String moduleAccountId, Long status);
 
     /**
      * 更新百度账号备注名
@@ -133,12 +133,19 @@ public interface AccountManageDAO extends HeyCrudRepository<SystemUserDTO, Strin
     void updateBaiduAccountInfo(String userName, ModuleAccountInfoDTO dto);
 
     /**
+     * 更新百度帐号信息
+     *
+     * @param dto
+     */
+    void updateBaiduAccountBasicInfo(ModuleAccountInfoDTO dto);
+
+    /**
      * 删除百度帐号
      *
      * @param username
-     * @param moduleAccountName
+     * @param moduleAccountId
      */
-    boolean deleteBaiduAccount(String username, String moduleAccountName);
+    boolean deleteBaiduAccount(String username, String moduleAccountId);
 
     /**
      * 根据当前登录的系统用户下指定的百度帐号获取帐户报告

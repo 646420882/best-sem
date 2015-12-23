@@ -20,4 +20,6 @@ public interface SystemRoleDAO extends HeyCrudRepository<SystemRoleDTO, String> 
     SystemRoleDTO findByNameAndPasswd(String username, String password);
 
     SystemRoleDTO findByUserLoginName(String user);
+
+    SystemRoleDTO findById(String roleId);
 }

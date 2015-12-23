@@ -8,9 +8,8 @@ public interface MongoEntityConstants {
     //SYS
     String SYS_KEYWORD = "sys_keyword";
     String TBL_ANSWERS = "sys_answers";
-    String SYS_CENSUS = "sys_census";
-    String SYS_CENSUS_EVERYDAY_REPORT = "sys_census_everyday_report";
-    String SYS_CENSUS_CONFIG = "sys_census_config";
+    String SYS_LOG="system_log";
+
 
     //Jedis static Key
     String TRADE_KEY = "trade_key";
@@ -65,4 +64,9 @@ public interface MongoEntityConstants {
     String INTOPAGE = "tp"; //分组字段intoPage（外部链接）
     String SEARCHENGINE = "se"; //分组字段searchEngine(搜索引擎)
     String COOKIE_UUID = "uid"; //Cookie 分组字段
+
+    //LOG Fields
+    String LOG_CID = "campgainId";
+    String LOG_AID = "adgroupdId";
+    String LOG_OID="oid";
 }

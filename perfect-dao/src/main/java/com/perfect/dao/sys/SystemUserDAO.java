@@ -56,7 +56,7 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     List<SystemUserDTO> findAll(int skip, int limit, String order, boolean asc);
 
-    boolean updateAccountStatus(String id, Boolean accountStatus);
+    boolean updateAccountStatus(String id, Integer accountStatus);
 
     boolean updateAccountTime(String id, Date startDate, Date endDate);
 

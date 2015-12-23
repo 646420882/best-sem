@@ -64,7 +64,7 @@ public class UserManageController {
      * @return
      */
     @RequestMapping(value = "/users/{id}/status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView changeAccountStatus(@PathVariable("id") String id, @RequestParam(value = "status") Boolean
+    public ModelAndView changeAccountStatus(@PathVariable("id") String id, @RequestParam(value = "status") Integer
             accountStatus) {
 
         if (accountStatus == null) {

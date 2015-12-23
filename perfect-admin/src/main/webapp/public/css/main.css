@@ -42,3 +42,76 @@
     background-color: #f0f0f0;
     border-color: #f0f0f0;
 }
+.hides{
+    display: none;
+}
+.system{
+    padding: 10px 20px 20px 20px;
+
+}
+.system_title{
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+}
+.systemContent{
+    margin-top: 10px;
+    /*width: 552px;*/
+}
+.systemContent span{
+    padding-top: 3px;
+    font-size: 10px;
+    float: right;
+}
+.systemContent .add{
+    background-color: #f6f5f5;
+    border: solid 1px #f0f0f0;
+    text-align: center;
+}
+.systemContent .add:hover{
+    background-color: #01aef0;
+    color: white;
+    box-shadow: 0px 1px 5px #888888;
+}
+.systemContent ul li {
+    padding: 8px;
+    list-style: none;
+    height: 34px;
+
+}
+.systemContent ul{
+    background-color: white;
+    border: solid 1px #e3e3e3;
+    width: 184px;
+    margin: 0;
+    padding: 0;
+}
+.systemContent input{
+    width: 95%;
+    height: 24px;
+}
+.systemlicurrent{
+    box-shadow: 0px 1px 5px #888888;
+}
+.webmenu{
+    position: absolute;
+    left: 184px;
+    top: 60px;
+}
+.systemContent .sure {
+    background-color: #01aef0;
+    color: #ffffff;
+}
+.dateinput{
+    background: url(/public/img/date.png) 4px no-repeat;
+    border: 1px solid #dadadd;
+
+    height: 24px;
+    line-height: 22px;
+    padding: 0 0px 0 20px;
+    width: 180px;
+    color: #000000;
+    margin: 0 5px;
+    background-color: white;
+}
+

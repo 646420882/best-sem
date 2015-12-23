@@ -23,13 +23,13 @@ public class SystemRoleControllerTest extends JUnitBaseTest {
     public void testCreateAdminSystemRole() throws Exception {
 
         SystemRoleDTO systemRoleDTO = new SystemRoleDTO();
-        systemRoleDTO.setPassword("yangle");
-        systemRoleDTO.setName("杨乐");
+        systemRoleDTO.setPassword("test123");
+        systemRoleDTO.setName("刘德华2");
         systemRoleDTO.setSuperAdmin(true);
         systemRoleDTO.setCtime(System.currentTimeMillis());
         systemRoleDTO.setContact("yangle@perfect-cn.cn");
         systemRoleDTO.setTitle("BOSS");
-        systemRoleDTO.setLoginName("yangle");
+        systemRoleDTO.setLoginName("liudehua2");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/sysroles").content(JSON.toJSONString(systemRoleDTO)).contentType("application/json;charset=UTF-8"))
                 .andDo(MockMvcResultHandlers.print()).andReturn();

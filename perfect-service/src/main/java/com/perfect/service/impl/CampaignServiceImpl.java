@@ -1,6 +1,7 @@
 package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.exception.ApiException;
@@ -547,5 +548,57 @@ public class CampaignServiceImpl implements CampaignService {
 
         return temp_list;
 
+    }
+
+    @Override
+    public List<Map<String, Object>> getLevelByParams(Integer level, Long id) {
+        List<Map<String, Object>> temp_list = Lists.newArrayList();
+        switch (level) {
+            case 1:
+                List<CampaignDTO> campaignDTOList = this.campaignDAO.findAllDownloadCampaignByBaiduAccountId();
+                if (campaignDTOList != null && campaignDTOList.size() > 0) {
+                    for (CampaignDTO dto : campaignDTOList) {
+                        Map<String, Object> map = new HashMap<String, Object>();
+                        map.put("id", dto.getCampaignId());
+                        map.put("name", dto.getCampaignName());
+                        temp_list.add(map);
+                    }
+                }
+                break;
+            case 2:
+                List<AdgroupDTO> adgroupDTOList = this.adgroupService.getAdgroupByCampaignId(id);
+                if (adgroupDTOList != null && adgroupDTOList.size() > 0) {
+                    for (AdgroupDTO dto : adgroupDTOList) {
+                        Map<String, Object> map = Maps.newHashMap();
+                        map.put("id", dto.getAdgroupId());
+                        map.put("name", dto.getAdgroupName());
+                        temp_list.add(map);
+                    }
+                }
+                break;
+            case 3:
+                List<KeywordDTO> keywordDTOList = this.keywordDAO.findByAdgroupId(AppContext.getAccountId(), id);
+                if (keywordDTOList != null && keywordDTOList.size() > 0) {
+                    for (KeywordDTO dto : keywordDTOList) {
+                        Map<String, Object> map = Maps.newHashMap();
+                        map.put("id", dto.getKeywordId());
+                        map.put("name", dto.getKeyword());
+                        temp_list.add(map);
+                    }
+                }
+                break;
+            case 4:
+                List<CreativeDTO> creativeDTOList = this.creativeDAO.findByAdgroupId(AppContext.getAccountId(), id);
+                if (creativeDTOList != null && creativeDTOList.size() > 0) {
+                    for (CreativeDTO dto : creativeDTOList) {
+                        Map<String, Object> map = Maps.newHashMap();
+                        map.put("id", dto.getCreativeId());
+                        map.put("name", dto.getTitle());
+                        temp_list.add(map);
+                    }
+                }
+                break;
+        }
+        return temp_list;
     }
 }

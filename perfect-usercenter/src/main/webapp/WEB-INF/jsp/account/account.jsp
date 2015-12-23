@@ -22,6 +22,8 @@
             <div class="page_title">
                 当前位置：账户绑定
             </div>
+            <input id="sysUserId" type="hidden" style="width: 0px; height: 0px" value="${user.id}"/>
+            <input id="sysUserName" type="hidden" style="width: 0px; height: 0px" value="${user.userName}"/>
             <div class="user_box" style="background: #f0f0f0">
                 <div class="user_content account_box over">
                     <h3>百思搜客绑定 <span>使用时间：2015-10.10至2016-12-12</span></h3>
@@ -30,7 +32,7 @@
                         <tr>
                             <th data-field="name">关联推广账户</th>
                             <th class="hide" data-field="password">账户密码</th>
-                            <th data-field="remark ">备注名</th>
+                            <th data-field="remark">备注名</th>
                             <th data-field="url">URL地址</th>
                             <th data-field="platform">账户所属平台</th>
                             <th data-field="time">绑定时间</th>

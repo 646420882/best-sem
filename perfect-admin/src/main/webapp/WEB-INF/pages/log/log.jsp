@@ -16,6 +16,27 @@
                 当前位置：日志管理
             </div>
             <div class="user_box">
+                <div class="admin_title">
+                    <label class="control-label fl"> 日志日期：</label>
+
+                    <div class="fl select">
+                        <div class="dropdown">
+                            <input type="text" class="dateinput" readonly id="date" name="reservation"/>
+                        </div>
+                    </div>
+
+                    <div class="fl">
+                        <input type="text" class="adminInput" placeholder="请输入操作账户或操作人">
+                        <span class="adminSearch">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </span>
+                    </div>
+                    <div class="fr">
+                        <button class="btn " style="background-color: #01aef0;color: #ffffff;    margin-bottom: 3px;">导出</button>
+                    </div>
+                    <!-- /.row -->
+
+                </div>
                 <table id="logAdmin" data-click-to-select="true" data-query-params="queryParams" data-pagination="true" data-page-list="[1, 25, 50, 100, All]" data-page-number="1" data-page-size="1">
                     <thead>
                     <tr>
@@ -35,7 +56,11 @@
 
     </div>
 </div>
+<%--<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>--%>
+<script type="text/javascript" src="/public/js/daterangerpicker/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript" src="/public/js/daterangerpicker/daterangepicker.js"></script>
 <script type="text/javascript" src="/public/js/log/log.js"></script>
+<link rel="stylesheet" href="/public/css/daterangepicker-bs2.css"/>
 </body>
 </html>
 

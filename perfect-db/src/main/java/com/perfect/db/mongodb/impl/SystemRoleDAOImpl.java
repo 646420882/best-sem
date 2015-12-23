@@ -103,4 +103,13 @@ public class SystemRoleDAOImpl extends AbstractSysBaseDAOImpl<SystemRoleDTO, Str
 
     }
 
+    @Override
+    public SystemRoleDTO findById(String roleId) {
+        SystemRoleEntity systemRoleEntity = getSysMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(roleId)), getEntityClass());
+        if (systemRoleEntity != null) {
+            return ObjectUtils.convert(systemRoleEntity, getDTOClass());
+        }
+        return null;
+    }
+
 }

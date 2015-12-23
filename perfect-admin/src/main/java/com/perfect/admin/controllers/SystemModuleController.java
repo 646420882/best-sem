@@ -74,7 +74,7 @@ public class SystemModuleController {
      */
     @RequestMapping(value = "/sysmodules/{moduleId}", method = RequestMethod.DELETE, produces = MediaType
             .APPLICATION_JSON_VALUE)
-    public ModelAndView deleteModule(@RequestParam("moduleId") String moduleId) {
+    public ModelAndView deleteModule(@PathVariable("moduleId") String moduleId) {
 
         boolean success = systemModuleService.deleteModule(moduleId);
 

@@ -14,13 +14,18 @@ public class SystemModuleControllerTest extends JUnitBaseTest {
     @Test
     public void testCreateModule() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/sysmodules").param("moduleurl",
-                "sem.best-ad.cn").param("modulename", "百思搜客3")).andDo(MockMvcResultHandlers.print()).andReturn();
+                "sem33.best-ad.cn").param("modulename", "百思搜客33")).andDo(MockMvcResultHandlers.print()).andReturn();
+    }
+
+    @Test
+    public void testDeleteModule() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/sysmodules/" + moduleid)).andDo(MockMvcResultHandlers.print()).andReturn();
     }
 
     @Test
     public void testUpdateModule() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/sysmodules/" + moduleid).param("moduleurl",
-                "hy2.best-ad.cn").param("modulename", "百思慧眼1")).andDo(MockMvcResultHandlers.print()).andReturn();
+                "hy23.best-ad.cn").param("modulename", "百思慧眼33")).andDo(MockMvcResultHandlers.print()).andReturn();
     }
 
     @Test
@@ -40,7 +45,7 @@ public class SystemModuleControllerTest extends JUnitBaseTest {
     @Test
     public void testCreateMenu() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/sysmodules/" + moduleid + "/menus").param("menuname",
-                "账户概览3").param("order", "1"))
+                "账户概览333").param("order", "1"))
                 .andDo(MockMvcResultHandlers.print()).andReturn();
 
     }
@@ -57,7 +62,7 @@ public class SystemModuleControllerTest extends JUnitBaseTest {
     @Test
     public void testUpdateMenu() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post
-                ("/sysmodules/" + moduleid + "/menus/" + updateModuleMenuId).param("menuname", "推广助手").param("order", "100"))
+                ("/sysmodules/" + moduleid + "/menus/" + moduleMenuId).param("menuname", "账户概览222").param("order", "222").param("menuurl", "/zhanghugailan222"))
                 .andDo(MockMvcResultHandlers.print()).andReturn();
 
     }

@@ -15,7 +15,7 @@ public class SystemLogDTOBuilder {
     private UserOperationLogDTO model = new UserOperationLogDTO();
 
     public static SystemLogDTOBuilder builder() {
-        return new SystemLogDTOBuilder().setTime(System.currentTimeMillis()).setUserId(AppContext.getAccountId());
+        return new SystemLogDTOBuilder().setTime(System.currentTimeMillis()).setUserId(AppContext.getAccountId()).setUserName(AppContext.getUser());
     }
 
     /**
@@ -145,6 +145,11 @@ public class SystemLogDTOBuilder {
      */
     public SystemLogDTOBuilder setProperty(String property) {
         this.model.setProperty(property);
+        return this;
+    }
+
+    public SystemLogDTOBuilder setUserName(String userName){
+        this.model.setUserName(userName);
         return this;
     }
 

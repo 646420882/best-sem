@@ -55,7 +55,7 @@
             <div class="on_title over">
                 <a href="#">
                     帮助中心
-                    &nbsp;&nbsp;>&nbsp;&nbsp;<a href="/home" style="color: #8e8e8e;">返回首页</a><span>（<b id="TitleName">账户全景</b>）</span>
+                    &nbsp;&nbsp;<span style="font-family: '宋体';">></span>&nbsp;&nbsp;<a href="/home">返回首页<span>（<b id="TitleName">账户全景</b>）</span></a>
                 </a>
             </div>
         </div>

@@ -15,14 +15,14 @@ import org.springframework.web.servlet.ModelAndView;
 @Scope("prototype")
 public class IndexController {
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         return new ModelAndView("index");
     }
 
     @RequestMapping(value = "/admin/role")
     public ModelAndView Role() {
-        return new ModelAndView("/role/role");
+        return new ModelAndView("/Role/Role");
     }
 
     @RequestMapping(value = "/admin/system", method = RequestMethod.GET)

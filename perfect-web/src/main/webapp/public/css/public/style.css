@@ -45,19 +45,21 @@
     float: left;
     padding: 0 40px;
     line-height: 66px;
-    color: #6f6f6f;
+    color: #666;
     background: url(/public/img/border.png) right no-repeat;
     font-size: 14px;
     cursor: pointer;
 }
-
+.tab_menu li:hover{
+    color: #333;
+}
 .tab_box {
     clear: both;
 }
 
 .tab_menu .selected {
     background: #ffffff url(/public/img/border.png) right no-repeat;
-    color: #030303;
+    color: #333;
     font-weight: bold;
 }
 
@@ -98,6 +100,8 @@
     background: url(/public/img/point.png) left no-repeat;
     padding-left: 20px;
     overflow: hidden;
+    font-weight: normal;
+    color: #333;
 }
 
 .list01_top .date_choice span {
@@ -147,9 +151,9 @@
     background: #fff;
     position: relative;
     z-index: 3;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
     overflow: hidden;
 }
 
@@ -169,12 +173,12 @@
     line-height: 26px;
     height: 26px;
     text-align: center;
-    color: #000000;
+    color: #666;
     cursor: pointer;
 }
 
 .list01_top ul li a b {
-    color: #000000;
+    color: #666;
     line-height: 26px;
 }
 
@@ -288,7 +292,7 @@
     margin-top: 10px;
     font-size: 24px;
     color: #fff;
-    font-family: "Arial";
+    font-family: "微软雅黑";
 }
 
 .list01_under2 ul li p {
@@ -1555,7 +1559,7 @@ h2 .close {
 }
 
 .close:hover {
-    color: #000000;
+    color: #333;
 }
 
 .mainlist {
@@ -1863,7 +1867,12 @@ h2 .close {
     padding: 0 12px;
     height: auto;
     min-width: 98px;
-
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -moz-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -ms-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -o-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    border: 1px solid rgba(0,0,0,0.1);
     /*z-index: 12;*/
     /*background: #FFFFFF;*/
     /*padding: 0 12px;*/
@@ -3843,9 +3852,15 @@ input[type=checkbox]:focus {
     z-index: 1000;
     border: 1px solid #cfcfcf;
     background: #fff;
-    -webkit-box-shadow: #666 0px 0px 10px;
+    /*-webkit-box-shadow: #666 0px 0px 10px;
     -moz-box-shadow: #666 0px 0px 10px;
-    box-shadow: #666 0px 0px 10px;
+    box-shadow: #666 0px 0px 10px;*/
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -moz-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -ms-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -o-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    border: 1px solid rgba(0,0,0,0.1);
     display: none;
 }
 
@@ -3865,9 +3880,15 @@ input[type=checkbox]:focus {
     border-radius: 4px;
     color: #fff;
     height: 30px;
-    padding: 0 20px;
+    padding: 0 17px;
 }
-
+.tabmodel .btn.btn-default{
+    color: #666;
+    background: #e0e0e0;
+}
+.tabmodel .btn.btn-default:hover {
+    color: #333;
+}
 .tabmodel select {
     width: 100%;
     margin: 10px 0;
@@ -4008,11 +4029,18 @@ input[type=checkbox]:focus {
 }
 
 .assstant_editor {
-    width: 90px;
+    width: 120px;
     position: absolute;
     z-index: 999;
     background: #fff;
+    color: #666;
     display: none;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -moz-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -ms-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    -o-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
 .assstant_editor ul a {
@@ -4020,15 +4048,15 @@ input[type=checkbox]:focus {
 }
 
 .assstant_editor ul a:hover {
-    color: #ffb500;
+    color: #01aeef;
 }
 
 .assstant_editor ul li {
     width: 100%;
     display: block;
     float: left;
-    height: 28px;
-    line-height: 28px;
+    height: 32px;
+    line-height: 32px;
     vertical-align: middle;
     z-index: 10;
     padding: 0 10px;
@@ -4138,7 +4166,7 @@ input[type=checkbox]:focus {
 }
 
 .list01_color {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .list01_under2.list01_color ul li .blue1 {
@@ -4575,15 +4603,21 @@ input[type=checkbox]:focus {
 }
 
 .timing_date {
-    background: url(/public/img/date.png) 155px no-repeat;
+    background: url(/public/img/date.png) 4px no-repeat;
     width: 180px;
-    padding: 0px 20px 0px 2px;
+    padding: 0px 2px 0px 20px;
     height: 30px;
-    border: 1px solid #d2daef;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
 }
 
 .timing_content ul li select {
-    width: 100px;
+    width: 130px;
+    height: 28px;
     margin-top: 0px;
 }
 

@@ -141,7 +141,8 @@
 
                                     <p><span class="fl">或者从相同格式的csv文件上传：</span><input type="file" class="fl"
                                                                                       name="fileName" id="suFile">&nbsp;<span
-                                            class="fl">(<20万行)</span> <span id="sError" class="fr">
+                                            class="fl">(<20万行)</span>
+                                        <button class="demodownload">上传模板下载</button><span id="sError" class="fr">
                                     <span id="nowColumn">0</span> /  <span id="sMaxColumns">5000</span>
                                 </span></p>
 

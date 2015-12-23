@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import org.bson.types.ObjectId;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created on 2015-12-20.
@@ -39,7 +42,16 @@ public class UserAccountServiceImpl implements UserAccountService {
     private static final String HTTP_UTF8 = "UTF-8";
 
     @Override
+    public List<ModuleAccountInfoDTO> getSemAccounts(String username) {
+        return accountManageDAO.getBaiduAccountItems(username);
+    }
+
+    @Override
     public boolean bindAccountForSem(String username, ModuleAccountInfoDTO dto) {
+        if (Objects.isNull(dto.getId())) {
+            dto.setId(new ObjectId().toString());
+        }
+
         // 设置帐号绑定时间
         dto.setAccountBindingTime(Calendar.getInstance().getTimeInMillis());
         // 设置帐号为可用状态
@@ -51,23 +63,23 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public void unbindAccountForSem(String username, String moduleAccountName) {
-        accountManageDAO.updateBaiduAccountStatus(username, moduleAccountName, 0L);
+    public void unbindAccountForSem(String username, String moduleAccountId) {
+        accountManageDAO.updateBaiduAccountStatus(username, moduleAccountId, 0L);
     }
 
     @Override
-    public void activeAccountForSem(String username, String moduleAccountName) {
-        accountManageDAO.updateBaiduAccountStatus(username, moduleAccountName, 1L);
+    public void activeAccountForSem(String username, String moduleAccountId) {
+        accountManageDAO.updateBaiduAccountStatus(username, moduleAccountId, 1L);
     }
 
     @Override
-    public void updateAccountForSem(String username, ModuleAccountInfoDTO dto) {
-        accountManageDAO.updateBaiduAccountInfo(username, dto);
+    public void updateAccountForSem(ModuleAccountInfoDTO dto) {
+        accountManageDAO.updateBaiduAccountBasicInfo(dto);
     }
 
     @Override
-    public void deleteAccountForSem(String username, String moduleAccountName) {
-        accountManageDAO.deleteBaiduAccount(username, moduleAccountName);
+    public void deleteAccountForSem(String username, String moduleAccountId) {
+        accountManageDAO.deleteBaiduAccount(username, moduleAccountId);
     }
 
     @Override
