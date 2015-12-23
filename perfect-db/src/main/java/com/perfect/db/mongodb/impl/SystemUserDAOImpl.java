@@ -570,7 +570,6 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         update.set("companyName", systemUserDTO.getCompanyName());
         update.set("address", systemUserDTO.getAddress());
         update.set("contactName", systemUserDTO.getContactName());
-        update.set("email", systemUserDTO.getEmail());
         update.set("telephone", systemUserDTO.getTelephone());
         update.set("mobilephone", systemUserDTO.getMobilephone());
 

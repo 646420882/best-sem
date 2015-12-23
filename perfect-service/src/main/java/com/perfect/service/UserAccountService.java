@@ -3,6 +3,7 @@ package com.perfect.service;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
 import com.perfect.autosdk.sms.v3.AccountInfoType;
+import com.perfect.dto.huiyan.InsightWebsiteDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 
 import java.util.Objects;
@@ -30,7 +31,6 @@ public interface UserAccountService extends SoukeAccountService, HuiyanAccountSe
      * @param email
      */
     void updateEmail(String username, String email);
-
 
 //    default long getBaiduAccountId(ModuleAccountInfoDTO dto) {
 //        if (Objects.isNull(dto))

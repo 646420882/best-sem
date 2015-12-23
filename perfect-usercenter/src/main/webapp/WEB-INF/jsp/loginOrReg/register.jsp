@@ -279,13 +279,13 @@
                         $(".NameStar").eq(2).css({"display": "none"});
                     } else if (multiSelect[0] == '百思慧眼') {
                         $('#defaultForm')
-                            // Get the bootstrapValidator instance
+                        // Get the bootstrapValidator instance
                                 .data('bootstrapValidator')
-                            // Mark the field as not validated, so it'll be re-validated when the user change date
+                                // Mark the field as not validated, so it'll be re-validated when the user change date
                                 .updateStatus('baiduUserName', 'NOT_VALIDATED', null)
                                 .updateStatus('baiduUserPassword', 'NOT_VALIDATED', null)
                                 .updateStatus('openPlatform', 'NOT_VALIDATED', null)
-                            // Validate the field
+                                // Validate the field
                                 .validateField('urlAddress');
                         $(".NameStar").eq(0).css({"display": "none"})
                         $(".NameStar").eq(1).css({"display": "none"})
