@@ -44,13 +44,14 @@ public class SystemLogDAOImpl extends AbstractSysBaseDAOImpl<SystemLogDTO, Strin
 
         Query query = new Query();
         if (params != null) {
-            if (params.getStart() != null) {
+            if (params.getStart() != null && params.getStart() != null) {
+                query = query.addCriteria(Criteria.where("time").gte(params.getStart()).lte(params.getEnd()));
+            } else if (params.getStart() != null && params.getEnd() == null) {
                 query = query.addCriteria(Criteria.where("time").gte(params.getStart()));
-            }
-
-            if (params.getEnd() != null) {
+            } else if (params.getStart() == null && params.getEnd() != null) {
                 query = query.addCriteria(Criteria.where("time").lte(params.getEnd()));
             }
+
 
             if (!Strings.isNullOrEmpty(params.getUser())) {
                 query = query.addCriteria(Criteria.where("user").is(params.getUser()));
