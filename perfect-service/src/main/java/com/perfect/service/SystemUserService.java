@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.sys.*;
+import com.perfect.utils.paging.BootStrapPagerInfo;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -97,4 +98,6 @@ public interface SystemUserService {
     SystemUserDTO findByUserId(String userid);
 
     boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO);
+
+    BootStrapPagerInfo findUsersPageable(String companyName, String userName, Boolean accountStatus, int i, int pagesize, String order, boolean asc);
 }

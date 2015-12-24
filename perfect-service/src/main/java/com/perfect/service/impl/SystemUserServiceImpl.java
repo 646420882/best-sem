@@ -29,6 +29,7 @@ import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.MD5;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.SystemUserUtils;
+import com.perfect.utils.paging.BootStrapPagerInfo;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.elasticsearch.common.Strings;
 import org.slf4j.Logger;
@@ -925,6 +926,19 @@ public class SystemUserServiceImpl implements SystemUserService {
             systemLogDAO.log("用户:" + userDTO.getUserName() + "修改了用户信息");
         }
         return success;
+    }
+
+    @Override
+    public BootStrapPagerInfo findUsersPageable(String companyName, String userName, Boolean accountStatus, int i, int pagesize, String order, boolean asc) {
+        List<SystemUserDTO> systemUserDTOs = findUsers(companyName, userName, accountStatus, i, pagesize, order, asc);
+
+        long total = findUsersCount(companyName, userName, accountStatus);
+
+        return new BootStrapPagerInfo(total, systemUserDTOs);
+    }
+
+    private long findUsersCount(String companyName, String userName, Boolean accountStatus) {
+        return systemUserDAO.listCount(companyName, userName, accountStatus);
     }
 
     /**

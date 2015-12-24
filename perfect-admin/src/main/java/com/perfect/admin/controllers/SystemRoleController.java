@@ -3,17 +3,16 @@ package com.perfect.admin.controllers;
 import com.google.common.collect.Lists;
 import com.perfect.admin.utils.JsonViews;
 import com.perfect.admin.utils.SuperUserUtils;
-import com.perfect.commons.web.JsonResultMaps;
 import com.perfect.core.AppContext;
 import com.perfect.core.SystemUserInfo;
 import com.perfect.dto.sys.SystemRoleDTO;
 import com.perfect.service.SystemRoleService;
+import com.perfect.utils.paging.BootStrapPagerInfo;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 系统角色控制器
@@ -28,7 +27,8 @@ public class SystemRoleController {
     private SystemRoleService systemRoleService;
 
     @RequestMapping(value = "/sysroles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView list(
+    @ResponseBody
+    public BootStrapPagerInfo list(
             @RequestParam(value = "name", required = false) String queryName,
             @RequestParam(value = "super", required = false) Boolean superUser,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
@@ -37,20 +37,21 @@ public class SystemRoleController {
             @RequestParam(value = "order", required = false, defaultValue = "true") Boolean asc) {
 
         boolean isSuper = SuperUserUtils.isLoginSuper();
+        BootStrapPagerInfo bootStrapPagerInfo = new BootStrapPagerInfo();
 
         if (!isSuper) {
             SystemUserInfo systemUserInfo = AppContext.getSystemUserInfo();
             SystemRoleDTO systemUserDTO = systemRoleService.findByUserName(systemUserInfo.getUser());
-
-            return JsonViews.generate(JsonResultMaps.successMap(Lists.newArrayList(systemUserDTO)));
+            bootStrapPagerInfo.setTotal(1);
+            bootStrapPagerInfo.setRows(Lists.newArrayList(systemUserDTO));
+            return bootStrapPagerInfo;
         }
 
         if (page < 1 || size < 0) {
-            return JsonViews.generate(-1, "分页参数错误.");
+            return null;
         }
-
-        List<SystemRoleDTO> systemRoleDTOList = systemRoleService.list(queryName, superUser, page, size, sort, asc);
-        return JsonViews.generate(JsonResultMaps.successMap(systemRoleDTOList));
+        bootStrapPagerInfo = systemRoleService.listPagable(queryName, superUser, page, size, sort, asc);
+        return bootStrapPagerInfo;
     }
 
     @RequestMapping(value = "/sysroles", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

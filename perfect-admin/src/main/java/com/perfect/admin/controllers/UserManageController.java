@@ -2,9 +2,9 @@ package com.perfect.admin.controllers;
 
 import com.google.common.base.Strings;
 import com.perfect.admin.utils.JsonViews;
-import com.perfect.commons.web.JsonResultMaps;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
+import com.perfect.utils.paging.BootStrapPagerInfo;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +13,6 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 用户管理控制器
@@ -26,25 +25,26 @@ public class UserManageController {
     private SystemUserService systemUserService;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView listUser(@RequestParam(value = "company", required = false) String companyName,
-                                 @RequestParam(value = "user", required = false) String userName,
-                                 @RequestParam(value = "account", required = false) Boolean accountStatus,
-                                 @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-                                 @RequestParam(value = "pagesize", required = false, defaultValue = "20") int pagesize,
-                                 @RequestParam(value = "order", required = false, defaultValue = "ctime") String order,
-                                 @RequestParam(value = "asc", required = false, defaultValue = "false") boolean asc) {
-        List<SystemUserDTO> systemUserDTOList = systemUserService.findUsers(companyName, userName, accountStatus,
+    public BootStrapPagerInfo listUser(@RequestParam(value = "company", required = false) String companyName,
+                                       @RequestParam(value = "user", required = false) String userName,
+                                       @RequestParam(value = "account", required = false) Boolean accountStatus,
+                                       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                       @RequestParam(value = "pagesize", required = false, defaultValue = "20") int pagesize,
+                                       @RequestParam(value = "order", required = false, defaultValue = "ctime") String order,
+                                       @RequestParam(value = "asc", required = false, defaultValue = "false") boolean asc) {
+        BootStrapPagerInfo bootStrapPagerInfo = systemUserService.findUsersPageable(companyName, userName, accountStatus,
                 (page - 1) * pagesize, pagesize, order, asc);
 
 
-        if (systemUserDTOList == null || systemUserDTOList.isEmpty()) {
-            return JsonViews.generateSuccessNoData();
+        if (bootStrapPagerInfo == null) {
+            return BootStrapPagerInfo.buildErrorInfo(0, "");
         }
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
 
-        systemUserDTOList.forEach((dto) -> {
+        bootStrapPagerInfo.getRows().forEach((obj) -> {
+            SystemUserDTO dto = (SystemUserDTO) obj;
             dto.setPassword(null);
 
             // format date
@@ -52,7 +52,7 @@ public class UserManageController {
             dto.setDisplayCtime(format.format(date));
         });
 
-        return JsonViews.generate(JsonResultMaps.successMap(systemUserDTOList));
+        return bootStrapPagerInfo;
 
     }
 

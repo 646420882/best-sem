@@ -10,6 +10,7 @@ import com.perfect.dao.sys.SystemRoleDAO;
 import com.perfect.dto.sys.SystemRoleDTO;
 import com.perfect.service.SystemRoleService;
 import com.perfect.utils.MD5;
+import com.perfect.utils.paging.BootStrapPagerInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -112,5 +113,21 @@ public class SystemRoleServiceImpl implements SystemRoleService {
     @Override
     public SystemRoleDTO findByUserName(String user) {
         return systemRoleDAO.findByUserLoginName(user);
+    }
+
+    @Override
+    public BootStrapPagerInfo listPagable(String queryName, Boolean superUser, Integer page, Integer size, String sort, Boolean asc) {
+        List<SystemRoleDTO> systemUserDTOs = list(queryName, superUser, page, size, sort, asc);
+
+        long totalCount = listCount(queryName, superUser);
+
+        BootStrapPagerInfo bootStrapPagerInfo = new BootStrapPagerInfo();
+        bootStrapPagerInfo.setTotal(totalCount);
+        bootStrapPagerInfo.setRows(systemUserDTOs);
+        return bootStrapPagerInfo;
+    }
+
+    private long listCount(String queryName, Boolean superUser) {
+        return systemRoleDAO.countByQuery(queryName, superUser);
     }
 }

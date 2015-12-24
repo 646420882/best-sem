@@ -1,9 +1,9 @@
 package com.perfect.admin.controllers;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author dolphineor
  */
-@RestController
+@Controller
 @Scope("prototype")
 public class IndexController {
 
@@ -20,37 +20,37 @@ public class IndexController {
         return new ModelAndView("index");
     }
 
-    @RequestMapping(value = "/admin/role")
+    @RequestMapping(value = "/roles")
     public ModelAndView Role() {
         return new ModelAndView("/Role/Role");
     }
 
-    @RequestMapping(value = "/admin/system", method = RequestMethod.GET)
+    @RequestMapping(value = "/system", method = RequestMethod.GET)
     public ModelAndView system() {
         return new ModelAndView("/system/system");
     }
 
-    @RequestMapping(value = "/admin/jurisdiction", method = RequestMethod.GET)
-    public ModelAndView jurisdiction() {
-        return new ModelAndView("/Jurisdiction/jurisdiction");
+    @RequestMapping(value = "/menus", method = RequestMethod.GET)
+    public ModelAndView menus() {
+        return new ModelAndView("/menus/menus");
     }
 
-    @RequestMapping(value = "/admin/log", method = RequestMethod.GET)
+    @RequestMapping(value = "/logs", method = RequestMethod.GET)
     public ModelAndView log() {
         return new ModelAndView("/log/log");
     }
 
-    @RequestMapping(value = "/admin/register", method = RequestMethod.GET)
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView register() {
         return new ModelAndView("/lognOrReg/register");
     }
 
-    @RequestMapping(value = "/admin/forget", method = RequestMethod.GET)
+    @RequestMapping(value = "/forget", method = RequestMethod.GET)
     public ModelAndView forget() {
         return new ModelAndView("/lognOrReg/forget");
     }
 
-    @RequestMapping(value = "/admin/forgetPassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/forgetPassword", method = RequestMethod.GET)
     public ModelAndView forgetPassword() {
         return new ModelAndView("/lognOrReg/forgetPassword");
     }

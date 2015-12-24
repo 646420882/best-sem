@@ -20,6 +20,7 @@ import com.perfect.entity.sys.*;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.SystemUserUtils;
 import org.bson.types.ObjectId;
+import org.elasticsearch.common.Strings;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -598,6 +599,27 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         return systemUserEntity.getEmail();
     }
 
+    @Override
+    public long listCount(String companyName, String userName, Boolean accountStatus) {
+
+        Query query = new Query();
+
+        if (!Strings.isNullOrEmpty(companyName)) {
+            query.addCriteria(Criteria.where("companyName").is("*" + companyName + "*"));
+        }
+
+        if (!Strings.isNullOrEmpty(userName)) {
+            query.addCriteria(Criteria.where("userName").regex("*" + userName + "*"));
+        }
+
+        if (accountStatus != null) {
+            query.addCriteria(Criteria.where("acstate").is(accountStatus));
+        }
+
+
+        return getSysMongoTemplate().count(query, getEntityClass());
+    }
+
     private boolean accountExistsByAccountName(String userid, String baiduUserName) {
         return getSysMongoTemplate().exists(Query.query(Criteria.where("modules.accounts.bname").is(baiduUserName)), getEntityClass());
     }
@@ -673,7 +695,6 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         for (SystemUserModuleEntity systemUserModule : entity.getSystemUserModules()) {
             SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
             BeanUtils.copyProperties(systemUserModule, systemUserModuleDTO);
-            systemUserModuleDTO.setModuleUrl(systemAccountDAO.findByModuleName(systemUserModule.getModuleName()).getModuleUrl());
 
             List<ModuleAccountInfoDTO> moduleAccountDTOs = systemAccountDAO.findByUserIdAndModuleId(entity.getId(), systemUserModule.getId());
             systemUserModuleDTO.setAccounts(moduleAccountDTOs);

@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 /**
+ *
  * Created by yousheng on 15/12/17.
  */
 public class SystemRoleControllerTest extends JUnitBaseTest {

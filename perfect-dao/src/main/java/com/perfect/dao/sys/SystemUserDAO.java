@@ -104,4 +104,6 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
     void updateUserEmail(String userId, String email);
 
     String getUserEmail(String username);
+
+    long listCount(String companyName, String userName, Boolean accountStatus);
 }

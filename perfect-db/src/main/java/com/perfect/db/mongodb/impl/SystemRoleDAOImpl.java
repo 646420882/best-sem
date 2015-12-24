@@ -112,4 +112,20 @@ public class SystemRoleDAOImpl extends AbstractSysBaseDAOImpl<SystemRoleDTO, Str
         return null;
     }
 
+    @Override
+    public long countByQuery(String name, Boolean superAdmin) {
+        Query query = new Query();
+
+
+        if (!Strings.isNullOrEmpty(name)) {
+            query.addCriteria(Criteria.where("name").regex("*" + name + "*"));
+        }
+
+        if (superAdmin != null) {
+            query.addCriteria(Criteria.where("superAdmin").is(superAdmin));
+        }
+
+        return getSysMongoTemplate().count(query,getEntityClass());
+    }
+
 }

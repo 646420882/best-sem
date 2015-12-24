@@ -2,6 +2,7 @@ package com.perfect.service;
 
 import com.perfect.dto.sys.SystemRoleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.utils.paging.BootStrapPagerInfo;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface SystemRoleService {
 
     SystemRoleDTO findByUserName(String user);
 
+    BootStrapPagerInfo listPagable(String queryName, Boolean superUser, Integer page, Integer size, String sort, Boolean asc);
 }
