@@ -43,7 +43,7 @@ public interface HuiyanAccountService {
      * @param webName
      * @return
      */
-    String huiyanUpdate(String uid, String rname, String url, String webName);
+    String huiyanUpdate(String uid, String rname, String url, String webName, String bname, String bpwd);
 
     /**
      * url 启用暂停
@@ -51,6 +51,15 @@ public interface HuiyanAccountService {
      * @param id
      * @return
      */
-    String huiyanEnableOrPause(String id, int enable);
+    String huiyanEnableOrPause(String id, boolean enable);
+
+    /**
+     * 对应的慧眼url 添加Token
+     *
+     * @param id
+     * @param token
+     * @return
+     */
+    String updateHuiyanToken(String id, String token);
 
 }

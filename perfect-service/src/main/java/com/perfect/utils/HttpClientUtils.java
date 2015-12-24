@@ -30,11 +30,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class HttpClientUtils {
 
+    private static final String HTTP_URL = "http://192.168.1.104:8000/config/site_list?";
+
     private final HttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
 
     private HttpClientUtils() {
     }
-
 
     private static class LazyHolder {
         private static final HttpClientUtils INSTANCE = new HttpClientUtils();
@@ -51,7 +52,7 @@ public class HttpClientUtils {
 
     public static String postRequest(String url, Map<String, Object> params) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(url);
+            HttpPost httpPost = new HttpPost(HTTP_URL + url);
 
             List<NameValuePair> postParams = Lists.<NameValuePair>newArrayList(params
                     .entrySet()
@@ -72,7 +73,7 @@ public class HttpClientUtils {
 
     public static String getRequest(String url) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(url);
+            HttpGet httpGet = new HttpGet(HTTP_URL + url);
             CloseableHttpResponse response = httpClient.execute(httpGet);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return EntityUtils.toString(response.getEntity(), UTF_8);

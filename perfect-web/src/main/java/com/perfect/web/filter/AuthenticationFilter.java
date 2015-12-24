@@ -32,6 +32,10 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
             filterChain.doFilter(request, response);
             return;
         }
+        if(request.getRequestURI().equals("/admin/index")){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // 检测是否执行登出操作
         if (Objects.equals("/logout", request.getRequestURI())) {

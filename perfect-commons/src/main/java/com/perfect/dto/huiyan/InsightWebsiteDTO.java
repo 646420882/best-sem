@@ -75,6 +75,11 @@ public class InsightWebsiteDTO {
     private String rname;
 
     /**
+     * 百度token
+     */
+    private String token;
+
+    /**
      * 绑定时间
      */
     private Long ctime;
@@ -197,5 +202,9 @@ public class InsightWebsiteDTO {
 
     public void setCtime(Long ctime) {
         this.ctime = ctime;
+    }
+
+    public Boolean getSite_pause() {
+        return site_pause;
     }
 }

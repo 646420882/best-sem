@@ -36,9 +36,6 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Resource
     private SystemAccountDAO systemAccountDAO;
 
-
-    private static final String HTTP_URL = "http://192.168.1.104:8000/config/site_list?";
-
     private static final String HTTP_UTF8 = "UTF-8";
 
     @Override
@@ -131,11 +128,15 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (Objects.nonNull(websiteDTO)) {
             websiteDTO.setSite_pause(false);
             websiteDTO.setTrack_status(-1);
+            websiteDTO.setIs_top(false);
             websiteDTO.setIcon(1);
+            /*websiteDTO.setBname(websiteDTO.getBname().equals("") ? "" : websiteDTO.getBname());
+            websiteDTO.setBpasswd(websiteDTO.getBpasswd().equals("") ? "" : websiteDTO.getBpasswd());
+            websiteDTO.setRname(websiteDTO.getRname().equals("") ? "" : websiteDTO.getRname());*/
             websiteDTO.setIs_use(1);
             String websiteString = JSONUtils.getJsonString(websiteDTO);
             try {
-                String insert = HttpClientUtils.getRequest(HTTP_URL + "type=save&entity=" + URLEncoder.encode(websiteString, HTTP_UTF8));
+                String insert = HttpClientUtils.getRequest("type=save&entity=" + URLEncoder.encode(websiteString, HTTP_UTF8));
                 if (Objects.nonNull(insert)) return insert;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -149,7 +150,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (Objects.nonNull(uid)) {
             String urlKey = "{\"uid\":\"" + uid + "\"}";
             try {
-                String queryString = HttpClientUtils.getRequest(HTTP_URL + "type=search&query=" + URLEncoder.encode(urlKey, HTTP_UTF8));
+                String queryString = HttpClientUtils.getRequest("type=search&query=" + URLEncoder.encode(urlKey, HTTP_UTF8));
                 List<InsightWebsiteDTO> dtos = HuiyanJsonConverUtils.toInsight(queryString);
                 if (Objects.nonNull(dtos)) return dtos;
             } catch (IOException e) {
@@ -165,7 +166,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (Objects.nonNull(id)) {
             String newid = "{\"_id\":\"" + id + "\"}";
             try {
-                String s = HttpClientUtils.getRequest(HTTP_URL + "type=delete&query=" + URLEncoder.encode(newid, HTTP_UTF8));
+                String s = HttpClientUtils.getRequest("type=delete&query=" + URLEncoder.encode(newid, HTTP_UTF8));
                 if (Objects.nonNull(s)) return s;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -175,7 +176,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public String huiyanUpdate(String uid, String rname, String url, String webName) {
+    public String huiyanUpdate(String uid, String rname, String url, String webName, String bname, String bpwd) {
         if (Objects.nonNull(uid)) {
             try {
                 String query = URLEncoder.encode("{\"_id\":\"" + uid + "\"}", HTTP_UTF8);
@@ -200,9 +201,23 @@ public class UserAccountServiceImpl implements UserAccountService {
                         update = update + "\"site_name\":\"" + webName + "\"";
                     }
                 }
+                if(Objects.nonNull(bname)){
+                    if (i > 0) {
+                        update = update + ",\"bname\":\"" + bname + "\"";
+                    } else {
+                        update = update + "\"bname\":\"" + bname + "\"";
+                    }
+                }
+                if(Objects.nonNull(bpwd)){
+                    if (i > 0) {
+                        update = update + ",\"bpasswd\":\"" + bpwd + "\"";
+                    } else {
+                        update = update + "\"bpasswd\":\"" + bpwd + "\"";
+                    }
+                }
                 update = update + "}";
 
-                String s = HttpClientUtils.getRequest(HTTP_URL + "type=update&query=" + query + "&updates=" + URLEncoder.encode(update, HTTP_UTF8));
+                String s = HttpClientUtils.getRequest("type=update&query=" + query + "&updates=" + URLEncoder.encode(update, HTTP_UTF8));
                 if (Objects.nonNull(s)) return s;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -212,17 +227,31 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public String huiyanEnableOrPause(String id, int enable) {
+    public String huiyanEnableOrPause(String id, boolean enable) {
         try {
             String query = URLEncoder.encode("{\"_id\":\"" + id + "\"}", HTTP_UTF8);
             String update;
-            if (enable == 0) {
+            if (enable) {
                 update = "{\"site_pause\": true}";
             } else {
                 update = "{\"site_pause\": false}";
             }
 
-            String s = HttpClientUtils.getRequest(HTTP_URL + "type=update&query=" + query + "&updates=" + URLEncoder.encode(update, HTTP_UTF8));
+            String s = HttpClientUtils.getRequest("type=update&query=" + query + "&updates=" + URLEncoder.encode(update, HTTP_UTF8));
+            if (Objects.nonNull(s)) return s;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String updateHuiyanToken(String id, String token) {
+        try {
+            String query = URLEncoder.encode("{\"_id\":\"" + id + "\"}", HTTP_UTF8);
+            String update = "{\"token\": " + token + "}";
+
+            String s = HttpClientUtils.getRequest("type=update&query=" + query + "&updates=" + URLEncoder.encode(update, HTTP_UTF8));
             if (Objects.nonNull(s)) return s;
         } catch (IOException e) {
             e.printStackTrace();
