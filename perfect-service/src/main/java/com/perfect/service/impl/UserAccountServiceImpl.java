@@ -29,6 +29,7 @@ import java.util.Objects;
 @Service("userAccountService")
 public class UserAccountServiceImpl implements UserAccountService {
 
+    private static final String HTTP_UTF8 = "UTF-8";
 
     @Resource
     private SystemUserDAO systemUserDAO;
@@ -36,7 +37,15 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Resource
     private SystemAccountDAO systemAccountDAO;
 
-    private static final String HTTP_UTF8 = "UTF-8";
+
+    @Override
+    public String getUserId(String username) {
+        try {
+            return systemAccountDAO.findByUserName(username).getId();
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
 
     @Override
     public List<ModuleAccountInfoDTO> getSemAccounts(String username) {
@@ -80,19 +89,19 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public void unbindAccountForSem(String username, String moduleAccountId) {
+    public void unbindAccountForSem(String username, String id) {
         ModuleAccountInfoDTO moduleAccountInfoDTO = new ModuleAccountInfoDTO();
         setModuleAccountBasicInfoForSem(username, moduleAccountInfoDTO);
-        moduleAccountInfoDTO.setId(moduleAccountId);
+        moduleAccountInfoDTO.setId(id);
         moduleAccountInfoDTO.setState(0L);
         systemAccountDAO.updateModuleAccount(moduleAccountInfoDTO);
     }
 
     @Override
-    public void activeAccountForSem(String username, String moduleAccountId) {
+    public void activeAccountForSem(String username, String id) {
         ModuleAccountInfoDTO moduleAccountInfoDTO = new ModuleAccountInfoDTO();
         setModuleAccountBasicInfoForSem(username, moduleAccountInfoDTO);
-        moduleAccountInfoDTO.setId(moduleAccountId);
+        moduleAccountInfoDTO.setId(id);
         moduleAccountInfoDTO.setState(1L);
         systemAccountDAO.updateModuleAccount(moduleAccountInfoDTO);
     }
@@ -104,8 +113,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public void deleteAccountForSem(String moduleAccountId) {
-        systemAccountDAO.deleteByObjectId(moduleAccountId);
+    public void deleteAccountForSem(String id) {
+        systemAccountDAO.deleteByObjectId(id);
     }
 
     @Override
@@ -202,14 +211,14 @@ public class UserAccountServiceImpl implements UserAccountService {
                         update = update + "\"site_name\":\"" + webName + "\"";
                     }
                 }
-                if(Objects.nonNull(bname)){
+                if (Objects.nonNull(bname)) {
                     if (i > 0) {
                         update = update + ",\"bname\":\"" + bname + "\"";
                     } else {
                         update = update + "\"bname\":\"" + bname + "\"";
                     }
                 }
-                if(Objects.nonNull(bpwd)){
+                if (Objects.nonNull(bpwd)) {
                     if (i > 0) {
                         update = update + ",\"bpasswd\":\"" + bpwd + "\"";
                     } else {

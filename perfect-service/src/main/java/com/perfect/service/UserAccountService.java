@@ -17,6 +17,14 @@ import java.util.Objects;
 public interface UserAccountService extends SoukeAccountService, HuiyanAccountService {
 
     /**
+     * <p>根据系统用户名获取用户ID
+     *
+     * @param username
+     * @return
+     */
+    String getUserId(String username);
+
+    /**
      * <p>获取用户邮箱
      *
      * @param username

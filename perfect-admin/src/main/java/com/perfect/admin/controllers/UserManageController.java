@@ -4,15 +4,19 @@ import com.google.common.base.Strings;
 import com.perfect.admin.utils.JsonViews;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
+import com.perfect.service.UserAccountService;
 import com.perfect.utils.paging.BootStrapPagerInfo;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * 用户管理控制器
@@ -23,6 +27,9 @@ public class UserManageController {
 
     @Resource
     private SystemUserService systemUserService;
+
+    @Resource
+    private UserAccountService userAccountService;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public BootStrapPagerInfo listUser(@RequestParam(value = "company", required = false) String companyName,
@@ -54,6 +61,23 @@ public class UserManageController {
 
         return bootStrapPagerInfo;
 
+    }
+
+    /**
+     * 获取用户ID
+     *
+     * @param username
+     * @return
+     */
+    @RequestMapping(value = "/users/{username}/getId", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getSystemUserId(@PathVariable String username) {
+        AbstractView jsonView = new MappingJackson2JsonView();
+        String userId = userAccountService.getUserId(username);
+        jsonView.setAttributesMap(new HashMap<String, Object>() {{
+            put("userId", userId == null ? "" : userId);
+        }});
+
+        return new ModelAndView(jsonView);
     }
 
     /**
