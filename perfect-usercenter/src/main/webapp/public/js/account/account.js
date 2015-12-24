@@ -9,6 +9,7 @@ $(function () {
             dataTye: 'JSON',
             success: function (data) {
                 var semAccounts = [];
+                //console.log(data)
                 data.rows.forEach(function (item) {
                     var obj = {};
                     obj["id"] = item.id;
@@ -18,7 +19,7 @@ $(function () {
                     obj["url"] = item.bestRegDomain;
                     obj["platform"] = "百思搜客";
                     // TODO 页面绑定与取消绑定的显示
-                    //obj["state"] = item.state;  // 1 -> 显示取消绑定; 0 -> 显示绑定
+                    obj["state"] = item.state;  // 1 -> 显示取消绑定; 0 -> 显示绑定
                     obj["time"] = new Date(item.accountBindingTime).Format("yyyy年M月dd日");
                     obj["action"] = 1;
                     semAccounts.push(obj);
@@ -50,9 +51,16 @@ $(function () {
 });
 
 function operateFormatter(value, row, index) {
+    if (row.state == 1) {
+        var content = "取消绑定"
+    } else {
+        var content = "绑定"
+    }
     return [
-        '<a class="binding" href="javascript:void(0)" title="绑定">',
-        '绑定',
+        '<a class="binding" href="javascript:void(0)" title=' + content + '>',
+        content,
+        //'<a class="binding" href="javascript:void(0)" title="绑定">',
+        //'绑定',
         '</a>',
         '<a class="editor suoke" href="javascript:void(0)" title="修改">',
         '修改',
@@ -113,8 +121,10 @@ window.operateEvents = {
                                 $('.modal-backdrop').hide();
                                 bindingtext.html("取消绑定");
                                 alert("绑定成功!");
+                                $("#modelboxBottom").unbind();
                             } else {
                                 alert("绑定失败!");
+                                $("#modelboxBottom").unbind();
                             }
                         }
                     });
@@ -134,12 +144,15 @@ window.operateEvents = {
                         },
                         success: function (data) {
                             if (data.status) {
+
                                 $('#modelbox').modal('hide');
                                 $('.modal-backdrop').hide();
                                 bindingtext.html("绑定");
                                 alert("解除绑定成功!");
+                                $("#modelboxBottom").unbind();
                             } else {
                                 alert("解除绑定失败!");
+                                $("#modelboxBottom").unbind();
                             }
                         }
                     });
@@ -237,11 +250,11 @@ window.operateEvents = {
         $('.modal-dialog').css({width: '400px'});
         $("#modelboxTitle").html("修改关联账户");
         $(".modal-body").html("<ul class='account_change'>" +
-            "<li id='selectedSemAccountName'>关联账户名：</li>" +
-            "<li id='selectedSemAccountPassword'>账户密码：</li>" +
-            "<li id='selectedSemAccountRemarkName'>备注名：</li>" +
-            "<li id='selectedSemAccountUrl'>URL地址：</li>" +
-            "<li>账户所属平台：</li></ul>");
+        "<li id='selectedSemAccountName'>关联账户名：</li>" +
+        "<li id='selectedSemAccountPassword'>账户密码：</li>" +
+        "<li id='selectedSemAccountRemarkName'>备注名：</li>" +
+        "<li id='selectedSemAccountUrl'>URL地址：</li>" +
+        "<li>账户所属平台：</li></ul>");
         var editorBottom = $(this);
         var that = $(this).parent().prevAll("td");
         var that_value = that.each(function (index) {
@@ -314,13 +327,13 @@ window.operateEvents = {
             $('.modal-dialog').css({width: '400px'});
             $("#modelboxTitle").html("修改关联账户");
             $(".modal-body").html("<ul class='account_change'>" +
-                "<li>关联账户名：</li>" +
-                "<li>账户密码：</li>" +
-                "<li id='rname'>备注名：</li>" +
-                "<li id='huiyanUrl'>URL地址：</li>" +
-                "<li>账户所属平台：</li>" +
-                "<li>统计代码：</li>" +
-                "<li id='webName'>网站名称：</li></ul>");
+            "<li>关联账户名：</li>" +
+            "<li>账户密码：</li>" +
+            "<li id='rname'>备注名：</li>" +
+            "<li id='huiyanUrl'>URL地址：</li>" +
+            "<li>账户所属平台：</li>" +
+            "<li>统计代码：</li>" +
+            "<li id='webName'>网站名称：</li></ul>");
             var editorBottom = $(this);
             var that = $(this).parent().prevAll("td");
             var that_value = that.each(function (index) {
@@ -565,7 +578,6 @@ var huiyanQuery = function () {
             if (user.code == 0) {
                 user.data.forEach(function (e, s) {
                     var obj = {};
-                    console.log(e)
                     obj.id = e.id;
                     obj.name = e.bname;
                     obj.remark = e.rname;

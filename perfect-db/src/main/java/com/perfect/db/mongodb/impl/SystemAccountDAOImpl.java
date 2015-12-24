@@ -250,7 +250,7 @@ public class SystemAccountDAOImpl implements SystemAccountDAO {
 
     @Override
     public boolean updateModuleAccount(ModuleAccountInfoDTO moduleAccount) {
-        Query query = Query.query(Criteria.where(BAIDU_ACCOUNT_ID).is(moduleAccount.getBaiduAccountId()));
+        Query query = Query.query(Criteria.where(SYSTEM_ID).is(new ObjectId(moduleAccount.getId())));
         Update update = new Update();
         if (Objects.nonNull(moduleAccount.getBaiduAccountId())) {
             update.set("bid", moduleAccount.getBaiduAccountId());

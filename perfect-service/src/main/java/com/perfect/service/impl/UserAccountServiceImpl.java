@@ -86,6 +86,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void unbindAccountForSem(String username, String moduleAccountId) {
         ModuleAccountInfoDTO moduleAccountInfoDTO = new ModuleAccountInfoDTO();
         setModuleAccountBasicInfoForSem(username, moduleAccountInfoDTO);
+        moduleAccountInfoDTO.setId(moduleAccountId);
         moduleAccountInfoDTO.setState(0L);
         systemAccountDAO.updateModuleAccount(moduleAccountInfoDTO);
     }

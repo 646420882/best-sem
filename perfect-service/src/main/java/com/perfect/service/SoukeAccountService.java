@@ -40,7 +40,7 @@ public interface SoukeAccountService {
      * <p>取消绑定SEM帐号
      *
      * @param username        系统用户名
-     * @param moduleAccountId 帐号ID
+     * @param moduleAccountId 帐号ID(Mongo ID)
      */
     void unbindAccountForSem(String username, String moduleAccountId);
 
@@ -48,7 +48,7 @@ public interface SoukeAccountService {
      * <p>重新激活SEM帐号
      *
      * @param username        系统用户名
-     * @param moduleAccountId 帐号ID
+     * @param moduleAccountId 帐号ID(Mongo ID)
      */
     void activeAccountForSem(String username, String moduleAccountId);
 
