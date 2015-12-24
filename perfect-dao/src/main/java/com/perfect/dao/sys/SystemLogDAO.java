@@ -12,7 +12,9 @@ import java.util.List;
  * Created by yousheng on 15/12/16.
  */
 public interface SystemLogDAO extends HeyCrudRepository<SystemLogDTO, String> {
-    BootStrapPagerInfo list(SystemLogParams params, int offset, int limit, String sort, String order);
+    List<SystemLogDTO> list(SystemLogParams params, int offset, int limit, String sort, String order);
 
     void log(String txt);
+
+    Long getListTotalCount(SystemLogParams slp);
 }

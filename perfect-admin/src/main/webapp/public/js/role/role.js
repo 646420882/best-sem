@@ -1,52 +1,66 @@
 /**
  * Created by guochunyan on 2015/12/16.
  */
+var role = {
+    init: {
+        data: function () {
+            $("#roleAdmin").bootstrapTable({
+                    locale: 'zh-CN',
+                    pagination: true,
+                    //smartDisplay: false,
+                    pageSize: 1,
+                    pageList: new Array(1, 50, 100),
+                    searchAlign: 'left',
+                    paginationPreText: "上一页",
+                    paginationNextText: "下一页",
+                    data: role.test.data
+                }
+            );
+        }
+    },
+    test: {
+        data: [{
+            id: 1,
+            roleName: '普菲特',
+            rolePosition: "运营经理",
+            roleProperty: "管理员",
+            roleAccount: "perfect2015",
+            rolePassword: "123456",
+            roleCreateTime: "2015-08-12",
+            roleContactWay: '123456789'
+
+        }, {
+            id: 2,
+            roleName: '普菲特',
+            rolePosition: "运营经理",
+            roleProperty: "管理员",
+            roleAccount: "perfect2015",
+            rolePassword: "123456",
+            roleCreateTime: "2015-08-12",
+            roleContactWay: '123456789'
+        }, {
+            id: 3,
+            roleName: '普菲特',
+            rolePosition: "运营经理",
+            roleProperty: "管理员",
+            roleAccount: "perfect2015",
+            rolePassword: "123456",
+            roleCreateTime: "2015-08-12",
+            roleContactWay: '123456789'
+        }, {
+            id: 4,
+            roleName: '普菲特',
+            rolePosition: "运营经理",
+            roleProperty: "管理员",
+            roleAccount: "perfect2015",
+            rolePassword: "123456",
+            roleCreateTime: "2015-08-12",
+            roleContactWay: '123456789'
+        }]
+    }
+}
 $(function () {
-    var data = [{
-        id: 1,
-        roleName: '普菲特',
-        rolePosition: "运营经理",
-        roleProperty: "管理员",
-        roleAccount: "perfect2015",
-        rolePassword: "123456",
-        roleCreateTime:"2015-08-12",
-        roleContactWay:'123456789'
-
-    }, {
-        id: 2,
-        roleName: '普菲特',
-        rolePosition: "运营经理",
-        roleProperty: "管理员",
-        roleAccount: "perfect2015",
-        rolePassword: "123456",
-        roleCreateTime:"2015-08-12",
-        roleContactWay:'123456789'
-    }, {
-        id: 3,
-        roleName: '普菲特',
-        rolePosition: "运营经理",
-        roleProperty: "管理员",
-        roleAccount: "perfect2015",
-        rolePassword: "123456",
-        roleCreateTime:"2015-08-12",
-        roleContactWay:'123456789'
-    }, {
-        id: 4,
-        roleName: '普菲特',
-        rolePosition: "运营经理",
-        roleProperty: "管理员",
-        roleAccount: "perfect2015",
-        rolePassword: "123456",
-        roleCreateTime:"2015-08-12",
-        roleContactWay:'123456789'
-    }]
-    $('#roleAdmin').bootstrapTable({
-        data: data
-    });
-    $(window).resize(function () {
-        $('#roleAdmin').bootstrapTable('resetView');
-
-    });
+    role.init.data();
 })
 function disableFormatter(value, row, index) {
     return [
@@ -65,9 +79,9 @@ function disableFormatter(value, row, index) {
 
     ].join('');
 }
-function passwordFormatter (value, row, index) {
+function passwordFormatter(value, row, index) {
     return [
-        "<span class='fl'>*******</span>&nbsp;&nbsp;&nbsp;&nbsp;"+
+        "<span class='fl'>*******</span>&nbsp;&nbsp;&nbsp;&nbsp;" +
         '<a class="password_reset" href="javascript:void(0)" title="重置">',
         '重置',
         '</a>'

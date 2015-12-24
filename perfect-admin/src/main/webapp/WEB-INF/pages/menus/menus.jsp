@@ -220,7 +220,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/public/js/jurisdiction/jurisdiction.js"></script>
+<script type="text/javascript" src="/public/js/menu/menu.js"></script>
 </body>
 </html>
 

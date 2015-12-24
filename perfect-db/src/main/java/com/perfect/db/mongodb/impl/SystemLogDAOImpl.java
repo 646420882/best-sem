@@ -40,7 +40,7 @@ public class SystemLogDAOImpl extends AbstractSysBaseDAOImpl<SystemLogDTO, Strin
     }
 
     @Override
-    public BootStrapPagerInfo list(SystemLogParams params, int offset, int limit, String sort, String order) {
+    public List<SystemLogDTO> list(SystemLogParams params, int offset, int limit, String sort, String order) {
 
         Query query = new Query();
         if (params != null) {
@@ -59,29 +59,18 @@ public class SystemLogDAOImpl extends AbstractSysBaseDAOImpl<SystemLogDTO, Strin
         }
 //        PageRequest pageRequest = new PageRequest(page, size, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort);
         query.with(new Sort((order.equals("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
-        int totalCount = getListTotalCount(query);
+
         query.skip(offset);
         query.limit(limit);
         List<SystemLogEntity> systemLogEntities = getSysMongoTemplate().find(query, getEntityClass());
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         List<SystemLogDTO> systemLogDTOs = ObjectUtils.convert(systemLogEntities, getDTOClass());
 
-        if (systemLogDTOs != null) {
-            if (systemLogDTOs.size() > 0)
-                systemLogDTOs.forEach((systemLogDTO -> {
-                    systemLogDTO.setDisplayTime(formatter.format(new Date(systemLogDTO.getTime())));
-                }));
-            return new BootStrapPagerInfo(totalCount, systemLogDTOs);
-        }
 
-        return null;
+        return systemLogDTOs;
     }
 
-    private int getListTotalCount(Query q) {
-        return (int) getSysMongoTemplate().count(q, getEntityClass());
-    }
 
     @Override
     public void log(String txt) {
@@ -98,5 +87,23 @@ public class SystemLogDAOImpl extends AbstractSysBaseDAOImpl<SystemLogDTO, Strin
 
         getSysMongoTemplate().insert(systemLogEntity);
         return;
+    }
+
+    @Override
+    public Long getListTotalCount(SystemLogParams params) {
+        Query query = new Query();
+        if (params != null) {
+            if (params.getStart() != null && params.getStart() != null) {
+                query = query.addCriteria(Criteria.where("time").gte(params.getStart()).lte(params.getEnd()));
+            } else if (params.getStart() != null && params.getEnd() == null) {
+                query = query.addCriteria(Criteria.where("time").gte(params.getStart()));
+            } else if (params.getStart() == null && params.getEnd() != null) {
+                query = query.addCriteria(Criteria.where("time").lte(params.getEnd()));
+            }
+            if (!Strings.isNullOrEmpty(params.getUser())) {
+                query = query.addCriteria(Criteria.where("user").is(params.getUser()));
+            }
+        }
+        return getSysMongoTemplate().count(query, getEntityClass());
     }
 }

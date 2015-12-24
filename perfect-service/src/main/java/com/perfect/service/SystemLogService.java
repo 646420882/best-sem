@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface SystemLogService {
     BootStrapPagerInfo list(SystemLogParams params, int offset, int limit, String s, String order);
+
+    Long getListTotalCount(SystemLogParams slp);
 }
