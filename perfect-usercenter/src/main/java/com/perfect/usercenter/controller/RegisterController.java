@@ -51,7 +51,6 @@ public class RegisterController {
     /**
      * 注册帐号
      * <p>
-     * TODO 注册账号必须使用POST方法
      *
      * @return
      */

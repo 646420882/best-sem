@@ -32,24 +32,28 @@ $(function () {
     });
 
     $("body").on("click", "#save", function () {
-        var regx = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
-        var regxm = /^(13[0-9]{9})|(15[89][0-9]{8})$/;
+        var regxm = /^(1[0-9][0-9]{9})|(15[89][0-9]{8})$/;
         if (!regxm.test($("#userList input[cname=mobilePhone]").val().trim())) {
             alert("请输入正确的移动电话！");
             return
         }
-
-        if (!regx.test($("#userList input[cname=email]").val().trim())) {
-            alert("请输入正确的电子邮箱！");
+        if($("#userList input[cname=companyName]").val().trim() == ""){
+            alert("公司名称不能为空！");
             return;
         }
-
+        if($("#userList input[cname=contactName]").val().trim() == ""){
+            alert("联系人不能为空！");
+            return;
+        }
+        if($("#userList input[cname=telephone]").val().trim() == ""){
+            alert("办公电话不能为空！");
+            return;
+        }
         var dto = {};
         dto["companyName"] = $("#userList input[cname=companyName]").val().trim();
         dto["contactName"] = $("#userList input[cname=contactName]").val().trim();
         dto["telephone"] = $("#userList input[cname=telephone]").val().trim();
         dto["address"] = $("#userList input[cname=address]").val().trim();
-        dto["email"] = $("#userList input[cname=email]").val().trim();
         dto["mobilePhone"] = $("#userList input[cname=mobilePhone]").val().trim();
 
         $.ajax({

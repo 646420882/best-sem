@@ -60,7 +60,12 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
                     // 重定向至登录之前访问的页面
                     Object _url = request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL);
                     response.setStatus(SC_FOUND);
-                    response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
+                    if(systemUserDTO.getAccess() == 1){
+                        response.sendRedirect("/admin/index");
+                    }else{
+                        response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
+                    }
+
 
                     // 清除Session中用户在未登录时访问的URL信息
                     request.getSession().setAttribute(USER_PRE_LOGIN_VISIT_URL, null);

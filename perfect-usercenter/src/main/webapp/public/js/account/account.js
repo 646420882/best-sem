@@ -78,10 +78,14 @@ function operateFormatter(value, row, index) {
     ].join('');
 }
 function disableFormatter(value, row, index) {
+    var html = "";
+    if(row.enable){
+        html = html +"<a class='disable' href='javascript:void(0)' title='启用'>启用</a>"
+    }else{
+        html = html +"<a class='disable' href='javascript:void(0)' title='禁用'>禁用</a>"
+    }
     return [
-        '<a class="disable" href="javascript:void(0)" title="禁用">',
-        '禁用',
-        '</a>',
+        html,
         '<a class="editor huiyan" href="javascript:void(0)" title="修改">',
         '修改',
         '</a>',
@@ -200,7 +204,7 @@ window.operateEvents = {
                         type: "post",
                         data: {
                             uid: row.id,
-                            enable: 1
+                            enable: true
                         },
                         cache: false,
                         dataType: "json",
@@ -226,7 +230,7 @@ window.operateEvents = {
                         type: "post",
                         data: {
                             uid: row.id,
-                            enable: 0
+                            enable: false
                         },
                         cache: false,
                         dataType: "json",
@@ -356,6 +360,8 @@ window.operateEvents = {
                     type: "post",
                     data: {
                         uid: row.id,
+                        bname:$("#bname input").val(),
+                        bpwd:$("#bpwd input").val(),
                         rname: $("#rname input").val(),
                         url: $("#huiyanUrl input").val(),
                         webName: $("#webName input").val()
@@ -533,12 +539,13 @@ $(function () {
             var buserName = $("#buserName").val();
             var bpasswd = $("#bpasswd").val();
             var rname = $("#rname").val();
-            if (url == undefined) {
+            if (url == undefined || url == "") {
                 alert("url地址不能为空");
                 return
             }
-            if (urlname == undefined) {
+            if (urlname == undefined || urlname == "") {
                 alert("网站名称不能为空");
+                return
             }
             var websiteDTO = {};
             websiteDTO["uid"] = $("#sysUserId").val();

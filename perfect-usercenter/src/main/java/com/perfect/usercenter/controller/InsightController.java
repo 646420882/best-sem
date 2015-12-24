@@ -58,9 +58,11 @@ public class InsightController {
                                       @RequestParam String uid,
                                       @RequestParam String rname,
                                       @RequestParam String url,
-                                      @RequestParam String webName) {
+                                      @RequestParam String webName,
+                                      @RequestParam String bname,
+                                      @RequestParam String bpwd) {
 
-        String update = userAccountService.huiyanUpdate(uid, rname, url, webName);
+        String update = userAccountService.huiyanUpdate(uid, rname, url, webName, bname, bpwd);
 
         return JsonViews.generate(JsonResultMaps.successMap(update));
     }
@@ -68,7 +70,7 @@ public class InsightController {
     @RequestMapping(value = "/enableOrPause", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView enableOrPause(HttpServletRequest request, HttpServletResponse response,
                                       @RequestParam String uid,
-                                      @RequestParam int enable) {
+                                      @RequestParam boolean enable) {
 
         String update = userAccountService.huiyanEnableOrPause(uid, enable);
 
