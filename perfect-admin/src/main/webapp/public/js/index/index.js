@@ -85,3 +85,42 @@ function cancelLookUp() {
     $(".indexCret").css({'display':'none'});
     $("#userLookUpWrap").css({"display": "none"});
 }
+function relationAccountFormatter(item){
+    var content = "";
+    for(var i = 0;i < item.length; i++){
+        content += '<div class="lookTableRow">'+item[i]+'</div>'
+    }
+    return [content].join('')
+}
+function relationPwdFormatter(item){
+    var content = "";
+    for(var i = 0;i < item.length; i++){
+        content += '<div class="lookTableRow">'+item[i]+'</div>'
+    }
+    return [content].join('')
+}
+function relationApiFormatter(item){
+    var content = "";
+    for(var i = 0;i < item.length; i++){
+        content += '<div class="lookTableRow">'+item[i]+'</div>'
+    }
+    return [content].join('')
+}
+function relationUrlFormatter(item){
+    var content = "";
+    for(var i = 0;i < item.length; i++){
+        content += '<div class="lookTableRow">'+item[i]+'</div>'
+    }
+    return [content].join('')
+}
+function relationCodeFormatter(item){
+    var content = "";
+    for(var i = 0;i < item.length; i++){
+        content += '<div class="lookTableRow">'+item[i]+'</div>'
+    }
+    return [content].join('')
+}
+function setFormatter(item){
+    var content = "<a href='/admin/jurisdiction'>设置</a>";
+    return [content].join('')
+}

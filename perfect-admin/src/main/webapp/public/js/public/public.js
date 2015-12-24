@@ -150,10 +150,10 @@ $(function () {
                 endDate: "2015-09-20",
                 authorityAssignment: "设置",
                 relatedAccount:["凤巢账户1","凤巢账户2"],
-                relatedAccountPwd:"123123",
-                APICode:"(运营人员双击填写)",
-                URLAddress:"www.perfect-cn.cn",
-                statisticalCode:"(运营人员双击填写)"
+                relatedAccountPwd:["凤巢账户1","凤巢账户2"],
+                APICode:["凤巢账户1","凤巢账户2"],
+                URLAddress:["凤巢账户1","凤巢账户2"],
+                statisticalCode:["凤巢账户1","凤巢账户2"]
 
             }, {
                 id: 2,
@@ -163,15 +163,16 @@ $(function () {
                 startDate: "2015-09-20",
                 endDate: "2015-09-20",
                 authorityAssignment: "设置",
-                relatedAccount:"凤巢账户1",
-                relatedAccountPwd:"123123",
-                APICode:"(运营人员双击填写)",
-                URLAddress:"www.perfect-cn.cn",
-                statisticalCode:"(运营人员双击填写)"
+                relatedAccount:["凤巢账户1","凤巢账户2"],
+                relatedAccountPwd:["凤巢账户1","凤巢账户2"],
+                APICode:["凤巢账户1","凤巢账户2"],
+                URLAddress:["凤巢账户1","凤巢账户2"],
+                statisticalCode:["凤巢账户1","凤巢账户2"]
             }];
             $('#userLookUpTable').bootstrapTable({
                 data: lookUpData
             });
+            $(".lookTableRow").parent().attr('style', 'padding: 0 !important');
         },
         'click .password_reset': function (e, value, row, index) {
             $('#modelbox').modal();

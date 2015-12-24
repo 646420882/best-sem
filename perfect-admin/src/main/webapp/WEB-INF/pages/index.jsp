@@ -72,12 +72,12 @@
                             <th data-field="openStates">开通状态</th>
                             <th data-field="startDate">开始日期</th>
                             <th data-field="endDate">结束日期</th>
-                            <th data-field="authorityAssignment">权限分配</th>
-                            <th data-field="relatedAccount">关联账户</th>
-                            <th data-field="relatedAccountPwd">关联账户密码</th>
-                            <th data-field="APICode">API代理</th>
-                            <th data-field="URLAddress">URL地址</th>
-                            <th data-field="APICode">统计代码</th>
+                            <th data-field="authorityAssignment" data-formatter="setFormatter">权限分配</th>
+                            <th data-field="relatedAccount" data-formatter="relationAccountFormatter">关联账户</th>
+                            <th data-field="relatedAccountPwd" data-formatter="relationPwdFormatter">关联账户密码</th>
+                            <th data-field="APICode" data-formatter="relationApiFormatter">API代理</th>
+                            <th data-field="URLAddress" data-formatter="relationUrlFormatter">URL地址</th>
+                            <th data-field="APICode" data-formatter="relationCodeFormatter">统计代码</th>
                         </tr>
                         </thead>
                     </table>

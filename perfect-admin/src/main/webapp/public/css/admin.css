@@ -94,6 +94,16 @@
     width: 100%;
     border: 1px solid #e3e3e3;
 }
+#userLookUpWrap table td,#userLookUpWrap table th{
+    vertical-align: middle;
+}
+#userLookUpWrap .lookTableRow{
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+}
+#userLookUpWrap .lookTableRow:last-child{
+    border-bottom: none;
+}
 #userLookUpWrap .lookUpContent .lookUpConfirmBtn {
     margin-top: 20px;
 }
