@@ -22,7 +22,7 @@
                     <div class="fl moduleSearchLabel"><label>用户名：</label></div>
                     <div class="fl moduleSearch">
                         <div style="position: relative">
-                            <input type="text" placeholder="perfect2015" class="form-control">
+                            <input id="sysUserName" type="text" placeholder="请输入用户名" class="form-control">
                             <span>
                                 <span class="glyphicon glyphicon-search"></span>
                             </span>
@@ -34,7 +34,7 @@
                     <div class="fl moduleSearchLabel"><label>操作模块：</label></div>
                     <div class="fl moduleSearch">
                         <div>
-                            <select onchange="transformModule(this)">
+                            <select id="moduleSelected" onchange="transformModule(this)">
                                 <option value="1">百思慧眼</option>
                                 <option value="2">百思搜客</option>
                             </select>
@@ -59,119 +59,153 @@
                                                                      onchange="checkboxCheck(this,1,'adminModuleReportWrap')">全选/全不选</label>
                         </div>
                         <div class="adminModuleReport" id="adminModuleReport">
-                            <div style="padding-left: 40px"><label><input type="checkbox"
-                                                                          onchange="checkboxCheck(this,2,'adminModuleReport')">报告模块</label>
+                            <div style="padding-left: 40px"><label>
+                                <input type="checkbox" menuname="报告模块"
+                                       onchange="checkboxCheck(this,2,'adminModuleReport')">报告模块
+                            </label>
                             </div>
                             <div style="padding-left: 40px">
                                 <div class="fl modalTree">
-                                    <div><label><input type="checkbox" onchange="checkboxCheck(this,3,'')">趋势分析</label>
-                                    </div>
-                                    <div class="secondClass"><img
-                                            src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">实时访客</label></div>
-                                    <div class="secondClass"><img
-                                            src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">今日统计</label></div>
-                                    <div class="lastClass"><img
-                                            src="${pageContext.request.contextPath}/public/img/lastModalTree.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">外部链接</label></div>
+                                    <div><label><input type="checkbox" menuname="网站概览"
+                                                       onchange="checkboxCheck(this,3,'')">网站概览
+                                    </label></div>
                                 </div>
                                 <div class="fl modalTree">
-                                    <div><label><input type="checkbox" onchange="checkboxCheck(this,3,'')">来源分析</label>
+                                    <div><label>
+                                        <input type="checkbox" menuname="趋向分析"
+                                               onchange="checkboxCheck(this,3,'')">趋向分析
+                                    </label>
                                     </div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">全部来源</label></div>
+                                            type="checkbox" menuname="实时访客"
+                                            onchange="checkboxCheck(this,5,'')">实时访客</label></div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">搜索引擎</label></div>
+                                            type="checkbox" menuname="今日统计"
+                                            onchange="checkboxCheck(this,5,'')">今日统计</label></div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">搜索词</label></div>
+                                            type="checkbox" menuname="昨日统计"
+                                            onchange="checkboxCheck(this,5,'')">昨日统计</label></div>
                                     <div class="lastClass"><img
-                                            src="${pageContext.request.contextPath}/public/img/lastModalTree.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">外部链接</label></div>
+                                            src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
+                                            type="checkbox" menuname="最近30天"
+                                            onchange="checkboxCheck(this,5,'')">最近30天</label></div>
                                 </div>
                                 <div class="fl modalTree">
-                                    <div><label><input type="checkbox" onchange="checkboxCheck(this,3,'')">页面分析</label>
+                                    <div><label><input type="checkbox" menuname="来源分析"
+                                                       onchange="checkboxCheck(this,3,'')">来源分析</label>
                                     </div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">受访页面</label></div>
+                                            type="checkbox" menuname="全部来源"
+                                            onchange="checkboxCheck(this,5,'')">全部来源</label></div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">入口页面</label></div>
+                                            type="checkbox" menuname="搜索引擎"
+                                            onchange="checkboxCheck(this,5,'')">搜索引擎</label></div>
+                                    <div class="secondClass"><img
+                                            src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
+                                            type="checkbox" menuname="搜索词"
+                                            onchange="checkboxCheck(this,5,'')">搜索词</label></div>
                                     <div class="lastClass"><img
                                             src="${pageContext.request.contextPath}/public/img/lastModalTree.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">页面热点图</label></div>
+                                            type="checkbox" menuname="外部链接"
+                                            onchange="checkboxCheck(this,5,'')">外部链接</label></div>
                                 </div>
                                 <div class="fl modalTree">
-                                    <div><label><input type="checkbox" onchange="checkboxCheck(this,3,'')">访客分析</label>
+                                    <div><label><input type="checkbox" menuname="页面分析"
+                                                       onchange="checkboxCheck(this,3,'')">页面分析</label>
                                     </div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">访客地图</label></div>
+                                            type="checkbox" menuname="受访页面"
+                                            onchange="checkboxCheck(this,5,'')">受访页面</label></div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">设置环境</label></div>
+                                            type="checkbox" menuname="入口页面"
+                                            onchange="checkboxCheck(this,5,'')">入口页面</label></div>
                                     <div class="lastClass"><img
                                             src="${pageContext.request.contextPath}/public/img/lastModalTree.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">新老访客</label></div>
+                                            type="checkbox" menuname="页面热点图"
+                                            onchange="checkboxCheck(this,5,'')">页面热点图</label></div>
                                 </div>
                                 <div class="fl modalTree">
-                                    <div><label><input type="checkbox" onchange="checkboxCheck(this,3,'')">价值透析</label>
+                                    <div><label><input type="checkbox" menuname="访客分析"
+                                                       onchange="checkboxCheck(this,3,'')">访客分析</label>
                                     </div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">流量地图</label></div>
+                                            type="checkbox" menuname="访客地图"
+                                            onchange="checkboxCheck(this,5,'')">访客地图</label></div>
+                                    <div class="secondClass"><img
+                                            src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
+                                            type="checkbox" menuname="设备环境"
+                                            onchange="checkboxCheck(this,5,'')">设备环境</label></div>
                                     <div class="lastClass"><img
                                             src="${pageContext.request.contextPath}/public/img/lastModalTree.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">频道流转</label></div>
+                                            type="checkbox" menuname="新老访客"
+                                            onchange="checkboxCheck(this,5,'')">新老访客</label></div>
                                 </div>
                                 <div class="fl modalTree">
-                                    <div><label><input type="checkbox" onchange="checkboxCheck(this,3,'')">转化分析</label>
+                                    <div><label><input type="checkbox" menuname="价值透析"
+                                                       onchange="checkboxCheck(this,3,'')">价值透析</label>
                                     </div>
                                     <div class="secondClass"><img
                                             src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">事件转化</label></div>
+                                            type="checkbox" menuname="流量地图"
+                                            onchange="checkboxCheck(this,5,'')">流量地图</label></div>
                                     <div class="lastClass"><img
                                             src="${pageContext.request.contextPath}/public/img/lastModalTree.png"><label><input
-                                            type="checkbox" onchange="checkboxCheck(this,5,'')">页面转化</label></div>
+                                            type="checkbox" menuname="频道流转"
+                                            onchange="checkboxCheck(this,5,'')">频道流转</label></div>
+                                </div>
+                                <div class="fl modalTree">
+                                    <div><label><input type="checkbox" menuname="转化分析"
+                                                       onchange="checkboxCheck(this,3,'')">转化分析</label>
+                                    </div>
+                                    <div class="secondClass"><img
+                                            src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
+                                            type="checkbox" menuname="事件转化"
+                                            onchange="checkboxCheck(this,5,'')">事件转化</label></div>
+                                    <div class="lastClass"><img
+                                            src="${pageContext.request.contextPath}/public/img/lastModalTree.png"><label><input
+                                            type="checkbox" menuname="页面转化"
+                                            onchange="checkboxCheck(this,5,'')">页面转化</label></div>
                                 </div>
                             </div>
                         </div>
                         <div style="clear: both"></div>
                         <div class="adminModuleReport" id="adminModuleWeb" style="border-top: 1px solid #f6f4f5">
                             <div style="padding-left: 40px"><label><input type="checkbox"
-                                                                          onchange="checkboxCheck(this,2,'adminModuleWeb')">网站设置</label>
+                                                                          menuname="网站统计设置"
+                                                                          onchange="checkboxCheck(this,2,'adminModuleWeb')">网站统计设置</label>
                             </div>
                             <div style="padding-left: 40px">
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">代码安装检查</label>
+                                                                                   menuname="统计规则设置"
+                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">统计规则设置</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">设置统计图表</label>
+                                                                                   menuname="子目录管理"
+                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">子目录管理</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">设置子目录</label>
+                                                                                   menuname="页面转化目标"
+                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">页面转化目标</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">设置统计规则</label>
+                                                                                   menuname="事件转化目标"
+                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">事件转化目标</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">设置页面转化</label>
+                                                                                   menuname="时长转化目标"
+                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">时长转化目标</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">设置事件转化目标</label>
-                                </div>
-                                <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">代码获取</label>
-                                </div>
-                                <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">设置指定广告耿总</label>
-                                </div>
-                                <div class="fl modalTree webSetWrap"><label><input type="checkbox"
-                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">设置统计图标</label>
+                                                                                   menuname="指定广告跟踪"
+                                                                                   onchange="checkboxCheck(this,4,'adminModuleWeb')">指定广告跟踪</label>
                                 </div>
                             </div>
                         </div>
@@ -181,24 +215,31 @@
                     <div class="fl moduleSearchLabel"></div>
                     <div class="fl" style="background: #fff;width: 88%;padding-bottom: 10px;">
                         <div class="adminModuleAll" style="border-bottom: 1px solid #f6f4f5">
-                            <label style="margin-left: 15px;"><input style="margin-right: 8px" type="checkbox"
-                                                                     onchange="skCheckAll(this,1)">全选/全不选</label>
+                            <label style="margin-left: 15px;">
+                                <input id="soukeSelectedAll" style="margin-right: 8px" type="checkbox"
+                                       onchange="skCheckAll(this,1)">全选/全不选
+                            </label>
                         </div>
                         <div class="adminModuleReport" style="border-top: 1px solid #f6f4f5">
                             <div style="padding: 15px 0 0 10px">
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
+                                                                                   menuname="账户全景"
                                                                                    onchange="skCheckAll(this,2)">账户全景</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
+                                                                                   menuname="推广助手"
                                                                                    onchange="skCheckAll(this,2)">推广助手</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
+                                                                                   menuname="智能结构"
                                                                                    onchange="skCheckAll(this,2)">智能结构</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
+                                                                                   menuname="智能竞价"
                                                                                    onchange="skCheckAll(this,2)">智能竞价</label>
                                 </div>
                                 <div class="fl modalTree webSetWrap"><label><input type="checkbox"
+                                                                                   menuname="数据报告"
                                                                                    onchange="skCheckAll(this,2)">数据报告</label>
                                 </div>
                             </div>

@@ -36,10 +36,19 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Resource
     private SystemAccountDAO systemAccountDAO;
 
-
     private static final String HTTP_URL = "http://192.168.1.104:8000/config/site_list?";
 
     private static final String HTTP_UTF8 = "UTF-8";
+
+
+    @Override
+    public String getUserId(String username) {
+        try {
+            return systemAccountDAO.findByUserName(username).getId();
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
 
     @Override
     public List<ModuleAccountInfoDTO> getSemAccounts(String username) {
