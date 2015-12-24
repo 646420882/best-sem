@@ -240,7 +240,7 @@ $(function () {
     $("input[cname=click]").attr("xname", "data2");
     $("input[name=chartcheckbox]").click(function () {
         var name = $(this).attr("cname");
-        if ($("input[type=checkbox]:checked").length <= 3) {
+        if ($("#containerLegend input[type=checkbox]:checked").length < 3 && $("#containerLegend input[type=checkbox]:checked").length >0) {
             if (name == "impression") {
                 if ($(this).is(':checked')) {
                     if (data1 == "") {
