@@ -413,7 +413,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
         List<SystemUserDTO> newEntityList = entityList.stream().filter(e -> e != null && e.getSystemUserModules() != null).filter(e -> {
             return e.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName()))).findAny().isPresent();
         }).filter(systemUserDTO -> {
-            boolean judge = (systemUserDTO.getState() != 0 && systemUserDTO.getAccountState() > 0);
+            boolean judge = (systemUserDTO.getState() != 0 && systemUserDTO.getAccess() == 2 && systemUserDTO.getAccountState() > 0);
 
             if (!judge) {
                 getSkipPull(systemUserDTO, null, dateStr + "--用户");
