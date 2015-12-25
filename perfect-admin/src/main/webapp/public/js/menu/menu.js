@@ -161,6 +161,9 @@ function transformModule(obj) {
     }
 }
 
+
+var moduleIdNameMap = new Map();
+
 $(function () {
     loadModuleMenusCache();
 
@@ -232,8 +235,36 @@ $(function () {
         });
     });
 
-    $('#sysUserName').blur(function () {
-        loadUserModuleMsg($('#sysUserName').val());
+    $('.setJurisdictionBtn input[type=button]').first().next().click(function () {
+        var sysUserName = $('#sysUserName').val();
+        if (sysUserName == null || sysUserName.trim() == "") {
+            return;
+        }
+
+        var userId = getSysUserId(sysUserName);
+        if (userId == null) {
+            return;
+        }
+
+        if (window.confirm("确定要还原模块权限?")) {
+            loadUserModuleMsg(sysUserName);
+        }
+    });
+
+    //$('#sysUserName').blur(function () {
+    //    loadUserModuleMsg($('#sysUserName').val());
+    //});
+
+    $("#sysUserName").keydown(function (event) {
+        event = document.all ? window.event : event;
+        if ((event.keyCode || event.which) == 13) {
+            var sysUserName = $('#sysUserName').val();
+            if (sysUserName == null || sysUserName.trim() == "") {
+                return;
+            }
+
+            loadUserModuleMsg(sysUserName);
+        }
     });
 
     $('#moduleSelected').change(function () {
@@ -254,6 +285,8 @@ var loadUserModuleMsg = function (sysUserName) {
                     $("input[menuname='" + menu + "']").prop('checked', false);
                 });
             });
+
+            alert("该用户不存在!");
 
             return;
         }
@@ -381,8 +414,6 @@ var loadModuleMenusCache = function () {
     moduleMenusCacheMap.put("价值透析", ["流量地图", "频道流转"]);
     moduleMenusCacheMap.put("转化分析", ["事件转化", "页面转化"]);
 };
-
-var moduleIdNameMap = new Map();
 
 
 /*

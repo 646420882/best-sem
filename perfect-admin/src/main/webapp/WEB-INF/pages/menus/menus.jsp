@@ -90,7 +90,7 @@
                                             type="checkbox" menuname="昨日统计"
                                             onchange="checkboxCheck(this,5,'')">昨日统计</label></div>
                                     <div class="lastClass"><img
-                                            src="${pageContext.request.contextPath}/public/img/modalTreePic.png"><label><input
+                                            src="${pageContext.request.contextPath}/public/img/lastModalTree.png"><label><input
                                             type="checkbox" menuname="最近30天"
                                             onchange="checkboxCheck(this,5,'')">最近30天</label></div>
                                 </div>
@@ -253,7 +253,7 @@
                     <div class="fl">
                         <div class="setJurisdictionBtn">
                             <input type="button" class="btn current" value="确定">
-                            <input type="button" class="btn" value="取消">
+                            <input type="button" class="btn" value="还原">
                         </div>
                     </div>
                 </div>
