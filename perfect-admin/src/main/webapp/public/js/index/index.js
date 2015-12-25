@@ -6,11 +6,13 @@ $(function () {
 });
 
 function disableFormatter(value, row, index) {
-    return [
-        '<a class="disable tab_operate" href="javascript:void(0)" title="禁用">',
-        '禁用',
-        '</a>'
-    ].join('');
+    var html = "";
+    if (row.accountState == 1) {
+        html = html + "<a class='disable tab_operate' href='javascript:void(0)' title='禁用'>禁用</a>"
+    } else {
+        html = html + "<a class='disable tab_operate' href='javascript:void(0)' title='启用'>启用</a>"
+    }
+    return [html].join('');
 };
 function LookUp(value, row, index) {
     return [
@@ -22,7 +24,6 @@ function LookUp(value, row, index) {
 }
 function passwordFormatter(value, row, index) {
     return [
-        "<span class='fl'>*******</span>&nbsp;&nbsp;&nbsp;&nbsp;" +
         '<a class="password_reset" href="javascript:void(0)" title="重置">',
         '重置',
         '</a>'
@@ -49,7 +50,7 @@ function relationPwdFormatter(item) {
 function relationApiFormatter(item) {
     var content = "";
     for (var i = 0; i < item.length; i++) {
-        content += '<div class="lookTableRow">' + item[i] + '</div>'
+        content += '<div class="lookTableRow updateToken">' + item[i] + '</div>'
     }
     return [content].join('')
 }
@@ -68,7 +69,6 @@ function relationCodeFormatter(item) {
     return [content].join('')
 }
 function setFormatter(item, row) {
-    console.log(row);
     var content = "<a href='/menus?userName=" + row.userName + "'>设置</a>";
     return [content].join('')
 }
@@ -93,5 +93,6 @@ var getAdminInfo = function () {
         }
     });
 }
+
 
 

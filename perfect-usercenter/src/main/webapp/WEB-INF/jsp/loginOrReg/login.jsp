@@ -76,8 +76,7 @@
                             </div>
                         </li>
                         <li>
-                            <input type="button" id="loginSec" class="loginButton"
-                                   onclick="_pct.putPar(['_trackEvent', 'Login', 'click', '登陆信息'])" value="登陆"/>
+                            <input type="button" id="loginSec" class="loginButton" value="登陆"/>
                         </li>
                         <li><a id="forgetPassword" class="fr" href="#">忘记密码?</a></li>
                     </ul>

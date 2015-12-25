@@ -883,7 +883,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public boolean updateUserPassword(String userid, String password) {
 
-        SystemUserDTO systemUserDTO = systemUserDAO.findOne(userid);
+        SystemUserDTO systemUserDTO = systemUserDAO.findByUserId(userid);
         if (systemUserDTO == null) {
             return false;
         }

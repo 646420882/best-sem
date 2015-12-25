@@ -63,15 +63,34 @@ $(function () {
                 $("#modelboxTitle").html("是否禁用？");
                 $("#modelboxBottom").click(function () {
                     $('#modelbox').modal('hide');
-                    bindingtext.html("启动");
-                })
-
+                    $.ajax({
+                        url: '/users/' + row.id + '/status',
+                        type: 'post',
+                        dataType: 'JSON',
+                        data: {
+                            status: 0,
+                        },
+                        success: function (user) {
+                            window.location.reload()
+                        }
+                    });
+                });
             } else {
-                $("#modelboxTitle").html("是否启动？");
+                $("#modelboxTitle").html("是否启用？");
                 $('#modelbox').modal()
                 $("#modelboxBottom").click(function () {
                     $('#modelbox').modal('hide');
-                    bindingtext.html("禁用");
+                    $.ajax({
+                        url: '/users/' + row.id + '/status',
+                        type: 'post',
+                        dataType: 'JSON',
+                        data: {
+                            status: 1,
+                        },
+                        success: function (user) {
+                            window.location.reload()
+                        }
+                    });
                 })
 
             }
@@ -114,7 +133,7 @@ $(function () {
             cancelThat.each(function (i) {
                 var that_html = $(this).find("input").val();
                 if (i == 2) {
-                    $(this).html('<span class="fl">******</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="password_reset" href="javascript:void(0)" title="重置">重置</a>');
+                    $(this).html('<a class="password_reset" href="javascript:void(0)" title="重置">重置</a>');
                 } else if (i == 7) {
                     $(this).html('<input data-index="' + index + '" name="btSelectItem" type="checkbox">')
                 } else {
@@ -169,11 +188,12 @@ $(function () {
                                 uid: row.id,
                             },
                             success: function (user) {
+                                console.log(user);
                                 if (user.data.length > 0) {
                                     user.data.forEach(function (huiyan, i) {
                                         baiduName.push(huiyan.bname == null ? "-" : huiyan.bname);
                                         baiduPwd.push(huiyan.bpasswd == null ? "-" : huiyan.bpasswd);
-                                        token.push(huiyan.token == null ? "-" : huiyan.token);
+                                        token.push(huiyan.token == null ? "-(双击修改)<input type='hidden' value='" + huiyan.id + "'/>" : huiyan.token + "<input type='hidden' value='" + huiyan.id + "'/>(双击修改)");
                                         bestDomain.push(huiyan.site_url == null ? "-" : huiyan.site_url);
                                         var html = "<div id='base_code'>&lt;script&gt;<br>" +
                                             "var _pct= _pct|| [];<br> " +
@@ -193,7 +213,7 @@ $(function () {
                         item.accounts.forEach(function (baidu, i) {
                             baiduName.push(baidu.baiduUserName == null ? "-" : baidu.baiduUserName);
                             baiduPwd.push(baidu.baiduPassword == null ? "-" : baidu.baiduPassword);
-                            token.push(baidu.token == null ? "-" : baidu.token);
+                            token.push(baidu.token == null ? "-(双击修改)<input type='hidden' value='" + baidu.id + "'/>" : baidu.token + "<input type='hidden' value='" + baidu.id + "'/>(双击修改)");
                             bestDomain.push(baidu.bestRegDomain == null ? "-" : baidu.bestRegDomain);
                         });
                     }
@@ -214,12 +234,68 @@ $(function () {
         },
         'click .password_reset': function (e, value, row, index) {
             $('#modelbox').modal();
-        }
+            $("#modelboxTitle").html("是否重置密码" + row.userName + "用户密码！");
+            $("#modelboxBottom").click(function () {
+                $('#modelbox').modal('hide');
+                $.ajax({
+                    url: '/users/' + row.id + '/password',
+                    type: 'post',
+                    dataType: 'JSON',
+                    success: function (user) {
+                        if(user.code == 0){
+                            alert("密码重置成功，重置为：123456")
+                        }else{
+                            alert("密码重置失败")
+                        }
+                    }
+                });
+            })
+        },
+        'dblclick .updateToken': function (e, value, row, index) {
+            $('#tokenBox').modal();
+            $("#tokenBoxTitle").html("修改Token值！");
+            //判断是否绑定了click事件
+            var objEvt = $._data($("#tokenBoxBottom")[0], "events");
+            $("#tokenBoxBottom").click(function () {
+                if (row.systemModal == "百思搜客") {
+                    console.log(row.accountid);
+                    $.ajax({
+                        url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (user) {
+                            if (user.code == 0) {
+                                alert("token修改成功");
+                                window.location.reload();
+                            } else {
+                                alert("token修改失败");
+                            }
+                        }
+                    });
+                } else {
+                    console.log(row.huiyanid);
+                    $.ajax({
+                        url: '/updateHuiYan/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (user) {
+                            console.log(user);
+                            if (user.code == 0) {
+                                alert("token修改成功");
+                                window.location.reload();
+                            } else {
+                                alert("token修改失败");
+                            }
+                        }
+                    });
+                }
+
+            })
+        },
     };
 })
 function firstAdd() {
-    var startId = "<input type='text' class='form-control'>",
-        rows = [];
+    var startId = "<input type='text' class='form-control'>", rows = [];
     rows.push({
         id: startId,
         name: startId,

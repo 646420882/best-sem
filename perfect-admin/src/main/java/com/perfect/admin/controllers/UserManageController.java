@@ -66,6 +66,12 @@ public class UserManageController {
         return bootStrapPagerInfo;
     }
 
+    /**
+     * 查询慧眼数据
+     *
+     * @param uid
+     * @return
+     */
     @RequestMapping(value = "/usersHuiYan", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView usersHuiYan(@RequestParam(value = "uid", required = false) String uid) {
 
@@ -75,6 +81,25 @@ public class UserManageController {
         }
 
         return JsonViews.generate(JsonResultMaps.successMap(insightWebsiteDTOs));
+    }
+
+    /**
+     * 修改慧眼token
+     *
+     * @param huiyanId
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/updateHuiYan/{huiyanId}/token/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updateHuiYan(@PathVariable("huiyanId") String huiyanId,
+                                     @PathVariable("token") String token) {
+
+        String huiyanToken = userAccountService.updateHuiyanToken(huiyanId, token);
+        if (huiyanToken == null) {
+            return JsonViews.generate(-1);
+        }
+
+        return JsonViews.generate(JsonResultMaps.successMap(huiyanToken));
     }
 
     /**

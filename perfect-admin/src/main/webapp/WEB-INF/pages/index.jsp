@@ -40,7 +40,7 @@
                         <thead>
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
-                            <th data-field="id">序号</th>
+                            <%--<th data-field="id">序号</th>--%>
                             <th data-field="companyName">公司名称</th>
                             <th data-field="userName">用户名</th>
                             <th data-field="userPwd" data-formatter="passwordFormatter" data-events="operateEvents">密码
@@ -73,7 +73,7 @@
                             <th data-field="authorityAssignment" data-formatter="setFormatter">权限分配</th>
                             <th data-field="relatedAccount" data-formatter="relationAccountFormatter">关联账户</th>
                             <th data-field="relatedAccountPwd" data-formatter="relationPwdFormatter">关联账户密码</th>
-                            <th data-field="APICode" data-formatter="relationApiFormatter">Token</th>
+                            <th data-field="APICode" data-formatter="relationApiFormatter" data-events="operateEvents">Token</th>
                             <th data-field="URLAddress" data-formatter="relationUrlFormatter">URL地址</th>
                             <th data-field="statisticalCode" data-formatter="relationCodeFormatter">统计代码</th>
                         </tr>

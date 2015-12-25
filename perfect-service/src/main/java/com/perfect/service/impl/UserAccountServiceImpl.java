@@ -259,7 +259,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public String updateHuiyanToken(String id, String token) {
         try {
             String query = URLEncoder.encode("{\"_id\":\"" + id + "\"}", HTTP_UTF8);
-            String update = "{\"token\": " + token + "}";
+            String update = "{\"token\": \"" + token + "\"}";
 
             String s = HttpClientUtils.getRequest("type=update&query=" + query + "&updates=" + URLEncoder.encode(update, HTTP_UTF8));
             if (Objects.nonNull(s)) return s;

@@ -65,8 +65,10 @@ public class LoginController {
 
             if (systemUserDTO.getAccountState() == 0) {
                 model.put("invalidUserName", "帐号已禁用");
+                return new ModelAndView("/loginOrReg/login", model);
             } else if (systemUserDTO.getState() == 0) {
                 model.put("invalidUserName", "正在审核中");
+                return new ModelAndView("/loginOrReg/login", model);
             }
 
             if (account.equals(systemUserDTO.getUserName()) && pwdKey.equals(systemUserDTO.getPassword())) {

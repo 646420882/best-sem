@@ -207,4 +207,12 @@ public class InsightWebsiteDTO {
     public Boolean getSite_pause() {
         return site_pause;
     }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
