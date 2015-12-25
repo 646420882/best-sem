@@ -34,8 +34,8 @@
     </div>
     <div class="servicesBox">
         <div class="time over">
-            <b id="time" class="fl"></b><span class="fl">${currSystemUserName}</span>
-
+            <%--<b id="time" class="fl"></b><span class="glyphicon glyphicon-user"></span><span class="fl">${currSystemUserName}</span>--%>
+            <b id="time" class="fl"></b><a href="/"><span class="fl glyphicon glyphicon-user" style="top: 3px;margin-right: 5px"></span><span class="fl">${currSystemUserName}</span></a>
             <form class="fl" name="logout" method="POST" action="${pageContext.request.contextPath}/logout">
                 <input type="submit" value="| 退出"
                        onclick="$('form[logout]').submit();"/>

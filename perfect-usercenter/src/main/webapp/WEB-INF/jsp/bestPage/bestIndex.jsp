@@ -12,6 +12,7 @@
     <meta charset="UTF-8">
     <title>欢迎来到百思</title>
 
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/bootstrap.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/public.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/css/shun_page.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
@@ -33,10 +34,10 @@
     </div>
     <div class="servicesBox">
         <div class="time over">
-            <b id="time" class="fl"></b><a href="/"><span class="fl">${user.userName}</span></a>
+            <b id="time" class="fl"></b><a href="/"><span class="fl glyphicon glyphicon-user" style="top: 3px;margin-right: 5px"></span><span class="fl">${user.userName}</span></a>
 
-            <form class="fl" name="logout" method="POST" action="/logout">
-                <input type="submit" value="| 退出"
+            <form class="fl" name="logout" method="POST" action="/logout">&nbsp;&nbsp;|
+                <input type="submit" value="退出"
                        onclick="$('form[logout]').submit();"/>
             </form>
         </div>
