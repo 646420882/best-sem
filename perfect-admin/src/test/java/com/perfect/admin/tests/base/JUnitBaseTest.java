@@ -36,7 +36,7 @@ public class JUnitBaseTest {
     //百思测试
     public String sysUserid = "5678bf10279c4ba1e19bd431";
 
-    public String roleid = "5677d27c8d6aff7e585260e7";
+    public String roleid = "567b909177c891978cae112e";
 
     public String moduleid = "5678eaa476941d1cc5753f2f";
 

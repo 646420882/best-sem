@@ -85,6 +85,6 @@ public class SystemRoleControllerTest extends JUnitBaseTest {
 
     @Test
     public void testUpdateRolePassword() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/sysroles/" + roleid + "/password").param("password", "yangle1")).andDo(MockMvcResultHandlers.print()).andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.post("/sysroles/" + roleid + "/password").param("password", "123456")).andDo(MockMvcResultHandlers.print()).andReturn();
     }
 }

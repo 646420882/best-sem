@@ -66,9 +66,10 @@ public class SystemRoleServiceImpl implements SystemRoleService {
     @Override
     public boolean update(String roleid, SystemRoleDTO systemRoleDTO) {
 
-        if (!Strings.isNullOrEmpty(systemRoleDTO.getPassword())) {
-            systemRoleDTO.setPassword(new MD5.Builder().source(systemRoleDTO.getPassword()).salt(pass_salt).build().getMD5());
-        }
+            //TODO 因为前台有重置密码的按钮,所以不需要在编辑的修改密码
+//        if (!Strings.isNullOrEmpty(systemRoleDTO.getPassword())) {
+//            systemRoleDTO.setPassword(new MD5.Builder().source(systemRoleDTO.getPassword()).salt(pass_salt).build().getMD5());
+//        }
 
         boolean updated = systemRoleDAO.update(roleid, systemRoleDTO);
 

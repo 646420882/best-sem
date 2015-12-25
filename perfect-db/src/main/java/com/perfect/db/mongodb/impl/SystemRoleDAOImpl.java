@@ -17,7 +17,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by yousheng on 15/12/17.
@@ -40,14 +42,20 @@ public class SystemRoleDAOImpl extends AbstractSysBaseDAOImpl<SystemRoleDTO, Str
 
 
         if (!Strings.isNullOrEmpty(name)) {
-            query.addCriteria(Criteria.where("name").regex("*" + name + "*"));
+            String newName = null;
+            try {
+                newName = new String(name.getBytes(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            query.addCriteria(Criteria.where("name").regex(Pattern.compile("^" + name + ".*$", Pattern.CASE_INSENSITIVE)));
         }
 
         if (superAdmin != null) {
             query.addCriteria(Criteria.where("superAdmin").is(superAdmin));
         }
 
-        query.with(new PageRequest(page - 1, size, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
+        query.with(new PageRequest(page, size, (asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
 
 
         List<SystemRoleEntity> systemRoleEntities = getSysMongoTemplate().find(query, getEntityClass());
@@ -118,7 +126,7 @@ public class SystemRoleDAOImpl extends AbstractSysBaseDAOImpl<SystemRoleDTO, Str
 
 
         if (!Strings.isNullOrEmpty(name)) {
-            query.addCriteria(Criteria.where("name").regex("*" + name + "*"));
+            query.addCriteria(Criteria.where("name").regex(Pattern.compile("^" + name + ".*$", Pattern.CASE_INSENSITIVE)));
         }
 
         if (superAdmin != null) {

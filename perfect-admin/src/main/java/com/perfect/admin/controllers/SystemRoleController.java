@@ -29,12 +29,12 @@ public class SystemRoleController {
     @RequestMapping(value = "/sysroles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BootStrapPagerInfo list(
-            @RequestParam(value = "name", required = false) String queryName,
+            @RequestParam(value = "search", required = false) String queryName,
             @RequestParam(value = "super", required = false) Boolean superUser,
-            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
+            @RequestParam(value = "offset", required = false) Integer page,
+            @RequestParam(value = "limit", required = false) Integer size,
             @RequestParam(value = "sort", required = false, defaultValue = "name") String sort,
-            @RequestParam(value = "order", required = false, defaultValue = "true") Boolean asc) {
+            @RequestParam(value = "order", required = false, defaultValue = "true") String order) {
 
         boolean isSuper = SuperUserUtils.isLoginSuper();
         BootStrapPagerInfo bootStrapPagerInfo = new BootStrapPagerInfo();
@@ -47,9 +47,10 @@ public class SystemRoleController {
             return bootStrapPagerInfo;
         }
 
-        if (page < 1 || size < 0) {
+        if (page < 0 || size < 0) {
             return null;
         }
+        Boolean asc = order.equals("asc");
         bootStrapPagerInfo = systemRoleService.listPagable(queryName, superUser, page, size, sort, asc);
         return bootStrapPagerInfo;
     }
@@ -107,7 +108,7 @@ public class SystemRoleController {
 
 
         boolean success = systemRoleService.deleteSystemRole(roleid);
-        if (success) {
+        if (!success) {
             return JsonViews.generateFailedNoData();
         }
         return JsonViews.generateSuccessNoData();
@@ -126,6 +127,12 @@ public class SystemRoleController {
 
         ModelAndView modelAndView = checkUserSuperAdmin("当前用户没有修改管理员权限");
         if (modelAndView != null) {
+            SystemRoleInfo systemRoleInfo=AppContext.getSystemRoleInfo();
+
+            if (systemRoleDTO.getId().equals(systemRoleInfo.getRoleId())) {
+                systemRoleService.addSystemRole(systemRoleDTO);
+                return JsonViews.generateSuccessNoData();
+            }
             return modelAndView;
         }
 
