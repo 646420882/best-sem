@@ -18,24 +18,12 @@ import java.util.Objects;
  */
 public class WebUtils extends org.springframework.web.util.WebUtils implements AuthConstants {
 
-    public static final String KEY_ACCOUNT = "_accountId";
-    public static final String KEY_ACCOUNTLIST = "_acclist";
+    public static final String KEY_ACCOUNT = "souke_moduleAccountId";
+    public static final String KEY_ACCOUNTLIST = "souke_moduleAccountList";
 
-
-    public static void setModuleId(HttpServletRequest request, String moduleId) {
-        request.getSession().setAttribute(MODULE, moduleId);
-    }
-
-    public static String getModuleId(HttpServletRequest request) {
-        Object obj = request.getSession().getAttribute(MODULE);
-        if (Objects.isNull(obj))
-            return null;
-
-        return obj.toString();
-    }
 
     public static String getUserName(HttpServletRequest request) {
-        Object userInfo = request.getSession().getAttribute(USER_INFORMATION);
+        Object userInfo = request.getSession().getAttribute(USER_INFO);
         if (Objects.isNull(userInfo))
             return null;
 
@@ -54,12 +42,12 @@ public class WebUtils extends org.springframework.web.util.WebUtils implements A
     }
 
     public static void setModuleAccounts(HttpServletRequest request, List<ModuleAccountInfoDTO> moduleAccountInfoDTOs) {
-        request.getSession().setAttribute(MODULE_ACCOUNT_INFORMATION, moduleAccountInfoDTOs);
+        request.getSession().setAttribute(MODULE_ACCOUNT_INFO, moduleAccountInfoDTOs);
     }
 
     @SuppressWarnings("unchecked")
     public static List<ModuleAccountInfoDTO> getModuleAccounts(HttpServletRequest request) {
-        Object moduleAccountInfo = request.getSession().getAttribute(MODULE_ACCOUNT_INFORMATION);
+        Object moduleAccountInfo = request.getSession().getAttribute(MODULE_ACCOUNT_INFO);
         if (Objects.isNull(moduleAccountInfo))
             return Collections.emptyList();
 

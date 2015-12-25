@@ -1376,10 +1376,9 @@
 
 .list4 table tr td {
     height: 30px;
-    line-height: 30px;
+    line-height: 32px;
     text-align: center;
-    border-right: 1px solid #ffffff;
-    border-bottom: 1px solid #ffffff;
+     border:none ;
     cursor: Default;
     overflow: hidden;
     white-space: nowrap;
@@ -1416,19 +1415,20 @@
 }
 
 .list02_top {
-    background: #272537;
+    border-bottom: solid 1px #d4d4d4;
+    border-top: solid 1px #d4d4d4;
+    background: #eeeeee;
     font-weight: bold;
-    color: #fff;
+    color: #666666;
     height: 30px;
     overflow: hidden;
 }
-
 .list2_box1 {
-    background: #f7f9fb;
+    background: #fafafa;
 }
 
 .list2_box2 {
-    background: #ecf3f9;
+    background: #f3f3f3;
 }
 
 .page2 {
@@ -2063,11 +2063,14 @@ h2 .close {
 }
 
 .list2_box3, .add.list2_box3, .update.list2_box3, .checked_all {
-    background: #c9e0f2;
+    background: #bcedfe;
 }
 
 .del.list2_box3 {
     color: #bababa;
+}
+.list2_box1 a,.list2_box2 a,.list2_box3 a{
+    color: #01aeef;
 }
 
 /*.add {
@@ -3773,7 +3776,7 @@ input[type=checkbox]:focus {
 
 /* CSS Document */
 .list2_box2.list2_box3 {
-    background: #c9e0f2;
+    background: #bcedfe;
 }
 
 .list2_box2.table_ctrl, .list2_box1.table_ctrl {
@@ -4196,7 +4199,7 @@ input[type=checkbox]:focus {
 }
 
 .InputTd {
-    padding: 0 10px;
+    padding: 0px 0px 0 56px
 }
 
 .InputTd span {
@@ -4330,31 +4333,33 @@ input[type=checkbox]:focus {
 }
 
 .ui-jqgrid-htable thead {
-    background: #272537;
-    color: #fff;
+    background: #eeeeee;
+    color: #666666;
 }
 
 .ui-jqgrid .ui-jqgrid-htable th div {
-    color: #fff;
-    font-weight: normal;
-    font-family: "微软雅黑";
+    color: #666666;
+    font-weight: 600;
+}
+.ui-jqgrid .ui-jqgrid-htable th div:hover{
+    color: #333333;
 }
 
 .ui-widget-content .list2_box2 {
-    background: #ecf3f9;
+    background: #f3f3f3;
 }
 
 .ui-widget-content .list2_box2:hover {
-    background: #c9e0f2;
+    background: #bcedfe;
 }
 
-.ui-widget-content .ui-state-hover {
-    background: #c9e0f2;
+.ui-jqgrid-bdiv .ui-state-hover {
+    background: #bcedfe !important;
     border: none;
 }
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
-    background: #c3def9;
+    background: #fafafa;
 }
 
 .checkbox-inlines {
@@ -4735,9 +4740,13 @@ input[type=checkbox]:focus {
 }
 
 .table-bordered > thead > tr > th {
-    color: #fff;
+    border: none;
+    color: #666666;
+    font-weight: 600;
 }
-
+.table-bordered > thead > tr > th:hover{
+    color: #333333;
+}
 .help_icon {
     text-align: center;
     position: absolute;

@@ -57,8 +57,6 @@ function operateFormatter(value, row, index) {
     return [
         '<a class="binding" href="javascript:void(0)" title=' + content + '>',
         content,
-        //'<a class="binding" href="javascript:void(0)" title="绑定">',
-        //'绑定',
         '</a>',
         '<a class="editor suoke" href="javascript:void(0)" title="修改">',
         '修改',
@@ -210,7 +208,7 @@ window.operateEvents = {
                                 $('#modelbox').modal('hide');
                                 var tabledelete = $(this).parent().parent();
                                 tabledelete.remove();
-                                window.location.reload()
+                                window.location.    reload()
                             }
                         }
                     });
@@ -247,13 +245,13 @@ window.operateEvents = {
     'click .suoke': function (e, value, row, index) {
         $('#modelbox').modal();
         $('.modal-dialog').css({width: '400px'});
-        $("#modelboxTitle").html("修改关联账户");
+        $("#modelboxTitle").html("百思搜客-关联账户");
         $(".modal-body").html("<ul class='account_change'>" +
-            "<li id='selectedSemAccountName'>关联账户名：</li>" +
-            "<li id='selectedSemAccountPassword'>账户密码：</li>" +
-            "<li id='selectedSemAccountRemarkName'>备注名：</li>" +
-            "<li id='selectedSemAccountUrl'>URL地址：</li>" +
-            "<li>账户所属平台：</li></ul>");
+        "<li id='selectedSemAccountName'>关联账户名：</li>" +
+        "<li id='selectedSemAccountPassword'>账户密码：</li>" +
+        "<li id='selectedSemAccountRemarkName'>备注名：</li>" +
+        "<li id='selectedSemAccountUrl'>URL地址：</li>" +
+        "<li class='hide'>账户所属平台：</li></ul>");
         var editorBottom = $(this);
         var that = $(this).parent().prevAll("td");
         var that_value = that.each(function (index) {
@@ -324,15 +322,15 @@ window.operateEvents = {
         if (platform == "百思慧眼") {
             $('#modelbox').modal();
             $('.modal-dialog').css({width: '400px'});
-            $("#modelboxTitle").html("修改关联账户");
+            $("#modelboxTitle").html("百思慧眼-关联账户");
             $(".modal-body").html("<ul class='account_change'>" +
-                "<li>关联账户名：</li>" +
-                "<li>账户密码：</li>" +
-                "<li id='rname'>备注名：</li>" +
-                "<li id='huiyanUrl'>URL地址：</li>" +
-                "<li>账户所属平台：</li>" +
-                "<li>统计代码：</li>" +
-                "<li id='webName'>网站名称：</li></ul>");
+            "<li>关联账户名：</li>" +
+            "<li>账户密码：</li>" +
+            "<li id='rname'>备注名：</li>" +
+            "<li id='huiyanUrl'>URL地址：</li>" +
+            "<li class='hide'>账户所属平台：</li>" +
+            "<li>统计代码：</li>" +
+            "<li id='webName'>网站名称：</li></ul>");
             var editorBottom = $(this);
             var that = $(this).parent().prevAll("td");
             var that_value = that.each(function (index) {
@@ -452,10 +450,10 @@ $(function () {
             "<li>账户密码：<input id='semAccountPassword' class='form-control ' type='password'></li>" +
             "<li>备注名：<input id='semAccountRemarkName' class='form-control ' type='text'></li>" +
             "<li>URL地址：<input id='semAccountAddr' class='form-control ' type='text'></li>" +
-            "<li>账户所属平台：<input id='semPlatForm' class='form-control ' readonly value='百思搜客' type='text'></li></ul>";
+            "<li class='hide'>账户所属平台：<input id='semPlatForm' class='form-control ' readonly value='百思搜客' type='text'></li></ul>";
         $('#modelbox').modal();
         $('.modal-dialog').css({width: '400px'});
-        $("#modelboxTitle").html("新增关联账户");
+        $("#modelboxTitle").html("百思搜客-关联账户");
         $(".modal-body").html(acountContent);
 
         $('#modelboxBottom').click(function () {
@@ -517,11 +515,11 @@ $(function () {
             "<li>关联账户名：<input class='form-control ' id='buserName' type='text'></li>" +
             "<li>账户密码：<input class='form-control ' id='bpasswd' type='text'></li>" +
             "<li>备注名：<input class='form-control ' id='rname' type='text'></li>" +
-            "<li>账户所属平台：<input class='form-control ' readonly value='百思慧眼' type='text'></li>" +
+            "<li class='hide'>账户所属平台：<input class='form-control ' readonly value='百思慧眼' type='text'></li>" +
             "<li>可输入如下4种域名形式 <p/>1.主域名（如：www.baidu.com）<br>2.二级域名（如：sub.baidu.com) 3.子目录（如：www.baidu.com/sub）<br>4.wap站域名（如：wap.baidu.com）</li></ul>";
         $('#modelbox').modal();
         $('.modal-dialog').css({width: '400px'});
-        $("#modelboxTitle").html("新增关联账户");
+        $("#modelboxTitle").html("百思慧眼-关联账户");
         $(".modal-body").html(acountContent);
 
         $("#modelboxBottom").click(function () {
@@ -586,6 +584,7 @@ var huiyanQuery = function () {
                     obj.platform = "百思慧眼";
                     obj.webName = e.site_name;
                     obj.webUrl = e.site_url;
+                    obj.enable = e.site_pause;
                     var code = "<div id='base_code'>&lt;script&gt;<br>" +
                         "var _pct= _pct|| [];<br> " +
                         "(function() {<br>" +

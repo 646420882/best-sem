@@ -10,6 +10,7 @@ import com.perfect.service.SystemUserService;
 import com.perfect.utils.MD5;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -117,9 +118,9 @@ public class LoginController {
             if (!Strings.isNullOrEmpty(url) && !url.equals("null")) {
                 String target;
                 if (url.lastIndexOf("/") != -1) {
-                    target = "http://" + url + TOKEN_URL_PATH.substring(1) + uuid;
+                    target = "http://" + url + TOKEN_URL_PATH.substring(1) + StringUtils.reverse(uuid);
                 } else {
-                    target = "http://" + url + TOKEN_URL_PATH + uuid;
+                    target = "http://" + url + TOKEN_URL_PATH + StringUtils.reverse(uuid);
                 }
 
                 try {
