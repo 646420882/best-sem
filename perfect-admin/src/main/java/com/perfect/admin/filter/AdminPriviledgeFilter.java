@@ -65,6 +65,7 @@ public class AdminPriviledgeFilter implements Filter {
 //            systemUserInfo.setIp(request.getRemoteHost());
             systemRoleInfo.setRoleName(systemRoleDTO.getLoginName());
             systemRoleInfo.setIsSuper(systemRoleDTO.isSuperAdmin());
+            systemRoleInfo.setRoleId(systemRoleDTO.getId());
             AppContext.setSystemUserInfo(systemRoleInfo);
         }
         chain.doFilter(request, response);

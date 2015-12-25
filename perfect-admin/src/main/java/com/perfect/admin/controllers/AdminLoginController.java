@@ -46,6 +46,11 @@ public class AdminLoginController {
         return new ModelAndView("loginOrReg/login", model);
     }
 
+    @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
+    public void logOut(HttpServletRequest request) {
+
+    }
+
 
     @RequestMapping(value = "/loginaction", method = {RequestMethod.POST})
     public ModelAndView login(HttpServletRequest request,
