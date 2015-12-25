@@ -752,30 +752,30 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean updateUserModuleMenus(String id, String moduleid, List<SystemMenuDTO> menus) {
-        return systemUserDAO.updateModuleMenus(id, moduleid, menus);
+    public boolean updateUserModuleMenus(String userId, String moduleid, UserModuleMenuDTO menus) {
+        return systemUserDAO.updateModuleMenus(userId, moduleid, menus);
     }
 
     @Override
-    public boolean addModule(String userid, String moduleId) {
+    public boolean addModule(String userid, String moduleName) {
 
         SystemUserDTO systemUserDTO = systemUserDAO.findByUserId(userid);
         if (systemUserDTO == null) {
             return false;
         }
 
-        boolean exists = systemUserDAO.existsModule(userid, moduleId);
+        boolean exists = systemUserDAO.existsModule(userid, moduleName);
         if (exists) {
             return false;
         }
 
-        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(moduleId);
-        if (systemModuleDTO == null) {
-            return false;
-        }
+//        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleName(moduleName);
+//        if (systemModuleDTO == null) {
+//            return false;
+//        }
 
         SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
-        systemUserModuleDTO.setModuleId(moduleId);
+        systemUserModuleDTO.setModuleName(moduleName);
 //        systemUserModuleDTO.setModuleName(systemModuleDTO.getModuleName());
 //        systemUserModuleDTO.setModuleUrl(systemModuleDTO.getModuleUrl());
 
@@ -792,7 +792,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
         boolean success = systemUserDAO.saveUserModule(userid, systemUserModuleDTO);
         if (success) {
-            systemLogDAO.log("用户:" + systemUserDTO.getUserName() + " 新增系统模块:" + systemModuleDTO.getModuleName());
+            systemLogDAO.log("用户:" + systemUserDTO.getUserName() + " 新增系统模块:" + moduleName);
         }
 
         return success;
@@ -824,30 +824,31 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public List<SystemMenuDTO> getUserSubMenu(String userid, String id) {
+    public List<SystemMenuDTO> getUserSubMenu(String userid, String moduleId) {
 
-        SystemUserModuleDTO systemUserModuleDTO = systemUserDAO.getUserModuleById(userid, id);
-
-        if (systemUserModuleDTO == null) {
-            return Lists.newArrayList();
-        }
-        // 查询系统模块菜单，获取最新菜单名称，url等
-        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(systemUserModuleDTO.getModuleId());
-
-//        List<SystemMenuDTO> systemMenuDTOs = systemModuleDTO.getMenus();
+        return Collections.EMPTY_LIST;
+//        SystemUserModuleDTO systemUserModuleDTO = systemUserDAO.getUserModuleById(userid, moduleId);
 //
-//        List<SystemMenuDTO> userMenuDTOs = systemUserModuleDTO.getMenus();
+//        if (systemUserModuleDTO == null) {
+//            return Lists.newArrayList();
+//        }
+//        // 查询系统模块菜单，获取最新菜单名称，url等
+//        SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(systemUserModuleDTO.getModuleId());
 //
-//        userMenuDTOs.stream().forEach((userMenuDTO -> {
-//            SystemMenuDTO matchedMenuDTO = systemMenuDTOs.stream().findFirst()
-//                    .filter((systemMenuDTO -> userMenuDTO.getId().equals(systemMenuDTO.getId()))).get();
+////        List<SystemMenuDTO> systemMenuDTOs = systemModuleDTO.getMenus();
+////
+////        List<SystemMenuDTO> userMenuDTOs = systemUserModuleDTO.getMenus();
+////
+////        userMenuDTOs.stream().forEach((userMenuDTO -> {
+////            SystemMenuDTO matchedMenuDTO = systemMenuDTOs.stream().findFirst()
+////                    .filter((systemMenuDTO -> userMenuDTO.getId().equals(systemMenuDTO.getId()))).get();
+////
+////            userMenuDTO.setMenuName(matchedMenuDTO.getMenuName());
+////            userMenuDTO.setMenuUrl(matchedMenuDTO.getMenuName());
+////        }));
 //
-//            userMenuDTO.setMenuName(matchedMenuDTO.getMenuName());
-//            userMenuDTO.setMenuUrl(matchedMenuDTO.getMenuName());
-//        }));
-
-        updateMenuData(systemModuleDTO.getMenus(), systemUserModuleDTO.getMenus());
-        return systemUserModuleDTO.getMenus();
+//        updateMenuData(systemModuleDTO.getMenus(), systemUserModuleDTO.getMenus());
+//        return systemUserModuleDTO.getMenus();
     }
 
     @Override
@@ -935,6 +936,11 @@ public class SystemUserServiceImpl implements SystemUserService {
         long total = findUsersCount(companyName, userName, accountStatus);
 
         return new BootStrapPagerInfo(total, systemUserDTOs);
+    }
+
+    @Override
+    public boolean deleteUser(String userid) {
+        return systemUserDAO.delete(userid);
     }
 
     private long findUsersCount(String companyName, String userName, Boolean accountStatus) {

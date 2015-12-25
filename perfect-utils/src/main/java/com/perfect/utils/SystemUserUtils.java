@@ -37,7 +37,9 @@ public class SystemUserUtils {
 
     public static List<ModuleAccountInfoDTO> findAccountsBySystemName(SystemUserDTO systemUserDTO, String systemName) {
         final List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = Lists.newArrayList();
-        systemUserDTO.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(systemName))).findFirst().ifPresent(systemUserModuleDTO1 -> {
+        systemUserDTO.getSystemUserModules().stream().filter((systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(systemName)))
+                .findFirst()
+                .ifPresent(systemUserModuleDTO1 -> {
             moduleAccountInfoDTOs.addAll(systemUserModuleDTO1.getAccounts());
         });
 

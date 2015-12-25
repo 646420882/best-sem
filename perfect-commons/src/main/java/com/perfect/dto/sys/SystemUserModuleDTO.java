@@ -1,8 +1,8 @@
 package com.perfect.dto.sys;
 
+import com.google.common.collect.Lists;
 import com.perfect.dto.BaseDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +11,9 @@ import java.util.List;
  * Created by yousheng on 15/12/15.
  */
 public class SystemUserModuleDTO extends BaseDTO {
+
+    private String moduleId;
+
     private String moduleName;
 
     private String moduleUrl;
@@ -23,13 +26,13 @@ public class SystemUserModuleDTO extends BaseDTO {
 
     private long endTime;
 
-    private List<SystemMenuDTO> menus;
+//    private List<SystemMenuDTO> menus;
 
-    private List<UserModuleMenuDTO> moduleMenus = new ArrayList<>();
+//    private List<UserModuleMenuDTO> moduleMenus = new ArrayList<>();
 
+    private List<String> menus = Lists.newArrayList();
     private List<ModuleAccountInfoDTO> accounts;
 
-    private String moduleId;
 
     public long getStartTime() {
         return startTime;
@@ -92,24 +95,33 @@ public class SystemUserModuleDTO extends BaseDTO {
         return moduleId;
     }
 
-    public List<SystemMenuDTO> getMenus() {
-        return menus;
-    }
+//    public List<SystemMenuDTO> getMenus() {
+//        return menus;
+//    }
 
-    public SystemUserModuleDTO setMenus(List<SystemMenuDTO> menus) {
-        this.menus = menus;
-        return this;
-    }
+//    public SystemUserModuleDTO setMenus(List<SystemMenuDTO> menus) {
+//        this.menus = menus;
+//        return this;
+//    }
 
     public void setPayed(boolean payed) {
         isPayed = payed;
     }
 
-    public List<UserModuleMenuDTO> getModuleMenus() {
-        return moduleMenus;
+    public List<String> getMenus() {
+        return menus;
     }
 
-    public void setModuleMenus(List<UserModuleMenuDTO> moduleMenus) {
-        this.moduleMenus = moduleMenus;
+    public SystemUserModuleDTO setMenus(List<String> menus) {
+        this.menus = menus;
+        return this;
     }
+
+//    public List<UserModuleMenuDTO> getModuleMenus() {
+//        return moduleMenus;
+//    }
+//
+//    public void setModuleMenus(List<UserModuleMenuDTO> moduleMenus) {
+//        this.moduleMenus = moduleMenus;
+//    }
 }

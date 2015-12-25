@@ -1,5 +1,7 @@
 package com.perfect.dto.sys;
 
+import com.perfect.dto.BaseDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  * 菜单模块均采用当前类
  * Created by yousheng on 15/12/19.
  */
-public class UserModuleMenuDTO {
+public class UserModuleMenuDTO extends BaseDTO {
 
     private String moduleName;
 

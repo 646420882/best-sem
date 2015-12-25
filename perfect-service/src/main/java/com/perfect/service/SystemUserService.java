@@ -76,8 +76,7 @@ public interface SystemUserService {
 
     List<SystemUserModuleDTO> getUserModules(String id);
 
-    @Deprecated
-    boolean updateUserModuleMenus(String id, String modulename, List<SystemMenuDTO> menus);
+    boolean updateUserModuleMenus(String userId, String moduleId, UserModuleMenuDTO menus);
 
     boolean addModule(String userid, String moduleId);
 
@@ -100,4 +99,6 @@ public interface SystemUserService {
     boolean updateUserBaseInfo(String userid, SystemUserDTO systemUserDTO);
 
     BootStrapPagerInfo findUsersPageable(String companyName, String userName, Boolean accountStatus, int i, int pagesize, String order, boolean asc);
+
+    boolean deleteUser(String userid);
 }

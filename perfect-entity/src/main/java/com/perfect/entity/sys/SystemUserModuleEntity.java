@@ -5,9 +5,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-/**
- * Created by yousheng on 15/12/15.
- */
 public class SystemUserModuleEntity {
 
     @Id
@@ -27,16 +24,16 @@ public class SystemUserModuleEntity {
 
     private long endTime;                               // 模块使用期限  结束时间
 
-    @Deprecated
+//    @Deprecated
+//    @Field("menus")
+//    private List<SystemMenuEntity> menus;
+
     @Field("menus")
-    private List<SystemMenuEntity> menus;
+    private List<String> menus;
 
-    @Field("moduleMenus")
-    private List<UserModuleMenuEntity> moduleMenus;
-
-    @Deprecated
-    @Field("accounts")
-    private List<ModuleAccountInfoEntity> accounts;
+//    @Deprecated
+//    @Field("accounts")
+//    private List<ModuleAccountInfoEntity> accounts;
 
     public long getStartTime() {
         return startTime;
@@ -54,13 +51,13 @@ public class SystemUserModuleEntity {
         this.endTime = endTime;
     }
 
-    public List<SystemMenuEntity> getMenus() {
-        return menus;
-    }
-
-    public void setMenus(List<SystemMenuEntity> menus) {
-        this.menus = menus;
-    }
+//    public List<SystemMenuEntity> getMenus() {
+//        return menus;
+//    }
+//
+//    public void setMenus(List<SystemMenuEntity> menus) {
+//        this.menus = menus;
+//    }
 
     public String getModuleName() {
         return moduleName;
@@ -116,19 +113,28 @@ public class SystemUserModuleEntity {
         return this;
     }
 
-    public List<ModuleAccountInfoEntity> getAccounts() {
-        return accounts;
+    public List<String> getMenus() {
+        return menus;
     }
 
-    public void setAccounts(List<ModuleAccountInfoEntity> accounts) {
-        this.accounts = accounts;
+    public SystemUserModuleEntity setMenus(List<String> menus) {
+        this.menus = menus;
+        return this;
     }
 
-    public List<UserModuleMenuEntity> getModuleMenus() {
-        return moduleMenus;
-    }
+//    public List<ModuleAccountInfoEntity> getAccounts() {
+//        return accounts;
+//    }
+//
+//    public void setAccounts(List<ModuleAccountInfoEntity> accounts) {
+//        this.accounts = accounts;
+//    }
 
-    public void setModuleMenus(List<UserModuleMenuEntity> moduleMenus) {
-        this.moduleMenus = moduleMenus;
-    }
+//    public List<UserModuleMenuEntity> getModuleMenus() {
+//        return moduleMenus;
+//    }
+//
+//    public void setModuleMenus(List<UserModuleMenuEntity> moduleMenus) {
+//        this.moduleMenus = moduleMenus;
+//    }
 }
