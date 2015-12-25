@@ -23,4 +23,6 @@ public interface SystemRoleService {
     SystemRoleDTO findByUserName(String user);
 
     BootStrapPagerInfo listPagable(String queryName, Boolean superUser, Integer page, Integer size, String sort, Boolean asc);
+
+    boolean updateRolePassword(String roleid, String password);
 }

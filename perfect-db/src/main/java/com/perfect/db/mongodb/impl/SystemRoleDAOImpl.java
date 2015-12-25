@@ -125,7 +125,15 @@ public class SystemRoleDAOImpl extends AbstractSysBaseDAOImpl<SystemRoleDTO, Str
             query.addCriteria(Criteria.where("superAdmin").is(superAdmin));
         }
 
-        return getSysMongoTemplate().count(query,getEntityClass());
+        return getSysMongoTemplate().count(query, getEntityClass());
+    }
+
+    @Override
+    public boolean updateUserPassword(String roleid, String password) {
+        WriteResult writeResult = getSysMongoTemplate()
+                .updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(roleid)), Update.update("password", password), getEntityClass());
+
+        return writeResult.isUpdateOfExisting();
     }
 
 }

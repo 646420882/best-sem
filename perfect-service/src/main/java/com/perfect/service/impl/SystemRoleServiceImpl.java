@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.perfect.commons.constants.PasswordSalts;
 import com.perfect.core.AppContext;
-import com.perfect.core.SystemUserInfo;
+import com.perfect.core.SystemRoleInfo;
 import com.perfect.dao.sys.SystemLogDAO;
 import com.perfect.dao.sys.SystemRoleDAO;
 import com.perfect.dto.sys.SystemRoleDTO;
@@ -84,10 +84,10 @@ public class SystemRoleServiceImpl implements SystemRoleService {
         SystemRoleDTO loginUser = systemRoleDAO.findByNameAndPasswd(username, new MD5.Builder().source(password).salt(pass_salt).build().getMD5());
         if (loginUser != null) {
 
-            SystemUserInfo systemUserInfo = new SystemUserInfo();
-            systemUserInfo.setUser(loginUser.getLoginName());
-            systemUserInfo.setIsSuper(loginUser.isSuperAdmin());
-            AppContext.setSystemUserInfo(systemUserInfo);
+            SystemRoleInfo systemRoleInfo = new SystemRoleInfo();
+            systemRoleInfo.setRoleName(loginUser.getLoginName());
+            systemRoleInfo.setIsSuper(loginUser.isSuperAdmin());
+            AppContext.setSystemUserInfo(systemRoleInfo);
 
             systemLogDAO.log("管理员登陆: " + loginUser.getLoginName());
         }
@@ -125,6 +125,19 @@ public class SystemRoleServiceImpl implements SystemRoleService {
         bootStrapPagerInfo.setTotal(totalCount);
         bootStrapPagerInfo.setRows(systemUserDTOs);
         return bootStrapPagerInfo;
+    }
+
+    @Override
+    public boolean updateRolePassword(String roleid, String password) {
+        boolean success = systemRoleDAO.updateUserPassword(roleid, new MD5.Builder().source(password).salt(pass_salt).build().getMD5());
+
+        if (success) {
+            SystemRoleDTO systemRoleDTO = systemRoleDAO.findById(roleid);
+            systemLogDAO.log("更新管理员" + systemRoleDTO.getLoginName() + "密码");
+        }
+
+        return success;
+
     }
 
     private long listCount(String queryName, Boolean superUser) {

@@ -3,11 +3,11 @@ package com.perfect.core;
 /**
  * Created by yousheng on 15/12/16.
  */
-public class SystemUserInfo {
+public class SystemRoleInfo {
     //    private String ip;
-    private String userId;
+    private String roleId;
 
-    private String user;
+    private String roleName;
 
     private boolean isSuper;
 
@@ -20,19 +20,19 @@ public class SystemUserInfo {
 //        return this;
 //    }
 
-    public String getUser() {
-        return user;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public SystemUserInfo setUser(String user) {
-        this.user = user;
+    public SystemRoleInfo setRoleName(String roleName) {
+        this.roleName = roleName;
         return this;
     }
 
     @Override
     public String toString() {
         return "SystemUserInfo{" +
-                "user='" + user + '\'' +
+                "user='" + roleName + '\'' +
                 ", isSuper=" + isSuper +
                 '}';
     }
@@ -41,17 +41,17 @@ public class SystemUserInfo {
         return isSuper;
     }
 
-    public SystemUserInfo setIsSuper(boolean isSuper) {
+    public SystemRoleInfo setIsSuper(boolean isSuper) {
         this.isSuper = isSuper;
         return this;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public SystemUserInfo setUserId(String userId) {
-        this.userId = userId;
+    public SystemRoleInfo setRoleId(String roleId) {
+        this.roleId = roleId;
         return this;
     }
 }

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.perfect.admin.utils.JsonViews;
 import com.perfect.admin.utils.SuperUserUtils;
 import com.perfect.core.AppContext;
-import com.perfect.core.SystemUserInfo;
+import com.perfect.core.SystemRoleInfo;
 import com.perfect.dto.sys.SystemRoleDTO;
 import com.perfect.service.SystemRoleService;
 import com.perfect.utils.paging.BootStrapPagerInfo;
@@ -40,8 +40,8 @@ public class SystemRoleController {
         BootStrapPagerInfo bootStrapPagerInfo = new BootStrapPagerInfo();
 
         if (!isSuper) {
-            SystemUserInfo systemUserInfo = AppContext.getSystemUserInfo();
-            SystemRoleDTO systemUserDTO = systemRoleService.findByUserName(systemUserInfo.getUser());
+            SystemRoleInfo systemRoleInfo = AppContext.getSystemRoleInfo();
+            SystemRoleDTO systemUserDTO = systemRoleService.findByUserName(systemRoleInfo.getRoleName());
             bootStrapPagerInfo.setTotal(1);
             bootStrapPagerInfo.setRows(Lists.newArrayList(systemUserDTO));
             return bootStrapPagerInfo;
@@ -65,6 +65,36 @@ public class SystemRoleController {
 
         systemRoleService.addSystemRole(systemRoleDTO);
         return JsonViews.generateSuccessNoData();
+    }
+
+    @RequestMapping(value = "/sysroles/{roleid}/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updateRolePassword(@PathVariable("roleid") String roleid,
+                                           @RequestParam(value = "password", required = false, defaultValue = "123456") String password) {
+
+        SystemRoleInfo systemRoleInfo = AppContext.getSystemRoleInfo();
+
+        if (systemRoleInfo == null) {
+            return JsonViews.generate(-1, "请先登录.");
+        }
+
+        boolean isSuper = systemRoleInfo.isSuper();
+        if (!isSuper) {
+            // 非超级管理员只能更新自己的密码
+            String currentUserId = systemRoleInfo.getRoleId();
+            if (!roleid.equals(currentUserId)) {
+                return JsonViews.generate(-1, "只能更新当前用户密码.");
+            }
+        }
+
+        boolean success = systemRoleService.updateRolePassword(roleid, password);
+
+        if (success) {
+            return JsonViews.generateSuccessNoData();
+        } else {
+            return JsonViews.generateFailedNoData();
+        }
+
+
     }
 
     @RequestMapping(value = "/sysroles/{roleid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -22,18 +22,18 @@ public class AppContext {
 
     private static ContextLocal contextMap = new ContextLocal();
 
-    private static ThreadLocal<SystemUserInfo> systemUserInfoThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<SystemRoleInfo> systemUserInfoThreadLocal = new ThreadLocal<>();
 
     private static ThreadLocal<String> remoteIpThreadLocal = new ThreadLocal<>();
 
     private static ThreadLocal<UserInfo> userInfoThreadLocal = new ThreadLocal<>();
     private static Object accountId;
 
-    public static void setSystemUserInfo(SystemUserInfo systemUserInfo) {
-        systemUserInfoThreadLocal.set(systemUserInfo);
+    public static void setSystemUserInfo(SystemRoleInfo systemRoleInfo) {
+        systemUserInfoThreadLocal.set(systemRoleInfo);
     }
 
-    public static SystemUserInfo getSystemUserInfo() {
+    public static SystemRoleInfo getSystemRoleInfo() {
         return systemUserInfoThreadLocal.get();
     }
 
