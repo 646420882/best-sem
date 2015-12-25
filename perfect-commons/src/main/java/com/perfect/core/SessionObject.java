@@ -13,7 +13,7 @@ public class SessionObject {
 
     private String userName;
 
-    private long accountId;
+    private Long accountId;
 
     private List<ModuleAccountInfoDTO> moduleAccountInfoDTOs;
 
@@ -25,11 +25,11 @@ public class SessionObject {
         this.userName = userName;
     }
 
-    public long getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(long accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 

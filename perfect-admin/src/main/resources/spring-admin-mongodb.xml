@@ -13,7 +13,9 @@
                        slave-ok="true"/>
     </mongo:mongo>
 
-    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
+    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo" authentication-dbname="admin"
+                      username="${mongo.username}"
+                      password="${mongo.password}"/>
 
     <mongo:mapping-converter id="converter"/>
 
