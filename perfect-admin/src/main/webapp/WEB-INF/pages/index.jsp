@@ -36,9 +36,7 @@
 
                 </div>
                 <div id="userTable">
-                    <table id="userAdmin" data-click-to-select="true" data-query-params="queryParams" data-search="true"
-                           data-search-align="left"
-                           data-pagination="true">
+                    <table id="userAdmin">
                         <thead>
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
@@ -48,10 +46,10 @@
                             <th data-field="userPwd" data-formatter="passwordFormatter" data-events="operateEvents">密码
                             </th>
                             <th data-field="email">注册邮箱</th>
-                            <th data-field="registerTime">注册日期</th>
-                            <th data-field="contactPerson">联系人</th>
-                            <th data-field="companyPhone">办公电话</th>
-                            <th data-field="mobile">移动电话</th>
+                            <th data-field="displayCtime">注册日期</th>
+                            <th data-field="contactName">联系人</th>
+                            <th data-field="telephone">办公电话</th>
+                            <th data-field="mobilePhone">移动电话</th>
                             <th data-field="address">通讯地址</th>
                             <th data-field="look" data-formatter="LookUp" data-events="operateEvents">系统模块</th>
                             <th data-field="action" data-formatter="disableFormatter" data-events="operateEvents">账户状态
@@ -75,9 +73,9 @@
                             <th data-field="authorityAssignment" data-formatter="setFormatter">权限分配</th>
                             <th data-field="relatedAccount" data-formatter="relationAccountFormatter">关联账户</th>
                             <th data-field="relatedAccountPwd" data-formatter="relationPwdFormatter">关联账户密码</th>
-                            <th data-field="APICode" data-formatter="relationApiFormatter">API代理</th>
+                            <th data-field="APICode" data-formatter="relationApiFormatter">Token</th>
                             <th data-field="URLAddress" data-formatter="relationUrlFormatter">URL地址</th>
-                            <th data-field="APICode" data-formatter="relationCodeFormatter">统计代码</th>
+                            <th data-field="statisticalCode" data-formatter="relationCodeFormatter">统计代码</th>
                         </tr>
                         </thead>
                     </table>

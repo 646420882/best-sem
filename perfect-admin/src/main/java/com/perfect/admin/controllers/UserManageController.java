@@ -3,6 +3,8 @@ package com.perfect.admin.controllers;
 import com.google.common.base.Strings;
 import com.perfect.admin.utils.JsonViews;
 import com.perfect.commons.constants.SystemNameConstant;
+import com.perfect.commons.web.JsonResultMaps;
+import com.perfect.dto.huiyan.InsightWebsiteDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
 import com.perfect.service.UserAccountService;
@@ -18,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 用户管理控制器
@@ -36,12 +39,12 @@ public class UserManageController {
     public BootStrapPagerInfo listUser(@RequestParam(value = "company", required = false) String companyName,
                                        @RequestParam(value = "user", required = false) String userName,
                                        @RequestParam(value = "account", required = false) Boolean accountStatus,
-                                       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-                                       @RequestParam(value = "pagesize", required = false, defaultValue = "20") int pagesize,
-                                       @RequestParam(value = "order", required = false, defaultValue = "ctime") String order,
-                                       @RequestParam(value = "asc", required = false, defaultValue = "false") boolean asc) {
-        BootStrapPagerInfo bootStrapPagerInfo = systemUserService.findUsersPageable(companyName, userName, accountStatus,
-                (page - 1) * pagesize, pagesize, order, asc);
+                                       @RequestParam(value = "offset", required = false, defaultValue = "1") int page,
+                                       @RequestParam(value = "limit", required = false, defaultValue = "20") int pagesize,
+                                       @RequestParam(value = "sort", required = false, defaultValue = "ctime") String sort,
+                                       @RequestParam(value = "order", required = false, defaultValue = "false") String oder) {
+        boolean asc = oder.equals("asc");
+        BootStrapPagerInfo bootStrapPagerInfo = systemUserService.findUsersPageable(companyName, userName, accountStatus, page, pagesize, sort, asc);
 
 
         if (bootStrapPagerInfo == null) {
@@ -61,7 +64,17 @@ public class UserManageController {
         });
 
         return bootStrapPagerInfo;
+    }
 
+    @RequestMapping(value = "/usersHuiYan", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView usersHuiYan(@RequestParam(value = "uid", required = false) String uid) {
+
+        List<InsightWebsiteDTO> insightWebsiteDTOs = userAccountService.queryInfo(uid);
+        if (insightWebsiteDTOs == null) {
+            return JsonViews.generate(-1);
+        }
+
+        return JsonViews.generate(JsonResultMaps.successMap(insightWebsiteDTOs));
     }
 
     /**
@@ -156,6 +169,7 @@ public class UserManageController {
         }
 
 
+        return JsonViews.generateFailedNoData();
     }
 
     @RequestMapping(value = "/users/{id}/time", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
