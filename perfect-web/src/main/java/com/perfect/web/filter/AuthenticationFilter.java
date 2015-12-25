@@ -5,6 +5,7 @@ import com.perfect.commons.constants.AuthConstants;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.utils.redis.JRedisUtils;
 import com.perfect.web.suport.ServletContextUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import redis.clients.jedis.Jedis;
 
@@ -47,6 +48,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
                     redirectForLogin(request, response);
                 } else {
                     // 将token并写入Session
+                    token = StringUtils.reverse(token);
                     request.getSession().setAttribute(USER_TOKEN, token);
 
                     // 根据token在Redis获取相应的用户信息
@@ -54,18 +56,17 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
                     if (Objects.isNull(systemUserDTO)) {
                         redirectForLogin(request, response);
                     } else {
-                        request.getSession().setAttribute(USER_INFORMATION, systemUserDTO);
-                    }
+                        request.getSession().setAttribute(USER_INFO, systemUserDTO);
 
-                    // 重定向至登录之前访问的页面
-                    Object _url = request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL);
-                    response.setStatus(SC_FOUND);
-                    if(systemUserDTO.getAccess() == 1){
-                        response.sendRedirect("/admin/index");
-                    }else{
-                        response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
+                        Object _url = request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL);
+                        response.setStatus(SC_FOUND);
+                        if (systemUserDTO.getAccess() == 1) {
+                            response.sendRedirect("/admin/index");
+                        } else {
+                            // 重定向至登录之前访问的页面
+                            response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
+                        }
                     }
-
 
                     // 清除Session中用户在未登录时访问的URL信息
                     request.getSession().setAttribute(USER_PRE_LOGIN_VISIT_URL, null);
@@ -86,7 +87,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
         // 清除Session中的token信息
         request.getSession().setAttribute(USER_TOKEN, null);
         // 清除Session中的用户信息
-        request.getSession().setAttribute(USER_INFORMATION, null);
+        request.getSession().setAttribute(USER_INFO, null);
 
         response.setStatus(SC_FOUND);
         response.setHeader(LOCATION, USER_LOGIN_URL);
@@ -128,7 +129,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
 
             SystemUserDTO systemUserDTO = JSON.parseObject(userInfoMsg, SystemUserDTO.class);
             if (Objects.nonNull(systemUserDTO)) {
-                request.getSession().setAttribute(USER_INFORMATION, systemUserDTO);
+                request.getSession().setAttribute(USER_INFO, systemUserDTO);
                 return systemUserDTO;
             }
         } finally {

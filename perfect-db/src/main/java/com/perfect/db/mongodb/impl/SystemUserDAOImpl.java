@@ -63,17 +63,18 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
+    @Deprecated
     public void addBaiduAccount(List<ModuleAccountInfoDTO> list, String currSystemUserName) {
-        List<ModuleAccountInfoDTO> _list = AppContext.getModuleAccounts();
-        if (_list == null)
-            _list = new ArrayList<>();
-
-        _list.addAll(list);
-
+//        List<ModuleAccountInfoDTO> _list = AppContext.getModuleAccounts();
+//        if (_list == null)
+//            _list = new ArrayList<>();
+//
+//        _list.addAll(list);
+//
 //        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName).and("modules.moduleId").is(AppContext.getModuleName())),
 //                Update.update("modules.accounts", _list), "sys_user");
-        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName).and("modules.moduleId").is(AppContext.getModuleId())),
-                Update.update("modules.accounts", _list), "sys_user");
+//        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currSystemUserName).and("modules.moduleId").is(AppContext.getModuleId())),
+//                Update.update("modules.accounts", _list), "sys_user");
     }
 
     @Override

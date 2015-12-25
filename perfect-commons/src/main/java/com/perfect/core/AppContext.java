@@ -73,12 +73,6 @@ public class AppContext {
 //        contextMap.set(so);
 //    }
 
-    public static void setModuleId(String moduleId) {
-        SessionObject so = new SessionObject();
-        so.setModuleId(moduleId);
-        contextMap.set(so);
-    }
-
     public static void setUser(String userName) {
         SessionObject so = new SessionObject();
         so.setUserName(userName);
@@ -99,16 +93,6 @@ public class AppContext {
         so.setAccountId(accountId);
         so.setModuleAccountInfoDTOs(moduleAccountInfoDTOs);
         contextMap.set(so);
-    }
-
-    public static String getModuleId() {
-        SessionObject so = contextMap.get();
-
-        if (so != null) {
-            return so.getModuleId();
-        } else {
-            return null;
-        }
     }
 
     public static String getModuleName() {

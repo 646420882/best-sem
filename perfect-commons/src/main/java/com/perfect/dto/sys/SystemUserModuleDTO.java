@@ -32,6 +32,7 @@ public class SystemUserModuleDTO extends BaseDTO {
 //    private List<UserModuleMenuDTO> moduleMenus = new ArrayList<>();
 
     private List<String> menus = Lists.newArrayList();
+
     private List<ModuleAccountInfoDTO> accounts;
 
 
