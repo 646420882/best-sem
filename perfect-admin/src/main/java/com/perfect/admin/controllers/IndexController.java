@@ -2,8 +2,10 @@ package com.perfect.admin.controllers;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -31,8 +33,10 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/menus", method = RequestMethod.GET)
-    public ModelAndView menus() {
-        return new ModelAndView("/menus/menus");
+    public ModelAndView menus(@RequestParam(required = false) String userName, ModelMap map) {
+        if (userName == null) userName = "";
+        map.put("userName", userName);
+        return new ModelAndView("/menus/menus", map);
     }
 
     @RequestMapping(value = "/logs", method = RequestMethod.GET)

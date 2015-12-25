@@ -28,7 +28,7 @@ $(function () {
             $(".totalNav:nth-child(4) ").addClass("current");
         })
     }
-    else if(href == "/log") {
+    else if (href == "/log") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(5) ").addClass("current");
@@ -58,7 +58,6 @@ $(function () {
         },
         'click .disable': function (e, value, row, index) {
             var bindingtext = $(this);
-            console.log(bindingtext);
             if ($(this).html() == "禁用") {
                 $('#modelbox').modal();
                 $("#modelboxTitle").html("是否禁用？");
@@ -82,13 +81,13 @@ $(function () {
             var that = $(this).parent().prevAll("td");
             var that_value = that.each(function (i) {
                 var that_html = $(this).html();
-                if(i == 1){
+                if (i == 1) {
                     return;
-                }else if(i == 2){
+                } else if (i == 2) {
                     $(this).html("<input type='password' class='form-control' value='******''> ");
-                }else if(i == 7){
+                } else if (i == 7) {
                     $(this).html('')
-                }else{
+                } else {
                     $(this).html("<input type='text' class='form-control' value='" + that_html + "'> ");
                 }
                 editorBottom.hide();
@@ -114,11 +113,11 @@ $(function () {
             var cancelThat = $(this).parent().prevAll("td");
             cancelThat.each(function (i) {
                 var that_html = $(this).find("input").val();
-                if(i == 2){
+                if (i == 2) {
                     $(this).html('<span class="fl">******</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="password_reset" href="javascript:void(0)" title="重置">重置</a>');
-                }else if(i == 7){
-                    $(this).html('<input data-index="'+index+'" name="btSelectItem" type="checkbox">')
-                }else{
+                } else if (i == 7) {
+                    $(this).html('<input data-index="' + index + '" name="btSelectItem" type="checkbox">')
+                } else {
                     $(this).html(that_html);
                 }
             });
@@ -138,41 +137,80 @@ $(function () {
             })
         },
         'click .look': function (e, value, row, index) {
-            $(".indexCret").css({'display':'none'});
-            $("#userLookUpWrap").css({"display":"block","top": 221+index*45+"px"});
-            $(this).next().css("display",'block')
-            var lookUpData = [{
-                id: 1,
-                systemModal: '百思搜客',
-                userProperty: "使用账户",
-                openStates: "正常使用",
-                startDate: "2015-09-20",
-                endDate: "2015-09-20",
-                authorityAssignment: "设置",
-                relatedAccount:["凤巢账户1","凤巢账户2"],
-                relatedAccountPwd:["凤巢账户1","凤巢账户2"],
-                APICode:["凤巢账户1","凤巢账户2"],
-                URLAddress:["凤巢账户1","凤巢账户2"],
-                statisticalCode:["凤巢账户1","凤巢账户2"]
+            $(".indexCret").css({'display': 'none'});
+            $("#userLookUpWrap").css({"display": "block", "top": 221 + index * 45 + "px"});
+            $(this).next().css("display", 'block');
+            if (row != undefined && row != "") {
+                var datas = [];
+                row.systemUserModules.forEach(function (item, i) {
+                    var data = {};
+                    data.id = item.id;
+                    data.userName = row.userName;
+                    data.userId = row.id;
+                    data.systemModal = item.moduleName;
+                    data.userProperty = (item.enabled ? "已启用" : "已禁用");
+                    data.openStates = (item.payed ? "已购买" : "未购买")
+                    data.startDate = new Date(item.startTime).Format("yyyy年M月dd日");
+                    data.endDate = new Date(item.endTime).Format("yyyy年M月dd日")
+                    data.authorityAssignment = "设置";
+                    var baiduName = [];
+                    var baiduPwd = [];
+                    var token = [];
+                    var bestDomain = [];
+                    var huiyanCode = [];
 
-            }, {
-                id: 2,
-                systemModal: '百思慧眼',
-                userProperty: "使用账户",
-                openStates: "正常使用",
-                startDate: "2015-09-20",
-                endDate: "2015-09-20",
-                authorityAssignment: "设置",
-                relatedAccount:["凤巢账户1","凤巢账户2"],
-                relatedAccountPwd:["凤巢账户1","凤巢账户2"],
-                APICode:["凤巢账户1","凤巢账户2"],
-                URLAddress:["凤巢账户1","凤巢账户2"],
-                statisticalCode:["凤巢账户1","凤巢账户2"]
-            }];
-            $('#userLookUpTable').bootstrapTable({
-                data: lookUpData
-            });
-            $(".lookTableRow").parent().attr('style', 'padding: 0 !important');
+                    if (item.moduleName == "百思慧眼") {
+                        $.ajax({
+                            url: '/usersHuiYan',
+                            type: 'get',
+                            dataType: 'JSON',
+                            async: false,
+                            data: {
+                                uid: row.id,
+                            },
+                            success: function (user) {
+                                if (user.data.length > 0) {
+                                    user.data.forEach(function (huiyan, i) {
+                                        baiduName.push(huiyan.bname == null ? "-" : huiyan.bname);
+                                        baiduPwd.push(huiyan.bpasswd == null ? "-" : huiyan.bpasswd);
+                                        token.push(huiyan.token == null ? "-" : huiyan.token);
+                                        bestDomain.push(huiyan.site_url == null ? "-" : huiyan.site_url);
+                                        var html = "<div id='base_code'>&lt;script&gt;<br>" +
+                                            "var _pct= _pct|| [];<br> " +
+                                            "(function() {<br>" +
+                                            "var hm = document.createElement(\"script\");<br>" +
+                                            "hm.src = \"//t.best-ad.cn/t.js?tid=" + huiyan.track_id + "\";<br>" +
+                                            "var s = document.getElementsByTagName(\"script\")[0];<br>" +
+                                            "s.parentNode.insertBefore(hm, s);<br> " +
+                                            "})();<br>" +
+                                            "&lt;/script&gt;</div>";
+                                        huiyanCode.push(html)
+                                    })
+                                }
+                            }
+                        });
+                    } else {
+                        item.accounts.forEach(function (baidu, i) {
+                            baiduName.push(baidu.baiduUserName == null ? "-" : baidu.baiduUserName);
+                            baiduPwd.push(baidu.baiduPassword == null ? "-" : baidu.baiduPassword);
+                            token.push(baidu.token == null ? "-" : baidu.token);
+                            bestDomain.push(baidu.bestRegDomain == null ? "-" : baidu.bestRegDomain);
+                        });
+                    }
+                    data.relatedAccount = baiduName;
+                    data.relatedAccountPwd = baiduPwd;
+                    data.APICode = token;
+                    data.URLAddress = bestDomain;
+                    data.statisticalCode = huiyanCode;
+                    datas.push(data);
+                });
+                $("#userLookUpTable").bootstrapTable("removeAll")
+                $("#userLookUpTable").bootstrapTable("append", datas);
+                $('#userLookUpTable').bootstrapTable({
+                    data: datas
+                });
+                $(".lookTableRow").parent().attr('style', 'padding: 0 !important');
+            }
         },
         'click .password_reset': function (e, value, row, index) {
             $('#modelbox').modal();
