@@ -281,8 +281,9 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         SystemUserDTO systemUserDTO = findByUserId(userId);
 
         if (systemUserDTO == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
+
         return systemUserDTO.getSystemUserModules();
     }
 
@@ -452,15 +453,15 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
-    public SystemUserModuleDTO getUserModuleByModuleId(String id, String moduleid) {
-        SystemUserEntity systemUserEntity = getSysMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(id).and("modules.moduleId").is(moduleid)), getEntityClass());
+    public SystemUserModuleDTO getUserModuleByModuleId(String id, String moduleId) {
+        SystemUserEntity systemUserEntity = getSysMongoTemplate().findOne(Query.query(Criteria.where(SYSTEM_ID).is(id).and("modules.moduleId").is(moduleId)), getEntityClass());
 
         if (systemUserEntity == null) {
             return null;
         }
 
         SystemUserModuleEntity systemUserModuleEntity = systemUserEntity.getSystemUserModules().stream().findFirst()
-                .filter((entity) -> moduleid.equals(entity.getModuleId())).get();
+                .filter((entity) -> moduleId.equals(entity.getModuleId())).get();
 
         if (systemUserModuleEntity == null) {
             return null;

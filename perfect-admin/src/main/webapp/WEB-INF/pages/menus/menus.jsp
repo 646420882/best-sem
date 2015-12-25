@@ -22,7 +22,8 @@
                     <div class="fl moduleSearchLabel"><label>用户名：</label></div>
                     <div class="fl moduleSearch">
                         <div style="position: relative">
-                            <input id="sysUserName" type="text" placeholder="请输入用户名" class="form-control">
+                            <input id="sysUserName" type="text" class="form-control" placeholder="请输入用户名"
+                                   value="${userName}">
                             <span>
                                 <span class="glyphicon glyphicon-search"></span>
                             </span>

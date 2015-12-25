@@ -72,7 +72,8 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     boolean deleteModule(String userid, String moduleId);
 
-    SystemUserModuleDTO getUserModuleByModuleId(String id, String moduleid);
+    @Deprecated
+    SystemUserModuleDTO getUserModuleByModuleId(String id, String moduleId);
 
     boolean existsModule(String userid, String moduleName);
 

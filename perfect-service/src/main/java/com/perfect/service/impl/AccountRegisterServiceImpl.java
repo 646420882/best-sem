@@ -106,7 +106,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
                 SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
                 String sysUserModuleId = new ObjectId().toString();
                 systemUserModuleDTO.setId(sysUserModuleId);
-                systemUserModuleDTO.setModuleId(systemModuleDTO.getId());
+//                systemUserModuleDTO.setModuleId(systemModuleDTO.getId());
                 systemUserModuleDTO.setModuleName(systemModuleDTO.getModuleName());
                 systemUserModuleDTO.setModuleUrl(systemModuleDTO.getModuleUrl());
                 systemUserModuleDTO.setPayed(true);

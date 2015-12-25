@@ -29,13 +29,13 @@ public class SystemAccountControllerTest extends JUnitBaseTest {
     @Test
     public void insertSystemUser() throws Exception {
         SystemUserDTO systemUserDTO = new SystemUserDTO();
-        systemUserDTO.setUserName("perfect2017");
+        systemUserDTO.setUserName("perfect2016");
         systemUserDTO.setPassword("aec34f5b755ae6f9550620d5f502d4ff");
         systemUserDTO.setCompanyName("普菲特广告有限公司");
         systemUserDTO.setContactName("Yangle");
         systemUserDTO.setPayed(true);
         systemUserDTO.setCtime(1450810594776L);
-        systemUserDTO.setEmail("perfect-cn@perfect-cn.com");
+        systemUserDTO.setEmail("baizz1@163.com");
         systemUserDTO.setAddress("北京 · 朝阳 · 北苑路36号金苑大厦402");
         systemUserDTO.setStartTime(Calendar.getInstance().getTimeInMillis());
         systemUserDTO.setEndTime(Calendar.getInstance().getTimeInMillis() + 3600_000 * 24 * 365);
@@ -110,7 +110,6 @@ public class SystemAccountControllerTest extends JUnitBaseTest {
         menus.add("转化分析");
         menus.add("指定广告跟踪");
         menus.add("同类群组分析");
-//        userModuleMenuDTO1.getMenus().addAll(menus);
         systemUserModuleDTO1.getMenus().addAll(menus);
         userModuleDTOs.add(systemUserModuleDTO1);
 
@@ -123,8 +122,8 @@ public class SystemAccountControllerTest extends JUnitBaseTest {
     @Test
     public void insertModuleAccount() {
         ModuleAccountInfoDTO moduleAccountInfoDTO = new ModuleAccountInfoDTO();
-        moduleAccountInfoDTO.setUserId("567a50f860b2f16482cd77a6");
-        moduleAccountInfoDTO.setModuleId("567a50f860b2f16482cd77a4");
+        moduleAccountInfoDTO.setUserId("567cbde060b233a07ea09375");
+        moduleAccountInfoDTO.setModuleId("567cbde060b233a07ea09373");
         moduleAccountInfoDTO.setAccountBindingTime(Calendar.getInstance().getTimeInMillis());
         moduleAccountInfoDTO.setBaiduAccountId(10394588L);
         moduleAccountInfoDTO.setBaiduPassword("Ab1234890");

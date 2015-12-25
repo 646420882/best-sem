@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class SystemUserModuleDTO extends BaseDTO {
 
+    @Deprecated
     private String moduleId;
 
     private String moduleName;
@@ -87,10 +88,12 @@ public class SystemUserModuleDTO extends BaseDTO {
         this.accounts = accounts;
     }
 
+    @Deprecated
     public void setModuleId(String moduleId) {
         this.moduleId = moduleId;
     }
 
+    @Deprecated
     public String getModuleId() {
         return moduleId;
     }

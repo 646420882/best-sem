@@ -164,6 +164,8 @@ function transformModule(obj) {
 $(function () {
     loadModuleMenusCache();
 
+    loadUserModuleMsg($('#sysUserName').val());
+
     $('.setJurisdictionBtn input[type=button]').first().click(function () {
         var sysUserName = $('#sysUserName').val();
         if (sysUserName == null || sysUserName.trim() == "") {
@@ -218,24 +220,28 @@ $(function () {
             url: '/users/' + userId + '/modules/' + moduleId + '/menus',
             type: 'POST',
             dataType: 'JSON',
-            data: userModuleMenuObj,
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(userModuleMenuObj),
             success: function (data) {
-                console.log(JSON.stringify(data));
+                if (data.code == 0) {
+                    alert("模块权限更新成功!");
+                } else {
+                    alert("模块权限更新失败!");
+                }
             }
         });
     });
 
     $('#sysUserName').blur(function () {
-        loadUserModuleMsg();
+        loadUserModuleMsg($('#sysUserName').val());
     });
 
     $('#moduleSelected').change(function () {
-        loadUserModuleMsg();
+        loadUserModuleMsg($('#sysUserName').val());
     });
 });
 
-var loadUserModuleMsg = function () {
-    var sysUserName = $('#sysUserName').val();
+var loadUserModuleMsg = function (sysUserName) {
     if (sysUserName != null && sysUserName.trim().length > 0) {
         var sysUserId = getSysUserId(sysUserName);
         if (sysUserId == null) {
@@ -259,44 +265,42 @@ var loadUserModuleMsg = function () {
             dataType: 'JSON',
             success: function (data) {
                 var _moduleName = $('#moduleSelected').find('option:selected').text();
-
+                moduleIdNameMap.clear();
                 $.each(data.data, function (i, item) {
                     moduleIdNameMap.put(item.moduleName, item.id);
 
                     if (item.moduleName == _moduleName) {
                         // 解析菜单信息
-                        $.each(item.moduleMenus, function (j, item1) {
-                            var menuMap = new Map();
-                            $.each(item1.menus, function (k, item2) {
-                                var _menuArr = item2.split("|");
-                                var key = _menuArr[0];
-                                if (_menuArr.length == 1) {
-                                    var mi = $("input[menuname='" + key + "']");
-                                    if (mi.length > 0) {
+                        var menuMap = new Map();
+                        $.each(item.menus, function (k, item1) {
+                            var _menuArr = item1.split("|");
+                            var key = _menuArr[0];
+                            if (_menuArr.length == 1) {
+                                var mi = $("input[menuname='" + key + "']");
+                                if (mi.length > 0) {
+                                    menuMap.put(key, 1);
+                                    mi.prop('checked', true);
+                                }
+                            } else {
+                                var mj = $("input[menuname='" + _menuArr[1] + "']");
+                                if (mj.length > 0) {
+                                    mj.prop('checked', true);
+
+                                    if (menuMap.containsKey(key)) {
+                                        menuMap.put(key, menuMap.get(key) + 1);
+                                    } else {
                                         menuMap.put(key, 1);
-                                        mi.prop('checked', true);
-                                    }
-                                } else {
-                                    var mj = $("input[menuname='" + _menuArr[1] + "']");
-                                    if (mj.length > 0) {
-                                        mj.prop('checked', true);
-
-                                        if (menuMap.containsKey(key)) {
-                                            menuMap.put(key, menuMap.get(key) + 1);
-                                        } else {
-                                            menuMap.put(key, 1);
-                                        }
                                     }
                                 }
-                            });
+                            }
+                        });
 
-                            menuMap.elements.forEach(function (item0) {
-                                if (moduleMenusCacheMap.containsKey(item0.key)) {
-                                    if (moduleMenusCacheMap.get(item0.key).length == item0.value) {
-                                        $("input[menuname='" + item0.key + "']").prop('checked', true);
-                                    }
+                        menuMap.elements.forEach(function (item0) {
+                            if (moduleMenusCacheMap.containsKey(item0.key)) {
+                                if (moduleMenusCacheMap.get(item0.key).length == item0.value) {
+                                    $("input[menuname='" + item0.key + "']").prop('checked', true);
                                 }
-                            });
+                            }
                         });
 
                     }
@@ -379,9 +383,6 @@ var loadModuleMenusCache = function () {
 };
 
 var moduleIdNameMap = new Map();
-var setModuleIdNameMsg = function () {
-    ;
-};
 
 
 /*
