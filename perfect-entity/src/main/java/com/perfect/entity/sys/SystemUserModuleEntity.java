@@ -10,6 +10,7 @@ public class SystemUserModuleEntity {
     @Id
     private String id;
 
+    @Deprecated
     private String moduleId;                            // 模块id
 
     private String moduleName;                          // 模块名称
@@ -104,10 +105,12 @@ public class SystemUserModuleEntity {
         return this;
     }
 
+    @Deprecated
     public String getModuleId() {
         return moduleId;
     }
 
+    @Deprecated
     public SystemUserModuleEntity setModuleId(String moduleId) {
         this.moduleId = moduleId;
         return this;

@@ -734,20 +734,21 @@ public class SystemUserServiceImpl implements SystemUserService {
     public List<SystemUserModuleDTO> getUserModules(String name) {
         List<SystemUserModuleDTO> systemUserModuleDTOs = systemUserDAO.getUserModules(name);
 
-        if (systemUserModuleDTOs == null || systemUserModuleDTOs.isEmpty()) {
-            return systemUserModuleDTOs;
-        }
+//        if (systemUserModuleDTOs == null || systemUserModuleDTOs.isEmpty()) {
+//            return systemUserModuleDTOs;
+//        }
+//
+//        systemUserModuleDTOs.removeIf((dto) -> !systemModuleDAO.exists(dto.getModuleId()));
+//
+//        systemUserModuleDTOs.forEach((dto) -> {
+//            SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(dto.getModuleId());
+//            if (systemModuleDTO == null) {
+//                return;
+//            }
+//            dto.setModuleName(systemModuleDTO.getModuleName());
+//            dto.setModuleUrl(systemModuleDTO.getModuleUrl());
+//        });
 
-        systemUserModuleDTOs.removeIf((dto) -> !systemModuleDAO.exists(dto.getModuleId()));
-
-        systemUserModuleDTOs.forEach((dto) -> {
-            SystemModuleDTO systemModuleDTO = systemModuleDAO.findByModuleId(dto.getModuleId());
-            if (systemModuleDTO == null) {
-                return;
-            }
-            dto.setModuleName(systemModuleDTO.getModuleName());
-            dto.setModuleUrl(systemModuleDTO.getModuleUrl());
-        });
         return systemUserModuleDTOs;
     }
 
