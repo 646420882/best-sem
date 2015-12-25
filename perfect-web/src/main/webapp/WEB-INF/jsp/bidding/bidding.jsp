@@ -248,39 +248,53 @@
                                     <ul class="jiangjia_list">
                                         <li class="current" id="showbox" data-toggle="tooltip"
                                             data-placement="bottom" title="对选中的关键词，设置竞价规则，包括：竞价时段、竞价模式、竞价位置、出价规则等。"><img
-                                                src="${pageContext.request.contextPath}/public/img/guize.png">设置规则
+                                                src="${pageContext.request.contextPath}/public/img/guize.png">
+                                            <img
+                                                    src="${pageContext.request.contextPath}/public/img/guize-w.png" style="display: none;">
+                                            设置规则
                                         </li>
                                         <li id="updateBtn" data-toggle="tooltip"
-                                            data-placement="bottom" title="点此对账户数据进行更新。"><img
-                                                src="${pageContext.request.contextPath}/public/img/gengxin.png">更新账户数据
+                                            data-placement="bottom" title="点此对账户数据进行更新。">
+                                            <img src="${pageContext.request.contextPath}/public/img/gengxin.png" class="blackImg">
+                                            <img src="${pageContext.request.contextPath}/public/img/gengxin-w.png" class="blackImg" style="display: none;">
+                                            更新账户数据
                                         </li>
                                         <li id="rankBtn" data-toggle="tooltip"
                                             data-placement="bottom" title="点此查看关键词当前排名。"><img
-                                                src="${pageContext.request.contextPath}/public/img/jiancha.png">检查当前排名
+                                                src="${pageContext.request.contextPath}/public/img/jiancha.png">
+                                            <img
+                                                    src="${pageContext.request.contextPath}/public/img/jiancha-w.png" style="display: none;">检查当前排名
                                         </li>
                                         <li id="showbox2" data-toggle="tooltip"
                                             data-placement="bottom" title="选中关键词修改出价。"><img
-                                                src="${pageContext.request.contextPath}/public/img/xiugai.png">修改出价
+                                                src="${pageContext.request.contextPath}/public/img/xiugai.png"><img
+                                                src="${pageContext.request.contextPath}/public/img/xiugai-w.png" style="display: none;">修改出价
                                         </li>
                                         <li id="showbox7" data-toggle="tooltip"
                                             data-placement="bottom" title="对已设置智能竞价规则的关键词启动竞价模式。"><img
-                                                src="${pageContext.request.contextPath}/public/img/qidong.png">启动竞价
+                                                src="${pageContext.request.contextPath}/public/img/qidong.png">
+                                            <img
+                                                    src="${pageContext.request.contextPath}/public/img/qidong-w.png" style="display: none;">启动竞价
                                         </li>
                                         <li id="showbox3" data-toggle="tooltip"
                                             data-placement="bottom" title="对已设置智能竞价规则的关键词暂停竞价。"><img
-                                                src="${pageContext.request.contextPath}/public/img/zanting.png">暂停竞价
+                                                src="${pageContext.request.contextPath}/public/img/zanting.png"><img
+                                                src="${pageContext.request.contextPath}/public/img/zanting-w.png" style="display: none;">暂停竞价
                                         </li>
                                         <li id="showbox4" data-toggle="tooltip"
                                             data-placement="bottom" title="修改关键词访问url。"><img
-                                                src="${pageContext.request.contextPath}/public/img/wangzhi.png">修改访问网址
+                                                src="${pageContext.request.contextPath}/public/img/wangzhi.png"><img
+                                                src="${pageContext.request.contextPath}/public/img/wangzhi-w.png" style="display: none;">修改访问网址
                                         </li>
                                         <li id="showbox5" data-toggle="tooltip"
                                             data-placement="bottom" title="对重点关注的关键词进行重点词竞价分组管理。"><img
-                                                src="${pageContext.request.contextPath}/public/img/fenzu.png">重点词分组
+                                                src="${pageContext.request.contextPath}/public/img/fenzu.png"><img
+                                                src="${pageContext.request.contextPath}/public/img/fenzu-w.png" style="display: none;">重点词分组
                                         </li>
                                         <li id="showbox6" data-toggle="tooltip"
                                             data-placement="bottom" title="自定义设置重点关注的指标，满足个性需求。"><img
-                                                src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列
+                                                src="${pageContext.request.contextPath}/public/img/zidingyi.png"><img
+                                                src="${pageContext.request.contextPath}/public/img/zidingyi-w.png" style="display: none;">自定义列
                                         </li>
                                     </ul>
                                 </div>
@@ -968,6 +982,14 @@
     String.prototype.trims = function () {
         return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     };
+    $(".w_list03 ul li").hover(function(){
+        $(this).find("img").eq(0).css("display","none")
+        $(this).find("img").eq(1).css("display","inline-block")
+    })
+    $(".w_list03 ul li").mouseout(function(){
+        $(this).find("img").eq(0).css("display","inline-block")
+        $(this).find("img").eq(1).css("display","none")
+    })
     //jqGrid表格宽度自适应
     $(document).ready(function () {
         $("#table1").jqGrid("setGridWidth", document.getElementById("main").clientWidth * 0.85, true);

@@ -151,7 +151,7 @@
     padding-bottom: 20px;
 }
 .adminModuleWrap .adminModuleReport .modalTree{
-    width: 15%;
+    width: 12%;
     margin-left: 15px;
 }
 .adminModuleWrap .adminModuleReport label input{
@@ -171,7 +171,7 @@
     margin-left: 20px;
 }
 .adminModuleWrap .adminModuleReport .modalTree div.lastClass img{
-    margin-top: -31px;
+    margin-top: -16px;
 }
 .adminModuleWrap .adminModuleReport .modalTree.webSetWrap label{
     margin-left: 15px;

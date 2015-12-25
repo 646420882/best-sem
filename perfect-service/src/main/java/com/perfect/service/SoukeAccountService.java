@@ -39,18 +39,18 @@ public interface SoukeAccountService {
     /**
      * <p>取消绑定SEM帐号
      *
-     * @param username        系统用户名
-     * @param moduleAccountId 帐号ID(Mongo ID)
+     * @param username 系统用户名
+     * @param id       模块帐号Mongo ID
      */
-    void unbindAccountForSem(String username, String moduleAccountId);
+    void unbindAccountForSem(String username, String id);
 
     /**
      * <p>重新激活SEM帐号
      *
-     * @param username        系统用户名
-     * @param moduleAccountId 帐号ID(Mongo ID)
+     * @param username 系统用户名
+     * @param id       模块帐号Mongo ID
      */
-    void activeAccountForSem(String username, String moduleAccountId);
+    void activeAccountForSem(String username, String id);
 
     /**
      * <p>更新帐号信息
@@ -63,7 +63,7 @@ public interface SoukeAccountService {
     /**
      * <p>删除帐号
      *
-     * @param moduleAccountId 帐号ID(Mongo ID)
+     * @param id 模块帐号Mongo ID
      */
-    void deleteAccountForSem(String moduleAccountId);
+    void deleteAccountForSem(String id);
 }

@@ -9,7 +9,6 @@ $(function () {
             dataTye: 'JSON',
             success: function (data) {
                 var semAccounts = [];
-                //console.log(data)
                 data.rows.forEach(function (item) {
                     var obj = {};
                     obj["id"] = item.id;
@@ -18,7 +17,6 @@ $(function () {
                     obj["remark"] = item.baiduRemarkName;
                     obj["url"] = item.bestRegDomain;
                     obj["platform"] = "百思搜客";
-                    // TODO 页面绑定与取消绑定的显示
                     obj["state"] = item.state;  // 1 -> 显示取消绑定; 0 -> 显示绑定
                     obj["time"] = new Date(item.accountBindingTime).Format("yyyy年M月dd日");
                     obj["action"] = 1;
@@ -79,10 +77,10 @@ function operateFormatter(value, row, index) {
 }
 function disableFormatter(value, row, index) {
     var html = "";
-    if(row.enable){
-        html = html +"<a class='disable' href='javascript:void(0)' title='启用'>启用</a>"
-    }else{
-        html = html +"<a class='disable' href='javascript:void(0)' title='禁用'>禁用</a>"
+    if (row.enable) {
+        html = html + "<a class='disable' href='javascript:void(0)' title='启用'>启用</a>"
+    } else {
+        html = html + "<a class='disable' href='javascript:void(0)' title='禁用'>禁用</a>"
     }
     return [
         html,
@@ -116,7 +114,7 @@ window.operateEvents = {
                         type: 'POST',
                         dataType: 'JSON',
                         data: {
-                            moduleAccountId: row.id,
+                            id: row.id,
                             username: $('#sysUserName').val()
                         },
                         success: function (data) {
@@ -143,7 +141,7 @@ window.operateEvents = {
                         type: 'POST',
                         dataType: 'JSON',
                         data: {
-                            moduleAccountId: row.id,
+                            id: row.id,
                             username: $('#sysUserName').val()
                         },
                         success: function (data) {
@@ -171,7 +169,6 @@ window.operateEvents = {
                 $("#modelboxTitle").html("系统提示");
                 $(".modal-body").html("是否绑定？");
                 $("#modelboxBottom").click(function () {
-                    //
                     $('#modelbox').modal('hide');
                     bindingtext.html("取消绑定");
                 })
@@ -181,7 +178,6 @@ window.operateEvents = {
                 $("#modelboxTitle").html("系统提示");
                 $(".modal-body").html("是否取消绑定？");
                 $("#modelboxBottom").click(function () {
-                    //
                     $('#modelbox').modal('hide');
                     bindingtext.html("绑定");
                 })
@@ -235,7 +231,6 @@ window.operateEvents = {
                         cache: false,
                         dataType: "json",
                         success: function (user) {
-                            console.log(user)
                             if (user.data != "" && user.data != undefined && user.data != null) {
                                 $('#modelbox').modal('hide');
                                 var tabledelete = $(this).parent().parent();
@@ -254,11 +249,11 @@ window.operateEvents = {
         $('.modal-dialog').css({width: '400px'});
         $("#modelboxTitle").html("修改关联账户");
         $(".modal-body").html("<ul class='account_change'>" +
-        "<li id='selectedSemAccountName'>关联账户名：</li>" +
-        "<li id='selectedSemAccountPassword'>账户密码：</li>" +
-        "<li id='selectedSemAccountRemarkName'>备注名：</li>" +
-        "<li id='selectedSemAccountUrl'>URL地址：</li>" +
-        "<li>账户所属平台：</li></ul>");
+            "<li id='selectedSemAccountName'>关联账户名：</li>" +
+            "<li id='selectedSemAccountPassword'>账户密码：</li>" +
+            "<li id='selectedSemAccountRemarkName'>备注名：</li>" +
+            "<li id='selectedSemAccountUrl'>URL地址：</li>" +
+            "<li>账户所属平台：</li></ul>");
         var editorBottom = $(this);
         var that = $(this).parent().prevAll("td");
         var that_value = that.each(function (index) {
@@ -331,13 +326,13 @@ window.operateEvents = {
             $('.modal-dialog').css({width: '400px'});
             $("#modelboxTitle").html("修改关联账户");
             $(".modal-body").html("<ul class='account_change'>" +
-            "<li>关联账户名：</li>" +
-            "<li>账户密码：</li>" +
-            "<li id='rname'>备注名：</li>" +
-            "<li id='huiyanUrl'>URL地址：</li>" +
-            "<li>账户所属平台：</li>" +
-            "<li>统计代码：</li>" +
-            "<li id='webName'>网站名称：</li></ul>");
+                "<li>关联账户名：</li>" +
+                "<li>账户密码：</li>" +
+                "<li id='rname'>备注名：</li>" +
+                "<li id='huiyanUrl'>URL地址：</li>" +
+                "<li>账户所属平台：</li>" +
+                "<li>统计代码：</li>" +
+                "<li id='webName'>网站名称：</li></ul>");
             var editorBottom = $(this);
             var that = $(this).parent().prevAll("td");
             var that_value = that.each(function (index) {
@@ -360,8 +355,8 @@ window.operateEvents = {
                     type: "post",
                     data: {
                         uid: row.id,
-                        bname:$("#bname input").val(),
-                        bpwd:$("#bpwd input").val(),
+                        bname: $("#bname input").val(),
+                        bpwd: $("#bpwd input").val(),
                         rname: $("#rname input").val(),
                         url: $("#huiyanUrl input").val(),
                         webName: $("#webName input").val()
@@ -407,7 +402,7 @@ window.operateEvents = {
                     dataType: 'JSON',
                     data: {
                         username: $('#sysUserName').val(),
-                        moduleAccountId: row.id
+                        id: row.id
                     },
                     success: function (data) {
                         if (data.status) {

@@ -206,12 +206,12 @@ public class UserAccountController {
      * <p>解除绑定
      *
      * @param username
-     * @param moduleAccountId
+     * @param id
      * @return
      */
     @RequestMapping(value = "/souke/unbind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView unbindSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountId) {
-        userAccountService.unbindAccountForSem(username, moduleAccountId);
+    public ModelAndView unbindSoukeAccount(@RequestParam String username, @RequestParam String id) {
+        userAccountService.unbindAccountForSem(username, id);
 
         return jsonView(true);
     }
@@ -220,12 +220,12 @@ public class UserAccountController {
      * <p>激活搜客帐号
      *
      * @param username
-     * @param moduleAccountId
+     * @param id
      * @return
      */
     @RequestMapping(value = "/souke/active", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView activeSoukeAccount(@RequestParam String username, @RequestParam String moduleAccountId) {
-        userAccountService.activeAccountForSem(username, moduleAccountId);
+    public ModelAndView activeSoukeAccount(@RequestParam String username, @RequestParam String id) {
+        userAccountService.activeAccountForSem(username, id);
 
         return jsonView(true);
     }
@@ -246,12 +246,12 @@ public class UserAccountController {
     /**
      * <p>更新搜客帐号
      *
-     * @param moduleAccountId
+     * @param id
      * @return
      */
     @RequestMapping(value = "/souke/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView deleteSoukeAccount(@RequestParam String moduleAccountId) {
-        userAccountService.deleteAccountForSem(moduleAccountId);
+    public ModelAndView deleteSoukeAccount(@RequestParam String id) {
+        userAccountService.deleteAccountForSem(id);
 
         return jsonView(true);
     }
