@@ -43,7 +43,7 @@
                             <%--<th data-field="id">序号</th>--%>
                             <th data-field="companyName">公司名称</th>
                             <th data-field="userName">用户名</th>
-                            <th data-field="userPwd" data-formatter="passwordFormatter" data-events="operateEvents">密码
+                            <th data-field="userPwd" data-formatter="passwordFormatterUser" data-events="operateEvents">密码
                             </th>
                             <th data-field="email">注册邮箱</th>
                             <th data-field="displayCtime">注册日期</th>

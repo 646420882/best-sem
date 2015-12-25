@@ -1,9 +1,11 @@
 package com.perfect.dto.account;
 
+import com.perfect.dto.BaseDTO;
+
 /**
  * Created by subdong on 15-9-25.
  */
-public class QuestionAnswersDTO {
+public class QuestionAnswersDTO extends BaseDTO {
 
     private String id;
 

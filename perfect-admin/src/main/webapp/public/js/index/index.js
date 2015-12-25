@@ -29,6 +29,13 @@ function passwordFormatter(value, row, index) {
         '</a>'
     ].join('')
 }
+function passwordFormatterUser(value, row, index) {
+    return [
+        '<a class="password_User" href="javascript:void(0)" title="重置">',
+        '重置',
+        '</a>'
+    ].join('')
+}
 function cancelLookUp() {
     $(".indexCret").css({'display': 'none'});
     $("#userLookUpWrap").css({"display": "none"});

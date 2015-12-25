@@ -10,7 +10,7 @@ $(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(1) ").addClass("current");
         })
-    } else if (href == "/role") {
+    } else if (href == "/roles") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(2) ").addClass("current");
@@ -22,13 +22,13 @@ $(function () {
             $(".totalNav:nth-child(3) ").addClass("current");
         })
     }
-    else if (href == "/jurisdiction") {
+    else if (href == "/menus") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(4) ").addClass("current");
         })
     }
-    else if (href == "/log") {
+    else if (href == "/logs") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(5) ").addClass("current");
@@ -59,10 +59,10 @@ $(function () {
         'click .disable': function (e, value, row, index) {
             var bindingtext = $(this);
             if ($(this).html() == "禁用") {
-                $('#modelbox').modal();
-                $("#modelboxTitle").html("是否禁用？");
-                $("#modelboxBottom").click(function () {
-                    $('#modelbox').modal('hide');
+                $('#modelbox1').modal();
+                $("#modelboxTitle1").html("是否禁用？");
+                $("#modelboxBottom1").click(function () {
+                    $('#modelbox1').modal('hide');
                     $.ajax({
                         url: '/users/' + row.id + '/status',
                         type: 'post',
@@ -76,10 +76,10 @@ $(function () {
                     });
                 });
             } else {
-                $("#modelboxTitle").html("是否启用？");
-                $('#modelbox').modal()
-                $("#modelboxBottom").click(function () {
-                    $('#modelbox').modal('hide');
+                $("#modelboxTitle1").html("是否启用？");
+                $('#modelbox1').modal()
+                $("#modelboxBottom1").click(function () {
+                    $('#modelbox1').modal('hide');
                     $.ajax({
                         url: '/users/' + row.id + '/status',
                         type: 'post',
@@ -103,25 +103,75 @@ $(function () {
                 if (i == 1) {
                     return;
                 } else if (i == 2) {
-                    $(this).html("<input type='password' class='form-control' value='******''> ");
+                    $(this).html("<a class='password_reset' href='javascript:void(0)' title='重置'>重置</a> ");
+                } else if (i == 3) {
+                    if (row.superAdmin) {
+                        $(this).html("<select><option value='true'>超级管理员</option><option value='false'>管理员</option></select>");
+                    } else {
+                        $(this).html("<select><option value='false'>管理员</option><option value='true'>超级管理员</option></select>");
+                    }
                 } else if (i == 7) {
-                    $(this).html('')
+                    $(this).html(index + 1);
+                } else if (i == 8) {
+                    $(this).html("<input data-index='" + index + "' name='btSelectItem' type='checkbox'  />");
                 } else {
                     $(this).html("<input type='text' class='form-control' value='" + that_html + "'> ");
                 }
-                editorBottom.hide();
-                editorBottom.next(".preserve").attr("style", "display:block");
-                editorBottom.next().next(".cancel").attr("style", "display:block");
-                editorBottom.next().next().next(".delete").attr("style", "display:none");
             });
+            editorBottom.hide();
+            editorBottom.next(".preserve").attr("style", "display:block");
+            editorBottom.next().next(".cancel").attr("style", "display:block");
+            editorBottom.next().next().next(".delete").attr("style", "display:none");
         },
         'click .preserve': function (e, value, row, index) {
             var preserveHtML = $(this);
             var preserveThat = $(this).parent().prevAll("td");
-            preserveThat.each(function () {
-                var that_html = $(this).find("input").val();
-                $(this).html(that_html);
-            });
+            var _newRow = {};
+            if (confirm("是否需要修改?")) {
+                preserveThat.each(function (i) {
+                    var that_html = $(this).find("input").val();
+                    _newRow["id"] = row.id;
+                    switch (i) {
+                        case 0:
+                            _newRow["contact"] = that_html;
+                            break;
+                        case 1:
+                            that_html = $(this).find("span").attr("ctime");
+                            _newRow["ctime"] = that_html;
+                            break;
+                        case 3:
+                            that_html = $(this).find("select :selected").val();
+                            that_html = that_html == "true" ? true : false;
+                            _newRow["superAdmin"] = that_html;
+                            break;
+                        case 4:
+                            _newRow["loginName"] = that_html;
+                            break;
+                        case 5:
+                            _newRow["title"] = that_html;
+                            break;
+                        case 6:
+                            _newRow["name"] = that_html;
+                            break;
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: '/sysroles/' + row.id,
+                    contentType: 'application/json',
+                    data: JSON.stringify(_newRow),
+                    success: function (result) {
+                        if (result.code == 0) {
+                            $("#roleAdmin").bootstrapTable("updateRow", {index: index, row: _newRow});
+                        } else {
+                            $("#roleAdmin").bootstrapTable("updateRow", {index: index, row: row});
+                            alert(result.msg);
+                        }
+                    }
+                });
+            } else {
+                $("#roleAdmin").bootstrapTable("updateRow", {index: index, row: row});
+            }
             preserveHtML.attr("style", "display:none");
             preserveHtML.next(".cancel").attr("style", "display:none");
             preserveHtML.next().next(".delete").attr("style", "display:block");
@@ -129,31 +179,40 @@ $(function () {
         },
         'click .cancel': function (e, value, row, index) {
             var cancelHtML = $(this);
-            var cancelThat = $(this).parent().prevAll("td");
-            cancelThat.each(function (i) {
-                var that_html = $(this).find("input").val();
-                if (i == 2) {
-                    $(this).html('<a class="password_reset" href="javascript:void(0)" title="重置">重置</a>');
-                } else if (i == 7) {
-                    $(this).html('<input data-index="' + index + '" name="btSelectItem" type="checkbox">')
-                } else {
-                    $(this).html(that_html);
-                }
-            });
+            $("#roleAdmin").bootstrapTable("updateRow", {index: index, row: row});
             cancelHtML.attr("style", "display:none");
             cancelHtML.next(".delete").attr("style", "display:block");
             cancelHtML.prev().prev(".editor").attr("style", "display:block");
             cancelHtML.prev(".preserve").attr("style", "display:none");
         },
         'click .delete': function (e, value, row, index) {
-            var tabledelete = $(this).parent().parent();
-            $('#modelbox').modal();
-            $("#modelboxTitle").html("是否删除？");
-            $("#modelboxBottom").click(function () {
-                $('#modelbox').modal('hide');
-                tabledelete.remove();
+            if (row.id != -1) {
+                $('#modelbox').modal();
+                $("#modelboxTitle").html("是否删除？");
+                $("#modelboxBottom").click(function () {
+                    $.ajax({
+                        url: '/sysroles/' + row.id,
+                        type: "DELETE",
+                        success: function (res) {
+                            if (res.code == 0) {
+                                $('#modelbox').modal('hide');
+                                $("#roleAdmin").bootstrapTable("removeByUniqueId", row.id);
+                                alert("删除成功!");
+                            } else {
+                                $('#modelbox').modal('hide');
+                                if (res.msg) {
+                                    alert(res.msg);
+                                } else {
+                                    alert("删除失败!")
+                                }
+                            }
+                        }
+                    })
 
-            })
+                });
+            } else {
+                $("#roleAdmin").bootstrapTable("removeByUniqueId", row.id);
+            }
         },
         'click .look': function (e, value, row, index) {
             $(".indexCret").css({'display': 'none'});
@@ -185,7 +244,7 @@ $(function () {
                             dataType: 'JSON',
                             async: false,
                             data: {
-                                uid: row.id,
+                                uid: row.id
                             },
                             success: function (user) {
                                 console.log(user);
@@ -234,17 +293,46 @@ $(function () {
         },
         'click .password_reset': function (e, value, row, index) {
             $('#modelbox').modal();
-            $("#modelboxTitle").html("是否重置密码" + row.userName + "用户密码！");
+            $("#modelboxTitle").html("是否重置密码管理员用户密码！");
             $("#modelboxBottom").click(function () {
-                $('#modelbox').modal('hide');
+                $("#modelboxTitle").html("重置管理员密码");
+                $("#modelboxBottom").click(function () {
+                    if (confirm("是否重置用户:" + row.loginName + "的登录密码?")) {
+                        var resetPwd = $("input[name='resetPwd']").val();
+                        $.ajax({
+                            url: '/sysroles/' + row.id + "/password",
+                            type: 'POST',
+                            data: {password: resetPwd},
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    $('#modelbox').modal('hide');
+                                    alert("重置成功!");
+
+                                } else {
+                                    if (res.msg) {
+                                        alert(res.msg);
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+            })
+        },
+        'click .password_User': function (e, value, row, index) {
+            $('#modelbox2').modal();
+            $("#modelboxTitle2").html("是否重置密码" + row.userName + "用户密码！");
+            $("#modelboxBottom2").click(function () {
+                console.log(value)
+                $('#modelbox2').modal('hide');
                 $.ajax({
                     url: '/users/' + row.id + '/password',
                     type: 'post',
                     dataType: 'JSON',
                     success: function (user) {
-                        if(user.code == 0){
+                        if (user.code == 0) {
                             alert("密码重置成功，重置为：123456")
-                        }else{
+                        } else {
                             alert("密码重置失败")
                         }
                     }
@@ -258,7 +346,6 @@ $(function () {
             var objEvt = $._data($("#tokenBoxBottom")[0], "events");
             $("#tokenBoxBottom").click(function () {
                 if (row.systemModal == "百思搜客") {
-                    console.log(row.accountid);
                     $.ajax({
                         url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
                         type: 'post',
@@ -273,7 +360,6 @@ $(function () {
                         }
                     });
                 } else {
-                    console.log(row.huiyanid);
                     $.ajax({
                         url: '/updateHuiYan/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
                         type: 'post',
@@ -289,9 +375,60 @@ $(function () {
                         }
                     });
                 }
-
             })
         },
+        'click .addRole': function (e, value, row, index) {
+            var readyAddData = {ctime: new Date().getTime()};
+            var preserveThat = $(this).parent().prevAll("td");
+            preserveThat.find("input")
+                .each(function (i, o) {
+                    var name = $(o).attr("name");
+                    if (name) {
+                        readyAddData[name] = $(o).val();
+                    }
+                });
+            preserveThat.find("select").each(function (i, o) {
+                var name = $(o).attr("name");
+                if (name) {
+                    readyAddData[name] = $(o).val() == "true" ? true : false;
+                }
+            });
+            if (!readyAddData.name) {
+                alert("请输入用户名!");
+                return;
+            }
+            if (!readyAddData.title) {
+                alert("请输入职务!");
+                return;
+            }
+            if (!readyAddData.loginName) {
+                alert("请输入登录名!");
+                return;
+            }
+            if (!readyAddData.password) {
+                alert("请输入密码!");
+                return;
+            }
+            if (!readyAddData.contact) {
+                alert("请输入联系方式!");
+                return;
+            }
+            $.ajax({
+                url: '/sysroles',
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify(readyAddData),
+                success: function (res) {
+                    if (res.code == 0) {
+                        $("#roleAdmin").bootstrapTable("updateRow", {index: index, row: readyAddData});
+                        $("#roleAdmin").bootstrapTable("refresh");
+                        alert("添加成功!");
+                    } else {
+                        alert(res.msg);
+                    }
+                }
+            });
+        }
     };
 })
 function firstAdd() {

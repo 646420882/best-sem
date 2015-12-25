@@ -8,7 +8,6 @@ import com.perfect.dao.account.AccountRegisterDAO;
 import com.perfect.dao.account.SystemAccountDAO;
 import com.perfect.dto.huiyan.InsightWebsiteDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
-import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.param.RegisterParam;
@@ -100,15 +99,15 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             List<SystemUserModuleDTO> entities = Lists.newArrayList();
             Map<String, ModuleAccountInfoDTO> moduleAccountInfoDTOMap = Maps.newHashMap();
             for (String s : dd) {
-                SystemModuleDTO systemModuleDTO = systemAccountDAO.findByModuleName(s);
+//                SystemModuleDTO systemModuleDTO = systemAccountDAO.findByModuleName(s);
 
                 // 百思系统模块
                 SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
                 String sysUserModuleId = new ObjectId().toString();
                 systemUserModuleDTO.setId(sysUserModuleId);
 //                systemUserModuleDTO.setModuleId(systemModuleDTO.getId());
-                systemUserModuleDTO.setModuleName(systemModuleDTO.getModuleName());
-                systemUserModuleDTO.setModuleUrl(systemModuleDTO.getModuleUrl());
+                systemUserModuleDTO.setModuleName(s);
+//                systemUserModuleDTO.setModuleUrl(systemModuleDTO.getModuleUrl());
                 systemUserModuleDTO.setPayed(true);
                 systemUserModuleDTO.setEnabled(true);
                 systemUserModuleDTO.setStartTime(Calendar.getInstance().getTimeInMillis());

@@ -8,7 +8,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 /**
- *
  * Created by yousheng on 15/12/17.
  */
 public class SystemRoleControllerTest extends JUnitBaseTest {
@@ -82,5 +81,10 @@ public class SystemRoleControllerTest extends JUnitBaseTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/sysroles/" + roleid))
                 .andDo(MockMvcResultHandlers.print()).andReturn();
 
+    }
+
+    @Test
+    public void testUpdateRolePassword() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/sysroles/" + roleid + "/password").param("password", "123456")).andDo(MockMvcResultHandlers.print()).andReturn();
     }
 }

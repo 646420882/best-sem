@@ -1,7 +1,7 @@
 package com.perfect.admin.utils;
 
 import com.perfect.core.AppContext;
-import com.perfect.core.SystemUserInfo;
+import com.perfect.core.SystemRoleInfo;
 
 /**
  * Created by yousheng on 15/12/18.
@@ -9,11 +9,11 @@ import com.perfect.core.SystemUserInfo;
 public class SuperUserUtils {
 
     public static boolean isLoginSuper() {
-        SystemUserInfo systemUserInfo = AppContext.getSystemUserInfo();
+        SystemRoleInfo systemRoleInfo = AppContext.getSystemRoleInfo();
 
-        if (systemUserInfo == null) {
+        if (systemRoleInfo == null) {
             return false;
         }
-        return systemUserInfo.isSuper();
+        return systemRoleInfo.isSuper();
     }
 }

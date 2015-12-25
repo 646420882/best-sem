@@ -1,26 +1,19 @@
 package com.perfect.db.mongodb.impl;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
-import com.perfect.core.SystemUserInfo;
+import com.perfect.core.SystemRoleInfo;
 import com.perfect.dao.sys.SystemLogDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.dto.sys.SystemLogDTO;
 import com.perfect.entity.sys.SystemLogEntity;
 import com.perfect.param.SystemLogParams;
 import com.perfect.utils.ObjectUtils;
-import com.perfect.utils.paging.BootStrapPagerInfo;
-import com.perfect.utils.paging.PagerInfo;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,14 +67,14 @@ public class SystemLogDAOImpl extends AbstractSysBaseDAOImpl<SystemLogDTO, Strin
 
     @Override
     public void log(String txt) {
-        SystemUserInfo systemUserInfo = AppContext.getSystemUserInfo();
-        if (systemUserInfo == null) {
+        SystemRoleInfo systemRoleInfo = AppContext.getSystemRoleInfo();
+        if (systemRoleInfo == null) {
             return;
         }
 
         SystemLogEntity systemLogEntity = new SystemLogEntity();
         systemLogEntity.setIp(AppContext.getRemote());
-        systemLogEntity.setUser(systemUserInfo.getUser());
+        systemLogEntity.setUser(systemRoleInfo.getRoleName());
         systemLogEntity.setTime(System.currentTimeMillis());
         systemLogEntity.setDesc(txt);
 

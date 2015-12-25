@@ -22,18 +22,18 @@ public class AppContext {
 
     private static ContextLocal contextMap = new ContextLocal();
 
-    private static ThreadLocal<SystemUserInfo> systemUserInfoThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<SystemRoleInfo> systemUserInfoThreadLocal = new ThreadLocal<>();
 
     private static ThreadLocal<String> remoteIpThreadLocal = new ThreadLocal<>();
 
     private static ThreadLocal<UserInfo> userInfoThreadLocal = new ThreadLocal<>();
     private static Object accountId;
 
-    public static void setSystemUserInfo(SystemUserInfo systemUserInfo) {
-        systemUserInfoThreadLocal.set(systemUserInfo);
+    public static void setSystemUserInfo(SystemRoleInfo systemRoleInfo) {
+        systemUserInfoThreadLocal.set(systemRoleInfo);
     }
 
-    public static SystemUserInfo getSystemUserInfo() {
+    public static SystemRoleInfo getSystemRoleInfo() {
         return systemUserInfoThreadLocal.get();
     }
 
@@ -73,12 +73,6 @@ public class AppContext {
 //        contextMap.set(so);
 //    }
 
-    public static void setModuleId(String moduleId) {
-        SessionObject so = new SessionObject();
-        so.setModuleId(moduleId);
-        contextMap.set(so);
-    }
-
     public static void setUser(String userName) {
         SessionObject so = new SessionObject();
         so.setUserName(userName);
@@ -99,16 +93,6 @@ public class AppContext {
         so.setAccountId(accountId);
         so.setModuleAccountInfoDTOs(moduleAccountInfoDTOs);
         contextMap.set(so);
-    }
-
-    public static String getModuleId() {
-        SessionObject so = contextMap.get();
-
-        if (so != null) {
-            return so.getModuleId();
-        } else {
-            return null;
-        }
     }
 
     public static String getModuleName() {

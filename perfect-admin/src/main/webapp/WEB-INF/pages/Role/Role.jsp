@@ -19,11 +19,11 @@
                 <div class="admin_title">
                     <label class="control-label fl"> 账户状态：</label>
 
-                    <div class="fl select">
-                        <select>
-                            <option>所有人员</option>
-                            <option>管理员</option>
-                            <option>超级管理员</option>
+                    <div class="fl select" id="userSelect">
+                        <select onchange="role.event.selectUser(this)">
+                            <option value="-1">所有人员</option>
+                            <option value="0">管理员</option>
+                            <option value="1">超级管理员</option>
                         </select>
                     </div>
 
@@ -37,23 +37,29 @@
 
                 </div>
                 <div id="roleTable">
-                    <table id="roleAdmin" data-click-to-select="true" data-query-params="queryParams" data-search="true" data-search-align="left" data-pagination="true" >
+                    <table id="roleAdmin">
                         <thead>
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
-                            <th data-field="roleName">姓名</th>
-                            <th data-field="rolePosition">职务</th>
-                            <th data-field="roleProperty">角色属性</th>
-                            <th data-field="roleAccount">登录账号</th>
-                            <th data-field="rolePassword" data-formatter="passwordFormatter" data-events="operateEvents">登录密码</th>
-                            <th data-field="roleCreateTime">创建日期</th>
-                            <th data-field="roleContactWay">联系方式</th>
-                            <th data-field="action" data-formatter="disableFormatter" data-events="operateEvents">操作</th>
+                            <th data-field="id" data-formatter="role.column.noFat">序号</th>
+                            <th data-field="name">姓名</th>
+                            <th data-field="title">职务</th>
+                            <%--<th data-field="roleProperty">角色属性</th>--%>
+                            <th data-field="loginName">登录账号</th>
+                            <th data-field="superAdmin" data-formatter="role.column.superAdminFat">是否超级管理员</th>
+                            <th data-field="password" data-formatter="role.column.passFat" data-events="operateEvents">
+                                登录密码
+                            </th>
+                            <th data-field="ctime" data-formatter="role.date.fat">创建日期</th>
+                            <th data-field="contact">联系方式</th>
+                            <th data-field="action" data-formatter="role.column.operateFat" data-events="operateEvents">
+                                操作
+                            </th>
                         </tr>
                         </thead>
                     </table>
-                    <div class="adminAddBtn">
-                        <a href="#"><strong>+ &nbsp;&nbsp;新增角色</strong></a>
+                    <div class="adminAddBtn" onclick="role.event.showAddRoleModal()">
+                        <a href="javascript:;"><strong>+ &nbsp;&nbsp;新增角色</strong></a>
                     </div>
                 </div>
 

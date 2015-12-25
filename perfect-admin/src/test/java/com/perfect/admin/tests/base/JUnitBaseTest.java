@@ -1,7 +1,7 @@
 package com.perfect.admin.tests.base;
 
 import com.perfect.core.AppContext;
-import com.perfect.core.SystemUserInfo;
+import com.perfect.core.SystemRoleInfo;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class JUnitBaseTest {
     //百思测试
     public String sysUserid = "5678bf10279c4ba1e19bd431";
 
-    public String roleid = "5677d27c8d6aff7e585260e7";
+    public String roleid = "567b909177c891978cae112e";
 
     public String moduleid = "5678eaa476941d1cc5753f2f";
 
@@ -53,12 +53,12 @@ public class JUnitBaseTest {
     public void init() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 
-        SystemUserInfo systemUserInfo = new SystemUserInfo();
+        SystemRoleInfo systemRoleInfo = new SystemRoleInfo();
 
-        systemUserInfo.setUser("yangle");
-
-        systemUserInfo.setIsSuper(true);
-        AppContext.setSystemUserInfo(systemUserInfo);
+        systemRoleInfo.setRoleName("yangle");
+        systemRoleInfo.setRoleId(roleid);
+        systemRoleInfo.setIsSuper(true);
+        AppContext.setSystemUserInfo(systemRoleInfo);
 
         try {
             AppContext.setRemote(InetAddress.getLocalHost().toString());

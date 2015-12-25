@@ -27,6 +27,8 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
      *
      * @param list
      * @param currSystemUserName
+     * @see {@link com.perfect.dao.account.SystemAccountDAO#insertModuleAccount(ModuleAccountInfoDTO)}
+     * @deprecated
      */
     void addBaiduAccount(List<ModuleAccountInfoDTO> list, String currSystemUserName);
 

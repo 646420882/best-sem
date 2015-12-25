@@ -2,7 +2,7 @@ package com.perfect.admin.filter;
 
 import com.perfect.admin.commons.ServletContextUtils;
 import com.perfect.core.AppContext;
-import com.perfect.core.SystemUserInfo;
+import com.perfect.core.SystemRoleInfo;
 import com.perfect.dto.sys.SystemRoleDTO;
 
 import javax.servlet.*;
@@ -61,11 +61,12 @@ public class AdminPriviledgeFilter implements Filter {
 
             SystemRoleDTO systemRoleDTO = (SystemRoleDTO) httpServletRequest.getSession().getAttribute(SESSION_USER);
 
-            SystemUserInfo systemUserInfo = new SystemUserInfo();
+            SystemRoleInfo systemRoleInfo = new SystemRoleInfo();
 //            systemUserInfo.setIp(request.getRemoteHost());
-            systemUserInfo.setUser(systemRoleDTO.getLoginName());
-            systemUserInfo.setIsSuper(systemRoleDTO.isSuperAdmin());
-            AppContext.setSystemUserInfo(systemUserInfo);
+            systemRoleInfo.setRoleName(systemRoleDTO.getLoginName());
+            systemRoleInfo.setIsSuper(systemRoleDTO.isSuperAdmin());
+            systemRoleInfo.setRoleId(systemRoleDTO.getId());
+            AppContext.setSystemUserInfo(systemRoleInfo);
         }
         chain.doFilter(request, response);
     }

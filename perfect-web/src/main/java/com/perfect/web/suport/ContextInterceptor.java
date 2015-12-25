@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by vbzer_000 on 2014/8/27.
@@ -32,7 +33,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if (Objects.isNull(request.getSession().getAttribute(USER_INFORMATION))
+        if (Objects.isNull(request.getSession().getAttribute(USER_INFO))
                 || Objects.isNull(request.getSession().getAttribute(USER_TOKEN))) {
             if (Objects.nonNull(request.getHeader("x-requested-with"))
                     && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
@@ -49,12 +50,11 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
 
         Long accoundId = WebUtils.getAccountId(request);
         if (accoundId != null && accoundId > 0) {
-            AppContext.setModuleId(WebUtils.getModuleId(request));
             AppContext.setUser(userName, accoundId, WebUtils.getModuleAccounts(request));
             return true;
         } else {
             AppContext.setUser(userName);
-            SystemUserDTO systemUserDTO = (SystemUserDTO) request.getSession().getAttribute(USER_INFORMATION);
+            SystemUserDTO systemUserDTO = (SystemUserDTO) request.getSession().getAttribute(USER_INFO);
             if (systemUserDTO == null) {
                 return false;
             }
@@ -140,18 +140,19 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
     }
 
     private boolean handleRequest(HttpServletRequest request, String userName) {
-        SystemUserDTO systemUserDTO = (SystemUserDTO) request.getSession().getAttribute(USER_INFORMATION);
+        SystemUserDTO systemUserDTO = (SystemUserDTO) request.getSession().getAttribute(USER_INFO);
         List<SystemUserModuleDTO> userModuleDTOs = systemUserDTO.getSystemUserModules();
 
         for (SystemUserModuleDTO userModuleDTO : userModuleDTOs) {
             if (Objects.equals(AppContext.getModuleName(), userModuleDTO.getModuleName())) {
                 List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = userModuleDTO.getAccounts();
-                WebUtils.setModuleId(request, userModuleDTO.getModuleId());
                 WebUtils.setModuleAccounts(request, moduleAccountInfoDTOs);
-                AppContext.setModuleId(userModuleDTO.getModuleId());
 
-                // TODO 菜单权限处理
-                List<String> sysUserModuleMenus = userModuleDTO.getMenus();
+                List<String> sysUserModuleMenus = userModuleDTO.getMenus()
+                        .stream()
+                        .map(menu -> menu + "," + SOUKE_MENU_INFO.get(menu))
+                        .collect(Collectors.toList());
+                request.getSession().setAttribute(USER_MENU_INFO, sysUserModuleMenus);
 
                 if (moduleAccountInfoDTOs.size() == 1) {
                     ModuleAccountInfoDTO moduleAccountInfoDTO = moduleAccountInfoDTOs.get(0);

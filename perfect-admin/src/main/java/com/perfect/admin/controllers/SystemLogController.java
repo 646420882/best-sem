@@ -1,23 +1,15 @@
 package com.perfect.admin.controllers;
 
 import com.google.common.base.Strings;
-import com.perfect.admin.utils.JsonViews;
 import com.perfect.admin.utils.SuperUserUtils;
-import com.perfect.commons.web.JsonResultMaps;
 import com.perfect.core.AppContext;
-import com.perfect.dto.sys.SystemLogDTO;
 import com.perfect.param.SystemLogParams;
 import com.perfect.service.SystemLogService;
 import com.perfect.utils.paging.BootStrapPagerInfo;
-import com.perfect.utils.paging.PagerInfo;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 日志查看控制器
@@ -47,7 +39,7 @@ public class SystemLogController {
         SystemLogParams params = new SystemLogParams().setStart(start).setEnd(end).setUser(user);
 
         if (!isSuper) {
-            params.setUser(AppContext.getSystemUserInfo().getUser());
+            params.setUser(AppContext.getSystemRoleInfo().getRoleName());
         }
 
         if (offset < 0 || limit <= 0) {

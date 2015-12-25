@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="fl">
-                        <input type="text" class="adminInput" placeholder="请输入操作账户或操作人">
+                        <%--<input type="text" class="adminInput" placeholder="请输入操作账户或操作人">--%>
                         <span class="adminSearch">
                             <span class="glyphicon glyphicon-search"></span>
                         </span>

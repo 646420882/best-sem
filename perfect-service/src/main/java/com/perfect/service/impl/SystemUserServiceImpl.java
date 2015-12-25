@@ -753,7 +753,14 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateUserModuleMenus(String userId, String moduleid, UserModuleMenuDTO menus) {
-        return systemUserDAO.updateModuleMenus(userId, moduleid, menus);
+        boolean success = systemUserDAO.updateModuleMenus(userId, moduleid, menus);
+        if (success) {
+
+            SystemUserDTO systemUserDTO = systemUserDAO.findByUserId(userId);
+            systemLogDAO.log("更新用户" + systemUserDTO.getUserName() + "菜单权限:");
+        }
+
+        return success;
     }
 
     @Override

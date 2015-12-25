@@ -24,4 +24,6 @@ public interface SystemRoleDAO extends HeyCrudRepository<SystemRoleDTO, String> 
     SystemRoleDTO findById(String roleId);
 
     long countByQuery(String queryName, Boolean superUser);
+
+    boolean updateUserPassword(String roleid, String password);
 }

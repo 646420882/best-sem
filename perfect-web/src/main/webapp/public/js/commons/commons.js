@@ -884,11 +884,11 @@ $("#kkeyword").next().next().find("th").mouseover().append("<span class='remove'
 
 //筛选图标加载
 $('.screenicon').parent().mouseover(function () {
-    if (jsonData.cid) {
+    //if (jsonData.cid) {
         $("#filterSearchTemplate").hide();
         $(".remove").remove()
         $(this).append("<span class='remove'><img src='../public/img/select.png'></span>");
-    }
+    //}
 })
 var TabModel = {
     Show: function (type, _this, e) {

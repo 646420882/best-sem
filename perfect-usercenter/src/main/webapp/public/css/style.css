@@ -303,6 +303,7 @@
 }
 
 .modal-body {
+    padding-bottom: 0;
     font-size: 14px;
 }
 
@@ -316,6 +317,7 @@
 }
 
 .modal-footer {
+    padding-top: 0;
     border: none;
 }
 

@@ -13,7 +13,8 @@
                        slave-ok="true"/>
     </mongo:mongo>
 
-    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
+    <mongo:db-factory authentication-dbname="admin" username="admin" password="NN7sHsHkS2q7" id="mongoDbFactory"
+                      dbname="sys" mongo-ref="mongo"/>
     <mongo:mapping-converter id="converter"/>
 
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
@@ -24,8 +25,13 @@
         <property name="writeResultChecking">
             <util:constant static-field="org.springframework.data.mongodb.core.WriteResultChecking.EXCEPTION"/>
         </property>
+
     </bean>
 
+    <bean id="mongoUserCredentials" class="org.springframework.data.authentication.UserCredentials">
+        <constructor-arg name="username" value="admin"/>
+        <constructor-arg name="password" value="NN7sHsHkS2q7"/>
+    </bean>
     <bean id="mongoSysTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
     </bean>
