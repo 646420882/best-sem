@@ -2,10 +2,7 @@ package com.perfect.admin.controllers;
 
 import com.perfect.admin.utils.JsonViews;
 import com.perfect.commons.web.JsonResultMaps;
-import com.perfect.dto.sys.ModuleAccountInfoDTO;
-import com.perfect.dto.sys.SystemMenuDTO;
-import com.perfect.dto.sys.SystemUserModuleDTO;
-import com.perfect.dto.sys.UserModuleMenuDTO;
+import com.perfect.dto.sys.*;
 import com.perfect.service.SystemUserService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +24,38 @@ public class UserModuleController {
     @Resource
     private SystemUserService systemUserService;
 
-    @RequestMapping(value = "/users/{userid}/menus", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView updateUserModules(@PathVariable("userid") String userid, @RequestBody UserModuleMenuDTO userModuleMenuDTO) {
+
+    @RequestMapping(value = "/users/{userid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView getUserInfo(@PathVariable("userid") String userid) {
+
+        SystemUserDTO systemUserDTO = systemUserService.findByUserId(userid);
+
+        if (systemUserDTO == null) {
+            return JsonViews.generateFailedNoData();
+        }
+        return JsonViews.generate(JsonResultMaps.successMap(systemUserDTO));
+    }
+
+    @RequestMapping(value = "/users/{userid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView deleteUserInfo(@PathVariable("userid") String userid) {
+
+        boolean success = systemUserService.deleteUser(userid);
+
+        if (success) {
+            return JsonViews.generateSuccessNoData();
+        } else {
+            return JsonViews.generateFailedNoData();
+        }
+    }
+
+    @RequestMapping(value = "/users/{userid}/modules/{moduleid}/menus", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updateUserModules(@PathVariable("userid") String userid, @PathVariable("moduleid") String moduleId,
+                                          @RequestBody UserModuleMenuDTO userModuleMenuDTO) {
         if (userModuleMenuDTO == null) {
             return JsonViews.generate(-1, "无菜单信息.");
         }
 
-        boolean success = systemUserService.updateUserModuleMenus(userid, userModuleMenuDTO);
+        boolean success = systemUserService.updateUserModuleMenus(userid, moduleId, userModuleMenuDTO);
 
         if (success) {
             return JsonViews.generateSuccessNoData();
@@ -43,9 +65,9 @@ public class UserModuleController {
     }
 
     @RequestMapping(value = "/users/{userid}/modules", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView addModule(@PathVariable("userid") String userid, @RequestParam("moduleid") String moduleId) {
+    public ModelAndView addModule(@PathVariable("userid") String userid, @RequestParam("moduleid") String moduleName) {
 
-        boolean success = systemUserService.addModule(userid, moduleId);
+        boolean success = systemUserService.addModule(userid, moduleName);
         if (success) {
             return JsonViews.generateSuccessNoData();
         }
@@ -77,22 +99,25 @@ public class UserModuleController {
 
     }
 
+    @Deprecated
     @RequestMapping(value = "/users/{userid}/modules/{usermoduleid}/submenus", method = RequestMethod.POST, produces = MediaType
             .APPLICATION_JSON_VALUE)
     public ModelAndView updateUserModuleSubMenus(@PathVariable("userid") String id, @PathVariable("usermoduleid") String
             usermoduleid, @RequestBody List<SystemMenuDTO> menus) {
 
-        if (menus == null) {
-            return JsonViews.generateFailedNoData();
-        }
+        return JsonViews.generate(-1, "方法未实现!");
 
-        boolean success = systemUserService.updateUserModuleMenus(id, usermoduleid, menus);
-
-        if (success) {
-            return JsonViews.generateSuccessNoData();
-        }
-
-        return JsonViews.generate(-1);
+//        if (menus == null) {
+//            return JsonViews.generateFailedNoData();
+//        }
+//
+//        boolean success = systemUserService.updateUserModuleMenus(id, usermoduleid, menus);
+//
+//        if (success) {
+//            return JsonViews.generateSuccessNoData();
+//        }
+//
+//        return JsonViews.generate(-1);
     }
 
     @RequestMapping(value = "/users/{userid}/modules/{moduleid}/submenus/{submenuid}", method = RequestMethod.DELETE, produces = MediaType
@@ -109,19 +134,21 @@ public class UserModuleController {
         return JsonViews.generate(-1);
     }
 
+    @Deprecated
     @RequestMapping(value = "/users/{userid}/modules/{moduleid}/submenus", method = RequestMethod.GET, produces = MediaType
             .APPLICATION_JSON_VALUE)
     public ModelAndView getUserModuleSubMenus(@PathVariable("userid") String id, @PathVariable("moduleid") String
             moduleid) {
 
+        return JsonViews.generateSuccessNoData();
 
-        List<SystemMenuDTO> systemMenuDTOs = systemUserService.getUserSubMenu(id, moduleid);
-
-        if (systemMenuDTOs == null) {
-            return JsonViews.generateFailedNoData();
-        }
-
-        return JsonViews.generate(JsonResultMaps.successMap(systemMenuDTOs));
+//        List<SystemMenuDTO> systemMenuDTOs = systemUserService.getUserSubMenu(id, moduleid);
+//
+//        if (systemMenuDTOs == null) {
+//            return JsonViews.generateFailedNoData();
+//        }
+//
+//        return JsonViews.generate(JsonResultMaps.successMap(systemMenuDTOs));
     }
 
 

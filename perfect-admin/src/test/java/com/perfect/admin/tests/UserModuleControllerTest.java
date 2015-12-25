@@ -25,7 +25,7 @@ public class UserModuleControllerTest extends JUnitBaseTest {
 
 
     @Test
-    public void testdeleteUserModule() throws Exception {
+    public void testDeleteUserModule() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + userid + "/modules/" + usermoduleid))
                 .andDo(MockMvcResultHandlers.print()).andReturn();
     }
@@ -120,6 +120,11 @@ public class UserModuleControllerTest extends JUnitBaseTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users/" + userid + "/menus").content(JSON.toJSONString(userModuleMenuDTO)).contentType(CONTENT_TYPE))
                 .andDo(MockMvcResultHandlers.print()).andReturn();
+    }
+
+    @Test
+    public void testGetUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/" + userid)).andDo(MockMvcResultHandlers.print()).andReturn();
     }
 
 }

@@ -6,6 +6,9 @@ import java.util.List;
  * Created by yousheng on 15/12/19.
  */
 public class UserModuleMenuEntity {
+
+    private String _id;
+
     private String moduleName;
 
     private String moduleUrl;

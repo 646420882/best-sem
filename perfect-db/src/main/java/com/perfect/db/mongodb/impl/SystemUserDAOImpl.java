@@ -279,6 +279,10 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     @Override
     public List<SystemUserModuleDTO> getUserModules(String userId) {
         SystemUserDTO systemUserDTO = findByUserId(userId);
+
+        if (systemUserDTO == null) {
+            return Collections.EMPTY_LIST;
+        }
         return systemUserDTO.getSystemUserModules();
     }
 
@@ -317,10 +321,10 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
      * @return
      */
     @Override
-    public boolean updateModuleMenus(String id, String usermoduleid, List<SystemMenuDTO> menus) {
+    public boolean updateModuleMenus(String id, String usermoduleid, UserModuleMenuDTO menus) {
         WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(id).and
                 ("modules._id").is
-                (new ObjectId(usermoduleid))), Update.update("modules.$.menus", fromMenuDTO(menus)), getEntityClass());
+                (new ObjectId(usermoduleid))), Update.update("modules.$.menus", menus.getMenus()), getEntityClass());
         return updateSuccess(writeResult);
     }
 
@@ -388,7 +392,6 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     @Override
     public boolean saveUserModule(String userid, SystemUserModuleDTO systemUserModuleDTO) {
-        SystemUserDTO systemUserDTO = findByUserId(userid);
 
         systemUserModuleDTO.setId(new ObjectId(Calendar.getInstance().getTime()).toString());
 
@@ -468,8 +471,8 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     }
 
     @Override
-    public boolean existsModule(String userid, String moduleId) {
-        return getSysMongoTemplate().exists(Query.query(Criteria.where(SYSTEM_ID).is(userid).and("modules.moduleId").is(moduleId)), getEntityClass());
+    public boolean existsModule(String userid, String moduleName) {
+        return getSysMongoTemplate().exists(Query.query(Criteria.where(SYSTEM_ID).is(userid).and("modules.moduleName").is(moduleName)), getEntityClass());
     }
 
     @Override
@@ -631,12 +634,12 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
         SystemUserModuleDTO systemUserModuleDTO = ObjectUtils.convert(systemUserModuleEntity, SystemUserModuleDTO.class);
 
-        List<SystemMenuEntity> menuEntities = systemUserModuleEntity.getMenus();
-
-        if (menuEntities != null) {
-            List<SystemMenuDTO> systemMenuDTOs = fromMenuEntity(menuEntities, SystemMenuDTO.class);
-            systemUserModuleDTO.setMenus(systemMenuDTOs);
-        }
+//        List<SystemMenuEntity> menuEntities = systemUserModuleEntity.getMenus();
+//
+//        if (menuEntities != null) {
+//            List<SystemMenuDTO> systemMenuDTOs = fromMenuEntity(menuEntities, SystemMenuDTO.class);
+//            systemUserModuleDTO.setMenus(systemMenuDTOs);
+//        }
 
         return systemUserModuleDTO;
     }

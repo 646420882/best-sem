@@ -5,7 +5,6 @@ import com.perfect.core.AppContext;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.dto.sys.SystemUserModuleDTO;
-import com.perfect.dto.sys.UserModuleMenuDTO;
 import com.perfect.service.AccountManageService;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -152,7 +151,7 @@ public class ContextInterceptor implements HandlerInterceptor, AuthConstants {
                 AppContext.setModuleId(userModuleDTO.getModuleId());
 
                 // TODO 菜单权限处理
-                List<UserModuleMenuDTO> sysUserModuleMenus = userModuleDTO.getModuleMenus();
+                List<String> sysUserModuleMenus = userModuleDTO.getMenus();
 
                 if (moduleAccountInfoDTOs.size() == 1) {
                     ModuleAccountInfoDTO moduleAccountInfoDTO = moduleAccountInfoDTOs.get(0);

@@ -31,7 +31,7 @@ public class JUnitBaseTest {
 
     public String CONTENT_TYPE = "application/json;charset=UTF-8";
 
-    public String userid = "53fec848e4b07cfcbba06db6";
+    public String userid = "567bc69177c8cee35a870c81";
 
     //百思测试
     public String sysUserid = "5678bf10279c4ba1e19bd431";

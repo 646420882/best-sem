@@ -29,7 +29,7 @@ public class SystemAccountControllerTest extends JUnitBaseTest {
     @Test
     public void insertSystemUser() throws Exception {
         SystemUserDTO systemUserDTO = new SystemUserDTO();
-        systemUserDTO.setUserName("perfect2016");
+        systemUserDTO.setUserName("perfect2017");
         systemUserDTO.setPassword("aec34f5b755ae6f9550620d5f502d4ff");
         systemUserDTO.setCompanyName("普菲特广告有限公司");
         systemUserDTO.setContactName("Yangle");
@@ -51,7 +51,7 @@ public class SystemAccountControllerTest extends JUnitBaseTest {
         // 搜客模块
         SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
         systemUserModuleDTO.setId(new ObjectId().toString());
-        systemUserModuleDTO.setModuleId(systemAccountDAO.findByModuleName(SystemNameConstant.SOUKE_SYSTEM_NAME).getId());
+//        systemUserModuleDTO.setModuleId(systemAccountDAO.findByModuleName(SystemNameConstant.SOUKE_SYSTEM_NAME).getId());
         systemUserModuleDTO.setEnabled(true);
         systemUserModuleDTO.setStartTime(Calendar.getInstance().getTimeInMillis());
         systemUserModuleDTO.setEndTime(Calendar.getInstance().getTimeInMillis() + 3600_000 * 24 * 365);
@@ -62,21 +62,21 @@ public class SystemAccountControllerTest extends JUnitBaseTest {
         UserModuleMenuDTO userModuleMenuDTO = new UserModuleMenuDTO();
         userModuleMenuDTO.setModuleName(systemUserModuleDTO.getModuleName());
         userModuleMenuDTO.setModuleUrl(systemUserModuleDTO.getModuleUrl());
-        userModuleMenuDTO.getMenus().addAll(new ArrayList<String>() {{
+
+        systemUserModuleDTO.getMenus().addAll(new ArrayList<String>() {{
             add("账户全景");
             add("推广助手");
             add("智能结构");
             add("智能竞价");
             add("数据报告");
         }});
-        systemUserModuleDTO.getModuleMenus().add(userModuleMenuDTO);
         userModuleDTOs.add(systemUserModuleDTO);
 
 
         // 慧眼模块
         SystemUserModuleDTO systemUserModuleDTO1 = new SystemUserModuleDTO();
         systemUserModuleDTO1.setId(new ObjectId().toString());
-        systemUserModuleDTO1.setModuleId(systemAccountDAO.findByModuleName(SystemNameConstant.HUIYAN_SYSTEM_NAME).getId());
+//        systemUserModuleDTO1.setModuleId(systemAccountDAO.findByModuleName(SystemNameConstant.HUIYAN_SYSTEM_NAME).getId());
         systemUserModuleDTO1.setEnabled(true);
         systemUserModuleDTO1.setStartTime(Calendar.getInstance().getTimeInMillis());
         systemUserModuleDTO1.setEndTime(Calendar.getInstance().getTimeInMillis() + 3600_000 * 24 * 365);
@@ -110,8 +110,8 @@ public class SystemAccountControllerTest extends JUnitBaseTest {
         menus.add("转化分析");
         menus.add("指定广告跟踪");
         menus.add("同类群组分析");
-        userModuleMenuDTO1.getMenus().addAll(menus);
-        systemUserModuleDTO1.getModuleMenus().add(userModuleMenuDTO1);
+//        userModuleMenuDTO1.getMenus().addAll(menus);
+        systemUserModuleDTO1.getMenus().addAll(menus);
         userModuleDTOs.add(systemUserModuleDTO1);
 
         systemUserDTO.setSystemUserModules(userModuleDTOs);

@@ -66,7 +66,7 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     SystemUserDTO findByUserId(String id);
 
-    boolean updateModuleMenus(String id, String moduleid, List<SystemMenuDTO> menus);
+    boolean updateModuleMenus(String id, String moduleid, UserModuleMenuDTO menus);
 
     boolean saveUserModule(String userid, SystemUserModuleDTO systemUserModuleDTO);
 
@@ -74,7 +74,7 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
 
     SystemUserModuleDTO getUserModuleByModuleId(String id, String moduleid);
 
-    boolean existsModule(String userid, String moduleId);
+    boolean existsModule(String userid, String moduleName);
 
     SystemUserModuleDTO getUserModuleById(String userid, String id);
 
