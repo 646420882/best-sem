@@ -101,4 +101,6 @@ public interface SystemUserService {
     BootStrapPagerInfo findUsersPageable(String companyName, String userName, Boolean accountStatus, int i, int pagesize, String order, boolean asc);
 
     boolean deleteUser(String userid);
+
+    boolean updateAccountToken(String userid, String accountid, String token);
 }

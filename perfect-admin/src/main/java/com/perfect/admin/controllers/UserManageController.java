@@ -2,6 +2,7 @@ package com.perfect.admin.controllers;
 
 import com.google.common.base.Strings;
 import com.perfect.admin.utils.JsonViews;
+import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
 import com.perfect.service.UserAccountService;
@@ -118,7 +119,7 @@ public class UserManageController {
     }
 
     @RequestMapping(value = "/users/{userid}/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView resetUserPassword(@PathVariable("userid") String userid, @RequestParam(value = "password", required = false, defaultValue = "Abcd1234") String password) {
+    public ModelAndView resetUserPassword(@PathVariable("userid") String userid, @RequestParam(value = "password", required = false, defaultValue = "123456") String password) {
         boolean success = systemUserService.updateUserPassword(userid, password);
 
         if (success) {
@@ -128,6 +129,34 @@ public class UserManageController {
 
     }
 
+//    @RequestMapping(value = "/users/{userid}/enable", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ModelAndView updateUserStatus(@PathVariable("userid") String userid, @RequestParam("enable") Boolean enable) {
+//        boolean success = systemUserService.updateAccount
+//    }
+
+    @RequestMapping(value = "/users/{userid}/modules/{modulename}/accounts/{accountid}/token/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView updateAccountToken(@PathVariable("userid") String userid,
+                                           @PathVariable("modulename") String modulename,
+                                           @PathVariable("accountid") String accountid,
+                                           @PathVariable("token") String token) {
+
+        if (modulename.equals(SystemNameConstant.HUIYAN_SYSTEM_NAME)) {
+            // 慧眼
+
+        } else if (modulename.equals(SystemNameConstant.SOUKE_SYSTEM_NAME)) {
+            // 搜客
+            boolean success = systemUserService.updateAccountToken(userid, accountid, token);
+            if (success) {
+                return JsonViews.generateSuccessNoData();
+            } else {
+                return JsonViews.generateFailedNoData();
+            }
+        } else {
+            return JsonViews.generate(-1, "无效系统名称!");
+        }
+
+
+    }
 
     @RequestMapping(value = "/users/{id}/time", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView updateAccountTime(@PathVariable("id") String id,

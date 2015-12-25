@@ -2,6 +2,7 @@ package com.perfect.db.mongodb.impl;
 
 import com.mongodb.WriteResult;
 import com.perfect.dao.account.SystemAccountDAO;
+import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
 import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemModuleDTO;
@@ -34,7 +35,7 @@ import static com.perfect.commons.constants.PasswordSalts.USER_SALT;
  * @author dolphineor
  */
 @Repository("systemAccountDAO")
-public class SystemAccountDAOImpl implements SystemAccountDAO {
+public class SystemAccountDAOImpl extends AbstractSysBaseDAOImpl<ModuleAccountInfoDTO, String> implements SystemAccountDAO {
 
     private final MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
 
@@ -339,6 +340,13 @@ public class SystemAccountDAOImpl implements SystemAccountDAO {
         return result.isUpdateOfExisting();
     }
 
+    @Override
+    public boolean updateAccountToken(String userid, String accountid, String token) {
+        WriteResult result = mongoTemplate.updateFirst(Query.query(Criteria.where("userId").is(userid).and(SYSTEM_ID).is(accountid)),
+                Update.update("btoken", token), getModuleAccountInfoEntityClass());
+        return result.isUpdateOfExisting();
+    }
+
 
     private SystemUserEntity getEntityFromDTO(SystemUserDTO dto) {
         return SystemUserUtils.retrieveEntityFromDTO(dto);
@@ -376,5 +384,15 @@ public class SystemAccountDAOImpl implements SystemAccountDAO {
         BeanUtils.copyProperties(entity, dto);
 
         return dto;
+    }
+
+    @Override
+    public Class<ModuleAccountInfoEntity> getEntityClass() {
+        return ModuleAccountInfoEntity.class;
+    }
+
+    @Override
+    public Class<ModuleAccountInfoDTO> getDTOClass() {
+        return ModuleAccountInfoDTO.class;
     }
 }

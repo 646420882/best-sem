@@ -1,5 +1,6 @@
 package com.perfect.dto.sys;
 
+import com.perfect.dto.BaseDTO;
 import com.perfect.dto.baidu.OfflineTimeDTO;
 import com.perfect.dto.baidu.OptTypeDTO;
 
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by yousheng on 15/12/15.
  */
-public class ModuleAccountInfoDTO {
+public class ModuleAccountInfoDTO extends BaseDTO {
 
     private String id;
 

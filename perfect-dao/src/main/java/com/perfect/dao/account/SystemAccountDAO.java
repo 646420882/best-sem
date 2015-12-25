@@ -187,4 +187,6 @@ public interface SystemAccountDAO extends MongoEntityConstants {
     default Class<ModuleAccountInfoEntity> getModuleAccountInfoEntityClass() {
         return ModuleAccountInfoEntity.class;
     }
+
+    boolean updateAccountToken(String userid, String accountid, String token);
 }

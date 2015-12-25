@@ -943,6 +943,11 @@ public class SystemUserServiceImpl implements SystemUserService {
         return systemUserDAO.delete(userid);
     }
 
+    @Override
+    public boolean updateAccountToken(String userid, String accountid, String token) {
+        return systemAccountDAO.updateAccountToken(userid, accountid, token);
+    }
+
     private long findUsersCount(String companyName, String userName, Boolean accountStatus) {
         return systemUserDAO.listCount(companyName, userName, accountStatus);
     }

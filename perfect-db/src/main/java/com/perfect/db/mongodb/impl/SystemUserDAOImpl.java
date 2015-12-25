@@ -242,7 +242,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
     public boolean updateAccountStatus(String id, Integer accountStatus) {
         WriteResult wr = getSysMongoTemplate().updateFirst(
                 Query.query(Criteria.where(SYSTEM_ID).is(id)),
-                Update.update("state", accountStatus),
+                Update.update("acstate", accountStatus),
                 getEntityClass());
 
         return wr.getN() == 1;
