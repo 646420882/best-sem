@@ -147,8 +147,8 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
                         .filter(o -> Objects.equals(SystemNameConstant.SOUKE_SYSTEM_NAME, o.getModuleName()))
                         .findFirst()
                         .ifPresent((systemUserModuleDTO -> {
-                    moduleAccountInfoDTOs.addAll(systemUserModuleDTO.getAccounts());
-                }));
+                            moduleAccountInfoDTOs.addAll(systemUserModuleDTO.getAccounts());
+                        }));
 
                 return moduleAccountInfoDTOs;
             } catch (NullPointerException e) {
@@ -161,8 +161,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public List<SystemUserDTO> getAllSysUserAccount() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        List<SystemUserEntity> userEntityList = mongoTemplate.find(
+        List<SystemUserEntity> userEntityList = getSysMongoTemplate().find(
                 Query.query(Criteria.where("access").is(2).and("acstate").is(1).and("state").is(1)), getEntityClass());
         return ObjectUtils.convertToList(userEntityList, getDTOClass());
     }
@@ -190,15 +189,13 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public boolean updatePwd(String userName, String pwd) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName)), Update.update("password", pwd), "sys_user");
+        WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(userName)), Update.update("password", pwd), "sys_user");
         return writeResult.isUpdateOfExisting();
     }
 
     @Override
     public List<SystemUserDTO> getAccount() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        return ObjectUtils.convert(mongoTemplate.find(Query.query(Criteria.where("state").is(0)), getEntityClass()), getDTOClass());
+        return ObjectUtils.convert(getSysMongoTemplate().find(Query.query(Criteria.where("state").is(0)), getEntityClass()), getDTOClass());
     }
 
     @Override
@@ -207,9 +204,8 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         if (Objects.isNull(systemModuleDTO))
             return false;
 
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Update update = Update.update("modules.accounts.$.state", status);
-        WriteResult writeResult = mongoTemplate.updateFirst(
+        WriteResult writeResult = getSysMongoTemplate().updateFirst(
                 Query.query(Criteria.where("userName").is(userName)
                         .and("modules.moduleId").is(systemModuleDTO.getId())
                         .and("modules.accounts._id").is(new ObjectId(moduleAccountId))),
@@ -221,26 +217,23 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public boolean updateBaiduRemarkName(String remarkName, String moduleAccountName) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Update update = Update.update("modules.accounts.$.baiduRemarkName", remarkName);
-        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("modules.accounts.bname").is(moduleAccountName)), update, "sys_user");
+        WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where("modules.accounts.bname").is(moduleAccountName)), update, "sys_user");
 
         return writeResult.isUpdateOfExisting();
     }
 
     @Override
     public boolean updateSysAccount(String userName, Long state) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         Update update = new Update();
         update.set("acstate", state);
-        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName)), update, "sys_user");
+        WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(userName)), update, "sys_user");
         return writeResult.isUpdateOfExisting();
     }
 
     @Override
     public List<SystemUserDTO> getAccountAll() {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        return ObjectUtils.convert(mongoTemplate.find(new Query(), getEntityClass()), getDTOClass());
+        return ObjectUtils.convert(getSysMongoTemplate().find(new Query(), getEntityClass()), getDTOClass());
     }
 
     /*@Override
@@ -289,8 +282,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public int updateAccountStruts(String userName) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
-        WriteResult writeResult = mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(userName)), Update.update("state", 1), "sys_user");
+        WriteResult writeResult = getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(userName)), Update.update("state", 1), "sys_user");
         int i = 0;
         if (writeResult.isUpdateOfExisting())
             i = 1;
@@ -299,7 +291,6 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
 
     @Override
     public void updateBaiduAccountInfo(BaiduAccountInfoDTO dto) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
         String currUser = AppContext.getUser();
         Update update = new Update();
         if (dto.getBudget() != null)
@@ -311,7 +302,7 @@ public class AccountManageDAOImpl extends AbstractUserBaseDAOImpl<SystemUserDTO,
         if (dto.getExcludeIp() != null)
             update.set("bdAccounts.$.exIp", dto.getExcludeIp());
 
-        mongoTemplate.updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(dto.getId())), update, getEntityClass());
+        getSysMongoTemplate().updateFirst(Query.query(Criteria.where("userName").is(currUser).and("bdAccounts._id").is(dto.getId())), update, getEntityClass());
     }
 
     @Override

@@ -3,9 +3,11 @@ package com.perfect.db.mongodb.base;
 import com.perfect.dto.BaseDTO;
 import com.perfect.utils.ObjectUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;

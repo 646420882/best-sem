@@ -2,28 +2,43 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
     <!-- MongoDB配置 -->
-    <mongo:mongo id="mongo" replica-set="${mongo.host}">
-        <mongo:options connections-per-host="20"
-                       threads-allowed-to-block-for-connection-multiplier="5"
-                       auto-connect-retry="true"
-                       slave-ok="true"/>
-    </mongo:mongo>
+    <!--<mongo:mongo id="mongo" replica-set="${mongo.host}">-->
+    <!--<mongo:options connections-per-host="20"-->
+    <!--threads-allowed-to-block-for-connection-multiplier="5"-->
+    <!--auto-connect-retry="true"-->
+    <!--slave-ok="true"/>-->
+    <!--</mongo:mongo>-->
 
-    <mongo:db-factory id="mongoDbFactory" dbname="sys" mongo-ref="mongo"/>
+    <!--<mongo:mongo-client host="${mongo.host}" port="27017" id="mongoclient"-->
+    <!--credentials="${mongo.username}:${mongo.password}@admin"/>-->
+
+    <!--<mongo:db-factory id="mongoDbFactory" uri="mongodb://${mongo.username}:${mongo.password}@${mongo.host}/admin"/>-->
     <mongo:mapping-converter id="converter"/>
 
-    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-        <property name="writeConcern">
-            <util:constant static-field="com.mongodb.WriteConcern.FSYNC_SAFE"/>
-        </property>
-        <property name="writeResultChecking">
-            <util:constant static-field="org.springframework.data.mongodb.core.WriteResultChecking.EXCEPTION"/>
-        </property>
+    <mongo:db-factory id="mongoDbFactory" dbname="sys" authentication-dbname="admin" username="${mongo.username}"
+                      password="${mongo.password}"
+                      host="${mongo.host}"
+                      port="27017"/>
+
+    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+    <!--<constructor-arg name="mongo" ref="mongo"/>-->
+    <!--<constructor-arg name="databaseName" value="admin"/>-->
+    <!--<constructor-arg name="userCredentials" ref="userCredentials"/>-->
+    <!--<property name="writeConcern">-->
+    <!--<util:constant static-field="com.mongodb.WriteConcern.FSYNC_SAFE"/>-->
+    <!--</property>-->
+    <!--<property name="writeResultChecking">-->
+    <!--<util:constant static-field="org.springframework.data.mongodb.core.WriteResultChecking.EXCEPTION"/>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+
+    <bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
+        <constructor-arg name="username" value="${mongo.username}"/>
+        <constructor-arg name="password" value="${mongo.password}"/>
     </bean>
 
     <bean id="mongoSysTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">

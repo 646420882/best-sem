@@ -10,7 +10,6 @@ import com.perfect.core.AppContext;
 import com.perfect.dao.account.SystemAccountDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.sys.*;
 import com.perfect.entity.adgroup.AdgroupEntity;
 import com.perfect.entity.campaign.CampaignEntity;
@@ -96,7 +95,6 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
     @Override
     public void insertAccountInfo(String userName, ModuleAccountInfoDTO baiduAccountInfoDTO) {
-        MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
 
         // 获取moduleId
         SystemModuleDTO systemModuleDTO = findSystemModuleByModuleName(userName, SystemNameConstant.SOUKE_SYSTEM_NAME);
@@ -126,7 +124,7 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         ModuleAccountInfoEntity moduleAccountInfoEntity = ObjectUtils.convert(baiduAccountInfoDTO, ModuleAccountInfoEntity.class);
         Update update = new Update();
         update.addToSet("modules.$.accounts", moduleAccountInfoEntity);
-        mongoTemplate.upsert(Query.query(Criteria.where("userName").is(userName).and("modules.moduleId").is(moduleId)), update, getEntityClass());
+        getSysMongoTemplate().upsert(Query.query(Criteria.where("userName").is(userName).and("modules.moduleId").is(moduleId)), update, getEntityClass());
     }
 
     @Override

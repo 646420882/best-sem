@@ -3,7 +3,6 @@ package com.perfect.db.mongodb.impl;
 import com.mongodb.WriteResult;
 import com.perfect.dao.account.SystemAccountDAO;
 import com.perfect.db.mongodb.base.AbstractSysBaseDAOImpl;
-import com.perfect.db.mongodb.base.BaseMongoTemplate;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemModuleDTO;
 import com.perfect.dto.sys.SystemUserDTO;
@@ -22,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +37,8 @@ import static com.perfect.commons.constants.PasswordSalts.USER_SALT;
 @Repository("systemAccountDAO")
 public class SystemAccountDAOImpl extends AbstractSysBaseDAOImpl<ModuleAccountInfoDTO, String> implements SystemAccountDAO {
 
-    private final MongoTemplate mongoTemplate = BaseMongoTemplate.getSysMongo();
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     private final MD5.Builder md5Builder = new MD5.Builder();
 
@@ -360,7 +361,7 @@ public class SystemAccountDAOImpl extends AbstractSysBaseDAOImpl<ModuleAccountIn
         for (SystemUserModuleEntity systemUserModule : entity.getSystemUserModules()) {
             SystemUserModuleDTO systemUserModuleDTO = new SystemUserModuleDTO();
             BeanUtils.copyProperties(systemUserModule, systemUserModuleDTO);
-            systemUserModuleDTO.setModuleUrl(findByModuleName(systemUserModule.getModuleName()).getModuleUrl());
+//            systemUserModuleDTO.setModuleUrl(findByModuleName(systemUserModule.getModuleName()).getModuleUrl());
 
             List<ModuleAccountInfoDTO> moduleAccountDTOs = findByUserIdAndModuleId(entity.getId(), systemUserModule.getId());
             systemUserModuleDTO.setAccounts(moduleAccountDTOs);

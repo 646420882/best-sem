@@ -1,6 +1,8 @@
 package com.perfect.db.mongodb.base;
 
+import com.google.common.collect.Lists;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.perfect.core.AppContext;
 import com.perfect.db.mongodb.convert.BigDecimalToDoubleConverter;
@@ -35,14 +37,28 @@ public class BaseMongoTemplate {
 
     private static volatile MongoClient mongoClient;
 
+    private static final String username;
+
+    private static final String password;
+
+    private static final String authdb = "admin";
+
     static {
+        InputStream is = BaseMongoTemplate.class.getResourceAsStream("/mongodb.properties");
+        Properties props = new Properties();
+        try {
+            props.load(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        username = props.getProperty("mongo.username");
+        password = props.getProperty("mongo.password");
+
         if (mongoClient == null) {
             synchronized (BaseMongoTemplate.class) {
                 if (mongoClient == null) {
-                    InputStream is = BaseMongoTemplate.class.getResourceAsStream("/mongodb.properties");
-                    Properties props = new Properties();
                     try {
-                        props.load(is);
                         String hosts = props.getProperty("mongo.host");
                         String[] hostArray = hosts.split(",");
                         List<ServerAddress> serverAddresses = new ArrayList<>();
@@ -56,8 +72,8 @@ public class BaseMongoTemplate {
                             }
                             serverAddresses.add(address);
                         }
-
-                        mongoClient = new MongoClient(serverAddresses);
+                        mongoClient = new MongoClient(serverAddresses,
+                                Lists.newArrayList(MongoCredential.createCredential(username, authdb, password.toCharArray())));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -91,9 +107,9 @@ public class BaseMongoTemplate {
         });
     }
 
-    public static MongoTemplate getSysMongo() {
-        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
-    }
+//    public static MongoTemplate getSysMongo() {
+//        return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getSysDBName());
+//    }
 
     public static MongoTemplate getUserMongo() {
         return BaseMongoTemplate.getMongoTemplate(DBNameUtils.getUserDBName(AppContext.getUser(), null));
