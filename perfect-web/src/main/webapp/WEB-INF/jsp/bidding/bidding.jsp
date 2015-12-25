@@ -31,6 +31,7 @@
             white-space: normal !important;
             height: 30px;
             line-height: inherit;
+            border:none ;
         }
 
     </style>

@@ -39,10 +39,18 @@
 
 }
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-    border: 1px solid #ffffff;
+    /*border-bottom: 1px solid #d4d4d4;*/
+    /*border-right: 1px solid #d4d4d4;*/
+    /*border-left: 1px solid #d4d4d4;*/
+    border: none;
     font-weight: bold;
     color: #000000;
-    background: none;
+    background: #eeeeee;
+}
+.ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr{
+    border-left: 1px solid #eeeeee;
+    border-bottom: 1px solid #d4d4d4;
+    border-top: 1px solid #d4d4d4;
 }
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
  background: #c3def9;

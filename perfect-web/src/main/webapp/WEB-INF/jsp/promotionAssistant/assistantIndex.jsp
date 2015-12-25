@@ -1154,7 +1154,7 @@
                                                     <li>
                                                         <span>账户预算：<b id="accountBudget">不限定</b><a href="#"
                                                                                                    class="showbox5">修改</a></span>
-                                                        <span>到达预算：<b id="reachBudget" class="blue">-</b></span>
+                                                        <span class="hide">到达预算：<b id="reachBudget" class="blue">-</b></span>
                                                         <span>IP排除：<a href="#" class="showbox6">设置</a></span>
                                                     </li>
                                                 </ul>
