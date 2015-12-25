@@ -38,6 +38,7 @@
                 <redis.password>3edcvfr4</redis.password>
 
                 <mongo.host>114.112.98.66:27017</mongo.host>
+                <mongo.port>27017</mongo.port>
                 <mongo.username>admin</mongo.username>
                 <mongo.password>NN7sHsHkS2q7</mongo.password>
 
@@ -57,6 +58,24 @@
                 <mongo.host>114.112.98.68:27017,114.112.98.67:27017</mongo.host>
                 <mongo.username>perfect</mongo.username>
                 <mongo.password>perfect</mongo.password>
+
+                <es.host>114.112.98.68:30101,114.112.98.68:30102,114.112.98.67:30103,114.112.98.67:30104</es.host>
+                <es.cluster>huiyan_prod</es.cluster>
+            </properties>
+        </profile>
+        <profile>
+            <id>tmp_prod</id>
+            <properties>
+                <env>tmp_prod</env>
+
+                <redis.host>114.112.98.68</redis.host>
+                <redis.port>16379</redis.port>
+                <redis.password>3edcxsw2</redis.password>
+
+                <mongo.host>114.112.98.66:27017</mongo.host>
+                <mongo.port>27017</mongo.port>
+                <mongo.username>admin</mongo.username>
+                <mongo.password>NN7sHsHkS2q7</mongo.password>
 
                 <es.host>114.112.98.68:30101,114.112.98.68:30102,114.112.98.67:30103,114.112.98.67:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>

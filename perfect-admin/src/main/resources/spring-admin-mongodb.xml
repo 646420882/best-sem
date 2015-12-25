@@ -28,10 +28,6 @@
         </property>
     </bean>
 
-    <bean id="mongoSysTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-    </bean>
-
     <bean id="gridFsTemplate"
           class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
         <constructor-arg ref="mongoDbFactory"/>
