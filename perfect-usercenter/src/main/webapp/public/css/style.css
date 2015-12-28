@@ -1,13 +1,11 @@
 /*导航*/
-body{
-    font-family: "微软雅黑";
-}
 .hide {
     display: none;
 }
 
 .container-fluid {
     padding: 0px;
+    font-family: "微软雅黑";
 }
 
 .navbar {
@@ -476,7 +474,4 @@ body{
     font-size: 12px;
     display: inline-block;
     width: 68%;
-}
-.bootstrap-table .table{
-    border-bottom: 0px;
 }
