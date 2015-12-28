@@ -109,4 +109,6 @@ public interface SystemUserDAO extends HeyCrudRepository<SystemUserDTO, String> 
     String getUserEmail(String username);
 
     long listCount(String companyName, String userName, Boolean accountStatus);
+
+    List<SystemUserDTO> findRegexUser(Map<String, Object> params, int skip, int limit, String sort, boolean asc);
 }

@@ -43,7 +43,8 @@ public class UserManageController {
                                        @RequestParam(value = "limit", required = false, defaultValue = "20") int pagesize,
                                        @RequestParam(value = "sort", required = false, defaultValue = "ctime") String sort,
                                        @RequestParam(value = "order", required = false, defaultValue = "false") String oder) {
-        boolean asc = oder.equals("asc");
+        boolean asc = oder.equals("desc");
+
         BootStrapPagerInfo bootStrapPagerInfo = systemUserService.findUsersPageable(companyName, userName, accountStatus, page, pagesize, sort, asc);
 
 
@@ -83,24 +84,6 @@ public class UserManageController {
         return JsonViews.generate(JsonResultMaps.successMap(insightWebsiteDTOs));
     }
 
-    /**
-     * 修改慧眼token
-     *
-     * @param huiyanId
-     * @param token
-     * @return
-     */
-    @RequestMapping(value = "/updateHuiYan/{huiyanId}/token/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView updateHuiYan(@PathVariable("huiyanId") String huiyanId,
-                                     @PathVariable("token") String token) {
-
-        String huiyanToken = userAccountService.updateHuiyanToken(huiyanId, token);
-        if (huiyanToken == null) {
-            return JsonViews.generate(-1);
-        }
-
-        return JsonViews.generate(JsonResultMaps.successMap(huiyanToken));
-    }
 
     /**
      * 获取用户ID
@@ -180,7 +163,12 @@ public class UserManageController {
 
         if (modulename.equals(SystemNameConstant.HUIYAN_SYSTEM_NAME)) {
             // 慧眼
-
+            String huiyanToken = userAccountService.updateHuiyanToken(accountid, token);
+            if (huiyanToken == null) {
+                return JsonViews.generateFailedNoData();
+            } else {
+                return JsonViews.generateSuccessNoData();
+            }
         } else if (modulename.equals(SystemNameConstant.SOUKE_SYSTEM_NAME)) {
             // 搜客
             boolean success = systemUserService.updateAccountToken(userid, accountid, token);
@@ -192,9 +180,6 @@ public class UserManageController {
         } else {
             return JsonViews.generate(-1, "无效系统名称!");
         }
-
-
-        return JsonViews.generateFailedNoData();
     }
 
     @RequestMapping(value = "/users/{id}/time", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -327,8 +327,8 @@ public class SystemAccountDAOImpl extends AbstractSysBaseDAOImpl<ModuleAccountIn
         if (Objects.nonNull(moduleAccount.getUserStat())) {
             update.set("us", moduleAccount.getUserStat());
         }
-        if (Objects.nonNull(moduleAccount.isDynamicCreative())) {
-            update.set("dcp", moduleAccount.isDynamicCreative());
+        if (Objects.nonNull(moduleAccount.getDynamicCreativeParam())) {
+            update.set("dcp", moduleAccount.getDynamicCreativeParam());
         }
         if (Objects.nonNull(moduleAccount.getOpt())) {
             update.set("o", moduleAccount.getOpt());

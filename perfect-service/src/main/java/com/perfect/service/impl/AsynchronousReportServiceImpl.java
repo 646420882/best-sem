@@ -30,10 +30,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
@@ -85,7 +82,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
             systemUser.getSystemUserModules().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
                 for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                    if (entity.getState() == 0) {
+                    if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
                         getSkipPull(systemUser, entity, dateStr + "--用户");
                         continue;
                     }
@@ -141,7 +138,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0) {
+                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--计划");
                                 continue;
                             }
@@ -193,7 +190,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0) {
+                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--单元");
                                 continue;
                             }
@@ -247,7 +244,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0) {
+                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--创意");
                                 continue;
                             }
@@ -300,7 +297,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0) {
+                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--关键字");
                                 continue;
                             }
@@ -354,7 +351,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0) {
+                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--关键字");
                                 continue;
                             }

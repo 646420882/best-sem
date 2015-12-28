@@ -608,19 +608,53 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
         Query query = new Query();
 
         if (!Strings.isNullOrEmpty(companyName)) {
-            query.addCriteria(Criteria.where("companyName").is("*" + companyName + "*"));
+            query.addCriteria(Criteria.where("companyName").is(".*" + companyName + ".*"));
         }
 
         if (!Strings.isNullOrEmpty(userName)) {
-            query.addCriteria(Criteria.where("userName").regex("*" + userName + "*"));
+            query.addCriteria(Criteria.where("userName").regex(".*" + userName + ".*"));
         }
 
         if (accountStatus != null) {
-            query.addCriteria(Criteria.where("acstate").is(accountStatus));
+            query.addCriteria(Criteria.where("acstate").is(accountStatus ? 1 : 0));
         }
 
 
         return getSysMongoTemplate().count(query, getEntityClass());
+    }
+
+    @Override
+    public List<SystemUserDTO> findRegexUser(Map<String, Object> params, int skip, int limit, String sort, boolean asc) {
+        Query query = new Query();
+        Criteria criteria = null;
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            if (criteria == null) {
+                criteria = new Criteria(param.getKey());
+                if (param.getValue() instanceof Boolean) {
+                    criteria.is(((Boolean) param.getValue()) ? 1 : 0);
+                } else {
+                    criteria.regex(".*" + param.getValue() + ".*");
+                }
+                continue;
+            }
+            if (param.getValue() instanceof Boolean) {
+                criteria.and(param.getKey()).is(((Boolean) param.getValue()) ? 1 : 0);
+            } else {
+                criteria.and(param.getKey()).regex(".*" + param.getValue() + ".*");
+            }
+        }
+
+        if (criteria == null) {
+            query.skip(skip).limit(limit);
+        } else {
+            query.addCriteria(criteria).skip(skip).limit(limit);
+        }
+
+        if (sort != null) {
+            query.with(new Sort((asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
+        }
+
+        return convert(getSysMongoTemplate().find(query, getEntityClass()));
     }
 
     private boolean accountExistsByAccountName(String userid, String baiduUserName) {

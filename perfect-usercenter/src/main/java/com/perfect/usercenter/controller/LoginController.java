@@ -130,7 +130,6 @@ public class LoginController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return;
             }
         } finally {
             if (jedis != null)

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
+import com.perfect.autosdk.common.OptType;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
@@ -20,6 +21,8 @@ import com.perfect.dao.sys.SystemLogDAO;
 import com.perfect.dao.sys.SystemModuleDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.adgroup.AdgroupDTO;
+import com.perfect.dto.baidu.OfflineTimeDTO;
+import com.perfect.dto.baidu.OptTypeDTO;
 import com.perfect.dto.campaign.CampaignDTO;
 import com.perfect.dto.creative.CreativeDTO;
 import com.perfect.dto.keyword.KeywordDTO;
@@ -692,7 +695,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         if (paramMap.isEmpty()) {
             return systemUserDAO.findAll(skip, limit, order, asc);
         }
-        return systemUserDAO.find(paramMap, skip, limit, order, asc);
+        return systemUserDAO.findRegexUser(paramMap, skip, limit, order, asc);
     }
 
     @Override
@@ -954,7 +957,48 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public boolean updateAccountToken(String userid, String moduleAccountObjectId, String token) {
-        return systemAccountDAO.updateAccountToken(userid, moduleAccountObjectId, token);
+        boolean retoken;
+        ModuleAccountInfoDTO moduleAccountById = systemAccountDAO.findModuleAccountById(moduleAccountObjectId);
+        CommonService commonService = BaiduServiceSupport.getCommonService(moduleAccountById.getBaiduUserName(), moduleAccountById.getBaiduPassword(), moduleAccountById.getToken());
+        BaiduApiService baiduApiService = new BaiduApiService(commonService);
+        if (baiduApiService != null) {
+            AccountInfoType accountInfo = baiduApiService.getAccountInfo();
+            if (accountInfo != null) {
+                ModuleAccountInfoDTO moduleAccountInfoDTO = new ModuleAccountInfoDTO();
+                moduleAccountInfoDTO.setId(moduleAccountObjectId);
+                moduleAccountInfoDTO.setBaiduAccountId(accountInfo.getUserid());
+                moduleAccountInfoDTO.setBestRegDomain(accountInfo.getRegDomain());
+                moduleAccountInfoDTO.setBudget(accountInfo.getBudget());
+                moduleAccountInfoDTO.setDynamicCreative(accountInfo.getIsDynamicCreative());
+                moduleAccountInfoDTO.setExcludeIp(accountInfo.getExcludeIp());
+                moduleAccountInfoDTO.setBalance(accountInfo.getBalance());
+                moduleAccountInfoDTO.setCost(accountInfo.getCost());
+                moduleAccountInfoDTO.setPayment(accountInfo.getPayment());
+                moduleAccountInfoDTO.setBudgetType(accountInfo.getBudgetType());
+                moduleAccountInfoDTO.setRegionTarget(accountInfo.getRegionTarget());
+                moduleAccountInfoDTO.setOpenDomains(accountInfo.getOpenDomains());
+                moduleAccountInfoDTO.setRegDomain(accountInfo.getRegDomain());
+                List<OfflineTimeDTO> convert = ObjectUtils.convert(accountInfo.getBudgetOfflineTime(), OfflineTimeDTO.class);
+                moduleAccountInfoDTO.setBudgetOfflineTime(convert);
+                moduleAccountInfoDTO.setWeeklyBudget(accountInfo.getWeeklyBudget());
+                moduleAccountInfoDTO.setUserStat(accountInfo.getUserStat());
+                moduleAccountInfoDTO.setDynamicCreativeParam(accountInfo.getDynamicCreativeParam());
+                OptTypeDTO optTypeDTO = ObjectUtils.convert(accountInfo.getOpt(), OptTypeDTO.class);
+                moduleAccountInfoDTO.setOpt(optTypeDTO);
+                boolean accountFlag = systemAccountDAO.updateModuleAccount(moduleAccountInfoDTO);
+                boolean userflag = systemAccountDAO.updateAccountToken(userid, moduleAccountObjectId, token);
+                if(accountFlag && userflag){
+                    retoken = true;
+                }else{
+                    retoken = false;
+                }
+            } else {
+                retoken = false;
+            }
+        } else {
+            retoken = false;
+        }
+        return retoken;
     }
 
     private long findUsersCount(String companyName, String userName, Boolean accountStatus) {

@@ -80,6 +80,7 @@ function setFormatter(item, row) {
     return [content].join('')
 }
 
+
 var getAdminInfo = function () {
     $('#userAdmin').bootstrapTable({
         locale: 'zh-CN',
@@ -93,12 +94,21 @@ var getAdminInfo = function () {
         paginationPreText: "上一页",
         paginationNextText: "下一页",
         showHeader: true,
-        sortName: "username",
+        sortName: "ctime",
         sidePagination: 'server',
         queryParams: function (params) {
+            if ($("#selectInfo option:selected").val() != 0) {
+                params["account"] = $("#selectInfo option:selected").val();
+            }
+            if ($("#userTable input[placeholder='搜索']").val() != "") {
+                params["user"] = $("#userTable input[placeholder='搜索']").val()
+            }
             return params;
         }
     });
+}
+var getAdminInfo2 = function () {
+    $("#userAdmin").bootstrapTable("refresh");
 }
 
 

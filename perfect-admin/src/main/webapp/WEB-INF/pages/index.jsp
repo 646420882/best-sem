@@ -20,10 +20,10 @@
                     <label class="control-label fl"> 账户状态：</label>
 
                     <div class="fl select">
-                        <select>
-                            <option>所有账户</option>
-                            <option>启用</option>
-                            <option>禁用</option>
+                        <select id="selectInfo" onchange="getAdminInfo2()">
+                            <option value="0">所有账户</option>
+                            <option value="true">启用</option>
+                            <option value="false">禁用</option>
                         </select>
                     </div>
 

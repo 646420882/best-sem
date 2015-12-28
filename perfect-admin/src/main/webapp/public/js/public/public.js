@@ -355,22 +355,23 @@ $(function () {
                                 alert("token修改成功");
                                 window.location.reload();
                             } else {
-                                alert("token修改失败");
+                                alert("token修改失败,请查看账号密码和token是否正确");
+                                window.location.reload();
                             }
                         }
                     });
                 } else {
                     $.ajax({
-                        url: '/updateHuiYan/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
+                        url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
                         type: 'post',
                         dataType: 'json',
                         success: function (user) {
-                            console.log(user);
                             if (user.code == 0) {
                                 alert("token修改成功");
                                 window.location.reload();
                             } else {
-                                alert("token修改失败");
+                                alert("token修改失败,请查看账号密码和token是否正确");
+                                window.location.reload();
                             }
                         }
                     });

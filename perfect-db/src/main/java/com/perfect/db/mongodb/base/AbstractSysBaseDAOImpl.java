@@ -106,7 +106,7 @@ public abstract class AbstractSysBaseDAOImpl<T extends BaseDTO, ID extends Seria
             query.with(new Sort((asc) ? Sort.Direction.ASC : Sort.Direction.DESC, sort));
         }
 
-        return convert(getMongoTemplate().find(query, getEntityClass()));
+        return convert(getSysMongoTemplate().find(query, getEntityClass()));
     }
 
 }
