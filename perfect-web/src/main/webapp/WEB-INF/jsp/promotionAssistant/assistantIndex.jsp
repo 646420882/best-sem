@@ -390,7 +390,7 @@
                                                             onclick="reBakClick();">还原</b></a></li>
                                                     <li><a href="javascript:void(0)" class="searchwordReport"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
                                                     </li>
                                                     <li><a onclick="timing.foRShow('creative',this)" href="#"><span
                                                             class="zs_top"><img
@@ -829,7 +829,7 @@
                                                             onclick="agreBakClick()">还原</b></a></li>
                                                     <li><a href="javascript:void(0)" class="searchwordReport"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
                                                     </li>
                                                     <li><a onclick="timing.foRShow('adgroup',this)" href="#"><span
                                                             class="zs_top"><img
@@ -969,7 +969,7 @@
                                                             src="../public/img/zs_function9.png"></span><b>还原</b></a>
                                                     </li>
                                                     <li><a href="#" class="searchwordReport"><span class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
                                                     </li>
                                                     <li><a onclick="timing.foRShow('campaign',this)" href="#"><span
                                                             class="zs_top"><img

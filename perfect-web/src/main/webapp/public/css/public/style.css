@@ -4772,3 +4772,7 @@ input[type=checkbox]:focus {
     max-height:734px;
     overflow-y: auto;
 }
+
+.search_mid  table .list2_top td, th{
+    color:#333333;
+}
