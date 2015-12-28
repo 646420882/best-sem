@@ -6,9 +6,7 @@ import com.perfect.service.MaterialsScheduledService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -38,29 +36,54 @@ public class MaterialsScheduledController {
     }
 
 
-    @RequestMapping(value = "/schedule/upload", method = POST, produces = "application/json")
-    public ModelAndView configureScheduler(@RequestParam int level,
-                                           @RequestParam(value = "content") String[] ids,
-                                           @RequestParam(value = "cron") String cronExpression) {
+    @RequestMapping(value = "/schedule/upload/{level}/{cron}", method = POST, produces = "application/json")
+    public ModelAndView configureScheduler(@PathVariable String level,
+                                           @PathVariable(value = "cron") String cronExpression,
+                                           @RequestBody String[] ids) {
         AbstractView jsonView = new MappingJackson2JsonView();
         Map<String, Object> attrMap = Maps.newHashMap();
 
-        synchronized (this) {
-            if (materialsScheduledService.isExists(MaterialsJobEnum.UPLOAD_MATERIALS.value(), level, ids)) {
-                attrMap.put("status", "failed");
-
-                jsonView.setAttributesMap(attrMap);
-                return new ModelAndView(jsonView);
-            } else {
-                materialsScheduledService.configureScheduler(MaterialsJobEnum.UPLOAD_MATERIALS.value(), level, ids, cronExpression);
-                attrMap.put("status", "success");
-
-                jsonView.setAttributesMap(attrMap);
-                return new ModelAndView(jsonView);
+        int jobLevel = 0;
+        switch (level) {
+            case "campaign": {
+                jobLevel = MaterialsJobEnum.CAMPAIGN.value();
+                break;
             }
+            case "adgroup": {
+                jobLevel = MaterialsJobEnum.ADGROUP.value();
+                break;
+            }
+            case "keyword": {
+                jobLevel = MaterialsJobEnum.KEYWORD.value();
+                break;
+            }
+            case "creative": {
+                jobLevel = MaterialsJobEnum.CREATIVE.value();
+                break;
+            }
+            default:
+                break;
+        }
+
+        if (jobLevel == 0) {
+            attrMap.put("status", "不合法的物料层级");
+            jsonView.setAttributesMap(attrMap);
+            return new ModelAndView(jsonView);
+        }
+
+        if (materialsScheduledService.isExists(MaterialsJobEnum.UPLOAD_MATERIALS.value(), jobLevel, ids)) {
+            attrMap.put("status", "任务已经存在");
+            jsonView.setAttributesMap(attrMap);
+            return new ModelAndView(jsonView);
+        } else {
+            materialsScheduledService.configureScheduler(MaterialsJobEnum.UPLOAD_MATERIALS.value(), jobLevel, ids, cronExpression);
+            attrMap.put("status", "ok");
+            jsonView.setAttributesMap(attrMap);
+            return new ModelAndView(jsonView);
         }
     }
 
+    // TODO 物料定时暂停
     @RequestMapping(value = "/schedule/pause", method = POST, produces = "application/json")
     public ModelAndView pause(@RequestParam(value = "cron") String cronExpression) {
         AbstractView jsonView = new MappingJackson2JsonView();
