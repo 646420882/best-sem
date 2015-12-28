@@ -11,7 +11,6 @@ var slog = {
                 search: true,
                 smartDisplay: false,
                 pageSize: 20,
-                height:800,
                 //showColumns:true,
                 searchAlign: 'left',
                 //sortName:"ip",

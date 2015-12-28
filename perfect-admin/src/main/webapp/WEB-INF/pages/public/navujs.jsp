@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;" language="java" %>
+<link rel="icon" href="/public/img/favicon.ico" mce_href="/public/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/public/img/favicon.ico" mce_href="/public/img/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.css">

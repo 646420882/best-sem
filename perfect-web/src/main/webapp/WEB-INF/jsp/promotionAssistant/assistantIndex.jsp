@@ -390,7 +390,7 @@
                                                             onclick="reBakClick();">还原</b></a></li>
                                                     <li><a href="javascript:void(0)" class="searchwordReport"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
                                                     </li>
                                                     <li><a onclick="timing.foRShow('creative',this)" href="#"><span
                                                             class="zs_top"><img
@@ -829,7 +829,7 @@
                                                             onclick="agreBakClick()">还原</b></a></li>
                                                     <li><a href="javascript:void(0)" class="searchwordReport"><span
                                                             class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
                                                     </li>
                                                     <li><a onclick="timing.foRShow('adgroup',this)" href="#"><span
                                                             class="zs_top"><img
@@ -969,7 +969,7 @@
                                                             src="../public/img/zs_function9.png"></span><b>还原</b></a>
                                                     </li>
                                                     <li><a href="#" class="searchwordReport"><span class="zs_top"><img
-                                                            src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
+                                                            src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
                                                     </li>
                                                     <li><a onclick="timing.foRShow('campaign',this)" href="#"><span
                                                             class="zs_top"><img
@@ -1140,8 +1140,8 @@
                                                     <span><b>baidu-bjtthunbohui2134115</b></span>
                                                     <%--            <span><a href="#">还原账户</a><input type="checkbox" checked="checkde"/>验证账户</span>--%>
                                                 </div>
-                                                <div class="fr"><input type="image" src="../public/img/shuaxin.png">
-                                                </div>
+                                            <%--    <div class="fr"><input type="image" src="../public/img/shuaxin.png">
+                                                </div>--%>
                                             </div>
                                             <div class="zh_list02 over">
                                                 <ul>
@@ -1149,7 +1149,7 @@
                                                         <span>账户余额：<b id="balance" class="blue">￥38678.1</b></span>
                                                         <span>昨日消费：<b id="cost" class="blue">暂无数据</b></span>
                                                         <span>消费升降：<b id="costStatus" class="blue">暂无数据</b></span>
-                                                        <span>动态创意:<a href="#" class="showbox7">开启</a></span>
+                                                       <%-- <span>动态创意:<a href="#" class="showbox7">开启</a></span>--%>
                                                     </li>
                                                     <li>
                                                         <span>账户预算：<b id="accountBudget">不限定</b><a href="#"

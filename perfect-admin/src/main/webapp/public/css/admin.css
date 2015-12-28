@@ -93,6 +93,7 @@
     background: #fafafa;
     width: 100%;
     border: 1px solid #e3e3e3;
+    z-index: 10;
 }
 #userLookUpWrap table td,#userLookUpWrap table th{
     vertical-align: middle;
@@ -189,4 +190,7 @@
 }
 .systemWrap .firstClass li{
     line-height: 34px;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
+    z-index:0;
 }

@@ -4757,7 +4757,7 @@ input[type=checkbox]:focus {
 
 .help_icon img {
     float: left;
-    margin: 5px 20px 0 0;
+    margin: 2px 20px 0 0;
 }
 
 .help_text {
@@ -4771,4 +4771,8 @@ input[type=checkbox]:focus {
 .ztree{
     max-height:734px;
     overflow-y: auto;
+}
+
+.search_mid  table .list2_top td, th{
+    color:#333333;
 }

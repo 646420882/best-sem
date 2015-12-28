@@ -9,29 +9,34 @@ $(function () {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(1) ").addClass("current");
+            document.title='百思-用户管理';
         })
     } else if (href == "/roles") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(2) ").addClass("current");
-        })
+        });
+        document.title='百思-角色管理';
     }
     else if (href == "/system") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(3) ").addClass("current");
-        })
+        });
+        document.title='百思-系统模块';
     }
     else if (href == "/menus") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(4) ").addClass("current");
-        })
+        });
+        document.title='百思-模块权限';
     }
     else if (href == "/logs") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(5) ").addClass("current");
+            document.title='百思-日志管理';
         })
     }
     //表格公用

@@ -22,13 +22,13 @@
                 <li>
                     <div class="user_logo fl">
                         <div class="user_logo1">
-                            <div class="user_img fl over">
+                        <%--    <div class="user_img fl over">
                             <span id="head_click"><img id="user_img"
                                                        src="/account/getImg"></span>
-                            </div>
+                            </div>--%>
                             <div class="user_text fl">
                                 <div class="user_top over">
-                                    <div class="fl"><b id="time"></b><a
+                                    <div class="fl"><b id="time"></b><span class="glyphicon glyphicon-user" aria-hidden="true"></span><a
                                             href="http://localhost:8088/toUserCenter?userToken=${SEM_USER_TOKEN}"><span>${currSystemUserName}</span></a>
                                     </div>
                                     <input type="image" onclick="downloadUser()"

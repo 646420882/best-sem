@@ -342,6 +342,9 @@ table tr, table tr td {
     float: left;
     margin: 4px 0 0 5px;
 }
+.user_top .glyphicon-user{
+    margin:0 2px;
+}
 .user_name {
     color: #777777;
     height: 24px;
