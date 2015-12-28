@@ -468,7 +468,7 @@
     padding: 0 10px 0 0;
 }
 .account_add li,.account_change li{
-    height: 50px;
+    height: 45px;
 }
 .account_add input,.account_change input{
     font-size: 12px;

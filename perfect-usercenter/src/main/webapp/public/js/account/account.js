@@ -185,7 +185,6 @@ window.operateEvents = {
     },
     'click .disable': function (e, value, row, index) {
         var platform = row.platform;
-
         if (platform == "百思慧眼") {
             var bindingtext = $(this);
             if ($(this).html() == "禁用") {
@@ -195,7 +194,7 @@ window.operateEvents = {
                 $("#modelboxBottom").click(function () {
                     $.ajax({
                         url: "/enableOrPause",
-                        type: "post",
+                         type: "post",
                         data: {
                             uid: row.id,
                             enable: true
@@ -339,6 +338,8 @@ window.operateEvents = {
                     var acount_html = "<input type='password' class='form-control' value='" + that_html + "'> "
                 } else if (index == 3) {
                     var that_html = "百思慧眼";
+                    var acount_html = "<input type='text'  class='form-control' readonly value='" + that_html + "'> "
+                }else if(index==2){
                     var acount_html = "<input type='text'  class='form-control' readonly value='" + that_html + "'> "
                 }
                 else {
@@ -510,18 +511,17 @@ $(function () {
 $(function () {
     $("#SecendTablebutton").click(function () {
         var acountContent = "<ul class='account_add'>" +
-            "<li>URL地址：<input class='form-control ' id='url' type='text'><b style='color:red;'>  *</b></li>" +
-            "<li>网站名称：<input class='form-control ' id='urlname' type='text'><b style='color:red;'>  *</b></li>" +
+            "<li >URL地址：<input class='form-control ' id='url' type='text'><span style='color: red;position: absolute;top: 20px;right: 10px' class='register_star'>*</span></li>" +
+            "<li>网站名称：<input class='form-control ' id='urlname' type='text'><span style='color: red;position: absolute;top: 70px;right: 10px' class='register_star'>*</span></li>" +
             "<li>关联账户名：<input class='form-control ' id='buserName' type='text'></li>" +
-            "<li>账户密码：<input class='form-control ' id='bpasswd' type='text'></li>" +
+            "<li>账户密码：<input class='form-control ' id='bpasswd' type='password'></li>" +
             "<li>备注名：<input class='form-control ' id='rname' type='text'></li>" +
             "<li class='hide'>账户所属平台：<input class='form-control ' readonly value='百思慧眼' type='text'></li>" +
-            "<li>可输入如下4种域名形式 <p/>1.主域名（如：www.baidu.com）<br>2.二级域名（如：sub.baidu.com) 3.子目录（如：www.baidu.com/sub）<br>4.wap站域名（如：wap.baidu.com）</li></ul>";
+            "<li style='text-align: left;height: 110px;margin-left: 110px;'>可输入如下4种域名形式 <p/>1.主域名（如：www.baidu.com）<br>2.二级域名（如：sub.baidu.com)<br> 3.子目录（如：www.baidu.com/sub）<br>4.wap站域名（如：wap.baidu.com）</li></ul>";
         $('#modelbox').modal();
         $('.modal-dialog').css({width: '400px'});
         $("#modelboxTitle").html("百思慧眼-关联账户");
         $(".modal-body").html(acountContent);
-
         $("#modelboxBottom").click(function () {
             var url = $("#url").val();
             if (IsURL(url)) {
@@ -563,7 +563,13 @@ $(function () {
                     }
                 }
             });
+
         })
+
+
+    });
+    $(".unbing").click(function () {
+        $("#modelboxBottom").unbind();
     });
     huiyanQuery();
 });

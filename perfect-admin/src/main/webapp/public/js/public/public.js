@@ -220,6 +220,7 @@ $(function () {
             }
         },
         'click .look': function (e, value, row, index) {
+
             $(".indexCret").css({'display': 'none'});
             $("#userLookUpWrap").css({"display": "block", "top": 221 + index * 45 + "px"});
             $(this).next().css("display", 'block');
@@ -288,6 +289,7 @@ $(function () {
                     data.statisticalCode = huiyanCode;
                     datas.push(data);
                 });
+
                 $("#userLookUpTable").bootstrapTable("removeAll")
                 $("#userLookUpTable").bootstrapTable("append", datas);
                 $('#userLookUpTable').bootstrapTable({
@@ -434,8 +436,17 @@ $(function () {
                     }
                 }
             });
+        },
+        'dblclick .startTime': function (e, value, row, index) {
+
+        },
+        'dblclick .endTime': function (e, value, row, index) {
+
+
         }
     };
+
+
 })
 function firstAdd() {
     var startId = "<input type='text' class='form-control'>", rows = [];
