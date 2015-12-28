@@ -13,7 +13,6 @@ var role = {
                     search: true,
                     uniqueId: "id",
                     pageSize: 20,
-                    height: 800,
                     pageList: new Array(20, 50, 100),
                     searchAlign: 'left',
                     paginationPreText: "上一页",
