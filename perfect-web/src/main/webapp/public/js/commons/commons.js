@@ -611,7 +611,7 @@ $.extend({
                             }
                             var ls = replaceText ? getLocalStatus(2) : getLocalStatus(parseInt(_edit));
                             _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
-                            var _tbody =  "<tr class='" + _trClass + " " + _del + "' onclick='on(this);'>"  +
+                            var _tbody = "<tr class='" + _trClass + " " + _del + "' onclick='on(this);'>" +
                                 "<td class='table_add'>&nbsp;<input type='checkbox' name='creativeCheck' value='" + _id + "' onchange='creativeListCheck()'/><input type='hidden' value='" + _id + "'/>" + ls + "</td>" +
                                 "<td >" + until.substring(10, json[i].title) + "</td>" +
                                 " <td >" + until.substring(10, json[i].description1) + "</td>" +
@@ -885,9 +885,9 @@ $("#kkeyword").next().next().find("th").mouseover().append("<span class='remove'
 //筛选图标加载
 $('.screenicon').parent().mouseover(function () {
     //if (jsonData.cid) {
-        $("#filterSearchTemplate").hide();
-        $(".remove").remove()
-        $(this).append("<span class='remove'><img src='../public/img/select.png'></span>");
+    $("#filterSearchTemplate").hide();
+    $(".remove").remove()
+    $(this).append("<span class='remove'><img src='../public/img/select.png'></span>");
     //}
 })
 var TabModel = {
@@ -1521,6 +1521,7 @@ var timing = {
     TimingOk: function () {
         if (this.elementLength == 0) {
             console.log("No local materials need to be uploaded to Baidu!");
+            return;
         }
 
         var startDateArr = $('#TimingDate').data('daterangepicker').startDate.format('YYYY-MM-DD').split("-");
@@ -1552,14 +1553,10 @@ var timing = {
         var cronExpression = "0 0 " + hour + " " + day + " " + month + " ? " + year;
 
         $.ajax({
-            url: '/material/schedule/upload',
+            url: '/material/schedule/upload/' + this.elementType + '/' + cronExpression,
             type: 'POST',
-            dataType: 'json',
-            data: {
-                "level": this.elementType,
-                "content": this.elements,
-                "cron": cronExpression
-            },
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify(this.elements),
             success: function (data) {
                 console.log(data);
             }
