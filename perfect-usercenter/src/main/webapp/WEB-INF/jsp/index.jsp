@@ -24,13 +24,12 @@
                 当前位置：账户概览
             </div>
             <div class="user_box" style="position: relative">
-                <div class="user_title" style="position: relative;text-align: center">
+                <div class="user_title" style="position: relative;">
                     <span aria-hidden="true" ng-class="icon"
                           class="glyphicon glyphicon-user"></span>账户：<b>${user.userName}</b>
                     <button type="button" class="btn btn-default">${user.payed ? "付费账户":"试用账户"}</button>
                 </div>
-                <div class="user_content" style="width: 282px;
-    margin: 0 auto;">
+                <div class="user_content">
                     <ul id="userList">
 
                     </ul>
