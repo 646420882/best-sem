@@ -10,12 +10,17 @@ var loadBaiduAccount = function () {
                 var lis = "";
                 var index = results[0].baiduUserName.length;
                 $.each(results, function (i, item) {
+                    if (item.baiduAccountId == null || item.baiduAccountId == "null") {
+                        // 此帐号还未被激活, 无法使用
+                        return true;
+                    }
+
                     var _item = item.baiduRemarkName;
                     if (_item == undefined) _item = item.baiduUserName.substring(0, (i > 0 ? index - 3 : index)) + (item.baiduUserName.length > index ? "..." : "");
-                    if (baiduAccountId == item.id) {
+                    if (baiduAccountId == item.baiduAccountId) {
                         $('.user_name span').html(_item);
                     }
-                    lis += "<li  title='" + item.baiduUserName + "' value='" + item.id + "'>" + _item + "</li>";
+                    lis += "<li  title='" + item.baiduUserName + "' value='" + item.baiduAccountId + "'>" + _item + "</li>";
                 });
                 $("#switchAccount_ul").empty();
                 $("#switchAccount_ul").append(lis);
