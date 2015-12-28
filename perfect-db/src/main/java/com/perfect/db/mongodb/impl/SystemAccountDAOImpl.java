@@ -236,6 +236,17 @@ public class SystemAccountDAOImpl extends AbstractSysBaseDAOImpl<ModuleAccountIn
     }
 
     @Override
+    public ModuleAccountInfoDTO findModuleAccountById(String id) {
+        ModuleAccountInfoEntity entity = mongoTemplate.findOne(
+                Query.query(Criteria.where(SYSTEM_ID).is(new ObjectId(id))),
+                getModuleAccountInfoEntityClass());
+        if (Objects.isNull(entity))
+            return null;
+
+        return getDTOFromEndity(entity);
+    }
+
+    @Override
     public void insertModuleAccount(ModuleAccountInfoDTO moduleAccount) {
         long count = mongoTemplate.count(
                 Query.query(Criteria.where(USER_ID).is(moduleAccount.getUserId()).and(MODULE_ID).is(moduleAccount.getModuleId())),
@@ -252,7 +263,12 @@ public class SystemAccountDAOImpl extends AbstractSysBaseDAOImpl<ModuleAccountIn
 
     @Override
     public boolean updateModuleAccount(ModuleAccountInfoDTO moduleAccount) {
-        Query query = Query.query(Criteria.where(SYSTEM_ID).is(new ObjectId(moduleAccount.getId())));
+        Criteria criteria = Criteria.where(SYSTEM_ID).is(new ObjectId(moduleAccount.getId()));
+        if (Objects.nonNull(moduleAccount.getUserId())) {
+            criteria.and("userId").is(moduleAccount.getUserId());
+        }
+        Query query = Query.query(criteria);
+
         Update update = new Update();
         if (Objects.nonNull(moduleAccount.getBaiduAccountId())) {
             update.set("bid", moduleAccount.getBaiduAccountId());
@@ -342,8 +358,9 @@ public class SystemAccountDAOImpl extends AbstractSysBaseDAOImpl<ModuleAccountIn
     }
 
     @Override
-    public boolean updateAccountToken(String userid, String accountid, String token) {
-        WriteResult result = mongoTemplate.updateFirst(Query.query(Criteria.where("userId").is(userid).and(SYSTEM_ID).is(accountid)),
+    public boolean updateAccountToken(String userId, String moduleAccountObjectId, String token) {
+        WriteResult result = mongoTemplate.updateFirst(
+                Query.query(Criteria.where("userId").is(userId).and(SYSTEM_ID).is(new ObjectId(moduleAccountObjectId))),
                 Update.update("btoken", token), getModuleAccountInfoEntityClass());
         return result.isUpdateOfExisting();
     }

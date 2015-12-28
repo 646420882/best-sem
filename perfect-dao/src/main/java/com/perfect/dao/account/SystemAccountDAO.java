@@ -149,6 +149,14 @@ public interface SystemAccountDAO extends MongoEntityConstants {
     ModuleAccountInfoDTO findByModuleAccountId(long moduleAccountId);
 
     /**
+     * 根据Mongo Object ID查询模块帐号详细信息
+     *
+     * @param id
+     * @return
+     */
+    ModuleAccountInfoDTO findModuleAccountById(String id);
+
+    /**
      * 新增模块帐号
      *
      * @param moduleAccount
@@ -188,5 +196,13 @@ public interface SystemAccountDAO extends MongoEntityConstants {
         return ModuleAccountInfoEntity.class;
     }
 
-    boolean updateAccountToken(String userid, String accountid, String token);
+    /**
+     * @param userId
+     * @param moduleAccountObjectId
+     * @param token
+     * @return
+     * @see {@link #updateModuleAccount(ModuleAccountInfoDTO)}
+     */
+    @Deprecated
+    boolean updateAccountToken(String userId, String moduleAccountObjectId, String token);
 }

@@ -242,8 +242,10 @@ public class SystemUserServiceImpl implements SystemUserService {
 
                         // 初始化账户数据
                         AccountInfoType accountInfoType = apiService.getAccountInfo();
+                        String moduleAccountObjectId = systemAccountDAO.findByModuleAccountId(aid).getId();
                         boolean isDefault = baiduAccountInfoDTO.isDfault();
                         _dto = ObjectUtils.convert(accountInfoType, ModuleAccountInfoDTO.class);
+                        _dto.setId(moduleAccountObjectId);
                         _dto.setBaiduAccountId(accountInfoType.getUserid());
                         _dto.setBaiduUserName(baiduAccountInfoDTO.getBaiduUserName());
                         _dto.setBaiduPassword(baiduAccountInfoDTO.getBaiduPassword());
@@ -476,7 +478,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             return Collections.emptyList();
         }
 
-        List<CampaignDTO> list = Collections.EMPTY_LIST;
+        List<CampaignDTO> list = Collections.emptyList();
 
         SystemUserUtils.consumeCurrentSystemAccount(systemUserDTO, AppContext.getModuleName(), systemUserModuleDTO -> {
             List<ModuleAccountInfoDTO> moduleAccountInfoDTOs = systemUserModuleDTO.getAccounts();
@@ -833,7 +835,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public List<SystemMenuDTO> getUserSubMenu(String userid, String moduleId) {
 
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
 //        SystemUserModuleDTO systemUserModuleDTO = systemUserDAO.getUserModuleById(userid, moduleId);
 //
 //        if (systemUserModuleDTO == null) {
@@ -951,8 +953,8 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Override
-    public boolean updateAccountToken(String userid, String accountid, String token) {
-        return systemAccountDAO.updateAccountToken(userid, accountid, token);
+    public boolean updateAccountToken(String userid, String moduleAccountObjectId, String token) {
+        return systemAccountDAO.updateAccountToken(userid, moduleAccountObjectId, token);
     }
 
     private long findUsersCount(String companyName, String userName, Boolean accountStatus) {

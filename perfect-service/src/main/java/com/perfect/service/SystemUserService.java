@@ -102,5 +102,5 @@ public interface SystemUserService {
 
     boolean deleteUser(String userid);
 
-    boolean updateAccountToken(String userid, String accountid, String token);
+    boolean updateAccountToken(String userid, String moduleAccountObjectId, String token);
 }
