@@ -283,7 +283,7 @@
                                             修改访问网址
                                         </li>
                                         <li id="showbox5" data-toggle="tooltip" data-placement="bottom" title="对重点关注的关键词进行重点词竞价分组管理。">
-                                           <span class="glyphicon glyphicon-hdd"></span>
+                                           <span class="glyphicon glyphicon-tasks"></span>
                                             重点词分组
                                         </li>
                                         <li id="showbox6" data-toggle="tooltip"
@@ -329,35 +329,45 @@
                                 <div class="zhushou_concent zhushou over">
                                     <div class="w_list03">
                                         <ul class="jiangjia_list">
-                                            <li class="current Screenings"><img
-                                                    src="${pageContext.request.contextPath}/public/img/shuaixuan.png">筛选
+                                            <li class="current Screenings">
+                                                <%--<img src="${pageContext.request.contextPath}/public/img/shuaixuan.png">--%>
+                                                <span class="glyphicon glyphicon-random"></span>
+                                                    筛选
                                             </li>
                                             <li id="showbox_im" data-toggle="tooltip"
                                                 data-placement="bottom" title="对选中的关键词，设置竞价规则，包括：竞价时段、竞价模式、竞价位置、出价规则等。">
-                                                <img src="${pageContext.request.contextPath}/public/img/guize.png">设置规则
+                                                <%--<img src="${pageContext.request.contextPath}/public/img/guize.png">--%>
+                                                <span class="glyphicon glyphicon-cog"></span>
+                                                    设置规则
                                             </li>
                                             <li id="showbox3_im" data-toggle="tooltip"
-                                                data-placement="bottom" title="对已设置智能竞价规则的关键词暂停竞价。"><img
-                                                    src="${pageContext.request.contextPath}/public/img/zanting.png">暂停竞价
+                                                data-placement="bottom" title="对已设置智能竞价规则的关键词暂停竞价。">
+                                                <span class="glyphicon glyphicon-pause"></span>
+                                                暂停竞价
                                             </li>
                                             <li id="showbox2_im" data-toggle="tooltip"
-                                                data-placement="bottom" title="选中关键词修改出价。"><img
-                                                    src="${pageContext.request.contextPath}/public/img/xiugai.png">修改出价
+                                                data-placement="bottom" title="选中关键词修改出价。">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                修改出价
                                             </li>
                                             <li id="showbox4_im" data-toggle="tooltip"
-                                                data-placement="bottom" title="修改关键词访问url。"><img
-                                                    src="${pageContext.request.contextPath}/public/img/wangzhi.png">修改访问网址
+                                                data-placement="bottom" title="修改关键词访问url。">
+                                                <span class="glyphicon glyphicon-globe"></span>
+                                                修改访问网址
                                             </li>
-                                            <li id="showbox5_im"><img
-                                                    src="${pageContext.request.contextPath}/public/img/fenzu.png">分组(改变分组)
+                                            <li id="showbox5_im">
+                                                <span class="glyphicon glyphicon-tasks"></span>
+                                                分组(改变分组)
                                             </li>
 
-                                            <li id="showboxD"><img
-                                                    src="${pageContext.request.contextPath}/public/img/zidingyi.png">删除数据
+                                            <li id="showboxD">
+                                                <span class="glyphicon glyphicon-floppy-remove"></span>
+                                                删除数据
                                             </li>
                                             <li id="showbox62" data-toggle="tooltip"
-                                                data-placement="bottom" title="自定义设置重点关注的指标，满足个性需求。"><img
-                                                    src="${pageContext.request.contextPath}/public/img/zidingyi.png">自定义列
+                                                data-placement="bottom" title="自定义设置重点关注的指标，满足个性需求。">
+                                                <span class="glyphicon glyphicon-th"></span>
+                                                自定义列
                                             </li>
                                         </ul>
                                         <div class="Screening_concent over" style="display: none;">
