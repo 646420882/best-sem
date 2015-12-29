@@ -42,7 +42,7 @@
                                        onblur="if (value=='') {value='个人用户请填写姓名'}">--%>
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="companyname"
+                                        <input class="registeInput form-control" type="text" name="companyname"
                                                placeholder="个人用户请填写姓名"
                                                onfocus="if(value=='个人用户请填写姓名') {value=''}"
                                                onblur="if (value=='') {value='个人用户请填写姓名'}">
@@ -56,7 +56,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="username">
+                                        <input class="registeInput form-control" type="text" name="username">
                                     </div>
                                 </div>
 
@@ -67,7 +67,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="email"/>
+                                        <input class="registeInput form-control" type="text" name="email"/>
                                     </div>
                                 </div>
                                 <span style="color: red" class="register_star">*</span>
@@ -77,7 +77,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="password" name="password">
+                                        <input class="registeInput form-control" type="password" name="password">
                                     </div>
                                 </div>
                                 <span style="color: red" class="register_star">*</span>
@@ -87,7 +87,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="password" name="confirmPassword">
+                                        <input class="registeInput form-control" type="password" name="confirmPassword">
                                     </div>
                                 </div>
                                 <span style="color: red" class="register_star">*</span>
@@ -97,7 +97,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="mailinAddress">
+                                        <input class="registeInput form-control" type="text" name="mailinAddress">
                                     </div>
                                 </div>
                             </li>
@@ -106,7 +106,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="contacts">
+                                        <input class="registeInput form-control" type="text" name="contacts">
                                     </div>
                                 </div>
                             </li>
@@ -115,7 +115,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="contactsPhone">
+                                        <input class="registeInput form-control" type="text" name="contactsPhone">
                                     </div>
                                 </div>
                             </li>
@@ -139,7 +139,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="baiduUserName">
+                                        <input class="registeInput form-control" type="text" name="baiduUserName">
                                     </div>
                                 </div>
                                 <span style="color: red;display: none" class="register_star NameStar">*</span>
@@ -149,7 +149,8 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="password" name="baiduUserPassword">
+                                        <input class="registeInput form-control" type="password"
+                                               name="baiduUserPassword">
                                     </div>
                                 </div>
                                 <span style="color: red;display: none" class="register_star NameStar">*</span>
@@ -159,7 +160,7 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput" type="text" name="urlAddress">
+                                        <input class="registeInput form-control" type="text" name="urlAddress">
                                     </div>
                                 </div>
                                 <span style="color: red;display: none" class="register_star NameStar">*</span>
@@ -176,7 +177,8 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input type="text" class="proving registeInput" id="input1" name="code_text">
+                                        <input type="text" class="proving registeInput form-control" id="input1"
+                                               name="code_text" style="float:left">
                                         <input type="text" onclick="createCode()" name="code" readonly="readonly"
                                                id="checkCode" class="unchanged" style="width: 65px"/>
 
@@ -188,9 +190,9 @@
                                 <input value="立即注册" id="immedateRegister" type="button" class="submit registeButton">
                             </li>--%>
                         </ul>
-                        <div class="registerWrap" style="margin-top:20px;">
+                        <div class="registerWrap" style="margin-top:20px; border-radius: 4px;">
                             <%--<input type="submit" id="" value="立即注册" class="submit">--%>
-                            <input value="立即注册" id="immedateRegister" type="submit" class="submit registeButton">
+                            <input value="立即注册" id="immedateRegister" type="submit" class="submit registeButton ">
                         </div>
                     </form>
                 </div>
@@ -279,13 +281,13 @@
                         $(".NameStar").eq(2).css({"display": "none"});
                     } else if (multiSelect[0] == '百思慧眼') {
                         $('#defaultForm')
-                        // Get the bootstrapValidator instance
+                            // Get the bootstrapValidator instance
                                 .data('bootstrapValidator')
-                                // Mark the field as not validated, so it'll be re-validated when the user change date
+                            // Mark the field as not validated, so it'll be re-validated when the user change date
                                 .updateStatus('baiduUserName', 'NOT_VALIDATED', null)
                                 .updateStatus('baiduUserPassword', 'NOT_VALIDATED', null)
                                 .updateStatus('openPlatform', 'NOT_VALIDATED', null)
-                                // Validate the field
+                            // Validate the field
                                 .validateField('urlAddress');
                         $(".NameStar").eq(0).css({"display": "none"})
                         $(".NameStar").eq(1).css({"display": "none"})

@@ -28,8 +28,8 @@
 <body>
 <div class="login over">
     <%--<img src="${pageContext.request.contextPath}/public/img/login_bg.jpg" width="100%" height="100%">--%>
-        <div class="loginBg" style="position: fixed;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
-        <div class="login_box">
+        <div class="loginBg" style="position: fixed;width: 100%;height: 100%;z-index: -1;"></div>
+        <div class="login_box" style="width:622px;">
             <div class="login_logo ">
                 <a href="http://best-ad.cn/" target="_blank"><img
                         src="${pageContext.request.contextPath}/public/img/login_logo.png"></a>

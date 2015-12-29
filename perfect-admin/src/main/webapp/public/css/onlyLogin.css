@@ -1,12 +1,20 @@
 ul, ol {
-    margin:0;
+    margin: 0;
     padding: 0;
 }
+
 .login {
     /*position: absolute;
     width: 100%;
     height: 100%;*/
     background: #e7e7e7;
+    font-family: "微软雅黑";
+}
+
+.loginBg {
+    background: #e7e7e7 url(/public/img/shunt_bg.png) center 0 no-repeat;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .login_box {
@@ -15,24 +23,27 @@ ul, ol {
     left: 50%;
     top: 50%;
     margin-left: -320px;
-    margin-top: -250px;
+    margin-top: -380px;
 }
-.registe_box{
-   /* position: absolute;
-    z-index: 2;
-    left: 50%;
-    top: 40%;
-    margin-left: -320px;
-    margin-top: -380px;*/
+
+.registe_box {
+    /* position: absolute;
+     z-index: 2;
+     left: 50%;
+     top: 40%;
+     margin-left: -320px;
+     margin-top: -380px;*/
     margin: 0 auto;
 }
+
 .login_box1, .login_box2 {
-    width: 620px;
+    width: 622px;
     /*height: 360px;*/
     /*background: url(/public/img/login_box_bg.png) no-repeat;*/
     background: #fff;
-    margin: 58px auto 0 auto;
+    margin: 0 auto;
 }
+
 /*.login_box2{
     width: 490px;
 }*/
@@ -50,24 +61,28 @@ ul, ol {
 
 .login_logo {
     text-align: center;
-    /*padding: 78px 0 30px 0px;*/
+    padding: 78px 0 30px 0px;
 }
 
 .login_logo2 {
     text-align: center;
     padding: 40px 0 30px 0;
 }
+
 /*.login_box2 .login_part1{
     height:408px;
 }*/
 
 .login_click {
+    height: 54px;
+    line-height: 54px;
     text-align: right;
     margin-bottom: 10px;
     border-bottom: 1px solid #ddd;
-    padding: 10px 29px;
+    padding: 0px 25px;
 }
-.login_click span{
+
+.login_click span {
     font-size: 18px;
     color: #999;
 }
@@ -75,45 +90,63 @@ ul, ol {
 .login_click a {
     font-size: 14px;
     padding: 2px 10px;
-    color: #868686;
+    color: #1fb8f2;
 }
 
 .login_click a:hover {
-    background: #f18b20;
-    color: #fff;
+    color: #1fb8f2;
     text-decoration: none;
 }
 
 .login_input ul li {
     margin-top: 25px;
-    height:34px;
-    line-height:34px;
+    height: 34px;
+    line-height: 34px;
     position: relative;
+    width: 100%;
 }
-.login_input ul li label{
-    width: 48px;
+
+.login_input ul li label {
+    width: 60px;
     display: inline-block;
     text-align: right;
-}
-.login_input ul li input {
-    width: 86%;
-    padding: 10px 1%;
-    position: relative;
     font-size: 14px;
+    color: #333;
+}
+
+.login_input ul li input {
+    width: 83%;
+    padding: 0px 1%;
+    position: relative;
     color: #666666;
     border: 1px solid #ddd;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    border-radius: 2px;
-    overflow:hidden;
+    border-radius: 4px;
+    overflow: hidden;
+    height: 33px;
+    line-height: 33px;
 }
-.login_input ul li input.loginButton{
+
+.login_input ul li input.loginButton {
     width: 100%;
     background: #1fb8f2;
     border: none;
     color: #fff;
+    font-size: 18px;
+    font-family: "微软雅黑";
+    height: 45px;
+    line-height: 45px;
 }
-.login_input2 ul li input.registeButton{
+
+.registerWrap {
+    width: 100%;
+    height: 34px;
+    text-align: center;
+    background: #1fb8f2;
+}
+
+.registerWrap input.registeButton {
     width: 100%;
     background: #1fb8f2;
     color: #fff;
@@ -122,13 +155,15 @@ ul, ol {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
+
 }
+
 .login_input ul li span {
     display: block;
     position: absolute;
     right: 10px;
     top: 8px;
-    *top:10px;
+    *top: 10px;
     z-index: 3;
 }
 
@@ -138,8 +173,7 @@ ul, ol {
 }
 
 .login_input ul li a:hover {
-    background: #f18b20;
-    color: #fff;
+    color: #1fb8f2;
 }
 
 .login_checkbox {
@@ -147,7 +181,7 @@ ul, ol {
     height: 34px;
     position: absolute;
     top: 0px;
-    right: -135px;
+    right: -138px;
     line-height: 34px;
     background: url(/public/img/bg.png) -10px -471px no-repeat;
     color: #fff;
@@ -210,80 +244,93 @@ ul, ol {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    height:34px;
-    *height:20px;
+    height: 34px;
+    *height: 28px;
 }
-#openPlatformLi .ms-parent{
+
+#openPlatformLi .ms-parent {
     width: 100%;
 }
-#openPlatformLi .ms-choice{
+
+#openPlatformLi .ms-choice {
     width: 100% !important;
     height: 34px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
 }
-#openPlatformLi .ms-choice > span.placeholder{
+
+#openPlatformLi .ms-choice > span.placeholder {
     width: 106px;
 }
-#openPlatformLi .ms-drop.bottom{
+
+#openPlatformLi .ms-drop.bottom {
     width: 100% !important;
 }
-#openPlatformLi .ms-choice > span{
+
+#openPlatformLi .ms-choice > span {
     width: 100% !important;
     text-align: left !important;
     padding-left: 8px !important;
 }
-#openPlatformLi .ms-drop ul > li.multiple{
+
+#openPlatformLi .ms-drop ul > li.multiple {
     float: none;
     height: auto;
     margin-bottom: 0;
+    z-index: 10;
 }
-.login_input2 ul li input.accountType{
+
+.login_input2 ul li input.accountType {
     width: 15px;
-    height:auto;
+    height: auto;
 }
-.login_input2 ul li label.accountType{
+
+.login_input2 ul li label.accountType {
     width: auto;
-    height:34px;
-    *height:340px;
+    height: 34px;
+    *height: 340px;
     line-height: 34px;
     margin-bottom: 0;
 }
-.login_input2 ul li label{
+
+.login_input2 ul li label {
     width: 110px;
     text-align: right;
     color: #5b5b5b;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 34px;
     font-weight: normal;
     font-family: '微软雅黑';
 }
+
 .login_input2 ul li span {
     display: block;
     float: left;
-    width:80px;
+    width: 80px;
     padding: 6px 0;
     margin-bottom: 5px;
     text-align: right;
 }
-.login_input2 ul li span.register_star{
+
+.login_input2 ul li span.register_star {
     color: red;
     display: inline-block;
-    width:10px;
+    width: 10px;
     float: right;
 }
-.login_box2 .login_part2 input{
+
+.login_box2 .login_part2 input {
     color: #ffffff;
 
 }
 
 .login_input2 ul li .proving {
     width: 150px !important;
-    *width:120px;
+    *width: 120px;
     margin-right: 10px;
-    font-size:14px;
-    color:#000;
+    font-size: 14px;
+    color: #000;
     /*  float:left;*/
 
 }
@@ -292,129 +339,142 @@ ul, ol {
     margin-top: 5px;
 
 }
-.login_part2 input{
-    display:block;
-    width:100%;
-    height:100%;
-    border:0px;
-    background:none;
+
+.login_part2 input {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0px;
+    background: none;
     color: #ffffff;
-    font-size:24px;
-    font-weight:bold;
+    font-size: 24px;
+    font-weight: bold;
     cursor: pointer;
-    line-height:78px;
+    line-height: 78px;
 
 }
 
-.login_input ul li .red ,.login_input2 ul li .red{
+.login_input ul li .red, .login_input2 ul li .red {
     border-color: #a94442;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 }
-.login_input ul li .red:focus ,.login_input2 ul li .red:focus {
+
+.login_input ul li .red:focus, .login_input2 ul li .red:focus {
     border-color: #843534;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #ce8483;
 }
+
 .bv-form .help-block {
     margin-bottom: 0;
-    color:#fff;
+    color: #fff;
 }
+
 .bv-form .tooltip-inner {
     text-align: left;
 }
+
 .nav-tabs li.bv-tab-success > a {
     color: #3c763d;
 }
+
 .nav-tabs li.bv-tab-error > a {
     color: #a94442;
 }
-.help-block{
-    width:210px;
+
+.help-block {
+    width: 210px;
     height: 34px;
-    font-weight:bold;
+    font-weight: bold;
     position: absolute;
-    padding:0 10px 0 15px;
+    padding: 0 10px 0 15px;
     top: -9px;
-    left:360px;
-    *left:340px;
+    left: 360px;
+    *left: 340px;
     line-height: 34px;
-    background:#343535 url(/public/img/left_rejister.jpg) left no-repeat;
+    background: #343535 url(/public/img/left_rejister.jpg) left no-repeat;
     color: #fff;
     z-index: 4;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
 
+}
 
+.has-error .help-block {
+    color: #fff;
 }
-.has-error .help-block{
-    color:#fff;
+
+.col-lg-5 {
+    width: 230px;
+    *width: 210px;
+    height: 34px;
+    padding: 0px;
 }
-.col-lg-5{
-    width:230px;
-    *width:210px;
-    height:34px;
-    padding:0px;
-}
-.form-horizontal .form-group{
-    margin:0px;
-    padding:0px;
+
+.form-horizontal .form-group {
+    margin: 0px;
+    padding: 0px;
     width: 73%;
     float: left;
 }
-.login_input2 ul li .code{
-    float:right;
-    font-family:Arial;
-    font-style:italic;
-    color:#000;
-    border:0;
-    padding:2px 3px;
-    letter-spacing:3px;
-    font-weight:bolder;
-    font-size:16px;
-}
-.login_input2 ul li #checkCode{
-    float:none;
-    font-family:Arial;
-    font-style:italic;
-    color:#000;
-    border:0;
-    padding:2px 3px;
-    letter-spacing:3px;
-    font-weight:bolder;
-    font-size:16px;
-    height:30px;
-    line-height:30px;
-}
-.unchanged
-{
-    border:0;
-}
-.has-feedback .form-control{
-    padding-right:0px;
+
+.login_input2 ul li .code {
+    float: right;
+    font-family: Arial;
+    font-style: italic;
+    color: #000;
+    border: 0;
+    padding: 2px 3px;
+    letter-spacing: 3px;
+    font-weight: bolder;
+    font-size: 16px;
 }
 
-.configure_under ul li{
-    margin-top:10px;
-    line-height:30px;
-    font-size:14px;
-    width:100%;
-    overflow:hidden;
+.login_input2 ul li #checkCode {
+    float: none;
+    font-family: Arial;
+    font-style: italic;
+    color: #000;
+    border: 0;
+    padding: 2px 3px;
+    letter-spacing: 3px;
+    font-weight: bolder;
+    font-size: 16px;
+    height: 30px;
+    line-height: 30px;
 }
-.configure_under ul li span{
-    width:100px;
-    float:left;
-    padding:0px;
+
+.unchanged {
+    border: 0;
 }
-.configure_under ul li input{
-    height:30px;
+
+.has-feedback .form-control {
+    padding-right: 0px;
+}
+
+.configure_under ul li {
+    margin-top: 10px;
+    line-height: 30px;
+    font-size: 14px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.configure_under ul li span {
+    width: 100px;
+    float: left;
+    padding: 0px;
+}
+
+.configure_under ul li input {
+    height: 30px;
 
 }
-.login_contact img{
+
+.login_contact img {
     vertical-align: middle;
 }
 
-
-
- /*forget --- fzk*/
+/*forget --- fzk*/
 
 .forget_click {
     background-color: #ffffff;
@@ -422,7 +482,8 @@ ul, ol {
     border-bottom: 1px solid #ddd;
     padding: 10px 29px;
 }
-.forget_click span{
+
+.forget_click span {
     font-size: 16px;
     color: #999;
 }
@@ -438,22 +499,26 @@ ul, ol {
     color: #fff;
     text-decoration: none;
 }
-.forget_form{
+
+.forget_form {
     background-color: #f2fbff;
     padding: 45px 0;
 }
+
 .forget_input ul li {
     margin-bottom: 25px;
-    height:34px;
-    line-height:34px;
+    height: 34px;
+    line-height: 34px;
     position: relative;
 }
-.forget_input ul li label{
+
+.forget_input ul li label {
     width: 120px;
     margin-right: 15px;
     display: inline-block;
     text-align: right;
 }
+
 .forget_input ul li input {
     width: 60%;
     padding: 7px 2%;
@@ -464,25 +529,27 @@ ul, ol {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    overflow:hidden;
+    overflow: hidden;
 }
-.forget_input ul li input.loginButton{
+
+.forget_input ul li input.loginButton {
     width: 22%;
-    margin:25px 0 0 40%;
+    margin: 25px 0 0 40%;
     background: #1fb8f2;
     padding: 10px;
-    border:none;
+    border: none;
     /* border-radius: 0;
      -webkit-border-radius: 0;*/
     color: #fff;
     border-radius: 2px;
 }
+
 .forget_input ul li span {
     display: block;
     position: absolute;
     right: 10px;
     top: 8px;
-    *top:10px;
+    *top: 10px;
     z-index: 3;
 }
 
@@ -495,13 +562,15 @@ ul, ol {
     background: #f18b20;
     color: #fff;
 }
-.hides{
+
+.hides {
     display: none;
 }
-.forget_input ul li .completeButton{
+
+.forget_input ul li .completeButton {
     background: #1fb8f2;
     padding: 5px 25px;
-    border:none;
+    border: none;
     /* border-radius: 0;
      -webkit-border-radius: 0;*/
     color: #fff;

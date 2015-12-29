@@ -475,3 +475,6 @@
     display: inline-block;
     width: 68%;
 }
+.bootstrap-table .table{
+    border-bottom: none;
+}
