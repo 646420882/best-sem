@@ -539,22 +539,24 @@
                         }
                     }
                 }
-                if (parseInt(getChar(c4)) > 36 || parseInt(getChar(c4)) <= 1) {
+                if (c4 != "") {
+                    if (parseInt(getChar(c4)) > 36 || parseInt(getChar(c4)) <= 1) {
 //                alert("第" + (j + 1) + "行的默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
-                    parent.window.AlertPrompt.show("第" + (j + 1) + "行的默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
-                    return false;
-                } else {
-                    if (c4.indexOf(dm) == -1) {
-//                    alert("第" + (j + 1) + "行的默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
-                        parent.window.AlertPrompt.show("第" + (j + 1) + "行的默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                        parent.window.AlertPrompt.show("第" + (j + 1) + "行的默认\"显示\"Url地址长度应大于2个字符小于36个字符，汉子占两个字符!");
                         return false;
-                    }
-                    //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                    else {
-                        if (c4.substr(c4.indexOf(dm)) != dm) {
-//                        alert("第"+(j+1)+"行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-                            parent.window.AlertPrompt.show("第" + (j + 1) + "行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                    } else {
+                        if (c4.indexOf(dm) == -1) {
+//                    alert("第" + (j + 1) + "行的默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            parent.window.AlertPrompt.show("第" + (j + 1) + "行的默认\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                             return false;
+                        }
+                        //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                        else {
+                            if (c4.substr(c4.indexOf(dm)) != dm) {
+//                        alert("第"+(j+1)+"行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                                parent.window.AlertPrompt.show("第" + (j + 1) + "行的默认\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                                return false;
+                            }
                         }
                     }
                 }
@@ -577,31 +579,34 @@
                     }
                 }
 
-
-                if (parseInt(getChar(c6)) > 36 || parseInt(getChar(c6)) <= 1) {
+                if (c6 != "") {
+                    if (parseInt(getChar(c6)) > 36 || parseInt(getChar(c6)) <= 1) {
 //                alert("第" + (j + 1) + "行的移动\"显示\"Url地址长度应大于2个字符小于36个字符");
-                    parent.window.AlertPrompt.show("第" + (j + 1) + "行的移动\"显示\"Url地址长度应大于2个字符小于36个字符");
-                    return false;
-                } else {
-                    if (c6.indexOf(dm) == -1) {
-//                    alert("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
-                        parent.window.AlertPrompt.show("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                        parent.window.AlertPrompt.show("第" + (j + 1) + "行的移动\"显示\"Url地址长度应大于2个字符小于36个字符");
                         return false;
-                    }
-                    //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
-                    else {
-                        if (c6.substr(c6.indexOf(dm)) != dm) {
-//                        alert("第"+(j+1)+"行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
-                            parent.window.AlertPrompt.show("第" + (j + 1) + "行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                    } else {
+                        if (c6.indexOf(dm) == -1) {
+//                    alert("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
+                            parent.window.AlertPrompt.show("第" + (j + 1) + "行的移动\"显示\"Url地址必须包含以\"" + dm + "\"的域名！");
                             return false;
+                        }
+                        //下面注释是判断结尾是否以注册的域名结尾已经不需要，百度官网也没有做这样验证，只验证了是否包含主域名)
+                        else {
+                            if (c6.substr(c6.indexOf(dm)) != dm) {
+//                        alert("第"+(j+1)+"行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                                parent.window.AlertPrompt.show("第" + (j + 1) + "行的移动\"显示\"Url地址必须以\"" + dm + "\"结尾！");
+                                return false;
+                            }
                         }
                     }
                 }
             }
             initNextStep();
+//            标题asdsadff,描述afsd1,描述adfs2,http://.perfect-cn.cn,,http://.perfect-cn.cn,http://.perfect-cn.cn,启用,全部设备
             _createTable.empty();
             var _trClass = "";
             $("#criSize").html(txtSize.length * names.length);
+            var dm = $("#doMain").html();
             for (var i = 0; i < names.length; i++) {
                 _trClass = i % 2 == 0 ? "list2_box1" : "list2_box2";
                 for (var j = 0; j < txtSize.length; j++) {
@@ -610,8 +615,14 @@
                     var c2 = txtSize[j].split(",")[2] != undefined ? txtSize[j].split(",")[2] : "";
                     var c3 = txtSize[j].split(",")[3] != undefined ? txtSize[j].split(",")[3] : "";
                     var c4 = txtSize[j].split(",")[4] != undefined ? txtSize[j].split(",")[4] : "";
+                    if (!c4) {
+                        c4 = "http://www." + dm;
+                    }
                     var c5 = txtSize[j].split(",")[5] != undefined ? txtSize[j].split(",")[5] : "";
                     var c6 = txtSize[j].split(",")[6] != undefined ? txtSize[j].split(",")[6] : "";
+                    if (!c6) {
+                        c6 = "http://www." + dm;
+                    }
                     var c7 = txtSize[j].split(",")[7] != undefined ? txtSize[j].split(",")[7] : "";
                     var c7_pause = c7 == "启用" ? "启用" : "暂停";
                     var c8 = txtSize[j].split(",")[8] != undefined ? txtSize[j].split(",")[8] : "";
@@ -744,6 +755,7 @@
                 alert("第" + (i + 1) + "行的\"创意描述1\"长度最大为80个字符，最小为9个字符，并且不能为空，汉字占两个字符！");
                 return;
             }
+            //test,test,标题撒旦法1,描述撒旦法1,描述撒旦法2,http://www.perfect-cn.cn,,http://www.perfect-cn.cn,,启用,全部设备
 //            标题撒旦法1,描述撒旦法1,描述撒旦法2,http://www.perfect-cn.cn,http://www.perfect-cn.cn,http://www.perfect-cn.cn,http://www.perfect-cn.cn,启用,全部设备
 //            test,test,创意标题1,创意描述1,创意描述2,http://.perfect-cn.cn,http://.perfect-cn.cn,http://.perfect-cn.cn,http://.perfect-cn.cn,暂停,全部设备
             if (parseInt(getChar(desc2)) > 80 || parseInt(getChar(desc2)) < 9) {
@@ -759,14 +771,18 @@
                     return false;
                 }
             }
-            if (parseInt(getChar(pcs)) > 36) {
-                alert("第" + (i + 1) + "行的\"显示Url\"长度最大为36个字符并且不能为空，汉字占两个字符！");
-                return;
-            } else {
-                if (pcs.substr(pcs.indexOf(dm)) != dm) {
-                    alert("第" + (i + 1) + "行的\"显示Url\"Url地址必须以\"" + dm + "\"结尾！");
-                    return false;
+            if (pcs != "") {
+                if (parseInt(getChar(pcs)) > 36) {
+                    alert("第" + (i + 1) + "行的\"显示Url\"长度最大为36个字符并且不能为空，汉字占两个字符！");
+                    return;
+                } else {
+                    if (pcs.substr(pcs.indexOf(dm)) != dm) {
+                        alert("第" + (i + 1) + "行的\"显示Url\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
                 }
+            } else {
+                pcs = "http://www" + dm;
             }
 
             if (parseInt(getChar(mib)) > 1024) {
@@ -779,14 +795,18 @@
                 }
             }
 
-            if (parseInt(getChar(mibs)) > 36) {
-                alert("第" + (i + 1) + "行的\"移动显示Url\"长度最大为36个字符并且不能为空，汉字占两个字符！");
-                return;
-            } else {
-                if (mibs.substr(mibs.indexOf(dm)) != dm) {
-                    alert("第" + (i + 1) + "行的\"移动显示Url\"Url地址必须以\"" + dm + "\"结尾！");
-                    return false;
+            if (mibs != "") {
+                if (parseInt(getChar(mibs)) > 36) {
+                    alert("第" + (i + 1) + "行的\"移动显示Url\"长度最大为36个字符并且不能为空，汉字占两个字符！");
+                    return;
+                } else {
+                    if (mibs.substr(mibs.indexOf(dm)) != dm) {
+                        alert("第" + (i + 1) + "行的\"移动显示Url\"Url地址必须以\"" + dm + "\"结尾！");
+                        return false;
+                    }
                 }
+            } else {
+                mibs = "http://www" + dm;
             }
 
             if ($("#sError").attr("style") == "color: red;") {
