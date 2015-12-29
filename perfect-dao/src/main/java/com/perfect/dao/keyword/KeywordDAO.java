@@ -155,22 +155,24 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
      * @param adgroupIds
      * @return
      */
-    List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds,FindOrReplaceParam forp);
+    List<KeywordDTO> findKeywordByAdgroupIdsStr(List<String> adgroupIds, FindOrReplaceParam forp);
 
-    List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds,FindOrReplaceParam forp);
+    List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds, FindOrReplaceParam forp);
 
     /**
      * 批量删除关键词
+     *
      * @param strings
      */
     void batchDelete(List<String> strings);
 
     /**
      * 批量启用/暂停 创意
+     *
      * @param strings
      * @param status
      */
-    void enableOrPause(List<String> strings,boolean status);
+    void enableOrPause(List<String> strings, boolean status);
 
     /**
      * @param keywordIds mongodb id  集合
@@ -180,6 +182,7 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     /**
      * 通过Obj ID查询
+     *
      * @param adgroupIds
      * @return
      */
@@ -187,8 +190,19 @@ public interface KeywordDAO extends HeyCrudRepository<KeywordDTO, Long> {
 
     /**
      * 通过Long ID查询
+     *
      * @param adgroupIds
      * @return
      */
     List<KeywordDTO> findKeywordByAdgroupIdsLong(List<Long> adgroupIds);
+
+    /**
+     * 给定系统用户名、凤巢帐号ID及物料层级, 查询其投放/暂停的关键词
+     *
+     * @param userName       系统用户名
+     * @param baiduAccountId 凤巢帐号ID
+     * @param isPause        暂停还是启用
+     * @return
+     */
+    List<String> findKeywordMarketStatus(String userName, long baiduAccountId, boolean isPause);
 }

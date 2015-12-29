@@ -47,8 +47,6 @@ public interface MaterialsScheduledService {
 
     /**
      * 删除任务
-     *
-     * @deprecated
      */
     void deleteJob(String jobId);
 
