@@ -68,8 +68,8 @@
                             <th data-field="systemModal">系统模块</th>
                             <th data-field="userProperty">用户属性</th>
                             <th data-field="openStates">开通状态</th>
-                            <th data-field="startDate">开始日期</th>
-                            <th data-field="endDate">结束日期</th>
+                            <th data-field="startDate" data-formatter="startTimeFormatter" data-events="operateEvents">开始日期</th>
+                            <th data-field="endDate" data-formatter="endTimeFormatter" data-events="operateEvents">结束日期</th>
                             <th data-field="authorityAssignment" data-formatter="setFormatter">权限分配</th>
                             <th data-field="relatedAccount" data-formatter="relationAccountFormatter">关联账户</th>
                             <th data-field="relatedAccountPwd" data-formatter="relationPwdFormatter">关联账户密码</th>
@@ -91,7 +91,12 @@
     </div>
 </div>
 <jsp:include page="home/homemodel.jsp"/>
+<script type="text/javascript" src="/public/js/daterangerpicker/bootstrap-daterangepicker-moment.js"></script>
+<script type="text/javascript" src="/public/js/daterangerpicker/daterangepicker.js"></script>
 <script type="text/javascript" src="/public/js/index/index.js"></script>
+<link rel="stylesheet" href="/public/css/daterangepicker-bs2.css"/>
+
+
 </body>
 </html>
 

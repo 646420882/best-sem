@@ -33,7 +33,7 @@
     margin-left: -23px;
     margin-bottom: 0;
 }
-#roleTable .pull-left.search .form-control{
+.form-control{
     height: 28px;
     line-height: 28px;
 }
@@ -150,6 +150,7 @@
     width: 88%;
     background: #fff;
     padding-bottom: 20px;
+    min-width: 983px;
 }
 .adminModuleWrap .adminModuleReport .modalTree{
     width: 12%;

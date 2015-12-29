@@ -74,13 +74,13 @@ var role = {
         showAddRoleModal: function () {
             var addVal = {
                 id: "-1",
-                name: '<input name="name"/>',
-                loginName: '<input name="loginName">',
-                contact: '<input name="contact">',
+                name: '<input class="form-control" name="name"/>',
+                loginName: '<input class="form-control" name="loginName">',
+                contact: '<input class="form-control" name="contact">',
                 superAdmin: "<select name='superAdmin'><option value='false'>管理员</option><option value='true'>超级管理员</option></select>",
-                password: "<input type='password' name='password'/>",
+                password: "<input class='form-control' type='password' name='password'/>",
                 ctiem: '0',
-                title: "<input name='title'/>"
+                title: "<input name='title' class='form-control'/>"
             };
             var existNewAdd = true;
             var data = $("#roleAdmin").bootstrapTable("getData");
