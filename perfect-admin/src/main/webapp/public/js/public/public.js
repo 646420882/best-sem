@@ -230,7 +230,6 @@ $(function () {
             }
         },
         'click .look': function (e, value, row, index) {
-
             $(".indexCret").css({'display': 'none'});
             $("#userLookUpWrap").css({"display": "block", "top": 221 + index * 45 + "px"});
             $(this).next().css("display", 'block');
@@ -305,6 +304,32 @@ $(function () {
                 $('#userLookUpTable').bootstrapTable({
                     data: datas
                 });
+                $('input[name="reservation"]').daterangepicker({
+                            "showDropdowns": true,
+                            "singleDatePicker": true,
+                            "timePicker24Hour": true,
+                            timePicker: true,
+                            timePickerIncrement: 30,
+                            format: 'YY/MM/DD',
+                            "locale": {
+                                "format": "YYYY年M月DD日",
+                                "separator": " - ",
+                                "applyLabel": "确定",
+                                "cancelLabel": "关闭",
+                                "fromLabel": "From",
+                                "toLabel": "To",
+                                "customRangeLabel": "Custom",
+                                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                                "firstDay": 1
+                            },
+                        },
+                        function (start, end, label, e) {
+                            var _endDate = end.format('YYYY年M月DD日');
+                            $(this).val(_endDate)
+                        });
+
+
                 $(".lookTableRow").parent().attr('style', 'padding: 0 !important');
             }
         },
