@@ -1,8 +1,14 @@
 package com.perfect.service.impl;
 
+import com.perfect.api.baidu.BaiduApiService;
+import com.perfect.api.baidu.BaiduServiceSupport;
+import com.perfect.autosdk.core.CommonService;
+import com.perfect.autosdk.sms.v3.AccountInfoType;
 import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.dao.account.SystemAccountDAO;
 import com.perfect.dao.sys.SystemUserDAO;
+import com.perfect.dto.baidu.OfflineTimeDTO;
+import com.perfect.dto.baidu.OptTypeDTO;
 import com.perfect.dto.huiyan.InsightWebsiteDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
@@ -10,6 +16,7 @@ import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.service.UserAccountService;
 import com.perfect.utils.HttpClientUtils;
 import com.perfect.utils.HuiyanJsonConverUtils;
+import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.json.JSONUtils;
 import org.springframework.stereotype.Service;
 
@@ -172,6 +179,22 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    public List<InsightWebsiteDTO> queryInfoByid(String id) {
+        if (Objects.nonNull(id)) {
+            String urlKey = "{\"_id\":\"" + id + "\"}";
+            try {
+                String queryString = HttpClientUtils.getRequest("type=search&query=" + URLEncoder.encode(urlKey, HTTP_UTF8));
+                List<InsightWebsiteDTO> dtos = HuiyanJsonConverUtils.toInsight(queryString);
+                if (Objects.nonNull(dtos)) return dtos;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
     public String del(String id) {
         if (Objects.nonNull(id)) {
             String newid = "{\"_id\":\"" + id + "\"}";
@@ -258,11 +281,30 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public String updateHuiyanToken(String id, String token) {
         try {
-            String query = URLEncoder.encode("{\"_id\":\"" + id + "\"}", HTTP_UTF8);
-            String update = "{\"token\": \"" + token + "\"}";
+            List<InsightWebsiteDTO> dtos = queryInfoByid(id);
+            if (dtos.size() <= 0) {
+                return null;
+            }
+            CommonService commonService = BaiduServiceSupport.getCommonService(dtos.get(0).getBname(), dtos.get(0).getBpasswd(), token);
+            if (commonService != null) {
+                BaiduApiService baiduApiService = new BaiduApiService(commonService);
+                AccountInfoType accountInfo = baiduApiService.getAccountInfo();
+                if (accountInfo != null) {
+                    String query = URLEncoder.encode("{\"_id\":\"" + id + "\"}", HTTP_UTF8);
+                    String update = "{\"token\": \"" + token + "\",\"account_id\":\"" + accountInfo.getUserid() + "\"}";
 
-            String s = HttpClientUtils.getRequest("type=update&query=" + query + "&updates=" + URLEncoder.encode(update, HTTP_UTF8));
-            if (Objects.nonNull(s)) return s;
+                    String s = HttpClientUtils.getRequest("type=update&query=" + query + "&updates=" + URLEncoder.encode(update, HTTP_UTF8));
+                    if (Objects.nonNull(s)) {
+                        return s;
+                    }else{
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

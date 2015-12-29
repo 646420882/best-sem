@@ -4,15 +4,19 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.perfect.api.baidu.AsynchronousReport;
+import com.perfect.autosdk.sms.v3.InsightService;
 import com.perfect.core.AppContext;
 import com.perfect.dao.account.SystemAccountDAO;
 import com.perfect.dao.report.AsynchronousReportDAO;
 import com.perfect.dao.sys.SystemUserDAO;
 import com.perfect.dto.account.*;
+import com.perfect.dto.huiyan.InsightWebsiteDTO;
 import com.perfect.dto.keyword.KeywordReportDTO;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.service.AsynchronousReportService;
+import com.perfect.service.UserAccountService;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import org.apache.http.HttpEntity;
@@ -39,7 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
- * Created by baizz on 2014-08-07.
+ * Created by subdong on 2014-08-07.
  * 2014-11-26 refactor
  */
 @Repository("asynchronousReportService")
@@ -51,7 +55,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
     private AsynchronousReportDAO asynchronousReportDAO;
 
     @Resource
-    private SystemUserDAO systemUserDAO;
+    private UserAccountService userAccountService;
 
     @Resource
     private SystemAccountDAO systemAccountDAO;
@@ -82,7 +86,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
 
             systemUser.getSystemUserModules().stream().filter(systemUserModuleDTO -> systemUserModuleDTO.getModuleName().equals(AppContext.getModuleName())).findFirst().ifPresent(systemUserModuleDTO1 -> {
                 for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                    if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
+                    if (entity.getState() == 0 || Objects.isNull(entity.getToken()) || Objects.isNull(entity.getBaiduAccountId())) {
                         getSkipPull(systemUser, entity, dateStr + "--用户");
                         continue;
                     }
@@ -138,7 +142,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
+                            if (entity.getState() == 0 || Objects.isNull(entity.getToken()) || Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--计划");
                                 continue;
                             }
@@ -190,7 +194,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
+                            if (entity.getState() == 0 || Objects.isNull(entity.getToken()) || Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--单元");
                                 continue;
                             }
@@ -244,7 +248,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
+                            if (entity.getState() == 0 || Objects.isNull(entity.getToken()) || Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--创意");
                                 continue;
                             }
@@ -297,7 +301,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
+                            if (entity.getState() == 0 || Objects.isNull(entity.getToken()) || Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--关键字");
                                 continue;
                             }
@@ -351,7 +355,7 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
                     .findFirst()
                     .ifPresent(systemUserModuleDTO1 -> {
                         for (ModuleAccountInfoDTO entity : systemUserModuleDTO1.getAccounts()) {
-                            if (entity.getState() == 0 && Objects.isNull(entity.getToken()) && Objects.isNull(entity.getBaiduAccountId())) {
+                            if (entity.getState() == 0 || Objects.isNull(entity.getToken()) || Objects.isNull(entity.getBaiduAccountId())) {
                                 getSkipPull(systemUser, entity, dateStr + "--关键字");
                                 continue;
                             }
@@ -418,6 +422,40 @@ public class AsynchronousReportServiceImpl implements AsynchronousReportService 
             return judge;
         }).collect(Collectors.toList());
 
+
+        List<InsightWebsiteDTO> newInsightWebsiteDTO = new ArrayList<>();
+        newEntityList.forEach(e -> {
+            List<InsightWebsiteDTO> insightWebsiteDTOs = userAccountService.queryInfo(e.getId());
+            if (Objects.nonNull(insightWebsiteDTOs)) {
+                e.getSystemUserModules().stream().filter(f -> f.getModuleName().equals(AppContext.getModuleName())).forEach(systemUserModuleDTO -> insightWebsiteDTOs.forEach(a -> {
+                    final boolean[] ab = new boolean[1];
+                    systemUserModuleDTO.getAccounts().forEach(b -> {
+                        if (Objects.nonNull(a.getBname()) && !a.getBname().equals("") && Objects.nonNull(a.getToken()) && !a.getToken().equals("") && b.getBaiduUserName().equals(a.getBname())) {
+                            ab[0] = true;
+                        } else {
+                            ab[0] = false;
+                        }
+                    });
+                    if (ab[0]) {
+                        newInsightWebsiteDTO.add(a);
+                    }
+                }));
+            }
+        });
+        for (SystemUserDTO systemUserDTO : newEntityList) {
+            for (InsightWebsiteDTO insightWebsiteDTO : newInsightWebsiteDTO) {
+                if (systemUserDTO.getId().equals(insightWebsiteDTO.getUid())) {
+                    ModuleAccountInfoDTO moduleAccountInfoDTO = new ModuleAccountInfoDTO();
+                    moduleAccountInfoDTO.setBaiduUserName(insightWebsiteDTO.getBname());
+                    moduleAccountInfoDTO.setBaiduPassword(insightWebsiteDTO.getBpasswd());
+                    moduleAccountInfoDTO.setToken(insightWebsiteDTO.getToken());
+                    moduleAccountInfoDTO.setBaiduAccountId(insightWebsiteDTO.getAccount_id());
+                    moduleAccountInfoDTO.setState(insightWebsiteDTO.getSite_pause() ? 0l : 1l);
+                    for (SystemUserModuleDTO systemUserModuleDTO : systemUserDTO.getSystemUserModules())
+                        systemUserModuleDTO.getAccounts().add(moduleAccountInfoDTO);
+                }
+            }
+        }
         return newEntityList;
     }
 

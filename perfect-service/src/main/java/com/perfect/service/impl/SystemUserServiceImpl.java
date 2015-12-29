@@ -960,8 +960,8 @@ public class SystemUserServiceImpl implements SystemUserService {
         boolean retoken;
         ModuleAccountInfoDTO moduleAccountById = systemAccountDAO.findModuleAccountById(moduleAccountObjectId);
         CommonService commonService = BaiduServiceSupport.getCommonService(moduleAccountById.getBaiduUserName(), moduleAccountById.getBaiduPassword(), moduleAccountById.getToken());
-        BaiduApiService baiduApiService = new BaiduApiService(commonService);
-        if (baiduApiService != null) {
+        if(commonService != null){
+            BaiduApiService baiduApiService = new BaiduApiService(commonService);
             AccountInfoType accountInfo = baiduApiService.getAccountInfo();
             if (accountInfo != null) {
                 ModuleAccountInfoDTO moduleAccountInfoDTO = new ModuleAccountInfoDTO();
@@ -987,17 +987,14 @@ public class SystemUserServiceImpl implements SystemUserService {
                 moduleAccountInfoDTO.setOpt(optTypeDTO);
                 boolean accountFlag = systemAccountDAO.updateModuleAccount(moduleAccountInfoDTO);
                 boolean userflag = systemAccountDAO.updateAccountToken(userid, moduleAccountObjectId, token);
-                if(accountFlag && userflag){
-                    retoken = true;
-                }else{
-                    retoken = false;
-                }
+                retoken = accountFlag && userflag;
             } else {
                 retoken = false;
             }
-        } else {
+        }else{
             retoken = false;
         }
+
         return retoken;
     }
 

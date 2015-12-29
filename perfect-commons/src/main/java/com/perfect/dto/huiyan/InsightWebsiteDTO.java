@@ -60,6 +60,11 @@ public class InsightWebsiteDTO {
     private int is_use;
 
     /**
+     * 百度账号ID
+     */
+    private Long account_id;
+
+    /**
      * 百度账号
      */
     private String bname;
@@ -156,14 +161,6 @@ public class InsightWebsiteDTO {
         this.icon = icon;
     }
 
-    public Boolean is_top() {
-        return is_top;
-    }
-
-    public void setIs_top(Boolean is_top) {
-        this.is_top = is_top;
-    }
-
     public int getIs_use() {
         return is_use;
     }
@@ -214,5 +211,21 @@ public class InsightWebsiteDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Boolean getIs_top() {
+        return is_top;
+    }
+
+    public void setIs_top(Boolean is_top) {
+        this.is_top = is_top;
+    }
+
+    public Long getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(Long account_id) {
+        this.account_id = account_id;
     }
 }

@@ -9,34 +9,34 @@ $(function () {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(1) ").addClass("current");
-            document.title='百思-用户管理';
+            document.title = '百思-用户管理';
         })
     } else if (href == "/roles") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(2) ").addClass("current");
         });
-        document.title='百思-角色管理';
+        document.title = '百思-角色管理';
     }
     else if (href == "/system") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(3) ").addClass("current");
         });
-        document.title='百思-系统模块';
+        document.title = '百思-系统模块';
     }
     else if (href == "/menus") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(4) ").addClass("current");
         });
-        document.title='百思-模块权限';
+        document.title = '百思-模块权限';
     }
     else if (href == "/logs") {
         $(".totalNav ").each(function () {
             $(this).removeClass("current");
             $(".totalNav:nth-child(5) ").addClass("current");
-            document.title='百思-日志管理';
+            document.title = '百思-日志管理';
         })
     }
     //表格公用
@@ -46,6 +46,8 @@ $(function () {
             if ($(this).html() == "绑定") {
                 $('#modelbox').modal()
                 $("#modelboxTitle").html("是否绑定？");
+                //取消绑定click事件
+                removeClick("modelboxBottom");
                 $("#modelboxBottom").click(function () {
                     $('#modelbox').modal('hide');
                     bindingtext.html("取消绑定");
@@ -53,7 +55,9 @@ $(function () {
 
             } else {
                 $("#modelboxTitle").html("是否取消绑定？");
-                $('#modelbox').modal()
+                $('#modelbox').modal();
+                //取消绑定click事件
+                removeClick("modelboxBottom");
                 $("#modelboxBottom").click(function () {
                     $('#modelbox').modal('hide');
                     bindingtext.html("绑定");
@@ -66,6 +70,8 @@ $(function () {
             if ($(this).html() == "禁用") {
                 $('#modelbox1').modal();
                 $("#modelboxTitle1").html("是否禁用？");
+                //取消绑定click事件
+                removeClick("modelboxBottom1");
                 $("#modelboxBottom1").click(function () {
                     $('#modelbox1').modal('hide');
                     $.ajax({
@@ -83,6 +89,8 @@ $(function () {
             } else {
                 $("#modelboxTitle1").html("是否启用？");
                 $('#modelbox1').modal()
+                //取消绑定click事件
+                removeClick("modelboxBottom1");
                 $("#modelboxBottom1").click(function () {
                     $('#modelbox1').modal('hide');
                     $.ajax({
@@ -194,6 +202,8 @@ $(function () {
             if (row.id != -1) {
                 $('#modelbox').modal();
                 $("#modelboxTitle").html("是否删除？");
+                //取消绑定click事件
+                removeClick("modelboxBottom");
                 $("#modelboxBottom").click(function () {
                     $.ajax({
                         url: '/sysroles/' + row.id,
@@ -327,6 +337,8 @@ $(function () {
         'click .password_User': function (e, value, row, index) {
             $('#modelbox2').modal();
             $("#modelboxTitle2").html("是否重置密码" + row.userName + "用户密码！");
+            //取消绑定click事件
+            removeClick("modelboxBottom2");
             $("#modelboxBottom2").click(function () {
                 console.log(value)
                 $('#modelbox2').modal('hide');
@@ -347,40 +359,44 @@ $(function () {
         'dblclick .updateToken': function (e, value, row, index) {
             $('#tokenBox').modal();
             $("#tokenBoxTitle").html("修改Token值！");
-            //判断是否绑定了click事件
-            var objEvt = $._data($("#tokenBoxBottom")[0], "events");
+            //取消绑定click事件
+            removeClick("tokenBoxBottom");
             $("#tokenBoxBottom").click(function () {
-                if (row.systemModal == "百思搜客") {
-                    $.ajax({
-                        url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
-                        type: 'post',
-                        dataType: 'json',
-                        success: function (user) {
-                            if (user.code == 0) {
-                                alert("token修改成功");
-                                window.location.reload();
-                            } else {
-                                alert("token修改失败,请查看账号密码和token是否正确");
-                                window.location.reload();
+                var tokenid = $("#tokenBoxInput").val();
+                if( tokenid.trim() != "" && tokenid != undefined){
+                    if (row.systemModal == "百思搜客") {
+                        $.ajax({
+                            url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
+                            type: 'post',
+                            dataType: 'json',
+                            success: function (user) {
+                                if (user.code == 0) {
+                                    alert("token修改成功");
+                                    window.location.reload();
+                                } else {
+                                    alert("token修改失败,请查看账号密码和token是否正确");
+                                }
                             }
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
-                        type: 'post',
-                        dataType: 'json',
-                        success: function (user) {
-                            if (user.code == 0) {
-                                alert("token修改成功");
-                                window.location.reload();
-                            } else {
-                                alert("token修改失败,请查看账号密码和token是否正确");
-                                window.location.reload();
+                        });
+                    } else {
+                        $.ajax({
+                            url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
+                            type: 'post',
+                            dataType: 'json',
+                            success: function (user) {
+                                if (user.code == 0) {
+                                    alert("token修改成功");
+                                    window.location.reload();
+                                } else {
+                                    alert("token修改失败,请查看账号密码和token是否正确");
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                }else{
+                    alert("请填写Token");
                 }
+
             })
         },
         'click .addRole': function (e, value, row, index) {
@@ -488,4 +504,10 @@ Date.prototype.Format = function (fmt) {
         if (new RegExp("(" + k + ")").test(fmt))
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+}
+
+var removeClick = function (id) {
+    //判断是否绑定了click事件
+    var objEvt = $._data($("#" + id + "")[0], "events");
+    if (objEvt && objEvt["click"]) $("#" + id + "").unbind("click");
 }

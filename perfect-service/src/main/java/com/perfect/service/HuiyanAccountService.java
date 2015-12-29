@@ -28,6 +28,14 @@ public interface HuiyanAccountService {
     List<InsightWebsiteDTO> queryInfo(String uid);
 
     /**
+     * 查询用户数据
+     *
+     * @param id
+     * @return
+     */
+    List<InsightWebsiteDTO> queryInfoByid(String id);
+
+    /**
      * 删除慧眼数据
      *
      * @param id

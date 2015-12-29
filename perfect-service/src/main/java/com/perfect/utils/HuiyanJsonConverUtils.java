@@ -36,6 +36,7 @@ public class HuiyanJsonConverUtils {
             dto.setBpasswd(e.getString("bpasswd"));
             dto.setRname(e.getString("rname"));
             dto.setToken(e.getString("token"));
+            dto.setAccount_id(e.getLong("account_id"));
             list.add(dto);
 
         });
