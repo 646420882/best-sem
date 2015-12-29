@@ -18,10 +18,10 @@
   </div>
   <div class="collapse navbar-collapse top_menu fr" id="example-navbar-collapse">
     <ul class="nav navbar-nav">
-      <li><a href="/#index"><span aria-hidden="true" class="glyphicon glyphicon-home"></span>首页</a></li>
+      <li><a href="/platform"><span aria-hidden="true" class="glyphicon glyphicon-home"></span>首页</a></li>
       <li>
         <span aria-hidden="true" class="glyphicon glyphicon-user fl"></span>
-        <span data-ng-bind="perfectUser" class="ng-binding">perfect2015</span>
+        <span data-ng-bind="perfectUser" class="ng-binding">${user.userName}</span>
       </li>
       <li><a href="/logout"><span aria-hidden="true" class="glyphicon glyphicon-share"></span>退出</a></li>
     </ul>

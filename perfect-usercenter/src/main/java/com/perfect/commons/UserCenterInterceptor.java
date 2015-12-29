@@ -50,7 +50,7 @@ public class UserCenterInterceptor implements HandlerInterceptor {
             Cookie[] cookies = request.getCookies();
             String userToken = "";
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(UserConstants.TOKEN_USER)) {
+                if (cookie.getName().equals(UserConstants.COOKIE_TOKEN)) {
                     userToken = cookie.getValue().toString();
                 }
             }
@@ -62,10 +62,12 @@ public class UserCenterInterceptor implements HandlerInterceptor {
                     SystemUserDTO systemUserDTO = RedisObtainedByToken.getUserInfo(token);
 
                     if (Objects.isNull(systemUserDTO)) {
+//                        ModelAndView view = new ModelAndView("redirect:/login");
                         response.sendRedirect("/login");
+                        return false;
                     }
 
-                    Cookie cookie = new Cookie(UserConstants.TOKEN_USER, token);
+                    Cookie cookie = new Cookie(UserConstants.COOKIE_TOKEN, token);
                     cookie.setMaxAge(30 * 60 * 60);
                     response.addCookie(cookie);
                     request.getSession().setAttribute(UserConstants.SESSION_USER, systemUserDTO);
@@ -75,6 +77,7 @@ public class UserCenterInterceptor implements HandlerInterceptor {
                     }
                 }
                 response.sendRedirect("/");
+                return false;
             }
 
             try {
@@ -83,10 +86,11 @@ public class UserCenterInterceptor implements HandlerInterceptor {
                     if (requestUrl.equals("/logout")) {
                         request.getSession().removeAttribute("user");
                         response.sendRedirect("/login");
+                        return false;
                     }
                     return true;
                 } else {
-                    Cookie cookie = new Cookie(UserConstants.TOKEN_USER, null);
+                    Cookie cookie = new Cookie(UserConstants.COOKIE_TOKEN, null);
                     cookie.setMaxAge(0);
                     response.addCookie(cookie);
                     response.sendRedirect("/login");

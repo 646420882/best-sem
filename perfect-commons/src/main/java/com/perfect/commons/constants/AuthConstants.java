@@ -28,6 +28,11 @@ public interface AuthConstants {
 
     String MODULE_ACCOUNT_INFO = "SOUKE_USER_MODULE_ACCOUNT_INFORMATION";
 
+    /**
+     * 慧眼数据访问接口
+     */
+    String HTTP_URL = "http://192.168.1.104:8000/config/site_list?";
+
     Map<String, String> SOUKE_MENU_INFO = new HashMap<String, String>() {{
         put("账户全景", "/");
         put("推广助手", "/assistant/index");
