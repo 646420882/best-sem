@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
  */
 public class CsvReadUtil implements Iterator<List<String>> {
     public static final String ENCODING_GBK = "GBK";
+    public static final String HTPP = "http://www.";
     private CsvListReader reader = null;
     private List<String> row = null;
     private String encoding;
@@ -259,7 +260,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
                     }
                 }
                 if (next().get(6) == null) {
-                    continue;
+                    crea.setPcDisplayUrl(HTPP + regDomain);
                 } else {
                     Pattern p = Pattern.compile("" + regDomain + "$", Pattern.CASE_INSENSITIVE);
                     Matcher m = p.matcher(next().get(6));
@@ -281,7 +282,7 @@ public class CsvReadUtil implements Iterator<List<String>> {
                     }
                 }
                 if (next().get(8) == null) {
-                    continue;
+                    crea.setMobileDisplayUrl(HTPP + regDomain);
                 } else {
                     Pattern p = Pattern.compile("" + regDomain + "$", Pattern.CASE_INSENSITIVE);
                     Matcher m = p.matcher(next().get(8));
