@@ -597,9 +597,9 @@ function addCreative() {
             "<td><input name='title' onkeyup='onKey(this);' style='width:140px;' maxlength='50'></td>" +
             " <td><input name='description1' onkeyup='onKey(this);'  style='width:140px;'  maxlength='80'></td>" +
             " <td><input name='description2' onkeyup='onKey(this);'  style='width:140px;' maxlength='80'></td>" +
-            " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='1024' ></td>" +
+            " <td><input name='pcDestinationUrl' onkeyup='onKey(this);' onblur='creativeUrlChange(this)' style='width:140px;'  maxlength='1024' ></td>" +
             " <td><input name='pcDisplayUrl' onkeyup='onKey(this);' style='width:140px;'  maxlength='36' ></td>" +
-            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='1017' ></td>" +
+            " <td><input name='mobileDestinationUrl' onkeyup='onKey(this);'  onblur='creativeUrlChange(this)' style='width:140px;' maxlength='1017' ></td>" +
             " <td><input name='mobileDisplayUrl' onkeyup='onKey(this);' style='width:140px;' maxlength='36' ></td>" +
             " <td><select name='pause'><option value='true'>启用</option><option value='false'>暂停</option></select></td>" +
             " <td><span>本地新增</span><input type='hidden' value='-1' name='status'></td>" +
@@ -1457,7 +1457,28 @@ function creativeListCheck() {
         document.getElementsByName("creativeAllCheck")[0].checked = false;
     }
 }
-
+var creativeUrlChange = function (_this) {
+    var doMain = $(".doMainS").html();
+    var name = $(_this).attr("name");
+    var _val = $(_this).val();
+    var _type = $(_this).attr("type");
+    if (_val.indexOf(doMain) > -1) {
+        switch (name) {
+            case "pcDestinationUrl":
+                if (!_type)
+                    $("input[name='pcDisplayUrl']").val("www." + doMain);
+                else
+                    $("#cUpdateForm input[name='pcDisplayUrl']").val("http://www." + doMain);
+                break;
+            case "mobileDestinationUrl":
+                if (!_type)
+                    $("input[name='mobileDisplayUrl']").val("www." + doMain);
+                else
+                    $("#cUpdateForm input[name='mobileDisplayUrl']").val("http://www." + doMain);
+                break;
+        }
+    }
+}
 
 
 

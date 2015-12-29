@@ -88,7 +88,7 @@ public class KeywordController {
         return new ModelAndView(getJsonView(JSONUtils.getJsonMapData(new KeywordDTO[]{keywordDTO})));
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView add(@RequestBody List<KeywordDTO> list) {
         List<String> stringList = keywordService.insertAll(list);
         return new ModelAndView(getJsonView(JSONUtils.getJsonMapData(stringList)));

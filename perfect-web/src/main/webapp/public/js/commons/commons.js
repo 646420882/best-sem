@@ -565,7 +565,6 @@ $.extend({
                 children_checks[i].checked = true;
             }
             $(children_checks).parent().parent().addClass("checked_all");
-            console.log(children_checks);
         }
         else {
             var children_checks = document.getElementsByName(checkIdStr);

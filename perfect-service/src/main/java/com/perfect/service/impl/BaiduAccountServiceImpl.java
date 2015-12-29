@@ -36,7 +36,7 @@ public class BaiduAccountServiceImpl implements BaiduAccountService {
 
         ModuleAccountInfoDTO moduleAccountInfoDTO = null;
         try {
-            systemUserModuleDTO.getAccounts().stream().filter(tmp -> tmp.getBaiduAccountId().equals(accountId)).findFirst().get();
+            moduleAccountInfoDTO = systemUserModuleDTO.getAccounts().stream().filter(tmp -> tmp.getBaiduAccountId().equals(accountId)).findFirst().get();
         } catch (Exception ex) {
             return null;
         }
