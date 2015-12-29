@@ -250,7 +250,7 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
     @Override
     public Long keywordCount(List<Long> adgroupIds) {
         return getMongoTemplate().count(Query.query(
-                        Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),
+                Criteria.where(MongoEntityConstants.ACCOUNT_ID).is(AppContext.getAccountId()).and(MongoEntityConstants.ADGROUP_ID).in(adgroupIds)),
                 getEntityClass());
     }
 
@@ -910,6 +910,22 @@ public class KeywordDAOImpl extends AbstractUserBaseDAOImpl<KeywordDTO, Long> im
         List<KeywordEntity> list = getMongoTemplate().find(query, getEntityClass());
         List<KeywordDTO> dtos = ObjectUtils.convert(list, getDTOClass());
         return dtos;
+    }
+
+    @Override
+    public List<String> findKeywordMarketStatus(String userName, long baiduAccountId, boolean isPause) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
+
+        final List<String> keywordMongoObjIds = Lists.newArrayList();
+
+        Query query = Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("p").is(!isPause));
+
+        mongoTemplate.find(query, getEntityClass()).stream().forEach(e -> {
+            if (Objects.nonNull(e.getKeywordId()))
+                keywordMongoObjIds.add(e.getKeywordId().toString());
+        });
+
+        return keywordMongoObjIds;
     }
 
     /**

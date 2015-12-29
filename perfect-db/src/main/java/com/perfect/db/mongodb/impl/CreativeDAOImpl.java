@@ -1,5 +1,6 @@
 package com.perfect.db.mongodb.impl;
 
+import com.google.common.collect.Lists;
 import com.perfect.commons.constants.MongoEntityConstants;
 import com.perfect.core.AppContext;
 import com.perfect.dao.creative.CreativeBackUpDAO;
@@ -489,6 +490,22 @@ public class CreativeDAOImpl extends AbstractUserBaseDAOImpl<CreativeDTO, Long> 
             return wrapperObject(creativeEntity);
 
         return null;
+    }
+
+    @Override
+    public List<String> findCreativeMarketStatus(String userName, long baiduAccountId, boolean isPause) {
+        MongoTemplate mongoTemplate = BaseMongoTemplate.getUserMongo(userName);
+
+        final List<String> creativeMongoObjIds = Lists.newArrayList();
+
+        Query query = Query.query(Criteria.where(ACCOUNT_ID).is(baiduAccountId).and("p").is(!isPause));
+
+        mongoTemplate.find(query, getEntityClass()).stream().forEach(e -> {
+            if (Objects.nonNull(e.getCreativeId()))
+                creativeMongoObjIds.add(e.getCreativeId().toString());
+        });
+
+        return creativeMongoObjIds;
     }
 
     private Integer getTotalCount(Query q, Class<?> cls) {

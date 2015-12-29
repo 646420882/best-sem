@@ -9,7 +9,7 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Objects;
 
 /**
  * Created on 2015-09-29.
@@ -19,12 +19,6 @@ import java.util.*;
  */
 @DisallowConcurrentExecution
 public class QuartzJobExecutor implements Job {
-
-    private static final Map<Integer, String> materialsResultMap = new HashMap<Integer, String>() {{
-        put(1, "新增");
-        put(2, "更新");
-        put(3, "删除");
-    }};
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzJobExecutor.class);
 
@@ -51,25 +45,35 @@ public class QuartzJobExecutor implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         ScheduledJob scheduledJob = (ScheduledJob) context.getMergedJobDataMap().get("scheduledJob");
-        String sysUser = scheduledJob.getJobName();
+        String sysUserName = scheduledJob.getJobName();
+        long baiduAccountId = Long.parseLong(scheduledJob.getJobName().split(":")[1]);
 
         switch (scheduledJob.getJobType()) {
+            // 物料上传
+            // 1. 上传本地新增物料
+            // 2. 启动凤巢中指定层级下暂停投放的物料
             case 10: {
-                LOGGER.info("==========开始上传 {} 的物料==========", sysUser);
-                Map<Integer, Set<Long>> result = materialsUploadService.upload(sysUser);
-                if (!result.isEmpty()) {
-                    result.forEach((k, v) -> {
-                        v.forEach(id -> LOGGER.info("ID为 {} 的百度帐号物料 {} 上传失败", id, materialsResultMap.get(k)));
-                    });
+                LOGGER.info("==========开始上传 {} 的物料==========", sysUserName);
+                // 提取物料层级
+                int level = scheduledJob.getJobLevel();
+                String[] jobContent = scheduledJob.getJobContent();
+                boolean result = materialsUploadService.uploadAndStartMaterials(sysUserName, baiduAccountId, level, jobContent);
+                if (!result) {
+                    LOGGER.info("ID为 {} 的百度帐号物料上传失败", baiduAccountId);
                 }
 
-                LOGGER.info("========== {} 的物料上传结束==========", sysUser);
+                LOGGER.info("========== {} 的物料上传结束==========", sysUserName);
                 break;
             }
+            // 物料暂停
+            // 暂停凤巢指定层级下正在进行投放的物料
             case 11: {
-                List<Long> result = materialsUploadService.pause(sysUser);
-                if (!result.isEmpty())
-                    result.forEach(id -> LOGGER.info("系统用户 {} 下, ID为 {} 的百度帐号暂停物料投放失败", sysUser, id));
+                // 提取物料层级
+                int level = scheduledJob.getJobLevel();
+                boolean result = materialsUploadService.pauseMaterials(sysUserName, baiduAccountId, level);
+                if (!result) {
+                    LOGGER.info("系统用户 {} 下, ID为 {} 的百度帐号暂停物料投放失败", sysUserName, baiduAccountId);
+                }
 
                 break;
             }
