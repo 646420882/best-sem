@@ -30,8 +30,8 @@
 
     &lt;%&ndash;<img src="${pageContext.request.contextPath}/public/img/login_bg.jpg" width="100%" height="100%">&ndash;%&gt;
 </div>--%>
-<div class="loginBg" style="position: fixed;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
-<div class="login_box">
+<div class="loginBg" style="position: fixed;width: 100%;height: 100%;z-index: -1;"></div>
+<div class="login_box" style="width:622px;">
     <div class="login_logo ">
         <a href="http://best-ad.cn/" target="_blank"><img
                 src="${pageContext.request.contextPath}/public/img/login_logo.png"></a>
@@ -70,7 +70,9 @@
                         <li>
                             <label for="j_validate">验证码：</label>
                             <input style="width: 50%" type="text" id="j_validate" name="j_validate"/>
-                            <b id="code" style="cursor: pointer;padding: 10px;font-size: 16px" onclick="createCodeLogin()"></b>
+                            <b id="code" style="cursor: pointer;padding: 10px;font-size: 16px"
+                               onclick="createCodeLogin()"></b>
+
                             <div>
                                 <b id="codeMsg"></b>
                             </div>
@@ -153,14 +155,14 @@
     $("#loginSec").click(function () {
         submitToCode();
     })
-    document.onkeydown=function(event){
+    document.onkeydown = function (event) {
         var e = event || window.event || arguments.callee.caller.arguments[0];
-        if(e && e.keyCode==13){ // enter 键
+        if (e && e.keyCode == 13) { // enter 键
             submitToCode();
         }
     };
 
-    var submitToCode = function(){
+    var submitToCode = function () {
         var inputCode = document.getElementById("j_validate").value.toUpperCase(); //取得输入的验证码并转化为大写
         if (inputCode.length <= 0) {
             $("#codeMsg").html("请输入验证码！");
