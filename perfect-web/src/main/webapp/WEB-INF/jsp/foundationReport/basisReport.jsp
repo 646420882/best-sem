@@ -84,9 +84,8 @@
         }
 
         #userStits, #shujuAll {
-            background: #D8E1E8;
+            background: white;
         }
-
         .tab_box {
             padding: 0px;
         }

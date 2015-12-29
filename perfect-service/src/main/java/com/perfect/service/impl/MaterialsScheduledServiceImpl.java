@@ -42,16 +42,16 @@ public class MaterialsScheduledServiceImpl implements MaterialsScheduledService 
 
     @Override
     public void configureScheduler(int jobType, int jobLevel, String[] jobContent, String cronExpression) {
-        String userName = AppContext.getUser();
-        String userId = systemUserDAO.findByUserName(userName).getId();
+        String jobName = AppContext.getUser() + ":" + AppContext.getAccountId();
+        String userId = systemUserDAO.findByUserName(AppContext.getUser()).getId();
         String jobId = getMD5(userId + ":" + jobType + ":" + jobLevel + ":" + Arrays.asList(jobContent).toString());
 
-        logger.info("Configure {}'s Scheduler: {}", userName, cronExpression);
+        logger.info("Configure {}'s Scheduler: {}", jobName, cronExpression);
 
         quartzJobManager.addJob(
                 new ScheduledJob.Builder()
                         .jobId(jobId)
-                        .jobName(userName)
+                        .jobName(jobName)
                         .jobGroup(MATERIALS_JOB_GROUP)
                         .jobType(jobType)
                         .jobLevel(jobLevel)

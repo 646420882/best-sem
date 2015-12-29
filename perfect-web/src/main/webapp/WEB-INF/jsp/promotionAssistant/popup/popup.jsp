@@ -323,9 +323,9 @@
                                                                                          class="chuangyi_fu"
                                                                                          value="插入{}符"
                                                                                          onclick="addTbDes2()"/></li>
-                <li><label>默认访问URL:<span>49/1024</span></label><input name="pcDestinationUrl" maxlength="1024"/></li>
+                <li><label>默认访问URL:<span>49/1024</span></label><input name="pcDestinationUrl" type='edit' maxlength="1024" onblur="creativeUrlChange(this)"/></li>
                 <li><label>默认显示URL:<span>35/36</span></label><input name="pcDisplayUrl" maxlength="36"/></li>
-                <li><label>移动访问URL:<span>49/1017</span></label><input name="mobileDestinationUrl" maxlength="1017"/>
+                <li><label>移动访问URL:<span>49/1017</span></label><input name="mobileDestinationUrl" type='edit' onblur="creativeUrlChange(this)" maxlength="1017"/>
                 </li>
                 <li><label>移动显示URL:<span>35/36</span></label><input name="mobileDisplayUrl" maxlength="36"/></li>
                 <li><label class="fl"><span>创意状态:</span></label><label id="cuStatus" class="fl">暂无</label><input

@@ -46,7 +46,7 @@ public class ScheduledJob implements Serializable {
     private final int jobLevel;
 
     /**
-     * 任务内容(凤巢的物料ID)
+     * 任务内容(物料ID)
      */
     private final String[] jobContent;
 

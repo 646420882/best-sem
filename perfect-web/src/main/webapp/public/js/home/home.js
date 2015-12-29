@@ -45,29 +45,15 @@ var genre = "";
 //日期控件坐标定位
 var _posX = 0, _posY = 0;
 var clickdddd = null;
-
-//双排日历初始化日期
-var flag = true;
-var flagt = true;
 function lisClick(obj, days) {
-    //$('.date_choice:eq(0)').daterangepicker({
-    //    "linkedCalendars": true
-    //})
-    if (days != null) {
-        getDateParam(days);
+    if (days == 1) {
+        $('.date_choice:eq(0)').children().find("b").html(GetDateStr(-1));
+
+    } else {
+        $('.date_choice:eq(0)').data('daterangepicker').setStartDate(GetDateStr(-days + 1));
+        $('.date_choice:eq(0)').data('daterangepicker').setEndDate(GetDateStr(0));
+        $('.date_choice:eq(0)').children().find("b").html(GetDateStr(-days + 1) + "至" + GetDateStr(0));
     }
-    setTimeout(function () {
-        if (days == 1) {
-            flag = true;
-            //$('.date_choice:eq(0)').data('daterangepicker').setStartDate(GetDateStr(-days));
-            //$('.date_choice:eq(0)').data('daterangepicker').setEndDate(GetDateStr(-days));
-            $('.date_choice:eq(0)').children().find("b").html(daterangepicker_start_date);
-        } else {
-            $('.date_choice:eq(0)').data('daterangepicker').setStartDate(GetDateStr(-days + 1));
-            $('.date_choice:eq(0)').data('daterangepicker').setEndDate(GetDateStr(0));
-            $('.date_choice:eq(0)').children().find("b").html(daterangepicker_start_date + "至" + daterangepicker_end_date);
-        }
-    })
     htmlLoding();
     getData();
     changedLiState(obj);
@@ -196,21 +182,7 @@ $(document).ready(function () {
                 }
                 $(".date_choice").children().find("b").html(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
             }
-            //console.log(_startDate);
         });
-    //双排日历初始化日期
-    $('.date_choice:eq(0)').click(function () {
-        if (flag) {
-            $(".ranges:eq(0)").find("li").click()
-            flag = false;
-        }
-    })
-    $('.date_choice:eq(3)').click(function () {
-        if (flagt) {
-            $(".ranges:eq(3)").find("li").click()
-            flagt = false;
-        }
-    })
     $(".ranges").hide();
     document.getElementById("background").style.display = "none";
     document.getElementById("progressBar1").style.display = "none";
@@ -223,7 +195,6 @@ $(document).ready(function () {
     loadKeywordQualityData();
 
 });
-
 function TestBlack(TagName) {
     var obj = document.getElementById(TagName);
     if (obj.style.display == "") {
@@ -244,30 +215,6 @@ function selectChange() {
  * 参数为30, 近30天
  * @param day
  */
-var getDateParam = function (day) {
-    var currDate = new Date();
-    if (day == 1) {
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-        daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
-        daterangepicker_end_date = daterangepicker_start_date;
-        $(".date_choice").children().find("b").html(daterangepicker_start_date);
-    } else if (day == 7) {
-        currDate = new Date();
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-        daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 6);
-        daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
-        $(".date_choice").children().find("b").html(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
-    } else if (day == 30) {
-        currDate = new Date();
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24);
-        daterangepicker_end_date = currDate.Format("yyyy-MM-dd");
-        currDate.setTime(currDate.getTime() - 1000 * 60 * 60 * 24 * 29);
-        daterangepicker_start_date = currDate.Format("yyyy-MM-dd");
-        $(".date_choice").children().find("b").html(daterangepicker_start_date + " 至 " + daterangepicker_end_date);
-    }
-};
-
 var judgeDet = 0;
 var perCount = 0;
 var startPer = 0;
@@ -281,10 +228,10 @@ var skipPagePer;
 var loadPerformance = function (obj, date) {
     $('.date_choice:eq(2)').data('daterangepicker').setStartDate(GetDateStr(-date + 1));
     $('.date_choice:eq(2)').data('daterangepicker').setEndDate(GetDateStr(0));
+    $(".date_choice:eq(2)").children().find("b").html(GetDateStr(-date + 1) + " 至 " + GetDateStr(0));
     if (obj != null) {
         changedLiState(obj);
     }
-    getDateParam(date);
     $.ajax({
         url: "/account/getPerformanceUser",
         type: "GET",
@@ -426,7 +373,7 @@ var unitTow = "次"
 var loadPerformanceCurve = function (obj, date) {
     $('.date_choice:eq(1)').data('daterangepicker').setStartDate(GetDateStr(-date + 1));
     $('.date_choice:eq(1)').data('daterangepicker').setEndDate(GetDateStr(0));
-
+    $(".date_choice:eq(1)").children().find("b").html(GetDateStr(-date + 1) + " 至 " + GetDateStr(0));
     if (obj != null) {
         changedLiState(obj);
     }
@@ -439,14 +386,12 @@ var loadPerformanceCurve = function (obj, date) {
     $("#containerLegend").empty();
     /*初始化曲线图所用需求*/
     $("#containerLegend").append("<div class='tu_top over'><ul><li>展示曲线</li>"
-        + "<li><label class='checkbox-inlines'><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></label></li>"
-        + "<li><label class='checkbox-inlines'><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></label></li>"
-        + "<li><label class='checkbox-inlines'><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></label></li>"
-        + "<li><label class='checkbox-inlines'><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></label></li>"
-        + "<li><label class='checkbox-inlines'><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></label></li>"
-        + "<li><label class='checkbox-inlines'><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></label></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
-
-    getDateParam(date);
+    + "<li><label class='checkbox-inlines'><input name='check' cname='impr' xname='' type='checkbox' checked='checked'><span class='blue' ></span><b>展现</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='clicks' xname='' type='checkbox' checked='checked'><span class='green'></span><b>点击</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='cost' xname='' type='checkbox'><span class='red'></span><b>消费</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='ctr' xname='' type='checkbox'><span class='blue2'></span><b>点击率</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='cpc' xname='' type='checkbox'><span class='green2'></span><b>平均点击价格</b></label></li>"
+    + "<li><label class='checkbox-inlines'><input name='check' cname='conv' xname='' type='checkbox'><span class='yellow'></span><b>转化</b></label></li><li><b style='color: red'>最多只能同时选择两项</b></li></ul></div>");
     //展现
     var t_impr = [];
     //点击数
@@ -1027,22 +972,20 @@ var curve = function () {
 
 var getImportKeywordDefault = function (obj, day) {
     if (day == 1) {
-        flagt = true;
-        //$('.date_choice:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day));
-        //$('.date_choice:eq(3)').data('daterangepicker').setEndDate(GetDateStr(-day));
+        $('.date_choice:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day));
+        $('.date_choice:eq(3)').data('daterangepicker').setEndDate(GetDateStr(-day));
+        $(".date_choice:eq(3)").children().find("b").html(GetDateStr(-day + 1));
     } else {
         $('.date_choice:eq(3)').data('daterangepicker').setStartDate(GetDateStr(-day + 1));
         $('.date_choice:eq(3)').data('daterangepicker').setEndDate(GetDateStr(0));
+        $(".date_choice:eq(3)").children().find("b").html(GetDateStr(-day + 1) + " 至 " + GetDateStr(0));
     }
     if (obj != null) {
         changedLiState(obj);
     }
-
-
     $("#importTr").empty();
     $("#importTr").append("<td style='color:red;'>加载中....</td>");
     statDate = day;
-    getDateParam(day);
     var _tr = $("#importTr");
     $.post("/import/getImportKeywordList", {
         startDate: daterangepicker_start_date,
@@ -1114,7 +1057,10 @@ function getData() {
 }
 
 //初始化账户概览页面数据
-lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
+setTimeout(function () {
+    lisClick($("#clickLis .current>a"), 1);//默认显示昨天的汇总数据
+}, 500)
+
 $(function () {
     $("[data-toggle='tooltip']").tooltip();
     $(".off").removeClass(".active");

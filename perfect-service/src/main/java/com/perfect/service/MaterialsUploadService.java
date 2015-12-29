@@ -42,38 +42,42 @@ public interface MaterialsUploadService {
      * 上传时的顺序为: 计划->单元->关键词、创意
      * </p>
      *
-     * @param baiduUserId 百度账号id
+     * @param baiduAccountId 百度账号id
      * @return {@code true} if upload success, otherwise, return {@code false}.
      */
-    boolean add(Long baiduUserId);
+    @Deprecated
+    boolean add(Long baiduAccountId);
 
     /**
      * <p>上传修改
      * 修改的部分包括: 账户、推广计划、推广单元、关键词、创意
      * </p>
      *
-     * @param baiduUserId
+     * @param baiduAccountId
      * @return
      */
-    boolean update(Long baiduUserId);
+    @Deprecated
+    boolean update(Long baiduAccountId);
 
     /**
      * <p>上传删除
      * 删除的部分包括: 推广计划、推广单元、关键词、创意
      * </p>
      *
-     * @param baiduUserId
+     * @param baiduAccountId
      * @return
      */
-    boolean delete(Long baiduUserId);
+    @Deprecated
+    boolean delete(Long baiduAccountId);
 
     /**
      * <p>上传指定百度账户下物料的新增、修改、删除</p>
      *
-     * @param baiduUserId
+     * @param baiduAccountId
      * @return
      */
-    Map<Integer, Long> upload(Long baiduUserId);
+    @Deprecated
+    Map<Integer, Long> upload(Long baiduAccountId);
 
     /**
      * <p>上传指定系统用户下物料的新增、修改、删除</p>
@@ -81,14 +85,16 @@ public interface MaterialsUploadService {
      * @param sysUser
      * @return 上传失败的百度账号
      */
+    @Deprecated
     Map<Integer, Set<Long>> upload(String sysUser);
 
     /**
      * <p>暂停指定百度账户下的物料投放</p>
      *
-     * @param baiduUserId
+     * @param baiduAccountId
      */
-    boolean pause(Long baiduUserId);
+    @Deprecated
+    boolean pause(Long baiduAccountId);
 
     /**
      * <p>暂停指定系统用户下的所有百度账户物料投放</p>
@@ -96,26 +102,35 @@ public interface MaterialsUploadService {
      * @param sysUser
      * @return 上传失败的百度账号
      */
+    @Deprecated
     List<Long> pause(String sysUser);
 
 
     // ==========================================================
 
     /**
-     * 上传本地新增物料并启用凤巢中暂停投放的关键词
+     * <p>
+     * 1. 上传本地新增物料
+     * 2. 启动凤巢中指定层级下暂停投放的物料
+     * </p>
      *
-     * @param level 物料层级
-     * @param ids   本地新增物料ID
+     * @param userName       系统用户名
+     * @param baiduAccountId 凤巢帐号ID
+     * @param level          物料层级
+     * @param materialsObjId 本地新增物料的Mongo ID
+     * @return
      */
-    void uploadAndStartMaterials(int level, String[] ids);
+    boolean uploadAndStartMaterials(String userName, long baiduAccountId, int level, String[] materialsObjId);
 
     /**
-     * 暂停指定物料的投放
+     * <p>暂停凤巢指定层级下正在进行投放的物料</p>
      *
-     * @param level 物料层级
-     * @param ids   凤巢物料ID(需要转换成{@code java.lang.Long})
+     * @param userName       系统用户名
+     * @param baiduAccountId 凤巢帐号ID
+     * @param level          物料层级
+     * @return
      */
-    void pauseMaterials(int level, String[] ids);
+    boolean pauseMaterials(String userName, long baiduAccountId, int level);
     // ==========================================================
 
 
