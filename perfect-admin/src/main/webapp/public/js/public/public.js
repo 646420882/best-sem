@@ -109,7 +109,19 @@ $(function () {
             }
         },
         'click .editor': function (e, value, row, index) {
-            var editorBottom = $(this);
+            var cTime = new Date(parseInt(row.ctime)).Format("yyyy-MM-dd hh:mm:ss");
+            $("#editRolePwdLi").hide();/*修改不要密码*/
+            $("#roleEdit").modal();
+            $("#rowIndex").val(index);
+            $("#editId").val(row.id);
+            $("#editRoleName").val(row.name);
+            $("#editRolePosition").val(row.title);
+            $("#editRoleAccount").val(row.loginName);
+            $("#editRoleManage").val(row.superAdmin?"true":"false");
+            $("#editRoleTransCreateTime").val(cTime);
+            $("#editRoleCreateTime").val(row.ctime);
+            $("#editRoleContact").val(row.contact);
+            /*var editorBottom = $(this);
             var that = $(this).parent().prevAll("td");
             var that_value = that.each(function (i) {
                 var that_html = $(this).html();
@@ -134,9 +146,9 @@ $(function () {
             editorBottom.hide();
             editorBottom.next(".preserve").attr("style", "display:block");
             editorBottom.next().next(".cancel").attr("style", "display:block");
-            editorBottom.next().next().next(".delete").attr("style", "display:none");
+            editorBottom.next().next().next(".delete").attr("style", "display:none");*/
         },
-        'click .preserve': function (e, value, row, index) {
+       /* 'click .preserve': function (e, value, row, index) {
             var preserveHtML = $(this);
             var preserveThat = $(this).parent().prevAll("td");
             var _newRow = {};
@@ -189,7 +201,7 @@ $(function () {
             preserveHtML.next(".cancel").attr("style", "display:none");
             preserveHtML.next().next(".delete").attr("style", "display:block");
             preserveHtML.prevAll().show();
-        },
+        },*/
         'click .cancel': function (e, value, row, index) {
             var cancelHtML = $(this);
             $("#roleAdmin").bootstrapTable("updateRow", {index: index, row: row});
@@ -424,7 +436,7 @@ $(function () {
 
             })
         },
-        'click .addRole': function (e, value, row, index) {
+        /*'click .addRole': function (e, value, row, index) {
             var readyAddData = {ctime: new Date().getTime()};
             var preserveThat = $(this).parent().prevAll("td");
             preserveThat.find("input")
@@ -475,7 +487,7 @@ $(function () {
                     }
                 }
             });
-        },
+        },*/
         'dblclick .startTime': function (e, value, row, index) {
 
         },

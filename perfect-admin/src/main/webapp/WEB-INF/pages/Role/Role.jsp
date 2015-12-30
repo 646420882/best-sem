@@ -58,7 +58,7 @@
                         </tr>
                         </thead>
                     </table>
-                    <div class="adminAddBtn" onclick="role.event.showAddRoleModal()">
+                    <div class="adminAddBtn" onclick="showAddRoleModal()">
                         <a href="javascript:;"><strong>+ &nbsp;&nbsp;新增角色</strong></a>
                     </div>
                 </div>
