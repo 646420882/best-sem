@@ -237,7 +237,6 @@
 .pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
     z-index: 0;
 }
-
 #roleEdit ul li {
     text-align: right;
     margin-top: 10px;
@@ -251,3 +250,49 @@
 #roleEdit ul li select {
     width: 68%;
 }
+
+/**按钮*/
+.modal-footer .btn {
+    padding: 0 27px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+.modal-footer .btn-primary {
+    color: #fff;
+}
+
+.h4, h4 {
+    font-size: 16px;
+}
+
+.daterangepicker .calendar th, .daterangepicker .calendar td {
+    font-family: "微软雅黑", "黑体";
+}
+
+.table-condensed > thead > tr > th, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > tbody > tr > td, .table-condensed > tfoot > tr > td {
+    padding: 7px 5px;
+    font-size: 12px;
+}
+
+.calendar-btn {
+    margin: 4px 4px 10px 4px;
+}
+
+.btn-success {
+    background: #01aef0;
+    border-color: #01aef0;
+}
+
+.btn-success:hover, .btn-success:focus, .btn-success.active, .open .dropdown-toggle.btn-success, .btn-primary:hover, .btn-primary:focus, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+    color: #fff;
+    background: #0298d0;
+    border-color: #0298d0;
+    width: auto;
+    height: 30px;
+    line-height: 30px;
+}
+

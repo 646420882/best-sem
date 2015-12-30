@@ -309,7 +309,7 @@
     vertical-align: middle;
     cursor: pointer;
     border: 1px solid transparent;
-    border-radius: 0px;
+    border-radius: 4px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -333,23 +333,10 @@
     color: #FFFFFF;
     border-radius: 2px;
 }
-
-.btn-success:hover, .btn-success:focus, .btn-success.active, .open .dropdown-toggle.btn-success {
-    color: #000000;
-    background-color: #1fb8f1;
-    border: none;
-    width: 74px;
-    height: 26px;
-}
-
-.btn-success:active {
-    color: #fff;
-    width: 74px;
-    height: 26px;
-    background-color: #1fb8f1;
-    border-color: #1fb8f1;
-    box-shadow: none;
-    box-shadow: 0 3px 3px #2d9dd5 inset;
+.range_inputs .btn{
+    padding:0px 28px;
+    height:30px;
+    line-height:30px;
 }
 .btn-default{
     background-color: #e4eafa;
@@ -389,9 +376,5 @@ select {
 }
 .daterangepicker_input{
     display: none;
-}
-.btn-success[disabled]{
-    background-color: rgba(34, 196, 255, 0.71);
-    border-color: rgba(34, 196, 255, 0.71);
 }
 
