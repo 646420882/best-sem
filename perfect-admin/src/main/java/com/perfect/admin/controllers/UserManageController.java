@@ -183,7 +183,8 @@ public class UserManageController {
     }
 
     @RequestMapping(value = "/users/{id}/time", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView updateAccountTime(@PathVariable("id") String id,
+    public ModelAndView updateAccountTime(
+                                          @PathVariable("id") String id,
                                           @RequestParam(value = "start", required = false) String start,
                                           @RequestParam(value = "end", required = false) String end) {
 
@@ -193,15 +194,15 @@ public class UserManageController {
 
         Date startDate = parseDate(start);
 
-        if (startDate == null) {
+        /*if (startDate == null) {
             return JsonViews.generate(-1, "起始时间格式错误.请使用(yyyy MM dd)/(yyyy-MM-dd)/(yyyy/MM/dd)");
-        }
+        }*/
 
         Date endDate = parseDate(end);
 
-        if (endDate == null) {
+        /*if (endDate == null) {
             return JsonViews.generate(-1, "结束时间格式错误.请使用(yyyy MM dd)/(yyyy-MM-dd)/(yyyy/MM/dd)");
-        }
+        }*/
 
 
         boolean success = systemUserService.updateAccountTime(id, startDate, endDate);

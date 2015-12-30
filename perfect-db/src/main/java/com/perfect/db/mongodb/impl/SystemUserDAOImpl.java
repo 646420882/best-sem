@@ -252,15 +252,15 @@ public class SystemUserDAOImpl extends AbstractSysBaseDAOImpl<SystemUserDTO, Str
 
         Update update = new Update();
         if (startDate != null) {
-            update = update.set("startTime", startDate.getTime());
+            update = update.set("modules.$.startTime", startDate.getTime());
         }
 
         if (endDate != null) {
-            update = update.set("endTime", endDate.getTime());
+            update = update.set("modules.$.endTime", endDate.getTime());
         }
 
-        WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where(SYSTEM_ID).is(id)), update,
-                getEntityClass());
+
+        WriteResult wr = getSysMongoTemplate().updateFirst(Query.query(Criteria.where("modules._id").is(new ObjectId(id))), update, getEntityClass());
 
         return wr.getN() == 1;
     }

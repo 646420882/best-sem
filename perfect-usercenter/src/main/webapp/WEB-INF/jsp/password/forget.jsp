@@ -13,15 +13,6 @@
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/onlyLogin.css">
-    <script>
-        var _pct = _pct || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "//t.best-ad.cn/t.js?tid=76c005e89e020c6e8813a5adaba384d7";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
 </head>
 <body>
 <div class="loginBg" style="position: absolute;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
@@ -40,34 +31,28 @@
             <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img
                     src="${pageContext.request.contextPath}/public/img/surecount.png" alt=""/></div>
             <div class="forget_form">
-                <input type="hidden" name="redirect" value="${redirect_url}"/>
+                <div class="login_part1">
+                    <form id="forgetFrm" action="recoverPwd" method="post">
+                        <div class="forget_input">
+                            <ul>
+                                <li>
+                                    <label for="j_username">请输入要找回的账户：</label>
+                                    <input type="text" id="j_username" name="username" placeholder="请输入登录账号" value=""/>
+                                </li>
+                                <li>
+                                    <label>请输入注册邮箱：</label>
+                                    <input type="email" id="email" name="email" placeholder="请输入邮箱地址" value=""/>
+                                </li>
 
-                <div class="login_part1 ">
-                    <div class="forget_input">
-                        <ul>
-                            <li>
-                                <label for="j_username">请输入要找回的账户：</label>
-                                <input type="text" id="j_username" name="j_username" placeholder="请输入登录账号"/>
-
-                                <div>
-                                    <b id="invalidUserName">${invalidUserName}</b>
-                                </div>
-                            </li>
-                            <li>
-                                <label>请输入注册邮箱：</label>
-                                <input type="email" id="email" name="j_password" placeholder="请输入邮箱地址"/>
-                                <%--<span><img src="${pageContext.request.contextPath}/public/img/login_lock.png"></span>--%>
-
-                                <div>
-                                    <b id="invalidEmail">${invalidEmail}</b>
-                                </div>
-                            </li>
-
-                            <li>
-                                <a class="next" href="/reset">下一步</a>
-                            </li>
-                        </ul>
-                    </div>
+                                <li>
+                                    <input type="button" id="forBtn" class="loginButton" value="下一步"/>
+                                </li>
+                            </ul>
+                            <div>
+                                <b id="invalidMsg">${invalidMsg}</b>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -83,26 +68,44 @@
 <script type="text/javascript">
     window.jQuery || document.write("<script src='http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js'>\x3C/script>");
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/public/js/loginOrReg/forgetPassword.js"></script>
 <script type="text/javascript">
+
     $(function () {
-        var _invalidUserName = "${invalidUserName}";
-        var _invalidPassword = "${invalidPassword}";
+        $("#forBtn").click(function(){
+            var username = $("#j_username").val();
+            var email = $("#email").val();
+            if(username == "" || username == undefined){
+                userMsgInfos("请填写用户名！");
+            }else if(email == "" || email==undefined){
+                userMsgInfos("请填写邮箱地址！");
+            }else{
+                if(validateEmail(email)){
+                    $("#forgetFrm").submit()
+                }else{
+                    userMsgInfos("请输入正确格式的邮箱地址！");
+                }
+            }
+        });
 
-        if (_invalidUserName == "") {
-            $("#invalidUserName").parent().removeClass("login_checkbox");
-        } else {
-            $("#invalidUserName").parent().addClass("login_checkbox");
-        }
-
-        if (_invalidPassword == "") {
-            $("#invalidPassword").parent().removeClass("login_checkbox");
-
-        } else {
-            $("#invalidPassword").parent().addClass("login_checkbox");
-        }
     });
-
+    var userMsgInfos = function (info) {
+        var _invalidMsg = "";
+        if (info != "" && info != undefined) {
+            _invalidMsg = info;
+        } else {
+            _invalidMsg = "${invalidMsg}";
+        }
+        $("#invalidMsg").html(_invalidMsg);
+        if (_invalidMsg == "") {
+            $("#invalidMsg").removeClass("login_checkbox");
+        } else {
+            $("#invalidMsg").addClass("login_checkbox");
+        }
+    }
+    var validateEmail = function (email) {
+        var regx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return regx.test(email);
+    };
 </script>
 
 </body>

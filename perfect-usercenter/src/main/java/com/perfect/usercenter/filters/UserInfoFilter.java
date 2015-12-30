@@ -48,7 +48,14 @@ public class UserInfoFilter implements Filter {
                 // 注销操作
             } else if (url.equals("/logout")) {
                 httpServletRequest.getSession().setAttribute(UserConstants.SESSION_USER, null);
-            } else if (url.equals("/register") || url.equals("/getPlatform") || url.equals("/userAdd") || url.equals("/toUserCenter") || url.equals("/forget") || url.equals("/reset") ){
+            } else if (url.equals("/register") ||
+                    url.equals("/getPlatform") ||
+                    url.equals("/userAdd") ||
+                    url.equals("/toUserCenter") ||
+                    url.equals("/forget") ||
+                    url.equals("/reset") ||
+                    url.equals("/recoverPwd") ||
+                    url.equals("/resetPwd")) {
                 chain.doFilter(request, response);
                 return;
             }

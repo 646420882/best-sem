@@ -5,12 +5,14 @@ import com.perfect.commons.SessionContext;
 import com.perfect.commons.constants.UserConstants;
 import com.perfect.core.AppContext;
 import com.perfect.service.UserAccountService;
+import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -104,7 +106,24 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
-    public ModelAndView reset() { return new ModelAndView("/password/reset"); }
+    public ModelAndView reset(HttpServletRequest request,
+                              ModelMap model) {
+        String userId = request.getParameter("u");
+        String userTokenId = request.getParameter("t");
+        Jedis jc = JRedisUtils.get();
+        try {
+            boolean jedisKey = jc.exists(userTokenId);
+            if (jedisKey) {
+                model.put("userid", userId);
+                return new ModelAndView("/password/reset", model);
+            } else {
+                model.put("invalidMsg", "验证连接已失效,请重新验证！");
+                return new ModelAndView("/password/forget", model);
+            }
+        } finally {
+            jc.close();
+        }
+    }
 
     @RequestMapping(value = "/safetyTool", method = RequestMethod.GET)
     public ModelAndView safetyTool(ModelMap modelMap) {

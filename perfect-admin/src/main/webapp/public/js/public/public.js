@@ -336,9 +336,27 @@ $(function () {
                             "firstDay": 1
                         },
                     },
-                    function (start, end, label, e, obj) {
+                    function (start, end, label, e) {
                         var _endDate = end.format('YYYY年M月DD日');
-                        //$(this).val(_endDate)
+                        $(this).val(_endDate)
+                        var id = $(this)[0].element[0].id.replace("start", "").replace("end", "");
+                        var startDate, endDate;
+                        if ($(this)[0].element[0].id.indexOf("start") != -1) {
+                            startDate = end.format('YYYY-M-DD');
+                        } else {
+                            endDate = end.format('YYYY-M-DD');
+                        }
+                        $.ajax({
+                            url: "/users/" + id + "/time",
+                            type: 'POST',
+                            data: {
+                                start: startDate,
+                                end: endDate
+                            },
+                            success: function (res) {
+
+                            }
+                        })
                     });
                 $(".lookTableRow").parent().attr('style', 'padding: 0 !important');
             }

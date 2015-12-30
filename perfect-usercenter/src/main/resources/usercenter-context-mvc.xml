@@ -40,6 +40,8 @@
                         <value>/reset</value>
                         <value>/userAdd</value>
                         <value>/getPlatform</value>
+                        <value>/recoverPwd</value>
+                        <value>/resetPwd</value>
                     </list>
                 </property>
             </bean>
