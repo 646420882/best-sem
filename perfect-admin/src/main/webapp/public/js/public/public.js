@@ -109,7 +109,19 @@ $(function () {
             }
         },
         'click .editor': function (e, value, row, index) {
-            var editorBottom = $(this);
+            var cTime = new Date(parseInt(row.ctime)).Format("yyyy-MM-dd hh:mm:ss");
+            $("#editRolePwdLi").hide();/*修改不要密码*/
+            $("#roleEdit").modal();
+            $("#rowIndex").val(index);
+            $("#editId").val(row.id);
+            $("#editRoleName").val(row.name);
+            $("#editRolePosition").val(row.title);
+            $("#editRoleAccount").val(row.loginName);
+            $("#editRoleManage").val(row.superAdmin?"true":"false");
+            $("#editRoleTransCreateTime").val(cTime);
+            $("#editRoleCreateTime").val(row.ctime);
+            $("#editRoleContact").val(row.contact);
+            /*var editorBottom = $(this);
             var that = $(this).parent().prevAll("td");
             var that_value = that.each(function (i) {
                 var that_html = $(this).html();
@@ -134,9 +146,9 @@ $(function () {
             editorBottom.hide();
             editorBottom.next(".preserve").attr("style", "display:block");
             editorBottom.next().next(".cancel").attr("style", "display:block");
-            editorBottom.next().next().next(".delete").attr("style", "display:none");
+            editorBottom.next().next().next(".delete").attr("style", "display:none");*/
         },
-        'click .preserve': function (e, value, row, index) {
+       /* 'click .preserve': function (e, value, row, index) {
             var preserveHtML = $(this);
             var preserveThat = $(this).parent().prevAll("td");
             var _newRow = {};
@@ -189,7 +201,7 @@ $(function () {
             preserveHtML.next(".cancel").attr("style", "display:none");
             preserveHtML.next().next(".delete").attr("style", "display:block");
             preserveHtML.prevAll().show();
-        },
+        },*/
         'click .cancel': function (e, value, row, index) {
             var cancelHtML = $(this);
             $("#roleAdmin").bootstrapTable("updateRow", {index: index, row: row});
@@ -305,31 +317,29 @@ $(function () {
                     data: datas
                 });
                 $('input[name="reservation"]').daterangepicker({
-                            "showDropdowns": true,
-                            "singleDatePicker": true,
-                            "timePicker24Hour": true,
-                            timePicker: true,
-                            timePickerIncrement: 30,
-                            format: 'YY/MM/DD',
-                            "locale": {
-                                "format": "YYYY年M月DD日",
-                                "separator": " - ",
-                                "applyLabel": "确定",
-                                "cancelLabel": "关闭",
-                                "fromLabel": "From",
-                                "toLabel": "To",
-                                "customRangeLabel": "Custom",
-                                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
-                                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                                "firstDay": 1
-                            },
+                        "showDropdowns": true,
+                        "singleDatePicker": true,
+                        "timePicker24Hour": true,
+                        timePicker: true,
+                        timePickerIncrement: 30,
+                        format: 'YY/MM/DD',
+                        "locale": {
+                            "format": "YYYY年M月DD日",
+                            "separator": " - ",
+                            "applyLabel": "确定",
+                            "cancelLabel": "关闭",
+                            "fromLabel": "From",
+                            "toLabel": "To",
+                            "customRangeLabel": "Custom",
+                            "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                            "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                            "firstDay": 1
                         },
-                        function (start, end, label, e) {
-                            var _endDate = end.format('YYYY年M月DD日');
-                            $(this).val(_endDate)
-                        });
-
-
+                    },
+                    function (start, end, label, e, obj) {
+                        var _endDate = end.format('YYYY年M月DD日');
+                        //$(this).val(_endDate)
+                    });
                 $(".lookTableRow").parent().attr('style', 'padding: 0 !important');
             }
         },
@@ -390,7 +400,7 @@ $(function () {
             removeClick("tokenBoxBottom");
             $("#tokenBoxBottom").click(function () {
                 var tokenid = $("#tokenBoxInput").val();
-                if( tokenid.trim() != "" && tokenid != undefined){
+                if (tokenid.trim() != "" && tokenid != undefined) {
                     if (row.systemModal == "百思搜客") {
                         $.ajax({
                             url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
@@ -420,13 +430,13 @@ $(function () {
                             }
                         });
                     }
-                }else{
+                } else {
                     alert("请填写Token");
                 }
 
             })
         },
-        'click .addRole': function (e, value, row, index) {
+        /*'click .addRole': function (e, value, row, index) {
             var readyAddData = {ctime: new Date().getTime()};
             var preserveThat = $(this).parent().prevAll("td");
             preserveThat.find("input")
@@ -477,7 +487,7 @@ $(function () {
                     }
                 }
             });
-        },
+        },*/
         'dblclick .startTime': function (e, value, row, index) {
 
         },

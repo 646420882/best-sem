@@ -10,6 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public.css">
     <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
@@ -72,7 +73,6 @@
                             <input style="width: 50%" type="text" id="j_validate" name="j_validate"/>
                             <b id="code" style="cursor: pointer;padding: 10px;font-size: 16px"
                                onclick="createCodeLogin()"></b>
-
                             <div>
                                 <b id="codeMsg"></b>
                             </div>
@@ -80,7 +80,7 @@
                         <li>
                             <input type="button" id="loginSec" class="loginButton" value="登陆"/>
                         </li>
-                        <li><a id="forgetPassword" class="fr" href="#">忘记密码?</a></li>
+                        <li><a class="fr" href="/forget">忘记密码?</a></li>
                     </ul>
                 </div>
                 <%--<div class="login_part2">

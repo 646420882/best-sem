@@ -1,4 +1,4 @@
-package com.perfect.commons.email;
+package com.perfect.utils.email;
 
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
@@ -6,6 +6,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.MultiPartEmail;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
@@ -13,18 +14,20 @@ import java.util.Properties;
  *
  * @author dolphineor
  */
-public class EmailHelper {
+public class EmailUtils {
+
+    private static final String CHARSET_UTF_8 = "UTF-8";
 
     private static String hostName;     // 邮件服务器
-    private static String from;         // 发送邮箱地址
-    private static String userName;     // 用户名
+    private static String from;         // 邮件发送者
+    private static String userName;     // 邮箱地址
     private static String password;     // 密码
 
     static {
         Properties props = new Properties();
 
         try {
-            props.load(EmailHelper.class.getClassLoader().getResourceAsStream("email.properties"));
+            props.load(new InputStreamReader(EmailUtils.class.getClassLoader().getResourceAsStream("email.properties"), CHARSET_UTF_8));
 
             hostName = props.getProperty("email.hostName");
             from = props.getProperty("email.from");
@@ -47,7 +50,7 @@ public class EmailHelper {
 
         email.setHostName(hostName);
         email.setAuthentication(userName, password);
-        email.setCharset("UTF-8");
+        email.setCharset(CHARSET_UTF_8);
         email.setStartTLSEnabled(true);
         try {
             email.setFrom(userName, from);
@@ -72,7 +75,7 @@ public class EmailHelper {
         MultiPartEmail email = new MultiPartEmail();
         email.setHostName(hostName);
         email.setAuthentication(userName, password);
-        email.setCharset("UTF-8");
+        email.setCharset(CHARSET_UTF_8);
         email.setStartTLSEnabled(true);
         try {
             email.setFrom(from);

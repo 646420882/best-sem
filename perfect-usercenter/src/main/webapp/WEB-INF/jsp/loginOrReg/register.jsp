@@ -10,6 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
     <title>大数据智能营销</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/public.css">
     <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/bootstrap.min.css">--%>
@@ -21,7 +22,7 @@
 <body>
 <div class="login">
     <%--<img src="/public/img/login_bg.jpg" width="100%" height="100%">--%>
-    <div class="loginBg" style="position: fixed;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
+    <div class="loginBg" style="position: fixed;width: 100%;height: 100%;z-index: -1;"></div>
     <div class="registe_box">
         <div class="login_logo2 ">
             <a href="http://best-ad.cn/" target="_blank"><img src="/public/img/login_logo.png"></a>
@@ -56,7 +57,10 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput form-control" type="text" name="username">
+                                        <input class="registeInput form-control" type="text" name="username"
+                                               placeholder="请输入6~32位英文字母、数字、汉字组"
+                                               onfocus="if(value=='请输入6~32位英文字母、数字、汉字组') {value=''}"
+                                               onblur="if (value=='') {value='请输入6~32位英文字母、数字、汉字组'}">
                                     </div>
                                 </div>
 
@@ -67,7 +71,8 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput form-control" type="text" name="email"/>
+                                        <input class="registeInput form-control" required type="email"
+                                               data-bv-emailaddress-message="请输入正确的邮箱地址" name="email"/>
                                     </div>
                                 </div>
                                 <span style="color: red" class="register_star">*</span>
@@ -77,7 +82,10 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput form-control" type="password" name="password">
+                                        <input class="registeInput form-control" type="password" name="password"
+                                               placeholder="密码的长度必须在6～16个字符之间"
+                                               onfocus="if(value=='密码的长度必须在6～16个字符之间') {value=''}"
+                                               onblur="if (value=='') {value='密码的长度必须在6～16个字符之间'}">
                                     </div>
                                 </div>
                                 <span style="color: red" class="register_star">*</span>
@@ -87,7 +95,10 @@
 
                                 <div class="form-group has-feedback">
                                     <div>
-                                        <input class="registeInput form-control" type="password" name="confirmPassword">
+                                        <input class="registeInput form-control" type="password" name="confirmPassword"
+                                               placeholder="请再次输入密码"
+                                               onfocus="if(value=='请再次输入密码') {value=''}"
+                                               onblur="if (value=='') {value='请再次输入密码'}">
                                     </div>
                                 </div>
                                 <span style="color: red" class="register_star">*</span>
@@ -159,8 +170,11 @@
                                 <label class="fl">网站URL地址：</label>
 
                                 <div class="form-group has-feedback">
-                                    <div>
-                                        <input class="registeInput form-control" type="text" name="urlAddress">
+                                    <div class="web_box">
+                                        <span class="web_title">https://</span>
+                                        <input class="registeInput form-control" type="url" name="urlAddress"
+                                               style="padding-left:60px;"
+                                               data-bv-uri-message="请输入正确的网站地址">
                                     </div>
                                 </div>
                                 <span style="color: red;display: none" class="register_star NameStar">*</span>
@@ -350,15 +364,11 @@
                         }
                     }
                 },
-                companyname: {
-                    validators: {
-                        notEmpty: {
-                            message: '公司名称不能为空'
-                        }
-                    }
-                },
                 email: {
                     validators: {
+                        notEmpty: {
+                            message: '邮箱地址不能为空'
+                        },
                         emailAddress: {
                             message: '请输入正确的邮箱地址'
                         }

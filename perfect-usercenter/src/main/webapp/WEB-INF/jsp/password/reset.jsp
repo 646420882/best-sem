@@ -27,7 +27,7 @@
 <div class="loginBg" style="position: absolute;width: 100%;height: 100%;background: #e7e7e7;z-index: -1;"></div>
 
 <div class="login">
-    <div class="login_box">
+    <div class="login_box ">
         <div class="login_logo ">
             <a href="http://best-ad.cn/" target="_blank"><img
                     src="${pageContext.request.contextPath}/public/img/login_logo.png"></a>
@@ -38,7 +38,7 @@
                 <a href="/" class="fr">→ 返回</a>
             </div>
             <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img
-                    src="${pageContext.request.contextPath}/public/img/surecount.png" alt=""/></div>
+                    src="${pageContext.request.contextPath}/public/img/resetpassword.png" alt=""/></div>
             <div class="forget_form">
                 <input type="hidden" name="redirect" value="${redirect_url}"/>
 
@@ -46,25 +46,61 @@
                     <div class="forget_input">
                         <ul>
                             <li>
-                                <label for="j_username">请输入要找回的账户：</label>
-                                <input type="text" id="j_username" name="j_username" placeholder="请输入登录账号"/>
+                                <label for="j_username">请输入新密码：</label>
+                                <input type="password" id="j_username" name="j_username" placeholder="请输入登陆密码"/>
 
                                 <div>
                                     <b id="invalidUserName">${invalidUserName}</b>
                                 </div>
                             </li>
                             <li>
-                                <label>请输入注册邮箱：</label>
-                                <input type="email" id="email" name="j_password" placeholder="请输入邮箱地址"/>
-                                <%--<span><img src="${pageContext.request.contextPath}/public/img/login_lock.png"></span>--%>
+                                <label>确认密码：</label>
+                                <input type="password" id="email" name="j_password" placeholder="请输入登陆密码"/>
 
                                 <div>
-                                    <b id="invalidEmail">${invalidEmail}</b>
+                                    <b id="invalidemail">${invalidPassword}</b>
                                 </div>
                             </li>
-
                             <li>
-                                <a class="next" href="/reset">下一步</a>
+                                <label for="j_validate">验证码：</label>
+                                <input style="width: 50%" type="text" id="j_validate" name="j_validate"/>
+                                <b>4598</b>
+                            </li>
+                            <li>
+                                <input type="submit" class="loginButton" onclick="next_complete()" value="下一步"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login_contact over">
+            <a href="http://www.perfect-cn.cn/" target="_blank">普菲特官网 </a>如在使用过程中有任何问题请联系客服：010-84922996
+            <script type="text/javascript">
+                var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F9e0d99624d24d17bb95abc5ca469c64e' type='text/javascript'%3E%3C/script%3E"));
+            </script>
+        </div>
+    </div>
+    <div class="login_box hides">
+        <div class="login_logo ">
+            <a href="http://best-ad.cn/" target="_blank"><img
+                    src="${pageContext.request.contextPath}/public/img/login_logo.png"></a>
+        </div>
+        <div class="login_box1">
+            <div class="forget_click over">
+                <span class="fl">找回密码</span>
+                <a href="/" class="fr">→ 返回</a>
+            </div>
+            <div style="background-color: #f2fbff;padding: 40px 0 0 29px;"><img
+                    src="${pageContext.request.contextPath}/public/img/complete.png" alt=""/></div>
+            <div class="forget_form">
+                <input type="hidden" name="redirect" value="${redirect_url}"/>
+                <div class="login_part1 ">
+                    <div class="forget_input" style="margin-left: 120px;">
+                        <ul>
+                            <li>
+                                密码已重置完成，请 <a href="/" class="completeButton" value="登陆"/>登录</a>
                             </li>
                         </ul>
                     </div>
@@ -86,6 +122,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/loginOrReg/forgetPassword.js"></script>
 <script type="text/javascript">
     $(function () {
+
         var _invalidUserName = "${invalidUserName}";
         var _invalidPassword = "${invalidPassword}";
 

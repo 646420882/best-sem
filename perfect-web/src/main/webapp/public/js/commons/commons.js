@@ -1556,10 +1556,10 @@ var timing = {
         }
 
         var cronExpression = "0 0 " + hour + " " + day + " " + month + " ? " + year;
-
         if (this.operationType == "Enable") {
             if (this.elementLength == 0) {
-                alert("没有可操作的物料!");
+                var TimingIcon = "<img src='/public/img/prompt.png' style='margin-right:10px;'>";
+                PromptBox.show("系统提示", "<span style='margin:60px 100px;'>" + TimingIcon + "请选择要操作的内容" + "</span>", 1);
                 return;
             }
 

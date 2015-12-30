@@ -26,6 +26,29 @@
         <connection>scm:git@github.com:zerocoolys/best-sem.git</connection>
     </scm>
 
+    <properties>
+        <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+        <spring.version>4.1.8.RELEASE</spring.version>
+        <spring.data.mongo.version>1.7.2.RELEASE</spring.data.mongo.version>
+        <spring.security.version>3.2.9.RELEASE</spring.security.version>
+        <elasticsearch.version>2.1.0</elasticsearch.version>
+        <cglib.version>3.1</cglib.version>
+        <guava.version>19.0</guava.version>
+        <fasterxml.jackson.version>2.5.5</fasterxml.jackson.version>
+        <httpclient.version>4.5.1</httpclient.version>
+        <jstl.version>1.2</jstl.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <mockito.version>1.9.5</mockito.version>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.api.version>1.7.12</slf4j.api.version>
+        <slf4j.log4j12.version>1.7.12</slf4j.log4j12.version>
+        <nexus.local.url>http://repo.best-ad.cn/nexus</nexus.local.url>
+        <best.email.hostName>smtp.mxhichina.com</best.email.hostName>
+        <best.email.from>百思用户管理中心</best.email.from>
+        <best.email.userName>bestad_hy@perfect-cn.cn</best.email.userName>
+        <best.email.password>Abcd1234</best.email.password>
+    </properties>
+
     <profiles>
         <profile>
             <id>dev</id>
@@ -44,6 +67,11 @@
 
                 <es.host>192.168.100.10:29300</es.host>
                 <es.cluster>es-intern-cluster</es.cluster>
+
+                <email.hostName>${best.email.hostName}</email.hostName>
+                <email.from>${best.email.from}</email.from>
+                <email.userName>${best.email.userName}</email.userName>
+                <email.password>${best.email.password}</email.password>
             </properties>
         </profile>
         <profile>
@@ -61,12 +89,18 @@
 
                 <es.host>114.112.98.68:30101,114.112.98.68:30102,114.112.98.67:30103,114.112.98.67:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>
+
+                <!-- Email -->
+                <email.hostName>${best.email.hostName}</email.hostName>
+                <email.from>${best.email.from}</email.from>
+                <email.userName>${best.email.userName}</email.userName>
+                <email.password>${best.email.password}</email.password>
             </properties>
         </profile>
         <profile>
-            <id>tmp_prod</id>
+            <id>prodBeta</id>
             <properties>
-                <env>tmp_prod</env>
+                <env>prodBeta</env>
 
                 <redis.host>114.112.98.68</redis.host>
                 <redis.port>16379</redis.port>
@@ -79,28 +113,14 @@
 
                 <es.host>114.112.98.68:30101,114.112.98.68:30102,114.112.98.67:30103,114.112.98.67:30104</es.host>
                 <es.cluster>huiyan_prod</es.cluster>
+
+                <email.hostName>${best.email.hostName}</email.hostName>
+                <email.from>${best.email.from}</email.from>
+                <email.userName>${best.email.userName}</email.userName>
+                <email.password>${best.email.password}</email.password>
             </properties>
         </profile>
     </profiles>
-
-    <properties>
-        <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
-        <spring.version>4.1.8.RELEASE</spring.version>
-        <spring.data.mongo.version>1.7.2.RELEASE</spring.data.mongo.version>
-        <spring.security.version>3.2.9.RELEASE</spring.security.version>
-        <elasticsearch.version>2.1.0</elasticsearch.version>
-        <cglib.version>3.1</cglib.version>
-        <guava.version>19.0</guava.version>
-        <fasterxml.jackson.version>2.5.5</fasterxml.jackson.version>
-        <httpclient.version>4.5.1</httpclient.version>
-        <jstl.version>1.2</jstl.version>
-        <hamcrest.version>1.3</hamcrest.version>
-        <mockito.version>1.9.5</mockito.version>
-        <log4j.version>1.2.17</log4j.version>
-        <slf4j.api.version>1.7.12</slf4j.api.version>
-        <slf4j.log4j12.version>1.7.12</slf4j.log4j12.version>
-        <nexus.local.url>http://repo.best-ad.cn/nexus</nexus.local.url>
-    </properties>
 
     <repositories>
         <repository>

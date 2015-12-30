@@ -1,10 +1,12 @@
 package com.perfect.usercenter.controller;
 
 import com.google.common.collect.Maps;
-import com.perfect.commons.email.EmailHelper;
+import com.perfect.commons.constants.EmailConstants;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.UserAccountService;
+import com.perfect.utils.CaptchaUtils;
+import com.perfect.utils.email.EmailUtils;
 import com.perfect.utils.json.JSONUtils;
 import com.perfect.utils.redis.JRedisUtils;
 import org.springframework.context.annotation.Scope;
@@ -19,7 +21,9 @@ import redis.clients.jedis.Jedis;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created on 2015-12-20.
@@ -29,25 +33,9 @@ import java.util.*;
 @RestController
 @Scope("prototype")
 @RequestMapping("/account")
-public class UserAccountController {
+public class UserAccountController implements EmailConstants {
 
     private static final String EMAIL_CAPTCHA_OF_REDIS_KEY = "BEST-USER-%s-EMAIL-CAPTCHA";
-
-    private static String captchaHtmlTemplate = "<!DOCTYPE html>" +
-            "<html>" +
-            "<head>" +
-            "<meta charset=\"UTF-8\">" +
-            "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=10\">" +
-            "</head>" +
-            "<body>" +
-            "<div>" +
-            "<span>此验证码10分钟内有效</span>" +
-            "</br>" +
-            "<span>%s</span>" +
-            "</div>" +
-            "</body>" +
-            "</html>";
-
 
     @Resource
     private AccountManageService accountManageService;
@@ -131,7 +119,7 @@ public class UserAccountController {
                 jedis.close();
         }
 
-        EmailHelper.sendHtmlEmail("邮箱绑定", String.format(captchaHtmlTemplate, captcha), email);
+        EmailUtils.sendHtmlEmail("邮箱绑定", String.format(captchaHtmlTemplate, captcha), email);
 
         return jsonView(true);
     }
@@ -274,58 +262,17 @@ public class UserAccountController {
     private String createCaptcha() {
         // 验证码在Redis中是否已经存在
         boolean continueFlag = true;
-        String num = getRandom(6);
+        String num = CaptchaUtils.getRandom(6);
         while (continueFlag) {
             // 不存在num, 返回validateCode, 结束循环
             if (!captchaIsExists(num)) {
                 return num;
             } else {
-                num = getRandom(6);
+                num = CaptchaUtils.getRandom(6);
             }
         }
 
-        return getRandom(6);
-    }
-
-    private static String getRandom(int codeCount) {
-        StringBuffer randomCodeRes = new StringBuffer();
-
-        char[] codeSequenceNumber = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-        char[] codeSequenceChar = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-                'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-                'X', 'Y', 'Z'
-        };
-
-        List<String> randomCode = new ArrayList<String>();
-
-        // 创建一个随机数生成器类
-        Random random = new Random();
-
-        // 随机产生, 验证码由几个数字、几个字母组成
-        int shuziNum = random.nextInt(5) + 1;
-        int charNum = codeCount - shuziNum;
-
-        // 随机产生codeCount数字的验证码
-        for (int i = 0; i < shuziNum; i++) {
-            // 得到随机产生的验证码数字
-            String numRand = String.valueOf(codeSequenceNumber[random.nextInt(codeSequenceNumber.length)]);
-            // 将产生的六个随机数组合在一起
-            randomCode.add(numRand);
-        }
-        for (int i = 0; i < charNum; i++) {
-            // 得到随机产生的验证码字母
-            String strRand = String.valueOf(codeSequenceChar[random.nextInt(codeSequenceChar.length)]);
-            // 将产生的六个随机数组合在一起
-            randomCode.add(strRand);
-        }
-
-        Collections.shuffle(randomCode);
-
-        for (int i = 0, s = randomCode.size(); i < s; i++) {
-            randomCodeRes.append(randomCode.get(i));
-        }
-
-        return randomCodeRes.toString();
+        return CaptchaUtils.getRandom(6);
     }
 
     private boolean captchaIsExists(String captcha) {

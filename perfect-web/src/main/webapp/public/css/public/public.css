@@ -349,12 +349,11 @@ table tr, table tr td {
     color: #777777;
     height: 24px;
     line-height: 24px;
-
     border-radius: 3px;
     cursor: pointer;
     padding: 0 10px;
     overflow: hidden;
-    float: right;
+    float: left;
 }
 
 .user_text {
