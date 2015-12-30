@@ -26,9 +26,9 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
 
     List<CreativeDTO> getCreativeByAdgroupId(String adgroupId, Map<String, Object> params, int skip, int limit);
 
-    List<CreativeDTO> getAllsByAdgroupIds(List<Long> l,FindOrReplaceParam forp);
+    List<CreativeDTO> getAllsByAdgroupIds(List<Long> l, FindOrReplaceParam forp);
 
-    List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l,FindOrReplaceParam forp);
+    List<CreativeDTO> getAllsByAdgroupIdsForString(List<String> l, FindOrReplaceParam forp);
 
     List<CreativeDTO> findHasLocalStatus();
 
@@ -100,5 +100,15 @@ public interface CreativeDAO extends HeyCrudRepository<CreativeDTO, Long> {
      */
     void enableOrPauseCreative(List<String> strings, boolean status);
 
-    CreativeDTO existDTO(Map<String,Object> params);
+    CreativeDTO existDTO(Map<String, Object> params);
+
+    /**
+     * 给定系统用户名、凤巢帐号ID及物料层级, 查询其投放/暂停的创意
+     *
+     * @param userName       系统用户名
+     * @param baiduAccountId 凤巢帐号ID
+     * @param isPause        暂停还是启用
+     * @return
+     */
+    List<String> findCreativeMarketStatus(String userName, long baiduAccountId, boolean isPause);
 }

@@ -72,26 +72,26 @@ public class LoginController {
                 return new ModelAndView("/loginOrReg/login", model);
             }
 
-            if (account.equals(systemUserDTO.getUserName()) && pwdKey.equals(systemUserDTO.getPassword())) {
-                //登录成功
-                String url = request.getParameter("redirect");
-                if (Strings.isNullOrEmpty(url)) {
-                    url = request.getParameter("url");
-                }
+            int s = loginFailureHandler(request, response, systemUserDTO);
+            if (s == 3) {
+                model.put("invalidPassword", "帐号已被锁定");
+            } else if (s == -1) {
+                model.put("invalidPassword", "登录错误");
+            } else  {
+                if (account.equals(systemUserDTO.getUserName()) && pwdKey.equals(systemUserDTO.getPassword())) {
+                    //登录成功
+                    String url = request.getParameter("redirect");
+                    if (Strings.isNullOrEmpty(url)) {
+                        url = request.getParameter("url");
+                    }
 
-                ModelAndView view = new ModelAndView("redirect:/platform");
-                loginSuccessHandler(request, response, systemUserDTO, view);
+                    ModelAndView view = new ModelAndView("redirect:/platform");
+                    loginSuccessHandler(request, response, systemUserDTO, view);
 
-                if (Strings.isNullOrEmpty(url) || java.util.Objects.equals("null", url)) {
-                    return view;
-                }
-            } else {
-                int s = loginFailureHandler(request, response, systemUserDTO);
-                if (s == 3) {
-                    model.put("invalidPassword", "帐号已被锁定");
-                } else if (s == -1) {
-                    model.put("invalidPassword", "登录错误");
-                } else {
+                    if (Strings.isNullOrEmpty(url) || java.util.Objects.equals("null", url)) {
+                        return view;
+                    }
+                }else {
                     model.put("invalidPassword", "密码错误, 剩余" + (3 - s) + "次");
                 }
             }
@@ -144,14 +144,13 @@ public class LoginController {
             if (jedis.exists(pwdKey)) {
                 Integer value = Integer.valueOf(jedis.get(pwdKey));
                 if (value == 3) {
-                    response.sendRedirect("/login");
+                    modelAndView = new ModelAndView("redirect:/login");
+                    modelAndView.getModelMap().put("invalidPassword", "帐号已被锁定");
                     return;
                 } else {
                     jedis.expire(pwdKey, 0);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         } finally {
             if (jedis != null) {
                 JRedisUtils.returnJedis(jedis);
@@ -164,7 +163,7 @@ public class LoginController {
             }
             return;
         }
-        Cookie cookie = new Cookie(UserConstants.TOKEN_USER, uuid);
+        Cookie cookie = new Cookie(UserConstants.COOKIE_TOKEN, uuid);
         cookie.setMaxAge(COOKIE_TIMEOUT);
         response.addCookie(cookie);
         request.getSession().setAttribute(UserConstants.SESSION_USER, systemUserDTO);
@@ -173,8 +172,7 @@ public class LoginController {
         userInfo.setUserId(systemUserDTO.getId());
         AppContext.setUserInfo(userInfo);
         // token settings
-        ModelMap modelMap = modelAndView.getModelMap();
-        modelMap.put(UserConstants.TOKEN_USER, uuid);
+        request.getSession().setAttribute(UserConstants.TOKEN_USER, StringUtils.reverse(uuid));
     }
 
 

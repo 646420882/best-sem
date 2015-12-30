@@ -1474,7 +1474,6 @@ $('#TimingDate').daterangepicker({
 
 $("input[value='Enable']").on("click", function () {
     PromptBox.show("提醒", "您选择了启用功能后，会对账户已经暂停的物料启用上线，或者会对保存到搜客本地的物料上传到凤巢账户，确认选择启用功能？");
-
 });
 
 $("input[value='Pause']").on("click", function () {
@@ -1482,10 +1481,12 @@ $("input[value='Pause']").on("click", function () {
 });
 
 var timing = {
-    elementType: null,
-    elementLength: 0,
-    elements: null,
+    operationType: null,    // 操作类型: 启用、暂停
+    elementType: null,      // 计划、单元、关键词、创意
+    elementLength: 0,       // 物料是否为空
+    elements: null,         // 物料ID(Mongo ID)
     init: function () {
+        this.operationType = null;
         this.elementType = null;
         this.elementLength = 0;
         this.elements = null;
@@ -1502,6 +1503,10 @@ var timing = {
         if (this.elementLength > 0) {
             this.elements = localNewAddKeywords;
         }
+        /* else {
+         alert("没有物料信息, 请选择!");
+         return;
+         }*/
 
         if ($('#Timings').css("display") == "none") {
             var tabtop = $(_this).offset().top + $(_this).outerHeight() + "px";
@@ -1518,10 +1523,11 @@ var timing = {
         $('#Timings').hide();
     },
     TimingOk: function () {
-        if (this.elementLength == 0) {
-            console.log("No local materials need to be uploaded to Baidu!");
+        if ($('input[name=TimingsRadio]:checked').val() == undefined) {
+            alert("请选择物料的操作类型!");
             return;
         }
+        this.operationType = $('input[name=TimingsRadio]:checked').val();
 
         var startDateArr = $('#TimingDate').data('daterangepicker').startDate.format('YYYY-MM-DD').split("-");
         var endDateArr = $('#TimingDate').data('daterangepicker').endDate.format('YYYY-MM-DD').split("-");
@@ -1529,10 +1535,10 @@ var timing = {
         var hour = $("#timePeriod").find("option:selected").val();
 
         var day;
-        if (startDateArr[0].trim() == endDateArr[0].trim()) {
-            day = startDateArr[0].trim();
+        if (startDateArr[2].trim() == endDateArr[2].trim()) {
+            day = startDateArr[2].trim();
         } else {
-            day = startDateArr[0].trim() + "-" + endDateArr[0].trim();
+            day = startDateArr[2].trim() + "-" + endDateArr[2].trim();
         }
 
         var month;
@@ -1543,23 +1549,40 @@ var timing = {
         }
 
         var year;
-        if (startDateArr[2].trim() == endDateArr[2].trim()) {
-            year = startDateArr[2].trim();
+        if (startDateArr[0].trim() == endDateArr[0].trim()) {
+            year = startDateArr[0].trim();
         } else {
-            year = startDateArr[2].trim() + "-" + endDateArr[2].trim();
+            year = startDateArr[0].trim() + "-" + endDateArr[0].trim();
         }
 
         var cronExpression = "0 0 " + hour + " " + day + " " + month + " ? " + year;
 
-        $.ajax({
-            url: '/material/schedule/upload/' + this.elementType + '/' + cronExpression,
-            type: 'POST',
-            contentType: 'application/json;charset=utf-8',
-            data: JSON.stringify(this.elements),
-            success: function (data) {
-                console.log(data);
+        if (this.operationType == "Enable") {
+            if (this.elementLength == 0) {
+                alert("没有可操作的物料!");
+                return;
             }
-        });
+
+            $.ajax({
+                url: '/material/schedule/upload/' + this.elementType + '/?cron=' + cronExpression,
+                type: 'POST',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(this.elements),
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        } else if (this.operationType == "Pause") {
+            $.ajax({
+                url: '/material/schedule/pause/' + this.elementType,
+                type: 'POST',
+                contentType: 'application/json;charset=utf-8',
+                data: cronExpression,
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        }
 
         $('#Timings').hide();
     }

@@ -8,4 +8,6 @@ public interface UserConstants {
     String SESSION_USER = "user";
 
     String TOKEN_USER = "userToken";
+
+    String COOKIE_TOKEN = "cookieToken";
 }

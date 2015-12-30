@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: baizz
@@ -67,7 +69,14 @@
             <div>
             </div>
         </div>
-        <div class="serBox" onclick="window.open('http://192.168.1.190:8081/token?tokenid=${userToken}')">
+            <c:forEach items="${user.systemUserModules}" var="item">
+                <c:if test="${item.moduleName == '百思搜客' && fn:length(item.menus) > 0}">
+                    <div class="serBox" onclick="window.open('http://localhost:8081/token?tokenid=${userToken}')">
+                </c:if>
+                <c:if test="${item.moduleName == '百思搜客' && fn:length(item.menus) == 0}">
+                    <div class="serBox" onclick="alert('请联系管理员或运营人员开通此模块即可使用！')">
+                </c:if>
+            </c:forEach>
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_shouke2.png"></div>
@@ -142,7 +151,14 @@
                 </div>
             </div>
         </div>
-        <div class="serBox" onclick="window.open('http://hy.best-ad.cn/token?tokenid=${userToken}')">
+        <c:forEach items="${user.systemUserModules}" var="item">
+            <c:if test="${item.moduleName == '百思搜客' && fn:length(item.menus) > 0}">
+                <div class="serBox" onclick="window.open('http://hy.best-ad.cn/token?tokenid=${userToken}')">
+            </c:if>
+            <c:if test="${item.moduleName == '百思搜客' && fn:length(item.menus) == 0}">
+                <div class="serBox" onclick="alert('请联系管理员或运营人员开通此模块即可使用！')">
+            </c:if>
+        </c:forEach>
             <div class="serBoxOn"></div>
             <div class="pic1"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan.png"></div>
             <div class="pic2"><img src="${pageContext.request.contextPath}/public/img/best_img/shunt_huiyan2.png"></div>

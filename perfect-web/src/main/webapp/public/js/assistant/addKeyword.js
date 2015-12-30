@@ -293,7 +293,7 @@ var saveKeywordNew = function () {
     kwd.forEach(function (item, i) {
         if (item != undefined) {
             var entity1 = {};
-            entity1["accountId"] = $("#bdAccountId").html();
+            //entity1["accountId"] = $("#bdAccountId").html();
             if (adgroupId.length < 24) {
                 entity1["adgroupId"] = adgroupId;
             } else {
