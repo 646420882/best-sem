@@ -2,7 +2,9 @@ package com.perfect.web.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.perfect.commons.constants.AuthConstants;
+import com.perfect.core.AppContext;
 import com.perfect.dto.sys.SystemUserDTO;
+import com.perfect.dto.sys.SystemUserModuleDTO;
 import com.perfect.utils.redis.JRedisUtils;
 import com.perfect.web.suport.ServletContextUtils;
 import org.apache.commons.lang.StringUtils;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 import static javax.servlet.http.HttpServletResponse.SC_FOUND;
 
@@ -47,24 +50,30 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
                     // 跳转至登录页面
                     redirectForLogin(request, response);
                 } else {
-                    // 将token并写入Session
-                    token = StringUtils.reverse(token);
-                    request.getSession().setAttribute(USER_TOKEN, token);
-
                     // 根据token在Redis获取相应的用户信息
+                    token = StringUtils.reverse(token);
                     SystemUserDTO systemUserDTO = retrieveUserInfoWithToken(token, request, response);
                     if (Objects.isNull(systemUserDTO)) {
                         redirectForLogin(request, response);
                     } else {
-                        request.getSession().setAttribute(USER_INFO, systemUserDTO);
+                        boolean hasMenus = checkSoukeMenus(systemUserDTO);
+                        if (hasMenus) {
+                            // 将token写入Session
+                            request.getSession().setAttribute(USER_TOKEN, token);
+                            // 将用户信息写入Session
+                            request.getSession().setAttribute(USER_INFO, systemUserDTO);
 
-                        Object _url = request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL);
-                        response.setStatus(SC_FOUND);
-                        if (systemUserDTO.getAccess() == 1) {
-                            response.sendRedirect("/admin/index");
+                            Object _url = request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL);
+                            response.setStatus(SC_FOUND);
+                            if (systemUserDTO.getAccess() == 1) {
+                                response.sendRedirect("/admin/index");
+                            } else {
+                                // 重定向至登录之前访问的页面
+                                response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
+                            }
                         } else {
-                            // 重定向至登录之前访问的页面
-                            response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
+                            // 没有搜客的菜单访问权限, 跳转至用户中心的登录页面
+                            logout(request, response);
                         }
                     }
 
@@ -139,5 +148,29 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
         }
 
         return null;
+    }
+
+    /**
+     * <p>检测搜客菜单权限信息
+     *
+     * @param systemUserDTO
+     * @return
+     */
+    private boolean checkSoukeMenus(SystemUserDTO systemUserDTO) {
+        boolean hasMenus = true;
+        Optional<SystemUserModuleDTO> optional = systemUserDTO.getSystemUserModules()
+                .stream()
+                .filter(o -> Objects.equals(AppContext.getModuleName(), o.getModuleName()))
+                .findFirst();
+
+        if (optional.isPresent()) {
+            if (Objects.isNull(optional.get().getMenus()) || optional.get().getMenus().isEmpty()) {
+                hasMenus = false;
+            }
+        } else {
+            hasMenus = false;
+        }
+
+        return hasMenus;
     }
 }
