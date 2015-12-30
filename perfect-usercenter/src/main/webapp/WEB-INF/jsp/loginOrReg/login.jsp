@@ -80,7 +80,7 @@
                         <li>
                             <input type="button" id="loginSec" class="loginButton" value="登陆"/>
                         </li>
-                        <li><a id="forgetPassword" class="fr" href="#">忘记密码?</a></li>
+                        <li><a class="fr" href="/forget">忘记密码?</a></li>
                     </ul>
                 </div>
                 <%--<div class="login_part2">

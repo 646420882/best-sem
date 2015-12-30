@@ -82,11 +82,12 @@ function setFormatter(item, row) {
 }
 
 function startTimeFormatter(item, row) {
-    var content = '<input name="reservation" id="start'+row.id+'" readonly  style="border: none;"  type="text" value=' + item + ' class="startTime">';
+    console.log(row)
+    var content = '<input name="reservation" id="start' + row.id + '" cname="' + row.id + '" readonly  style="border: none;"  type="text" value=' + item + ' class="startTime">';
     return [content].join('')
 }
 function endTimeFormatter(item, row) {
-    var content = '<input name="reservation" id="end'+row.id+'"  readonly style="border: none" type="text" value=' + item + ' class="endTime">';
+    var content = '<input name="reservation" id="end' + row.id + '" cname="' + row.id + '"  readonly style="border: none" type="text" value=' + item + ' class="endTime">';
     return [content].join('')
 }
 var getAdminInfo = function () {
