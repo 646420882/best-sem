@@ -1,7 +1,7 @@
 package com.perfect.usercenter.controller;
 
 import com.google.common.collect.Maps;
-import com.perfect.commons.email.EmailHelper;
+import com.perfect.utils.email.EmailUtils;
 import com.perfect.dto.sys.ModuleAccountInfoDTO;
 import com.perfect.service.AccountManageService;
 import com.perfect.service.UserAccountService;
@@ -120,9 +120,9 @@ public class UserAccountController {
         try {
             jedis = JRedisUtils.get();
             String key = String.format(EMAIL_CAPTCHA_OF_REDIS_KEY, username);
-            if (jedis.llen(key) > 0) {
-                return jsonView(false);
-            }
+//            if (jedis.llen(key) > 0) {
+//                return jsonView(false);
+//            }
 
             jedis.lpush(key, captcha);
             jedis.expire(key, 600);
@@ -131,7 +131,7 @@ public class UserAccountController {
                 jedis.close();
         }
 
-        EmailHelper.sendHtmlEmail("邮箱绑定", String.format(captchaHtmlTemplate, captcha), email);
+        EmailUtils.sendHtmlEmail("邮箱绑定", String.format(captchaHtmlTemplate, captcha), email);
 
         return jsonView(true);
     }
