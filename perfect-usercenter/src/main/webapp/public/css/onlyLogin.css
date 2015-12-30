@@ -307,7 +307,6 @@ input {
 .login_input2 ul li label.accountType {
     width: auto;
     height: 34px;
-    *height: 340px;
     line-height: 34px;
     margin-bottom: 0;
 }
@@ -434,6 +433,7 @@ input {
     margin: 0px;
     padding: 0px;
     width: 73%;
+    *width:65%;
     float: left;
 }
 
