@@ -532,7 +532,7 @@ ul, ol {
     overflow: hidden;
 }
 
-.forget_input ul li input.loginButton {
+.next,.forget_input ul li input.loginButton {
     width: 22%;
     margin: 25px 0 0 40%;
     background: #1fb8f2;

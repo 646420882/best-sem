@@ -553,16 +553,27 @@ input {
 }
 
 .forget_input ul li input.loginButton {
+    display: block;
+    text-align: center;
     width: 22%;
     margin: 25px 0 0 40%;
     background: #1fb8f2;
     padding: 10px;
     border: none;
-    /* border-radius: 0;
-     -webkit-border-radius: 0;*/
     color: #fff;
     border-radius: 2px;
 }
+.next,.next:hover{
+    display: block;
+    text-align: center;
+    width: 22%;
+    margin: 25px 0 0 40%;
+    background: #1fb8f2;
+    border: none;
+    color: #fff;
+    border-radius: 2px;
+}
+
 
 .forget_input ul li span {
     display: block;
@@ -574,7 +585,6 @@ input {
 }
 
 .forget_input ul li a {
-    color: #1fb8f2;
     cursor: pointer;
 }
 

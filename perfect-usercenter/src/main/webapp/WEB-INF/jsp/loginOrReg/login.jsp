@@ -73,7 +73,6 @@
                             <input style="width: 50%" type="text" id="j_validate" name="j_validate"/>
                             <b id="code" style="cursor: pointer;padding: 10px;font-size: 16px"
                                onclick="createCodeLogin()"></b>
-
                             <div>
                                 <b id="codeMsg"></b>
                             </div>

@@ -37,6 +37,7 @@
                         <value>/login</value>
                         <value>/register</value>
                         <value>/forget</value>
+                        <value>/reset</value>
                         <value>/userAdd</value>
                         <value>/getPlatform</value>
                     </list>

@@ -90,7 +90,6 @@ public class IndexController {
         long[] serviceLife = userAccountService.getSemModuleServiceLife(SessionContext.getUser(request).getUserName());
         modelMap.put("bestSemStartTime", DATE_FORMAT.format(new Date(serviceLife[0])));
         modelMap.put("bestSemEndTime", DATE_FORMAT.format(new Date(serviceLife[1])));
-
         return new ModelAndView("/account/account").addAllObjects(modelMap);
     }
 
@@ -103,6 +102,9 @@ public class IndexController {
     public ModelAndView forget() {
         return new ModelAndView("/password/forget");
     }
+
+    @RequestMapping(value = "/reset", method = RequestMethod.GET)
+    public ModelAndView reset() { return new ModelAndView("/password/reset"); }
 
     @RequestMapping(value = "/safetyTool", method = RequestMethod.GET)
     public ModelAndView safetyTool(ModelMap modelMap) {

@@ -305,31 +305,29 @@ $(function () {
                     data: datas
                 });
                 $('input[name="reservation"]').daterangepicker({
-                            "showDropdowns": true,
-                            "singleDatePicker": true,
-                            "timePicker24Hour": true,
-                            timePicker: true,
-                            timePickerIncrement: 30,
-                            format: 'YY/MM/DD',
-                            "locale": {
-                                "format": "YYYY年M月DD日",
-                                "separator": " - ",
-                                "applyLabel": "确定",
-                                "cancelLabel": "关闭",
-                                "fromLabel": "From",
-                                "toLabel": "To",
-                                "customRangeLabel": "Custom",
-                                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
-                                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                                "firstDay": 1
-                            },
+                        "showDropdowns": true,
+                        "singleDatePicker": true,
+                        "timePicker24Hour": true,
+                        timePicker: true,
+                        timePickerIncrement: 30,
+                        format: 'YY/MM/DD',
+                        "locale": {
+                            "format": "YYYY年M月DD日",
+                            "separator": " - ",
+                            "applyLabel": "确定",
+                            "cancelLabel": "关闭",
+                            "fromLabel": "From",
+                            "toLabel": "To",
+                            "customRangeLabel": "Custom",
+                            "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                            "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                            "firstDay": 1
                         },
-                        function (start, end, label, e) {
-                            var _endDate = end.format('YYYY年M月DD日');
-                            $(this).val(_endDate)
-                        });
-
-
+                    },
+                    function (start, end, label, e, obj) {
+                        var _endDate = end.format('YYYY年M月DD日');
+                        //$(this).val(_endDate)
+                    });
                 $(".lookTableRow").parent().attr('style', 'padding: 0 !important');
             }
         },
@@ -390,7 +388,7 @@ $(function () {
             removeClick("tokenBoxBottom");
             $("#tokenBoxBottom").click(function () {
                 var tokenid = $("#tokenBoxInput").val();
-                if( tokenid.trim() != "" && tokenid != undefined){
+                if (tokenid.trim() != "" && tokenid != undefined) {
                     if (row.systemModal == "百思搜客") {
                         $.ajax({
                             url: '/users/' + row.userId + '/modules/' + row.systemModal + '/accounts/' + $(e.target).find("input").val() + '/token/' + $("#tokenBoxInput").val(),
@@ -420,7 +418,7 @@ $(function () {
                             }
                         });
                     }
-                }else{
+                } else {
                     alert("请填写Token");
                 }
 

@@ -82,7 +82,6 @@ function setFormatter(item, row) {
 }
 
 function startTimeFormatter(item, row) {
-    console.log(row)
     var content = '<input name="reservation" id="start' + row.id + '" cname="' + row.id + '" readonly  style="border: none;"  type="text" value=' + item + ' class="startTime">';
     return [content].join('')
 }
