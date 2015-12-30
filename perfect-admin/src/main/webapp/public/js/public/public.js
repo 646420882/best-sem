@@ -79,7 +79,7 @@ $(function () {
                         type: 'post',
                         dataType: 'JSON',
                         data: {
-                            status: 0,
+                            status: 0
                         },
                         success: function (user) {
                             window.location.reload()
@@ -98,7 +98,7 @@ $(function () {
                         type: 'post',
                         dataType: 'JSON',
                         data: {
-                            status: 1,
+                            status: 1
                         },
                         success: function (user) {
                             window.location.reload()
@@ -334,7 +334,7 @@ $(function () {
                             "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
                             "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
                             "firstDay": 1
-                        },
+                        }
                     },
                     function (start, end, label, e) {
                         var _endDate = end.format('YYYY年M月DD日');

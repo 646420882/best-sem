@@ -89,7 +89,6 @@ public class KeywordBackUpServiceImpl implements KeywordBackUpService {
     public void reducDel(String id) {
         if (id.matches("^\\d+$")) {
             keywordDAO.updateLocalstatu(Long.parseLong(id));
-            KeywordDTO keywordDTO = keywordDAO.findByLongId(Long.valueOf(id));
         }
     }
 

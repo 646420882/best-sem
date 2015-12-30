@@ -411,20 +411,20 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
         }
 
         page.setList(setCampaignNameByKeywordEntitys((List<KeywordDTO>) page.getList(), campaignDTO));
-        page.setErrorList(getErrorList());
+//        page.setErrorList(getErrorList());
         return page;
     }
 
-    private Map<String, Map<Integer, List<String>>> getErrorList() {
-        Map<String, Map<Integer, List<String>>> maps = keywordDeduplicateService.deduplicate(AppContext.getAccountId());
-        List<String> str = Lists.newArrayList();
-        for (Map.Entry<String, Map<Integer, List<String>>> m : maps.entrySet()) {
-            for (Map.Entry<Integer, List<String>> mi : m.getValue().entrySet()) {
-//                str.add(mi.getValue());
-            }
-        }
-        return maps;
-    }
+//    private Map<String, Map<Integer, List<String>>> getErrorList() {
+//        Map<String, Map<Integer, List<String>>> maps = keywordDeduplicateService.deduplicate(AppContext.getAccountId());
+//        List<String> str = Lists.newArrayList();
+//        for (Map.Entry<String, Map<Integer, List<String>>> m : maps.entrySet()) {
+//            for (Map.Entry<Integer, List<String>> mi : m.getValue().entrySet()) {
+////                str.add(mi.getValue());
+//            }
+//        }
+//        return maps;
+//    }
 
     private List<KeywordInfoDTO> setCampaignNameByKeywordEntitys(List<KeywordDTO> list, CampaignDTO camp) {
         List<KeywordInfoDTO> dtoList = new ArrayList<>();
@@ -469,6 +469,7 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
             }
 
         }
+        //TODO 关键词质量度注释
         //在百度上得到关键词的质量度
 //        BaiduAccountInfoDTO baiduAccountInfoDTO = accountManageDAO.findByBaiduUserId(AppContext.getAccountId());
 //        CommonService commonService = BaiduServiceSupport.getCommonService(baiduAccountInfoDTO.getBaiduUserName(), baiduAccountInfoDTO.getBaiduPassword(), baiduAccountInfoDTO.getToken());
@@ -513,15 +514,17 @@ public class AssistantKeywordServiceImpl implements AssistantKeywordService {
      */
     @Override
     public KeywordDTO updateKeyword(KeywordDTO kwd) {
-        KeywordDTO findKeyword = keywordDAO.findByLongId(kwd.getKeywordId());
+//        KeywordDTO findKeyword = keywordDAO.findByLongId(kwd.getKeywordId());
 
         KeywordDTO newKeywordDTO;
 
         if (kwd.getKeywordId() == null) {
             newKeywordDTO = keywordDAO.findByObjectId(kwd.getId());
-            if(newKeywordDTO!=null){
-                if(newKeywordDTO.getLocalStatus()!=3||newKeywordDTO.getLocalStatus()!=4){
+            if (newKeywordDTO != null) {
+                if (newKeywordDTO.getLocalStatus() == 3 || newKeywordDTO.getLocalStatus() == 4) {
                     newKeywordDTO.setLocalStatus(1);
+                } else if (newKeywordDTO.getLocalStatus() == -1) {
+                    newKeywordDTO.setLocalStatus(-1);
                 }
             }
         } else {

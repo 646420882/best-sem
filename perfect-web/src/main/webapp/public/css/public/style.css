@@ -253,7 +253,7 @@
 
 .wd1 {
     width: 40%;
-    height: 100px;
+    height: 104px;
 }
 
 .wd2 {
@@ -303,7 +303,8 @@
 
 .list01_under2 ul li .blue1 {
     background: url(/public/img/blue1.png) center no-repeat;
-    background-size: 48px;
+    background-size: 70px;
+    background-position: 96px bottom;
 }
 
 .list01_under2 ul li .blue2 {
@@ -312,7 +313,8 @@
 
 .list01_under2 ul li .green1 {
     background: url(/public/img/geen1.png) center no-repeat;
-    background-size: 48px;
+    background-size: 70px;
+    background-position: 96px bottom;
 }
 
 .list01_under2 ul li .green2 {
@@ -321,7 +323,8 @@
 
 .list01_under2 ul li .red1 {
     background: url(/public/img/red1.png) center no-repeat;
-    background-size: 48px;
+    background-size: 70px;
+    background-position: 96px bottom;
 }
 
 .list01_under2 ul li .red2 {
@@ -330,7 +333,8 @@
 
 .list01_under2 ul li .yellow1 {
     background: url(/public/img/yellow1.png) center no-repeat;
-    background-size: 48px;
+    background-size: 70px;
+    background-position: 96px bottom;
 }
 
 .list01_under2 ul li .yellow2 {
@@ -4183,22 +4187,26 @@ input[type=checkbox]:focus {
 
 .list01_under2.list01_color ul li .blue1 {
     background: url(/public/img/blue2.png) center no-repeat;
-    background-size: 48px;
+    background-size: 70px;
+    background-position: 96px bottom;
 }
 
 .list01_under2.list01_color ul li .green1 {
     background: url(/public/img/geen2.png) center no-repeat;
-    background-size: 48px;
+    background-size: 70px;
+    background-position: 96px bottom;
 }
 
 .list01_under2.list01_color ul li .red1 {
     background: url(/public/img/red2.png) center no-repeat;
-    background-size: 48px;
+    background-size: 70px;
+    background-position: 96px bottom;
 }
 
 .list01_under2.list01_color ul li .yellow1 {
     background: url(/public/img/yellow2.png) center no-repeat;
-    background-size: 48px;
+    background-size: 70px;
+    background-position: 96px bottom;
 }
 
 .InputTd {

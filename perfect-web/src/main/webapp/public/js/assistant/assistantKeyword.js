@@ -7,7 +7,6 @@ var skip = 0;
 var limit = 20;//每一页显示的条数
 
 var pageType = 1;
-
 var pageSelectCallback = function (page_index, jq) {
     //值为1的时候代表是关键词的分页,2代表是推广计划的分页
     if (pageType == 1) {
@@ -115,6 +114,7 @@ function getKwdList(nowPage) {
                     return;
                 }
 
+                var repeatKeyword = [];
                 for (var i = 0; i < data.list.length; i++) {
                     var html = keywordDataToHtml(data.list[i], i);
                     $("#tbodyClick").append(html);
@@ -128,7 +128,27 @@ function getKwdList(nowPage) {
                             $("#reduction").find("span").addClass("z_function_hover");
                         }
                     }
+                    var _tmpRepeat = data.list[i].object.localStatus;
+                    if (_tmpRepeat == -1) {
+                        repeatKeyword.push(data.list[i]);
+                    }
                 }
+                if (repeatKeyword.length) {
+                    $("#kwdErrorCount").show();
+                    $("#kwdError").show();
+                    var errorLi = $("#repeatList");
+                    errorLi.empty();
+                    repeatKeyword.forEach(function (item) {
+                        var _li = $("<li>");
+                        _li.html("关键词<span>" + item.object.keyword + "</span>与计划<span>" + item.campaignName + "</span>,单元<span>" + item.adgroupName + "</span>的关键词名称重复");
+                        errorLi.append(_li);
+                    });
+
+                } else {
+                    $("#kwdErrorCount").hide();
+                    $("#kwdError").hide();
+                }
+
             } else {
                 $("#tbodyClick").html("点击树，则加载！");
             }
@@ -236,7 +256,6 @@ function keywordDataToHtml(obj, index) {
         }
         else if (obj.object.localStatus == -1) {
             TableStatus = "repeat";
-
         }
         html = html + "<td class='table_add'><input type='checkbox'   name='keywordCheck' value='" + obj.object.keywordId + "' /><span class='" + TableStatus + "' step='" + obj.object.localStatus + "'></span></td>";
     } else {
@@ -280,7 +299,7 @@ function keywordDataToHtml(obj, index) {
             html = html + "<td>部分无效</td>";
             break;
         case 49:
-            html = html + "<td>计算机搜索无效</td>";
+            html = html + "<td>计算机搜索无效</tvar repeatKeyword=[];//重复关键词显示数组d>";
             break;
         case 50:
             html = html + "<td>移动搜索无效</td>";
@@ -771,12 +790,12 @@ function missBlur(even, obj) {
     if (even.keyCode == 13) {
         obj.blur();
     }
-    var _val=$(obj).val();
-    $(obj).next("span").html(""+_val.length+"/1024");
-    if(_val.length>1024){
-        $(obj).next("span").attr("style","color:red");
-    }else{
-        $(obj).next("span").attr("style","");
+    var _val = $(obj).val();
+    $(obj).next("span").html("" + _val.length + "/1024");
+    if (_val.length > 1024) {
+        $(obj).next("span").attr("style", "color:red");
+    } else {
+        $(obj).next("span").attr("style", "");
     }
 }
 
@@ -909,9 +928,43 @@ function searchword() {
  * 还原按钮的事件
  */
 $("#reduction").click(function () {
-    reductionKeyword();
+    //reductionKeyword();
+    var checked_data = [];
+    var checkChildren = $("input[name='keywordCheck']");
+    for (var i = 0; i < checkChildren.length; i++) {
+        var _tmpData = {};
+        var step = $(checkChildren[i]).next("span").attr("step");
+        if (checkChildren[i].checked == true && step) {
+            //checked_data.push(checkChildren[i].value);
+            _tmpData[checkChildren[i].value] = step;
+            checked_data.push(_tmpData);
+        }
+    }
+    if (!checked_data.length) {
+        //alert("您没有选择要所需物料!");
+        AlertPrompt.show("您没有选择要还原的物料!");
+        return;
+    }
+    if (confirm("是否还原选中的数据?")) {
+        reduceMutilKeyword(checked_data);
+    }
 });
-
+function reduceMutilKeyword(items) {
+    $.ajax({
+        url: '/assistantKeyword/reduceMutil',
+        type: "post",
+        contentType: 'application/json',
+        data: JSON.stringify(items),
+        success: function (data) {
+            if (data.msg == "1") {
+                alert("还原成功!");
+                reloadGrid();
+            } else {
+                alert(data.msg);
+            }
+        }
+    });
+}
 //还原关键词
 function reductionKeyword() {
 
@@ -923,6 +976,9 @@ function reductionKeyword() {
         var step = choose.find("td:eq(0) span").attr("step");
         var id = $("#tbodyClick").find(".list2_box3").find("input[type=checkbox]").val();
         switch (parseInt(step)) {
+            case -1:
+                reducKwd_Add(id);
+                break;
             case 1:
                 reducKwd_Add(id);
                 break;

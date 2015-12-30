@@ -8,6 +8,7 @@ import com.perfect.dto.huiyan.InsightWebsiteDTO;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
 import com.perfect.service.UserAccountService;
+import com.perfect.utils.CaptchaUtils;
 import com.perfect.utils.paging.BootStrapPagerInfo;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -140,7 +141,11 @@ public class UserManageController {
     }
 
     @RequestMapping(value = "/users/{userid}/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView resetUserPassword(@PathVariable("userid") String userid, @RequestParam(value = "password", required = false, defaultValue = "123456") String password) {
+    public ModelAndView resetUserPassword(@PathVariable("userid") String userid, @RequestParam(value = "password", required = false) String password) {
+        if (password == null || password.isEmpty()) {
+            password = CaptchaUtils.getRandom(8);
+        }
+
         boolean success = systemUserService.updateUserPassword(userid, password);
 
         if (success) {
