@@ -130,7 +130,7 @@
 }
 
 .btn {
-    padding: 4px 30px;
+    padding: 4px 27px;
 }
 
 .btn.btn_large {
@@ -144,8 +144,11 @@
 .menu_list h4 {
     margin: 0px;
 
-}
 
+}
+.modal-title{
+    font-size:16px;
+}
 .panel-heading {
     cursor: pointer;
     border-radius: 0px;
@@ -477,4 +480,9 @@
 }
 .bootstrap-table .table{
     border-bottom: none;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary.active, .open .dropdown-toggle.btn-primary{
+    color: #fff;
+    background: #0298d0;
+    border-color:#0298d0;
 }
