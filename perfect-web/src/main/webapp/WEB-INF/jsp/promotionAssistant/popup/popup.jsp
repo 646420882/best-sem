@@ -579,14 +579,8 @@
         <span class="fl">错误</span>
         <a href="javascript:void(0)" class="close">×</a></h2>
 
-    <div class="mainlist">
-        <ul>
-            <li>
-                关键词<span>***</span>与<span>***</span>计划，<span>***</span>单元中的另一关键词名称相同
-            </li>
-            <li>
-                关键词<span>***</span>与<span>***</span>计划，<span>***</span>单元中的另一关键词名称相同
-            </li>
+    <div class="mainlist" >
+        <ul id="repeatList">
         </ul>
     </div>
     <div class="main_bottom">

@@ -252,13 +252,14 @@
                                             <div class="zhanghu_input"></div>
                                             <div id="pagination_keywordPage" class="pagination"></div>
                                             <div class="error_prompt over">
-                                                <div class="error_prompt_title over" id="kwdErrorCount" style="display: none;">
+                                                <div class="error_prompt_title over" id="kwdErrorCount" style="display:none;">
                                                     一项错误
                                                 </div>
-                                                <div class="error_prompt_concent over" id="kwdError">
+                                                <div class="error_prompt_concent over" id="kwdError" style="display:none;">
                                                     <ul>
+                                                        <li>关键词重复</li>
                                                     </ul>
-                                                    <a class="error_prompt_more" id="error_prompt_more" style="display:none;">
+                                                    <a class="error_prompt_more" id="error_prompt_more" >
                                                         更多详情
                                                     </a>
                                                 </div>

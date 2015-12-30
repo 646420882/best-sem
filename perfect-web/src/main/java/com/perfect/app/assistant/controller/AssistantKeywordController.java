@@ -1021,6 +1021,33 @@ public class AssistantKeywordController extends WebContextSupport {
             writeJson(cr, response);
             return;
         }
+    }
 
+    @RequestMapping(value = "assistantKeyword/reduceMutil", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView reduceMutil(@RequestBody List<Map<String, Integer>> kwids) {
+        try {
+            if (kwids.size() > 0) {
+                kwids.stream().forEach(s -> {
+                    s.entrySet().stream().forEach(k -> {
+                        switch (Integer.parseInt(k.getValue().toString())) {
+                            case 2:
+                                KeywordInfoDTO keywordDTO = keywordBackUpService.reducUpdate(k.getKey());
+                                break;
+                            case 3:
+                                keywordBackUpService.reducDel(k.getKey());
+                                break;
+                            default:
+                                assistantKeywordService.deleteByKwIds(Arrays.asList(new String[]{k.getKey()}));
+                                break;
+                        }
+                    });
+                });
+            }
+            return writeMapObject(MSG, SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return writeMapObject(MSG, "异常!");
     }
 }
