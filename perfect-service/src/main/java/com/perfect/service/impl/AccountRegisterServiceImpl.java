@@ -2,6 +2,7 @@ package com.perfect.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.perfect.commons.constants.EmailConstants;
 import com.perfect.commons.constants.PasswordSalts;
 import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.dao.account.AccountRegisterDAO;
@@ -14,6 +15,7 @@ import com.perfect.param.RegisterParam;
 import com.perfect.service.AccountRegisterService;
 import com.perfect.service.UserAccountService;
 import com.perfect.utils.MD5;
+import com.perfect.utils.email.EmailUtils;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ import java.util.*;
  * Created by SubDong on 2014/9/30.
  */
 @Service("accountRegisterService")
-public class AccountRegisterServiceImpl implements AccountRegisterService {
+public class AccountRegisterServiceImpl implements AccountRegisterService, EmailConstants {
 
     private final String userSalt = PasswordSalts.USER_SALT;
 
@@ -158,6 +160,9 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
 
 //                accountRegisterDAO.regAccount(systemUserDTO);
                 returnState = 1;
+
+                // 发送邮件通知管理员
+                EmailUtils.sendHtmlEmail("新用户注册", String.format(registerUserForAdmin, systemUserDTO.getUserName(), systemUserDTO.getCompanyName()), adminEmail);
             } else {
                 returnState = -1;
             }
