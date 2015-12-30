@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.perfect.api.baidu.BaiduApiService;
 import com.perfect.api.baidu.BaiduServiceSupport;
-import com.perfect.autosdk.common.OptType;
 import com.perfect.autosdk.core.CommonService;
 import com.perfect.autosdk.core.ResHeaderUtil;
 import com.perfect.autosdk.sms.v3.*;
+import com.perfect.commons.constants.EmailConstants;
 import com.perfect.commons.constants.PasswordSalts;
 import com.perfect.commons.constants.SystemNameConstant;
 import com.perfect.core.AppContext;
@@ -32,6 +32,7 @@ import com.perfect.utils.EntityConvertUtils;
 import com.perfect.utils.MD5;
 import com.perfect.utils.ObjectUtils;
 import com.perfect.utils.SystemUserUtils;
+import com.perfect.utils.email.EmailUtils;
 import com.perfect.utils.paging.BootStrapPagerInfo;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.elasticsearch.common.Strings;
@@ -50,7 +51,7 @@ import java.util.*;
  * @author yousheng
  */
 @Service("systemUserService")
-public class SystemUserServiceImpl implements SystemUserService {
+public class SystemUserServiceImpl implements SystemUserService, EmailConstants {
 
     private Logger logger = LoggerFactory.getLogger(SystemUserServiceImpl.class);
 
@@ -902,6 +903,10 @@ public class SystemUserServiceImpl implements SystemUserService {
         boolean success = systemUserDAO.updateAccountPassword(userid, new MD5.Builder().source(password).salt(user_salt).build().getMD5());
 
         if (success) {
+            // 通知用户
+            EmailUtils.sendHtmlEmail("密码重置", String.format(resetPasswordTemplateForUser, systemUserDTO.getUserName(), password), systemUserDTO.getEmail());
+            // 通知管理员
+            EmailUtils.sendHtmlEmail("密码重置", String.format(resetPasswordTemplateForAdmin, systemUserDTO.getUserName(), password), adminEmail);
             systemLogDAO.log("修改用户密码: " + systemUserDTO.getUserName());
         }
         return success;
@@ -960,7 +965,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         boolean retoken;
         ModuleAccountInfoDTO moduleAccountById = systemAccountDAO.findModuleAccountById(moduleAccountObjectId);
         CommonService commonService = BaiduServiceSupport.getCommonService(moduleAccountById.getBaiduUserName(), moduleAccountById.getBaiduPassword(), moduleAccountById.getToken());
-        if(commonService != null){
+        if (commonService != null) {
             BaiduApiService baiduApiService = new BaiduApiService(commonService);
             AccountInfoType accountInfo = baiduApiService.getAccountInfo();
             if (accountInfo != null) {
@@ -991,7 +996,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             } else {
                 retoken = false;
             }
-        }else{
+        } else {
             retoken = false;
         }
 
