@@ -64,9 +64,9 @@
             </properties>
         </profile>
         <profile>
-            <id>tmp_prod</id>
+            <id>prodBeta</id>
             <properties>
-                <env>tmp_prod</env>
+                <env>prodBeta</env>
 
                 <redis.host>114.112.98.68</redis.host>
                 <redis.port>16379</redis.port>
