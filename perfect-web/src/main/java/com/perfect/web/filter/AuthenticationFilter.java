@@ -39,7 +39,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
 
         // 检测是否执行登出操作
         if (Objects.equals("/logout", request.getRequestURI())) {
-            logout(request, response);
+            redirect(request, response, USER_LOGIN_URL);
         } else {
             // Token检测
             Object obj = request.getSession().getAttribute(USER_TOKEN);
@@ -48,32 +48,35 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
                 String token = request.getParameter("tokenid");
                 if (Objects.isNull(token) || token.isEmpty()) {
                     // 跳转至登录页面
-                    redirectForLogin(request, response);
+                    redirectToLogin(request, response);
                 } else {
                     // 根据token在Redis获取相应的用户信息
                     token = StringUtils.reverse(token);
                     SystemUserDTO systemUserDTO = retrieveUserInfoWithToken(token, request, response);
                     if (Objects.isNull(systemUserDTO)) {
-                        redirectForLogin(request, response);
+                        redirectToLogin(request, response);
                     } else {
+                        // 将token写入Session
+                        request.getSession().setAttribute(USER_TOKEN, token);
+
+                        // 检测当前登录用户是否有菜单访问权限
                         boolean hasMenus = checkSoukeMenus(systemUserDTO);
                         if (hasMenus) {
-                            // 将token写入Session
-                            request.getSession().setAttribute(USER_TOKEN, token);
                             // 将用户信息写入Session
                             request.getSession().setAttribute(USER_INFO, systemUserDTO);
 
+                            // 重定向至登录之前访问的页面
                             Object _url = request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL);
                             response.setStatus(SC_FOUND);
+                            response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
+                        } else {
                             if (systemUserDTO.getAccess() == 1) {
+                                // 搜客的管理员帐户
                                 response.sendRedirect("/admin/index");
                             } else {
-                                // 重定向至登录之前访问的页面
-                                response.sendRedirect(Objects.isNull(_url) ? "/" : _url.toString());
+                                // 没有搜客的菜单访问权限, 跳转至百思平台页面
+                                redirect(request, response, USER_CENTER_URL + "/toUserCenter?userToken=" + token);
                             }
-                        } else {
-                            // 没有搜客的菜单访问权限, 跳转至用户中心的登录页面
-                            logout(request, response);
                         }
                     }
 
@@ -86,29 +89,18 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * <p>登出操作
-     *
-     * @param request
-     * @param response
-     */
-    private void logout(HttpServletRequest request, HttpServletResponse response) {
+
+    private void redirect(HttpServletRequest request, HttpServletResponse response, String url) {
         // 清除Session中的token信息
         request.getSession().setAttribute(USER_TOKEN, null);
         // 清除Session中的用户信息
         request.getSession().setAttribute(USER_INFO, null);
 
         response.setStatus(SC_FOUND);
-        response.setHeader(LOCATION, USER_LOGIN_URL);
+        response.setHeader(LOCATION, url);
     }
 
-    /**
-     * <p>登录重定向
-     *
-     * @param request
-     * @param response
-     */
-    private void redirectForLogin(HttpServletRequest request, HttpServletResponse response) {
+    private void redirectToLogin(HttpServletRequest request, HttpServletResponse response) {
         response.setStatus(SC_FOUND);
         response.setHeader(LOCATION, String.format(USER_LOGIN_REDIRECT_URL, request.getHeader(HOST)));
         if (Objects.isNull(request.getSession().getAttribute(USER_PRE_LOGIN_VISIT_URL))) {
@@ -122,7 +114,7 @@ public class AuthenticationFilter extends OncePerRequestFilter implements AuthCo
      * @param token
      * @param request
      * @param response
-     * @return
+     * @return 系统用户信息
      */
     private SystemUserDTO retrieveUserInfoWithToken(String token, HttpServletRequest request, HttpServletResponse response) {
         Jedis jedis = null;
