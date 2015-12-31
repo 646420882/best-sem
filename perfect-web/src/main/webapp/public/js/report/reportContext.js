@@ -1955,6 +1955,7 @@ $(function () {
             },
             dataType: "json",
             success: function (data) {
+                console.log(data)
                 if (data.length == 0) {
                     $("#searchWordTbody").empty();
                     $("#searchWordTbody").html("没有该范围的数据!");

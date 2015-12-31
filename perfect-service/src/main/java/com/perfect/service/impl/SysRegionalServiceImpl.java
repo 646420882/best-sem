@@ -445,7 +445,12 @@ public class SysRegionalServiceImpl implements SysRegionalService {
         Map<Integer, String> map = new HashMap<>();
         for (String name : regionalName) {
             RegionalCodeDTO regionalCodeDTO = regionalCodeDAO.getRegionalByRegionName(name);
-            map.put(Integer.valueOf((regionalCodeDTO.getProvinceId() + regionalCodeDTO.getRegionId())), name);
+            if(regionalCodeDTO != null){
+                map.put(Integer.valueOf((regionalCodeDTO.getProvinceId() + regionalCodeDTO.getRegionId())), name);
+            }else{
+                return null;
+            }
+
         }
         return map;
     }

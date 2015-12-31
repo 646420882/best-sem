@@ -115,6 +115,7 @@ public class IndexController {
             boolean jedisKey = jc.exists(userTokenId);
             if (jedisKey) {
                 model.put("userid", userId);
+                model.put("userToken", userTokenId);
                 return new ModelAndView("/password/reset", model);
             } else {
                 model.put("invalidMsg", "验证连接已失效,请重新验证！");

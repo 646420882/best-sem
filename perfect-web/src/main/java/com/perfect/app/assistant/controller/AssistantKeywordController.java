@@ -577,6 +577,10 @@ public class AssistantKeywordController extends WebContextSupport {
             String[] attrs = attributes.split(",");
             Map<Integer, String> regions = sysRegionalService.getRegionalByRegionName(Arrays.asList(attrs));
             AttributeType attributeType = new AttributeType();
+            if(regions == null){
+                writeJson(list , response);
+                return;
+            }
             attributeType.setKey("provid");
             attributeType.setValue(new ArrayList<Integer>(regions.keySet()));
             list.add(attributeType);

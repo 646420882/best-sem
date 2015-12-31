@@ -52,6 +52,7 @@
                                 </li>
                                 <li>
                                     <input type="hidden" name="userid" value="${userid}"/>
+                                    <input type="hidden" name="userToken" value="${userToken}"/>
                                     <input type="button" id="resetPwd" class="loginButton" value="下一步"/>
                                 </li>
                             </ul>

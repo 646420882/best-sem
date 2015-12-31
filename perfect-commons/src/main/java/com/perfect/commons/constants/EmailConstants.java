@@ -24,7 +24,7 @@ public interface EmailConstants {
             "<body>" +
             "<div>" +
             "<span>%s, 您好:</span>" +
-            "</br>" +
+            "<br />" +
             "<span>您的密码已经成功重置为: %s, 请注意保存。</span>" +
             "</div>" +
             "</body>" +
@@ -54,7 +54,7 @@ public interface EmailConstants {
             "<body>" +
             "<div>" +
             "<span>此验证码10分钟内有效: </span>" +
-            "</br>" +
+            "<br />" +
             "<span>%s</span>" +
             "</div>" +
             "</body>" +
@@ -72,5 +72,22 @@ public interface EmailConstants {
             "<span>用户%s已注册成功，其所在公司为：%s。</span>" +
             "</div>" +
             "</body>" +
+            "</html>";
+
+    //用户修改密码
+    String updatePasswordTemplate = "<!DOCTYPE html>" +
+            "<html> " +
+            "<head> " +
+            "<meta charset=\"UTF-8\"> " +
+            "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=10\"> " +
+            "</head>\" +\n" +
+            "<body>" +
+            "<div> " +
+            "<span>此验证码10分钟内有效</span> <br /> " +
+            "<span>点击次连接进行你的密码修改</span><br />" +
+            "<span style='font-size:14px;color:red'>注：如果点击无效请复制此连接到浏览器中访问：</span>" +
+            "<span>%s</span> " +
+            "</div> " +
+            "</body> " +
             "</html>";
 }

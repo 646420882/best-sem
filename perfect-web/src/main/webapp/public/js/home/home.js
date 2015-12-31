@@ -1047,10 +1047,10 @@ function getData() {
         dataType: "json",
         data: {"startDate": daterangepicker_start_date, "endDate": daterangepicker_end_date},
         success: function (data) {
-            $(".impression").html(data.impression);
-            $(".click").html(data.click);
-            $(".cos").html(data.cos);
-            $(".conversion").html(data.conversion);
+            $(".impression").html(data.rows[0][data.date[0]][0].pcImpression);
+            $(".click").html(data.rows[0][data.date[0]][0].pcClick);
+            $(".cos").html(data.rows[0][data.date[0]][0].pcCost);
+            $(".conversion").html(data.rows[0][data.date[0]][0].pcConversion);
         }
 
     });

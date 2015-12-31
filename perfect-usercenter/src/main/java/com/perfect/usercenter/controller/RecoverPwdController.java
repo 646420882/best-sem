@@ -1,5 +1,6 @@
 package com.perfect.usercenter.controller;
 
+import com.perfect.commons.constants.EmailConstants;
 import com.perfect.commons.deduplication.Md5Helper;
 import com.perfect.dto.sys.SystemUserDTO;
 import com.perfect.service.SystemUserService;
@@ -56,11 +57,7 @@ public class RecoverPwdController {
 
         String uri = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 
-        String html = "<!DOCTYPE html><html> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=10\"> </head>" +
-                "<body> <div> <span>此验证码10分钟内有效</span> </br> <span>" + uri + "/reset?u=" + byUserName.getId() + "&t=" + md5 + "</span> </div> </body> </html>";
-
-
-        EmailUtils.sendHtmlEmail("百思平台密码修改验证", html, byUserName.getEmail());
+        EmailUtils.sendHtmlEmail("百思平台密码修改验证", String.format(EmailConstants.updatePasswordTemplate, uri + "/reset?u=" + byUserName.getId() + "&t=" + md5), byUserName.getEmail());
 
         model.put("invalidMsg", "密码修改验证已发送到你的邮箱当中！请进入" + byUserName.getEmail() + "邮箱查看");
         return new ModelAndView("/password/forget", model);
@@ -73,15 +70,27 @@ public class RecoverPwdController {
     public ModelAndView resetPwd(HttpServletRequest request,
                                  @RequestParam(value = "pwd", required = true) String pwd,
                                  @RequestParam(value = "userid", required = true) String userId,
+                                 @RequestParam(value = "userToken", required = true) String userToken,
                                  ModelMap model) {
-
-        boolean b = systemUserService.updateUserPassword(userId, pwd);
-        if (b) {
-            model.put("resetsMsg", "OK");
-        } else {
-            model.put("resetsMsg", "fild");
+        Jedis jc = JRedisUtils.get();
+        try {
+            boolean jedisKey = jc.exists(userToken);
+            if (jedisKey) {
+                boolean b = systemUserService.updateUserPassword(userId, pwd);
+                if (b) {
+                    model.put("resetsMsg", "OK");
+                } else {
+                    model.put("resetsMsg", "fild");
+                }
+                return new ModelAndView("/password/reset", model);
+            } else {
+                model.put("invalidMsg", "验证连接已失效,请重新验证！");
+                return new ModelAndView("/password/forget", model);
+            }
+        } finally {
+            jc.close();
         }
 
-        return new ModelAndView("/password/reset", model);
+
     }
 }
