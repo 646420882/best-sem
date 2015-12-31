@@ -4787,3 +4787,6 @@ input[type=checkbox]:focus {
 .search_mid  table .list2_top td, th{
     color:#333333;
 }
+.btn {
+    padding: 2px 28px;
+}

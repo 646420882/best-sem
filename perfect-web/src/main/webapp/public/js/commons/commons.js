@@ -7,9 +7,20 @@ var $rootScope = {
     basePageSize: 10,
     pageIndex: 0
 };
-
+$(document).click(function (e) {
+    $(".assstant_editor").hide();
+});
+$(".assstant_editor").click(function (e) {
+    var ev = e || window.event;
+    if (ev.stopPropagation) {
+        ev.stopPropagation();
+    }
+    else if (window.event) {
+        window.event.cancelBubble = true;//兼容IE
+    }
+});
 var commons = {
-    foRShow: function (type, _this) {
+    foRShow: function (type, _this, e) {
         var exist_selected = jsonData;
         var checkType = $("select[name='checkType']");
         checkType.empty();
@@ -38,9 +49,13 @@ var commons = {
             $(".assstant_editor").css("top", TabtopFirst);
             $(".assstant_editor").css("left", TableftNext);
             $(".assstant_editor").show();
-            $(".assstant_editor ").mouseleave(function () {
-                $(".assstant_editor").hide();
-            });
+            var ev = e || window.event;
+            if (ev.stopPropagation) {
+                ev.stopPropagation();
+            }
+            else if (window.event) {
+                window.event.cancelBubble = true;//兼容IE
+            }
         }
         else {
             $(".assstant_editor").hide();
