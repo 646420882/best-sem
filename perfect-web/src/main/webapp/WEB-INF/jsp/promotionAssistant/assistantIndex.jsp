@@ -175,7 +175,7 @@
                                                             src="../public/img/zs_function8.png"></span><b>监控</b></a>
                                                     </li>
                                                     <li><a href="#" id="reduction"><span class="z_function_hover"><img
-                                                            src="../public/img/zs_function9.png"></span><b>还原</b></a><%--z_function_hover--%>
+                                                            src="../public/img/zs_function9.png"></span><b>批量还原</b></a><%--z_function_hover--%>
                                                     </li>
                                                     <li><a href="#" onclick="showSearchWord()"><span class="zs_top"><img
                                                             src="../public/img/zs_function10.png"></span><b>快速添加关键词</b></a>
@@ -388,7 +388,7 @@
                                                     <li><a href="#"><span class="z_function_hover" id="reBak"
                                                                           onclick="reBakClick();"><img
                                                             src="../public/img/zs_function9.png"></span><b
-                                                            onclick="reBakClick();">还原</b></a></li>
+                                                            onclick="reBakClick();">批量还原</b></a></li>
                                                     <li><a href="javascript:void(0)" class="searchwordReport"><span
                                                             class="zs_top"><img
                                                             src="../public/img/zs_function10.png"></span><b>搜索词报告</b></a>
