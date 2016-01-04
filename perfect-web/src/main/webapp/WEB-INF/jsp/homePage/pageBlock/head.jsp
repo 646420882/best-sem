@@ -22,13 +22,14 @@
                 <li>
                     <div class="user_logo fl">
                         <div class="user_logo1">
-                        <%--    <div class="user_img fl over">
-                            <span id="head_click"><img id="user_img"
-                                                       src="/account/getImg"></span>
-                            </div>--%>
+                            <%--    <div class="user_img fl over">
+                                <span id="head_click"><img id="user_img"
+                                                           src="/account/getImg"></span>
+                                </div>--%>
                             <div class="user_text fl">
                                 <div class="user_top over">
-                                    <div class="fl"><b id="time"></b><span class="glyphicon glyphicon-user" aria-hidden="true"></span><a
+                                    <div class="fl"><b id="time"></b><span class="glyphicon glyphicon-user"
+                                                                           aria-hidden="true"></span><a
                                             href="http://localhost:8088/toUserCenter?userToken=${SOUKE_USER_TOKEN}"><span>${currSystemUserName}</span></a>
                                     </div>
                                     <input type="image" onclick="downloadUser()"
@@ -169,7 +170,7 @@
     </h2>
 
     <div class="mainlist">
-        <label>您要添加的关键词是：<strong>百思克</strong></label>
+        <label>您要添加的关键词是：<strong id="kewordInfo"></strong></label>
 
         <%--<div id="choicedKeyWord">
             <h3></h3>
@@ -182,26 +183,20 @@
         <div class="mainChoiceList">
             <div>
                 <label>添加到推广计划：</label>
-                <select>
-                    <option value="所属推广家户">所属推广家户</option>
-                    <option value="test">test</option>
-                    <option value="通用词">通用词</option>
-                </select>
+                <select id="camp"></select>
             </div>
             <div>
                 <label>添加到推广单元：</label>
-                <select>
-                    <option value="所属推广单元">所属推广单元</option>
-                    <option value="test">test</option>
-                    <option value="通用词">通用词</option>
+                <select id="admp">
+                    <option value="">所属推广单元</option>
                 </select>
             </div>
             <div>
                 <label>匹配模式：</label>
-                <select>
-                    <option value="所属推广单元">广泛</option>
-                    <option value="test">test</option>
-                    <option value="通用词">通用词</option>
+                <select id="pipei">
+                    <option value="1">精确</option>
+                    <option value="2">短语</option>
+                    <option value="2">广泛</option>
                 </select>
             </div>
         </div>
@@ -226,12 +221,9 @@
     </h2>
 
     <div class="mainlist">
-        <p>你要添加为否定关键词的有<span style="color: red">1</span>个</p>
-
-        <p style="margin: 5px 0 15px 0">以下搜索词搜索到后将不触发你的搜索结果</p>
-
+        <div id="addKeyWordOrN"></div>
         <div id="choicedNoKeyWord">
-            <h3><strong>百思克</strong></h3>
+            <h3><strong id="noKewordInfo"></strong></h3>
         </div>
 
         <div class="mainChoiceList">
@@ -244,12 +236,7 @@
 
                     <div style="margin: 5px 0 0 17px;" id="PlanLevel">
                         <label>推广计划：</label>
-                        <select style="width: 180px">
-                            <option>所属推广计划</option>
-                            <option>test</option>
-                            <option>通用词</option>
-                            <option>品牌计划</option>
-                        </select>
+                        <select id="campOne" style="width: 180px"></select>
                     </div>
                 </div>
                 <div style="margin: 5px 0 0 0">
@@ -259,21 +246,11 @@
                     <div id="UnitLevel" class="hides">
                         <div style="margin: 5px 0 0 17px;">
                             <label>推广计划：</label>
-                            <select style="width: 180px">
-                                <option>所属推广计划</option>
-                                <option>test</option>
-                                <option>通用词</option>
-                                <option>品牌计划</option>
-                            </select>
+                            <select id="camptow" style="width: 180px"></select>
                         </div>
                         <div style="margin: 5px 0 0 17px;">
                             <label>推广单元：</label>
-                            <select style="width: 180px">
-                                <option>所属推广计划</option>
-                                <option>test</option>
-                                <option>通用词</option>
-                                <option>品牌计划</option>
-                            </select>
+                            <select id="agmpOne" style="width: 180px"></select>
                         </div>
                     </div>
                 </div>

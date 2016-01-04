@@ -1963,37 +1963,25 @@ $(function () {
                     var basisHtml = "";
                     data.forEach(function (item, i) {
                         if (i % 2 == 0) {
-                            basisHtml = basisHtml + "<tr class='list2_box1'><td>&nbsp;" + item.date + "</td>"
-                            + "<td><span>&nbsp;" + item.campaignName + "</td>"
-                            + "<td><span>&nbsp;" + item.adgroupName + "</td>"
-                                /*+ "<td><span>&nbsp;" + item.createTitle + "</td>"
-                                 + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
-                                 + "<td><span>&nbsp;" + item.createDesc2 + "</td>"*/
-                            + "<td><span>&nbsp;" + item.searchEngine + "</td>"
-                            + "<td><span>&nbsp;" + item.click + "</td>"
-                            + "<td><span>&nbsp;" + item.impression + "</td>"
-                            + "<td><span>&nbsp;" + item.clickRate + "</td>"
-                            + "<td><span>&nbsp;" + item.searchWord + "</td>"
-                            + "<td><span>&nbsp;" + item.keyword + "</td>"
-                            + "<td><span>&nbsp;" + item.parseExtent + "</td>"
-                            + "<td><select onchange='addKeyOrNotWord(this)' style='height: 26px'><option value='keyWord'>添加为关键词</option><option value='uNkeyWord'>添加为否定关键词</option></select></td>"
-                            + "</tr>"
+                            basisHtml = basisHtml + "<tr class='list2_box1' cname="+item.keyword+">"
                         } else {
-                            basisHtml = basisHtml + "<tr class='list2_box2'><td>&nbsp;" + item.date + "</td>"
-                            + "<td><span>&nbsp;" + item.campaignName + "</td>"
-                            + "<td><span>&nbsp;" + item.adgroupName + "</td>"
-                                /*+ "<td><span>&nbsp;" + item.createTitle + "</td>"
-                                 + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
-                                 + "<td><span>&nbsp;" + item.createDesc2 + "</td>"*/
-                            + "<td><span>&nbsp;" + item.searchEngine + "</td>"
-                            + "<td><span>&nbsp;" + item.click + "</td>"
-                            + "<td><span>&nbsp;" + item.impression + "</td>"
-                            + "<td><span>&nbsp;" + item.clickRate + "</td>"
-                            + "<td><span>&nbsp;" + item.searchWord + "</td>"
-                            + "<td><span>&nbsp;" + item.keyword + "</td>"
-                            + "<td><span>&nbsp;" + item.parseExtent + "</td>"
-                            + "</tr>"
+                            basisHtml = basisHtml + "<tr class='list2_box2' cname="+item.keyword+">"
                         }
+                        basisHtml = basisHtml + "<td>&nbsp;" + item.date + "</td>"
+                        + "<td><span>&nbsp;" + item.campaignName + "</td>"
+                        + "<td><span>&nbsp;" + item.adgroupName + "</td>"
+                            /*+ "<td><span>&nbsp;" + item.createTitle + "</td>"
+                             + "<td><span>&nbsp;" + item.createDesc1 + "</td>"
+                             + "<td><span>&nbsp;" + item.createDesc2 + "</td>"*/
+                        + "<td><span>&nbsp;" + item.searchEngine + "</td>"
+                        + "<td><span>&nbsp;" + item.click + "</td>"
+                        + "<td><span>&nbsp;" + item.impression + "</td>"
+                        + "<td><span>&nbsp;" + item.clickRate + "</td>"
+                        + "<td><span>&nbsp;" + item.searchWord + "</td>"
+                        + "<td><span>&nbsp;" + item.keyword + "</td>"
+                        + "<td><span>&nbsp;" + item.parseExtent + "</td>"
+                        + "<td><select onclick='addKeyOrNotWord(this)' style='height: 26px'><option value='keyWord'>添加为关键词</option><option value='uNkeyWord'>添加为否定关键词</option></select></td>"
+                        + "</tr>"
                     });
 
                     $("#searchWordTbody").empty();

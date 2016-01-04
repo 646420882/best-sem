@@ -86,6 +86,7 @@
         #userStits, #shujuAll {
             background: white;
         }
+
         .tab_box {
             padding: 0px;
         }
@@ -316,7 +317,8 @@
                     <div class="number_concent over">
                         <div class="list01_top over"><Span>明细数据</Span>
                             <button type="button" class="question  btn btn-default" data-toggle="tooltip"
-                                    data-placement="bottom" title="按您个性需求，分结构、关键词、创意、地域查看日、周、月的报告。搜索词报告帮助您快速锁定高价值关键词，覆盖更多潜在客户。"></button>
+                                    data-placement="bottom"
+                                    title="按您个性需求，分结构、关键词、创意、地域查看日、周、月的报告。搜索词报告帮助您快速锁定高价值关键词，覆盖更多潜在客户。"></button>
                         </div>
                         <div class="shuju_detali over">
                             <ul>
@@ -563,34 +565,121 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/daterangepicker.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/public/js/report/reportContext.js"></script>
 <script type="text/javascript">
-
+    var keywordName = "";
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
+
+        var mydate = new Date();
+        var str = "" + mydate.getFullYear() + "-";
+        str += (mydate.getMonth() + 1) + "-";
+        str += (mydate.getDate());
+        var time = str + " " + " 至 " + " " + str
+        $("#tacittime").val(time);
+        $("#tacittime1").val(time);
+        $("#tacittime2").val(time);
+        var Yesterday = GetDateStr(-1);
+        $(".time_input").val(Yesterday);
+
+        $("#camp").click(function () {
+            var campaignId = $("#camp option:selected").val();
+            if (campaignId != "") {
+                changeAdgroup(campaignId);
+            }
+        })
+        $("#camptow").click(function () {
+            var campaignId = $("#camptow option:selected").val();
+            if (campaignId != "") {
+                changeAdgroup(campaignId);
+            }
+        })
+
+        $("#confirmAddKeyWord").click(function () {
+            var campid = $("#camp  option:selected").val();
+            var admpid = $("#admp  option:selected").val();
+            var matchType = $("#pipei  option:selected").val();
+            if (campid == "" || campid == undefined) {
+                //AlertPrompt.show("请选择推广计划");
+                alert("计划")
+                return
+            }
+            if (admpid == "" || admpid == undefined) {
+                //AlertPrompt.show("请选择推广单元");
+                alert("单元")
+                return
+            }
+            if (pipei == "" || pipei == undefined) {
+                //AlertPrompt.show("请选择匹配模式");
+                alert("匹配")
+                return
+            }
+            if (kewordInfo == "" || kewordInfo == undefined) {
+                //AlertPrompt.show("关键词获取失败,请刷新页面重新操作");
+                alert("关键词")
+                return
+            }
+
+            var jsonObj = [], entity1 = {};
+            //entity1["accountId"] = $("#bdAccountId").html();
+            if (admpid.length < 24) {
+                entity1["adgroupId"] = admpid;
+            } else {
+                entity1["adgroupObjId"] = admpid;
+            }
+            entity1["keyword"] = keywordName;
+            entity1["price"] = "0.1"
+            entity1["matchType"] = matchType;
+            entity1["pause"] = false;
+            entity1["status"] = -1;
+            entity1["phraseType"] = 1;
+            entity1["localStatus"] = 1;
+            jsonObj.push(entity1);
+
+            $.ajax({
+                url: "/keyword/add",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(jsonObj),
+                async: false,
+                contentType: "application/json; charset=UTF-8",
+                success: function (data, textStatus, jqXHR) {
+                    if (data.rows != undefined || data.rows != "") {
+                        //AlertPrompt.show("关键词获添加成功！");
+                        alert("添加成功");
+                    }
+                }
+            });
+        })
     });
 
     function addKeyOrNotWord(obj) {
         var _val = $(obj).val();
+        keywordName = $(obj).parent().parent().attr("cname");
         $(".TB_overlayBG_alert").css({
             display: "block"
         });
-        if(_val == "keyWord"){
-            $("#reportAddNoSearchWord").css("display",'none');
+        if (_val == "keyWord") {
+            $("#reportAddNoSearchWord").css("display", 'none');
             $("#reportAddSearchWord").css({
                 top: ($(window).height() - $("#reportAddSearchWord").height()) / 2 + $(window).scrollTop() + "px",
                 left: ($("body").width() - $("#reportAddSearchWord").width()) / 2 - 20 + "px",
                 display: "block"
             });
-        }else {
-            $("#reportAddSearchWord").css("display",'none');
+            $("#kewordInfo").html(keywordName);
+            campaign();
+        } else {
+            $("#reportAddSearchWord").css("display", 'none');
             $("#reportAddNoSearchWord").css({
                 top: ($(window).height() - $("#reportAddNoSearchWord").height()) / 2 + $(window).scrollTop() + "px",
                 left: ($("body").width() - $("#reportAddNoSearchWord").width()) / 2 - 20 + "px",
                 display: "block"
             });
+            $("#noKewordInfo").html(keywordName);
+            campaign();
         }
     }
-    function keyWordCancel(id){
-        $("#"+id).css('display','none')
+
+    function keyWordCancel(id) {
+        $("#" + id).css('display', 'none')
         $(".TB_overlayBG_alert").css({
             display: "none"
         });
@@ -605,47 +694,76 @@
     //   $("#SearchReport").click(function(){
     //       $(".searh_report").hide();
     //   })
-    $(function () {
-        var mydate = new Date();
-        var str = "" + mydate.getFullYear() + "-";
-        str += (mydate.getMonth() + 1) + "-";
-        str += (mydate.getDate());
-        var time = str + " " + " 至 " + " " + str
-        $("#tacittime").val(time);
-        $("#tacittime1").val(time);
-        $("#tacittime2").val(time);
-        var Yesterday =GetDateStr(-1);
-        $(".time_input").val(Yesterday);
-    })
     function GetDateStr(AddDayCount) {
         var dd = new Date();
-        dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+        dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
         var y = dd.getFullYear();
-        var m = dd.getMonth()+1;//获取当前月份的日期
+        var m = dd.getMonth() + 1;//获取当前月份的日期
         var d = dd.getDate();
-        return y+"-"+m+"-"+d;
+        return y + "-" + m + "-" + d;
     }
 
+    //推广计划
+    var campaign = function () {
+        $.getJSON("/campaign/getAllCampaign", null, function (data) {
+            if (data.rows.length > 0) {
+                var campaigns = "", datas = data.rows;
+                campaigns = "<option value=''>请选择推广计划</option>";
+                datas.forEach(function (item, i) {
+                    campaigns = campaigns + "<option value='" + item.campaignId + "'>" + item.campaignName + "</option>";
+                });
+                $("#camp").empty();
+                $("#campOne").empty();
+                $("#camptow").empty();
+                $("#camp").append(campaigns);
+                $("#campOne").append(campaigns);
+                $("#camptow").append(campaigns);
+            }
+        });
+    }
 
-    //bootstrap-daterangepicker-setting
-    //    $("input[name=reservation]").daterangepicker({
-    //       $('#fzk').click(function(){
-    //
-    //       })
-
-    //    $('#fzk').click(function(){
-    //        console.log($('.daterangepicker').css('display'));
-    //        console.log($('.daterangepicker').css('display')=='block');
-    //
-    //        if($('.daterangepicker').css('display')=='block'){
-    //            $('.daterangepicker').css("display", "none");
-    //        }
-    //        console.log($('.daterangepicker').css('display'));
-    //    })
-    //    console.log($("#daterangepicker").css('display'));
-
-
-    //end
+    //推广单元
+    var changeAdgroup = function (campaignId) {
+        campaignId = campaignId.toString();
+        if (campaignId.length < 24) {
+            $.getJSON("/adgroup/getAdgroupByCampaignId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
+                    function (data) {
+                        var adgroups = "", datas = data.rows;
+                        adgroups = "<option value=''>请选择推广单元</option>";
+                        datas.forEach(function (item, i) {
+                            adgroups = adgroups + "<option value='" + item.adgroupId + "'>" + item.adgroupName + "</option>";
+                        });
+                        $("#admp").empty();
+                        $("#agmpOne").empty();
+                        $("#admp").append(adgroups);
+                        $("#agmpOne").append(adgroups);
+                    });
+        } else {
+            $.getJSON("/adgroup/getAdgroupByCampaignObjId/" + campaignId,
+                    {
+                        campaignId: campaignId,
+                        skip: 0,
+                        limit: 100
+                    },
+                    function (data) {
+                        var adgroups = "", datas = data.rows;
+                        var adgroups = "", datas = data.rows;
+                        adgroups = "<option value=''>请选择推广单元</option>";
+                        datas.forEach(function (item, i) {
+                            adgroups = adgroups + "<option value='" + item.adgroupId + "'>" + item.adgroupName + "</option>";
+                        });
+                        $("#admp").empty();
+                        $("#agmpOne").empty();
+                        $("#admp").append(adgroups);
+                        $("#agmpOne").append(adgroups);
+                    });
+        }
+    };
 </script>
 </body>
 
