@@ -1976,6 +1976,7 @@ $(function () {
                             + "<td><span>&nbsp;" + item.searchWord + "</td>"
                             + "<td><span>&nbsp;" + item.keyword + "</td>"
                             + "<td><span>&nbsp;" + item.parseExtent + "</td>"
+                            + "<td><select onchange='addKeyOrNotWord(this)' style='height: 26px'><option value='keyWord'>添加为关键词</option><option value='uNkeyWord'>添加为否定关键词</option></select></td>"
                             + "</tr>"
                         } else {
                             basisHtml = basisHtml + "<tr class='list2_box2'><td>&nbsp;" + item.date + "</td>"

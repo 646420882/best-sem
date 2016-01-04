@@ -162,22 +162,22 @@
     </div>
 </div>
 <%--数据报告中搜索词快速添加--%>
-<div class="box" id="reportAddSearchWord" style="display: none;width: 550px;">
+<div class="box" id="reportAddSearchWord" style="width: 550px;z-index: 10001;display: none">
     <h2 id="reportAddSearchWordTitile">
         <span class="fl">添加为关键词</span>
         <a href="javascript:void(0)" class="close">×</a>
     </h2>
 
     <div class="mainlist">
-        <label>您要添加的关键词是：</label>
+        <label>您要添加的关键词是：<strong>百思克</strong></label>
 
-        <div id="choicedKeyWord">
-            <h3><strong>百思克</strong></h3>
+        <%--<div id="choicedKeyWord">
+            <h3></h3>
 
             <p>所属推广计划：<span>品牌计划</span></p>
 
-            <p>所属推广单元：<span>百思产品</span><span class="choicedKeyWordCancel" onclick="cancelKeyWord()">取消</span></p>
-        </div>
+            <p>所属推广单元：<span>百思产品</span><span class="choicedKeyWordCancel">取消</span></p>
+        </div>--%>
 
         <div class="mainChoiceList">
             <div>
@@ -213,13 +213,13 @@
                 <li class="current" style="padding: 0"><input id="confirmAddKeyWord" value="确认" type="button"
                                                               style="border: none;background: #01aef0;width: 64px;">
                 </li>
-                <li>取消</li>
+                <li onclick="keyWordCancel('reportAddSearchWord')">取消</li>
             </ul>
         </div>
     </div>
 </div>
 <%--数据报告中添加否定关键词--%>
-<div class="box" id="reportAddNoSearchWord" style="display: none;width: 550px;">
+<div class="box" id="reportAddNoSearchWord" style="display: none;z-index: 10001;width: 550px;">
     <h2 id="reportAddNoSearchWordTitile">
         <span class="fl">添加为关键词</span>
         <a href="javascript:void(0)" class="close">×</a>
@@ -232,10 +232,6 @@
 
         <div id="choicedNoKeyWord">
             <h3><strong>百思克</strong></h3>
-
-            <p>所属推广计划：<span>品牌计划</span></p>
-
-            <p>所属推广单元：<span>百思产品</span><span class="choicedKeyWordCancel" onclick="cancelKeyWord()">取消</span></p>
         </div>
 
         <div class="mainChoiceList">
@@ -298,7 +294,7 @@
                 <li class="current" style="padding: 0"><input id="confirmAddNoKeyWord" value="确认" type="button"
                                                               style="border: none;background: #01aef0;width: 64px;">
                 </li>
-                <li>取消</li>
+                <li onclick="keyWordCancel('reportAddNoSearchWord')">取消</li>
             </ul>
         </div>
     </div>

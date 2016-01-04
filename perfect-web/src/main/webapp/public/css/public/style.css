@@ -4665,19 +4665,13 @@ input[type=checkbox]:focus {
     margin: 8px 2px 0 0;
 }
 
-#choicedKeyWord, #choicedNoKeyWord {
+#choicedNoKeyWord {
     background: #fff;
     padding: 20px;
 }
 
-#choicedKeyWord p, #choicedNoKeyWord p {
+#choicedNoKeyWord p {
     margin: 5px 0;
-}
-
-#choicedKeyWord p .choicedKeyWordCancel {
-    float: right;
-    color: #01aef0;
-    cursor: pointer;
 }
 
 #reportAddSearchWord .mainChoiceList {

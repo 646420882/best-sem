@@ -629,7 +629,7 @@
             <li>
                 <label class='checkbox-inlines'> <input type="radio" name="price1" checked="checked"> 输入新出价:</label>
                 <input name="newPrice" class="zs_input3"
-                       type="text"></li>
+                       type="text"></li>\
             <li><label class='checkbox-inlines'><input type="radio" name="price1"><span
                     class="mainlist_left"> 使用单元出价 </span></label></li>
         </ul>

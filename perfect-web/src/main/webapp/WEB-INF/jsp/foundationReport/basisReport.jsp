@@ -501,6 +501,7 @@
                                         <td>&nbsp;<span>精确匹配扩展(地域词)触发</span><b><p></p>
 
                                             <p></p></b></td>
+                                        <td>操 作</td>
                                     </tr>
                                     </thead>
                                     <tbody id="searchWordTbody">
@@ -566,6 +567,34 @@
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
     });
+
+    function addKeyOrNotWord(obj) {
+        var _val = $(obj).val();
+        $(".TB_overlayBG_alert").css({
+            display: "block"
+        });
+        if(_val == "keyWord"){
+            $("#reportAddNoSearchWord").css("display",'none');
+            $("#reportAddSearchWord").css({
+                top: ($(window).height() - $("#reportAddSearchWord").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#reportAddSearchWord").width()) / 2 - 20 + "px",
+                display: "block"
+            });
+        }else {
+            $("#reportAddSearchWord").css("display",'none');
+            $("#reportAddNoSearchWord").css({
+                top: ($(window).height() - $("#reportAddNoSearchWord").height()) / 2 + $(window).scrollTop() + "px",
+                left: ($("body").width() - $("#reportAddNoSearchWord").width()) / 2 - 20 + "px",
+                display: "block"
+            });
+        }
+    }
+    function keyWordCancel(id){
+        $("#"+id).css('display','none')
+        $(".TB_overlayBG_alert").css({
+            display: "none"
+        });
+    }
 
     function OtherSearch() {
         $(".searh_report").hide();

@@ -93,11 +93,6 @@ var dockObj = document.getElementById('argDialogDiv');
 $("#downloadUser").click(function () {
     downloadUser();
 });
-function cancelKeyWord() {
-    $("#choicedKeyWord").css({'display': "none"});
-    $("#confirmAddKeyWord").attr({'disabled': 'disabled'});
-    $("#confirmAddKeyWord").css({"background": "#ccc", "cursor": 'not-allowed'})
-}
 function imageChange(obj) {
     var fileFormat = "jpg,jpeg,png,gif,bmp";
     var path = $(obj).val();
