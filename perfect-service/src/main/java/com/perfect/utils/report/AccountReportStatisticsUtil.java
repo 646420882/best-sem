@@ -19,24 +19,22 @@ public abstract class AccountReportStatisticsUtil {
      */
     public static List<AccountReportDTO> getUserPro(List<AccountReportDTO> responses) {
         List<AccountReportDTO> list = new ArrayList<>();
+        AccountReportDTO reportDTO = new AccountReportDTO();
         for (AccountReportDTO enit : responses) {
-            if (list.size() > 0) {
-                list.get(0).setPcImpression(list.get(0).getPcImpression() + ((enit.getPcImpression() == null) ? 0 : enit.getPcImpression()));
-                list.get(0).setPcClick(list.get(0).getPcClick() + ((enit.getPcClick() == null) ? 0 : enit.getPcClick()));
-                list.get(0).setPcCost(list.get(0).getPcCost().add((enit.getPcCost() == null) ? BigDecimal.valueOf(0) : enit.getPcCost()));
-                list.get(0).setPcConversion(list.get(0).getPcConversion() + ((enit.getPcConversion() == null) ? 0 : enit.getPcConversion()));
-                list.get(0).setPcCtr(0d);
-                list.get(0).setPcCpc(BigDecimal.valueOf(0));
-                list.get(0).setMobileImpression(((list.get(0).getMobileImpression() == null) ? 0 : list.get(0).getMobileImpression()) + ((enit.getMobileImpression() == null) ? 0 : enit.getMobileImpression()));
-                list.get(0).setMobileClick(((list.get(0).getMobileClick() == null) ? 0 : list.get(0).getMobileClick()) + ((enit.getMobileClick() == null) ? 0 : enit.getMobileClick()));
-                list.get(0).setMobileCost(((list.get(0).getMobileCost() == null) ? BigDecimal.valueOf(0) : list.get(0).getMobileCost()).add((enit.getMobileCost() == null) ? BigDecimal.valueOf(0) : enit.getMobileCost()));
-                list.get(0).setMobileConversion(((list.get(0).getMobileConversion() == null) ? 0 : list.get(0).getMobileConversion()) + ((enit.getMobileConversion() == null) ? 0 : enit.getMobileConversion()));
-                list.get(0).setMobileCtr(0d);
-                list.get(0).setMobileCpc(BigDecimal.valueOf(0));
-            } else {
-                list.add(enit);
-            }
+            reportDTO.setPcImpression((reportDTO.getPcImpression() == null ? 0 : reportDTO.getPcImpression()) + ((enit.getPcImpression() == null) ? 0 : enit.getPcImpression()));
+            reportDTO.setPcClick((reportDTO.getPcClick() == null ? 0 : reportDTO.getPcClick()) + ((enit.getPcClick() == null) ? 0 : enit.getPcClick()));
+            reportDTO.setPcCost((reportDTO.getPcCost() == null ? BigDecimal.ZERO : reportDTO.getPcCost()).add((enit.getPcCost() == null) ? BigDecimal.valueOf(0) : enit.getPcCost()));
+            reportDTO.setPcConversion((reportDTO.getPcConversion() == null ? 0 : reportDTO.getPcConversion()) + ((enit.getPcConversion() == null) ? 0 : enit.getPcConversion()));
+            reportDTO.setPcCtr(0d);
+            reportDTO.setPcCpc(BigDecimal.valueOf(0));
+            reportDTO.setMobileImpression(((reportDTO.getMobileImpression() == null) ? 0 : reportDTO.getMobileImpression()) + ((enit.getMobileImpression() == null) ? 0 : enit.getMobileImpression()));
+            reportDTO.setMobileClick(((reportDTO.getMobileClick() == null) ? 0 : reportDTO.getMobileClick()) + ((enit.getMobileClick() == null) ? 0 : enit.getMobileClick()));
+            reportDTO.setMobileCost(((reportDTO.getMobileCost() == null) ? BigDecimal.valueOf(0) : reportDTO.getMobileCost()).add((enit.getMobileCost() == null) ? BigDecimal.valueOf(0) : enit.getMobileCost()));
+            reportDTO.setMobileConversion(((reportDTO.getMobileConversion() == null) ? 0 : reportDTO.getMobileConversion()) + ((enit.getMobileConversion() == null) ? 0 : enit.getMobileConversion()));
+            reportDTO.setMobileCtr(0d);
+            reportDTO.setMobileCpc(BigDecimal.valueOf(0));
         }
+        list.add(reportDTO);
         return list;
     }
 

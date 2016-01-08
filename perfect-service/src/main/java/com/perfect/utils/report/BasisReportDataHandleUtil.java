@@ -78,26 +78,26 @@ public class BasisReportDataHandleUtil {
     public static Map<String, List<AccountReportDTO>> getUserDataPro(List<AccountReportDTO> responses, Date date1, Date date2) {
         Map<String, List<AccountReportDTO>> responseMap = new HashMap<>();
         List<AccountReportDTO> responseList = new ArrayList<>();
+        AccountReportDTO reportDTO = new AccountReportDTO();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (AccountReportDTO enit : responses) {
-            if (responseList.size() > 0) {
-                responseList.get(0).setPcImpression(responseList.get(0).getPcImpression() + ((enit.getPcImpression() == null) ? 0 : enit.getPcImpression()));
-                responseList.get(0).setPcClick(responseList.get(0).getPcClick() + ((enit.getPcClick() == null) ? 0 : enit.getPcClick()));
-                responseList.get(0).setPcCost(responseList.get(0).getPcCost().add((enit.getPcCost() == null) ? BigDecimal.valueOf(0) : enit.getPcCost()));
-                responseList.get(0).setPcConversion(responseList.get(0).getPcConversion() + ((enit.getPcConversion() == null) ? 0 : enit.getPcConversion()));
-                responseList.get(0).setPcCtr(0d);
-                responseList.get(0).setPcCpc(BigDecimal.valueOf(0));
-                responseList.get(0).setMobileImpression(((responseList.get(0).getMobileImpression() == null) ? 0 : responseList.get(0).getMobileImpression()) + ((enit.getMobileImpression() == null) ? 0 : enit.getMobileImpression()));
-                responseList.get(0).setMobileClick(((responseList.get(0).getMobileClick() == null) ? 0 : responseList.get(0).getMobileClick()) + ((enit.getMobileClick() == null) ? 0 : enit.getMobileClick()));
-                responseList.get(0).setMobileCost(((responseList.get(0).getMobileCost() == null) ? BigDecimal.valueOf(0) : responseList.get(0).getMobileCost()).add((enit.getMobileCost() == null) ? BigDecimal.valueOf(0) : enit.getMobileCost()));
-                responseList.get(0).setMobileConversion(((responseList.get(0).getMobileConversion() == null) ? 0 : responseList.get(0).getMobileConversion()) + ((enit.getMobileConversion() == null) ? 0 : enit.getMobileConversion()));
-                responseList.get(0).setMobileCtr(0d);
-                responseList.get(0).setMobileCpc(BigDecimal.valueOf(0));
-            } else {
-                enit.setDateRep(dateFormat.format(enit.getDate()));
-                responseList.add(enit);
+            if (reportDTO.getDateRep() == null) {
+                reportDTO.setDateRep(dateFormat.format(enit.getDate()));
             }
+            reportDTO.setPcImpression((reportDTO.getPcImpression() == null ? 0 : reportDTO.getPcImpression()) + ((enit.getPcImpression() == null) ? 0 : enit.getPcImpression()));
+            reportDTO.setPcClick((reportDTO.getPcClick() == null ? 0 : reportDTO.getPcClick()) + ((enit.getPcClick() == null) ? 0 : enit.getPcClick()));
+            reportDTO.setPcCost((reportDTO.getPcCost() == null ? BigDecimal.ZERO : reportDTO.getPcCost()).add((enit.getPcCost() == null) ? BigDecimal.valueOf(0) : enit.getPcCost()));
+            reportDTO.setPcConversion(reportDTO.getPcConversion() == null ? 0 : reportDTO.getPcConversion() + ((enit.getPcConversion() == null) ? 0 : enit.getPcConversion()));
+            reportDTO.setPcCtr(0d);
+            reportDTO.setPcCpc(BigDecimal.valueOf(0));
+            reportDTO.setMobileImpression(((reportDTO.getMobileImpression() == null) ? 0 : reportDTO.getMobileImpression()) + ((enit.getMobileImpression() == null) ? 0 : enit.getMobileImpression()));
+            reportDTO.setMobileClick(((reportDTO.getMobileClick() == null) ? 0 : reportDTO.getMobileClick()) + ((enit.getMobileClick() == null) ? 0 : enit.getMobileClick()));
+            reportDTO.setMobileCost(((reportDTO.getMobileCost() == null) ? BigDecimal.valueOf(0) : reportDTO.getMobileCost()).add((enit.getMobileCost() == null) ? BigDecimal.valueOf(0) : enit.getMobileCost()));
+            reportDTO.setMobileConversion(((reportDTO.getMobileConversion() == null) ? 0 : reportDTO.getMobileConversion()) + ((enit.getMobileConversion() == null) ? 0 : enit.getMobileConversion()));
+            reportDTO.setMobileCtr(0d);
+            reportDTO.setMobileCpc(BigDecimal.valueOf(0));
         }
+        responseList.add(reportDTO);
         responseMap.put(dateFormat.format(date1) + " 至 " + dateFormat.format(date2), responseList);
         return responseMap;
     }
