@@ -20,6 +20,8 @@
         <module>perfect-db</module>
         <module>perfect-admin</module>
         <module>perfect-usercenter</module>
+        <module>best-bidding</module>
+        <module>best-scheduler</module>
     </modules>
 
     <scm>
