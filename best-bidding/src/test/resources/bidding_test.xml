@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+	    http://www.springframework.org/schema/context/spring-context.xsd"
+       xmlns:context="http://www.springframework.org/schema/context"
+       default-autowire="byName">
+
+    <context:property-placeholder
+            location="classpath:mongodb.properties,classpath:redis.properties,classpath:elasticsearch.properties"/>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.perfect.*"/>
+
+    <!-- Redis连接池 -->
+    <bean id="redisPool" class="com.perfect.bidding.redis.JRedisPools" init-method="init" lazy-init="false"/>
+
+    <!-- Cookie心跳任务 -->
+    <bean id="heartBeatJob" class="com.perfect.bidding.core.CookieHeartBeat" init-method="start"/>
+
+    <bean id="biddingMaster" class="com.perfect.bidding.master.Master" init-method="start"/>
+
+    <bean id="biddingWorker" class="com.perfect.bidding.worker.Worker" init-method="start">
+        <property name="workerNumber" value="8"/>
+    </bean>
+
+    <!-- 单账户独立进程 -->
+    <!--<bean name="accountThreadTaskExecutors" class="com.perfect.bidding.core.AccountThreadTaskExecutors">
+        <property name="threadNamePrefix" value="account-thread-"/>
+        <property name="corePoolSize" value="8"/>
+    </bean>-->
+
+    <!--<bean name="heartbeatTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <bean class="com.perfect.bidding.heartbeat.HeartBeatJob"/>
+        </property>
+        <property name="targetMethod" value="start"/>
+    </bean>
+
+    <bean name="hbTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="heartbeatTask"/>
+        <property name="cronExpression" value="0 */1 * * * ?"/>
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup" value="true"/>
+        <property name="triggers">
+            <list>
+                <ref bean="hbTrigger"/>
+            </list>
+        </property>
+    </bean>-->
+    <!-- ============================================= -->
+    <import resource="spring-mongodb.xml"/>
+    <import resource="spring-es.xml"/>
+    <!-- ============================================= -->
+
+</beans>

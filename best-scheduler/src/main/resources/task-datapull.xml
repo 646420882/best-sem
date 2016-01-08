@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataPullJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <bean class="com.perfect.tasks.ReportDataPull"/>
+        </property>
+        <property name="targetMethod" value="pullStart"/>
+
+    </bean>
+    <bean id="dataPullTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="dataPullJobBean"/>
+        <property name="cronExpression" value="0 30 1 */1 * ? "/>
+    </bean>
+
+    <bean id="dataPullNmsJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <bean class="com.perfect.tasks.NmsReportDataPull"/>
+        </property>
+        <property name="targetMethod" value="pullNmsStart"/>
+    </bean>
+    <bean id="dataPullNmsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="dataPullNmsJobBean"/>
+        <property name="cronExpression" value="0 0 2 */1 * ? "/>
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup" value="true"/>
+        <property name="triggers">
+            <list>
+                <ref bean="dataPullTrigger"/>
+                <ref bean="dataPullNmsTrigger"/>
+                <!--<ref bean="everdayWarningTrigger"/>
+                <ref bean="senderWarningTrigger"/>-->
+            </list>
+        </property>
+    </bean>
+</beans>
